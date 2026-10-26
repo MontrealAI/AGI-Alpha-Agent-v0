@@ -1,0 +1,117 @@
+{
+  "totals": {
+    "incumbent": {
+      "validated_scoped_packets": 0,
+      "source_binding_loss_rows": 0,
+      "griffe_alerts": 0,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 0.164,
+      "range_of_mission_medians_seconds": [
+        0.1,
+        0.459
+      ],
+      "sum_median_cpu_seconds": 1.955809688
+    },
+    "retained": {
+      "validated_scoped_packets": 9,
+      "source_binding_loss_rows": 3,
+      "griffe_alerts": 0,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 12.0175,
+      "range_of_mission_medians_seconds": [
+        11.249,
+        13.081
+      ],
+      "sum_median_cpu_seconds": 141.013857916
+    },
+    "conventional": {
+      "validated_scoped_packets": 12,
+      "source_binding_loss_rows": 3,
+      "griffe_alerts": 6,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 12.4205,
+      "range_of_mission_medians_seconds": [
+        11.791,
+        13.034
+      ],
+      "sum_median_cpu_seconds": 144.869852123
+    }
+  },
+  "failures": [
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "errors": [
+            "WrappedSocket.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "errors": [
+            "WrappedSocket.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    }
+  ],
+  "process": {
+    "schema": "campaign-process-resources/v1",
+    "started": "2026-10-26T13:34:18.740675+00:00",
+    "command": [
+      "node",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/src/campaign.mjs",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/results/confirmation"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 886.0528782680003,
+    "child_user_cpu_seconds": 884.047149,
+    "child_system_cpu_seconds": 3.572261,
+    "child_maxrss_kib": 383304,
+    "money_usd": null,
+    "scope": "Complete child campaign including Python workers, verification, serialization and native Workbench; excludes prior acquisition/construction and later publication. Shared-host contention possible; not a capacity guarantee."
+  }
+}

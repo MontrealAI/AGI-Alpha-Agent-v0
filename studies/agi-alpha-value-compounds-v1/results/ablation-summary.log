@@ -1,0 +1,74 @@
+{
+  "schema": "context-ablation/v1",
+  "role": "postconfirmation diagnostic on exposed historical development inputs",
+  "rows": [
+    {
+      "arm": "retained",
+      "ablation": "consumer-code-omitted",
+      "status": "ASSESSMENT_READY",
+      "summary": {
+        "functions": {
+          "added": 1,
+          "call_loss": 31,
+          "no_call_loss": 66,
+          "unresolved": 5
+        },
+        "independent_report_valid": true,
+        "native_source_refusals": 16,
+        "runtime_model_calls": 0,
+        "production_approved": false,
+        "actual_paid_customer_jobs": 0
+      },
+      "meter": {
+        "cpu_ns": 1613010148,
+        "wall_ns": 1616718273,
+        "input_bytes": 579287,
+        "consumer_bytes": 0,
+        "runtime_model_calls": 0,
+        "network_requests": 0,
+        "candidate_cache": null,
+        "conventional_cache": null
+      },
+      "consumer_findings": 0,
+      "candidate_findings": 0,
+      "losses": 31
+    },
+    {
+      "arm": "conventional",
+      "ablation": "consumer-code-omitted",
+      "status": "ASSESSMENT_READY",
+      "summary": {
+        "functions": {
+          "added": 1,
+          "call_loss": 31,
+          "no_call_loss": 66,
+          "unresolved": 5
+        },
+        "independent_report_valid": true,
+        "native_source_refusals": 16,
+        "runtime_model_calls": 0,
+        "production_approved": false,
+        "actual_paid_customer_jobs": 0
+      },
+      "meter": {
+        "cpu_ns": 2043502462,
+        "wall_ns": 2048173241,
+        "input_bytes": 579287,
+        "consumer_bytes": 0,
+        "runtime_model_calls": 0,
+        "network_requests": 0,
+        "candidate_cache": null,
+        "conventional_cache": {
+          "entries": 0,
+          "source_bytes": 0
+        }
+      },
+      "consumer_findings": 0,
+      "candidate_findings": 0,
+      "losses": 31
+    }
+  ],
+  "complete_outcome": "FAIL: no supplied consumer code means the historical exact app-forwarding call cannot be identified. Lower resource use cannot be priced as an equal accepted customer service.",
+  "runtime_model_calls": 0,
+  "money_usd": null
+}

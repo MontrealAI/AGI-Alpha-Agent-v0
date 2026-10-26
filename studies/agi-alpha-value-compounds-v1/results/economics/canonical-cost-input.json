@@ -1,0 +1,817 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "call-compatibility",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Real monthly capacity has not been measured."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Paid utilization and demand have not been observed."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Future operating acceptance cannot be inferred from finite research cases."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+      },
+      "operations": [
+        {
+          "id": "preparation-inclusive",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning-inclusive",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution-inclusive",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification-inclusive",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction-inclusive",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging-inclusive",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting-inclusive",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery-inclusive",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Residual human exception frequency is unmeasured."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human exception duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No operator wage or contractor rate is assigned to the research assistant."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "shared-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+          }
+        },
+        {
+          "id": "shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Required recurring maintenance has not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        },
+        {
+          "id": "business-costs",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable delivery-business costs and obligations have not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "discovery-and-unsuccessful",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        },
+        {
+          "id": "construction-and-validation",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete construction, validation, integration and packaging costs are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched competent-human duration has been measured."
+        },
+        "hourlyCostMicros": {
+          "value": 50140000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Real monthly capacity has not been measured."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Paid utilization and demand have not been observed."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Future operating acceptance cannot be inferred from finite research cases."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+      },
+      "operations": [
+        {
+          "id": "preparation-inclusive",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning-inclusive",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution-inclusive",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification-inclusive",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction-inclusive",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging-inclusive",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting-inclusive",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery-inclusive",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Residual human exception frequency is unmeasured."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human exception duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No operator wage or contractor rate is assigned to the research assistant."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "shared-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+          }
+        },
+        {
+          "id": "shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Required recurring maintenance has not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        },
+        {
+          "id": "business-costs",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable delivery-business costs and obligations have not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "discovery-and-unsuccessful",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        },
+        {
+          "id": "construction-and-validation",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete construction, validation, integration and packaging costs are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched competent-human duration has been measured."
+        },
+        "hourlyCostMicros": {
+          "value": 50140000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Real monthly capacity has not been measured."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Paid utilization and demand have not been observed."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Future operating acceptance cannot be inferred from finite research cases."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+      },
+      "operations": [
+        {
+          "id": "preparation-inclusive",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning-inclusive",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution-inclusive",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification-inclusive",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction-inclusive",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging-inclusive",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting-inclusive",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery-inclusive",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Residual human exception frequency is unmeasured."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human exception duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No operator wage or contractor rate is assigned to the research assistant."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "shared-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+          }
+        },
+        {
+          "id": "shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Required recurring maintenance has not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        },
+        {
+          "id": "business-costs",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Attributable delivery-business costs and obligations have not been priced."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Row means attributable share only."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "discovery-and-unsuccessful",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        },
+        {
+          "id": "construction-and-validation",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Complete construction, validation, integration and packaging costs are unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No supported demand horizon for amortization."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched competent-human duration has been measured."
+        },
+        "hourlyCostMicros": {
+          "value": 50140000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+        }
+      }
+    }
+  ]
+}

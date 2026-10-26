@@ -1,0 +1,5412 @@
+{
+  "schema": "upgrade-campaign/v1",
+  "started": "2026-10-26T13:34:18.790Z",
+  "sourceHash": "5ce2d4b9c6ad769a45f43fae192b919ccd8f089de363cd06647677be87d3d076",
+  "unique_registered_transitions": 12,
+  "timing_repetitions_are_jobs": false,
+  "rows": [
+    {
+      "mission": "fastapi-1",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 443,
+      "whole_call_ns": 469603574,
+      "cpu_ns": 207407959,
+      "analysis_wall_ns": 207425805,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 207407959,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 207425805
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0001-fastapi-1-incumbent.json",
+        "sha256": "77daf2c6f78ff5be1ce9f3285a352b61da2480a1d8fe96a2d4ff32605ad40910",
+        "bytes": 43424
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11200,
+      "whole_call_ns": 11225976875,
+      "cpu_ns": 10839066935,
+      "analysis_wall_ns": 10839972867,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 63060,
+          "hits": 0,
+          "misses": 8
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 10839066935,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10839972867
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0002-fastapi-1-retained.json",
+        "sha256": "b548f92c844570e7b7e13842f516a119c1492e64e1430121f558d5b774f57d1d",
+        "bytes": 15653602
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12332,
+      "whole_call_ns": 12356966983,
+      "cpu_ns": 12044998030,
+      "analysis_wall_ns": 12047058220,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 8,
+          "source_bytes": 655478
+        },
+        "cpu_ns": 12044998030,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12047058220
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0003-fastapi-1-conventional.json",
+        "sha256": "898723b41ecec47a305ea104c7be21ca695491a27c8d72efa126582e7f38e848",
+        "bytes": 16714249
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11676,
+      "whole_call_ns": 11716086816,
+      "cpu_ns": 11381453616,
+      "analysis_wall_ns": 11383636633,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13131,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11381453616,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11383636633
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0004-fastapi-2-retained.json",
+        "sha256": "ef1572d474ee9d697c5f44a7132274af2320656cd679a29d8d7c0a38e868265d",
+        "bytes": 15608722
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12027,
+      "whole_call_ns": 12053188286,
+      "cpu_ns": 11738119115,
+      "analysis_wall_ns": 11739925689,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 10,
+          "source_bytes": 712635
+        },
+        "cpu_ns": 11738119115,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11739925689
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0005-fastapi-2-conventional.json",
+        "sha256": "ef5e84364234d406af245729fa329493c229eb76accb720cdd6349a695706d32",
+        "bytes": 15752360
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 155,
+      "whole_call_ns": 174591625,
+      "cpu_ns": 98976533,
+      "analysis_wall_ns": 98984680,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 98976533,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 98984680
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0006-fastapi-2-incumbent.json",
+        "sha256": "3fe027c3965f5e3af664955b37eb2b419015867930ef83b530937d9ec5685fa9",
+        "bytes": 24705
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11317,
+      "whole_call_ns": 11341899380,
+      "cpu_ns": 11048156622,
+      "analysis_wall_ns": 11050346921,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 12,
+          "source_bytes": 769921
+        },
+        "cpu_ns": 11048156622,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11050346921
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0007-fastapi-3-conventional.json",
+        "sha256": "aafd8b5cf2b46fe5a1bbb19248f421613738f60a8a733763b0cb0c110547970a",
+        "bytes": 15746340
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 144,
+      "whole_call_ns": 162315282,
+      "cpu_ns": 94763622,
+      "analysis_wall_ns": 94777090,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 94763622,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 94777090
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0008-fastapi-3-incumbent.json",
+        "sha256": "aeb70dadce9bb5d8a238e2951398ecd825dafd2af718ec2c5f6a90bd99e8953d",
+        "bytes": 17997
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11648,
+      "whole_call_ns": 11669136309,
+      "cpu_ns": 11274948804,
+      "analysis_wall_ns": 11277663947,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11274948804,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11277663947
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0009-fastapi-3-retained.json",
+        "sha256": "0468bcb6e137399bc02bd4744609d8830feca20cf0ce6ec80cb50b398dc872e6",
+        "bytes": 15602013
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 144,
+      "whole_call_ns": 165778332,
+      "cpu_ns": 92888862,
+      "analysis_wall_ns": 92896239,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 92888862,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 92896239
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0010-fastapi-4-incumbent.json",
+        "sha256": "fc8e97fd951e70243b04ce6c4b40c6e4e53c6ebed58e47a1d29de913c6ac7fb2",
+        "bytes": 18743
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12450,
+      "whole_call_ns": 12475503761,
+      "cpu_ns": 11670362322,
+      "analysis_wall_ns": 11672292735,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11670362322,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11672292735
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0011-fastapi-4-retained.json",
+        "sha256": "ebb79326a3b35b3fac0aed4bde2d8e781bd20d1e7af6cd32a4b65f51dc082be9",
+        "bytes": 15602762
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11652,
+      "whole_call_ns": 11672014001,
+      "cpu_ns": 11367482785,
+      "analysis_wall_ns": 11369466648,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 14,
+          "source_bytes": 826435
+        },
+        "cpu_ns": 11367482785,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11369466648
+      },
+      "pack": "results/confirmation/repeat-1/fastapi-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0012-fastapi-4-conventional.json",
+        "sha256": "322fb03b7a0212f105eff5188d296c468cdbd2645fdd29318837d3d81c9e9336",
+        "bytes": 15747084
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 10841,
+      "whole_call_ns": 10862201284,
+      "cpu_ns": 10593507797,
+      "analysis_wall_ns": 10594394415,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 28512,
+          "hits": 0,
+          "misses": 6
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 10593507797,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10594394415
+      },
+      "pack": "results/confirmation/repeat-1/requests-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0013-requests-1-retained.json",
+        "sha256": "eadf2d497c031856711092350b1d77369921ec58b8586051e8120d60c0322e7b",
+        "bytes": 15577642
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11040,
+      "whole_call_ns": 11062048253,
+      "cpu_ns": 10784856738,
+      "analysis_wall_ns": 10785636452,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 20,
+          "source_bytes": 896360
+        },
+        "cpu_ns": 10784856738,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10785636452
+      },
+      "pack": "results/confirmation/repeat-1/requests-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0014-requests-1-conventional.json",
+        "sha256": "f09ec5315f3e50f7814c5b2325a86318b9e15dddf8cc4c2eba871b5d16fe7a84",
+        "bytes": 15672115
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 89,
+      "whole_call_ns": 106302920,
+      "cpu_ns": 49739185,
+      "analysis_wall_ns": 49744994,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 49739185,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 49744994
+      },
+      "pack": "results/confirmation/repeat-1/requests-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0015-requests-1-incumbent.json",
+        "sha256": "75817adfcc62207ef14ec3d4dc1cdfe65c81cf2cad35b922b8ea06cd8d6ba0fe",
+        "bytes": 13450
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-2",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 10986,
+      "whole_call_ns": 11013179549,
+      "cpu_ns": 10608069191,
+      "analysis_wall_ns": 10610824010,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 51,
+          "source_bytes": 1262995
+        },
+        "cpu_ns": 10608069191,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10610824010
+      },
+      "pack": "results/confirmation/repeat-1/requests-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0016-requests-2-conventional.json",
+        "sha256": "3e564b1e18a5c63d786123445e5125b006acf005635f8ea7b12dfda7bc3e03d8",
+        "bytes": 16519537
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 667,
+      "whole_call_ns": 687320878,
+      "cpu_ns": 618756178,
+      "analysis_wall_ns": 618985649,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 618756178,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 618985649
+      },
+      "pack": "results/confirmation/repeat-1/requests-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0017-requests-2-incumbent.json",
+        "sha256": "17b95f38e7037ba7b012e744dd1c9e8373665dda1b79b72e71218e5addf76a9b",
+        "bytes": 181930
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12178,
+      "whole_call_ns": 12204054468,
+      "cpu_ns": 11944081029,
+      "analysis_wall_ns": 11947908201,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 14256,
+          "bytes_written": 82901,
+          "hits": 3,
+          "misses": 31
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11944081029,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11947908201
+      },
+      "pack": "results/confirmation/repeat-1/requests-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0018-requests-2-retained.json",
+        "sha256": "fd35cc8ec31ffffefafe88e82bf9a427031ea37c22357e4734906ce2197fe242",
+        "bytes": 15791111
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-3",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 214,
+      "whole_call_ns": 237401395,
+      "cpu_ns": 145826066,
+      "analysis_wall_ns": 145833589,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 145826066,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 145833589
+      },
+      "pack": "results/confirmation/repeat-1/requests-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0019-requests-3-incumbent.json",
+        "sha256": "ca0c839e384bf6e2866302d9fbd7f57143d97d3299ce3f85013078375cc2b2e3",
+        "bytes": 17063
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 10885,
+      "whole_call_ns": 10900988162,
+      "cpu_ns": 10682680172,
+      "analysis_wall_ns": 10684342258,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 12448,
+          "bytes_written": 12475,
+          "hits": 4,
+          "misses": 4
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 10682680172,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10684342258
+      },
+      "pack": "results/confirmation/repeat-1/requests-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0020-requests-3-retained.json",
+        "sha256": "ebf92086eb8ce8867b600c627d376df4dd44c01dfc96334ce13db97573eb7053",
+        "bytes": 15562650
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12260,
+      "whole_call_ns": 12291957937,
+      "cpu_ns": 11586890745,
+      "analysis_wall_ns": 11590433001,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 55,
+          "source_bytes": 1345360
+        },
+        "cpu_ns": 11586890745,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11590433001
+      },
+      "pack": "results/confirmation/repeat-1/requests-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0021-requests-3-conventional.json",
+        "sha256": "e7a1b11b4046fcd441158fdbf5723a1a686409c50147fc5bd34f3b427863142d",
+        "bytes": 15900875
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-4",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12098,
+      "whole_call_ns": 12127161135,
+      "cpu_ns": 11685780249,
+      "analysis_wall_ns": 11688122805,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8521,
+          "bytes_written": 8487,
+          "hits": 3,
+          "misses": 3
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11685780249,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11688122805
+      },
+      "pack": "results/confirmation/repeat-1/requests-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0022-requests-4-retained.json",
+        "sha256": "cf233fe3e50c7dbbc76551296a3749c1be06da41461da14d4fa9e358d3362fdd",
+        "bytes": 15554258
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12168,
+      "whole_call_ns": 12192527999,
+      "cpu_ns": 11717751425,
+      "analysis_wall_ns": 11722294859,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 58,
+          "source_bytes": 1393416
+        },
+        "cpu_ns": 11717751425,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11722294859
+      },
+      "pack": "results/confirmation/repeat-1/requests-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0023-requests-4-conventional.json",
+        "sha256": "e9f2a1bc08f76f062d2f3e134a4041c8aa0c9509e281ffe2d41ef843fecad083",
+        "bytes": 15779665
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 173,
+      "whole_call_ns": 193942872,
+      "cpu_ns": 124793039,
+      "analysis_wall_ns": 124800946,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 124793039,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 124800946
+      },
+      "pack": "results/confirmation/repeat-1/requests-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0024-requests-4-incumbent.json",
+        "sha256": "ce7fa64b4890bab1c4e46aaa24309ad2d0c13b909088ca655855c52a28ff5282",
+        "bytes": 12958
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12456,
+      "whole_call_ns": 12475678833,
+      "cpu_ns": 12005169399,
+      "analysis_wall_ns": 12007854568,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 60,
+          "source_bytes": 1498670
+        },
+        "cpu_ns": 12005169399,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12007854568
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0025-urllib3-1-conventional.json",
+        "sha256": "4e5575bb85a839499e0649dc42f5dcd45a7a94c2abce574e5c4c4534f9e19adf",
+        "bytes": 15696447
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 107,
+      "whole_call_ns": 128560059,
+      "cpu_ns": 60822752,
+      "analysis_wall_ns": 60830290,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 60822752,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 60830290
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0026-urllib3-1-incumbent.json",
+        "sha256": "de68a1f3ed3bee83d05b40ea537bd1152916826c81831220928cc183074d3b61",
+        "bytes": 10932
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11879,
+      "whole_call_ns": 11904352749,
+      "cpu_ns": 11494443576,
+      "analysis_wall_ns": 11496996286,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 12078,
+          "hits": 0,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11494443576,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11496996286
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0027-urllib3-1-retained.json",
+        "sha256": "52cd5863590c97f1dac37cc4afd862f5e0f83d359824aede04795f7751e6a100",
+        "bytes": 15553569
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 149,
+      "whole_call_ns": 172836798,
+      "cpu_ns": 99597577,
+      "analysis_wall_ns": 99617139,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 99597577,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 99617139
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0028-urllib3-2-incumbent.json",
+        "sha256": "650d2c4bb4adb0a51c71d307cc4df644e6629d496ec3996c5993ea462c11a5f2",
+        "bytes": 20307
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11667,
+      "whole_call_ns": 11690944053,
+      "cpu_ns": 11132627396,
+      "analysis_wall_ns": 11133826847,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 6039,
+          "bytes_written": 27836,
+          "hits": 1,
+          "misses": 9
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11132627396,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11133826847
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0029-urllib3-2-retained.json",
+        "sha256": "b5e026d8be1b99a2e0277b5cfdf8d3e2e37c9df6f26496a81141e27723314f5b",
+        "bytes": 15580065
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 12
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12424,
+      "whole_call_ns": 12442115812,
+      "cpu_ns": 12189566813,
+      "analysis_wall_ns": 12190837632,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1296393
+        },
+        "cpu_ns": 12189566813,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12190837632
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0030-urllib3-2-conventional.json",
+        "sha256": "8521b4eba9a8126f44668d0656da25f4ca21504c1caea7462d8cb510e83cc9c7",
+        "bytes": 15911246
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 11,
+        "unresolved": 1
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13887,
+      "whole_call_ns": 13915236034,
+      "cpu_ns": 13612017568,
+      "analysis_wall_ns": 13617121795,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8881,
+          "bytes_written": 88721,
+          "hits": 2,
+          "misses": 26
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 13612017568,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 13617121795
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0031-urllib3-3-retained.json",
+        "sha256": "0fa673de8eb8b228edfbfaf7493d4a79a74542d5a57fb9be40a97417ac43da03",
+        "bytes": 15655763
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 46,
+        "unresolved": 8
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13162,
+      "whole_call_ns": 13186795404,
+      "cpu_ns": 12896259811,
+      "analysis_wall_ns": 12898549863,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1167492
+        },
+        "cpu_ns": 12896259811,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12898549863
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0032-urllib3-3-conventional.json",
+        "sha256": "91dc3196043fa0fe73af9f7a09d458c9b4522d008c8acbc0a693dfc723993044",
+        "bytes": 16673308
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 44,
+        "unresolved": 10
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 266,
+      "whole_call_ns": 283936554,
+      "cpu_ns": 218570464,
+      "analysis_wall_ns": 218586992,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 218570464,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 218586992
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0033-urllib3-3-incumbent.json",
+        "sha256": "25f7f2475c1e2df3091ba79cef7e54ecd7b324c0f834d5400b76d76b8aa8b4d2",
+        "bytes": 51344
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "conventional",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12224,
+      "whole_call_ns": 12249612906,
+      "cpu_ns": 11955282326,
+      "analysis_wall_ns": 11957805484,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1350346
+        },
+        "cpu_ns": 11955282326,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11957805484
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0034-urllib3-4-conventional.json",
+        "sha256": "be56b50920196dae64e8ea87a6530d8c4c720ca4a4864babe3bd47dcf304897f",
+        "bytes": 16613576
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 34,
+        "unresolved": 6
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "incumbent",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 290,
+      "whole_call_ns": 307824005,
+      "cpu_ns": 238316903,
+      "analysis_wall_ns": 238340981,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 238316903,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 238340981
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0035-urllib3-4-incumbent.json",
+        "sha256": "e0a14c60235b6b831ffa926b062ca60c5f99ec0b1326f800e6132db83bfb8b71",
+        "bytes": 79420
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "retained",
+      "repetition": 1,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11511,
+      "whole_call_ns": 11533181688,
+      "cpu_ns": 11267209061,
+      "analysis_wall_ns": 11268603890,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 37290,
+          "bytes_written": 47521,
+          "hits": 10,
+          "misses": 14
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11267209061,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11268603890
+      },
+      "pack": "results/confirmation/repeat-1/urllib3-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0036-urllib3-4-retained.json",
+        "sha256": "304796ddd3ee7f3eeda8bf7031238f07a02ec715074b9832321361d60ace1bbf",
+        "bytes": 15671277
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 36,
+        "unresolved": 4
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13081,
+      "whole_call_ns": 13108023915,
+      "cpu_ns": 12595989419,
+      "analysis_wall_ns": 12623743035,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 63060,
+          "hits": 0,
+          "misses": 8
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12595989419,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12623743035
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0001-fastapi-1-retained.json",
+        "sha256": "58135b510fe232e4a13ba2acd0c3e26db11986a00b2a5e7b1b67ef95c2adbc34",
+        "bytes": 15653603
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12417,
+      "whole_call_ns": 12434618762,
+      "cpu_ns": 12148593115,
+      "analysis_wall_ns": 12155900651,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 8,
+          "source_bytes": 655478
+        },
+        "cpu_ns": 12148593115,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12155900651
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0002-fastapi-1-conventional.json",
+        "sha256": "5fd7ec7d74034e4d7a777cd24ec76ec4427e2efe8271e8ead43b981523f8ae04",
+        "bytes": 16714241
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 472,
+      "whole_call_ns": 489962387,
+      "cpu_ns": 421545860,
+      "analysis_wall_ns": 421579581,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 421545860,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 421579581
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0003-fastapi-1-incumbent.json",
+        "sha256": "6d1e718840deda7340ec609725002c6e23065249b744bb470005002e4ca956a1",
+        "bytes": 43424
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11183,
+      "whole_call_ns": 11204911892,
+      "cpu_ns": 10905265217,
+      "analysis_wall_ns": 10907918683,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 10,
+          "source_bytes": 712635
+        },
+        "cpu_ns": 10905265217,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10907918683
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0004-fastapi-2-conventional.json",
+        "sha256": "b455bc6f9e2fa7004e0724cf64cfc8113da5986b8ad907db656b90951978971d",
+        "bytes": 15752359
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 168,
+      "whole_call_ns": 191113531,
+      "cpu_ns": 109853133,
+      "analysis_wall_ns": 109868773,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 109853133,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 109868773
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0005-fastapi-2-incumbent.json",
+        "sha256": "aa1417319504245e8e5606a101993c5d76150b1623beb7c58ed6f1406342f400",
+        "bytes": 24707
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11211,
+      "whole_call_ns": 11230797001,
+      "cpu_ns": 10993874392,
+      "analysis_wall_ns": 10997077918,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13131,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 10993874392,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10997077918
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0006-fastapi-2-retained.json",
+        "sha256": "26d2174f62c3bf5fc71c4e676ddf87742fd9de71b4484f9d31dd2bd17f21a1b8",
+        "bytes": 15608722
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 156,
+      "whole_call_ns": 172384720,
+      "cpu_ns": 108640387,
+      "analysis_wall_ns": 108649295,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 108640387,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 108649295
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0007-fastapi-3-incumbent.json",
+        "sha256": "146f4d2408ddb4080d884eb461e6794e032abc0de75f69244327b3947c8c8307",
+        "bytes": 17999
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11900,
+      "whole_call_ns": 11919043284,
+      "cpu_ns": 11664974449,
+      "analysis_wall_ns": 11666325130,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11664974449,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11666325130
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0008-fastapi-3-retained.json",
+        "sha256": "0386f01f870bcd14274884a6f094d146160cbfd73b615c536917d74a1ba30452",
+        "bytes": 15602015
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12418,
+      "whole_call_ns": 12443595347,
+      "cpu_ns": 12147439838,
+      "analysis_wall_ns": 12148428493,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 12,
+          "source_bytes": 769921
+        },
+        "cpu_ns": 12147439838,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12148428493
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0009-fastapi-3-conventional.json",
+        "sha256": "59e9cd9b2bb2792c7b40e090f3336f717dd64414f5d9ffcbcc4f2389adee5808",
+        "bytes": 15746337
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12496,
+      "whole_call_ns": 12520612443,
+      "cpu_ns": 12232721546,
+      "analysis_wall_ns": 12239186396,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12232721546,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12239186396
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0010-fastapi-4-retained.json",
+        "sha256": "6e1cc5e07d2cd7cea4440e940dd671079c358486399e3ec20565a92a1d29cc06",
+        "bytes": 15602760
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12646,
+      "whole_call_ns": 12664278449,
+      "cpu_ns": 12389374001,
+      "analysis_wall_ns": 12395190781,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 14,
+          "source_bytes": 826435
+        },
+        "cpu_ns": 12389374001,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12395190781
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0011-fastapi-4-conventional.json",
+        "sha256": "ccea4432f1b78bfe64314964f8f43ff959964846bbe6fdd6e485d9749ba75081",
+        "bytes": 15747089
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 176,
+      "whole_call_ns": 200251347,
+      "cpu_ns": 104589287,
+      "analysis_wall_ns": 104597599,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 104589287,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 104597599
+      },
+      "pack": "results/confirmation/repeat-2/fastapi-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0012-fastapi-4-incumbent.json",
+        "sha256": "018c2d8d6f9f0f99b44a28aab458db828defc4da0f3cb15994163e051074f461",
+        "bytes": 18745
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11887,
+      "whole_call_ns": 11905478183,
+      "cpu_ns": 11624901022,
+      "analysis_wall_ns": 11629377070,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 20,
+          "source_bytes": 896360
+        },
+        "cpu_ns": 11624901022,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11629377070
+      },
+      "pack": "results/confirmation/repeat-2/requests-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0013-requests-1-conventional.json",
+        "sha256": "6ab3fc72592a3499f168126417e83fdca1021150511ba66a5ff3776a5e324e08",
+        "bytes": 15672107
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 106,
+      "whole_call_ns": 123332860,
+      "cpu_ns": 61598037,
+      "analysis_wall_ns": 61622755,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 61598037,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 61622755
+      },
+      "pack": "results/confirmation/repeat-2/requests-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0014-requests-1-incumbent.json",
+        "sha256": "ec234a053f4506b881e3885545115dcd43b93011e8b8ddb1f2697a4cb9ff1b57",
+        "bytes": 13450
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11249,
+      "whole_call_ns": 11271841462,
+      "cpu_ns": 11026771780,
+      "analysis_wall_ns": 11027921714,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 28512,
+          "hits": 0,
+          "misses": 6
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11026771780,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11027921714
+      },
+      "pack": "results/confirmation/repeat-2/requests-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0015-requests-1-retained.json",
+        "sha256": "a0eaf45febe0e4c8506bc8f195ed54fe93ea53396fb68cbde78b54c4516cafd5",
+        "bytes": 15577642
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-2",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 459,
+      "whole_call_ns": 478935534,
+      "cpu_ns": 406669678,
+      "analysis_wall_ns": 406739081,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 406669678,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 406739081
+      },
+      "pack": "results/confirmation/repeat-2/requests-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0016-requests-2-incumbent.json",
+        "sha256": "5028241173ed7b23257625c310437d0ba957613286193f8d470dbcc9427570fd",
+        "bytes": 181930
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12111,
+      "whole_call_ns": 12125981773,
+      "cpu_ns": 11880383098,
+      "analysis_wall_ns": 11881758843,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 14256,
+          "bytes_written": 82901,
+          "hits": 3,
+          "misses": 31
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11880383098,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11881758843
+      },
+      "pack": "results/confirmation/repeat-2/requests-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0017-requests-2-retained.json",
+        "sha256": "014bf79b9140a443482b870eff56c2eb19fb8deb1a902719be9a0116700a0f62",
+        "bytes": 15791111
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13078,
+      "whole_call_ns": 13099663746,
+      "cpu_ns": 12795840481,
+      "analysis_wall_ns": 12797099475,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 51,
+          "source_bytes": 1262995
+        },
+        "cpu_ns": 12795840481,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12797099475
+      },
+      "pack": "results/confirmation/repeat-2/requests-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0018-requests-2-conventional.json",
+        "sha256": "5a40a0005357a15eefbd56c243e96079ab940315f635d157608b82be7afc7bf1",
+        "bytes": 16519534
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-3",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11656,
+      "whole_call_ns": 11680656224,
+      "cpu_ns": 11398346249,
+      "analysis_wall_ns": 11404059992,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 12448,
+          "bytes_written": 12475,
+          "hits": 4,
+          "misses": 4
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11398346249,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11404059992
+      },
+      "pack": "results/confirmation/repeat-2/requests-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0019-requests-3-retained.json",
+        "sha256": "57530cdeb6919b649f92fe5ae1251520bcc202678f4da31d2def45d112b9e009",
+        "bytes": 15562650
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12568,
+      "whole_call_ns": 12585117544,
+      "cpu_ns": 12289345765,
+      "analysis_wall_ns": 12293931031,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 55,
+          "source_bytes": 1345360
+        },
+        "cpu_ns": 12289345765,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12293931031
+      },
+      "pack": "results/confirmation/repeat-2/requests-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0020-requests-3-conventional.json",
+        "sha256": "2940b7257305969b55b4be6f07662377707d6f82a30a75033b7b0ec9ece016e3",
+        "bytes": 15900876
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 190,
+      "whole_call_ns": 208008418,
+      "cpu_ns": 143657269,
+      "analysis_wall_ns": 143987474,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 143657269,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 143987474
+      },
+      "pack": "results/confirmation/repeat-2/requests-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0021-requests-3-incumbent.json",
+        "sha256": "0e9c7dd8baea654eb73bc8c4bd2528c82a31c6924509fe2065a6f3a8fbf30c5d",
+        "bytes": 17063
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-4",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11791,
+      "whole_call_ns": 11812366056,
+      "cpu_ns": 11529674903,
+      "analysis_wall_ns": 11532015152,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 58,
+          "source_bytes": 1393416
+        },
+        "cpu_ns": 11529674903,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11532015152
+      },
+      "pack": "results/confirmation/repeat-2/requests-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0022-requests-4-conventional.json",
+        "sha256": "3861e181422ca93932698d7f349a461ee684e4a8daf211aca45763b9f178e2c5",
+        "bytes": 15779668
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 160,
+      "whole_call_ns": 179398544,
+      "cpu_ns": 116841354,
+      "analysis_wall_ns": 116848847,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 116841354,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 116848847
+      },
+      "pack": "results/confirmation/repeat-2/requests-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0023-requests-4-incumbent.json",
+        "sha256": "c2e413b50639f6a65352ca58ef1851cb83204830987743a0c1c11a7b4a143030",
+        "bytes": 12958
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11626,
+      "whole_call_ns": 11647543212,
+      "cpu_ns": 11408317461,
+      "analysis_wall_ns": 11412156818,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8521,
+          "bytes_written": 8487,
+          "hits": 3,
+          "misses": 3
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11408317461,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11412156818
+      },
+      "pack": "results/confirmation/repeat-2/requests-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0024-requests-4-retained.json",
+        "sha256": "624c8e375ce730012f2e5a18859248e00f7449f05bacec5eab7e67bcfbf70289",
+        "bytes": 15554257
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 444,
+      "whole_call_ns": 464839914,
+      "cpu_ns": 390790807,
+      "analysis_wall_ns": 390931626,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 390790807,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 390931626
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0025-urllib3-1-incumbent.json",
+        "sha256": "4d21662eadb56cd5311a5c96e9670a87fa8db2c1dfc7bc531636290f2d3dc9cd",
+        "bytes": 10934
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11528,
+      "whole_call_ns": 11542436947,
+      "cpu_ns": 11308660425,
+      "analysis_wall_ns": 11310426034,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 12078,
+          "hits": 0,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11308660425,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11310426034
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0026-urllib3-1-retained.json",
+        "sha256": "3c5dd9f8f3b21b73c098c082b9da72412f04197bb3e6268354c40707238257b3",
+        "bytes": 15553570
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12091,
+      "whole_call_ns": 12109726687,
+      "cpu_ns": 11841627749,
+      "analysis_wall_ns": 11844509166,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 60,
+          "source_bytes": 1498670
+        },
+        "cpu_ns": 11841627749,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11844509166
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0027-urllib3-1-conventional.json",
+        "sha256": "daa4b8a910aea54b05ca3f0f4a7fbd39bedf014a557fce55d5e46f54ea74730a",
+        "bytes": 15696446
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12135,
+      "whole_call_ns": 12161880416,
+      "cpu_ns": 11867259617,
+      "analysis_wall_ns": 11868562016,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 6039,
+          "bytes_written": 27836,
+          "hits": 1,
+          "misses": 9
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11867259617,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11868562016
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0028-urllib3-2-retained.json",
+        "sha256": "a43b2277a5046effa648121f47736633bd2d9ccec0c7ffb54e4b94bf978acdab",
+        "bytes": 15580068
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 12
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12453,
+      "whole_call_ns": 12469826064,
+      "cpu_ns": 12198368862,
+      "analysis_wall_ns": 12201463336,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1296393
+        },
+        "cpu_ns": 12198368862,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12201463336
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0029-urllib3-2-conventional.json",
+        "sha256": "c2551cd3d5b588eb8936a10ce6f32cba1df890911e492c70c407fd316aa2eb46",
+        "bytes": 15911250
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 11,
+        "unresolved": 1
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 143,
+      "whole_call_ns": 163575997,
+      "cpu_ns": 96210987,
+      "analysis_wall_ns": 96218865,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 96210987,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 96218865
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0030-urllib3-2-incumbent.json",
+        "sha256": "c79085f6e025bc2836ff02a453abba0e67ae1092d219f404f1af761e4e08c625",
+        "bytes": 20307
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12443,
+      "whole_call_ns": 12467026120,
+      "cpu_ns": 12156749259,
+      "analysis_wall_ns": 12160029499,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1167492
+        },
+        "cpu_ns": 12156749259,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12160029499
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0031-urllib3-3-conventional.json",
+        "sha256": "544549a2e8eafbffb7b9a56bab44fbfdd7fab70f79dd15cd3ff02f3101bf4736",
+        "bytes": 16673309
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 44,
+        "unresolved": 10
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 297,
+      "whole_call_ns": 316839520,
+      "cpu_ns": 246189253,
+      "analysis_wall_ns": 246205327,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 246189253,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 246205327
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0032-urllib3-3-incumbent.json",
+        "sha256": "3604b911f88ef74293a5da94b0bc3d4eb71eecf85fda422f8bed4b916d081944",
+        "bytes": 51344
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12921,
+      "whole_call_ns": 12946586473,
+      "cpu_ns": 12635597699,
+      "analysis_wall_ns": 12638535391,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8881,
+          "bytes_written": 88721,
+          "hits": 2,
+          "misses": 26
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12635597699,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12638535391
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0033-urllib3-3-retained.json",
+        "sha256": "8f1d2d2ada8691c5767ff71cc8dc3cac1f19de302125f5b8f8c67f1fb369b30b",
+        "bytes": 15655759
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 46,
+        "unresolved": 8
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "incumbent",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 337,
+      "whole_call_ns": 364549557,
+      "cpu_ns": 273924861,
+      "analysis_wall_ns": 273942196,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 273924861,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 273942196
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0034-urllib3-4-incumbent.json",
+        "sha256": "235402df599582e27310b06534ad31fdf0a1ba61c4b18a36974ed2948f5f5767",
+        "bytes": 79420
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "retained",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12343,
+      "whole_call_ns": 12359798560,
+      "cpu_ns": 12112043850,
+      "analysis_wall_ns": 12115640545,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 37290,
+          "bytes_written": 47521,
+          "hits": 10,
+          "misses": 14
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12112043850,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12115640545
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0035-urllib3-4-retained.json",
+        "sha256": "131d02aaba39b0c3eaaa6696039725a1613ad00fdede6109d3e4de72c5dcdbf1",
+        "bytes": 15671275
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 36,
+        "unresolved": 4
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "conventional",
+      "repetition": 2,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12511,
+      "whole_call_ns": 12533184322,
+      "cpu_ns": 12241014444,
+      "analysis_wall_ns": 12242534415,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1350346
+        },
+        "cpu_ns": 12241014444,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12242534415
+      },
+      "pack": "results/confirmation/repeat-2/urllib3-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-2/evidence/0036-urllib3-4-conventional.json",
+        "sha256": "aac0e901e7ef8150fed655fbe2b2b704bd5aa5a736431ea8c0a93e9cca0be0db",
+        "bytes": 16613575
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 34,
+        "unresolved": 6
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13446,
+      "whole_call_ns": 13471912853,
+      "cpu_ns": 12910590025,
+      "analysis_wall_ns": 12914649717,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 8,
+          "source_bytes": 655478
+        },
+        "cpu_ns": 12910590025,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12914649717
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0001-fastapi-1-conventional.json",
+        "sha256": "a7114f95bb0d78b9976e55f112aa87657b4b00d3eeee243287e12248b20450f8",
+        "bytes": 16714248
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 323,
+      "whole_call_ns": 349979322,
+      "cpu_ns": 259266549,
+      "analysis_wall_ns": 259293015,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 259266549,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 259293015
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0002-fastapi-1-incumbent.json",
+        "sha256": "4580adfa8c325b06d5758407f43e0c5969e15fb20bf44e0ea62ca7d19210bc7d",
+        "bytes": 43424
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-1",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 3,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13478,
+      "whole_call_ns": 13496788667,
+      "cpu_ns": 13207472452,
+      "analysis_wall_ns": 13209718637,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 63060,
+          "hits": 0,
+          "misses": 8
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 13207472452,
+        "input_bytes": 1674426,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 13209718637
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0003-fastapi-1-retained.json",
+        "sha256": "757d50270d04cf83af8a723c9f5a7b840930555be65af2733d8be31314dd949a",
+        "bytes": 15653601
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "call_loss": 3,
+        "no_call_loss": 22
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 371,
+      "whole_call_ns": 390011699,
+      "cpu_ns": 321728144,
+      "analysis_wall_ns": 321796650,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 321728144,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 321796650
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0004-fastapi-2-incumbent.json",
+        "sha256": "b95eafccb0b0ddb1ccfba89b20997cb70e09743fa4f053aaa6308af1cd47ede8",
+        "bytes": 24707
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12486,
+      "whole_call_ns": 12512026325,
+      "cpu_ns": 12218585279,
+      "analysis_wall_ns": 12222375936,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13131,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12218585279,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12222375936
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0005-fastapi-2-retained.json",
+        "sha256": "6f97dc432abf52a2f011cfc851cfa4ee9e131b4da4a3d3c4925d464b540d13f3",
+        "bytes": 15608722
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-2",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11999,
+      "whole_call_ns": 12028562537,
+      "cpu_ns": 11715671846,
+      "analysis_wall_ns": 11717985692,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 10,
+          "source_bytes": 712635
+        },
+        "cpu_ns": 11715671846,
+        "input_bytes": 1670592,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11717985692
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0006-fastapi-2-conventional.json",
+        "sha256": "f44362895fc0fb17a21b88c17e485e12aed92f8e0d32acba5d434888375442cd",
+        "bytes": 15752362
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12037,
+      "whole_call_ns": 12059747729,
+      "cpu_ns": 11768860069,
+      "analysis_wall_ns": 11772840694,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11768860069,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11772840694
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0007-fastapi-3-retained.json",
+        "sha256": "47dd8ba237ef31c0597f016884a42e06452c13a8e655aa4a17769a548438b239",
+        "bytes": 15602015
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12386,
+      "whole_call_ns": 12404396587,
+      "cpu_ns": 12121347183,
+      "analysis_wall_ns": 12122517170,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 12,
+          "source_bytes": 769921
+        },
+        "cpu_ns": 12121347183,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12122517170
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0008-fastapi-3-conventional.json",
+        "sha256": "0181436f1977294164c1ce059d7ce5e36fb5ec6ed679f48cb7a775e2dfe5502e",
+        "bytes": 15746338
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-3",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 185,
+      "whole_call_ns": 209435443,
+      "cpu_ns": 104553513,
+      "analysis_wall_ns": 104561756,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 104553513,
+        "input_bytes": 1670361,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 104561756
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0009-fastapi-3-incumbent.json",
+        "sha256": "f5931427c2f12dd59636f8dbd05ec07e6f22327b9a2fe9207852a8024ced2413",
+        "bytes": 17999
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12476,
+      "whole_call_ns": 12507268316,
+      "cpu_ns": 12031814073,
+      "analysis_wall_ns": 12034818169,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 14,
+          "source_bytes": 826435
+        },
+        "cpu_ns": 12031814073,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12034818169
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0010-fastapi-4-conventional.json",
+        "sha256": "549279a8da18746513d462dad4f5d557ee4535fc62c50a267c36dca4b96318a6",
+        "bytes": 15747080
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 158,
+      "whole_call_ns": 175028154,
+      "cpu_ns": 105705368,
+      "analysis_wall_ns": 105713724,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 105705368,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 105713724
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0011-fastapi-4-incumbent.json",
+        "sha256": "eab6cb412cc9be4d4fa5330ff2eddc94f649bcd33be3fe6b8d503bc872af6ec6",
+        "bytes": 18745
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "fastapi-4",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 2,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11768,
+      "whole_call_ns": 11784672502,
+      "cpu_ns": 11555263487,
+      "analysis_wall_ns": 11556212809,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 13169,
+          "bytes_written": 13169,
+          "hits": 2,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11555263487,
+        "input_bytes": 1669718,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11556212809
+      },
+      "pack": "results/confirmation/repeat-3/fastapi-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0012-fastapi-4-retained.json",
+        "sha256": "a84b591c026db3a731fcaa588d3f8cfdf89b77dbfbe6b15b6a1cf68750e893af",
+        "bytes": 15602758
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "dependency-import-reference": 57,
+          "other-import-reference": 2705,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 15
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 100,
+      "whole_call_ns": 115556433,
+      "cpu_ns": 56780986,
+      "analysis_wall_ns": 56787369,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 56780986,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 56787369
+      },
+      "pack": "results/confirmation/repeat-3/requests-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0013-requests-1-incumbent.json",
+        "sha256": "827996f87d1cc8f1deff80c2fc449968df15980ff8ab60077ff0ec0a039bdef3",
+        "bytes": 13450
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12399,
+      "whole_call_ns": 12427836163,
+      "cpu_ns": 12163277623,
+      "analysis_wall_ns": 12166106750,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 28512,
+          "hits": 0,
+          "misses": 6
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12163277623,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12166106750
+      },
+      "pack": "results/confirmation/repeat-3/requests-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0014-requests-1-retained.json",
+        "sha256": "de66726f9cad274eb94b8ecb9aaa34a781301c5bc0a0fcb5fb5ea9873b2dfc76",
+        "bytes": 15577644
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-1",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12595,
+      "whole_call_ns": 12619352424,
+      "cpu_ns": 12321314835,
+      "analysis_wall_ns": 12322442404,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 20,
+          "source_bytes": 896360
+        },
+        "cpu_ns": 12321314835,
+        "input_bytes": 374009,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12322442404
+      },
+      "pack": "results/confirmation/repeat-3/requests-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0015-requests-1-conventional.json",
+        "sha256": "91edddb123665d48b90d4c4e9c3659ce8f9326dd2fcbf8762ad5657e5cb110f0",
+        "bytes": 15672111
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 38,
+        "unresolved": 2
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-2",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12966,
+      "whole_call_ns": 12984417800,
+      "cpu_ns": 12567532122,
+      "analysis_wall_ns": 12572442856,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 14256,
+          "bytes_written": 82901,
+          "hits": 3,
+          "misses": 31
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12567532122,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12572442856
+      },
+      "pack": "results/confirmation/repeat-3/requests-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0016-requests-2-retained.json",
+        "sha256": "d3e1c2129aab46066336eab34637119a3674f6791737898b5eb6c4ccae467421",
+        "bytes": 15791120
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12742,
+      "whole_call_ns": 12762563118,
+      "cpu_ns": 12396109915,
+      "analysis_wall_ns": 12400296968,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 51,
+          "source_bytes": 1262995
+        },
+        "cpu_ns": 12396109915,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12400296968
+      },
+      "pack": "results/confirmation/repeat-3/requests-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0017-requests-2-conventional.json",
+        "sha256": "505420dbea329f146681feb1106ddee2c47abdd1bf158c0e65cb2650e60d2afa",
+        "bytes": 16519527
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "added": 1,
+        "no_call_loss": 67,
+        "unresolved": 10
+      },
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-2",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 17,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 404,
+      "whole_call_ns": 421840360,
+      "cpu_ns": 350938789,
+      "analysis_wall_ns": 351059041,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 350938789,
+        "input_bytes": 404206,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 351059041
+      },
+      "pack": "results/confirmation/repeat-3/requests-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0018-requests-2-incumbent.json",
+        "sha256": "4251fef506cb9a9b3424551e0a5d3b968b0f12e7a531188d2b760176787feee3",
+        "bytes": 181930
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 22
+    },
+    {
+      "mission": "requests-3",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12686,
+      "whole_call_ns": 12721745978,
+      "cpu_ns": 12291935676,
+      "analysis_wall_ns": 12295394312,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 55,
+          "source_bytes": 1345360
+        },
+        "cpu_ns": 12291935676,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12295394312
+      },
+      "pack": "results/confirmation/repeat-3/requests-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0019-requests-3-conventional.json",
+        "sha256": "d7abf0c3e85dd97b2dacf9e6cb1541b9da851da7ae622a64f3ffa566e1cec769",
+        "bytes": 15900877
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 205,
+      "whole_call_ns": 225402519,
+      "cpu_ns": 154034319,
+      "analysis_wall_ns": 154042997,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 154034319,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 154042997
+      },
+      "pack": "results/confirmation/repeat-3/requests-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0020-requests-3-incumbent.json",
+        "sha256": "ef22a26c5a90a0d4a1a879de19e1f66499dee00d93c984ef8e157026b6634f07",
+        "bytes": 17063
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-3",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 4,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11830,
+      "whole_call_ns": 11854107206,
+      "cpu_ns": 11614779026,
+      "analysis_wall_ns": 11619326960,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 12448,
+          "bytes_written": 12475,
+          "hits": 4,
+          "misses": 4
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11614779026,
+        "input_bytes": 434606,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11619326960
+      },
+      "pack": "results/confirmation/repeat-3/requests-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0021-requests-3-retained.json",
+        "sha256": "033fdc57eba958642eec1253ba0018f09d253776527bf11cf7e5c5d4df602d39",
+        "bytes": 15562651
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 7,
+        "unresolved": 1
+      },
+      "native_refusals": 4
+    },
+    {
+      "mission": "requests-4",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 160,
+      "whole_call_ns": 176791115,
+      "cpu_ns": 112581494,
+      "analysis_wall_ns": 112589937,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 112581494,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 112589937
+      },
+      "pack": "results/confirmation/repeat-3/requests-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0022-requests-4-incumbent.json",
+        "sha256": "a696aa0e7013e57f5e4afca5ed0819548ecdb58439693a21a0dd12acaae49759",
+        "bytes": 12958
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11596,
+      "whole_call_ns": 11619179219,
+      "cpu_ns": 11361893311,
+      "analysis_wall_ns": 11363182133,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8521,
+          "bytes_written": 8487,
+          "hits": 3,
+          "misses": 3
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11361893311,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11363182133
+      },
+      "pack": "results/confirmation/repeat-3/requests-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0023-requests-4-retained.json",
+        "sha256": "232987b6e3b18a0c7e0f74a3c10f7526bbbd790c88e5f258a6f5cacf10cf1140",
+        "bytes": 15554258
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "requests-4",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 3,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11443,
+      "whole_call_ns": 11470661742,
+      "cpu_ns": 11178751215,
+      "analysis_wall_ns": 11182580412,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 58,
+          "source_bytes": 1393416
+        },
+        "cpu_ns": 11178751215,
+        "input_bytes": 434629,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11182580412
+      },
+      "pack": "results/confirmation/repeat-3/requests-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0024-requests-4-conventional.json",
+        "sha256": "bbbd21b8e0672c6fa404df0d83a119825e8785ae3b7e2dfd19c375f7511bc582",
+        "bytes": 15779667
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 3,
+        "unresolved": 1
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11523,
+      "whole_call_ns": 11541440546,
+      "cpu_ns": 11274283341,
+      "analysis_wall_ns": 11276182891,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 0,
+          "bytes_written": 12078,
+          "hits": 0,
+          "misses": 2
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 11274283341,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11276182891
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-1-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0025-urllib3-1-retained.json",
+        "sha256": "780968abf347dedf4c1a1ad2696065ab9187db4cabfdc442169adf03501176e8",
+        "bytes": 15553570
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12017,
+      "whole_call_ns": 12043966252,
+      "cpu_ns": 11749032005,
+      "analysis_wall_ns": 11750734096,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 60,
+          "source_bytes": 1498670
+        },
+        "cpu_ns": 11749032005,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 11750734096
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-1-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0026-urllib3-1-conventional.json",
+        "sha256": "bfc0634723762a46868572896d56f7bd4ab065166505f9cdcf4375379367c816",
+        "bytes": 15696450
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 6
+      },
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-1",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 1,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 102,
+      "whole_call_ns": 120773981,
+      "cpu_ns": 52744338,
+      "analysis_wall_ns": 52751835,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 52744338,
+        "input_bytes": 832584,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 52751835
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-1-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0027-urllib3-1-incumbent.json",
+        "sha256": "0c153952c53d25c3f666a84484b71510016898e2a79dc7017e917a5c72d47e88",
+        "bytes": 10932
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 2
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 11113,
+      "whole_call_ns": 11144808496,
+      "cpu_ns": 10869975386,
+      "analysis_wall_ns": 10873103787,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1296393
+        },
+        "cpu_ns": 10869975386,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 10873103787
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-2-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0028-urllib3-2-conventional.json",
+        "sha256": "299129cdde549f2bd9105cc4677e5b2827f76990a14889592a22b407234c9634",
+        "bytes": 15911247
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 11,
+        "unresolved": 1
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 178,
+      "whole_call_ns": 194226394,
+      "cpu_ns": 124095035,
+      "analysis_wall_ns": 124110094,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 124095035,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 124110094
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-2-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0029-urllib3-2-incumbent.json",
+        "sha256": "b3c0802a4b7f1233274fd71c2d98bfb14fe21b917a8dc4bb3d3949738487522e",
+        "bytes": 20309
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 5,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12757,
+      "whole_call_ns": 12773827463,
+      "cpu_ns": 12513685857,
+      "analysis_wall_ns": 12518236578,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 6039,
+          "bytes_written": 27836,
+          "hits": 1,
+          "misses": 9
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12513685857,
+        "input_bytes": 833855,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12518236578
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-2-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0030-urllib3-2-retained.json",
+        "sha256": "901ec4dd73e88ee7308fd7befb4e79ac3e0beac8de47bff25f7a2763acb00fb6",
+        "bytes": 15580065
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 12
+      },
+      "native_refusals": 8
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 288,
+      "whole_call_ns": 304524311,
+      "cpu_ns": 237573951,
+      "analysis_wall_ns": 237591569,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 237573951,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 237591569
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-3-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0031-urllib3-3-incumbent.json",
+        "sha256": "04b4e61049345e33a6ed1e4535ea7a7851875b40da6b6ad255f0a1e4f315e31d",
+        "bytes": 51344
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12564,
+      "whole_call_ns": 12583153996,
+      "cpu_ns": 12326334671,
+      "analysis_wall_ns": 12327848415,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 8881,
+          "bytes_written": 88721,
+          "hits": 2,
+          "misses": 26
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12326334671,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12327848415
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-3-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0032-urllib3-3-retained.json",
+        "sha256": "3e101fc747005218dc147900a65a6cd44ee653bbdd3ed5f72f2a1a22854d81af",
+        "bytes": 15655754
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 46,
+        "unresolved": 8
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 14,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 13034,
+      "whole_call_ns": 13064028597,
+      "cpu_ns": 12740185295,
+      "analysis_wall_ns": 12741436033,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1167492
+        },
+        "cpu_ns": 12740185295,
+        "input_bytes": 834066,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12741436033
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-3-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0033-urllib3-3-conventional.json",
+        "sha256": "c75180023fc2e5474214dd07d58ad8e3b46037691287c0d8e697834ac034eb3e",
+        "bytes": 16673311
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 44,
+        "unresolved": 10
+      },
+      "native_refusals": 28
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "retained",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12830,
+      "whole_call_ns": 12847948501,
+      "cpu_ns": 12573038865,
+      "analysis_wall_ns": 12574000157,
+      "resources": {
+        "candidate_cache": {
+          "bytes_read": 37290,
+          "bytes_written": 47521,
+          "hits": 10,
+          "misses": 14
+        },
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 12573038865,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12574000157
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-4-retained-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0034-urllib3-4-retained.json",
+        "sha256": "2370836bd8baa1dca130789c1a4a159b2f35a58be0f22c0f6703ea10858d2612",
+        "bytes": 15671282
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 36,
+        "unresolved": 4
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "conventional",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "ASSESSMENT_READY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 12803,
+      "whole_call_ns": 12833398521,
+      "cpu_ns": 12470746968,
+      "analysis_wall_ns": 12472796431,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": {
+          "entries": 64,
+          "source_bytes": 1350346
+        },
+        "cpu_ns": 12470746968,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 12472796431
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-4-conventional-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0035-urllib3-4-conventional.json",
+        "sha256": "dc08528219b783b73579eb8919b507f44619f1ff8332d04effdea62f264015ca",
+        "bytes": 16613571
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": {
+        "consumer_files": 56,
+        "inspected_calls": 10172,
+        "potential_break": 0,
+        "preserved_binding": 0,
+        "scope_triage": {
+          "other-import-reference": 2762,
+          "unattributed-call": 7410
+        },
+        "unresolved": 10172,
+        "unvisited_call_nodes": 0
+      },
+      "candidate_coverage": {},
+      "functions": {
+        "no_call_loss": 34,
+        "unresolved": 6
+      },
+      "native_refusals": 24
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "incumbent",
+      "repetition": 3,
+      "role": "timing-replicate-not-new-job",
+      "decision": "INVENTORY_ONLY",
+      "summary": {
+        "changedModules": 12,
+        "bindingLosses": 0,
+        "strictConsumerFindings": 0,
+        "syntacticCandidateFindings": 0
+      },
+      "workbench_elapsed_ms": 314,
+      "whole_call_ns": 335363005,
+      "cpu_ns": 253434842,
+      "analysis_wall_ns": 253467964,
+      "resources": {
+        "candidate_cache": null,
+        "consumer_bytes": 1061279,
+        "conventional_cache": null,
+        "cpu_ns": 253434842,
+        "input_bytes": 850763,
+        "network_requests": 0,
+        "runtime_model_calls": 0,
+        "wall_ns": 253467964
+      },
+      "pack": "results/confirmation/repeat-3/urllib3-4-incumbent-pack.json",
+      "full_evidence": {
+        "path": "results/confirmation/repeat-3/evidence/0036-urllib3-4-incumbent.json",
+        "sha256": "7eedcea1769c4d566ec20f3515882c86d166a1967b8a5b4cdcd7c4489e7b2b2d",
+        "bytes": 79420
+      },
+      "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+      "consumer_coverage": null,
+      "candidate_coverage": null,
+      "functions": {},
+      "native_refusals": 24
+    }
+  ]
+}

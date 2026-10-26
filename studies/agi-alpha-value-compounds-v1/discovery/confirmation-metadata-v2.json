@@ -1,0 +1,5685 @@
+{
+  "schema": "value-compounds-confirmation-selection/v2",
+  "selection_rule": "five latest published non-prerelease GitHub releases per selected dependency within declared package major ranges; four adjacent chronological release transitions; no code or outcome inspection",
+  "supersedes": "confirmation-metadata.json (HTTPX moved to exposed development because three transitions predate current >=0.28 bound)",
+  "source_inspected": false,
+  "cutoff_utc": "2026-10-26T13:09:17Z",
+  "limitations": [
+    "Historical publicly available source, held out from builders within this study; not prospective releases or secret data.",
+    "Model pretraining or prior general knowledge may include these histories.",
+    "Dependency declaration is evidence of project relevance, not current upgrade permission or proof a lock change is safe.",
+    "Per-package .py snapshots exclude tests/fixtures and do not establish dynamic behavior, semantic compatibility or deployment acceptance."
+  ],
+  "alpha_dependency_evidence": [
+    {
+      "path": "pyproject.toml",
+      "source": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "git_blob": "e0289e898e486e15b20f86d104e1912f33de090c",
+      "lines": [
+        {
+          "line": 14,
+          "text": "    \"fastapi>=0.116,<1\","
+        },
+        {
+          "line": 17,
+          "text": "    \"pydantic>=2.11,<3\","
+        }
+      ]
+    },
+    {
+      "path": "alpha_factory_v1/requirements-core.txt",
+      "source": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "git_blob": "b196a4e30e5e54fdc97c2b360b81163bc92e31ca",
+      "lines": [
+        {
+          "line": 20,
+          "text": "requests~=2.32"
+        }
+      ]
+    }
+  ],
+  "missions": [
+    {
+      "id": "fastapi-1",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.159.1",
+      "before_commit": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "after_tag": "0.160.0",
+      "after_commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T16:54:31Z"
+    },
+    {
+      "id": "fastapi-2",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.160.0",
+      "before_commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "after_tag": "0.161.0",
+      "after_commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T18:30:24Z"
+    },
+    {
+      "id": "fastapi-3",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.161.0",
+      "before_commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "after_tag": "0.161.1",
+      "after_commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T22:21:50Z"
+    },
+    {
+      "id": "fastapi-4",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.161.1",
+      "before_commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "after_tag": "0.162.0",
+      "after_commit": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-23T18:47:17Z"
+    },
+    {
+      "id": "requests-1",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.33.0",
+      "before_commit": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761",
+      "after_tag": "v2.33.1",
+      "after_commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-03-30T16:12:09Z"
+    },
+    {
+      "id": "requests-2",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.33.1",
+      "before_commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "after_tag": "v2.34.0",
+      "after_commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-11T19:40:27Z"
+    },
+    {
+      "id": "requests-3",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.34.0",
+      "before_commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "after_tag": "v2.34.1",
+      "after_commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-13T19:23:51Z"
+    },
+    {
+      "id": "requests-4",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.34.1",
+      "before_commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "after_tag": "v2.34.2",
+      "after_commit": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-14T19:27:15Z"
+    },
+    {
+      "id": "pydantic-1",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "before_tag": "v2.13.3",
+      "before_commit": "9e9a11132c980c4ec84ff6d2df06d4c1a55ca8f3",
+      "after_tag": "v2.13.4",
+      "after_commit": "cf67d4b3193c3fe43ede18612ed62785eee11382",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-06T13:44:39Z"
+    },
+    {
+      "id": "pydantic-2",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "before_tag": "v2.13.4",
+      "before_commit": "cf67d4b3193c3fe43ede18612ed62785eee11382",
+      "after_tag": "v2.13.5",
+      "after_commit": "001dea020e0809844e5b17666432c9135a976f46",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-08-28T14:06:45Z"
+    },
+    {
+      "id": "pydantic-3",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "before_tag": "v2.13.5",
+      "before_commit": "001dea020e0809844e5b17666432c9135a976f46",
+      "after_tag": "v2.14.0",
+      "after_commit": "fcdefa7198c4fc94a22eecf1a5b7926e20b9fc8a",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-08T16:12:06Z"
+    },
+    {
+      "id": "pydantic-4",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "before_tag": "v2.14.0",
+      "before_commit": "fcdefa7198c4fc94a22eecf1a5b7926e20b9fc8a",
+      "after_tag": "v2.14.1",
+      "after_commit": "b2212c787fb5c73386dc770681ec49cd09da8e73",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-11T18:39:44Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "tag": "0.162.0",
+      "published_at": "2026-10-23T18:47:17Z",
+      "created_at": "2026-10-23T18:45:33Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.162.0",
+      "target_commitish": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 834473,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "0796611f0de72123bc552991d36bb7e08ea8d6c4",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "247d0265ddf319323cca3a80d9f331559db3166a",
+          "size": 55433,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4"
+    },
+    {
+      "tag": "0.161.1",
+      "published_at": "2026-10-22T22:21:50Z",
+      "created_at": "2026-10-22T19:13:01Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.161.1",
+      "target_commitish": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835245,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "07446a7e0d90dcd2a3eaa4dbe3613daa3ef68841",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "24f4be23cd5ec202d4e6e1f518171dff2a9bd9f4",
+          "size": 56205,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "69ddc2badf9da1123bba4d360225ae6b085985f6"
+    },
+    {
+      "tag": "0.161.0",
+      "published_at": "2026-10-22T18:30:24Z",
+      "created_at": "2026-10-22T18:27:20Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.161.0",
+      "target_commitish": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835116,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "a217ac08d4e4a67c79947f9575156ef2917b67a9",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "b24b3e887ec78b460379d468be7d7a469370d0db",
+          "size": 56076,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "80c8742d141e67beaf747343405c8facf999bc0c"
+    },
+    {
+      "tag": "0.160.0",
+      "published_at": "2026-10-22T16:54:31Z",
+      "created_at": "2026-10-22T16:49:26Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.160.0",
+      "target_commitish": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835476,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "0fd0c21adcbf68dea95820eb28d039d89c8bbb82",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "92c423249506d94cd0a616921a99d982dfbe3cbd",
+          "size": 56436,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "addd0778e996cf886972b8024113d79f8d0a3580"
+    },
+    {
+      "tag": "0.159.1",
+      "published_at": "2026-10-21T20:59:13Z",
+      "created_at": "2026-10-21T20:49:11Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.159.1",
+      "target_commitish": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 838950,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "69a29978dba78b1f16a5e441e0c2802866503ca1",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "047f49d7ac288d05d1d5a15400c331b97fe22b87",
+          "size": 8152,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "bef2ebea550608888c3ef471b539107d608c7c1f",
+          "size": 59747,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "9a14ebf6512ae8865110e2699aad69808bec8a9d",
+          "size": 260496,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0"
+    },
+    {
+      "tag": "v2.34.2",
+      "published_at": "2026-05-14T19:27:15Z",
+      "created_at": "2026-05-14T19:21:52Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.2",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217284,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "fea814e58271ecb7a1088ce9ac636791a2cc1289",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "b2273d612b17726609afb45a29058625b79eae60",
+          "size": 5838,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "59b5615960d19849d2dd4a85de4fdc079969ddae",
+          "size": 41783,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "feaf34053a911d4b9051069aeb57e595b4d00165",
+          "size": 34248,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3"
+    },
+    {
+      "tag": "v2.34.1",
+      "published_at": "2026-05-13T19:23:51Z",
+      "created_at": "2026-05-13T19:17:24Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.1",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217345,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "bf5a4e9bc25d541cd0466cc5fee28e6597f21e0d",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "f4573cdd07d27edbe5a75c344cb196c502e135b0",
+          "size": 5845,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "78eb52c311a99b3b60d06b7e6fa511d6e619452a",
+          "size": 41837,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "feaf34053a911d4b9051069aeb57e595b4d00165",
+          "size": 34248,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "b7b549b54571d03950b16afd2d01bc6ff0348224"
+    },
+    {
+      "tag": "v2.34.0",
+      "published_at": "2026-05-11T19:40:27Z",
+      "created_at": "2026-05-11T19:24:57Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.0",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217261,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "872a8aaa227c3b6a38008d06c4c433c80e30a3e9",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "963867b0126c72d73f9c4edca94f5bd4d78d9515",
+          "size": 5882,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "4142f2a4bbf39820b46b414a15af805a34b1a013",
+          "size": 41698,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "8f13887d187deda256e08f305950a56a9c145ea5",
+          "size": 34266,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "0b401c76b6e80a4eecf3c690085b2553f6e261ca"
+    },
+    {
+      "tag": "v2.33.1",
+      "published_at": "2026-03-30T16:12:09Z",
+      "created_at": "2026-03-30T16:07:00Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.33.1",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "prefix": "src/requests/",
+      "file_count": 18,
+      "total_bytes": 186945,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "8ecd8b81499e6b966c6029ea6a6bb90c145ee6e1",
+          "size": 5044,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "7f8a52c8565c69b396e9cdc81a60fefdfe032dd7",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "b7cf4695b0702cf5ffaad181980b223279702eb1",
+          "size": 1502,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "98f74465f211078899448fc1737127aa5435db4a",
+          "size": 26172,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "5960744552e7f8eea815429e7bdad38b0cc2741d",
+          "size": 6449,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "c39b645189ddaf03a5700e62521f39dcc24ecb0a",
+          "size": 10170,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "7f9d754350c9fe28db41e328ea880b9e4b20cc8b",
+          "size": 2142,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "f69d0cda9e1c893401015a09f2db2de5a5960fd2",
+          "size": 18590,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "6e71506e968e85c6f539e8292706aa566146f48a",
+          "size": 4261,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "5d5107895eed204996d3ab9a1a21afe8f6304925",
+          "size": 3802,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "5976bc7d0f22ad5769194eb7965b2e3fe7302048",
+          "size": 734,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "2d043f59cff71257048fe5d039525d388a54e5a4",
+          "size": 35465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "578cc44d5c17a81982c28308b6396760ab9d5946",
+          "size": 30645,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "c7945a2f06897ed980cc575df2f48d9e6c1a9f7e",
+          "size": 4322,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "188e13e4829591facb23ae0e2eda84b9807cb818",
+          "size": 2912,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "42238375c8fd5f0937a473eac7ff5fbe183a284e",
+          "size": 32966,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "111d2b77790bf49943c0dfa09b365371c24aec7e"
+    },
+    {
+      "tag": "v2.33.0",
+      "published_at": "2026-03-25T16:38:25Z",
+      "created_at": "2026-03-25T15:06:17Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.33.0",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761",
+      "prefix": "src/requests/",
+      "file_count": 18,
+      "total_bytes": 187064,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "8ecd8b81499e6b966c6029ea6a6bb90c145ee6e1",
+          "size": 5044,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "567b49f54927efec4922b4c5b694b7db6e504e97",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "8c7c05190c798283e6ddc38f283c9431946283c7",
+          "size": 1496,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "98f74465f211078899448fc1737127aa5435db4a",
+          "size": 26172,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "5960744552e7f8eea815429e7bdad38b0cc2741d",
+          "size": 6449,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "c39b645189ddaf03a5700e62521f39dcc24ecb0a",
+          "size": 10170,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "7f9d754350c9fe28db41e328ea880b9e4b20cc8b",
+          "size": 2142,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "f69d0cda9e1c893401015a09f2db2de5a5960fd2",
+          "size": 18590,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "6e71506e968e85c6f539e8292706aa566146f48a",
+          "size": 4261,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "5d5107895eed204996d3ab9a1a21afe8f6304925",
+          "size": 3802,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "5976bc7d0f22ad5769194eb7965b2e3fe7302048",
+          "size": 734,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "2d043f59cff71257048fe5d039525d388a54e5a4",
+          "size": 35465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "578cc44d5c17a81982c28308b6396760ab9d5946",
+          "size": 30645,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "c7945a2f06897ed980cc575df2f48d9e6c1a9f7e",
+          "size": 4322,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "188e13e4829591facb23ae0e2eda84b9807cb818",
+          "size": 2912,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "54959bb8aba33d35583b0ed34ae395a3eb1f3999",
+          "size": 33091,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761"
+    },
+    {
+      "tag": "v2.14.1",
+      "published_at": "2026-10-11T18:39:44Z",
+      "created_at": "2026-10-11T17:57:49Z",
+      "url": "https://github.com/pydantic/pydantic/releases/tag/v2.14.1",
+      "target_commitish": "main",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "prefix": "pydantic/",
+      "commit": "b2212c787fb5c73386dc770681ec49cd09da8e73",
+      "tree_api_ref": "b2212c787fb5c73386dc770681ec49cd09da8e73",
+      "file_count": 105,
+      "total_bytes": 1820880,
+      "files": [
+        {
+          "path": "pydantic/__init__.py",
+          "blob": "10bb2f7245826a11dd980bbe594e28366f413325",
+          "size": 15951,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_config.py",
+          "blob": "7045779b00a33505a4a35e33a481890add12b6fa",
+          "size": 14916,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_metadata.py",
+          "blob": "9f2510c03429b6de24063bec5937e4334077722d",
+          "size": 5162,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_utils.py",
+          "blob": "a49b4ddde9a5771c787b203b42f0c147eff32ecf",
+          "size": 5913,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_dataclasses.py",
+          "blob": "0bdc659c80a9a670b35e36c801c8da2b3af02d36",
+          "size": 13640,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators.py",
+          "blob": "753696b1bea1a9ca5ac47e0fedaf6269f3b20fa0",
+          "size": 35483,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators_v1.py",
+          "blob": "cac9385b493f3f9f4e759d8dc434270a4f47c223",
+          "size": 6198,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_discriminated_union.py",
+          "blob": "176bf11b4b608bf19de4abd18b2a6dc9930cb88b",
+          "size": 27686,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_docs_extraction.py",
+          "blob": "8808c1f08d3a8409f2f3bc374030795492f82bf8",
+          "size": 4140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_fields.py",
+          "blob": "51e7c9f0139d99069d45cecacfaf9d2c602c6f70",
+          "size": 39627,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_forward_ref.py",
+          "blob": "dab88b96b80c3a17df4dc1c950f3928d49f549d8",
+          "size": 641,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generate_schema.py",
+          "blob": "0d03cd299e625a248bdaf6e23c5d0f671ffa93db",
+          "size": 141797,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generics.py",
+          "blob": "15c4c56de017bbfffd52a7f1d48d2264ff063cfe",
+          "size": 24574,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_git.py",
+          "blob": "96dcda28f801cd19989838b029f6f2b250dedc52",
+          "size": 809,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_import_utils.py",
+          "blob": "638102f771dd674799255cc6ef69cacb2c184d13",
+          "size": 402,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_known_annotated_metadata.py",
+          "blob": "95dc0213fffc070b0d7a5c7a3570aec875c9e4c8",
+          "size": 16863,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_mock_val_ser.py",
+          "blob": "b0344ac06091cf4cfdfb5a0b2ccec16a29f6c9c6",
+          "size": 9432,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_model_construction.py",
+          "blob": "143655652b989b09b5750b7557e0b9daf4ec62ca",
+          "size": 36663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_namespace_utils.py",
+          "blob": "495f17da69a15b6045187736330f3fccb9ae0c96",
+          "size": 13328,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_repr.py",
+          "blob": "2f8166b09ec1477d754d6334cbbfdaa8f2359abf",
+          "size": 4981,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_gather.py",
+          "blob": "3adcfbea13690887e6e2582d3cf0efa3bcb1fe39",
+          "size": 1892,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_generation_shared.py",
+          "blob": "ece84bd200c10c4eab29826d925274ea2358da0a",
+          "size": 4869,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_serializers.py",
+          "blob": "a4058e009020e28658e13e30731b2eb29eb0d154",
+          "size": 1491,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_signature.py",
+          "blob": "a2770c5b51324084a1c9f6e720e0e46303d8b34d",
+          "size": 7143,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_type_refs.py",
+          "blob": "df8b65c5ad84137fcea156a0ee63cc4daf4b57e3",
+          "size": 4521,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_typing_extra.py",
+          "blob": "4eca11008e23e70608c68cca6426bd452aa729e5",
+          "size": 20967,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_utils.py",
+          "blob": "e6145ddb79ea745ef3e959e633b026dc3f4d72e9",
+          "size": 15386,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validate_call.py",
+          "blob": "10f12cc80108f15a674478a733b60df2f7c330e7",
+          "size": 5369,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validators.py",
+          "blob": "2650ed96fe24454bb33b32704d3370c471bbd4a4",
+          "size": 20987,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_migration.py",
+          "blob": "010b2b18fc7362bada3392206c90acb03df439fe",
+          "size": 12188,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/alias_generators.py",
+          "blob": "0b7653f5825979edcd446d698d320bdb980b8e9e",
+          "size": 2124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/aliases.py",
+          "blob": "3a2f28f8f2f870056cba7eb1f51b2bec5316f4c6",
+          "size": 4902,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/annotated_handlers.py",
+          "blob": "1538250df8f514b4f217618296ae4f426d487d82",
+          "size": 4421,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/class_validators.py",
+          "blob": "9977150c92fcb083fcdfa632c9de3b5fa92470cb",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/color.py",
+          "blob": "91d31ba861e6a44804d57e256c2659492246d092",
+          "size": 21497,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/config.py",
+          "blob": "237be865af71f0703b79b4bfc9fac8d9039dbaed",
+          "size": 44640,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/dataclasses.py",
+          "blob": "01bcf8f9f5d1a8cf39c22fad451ec4d6b648e635",
+          "size": 18422,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/datetime_parse.py",
+          "blob": "53d52649e7620965ed194240a3becaa3ce3e3448",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/decorator.py",
+          "blob": "0d97560c1b791956726b04fd66740a947647aabe",
+          "size": 145,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/class_validators.py",
+          "blob": "a33d8a4cb69d50d4887650611c4f3ae1b644fc20",
+          "size": 10303,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/config.py",
+          "blob": "bd4692ace9b4594799974d6ecf8d44357d1d02c5",
+          "size": 2663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/copy_internals.py",
+          "blob": "0170dc08bc13d29ef4b23476877fc22dc81bdfff",
+          "size": 7618,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/decorator.py",
+          "blob": "db01e74f250101bb33cb865709bf71e371c05b36",
+          "size": 10879,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/json.py",
+          "blob": "b08a0762a1c90be60d221ce4f0c4708e40c36277",
+          "size": 4669,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/parse.py",
+          "blob": "94c497716ddef8f06356bebf48f073f5b4c86eff",
+          "size": 2538,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/tools.py",
+          "blob": "e7c3310f52e99ac82918229f7d83d35702c48883",
+          "size": 3357,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/env_settings.py",
+          "blob": "cd0b04e6a43c1bb3767dd136a19a9873fa547514",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/error_wrappers.py",
+          "blob": "2985419abf23f5e529af43883f1d365452e4190a",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/errors.py",
+          "blob": "510a1de9f6fa8407aa77a1e39c7be8b7d6fda8e3",
+          "size": 5870,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/__init__.py",
+          "blob": "5b5add10921077da0928529592a75e7ada7ecee5",
+          "size": 104,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/arguments_schema.py",
+          "blob": "af4a8f3be3242519b529668e321dd8393241f7ea",
+          "size": 1866,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/missing_sentinel.py",
+          "blob": "c92888d0a4b9404b0dc6c28448644af3b2158b04",
+          "size": 845,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/pipeline.py",
+          "blob": "fb1da8b224834637737322c669c5d457ef85628e",
+          "size": 24962,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/fields.py",
+          "blob": "4d9d4dce9d1c8d509c88ea903441ebbe02424c5b",
+          "size": 88258,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_serializers.py",
+          "blob": "f7ab518496a7c5d8f0a2ca55bb1b024efda5f8a3",
+          "size": 17929,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_validators.py",
+          "blob": "066c6e0aa5576bc81a80c1f5e7b1c8a8edf9d9e8",
+          "size": 33225,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/generics.py",
+          "blob": "3f1070d08f3ac5bd554794401734eb349373ab8e",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json.py",
+          "blob": "bcaff9f57958b8c0938255fd8f937293c5850cbd",
+          "size": 140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json_schema.py",
+          "blob": "48e804165fbc5a696f5fc690ae89c2a100e51f9e",
+          "size": 142234,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/main.py",
+          "blob": "5527adcb35deb6bf2d8e291003070635426de4a1",
+          "size": 91376,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/mypy.py",
+          "blob": "548c2a8ef0fe77252ee3c5f0b8653b8ad7f83f62",
+          "size": 64439,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/networks.py",
+          "blob": "7a701042799495b8fea667c8eaa639a5611e42d4",
+          "size": 44516,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/parse.py",
+          "blob": "68b7f0464ece32edfb955eec0cb24655752716d6",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/__init__.py",
+          "blob": "7677a43a1ab08a7ac9d5de96015b4cc3fb006d03",
+          "size": 7263,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_loader.py",
+          "blob": "e8226fafe98131afa3bee9b70d0324d694c72da5",
+          "size": 2213,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_schema_validator.py",
+          "blob": "d87f5b772b8e7e5dd7b09c67d7a5a32ff22ec439",
+          "size": 5815,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/root_model.py",
+          "blob": "4134862cff702d207d33f2d2faaa6da42032499c",
+          "size": 8703,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/schema.py",
+          "blob": "a3245a61afd0f59143f38ee809ee2d784d9198eb",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/tools.py",
+          "blob": "fdc68c4f4a35e8d8200b3aafcda63d43839da375",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/type_adapter.py",
+          "blob": "2bce1b638d0627bad94368bfcbee7a6e7e9806e6",
+          "size": 36039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/types.py",
+          "blob": "bd8cfab389c19a7157afa45fd0bbb0499f94cb19",
+          "size": 110280,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/typing.py",
+          "blob": "0bda22d02ffc59f306ded475805343aef2855f49",
+          "size": 138,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/utils.py",
+          "blob": "8d1e2a81c5f0d1bd858bf12ccf15b1461008cf99",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/__init__.py",
+          "blob": "6ad3f466684df5c377480a8e181971a1b2f0016a",
+          "size": 2946,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/_hypothesis_plugin.py",
+          "blob": "b62234d50750cbcf6d3ebba02d2ee54afb8c7347",
+          "size": 14847,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/annotated_types.py",
+          "blob": "d9eaaafd5b6b2617baf3b3c889659c5bac807ff2",
+          "size": 3157,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/class_validators.py",
+          "blob": "2f68fc8600038d8de10017b0d02a3fde77a06ba6",
+          "size": 14672,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/color.py",
+          "blob": "b0bbf78f4367c3e13a5aac0df09b5824d8f7e6ea",
+          "size": 16844,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/config.py",
+          "blob": "18f7c999bee0fab95293b2434047fd20532a6446",
+          "size": 6532,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/dataclasses.py",
+          "blob": "bd1670291d6622a28ecb5b8e9ad68f4bac9305d7",
+          "size": 18172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/datetime_parse.py",
+          "blob": "a7598fc6c56688c4dd6526fc6e8b8e03682f62e8",
+          "size": 7724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/decorator.py",
+          "blob": "2c7c2c2ffdb45ca50cd2b7e57bde1fc711adb851",
+          "size": 10339,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/env_settings.py",
+          "blob": "5f6f217500d8ca1e7717f59ae372ee9a27660fe3",
+          "size": 14105,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/error_wrappers.py",
+          "blob": "bc7f263146ee4f1701391a2436ab38e5e16f0e1a",
+          "size": 5196,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/errors.py",
+          "blob": "6e8644258a6ccf999a19f69c359452a109e54ffe",
+          "size": 17726,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/fields.py",
+          "blob": "610ff9272df9a3b7d41131587a18ca136d6ce7f6",
+          "size": 50646,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/generics.py",
+          "blob": "fa1dcec42d7fc6310f0f243dd1a50f296d0146f4",
+          "size": 17829,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/json.py",
+          "blob": "41d0d5fcae0d946401c2d089b69143f540618b90",
+          "size": 3390,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/main.py",
+          "blob": "36e9c44c98735ece2d784f5ad1d60b783e39ce59",
+          "size": 45697,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/mypy.py",
+          "blob": "0a77569218ce6f832e7221b1f557d811318402e7",
+          "size": 38860,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/networks.py",
+          "blob": "ba07b74867b83beaaabc3afe2e19d77d71544338",
+          "size": 22124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/parse.py",
+          "blob": "431d75a6406f3cf79ae4fcd26a2ad35fb5030526",
+          "size": 1821,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/schema.py",
+          "blob": "a91fe2cd4ae12e619a0ca34baf14400ded5f14cf",
+          "size": 47801,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/tools.py",
+          "blob": "6838a23ecc7419f0478449d9d680c230a99c20e0",
+          "size": 2881,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/types.py",
+          "blob": "e1840d99f79683412aebfc23ced893d0716c1400",
+          "size": 35455,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/typing.py",
+          "blob": "c5c59794b9b3d29765e24bfb05880de78e6f5a25",
+          "size": 20102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/utils.py",
+          "blob": "2094e84fad951d6620635cf86f7f5fb647c5c20b",
+          "size": 26014,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/validators.py",
+          "blob": "c0940e8114a47ceacf21f4df946a6401946b9b8f",
+          "size": 22187,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/version.py",
+          "blob": "6ba1cb08332b03fc85194d29ee76ab993ea951c9",
+          "size": 1039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validate_call_decorator.py",
+          "blob": "d0d4352b039f45441aeb3beb21c4ef8627dbae2e",
+          "size": 4749,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validators.py",
+          "blob": "7921b04f05d5ef0ad20365e7372a48d86724dc51",
+          "size": 146,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/version.py",
+          "blob": "bc130a8256d46e847a951556b011fe5ae82d9bad",
+          "size": 3985,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/warnings.py",
+          "blob": "6115f387b435569de6a20929e57db2da8042cec6",
+          "size": 5177,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "v2.14.0",
+      "published_at": "2026-10-08T16:12:06Z",
+      "created_at": "2026-10-08T13:29:41Z",
+      "url": "https://github.com/pydantic/pydantic/releases/tag/v2.14.0",
+      "target_commitish": "main",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "prefix": "pydantic/",
+      "commit": "fcdefa7198c4fc94a22eecf1a5b7926e20b9fc8a",
+      "tree_api_ref": "fcdefa7198c4fc94a22eecf1a5b7926e20b9fc8a",
+      "file_count": 105,
+      "total_bytes": 1817992,
+      "files": [
+        {
+          "path": "pydantic/__init__.py",
+          "blob": "10bb2f7245826a11dd980bbe594e28366f413325",
+          "size": 15951,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_config.py",
+          "blob": "7045779b00a33505a4a35e33a481890add12b6fa",
+          "size": 14916,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_metadata.py",
+          "blob": "9f2510c03429b6de24063bec5937e4334077722d",
+          "size": 5162,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_utils.py",
+          "blob": "a49b4ddde9a5771c787b203b42f0c147eff32ecf",
+          "size": 5913,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_dataclasses.py",
+          "blob": "0bdc659c80a9a670b35e36c801c8da2b3af02d36",
+          "size": 13640,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators.py",
+          "blob": "753696b1bea1a9ca5ac47e0fedaf6269f3b20fa0",
+          "size": 35483,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators_v1.py",
+          "blob": "cac9385b493f3f9f4e759d8dc434270a4f47c223",
+          "size": 6198,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_discriminated_union.py",
+          "blob": "176bf11b4b608bf19de4abd18b2a6dc9930cb88b",
+          "size": 27686,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_docs_extraction.py",
+          "blob": "8808c1f08d3a8409f2f3bc374030795492f82bf8",
+          "size": 4140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_fields.py",
+          "blob": "51e7c9f0139d99069d45cecacfaf9d2c602c6f70",
+          "size": 39627,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_forward_ref.py",
+          "blob": "dab88b96b80c3a17df4dc1c950f3928d49f549d8",
+          "size": 641,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generate_schema.py",
+          "blob": "a446559b8b5f0742d65d0b0ea898d5781fef0588",
+          "size": 140009,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generics.py",
+          "blob": "15c4c56de017bbfffd52a7f1d48d2264ff063cfe",
+          "size": 24574,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_git.py",
+          "blob": "96dcda28f801cd19989838b029f6f2b250dedc52",
+          "size": 809,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_import_utils.py",
+          "blob": "638102f771dd674799255cc6ef69cacb2c184d13",
+          "size": 402,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_known_annotated_metadata.py",
+          "blob": "6245b4290bf245a64feac2d1e73b3bcfee6f99d6",
+          "size": 16530,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_mock_val_ser.py",
+          "blob": "b0344ac06091cf4cfdfb5a0b2ccec16a29f6c9c6",
+          "size": 9432,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_model_construction.py",
+          "blob": "143655652b989b09b5750b7557e0b9daf4ec62ca",
+          "size": 36663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_namespace_utils.py",
+          "blob": "495f17da69a15b6045187736330f3fccb9ae0c96",
+          "size": 13328,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_repr.py",
+          "blob": "2f8166b09ec1477d754d6334cbbfdaa8f2359abf",
+          "size": 4981,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_gather.py",
+          "blob": "3adcfbea13690887e6e2582d3cf0efa3bcb1fe39",
+          "size": 1892,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_generation_shared.py",
+          "blob": "ece84bd200c10c4eab29826d925274ea2358da0a",
+          "size": 4869,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_serializers.py",
+          "blob": "a4058e009020e28658e13e30731b2eb29eb0d154",
+          "size": 1491,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_signature.py",
+          "blob": "a2770c5b51324084a1c9f6e720e0e46303d8b34d",
+          "size": 7143,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_type_refs.py",
+          "blob": "df8b65c5ad84137fcea156a0ee63cc4daf4b57e3",
+          "size": 4521,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_typing_extra.py",
+          "blob": "8203ee68d3ac9a9ac3e058e2e615effbd80481ca",
+          "size": 20840,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_utils.py",
+          "blob": "e6145ddb79ea745ef3e959e633b026dc3f4d72e9",
+          "size": 15386,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validate_call.py",
+          "blob": "10f12cc80108f15a674478a733b60df2f7c330e7",
+          "size": 5369,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validators.py",
+          "blob": "a63b8db1b60de7ce6b1650cb884f1cb9d836661b",
+          "size": 20347,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_migration.py",
+          "blob": "010b2b18fc7362bada3392206c90acb03df439fe",
+          "size": 12188,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/alias_generators.py",
+          "blob": "0b7653f5825979edcd446d698d320bdb980b8e9e",
+          "size": 2124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/aliases.py",
+          "blob": "3a2f28f8f2f870056cba7eb1f51b2bec5316f4c6",
+          "size": 4902,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/annotated_handlers.py",
+          "blob": "1538250df8f514b4f217618296ae4f426d487d82",
+          "size": 4421,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/class_validators.py",
+          "blob": "9977150c92fcb083fcdfa632c9de3b5fa92470cb",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/color.py",
+          "blob": "91d31ba861e6a44804d57e256c2659492246d092",
+          "size": 21497,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/config.py",
+          "blob": "237be865af71f0703b79b4bfc9fac8d9039dbaed",
+          "size": 44640,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/dataclasses.py",
+          "blob": "01bcf8f9f5d1a8cf39c22fad451ec4d6b648e635",
+          "size": 18422,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/datetime_parse.py",
+          "blob": "53d52649e7620965ed194240a3becaa3ce3e3448",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/decorator.py",
+          "blob": "0d97560c1b791956726b04fd66740a947647aabe",
+          "size": 145,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/class_validators.py",
+          "blob": "a33d8a4cb69d50d4887650611c4f3ae1b644fc20",
+          "size": 10303,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/config.py",
+          "blob": "bd4692ace9b4594799974d6ecf8d44357d1d02c5",
+          "size": 2663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/copy_internals.py",
+          "blob": "0170dc08bc13d29ef4b23476877fc22dc81bdfff",
+          "size": 7618,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/decorator.py",
+          "blob": "db01e74f250101bb33cb865709bf71e371c05b36",
+          "size": 10879,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/json.py",
+          "blob": "b08a0762a1c90be60d221ce4f0c4708e40c36277",
+          "size": 4669,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/parse.py",
+          "blob": "94c497716ddef8f06356bebf48f073f5b4c86eff",
+          "size": 2538,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/tools.py",
+          "blob": "e7c3310f52e99ac82918229f7d83d35702c48883",
+          "size": 3357,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/env_settings.py",
+          "blob": "cd0b04e6a43c1bb3767dd136a19a9873fa547514",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/error_wrappers.py",
+          "blob": "2985419abf23f5e529af43883f1d365452e4190a",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/errors.py",
+          "blob": "510a1de9f6fa8407aa77a1e39c7be8b7d6fda8e3",
+          "size": 5870,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/__init__.py",
+          "blob": "5b5add10921077da0928529592a75e7ada7ecee5",
+          "size": 104,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/arguments_schema.py",
+          "blob": "af4a8f3be3242519b529668e321dd8393241f7ea",
+          "size": 1866,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/missing_sentinel.py",
+          "blob": "c92888d0a4b9404b0dc6c28448644af3b2158b04",
+          "size": 845,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/pipeline.py",
+          "blob": "fb1da8b224834637737322c669c5d457ef85628e",
+          "size": 24962,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/fields.py",
+          "blob": "4d9d4dce9d1c8d509c88ea903441ebbe02424c5b",
+          "size": 88258,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_serializers.py",
+          "blob": "f7ab518496a7c5d8f0a2ca55bb1b024efda5f8a3",
+          "size": 17929,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_validators.py",
+          "blob": "066c6e0aa5576bc81a80c1f5e7b1c8a8edf9d9e8",
+          "size": 33225,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/generics.py",
+          "blob": "3f1070d08f3ac5bd554794401734eb349373ab8e",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json.py",
+          "blob": "bcaff9f57958b8c0938255fd8f937293c5850cbd",
+          "size": 140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json_schema.py",
+          "blob": "48e804165fbc5a696f5fc690ae89c2a100e51f9e",
+          "size": 142234,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/main.py",
+          "blob": "5527adcb35deb6bf2d8e291003070635426de4a1",
+          "size": 91376,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/mypy.py",
+          "blob": "548c2a8ef0fe77252ee3c5f0b8653b8ad7f83f62",
+          "size": 64439,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/networks.py",
+          "blob": "7a701042799495b8fea667c8eaa639a5611e42d4",
+          "size": 44516,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/parse.py",
+          "blob": "68b7f0464ece32edfb955eec0cb24655752716d6",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/__init__.py",
+          "blob": "7677a43a1ab08a7ac9d5de96015b4cc3fb006d03",
+          "size": 7263,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_loader.py",
+          "blob": "e8226fafe98131afa3bee9b70d0324d694c72da5",
+          "size": 2213,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_schema_validator.py",
+          "blob": "d87f5b772b8e7e5dd7b09c67d7a5a32ff22ec439",
+          "size": 5815,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/root_model.py",
+          "blob": "4134862cff702d207d33f2d2faaa6da42032499c",
+          "size": 8703,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/schema.py",
+          "blob": "a3245a61afd0f59143f38ee809ee2d784d9198eb",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/tools.py",
+          "blob": "fdc68c4f4a35e8d8200b3aafcda63d43839da375",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/type_adapter.py",
+          "blob": "2bce1b638d0627bad94368bfcbee7a6e7e9806e6",
+          "size": 36039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/types.py",
+          "blob": "bd8cfab389c19a7157afa45fd0bbb0499f94cb19",
+          "size": 110280,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/typing.py",
+          "blob": "0bda22d02ffc59f306ded475805343aef2855f49",
+          "size": 138,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/utils.py",
+          "blob": "8d1e2a81c5f0d1bd858bf12ccf15b1461008cf99",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/__init__.py",
+          "blob": "6ad3f466684df5c377480a8e181971a1b2f0016a",
+          "size": 2946,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/_hypothesis_plugin.py",
+          "blob": "b62234d50750cbcf6d3ebba02d2ee54afb8c7347",
+          "size": 14847,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/annotated_types.py",
+          "blob": "d9eaaafd5b6b2617baf3b3c889659c5bac807ff2",
+          "size": 3157,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/class_validators.py",
+          "blob": "2f68fc8600038d8de10017b0d02a3fde77a06ba6",
+          "size": 14672,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/color.py",
+          "blob": "b0bbf78f4367c3e13a5aac0df09b5824d8f7e6ea",
+          "size": 16844,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/config.py",
+          "blob": "18f7c999bee0fab95293b2434047fd20532a6446",
+          "size": 6532,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/dataclasses.py",
+          "blob": "bd1670291d6622a28ecb5b8e9ad68f4bac9305d7",
+          "size": 18172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/datetime_parse.py",
+          "blob": "a7598fc6c56688c4dd6526fc6e8b8e03682f62e8",
+          "size": 7724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/decorator.py",
+          "blob": "2c7c2c2ffdb45ca50cd2b7e57bde1fc711adb851",
+          "size": 10339,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/env_settings.py",
+          "blob": "5f6f217500d8ca1e7717f59ae372ee9a27660fe3",
+          "size": 14105,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/error_wrappers.py",
+          "blob": "bc7f263146ee4f1701391a2436ab38e5e16f0e1a",
+          "size": 5196,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/errors.py",
+          "blob": "6e8644258a6ccf999a19f69c359452a109e54ffe",
+          "size": 17726,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/fields.py",
+          "blob": "610ff9272df9a3b7d41131587a18ca136d6ce7f6",
+          "size": 50646,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/generics.py",
+          "blob": "fa1dcec42d7fc6310f0f243dd1a50f296d0146f4",
+          "size": 17829,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/json.py",
+          "blob": "41d0d5fcae0d946401c2d089b69143f540618b90",
+          "size": 3390,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/main.py",
+          "blob": "36e9c44c98735ece2d784f5ad1d60b783e39ce59",
+          "size": 45697,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/mypy.py",
+          "blob": "0a77569218ce6f832e7221b1f557d811318402e7",
+          "size": 38860,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/networks.py",
+          "blob": "ba07b74867b83beaaabc3afe2e19d77d71544338",
+          "size": 22124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/parse.py",
+          "blob": "431d75a6406f3cf79ae4fcd26a2ad35fb5030526",
+          "size": 1821,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/schema.py",
+          "blob": "a91fe2cd4ae12e619a0ca34baf14400ded5f14cf",
+          "size": 47801,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/tools.py",
+          "blob": "6838a23ecc7419f0478449d9d680c230a99c20e0",
+          "size": 2881,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/types.py",
+          "blob": "e1840d99f79683412aebfc23ced893d0716c1400",
+          "size": 35455,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/typing.py",
+          "blob": "c5c59794b9b3d29765e24bfb05880de78e6f5a25",
+          "size": 20102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/utils.py",
+          "blob": "2094e84fad951d6620635cf86f7f5fb647c5c20b",
+          "size": 26014,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/validators.py",
+          "blob": "c0940e8114a47ceacf21f4df946a6401946b9b8f",
+          "size": 22187,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/version.py",
+          "blob": "6ba1cb08332b03fc85194d29ee76ab993ea951c9",
+          "size": 1039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validate_call_decorator.py",
+          "blob": "d0d4352b039f45441aeb3beb21c4ef8627dbae2e",
+          "size": 4749,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validators.py",
+          "blob": "7921b04f05d5ef0ad20365e7372a48d86724dc51",
+          "size": 146,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/version.py",
+          "blob": "9723587cded166156c6aa8c177cafd4a8e55db8b",
+          "size": 3985,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/warnings.py",
+          "blob": "6115f387b435569de6a20929e57db2da8042cec6",
+          "size": 5177,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "v2.13.5",
+      "published_at": "2026-08-28T14:06:45Z",
+      "created_at": "2026-08-28T13:39:21Z",
+      "url": "https://github.com/pydantic/pydantic/releases/tag/v2.13.5",
+      "target_commitish": "main",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "prefix": "pydantic/",
+      "commit": "001dea020e0809844e5b17666432c9135a976f46",
+      "tree_api_ref": "001dea020e0809844e5b17666432c9135a976f46",
+      "file_count": 105,
+      "total_bytes": 1773212,
+      "files": [
+        {
+          "path": "pydantic/__init__.py",
+          "blob": "01212849e733d8f07df79b27f328a294c54d7fe3",
+          "size": 15812,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_config.py",
+          "blob": "73b5870891629a6f1351ef825cc1e2a3d1728268",
+          "size": 14839,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_metadata.py",
+          "blob": "9f2510c03429b6de24063bec5937e4334077722d",
+          "size": 5162,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_utils.py",
+          "blob": "caa51e8c4630458020486407c032f0a8b78bba75",
+          "size": 6487,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_dataclasses.py",
+          "blob": "f00c8b77723ba2c269d858c0c7c6bb9f04fba7f2",
+          "size": 13188,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators.py",
+          "blob": "e24ad2cf924b0940b1d1d41f2ccbe4b20f380947",
+          "size": 33620,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators_v1.py",
+          "blob": "34273779d77666f5cd775f6a2684641092db67ee",
+          "size": 6185,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_discriminated_union.py",
+          "blob": "fc52f30889816b7161f41ae030df05e46ec5f557",
+          "size": 26255,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_docs_extraction.py",
+          "blob": "6df77bf6c7786a480a9b5aa4c9a816944dc72ed2",
+          "size": 4127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_fields.py",
+          "blob": "9a2a96b9269c18a40550cb8bd4965e31e8e8c605",
+          "size": 31557,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_forward_ref.py",
+          "blob": "231f81d11b87ef05d4765cd61d88d7348eb9e401",
+          "size": 611,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generate_schema.py",
+          "blob": "98fae40d6e311c432cc108ae6accf774d3c5c4e7",
+          "size": 136348,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generics.py",
+          "blob": "f3e927cb0697f162039ebf6371e1b4903d8417a5",
+          "size": 23393,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_git.py",
+          "blob": "96dcda28f801cd19989838b029f6f2b250dedc52",
+          "size": 809,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_import_utils.py",
+          "blob": "638102f771dd674799255cc6ef69cacb2c184d13",
+          "size": 402,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_internal_dataclass.py",
+          "blob": "33e152cc8d178486ef016285855495a86d5991d8",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_known_annotated_metadata.py",
+          "blob": "5954dba7017edd9b55ddb0eb1831fa449a8edf7c",
+          "size": 16805,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_mock_val_ser.py",
+          "blob": "9125ab32e5348b6e873c4b1939a887ebde35d97a",
+          "size": 8885,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_model_construction.py",
+          "blob": "b7945442fb20d23ae16a2603130ffe566fb0989f",
+          "size": 38928,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_namespace_utils.py",
+          "blob": "af0cddb03d6700b5f292c7231b32d9a92a8472eb",
+          "size": 12878,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_repr.py",
+          "blob": "7e80a9c83db0f142fd5ae577a4388aa8ad4d0444",
+          "size": 5172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_gather.py",
+          "blob": "8e07b20e70990287a874c8cf5bd932fb57d30d45",
+          "size": 9052,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_generation_shared.py",
+          "blob": "b231a82e1969822695bb3680217b66e73c81d017",
+          "size": 4842,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_serializers.py",
+          "blob": "a4058e009020e28658e13e30731b2eb29eb0d154",
+          "size": 1491,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_signature.py",
+          "blob": "3b0c5ae8c40158a28a3b0cf21116c9695208076e",
+          "size": 6808,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_typing_extra.py",
+          "blob": "c217f1127d7c71ab47720263384b9564abe69a29",
+          "size": 31574,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_utils.py",
+          "blob": "7a0346d8470c4a4827f785905a596e9e992ec741",
+          "size": 15959,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validate_call.py",
+          "blob": "49ccd4f2d321128dbabb02a2eef2616875da0b95",
+          "size": 5366,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validators.py",
+          "blob": "3ad6c92790404b7b63cafed02e9dccb5c4fb7a3a",
+          "size": 20563,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_migration.py",
+          "blob": "b4ecd283a0ac53c55ff75e9a03669d03b2d0ea30",
+          "size": 12160,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/alias_generators.py",
+          "blob": "0b7653f5825979edcd446d698d320bdb980b8e9e",
+          "size": 2124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/aliases.py",
+          "blob": "ac2273701b5a0ae7cb0d0171cd08a7bbf77a9178",
+          "size": 4937,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/annotated_handlers.py",
+          "blob": "d0cb5d3d4616f938aea2aae42985b4c166b500cc",
+          "size": 4407,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/class_validators.py",
+          "blob": "9977150c92fcb083fcdfa632c9de3b5fa92470cb",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/color.py",
+          "blob": "9a42d586fd71a786ba63a4d5ce55a0ed93d866b0",
+          "size": 21481,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/config.py",
+          "blob": "6d895258c50e3d29fc556824f56c4216b00a1599",
+          "size": 44533,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/dataclasses.py",
+          "blob": "46401c310ee7d950d671368eb7e2899ed5b80ca1",
+          "size": 18963,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/datetime_parse.py",
+          "blob": "53d52649e7620965ed194240a3becaa3ce3e3448",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/decorator.py",
+          "blob": "0d97560c1b791956726b04fd66740a947647aabe",
+          "size": 145,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/class_validators.py",
+          "blob": "e6ba195064646af6b128c6be769790d8fa06c925",
+          "size": 10281,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/config.py",
+          "blob": "bd4692ace9b4594799974d6ecf8d44357d1d02c5",
+          "size": 2663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/copy_internals.py",
+          "blob": "0170dc08bc13d29ef4b23476877fc22dc81bdfff",
+          "size": 7618,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/decorator.py",
+          "blob": "e73ad209ae86b26d6fa892f1eba39cfc28980970",
+          "size": 10845,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/json.py",
+          "blob": "1e216a765d15d5dd9e379f9de4f8f91ab8063877",
+          "size": 4657,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/parse.py",
+          "blob": "2a92e62b7b2e8dab77cbe0c2dbb79c810af7f452",
+          "size": 2511,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/tools.py",
+          "blob": "5ad7faef2ec69eaa737a58d3587770a612a510d8",
+          "size": 3330,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/env_settings.py",
+          "blob": "cd0b04e6a43c1bb3767dd136a19a9873fa547514",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/error_wrappers.py",
+          "blob": "2985419abf23f5e529af43883f1d365452e4190a",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/errors.py",
+          "blob": "33851bded20b1125a3b55ecc03727692ed78e1db",
+          "size": 6013,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/__init__.py",
+          "blob": "5b5add10921077da0928529592a75e7ada7ecee5",
+          "size": 104,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/arguments_schema.py",
+          "blob": "af4a8f3be3242519b529668e321dd8393241f7ea",
+          "size": 1866,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/missing_sentinel.py",
+          "blob": "3e7f820ceda3b8d984f01ad0aaa1e150f06beda3",
+          "size": 127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/pipeline.py",
+          "blob": "9ead658f06ff547613803ac852be85e643bfc584",
+          "size": 23956,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/fields.py",
+          "blob": "ede966fa8010c070fede69d8f048b618a1b38f17",
+          "size": 82023,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_serializers.py",
+          "blob": "ed6333694a99892db37497f6ccc587ecd72fe1aa",
+          "size": 18117,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_validators.py",
+          "blob": "558e99c1e7a09e3c894d769c96cb28e25dc537ca",
+          "size": 31724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/generics.py",
+          "blob": "3f1070d08f3ac5bd554794401734eb349373ab8e",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json.py",
+          "blob": "bcaff9f57958b8c0938255fd8f937293c5850cbd",
+          "size": 140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json_schema.py",
+          "blob": "b9b21fd52a4235e740a85793e45b2b7b58e02d0b",
+          "size": 125955,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/main.py",
+          "blob": "2ed62e5f3eded5d1e6b0052130e8d5f8627a60c6",
+          "size": 85334,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/mypy.py",
+          "blob": "4c73b5448dec28841bf2fc9b471e9f5d8fffa534",
+          "size": 61074,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/networks.py",
+          "blob": "4015bad6b0db49006923bc1ba05fd0b8c06e072a",
+          "size": 42102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/parse.py",
+          "blob": "68b7f0464ece32edfb955eec0cb24655752716d6",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/__init__.py",
+          "blob": "840d20a09ef27b084440ad16e221403bddd2ac3a",
+          "size": 7333,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_loader.py",
+          "blob": "e8226fafe98131afa3bee9b70d0324d694c72da5",
+          "size": 2213,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_schema_validator.py",
+          "blob": "6ca55634aa07cd5180b1562e88167f94fcdf5232",
+          "size": 5815,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/root_model.py",
+          "blob": "d2900433ed5d2d186f3dca0cbdaabfeecaaf5cde",
+          "size": 6394,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/schema.py",
+          "blob": "a3245a61afd0f59143f38ee809ee2d784d9198eb",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/tools.py",
+          "blob": "fdc68c4f4a35e8d8200b3aafcda63d43839da375",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/type_adapter.py",
+          "blob": "d962305f2c923a6046b8234a334bdca0e644b159",
+          "size": 36123,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/types.py",
+          "blob": "467bc8285b4d6a1fa271d0aaa7d1f6fb7735c7a0",
+          "size": 105961,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/typing.py",
+          "blob": "0bda22d02ffc59f306ded475805343aef2855f49",
+          "size": 138,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/utils.py",
+          "blob": "8d1e2a81c5f0d1bd858bf12ccf15b1461008cf99",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/__init__.py",
+          "blob": "6ad3f466684df5c377480a8e181971a1b2f0016a",
+          "size": 2946,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/_hypothesis_plugin.py",
+          "blob": "b62234d50750cbcf6d3ebba02d2ee54afb8c7347",
+          "size": 14847,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/annotated_types.py",
+          "blob": "d9eaaafd5b6b2617baf3b3c889659c5bac807ff2",
+          "size": 3157,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/class_validators.py",
+          "blob": "2f68fc8600038d8de10017b0d02a3fde77a06ba6",
+          "size": 14672,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/color.py",
+          "blob": "b0bbf78f4367c3e13a5aac0df09b5824d8f7e6ea",
+          "size": 16844,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/config.py",
+          "blob": "18f7c999bee0fab95293b2434047fd20532a6446",
+          "size": 6532,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/dataclasses.py",
+          "blob": "bd1670291d6622a28ecb5b8e9ad68f4bac9305d7",
+          "size": 18172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/datetime_parse.py",
+          "blob": "a7598fc6c56688c4dd6526fc6e8b8e03682f62e8",
+          "size": 7724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/decorator.py",
+          "blob": "2c7c2c2ffdb45ca50cd2b7e57bde1fc711adb851",
+          "size": 10339,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/env_settings.py",
+          "blob": "5f6f217500d8ca1e7717f59ae372ee9a27660fe3",
+          "size": 14105,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/error_wrappers.py",
+          "blob": "bc7f263146ee4f1701391a2436ab38e5e16f0e1a",
+          "size": 5196,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/errors.py",
+          "blob": "6e8644258a6ccf999a19f69c359452a109e54ffe",
+          "size": 17726,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/fields.py",
+          "blob": "002b60cde1bf28bbbf20af824638503d598fbc60",
+          "size": 50649,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/generics.py",
+          "blob": "fa1dcec42d7fc6310f0f243dd1a50f296d0146f4",
+          "size": 17829,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/json.py",
+          "blob": "41d0d5fcae0d946401c2d089b69143f540618b90",
+          "size": 3390,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/main.py",
+          "blob": "36e9c44c98735ece2d784f5ad1d60b783e39ce59",
+          "size": 45697,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/mypy.py",
+          "blob": "0a77569218ce6f832e7221b1f557d811318402e7",
+          "size": 38860,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/networks.py",
+          "blob": "ba07b74867b83beaaabc3afe2e19d77d71544338",
+          "size": 22124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/parse.py",
+          "blob": "431d75a6406f3cf79ae4fcd26a2ad35fb5030526",
+          "size": 1821,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/schema.py",
+          "blob": "a91fe2cd4ae12e619a0ca34baf14400ded5f14cf",
+          "size": 47801,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/tools.py",
+          "blob": "6838a23ecc7419f0478449d9d680c230a99c20e0",
+          "size": 2881,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/types.py",
+          "blob": "e1840d99f79683412aebfc23ced893d0716c1400",
+          "size": 35455,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/typing.py",
+          "blob": "c5c59794b9b3d29765e24bfb05880de78e6f5a25",
+          "size": 20102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/utils.py",
+          "blob": "2094e84fad951d6620635cf86f7f5fb647c5c20b",
+          "size": 26014,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/validators.py",
+          "blob": "c0940e8114a47ceacf21f4df946a6401946b9b8f",
+          "size": 22187,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/version.py",
+          "blob": "6ba1cb08332b03fc85194d29ee76ab993ea951c9",
+          "size": 1039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validate_call_decorator.py",
+          "blob": "4bc899146d96b216fa7b02b951bc271243bdf3ee",
+          "size": 4416,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validators.py",
+          "blob": "7921b04f05d5ef0ad20365e7372a48d86724dc51",
+          "size": 146,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/version.py",
+          "blob": "560f34a29332eb2207f7d3e4ca011ba04e12c26a",
+          "size": 3985,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/warnings.py",
+          "blob": "02323b8da5924aa3285dd557b2a33533053534bd",
+          "size": 4822,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "v2.13.4",
+      "published_at": "2026-05-06T13:44:39Z",
+      "created_at": "2026-05-06T08:27:35Z",
+      "url": "https://github.com/pydantic/pydantic/releases/tag/v2.13.4",
+      "target_commitish": "main",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "prefix": "pydantic/",
+      "commit": "cf67d4b3193c3fe43ede18612ed62785eee11382",
+      "tree_api_ref": "cf67d4b3193c3fe43ede18612ed62785eee11382",
+      "file_count": 105,
+      "total_bytes": 1772739,
+      "files": [
+        {
+          "path": "pydantic/__init__.py",
+          "blob": "01212849e733d8f07df79b27f328a294c54d7fe3",
+          "size": 15812,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_config.py",
+          "blob": "73b5870891629a6f1351ef825cc1e2a3d1728268",
+          "size": 14839,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_metadata.py",
+          "blob": "9f2510c03429b6de24063bec5937e4334077722d",
+          "size": 5162,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_utils.py",
+          "blob": "caa51e8c4630458020486407c032f0a8b78bba75",
+          "size": 6487,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_dataclasses.py",
+          "blob": "f00c8b77723ba2c269d858c0c7c6bb9f04fba7f2",
+          "size": 13188,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators.py",
+          "blob": "e24ad2cf924b0940b1d1d41f2ccbe4b20f380947",
+          "size": 33620,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators_v1.py",
+          "blob": "34273779d77666f5cd775f6a2684641092db67ee",
+          "size": 6185,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_discriminated_union.py",
+          "blob": "fc52f30889816b7161f41ae030df05e46ec5f557",
+          "size": 26255,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_docs_extraction.py",
+          "blob": "6df77bf6c7786a480a9b5aa4c9a816944dc72ed2",
+          "size": 4127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_fields.py",
+          "blob": "9a2a96b9269c18a40550cb8bd4965e31e8e8c605",
+          "size": 31557,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_forward_ref.py",
+          "blob": "231f81d11b87ef05d4765cd61d88d7348eb9e401",
+          "size": 611,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generate_schema.py",
+          "blob": "98fae40d6e311c432cc108ae6accf774d3c5c4e7",
+          "size": 136348,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generics.py",
+          "blob": "f3e927cb0697f162039ebf6371e1b4903d8417a5",
+          "size": 23393,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_git.py",
+          "blob": "96dcda28f801cd19989838b029f6f2b250dedc52",
+          "size": 809,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_import_utils.py",
+          "blob": "638102f771dd674799255cc6ef69cacb2c184d13",
+          "size": 402,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_internal_dataclass.py",
+          "blob": "33e152cc8d178486ef016285855495a86d5991d8",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_known_annotated_metadata.py",
+          "blob": "5954dba7017edd9b55ddb0eb1831fa449a8edf7c",
+          "size": 16805,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_mock_val_ser.py",
+          "blob": "9125ab32e5348b6e873c4b1939a887ebde35d97a",
+          "size": 8885,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_model_construction.py",
+          "blob": "b7945442fb20d23ae16a2603130ffe566fb0989f",
+          "size": 38928,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_namespace_utils.py",
+          "blob": "af0cddb03d6700b5f292c7231b32d9a92a8472eb",
+          "size": 12878,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_repr.py",
+          "blob": "7e80a9c83db0f142fd5ae577a4388aa8ad4d0444",
+          "size": 5172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_gather.py",
+          "blob": "8e07b20e70990287a874c8cf5bd932fb57d30d45",
+          "size": 9052,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_generation_shared.py",
+          "blob": "b231a82e1969822695bb3680217b66e73c81d017",
+          "size": 4842,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_serializers.py",
+          "blob": "a4058e009020e28658e13e30731b2eb29eb0d154",
+          "size": 1491,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_signature.py",
+          "blob": "3b0c5ae8c40158a28a3b0cf21116c9695208076e",
+          "size": 6808,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_typing_extra.py",
+          "blob": "c217f1127d7c71ab47720263384b9564abe69a29",
+          "size": 31574,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_utils.py",
+          "blob": "7a0346d8470c4a4827f785905a596e9e992ec741",
+          "size": 15959,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validate_call.py",
+          "blob": "49ccd4f2d321128dbabb02a2eef2616875da0b95",
+          "size": 5366,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validators.py",
+          "blob": "3ad6c92790404b7b63cafed02e9dccb5c4fb7a3a",
+          "size": 20563,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_migration.py",
+          "blob": "b4ecd283a0ac53c55ff75e9a03669d03b2d0ea30",
+          "size": 12160,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/alias_generators.py",
+          "blob": "0b7653f5825979edcd446d698d320bdb980b8e9e",
+          "size": 2124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/aliases.py",
+          "blob": "ac2273701b5a0ae7cb0d0171cd08a7bbf77a9178",
+          "size": 4937,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/annotated_handlers.py",
+          "blob": "d0cb5d3d4616f938aea2aae42985b4c166b500cc",
+          "size": 4407,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/class_validators.py",
+          "blob": "9977150c92fcb083fcdfa632c9de3b5fa92470cb",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/color.py",
+          "blob": "9a42d586fd71a786ba63a4d5ce55a0ed93d866b0",
+          "size": 21481,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/config.py",
+          "blob": "6d895258c50e3d29fc556824f56c4216b00a1599",
+          "size": 44533,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/dataclasses.py",
+          "blob": "46401c310ee7d950d671368eb7e2899ed5b80ca1",
+          "size": 18963,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/datetime_parse.py",
+          "blob": "53d52649e7620965ed194240a3becaa3ce3e3448",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/decorator.py",
+          "blob": "0d97560c1b791956726b04fd66740a947647aabe",
+          "size": 145,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/class_validators.py",
+          "blob": "e6ba195064646af6b128c6be769790d8fa06c925",
+          "size": 10281,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/config.py",
+          "blob": "bd4692ace9b4594799974d6ecf8d44357d1d02c5",
+          "size": 2663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/copy_internals.py",
+          "blob": "0170dc08bc13d29ef4b23476877fc22dc81bdfff",
+          "size": 7618,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/decorator.py",
+          "blob": "e73ad209ae86b26d6fa892f1eba39cfc28980970",
+          "size": 10845,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/json.py",
+          "blob": "1e216a765d15d5dd9e379f9de4f8f91ab8063877",
+          "size": 4657,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/parse.py",
+          "blob": "2a92e62b7b2e8dab77cbe0c2dbb79c810af7f452",
+          "size": 2511,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/tools.py",
+          "blob": "5ad7faef2ec69eaa737a58d3587770a612a510d8",
+          "size": 3330,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/env_settings.py",
+          "blob": "cd0b04e6a43c1bb3767dd136a19a9873fa547514",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/error_wrappers.py",
+          "blob": "2985419abf23f5e529af43883f1d365452e4190a",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/errors.py",
+          "blob": "33851bded20b1125a3b55ecc03727692ed78e1db",
+          "size": 6013,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/__init__.py",
+          "blob": "5b5add10921077da0928529592a75e7ada7ecee5",
+          "size": 104,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/arguments_schema.py",
+          "blob": "af4a8f3be3242519b529668e321dd8393241f7ea",
+          "size": 1866,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/missing_sentinel.py",
+          "blob": "3e7f820ceda3b8d984f01ad0aaa1e150f06beda3",
+          "size": 127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/pipeline.py",
+          "blob": "9ead658f06ff547613803ac852be85e643bfc584",
+          "size": 23956,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/fields.py",
+          "blob": "ede966fa8010c070fede69d8f048b618a1b38f17",
+          "size": 82023,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_serializers.py",
+          "blob": "ed6333694a99892db37497f6ccc587ecd72fe1aa",
+          "size": 18117,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_validators.py",
+          "blob": "558e99c1e7a09e3c894d769c96cb28e25dc537ca",
+          "size": 31724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/generics.py",
+          "blob": "3f1070d08f3ac5bd554794401734eb349373ab8e",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json.py",
+          "blob": "bcaff9f57958b8c0938255fd8f937293c5850cbd",
+          "size": 140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json_schema.py",
+          "blob": "b9b21fd52a4235e740a85793e45b2b7b58e02d0b",
+          "size": 125955,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/main.py",
+          "blob": "2ed62e5f3eded5d1e6b0052130e8d5f8627a60c6",
+          "size": 85334,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/mypy.py",
+          "blob": "ed4c30869b87b79ed908c7be556a7c04283ec618",
+          "size": 60971,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/networks.py",
+          "blob": "4015bad6b0db49006923bc1ba05fd0b8c06e072a",
+          "size": 42102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/parse.py",
+          "blob": "68b7f0464ece32edfb955eec0cb24655752716d6",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/__init__.py",
+          "blob": "840d20a09ef27b084440ad16e221403bddd2ac3a",
+          "size": 7333,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_loader.py",
+          "blob": "e8226fafe98131afa3bee9b70d0324d694c72da5",
+          "size": 2213,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_schema_validator.py",
+          "blob": "492cc39cba7f1244b8c152df244064067270e2d7",
+          "size": 5445,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/root_model.py",
+          "blob": "d2900433ed5d2d186f3dca0cbdaabfeecaaf5cde",
+          "size": 6394,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/schema.py",
+          "blob": "a3245a61afd0f59143f38ee809ee2d784d9198eb",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/tools.py",
+          "blob": "fdc68c4f4a35e8d8200b3aafcda63d43839da375",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/type_adapter.py",
+          "blob": "d962305f2c923a6046b8234a334bdca0e644b159",
+          "size": 36123,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/types.py",
+          "blob": "467bc8285b4d6a1fa271d0aaa7d1f6fb7735c7a0",
+          "size": 105961,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/typing.py",
+          "blob": "0bda22d02ffc59f306ded475805343aef2855f49",
+          "size": 138,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/utils.py",
+          "blob": "8d1e2a81c5f0d1bd858bf12ccf15b1461008cf99",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/__init__.py",
+          "blob": "6ad3f466684df5c377480a8e181971a1b2f0016a",
+          "size": 2946,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/_hypothesis_plugin.py",
+          "blob": "b62234d50750cbcf6d3ebba02d2ee54afb8c7347",
+          "size": 14847,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/annotated_types.py",
+          "blob": "d9eaaafd5b6b2617baf3b3c889659c5bac807ff2",
+          "size": 3157,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/class_validators.py",
+          "blob": "2f68fc8600038d8de10017b0d02a3fde77a06ba6",
+          "size": 14672,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/color.py",
+          "blob": "b0bbf78f4367c3e13a5aac0df09b5824d8f7e6ea",
+          "size": 16844,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/config.py",
+          "blob": "18f7c999bee0fab95293b2434047fd20532a6446",
+          "size": 6532,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/dataclasses.py",
+          "blob": "bd1670291d6622a28ecb5b8e9ad68f4bac9305d7",
+          "size": 18172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/datetime_parse.py",
+          "blob": "a7598fc6c56688c4dd6526fc6e8b8e03682f62e8",
+          "size": 7724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/decorator.py",
+          "blob": "2c7c2c2ffdb45ca50cd2b7e57bde1fc711adb851",
+          "size": 10339,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/env_settings.py",
+          "blob": "5f6f217500d8ca1e7717f59ae372ee9a27660fe3",
+          "size": 14105,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/error_wrappers.py",
+          "blob": "bc7f263146ee4f1701391a2436ab38e5e16f0e1a",
+          "size": 5196,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/errors.py",
+          "blob": "6e8644258a6ccf999a19f69c359452a109e54ffe",
+          "size": 17726,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/fields.py",
+          "blob": "002b60cde1bf28bbbf20af824638503d598fbc60",
+          "size": 50649,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/generics.py",
+          "blob": "fa1dcec42d7fc6310f0f243dd1a50f296d0146f4",
+          "size": 17829,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/json.py",
+          "blob": "41d0d5fcae0d946401c2d089b69143f540618b90",
+          "size": 3390,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/main.py",
+          "blob": "36e9c44c98735ece2d784f5ad1d60b783e39ce59",
+          "size": 45697,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/mypy.py",
+          "blob": "0a77569218ce6f832e7221b1f557d811318402e7",
+          "size": 38860,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/networks.py",
+          "blob": "ba07b74867b83beaaabc3afe2e19d77d71544338",
+          "size": 22124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/parse.py",
+          "blob": "431d75a6406f3cf79ae4fcd26a2ad35fb5030526",
+          "size": 1821,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/schema.py",
+          "blob": "a91fe2cd4ae12e619a0ca34baf14400ded5f14cf",
+          "size": 47801,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/tools.py",
+          "blob": "6838a23ecc7419f0478449d9d680c230a99c20e0",
+          "size": 2881,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/types.py",
+          "blob": "e1840d99f79683412aebfc23ced893d0716c1400",
+          "size": 35455,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/typing.py",
+          "blob": "c5c59794b9b3d29765e24bfb05880de78e6f5a25",
+          "size": 20102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/utils.py",
+          "blob": "2094e84fad951d6620635cf86f7f5fb647c5c20b",
+          "size": 26014,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/validators.py",
+          "blob": "c0940e8114a47ceacf21f4df946a6401946b9b8f",
+          "size": 22187,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/version.py",
+          "blob": "6ba1cb08332b03fc85194d29ee76ab993ea951c9",
+          "size": 1039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validate_call_decorator.py",
+          "blob": "4bc899146d96b216fa7b02b951bc271243bdf3ee",
+          "size": 4416,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validators.py",
+          "blob": "7921b04f05d5ef0ad20365e7372a48d86724dc51",
+          "size": 146,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/version.py",
+          "blob": "f17ae9c8067394a46601c0b8ea997b31c465e3fe",
+          "size": 3985,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/warnings.py",
+          "blob": "02323b8da5924aa3285dd557b2a33533053534bd",
+          "size": 4822,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "v2.13.3",
+      "published_at": "2026-04-20T14:48:11Z",
+      "created_at": "2026-04-20T14:14:55Z",
+      "url": "https://github.com/pydantic/pydantic/releases/tag/v2.13.3",
+      "target_commitish": "main",
+      "project": "pydantic",
+      "repo": "pydantic/pydantic",
+      "prefix": "pydantic/",
+      "commit": "9e9a11132c980c4ec84ff6d2df06d4c1a55ca8f3",
+      "tree_api_ref": "9e9a11132c980c4ec84ff6d2df06d4c1a55ca8f3",
+      "file_count": 105,
+      "total_bytes": 1772172,
+      "files": [
+        {
+          "path": "pydantic/__init__.py",
+          "blob": "01212849e733d8f07df79b27f328a294c54d7fe3",
+          "size": 15812,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_config.py",
+          "blob": "73b5870891629a6f1351ef825cc1e2a3d1728268",
+          "size": 14839,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_metadata.py",
+          "blob": "9f2510c03429b6de24063bec5937e4334077722d",
+          "size": 5162,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_core_utils.py",
+          "blob": "caa51e8c4630458020486407c032f0a8b78bba75",
+          "size": 6487,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_dataclasses.py",
+          "blob": "f00c8b77723ba2c269d858c0c7c6bb9f04fba7f2",
+          "size": 13188,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators.py",
+          "blob": "e24ad2cf924b0940b1d1d41f2ccbe4b20f380947",
+          "size": 33620,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_decorators_v1.py",
+          "blob": "34273779d77666f5cd775f6a2684641092db67ee",
+          "size": 6185,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_discriminated_union.py",
+          "blob": "fc52f30889816b7161f41ae030df05e46ec5f557",
+          "size": 26255,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_docs_extraction.py",
+          "blob": "6df77bf6c7786a480a9b5aa4c9a816944dc72ed2",
+          "size": 4127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_fields.py",
+          "blob": "9a2a96b9269c18a40550cb8bd4965e31e8e8c605",
+          "size": 31557,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_forward_ref.py",
+          "blob": "231f81d11b87ef05d4765cd61d88d7348eb9e401",
+          "size": 611,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generate_schema.py",
+          "blob": "f97f76ed8ef3b76eb6daf9ad8e1e40dbb05b3518",
+          "size": 135560,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_generics.py",
+          "blob": "f3e927cb0697f162039ebf6371e1b4903d8417a5",
+          "size": 23393,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_git.py",
+          "blob": "96dcda28f801cd19989838b029f6f2b250dedc52",
+          "size": 809,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_import_utils.py",
+          "blob": "638102f771dd674799255cc6ef69cacb2c184d13",
+          "size": 402,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_internal_dataclass.py",
+          "blob": "33e152cc8d178486ef016285855495a86d5991d8",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_known_annotated_metadata.py",
+          "blob": "5954dba7017edd9b55ddb0eb1831fa449a8edf7c",
+          "size": 16805,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_mock_val_ser.py",
+          "blob": "9125ab32e5348b6e873c4b1939a887ebde35d97a",
+          "size": 8885,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_model_construction.py",
+          "blob": "b7945442fb20d23ae16a2603130ffe566fb0989f",
+          "size": 38928,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_namespace_utils.py",
+          "blob": "af0cddb03d6700b5f292c7231b32d9a92a8472eb",
+          "size": 12878,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_repr.py",
+          "blob": "7e80a9c83db0f142fd5ae577a4388aa8ad4d0444",
+          "size": 5172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_gather.py",
+          "blob": "8e07b20e70990287a874c8cf5bd932fb57d30d45",
+          "size": 9052,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_schema_generation_shared.py",
+          "blob": "b231a82e1969822695bb3680217b66e73c81d017",
+          "size": 4842,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_serializers.py",
+          "blob": "a4058e009020e28658e13e30731b2eb29eb0d154",
+          "size": 1491,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_signature.py",
+          "blob": "3b0c5ae8c40158a28a3b0cf21116c9695208076e",
+          "size": 6808,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_typing_extra.py",
+          "blob": "c217f1127d7c71ab47720263384b9564abe69a29",
+          "size": 31574,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_utils.py",
+          "blob": "7a0346d8470c4a4827f785905a596e9e992ec741",
+          "size": 15959,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validate_call.py",
+          "blob": "49ccd4f2d321128dbabb02a2eef2616875da0b95",
+          "size": 5366,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_internal/_validators.py",
+          "blob": "3ad6c92790404b7b63cafed02e9dccb5c4fb7a3a",
+          "size": 20563,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/_migration.py",
+          "blob": "b4ecd283a0ac53c55ff75e9a03669d03b2d0ea30",
+          "size": 12160,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/alias_generators.py",
+          "blob": "0b7653f5825979edcd446d698d320bdb980b8e9e",
+          "size": 2124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/aliases.py",
+          "blob": "ac2273701b5a0ae7cb0d0171cd08a7bbf77a9178",
+          "size": 4937,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/annotated_handlers.py",
+          "blob": "d0cb5d3d4616f938aea2aae42985b4c166b500cc",
+          "size": 4407,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/class_validators.py",
+          "blob": "9977150c92fcb083fcdfa632c9de3b5fa92470cb",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/color.py",
+          "blob": "9a42d586fd71a786ba63a4d5ce55a0ed93d866b0",
+          "size": 21481,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/config.py",
+          "blob": "6d895258c50e3d29fc556824f56c4216b00a1599",
+          "size": 44533,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/dataclasses.py",
+          "blob": "46401c310ee7d950d671368eb7e2899ed5b80ca1",
+          "size": 18963,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/datetime_parse.py",
+          "blob": "53d52649e7620965ed194240a3becaa3ce3e3448",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/decorator.py",
+          "blob": "0d97560c1b791956726b04fd66740a947647aabe",
+          "size": 145,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/class_validators.py",
+          "blob": "e6ba195064646af6b128c6be769790d8fa06c925",
+          "size": 10281,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/config.py",
+          "blob": "bd4692ace9b4594799974d6ecf8d44357d1d02c5",
+          "size": 2663,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/copy_internals.py",
+          "blob": "0170dc08bc13d29ef4b23476877fc22dc81bdfff",
+          "size": 7618,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/decorator.py",
+          "blob": "e73ad209ae86b26d6fa892f1eba39cfc28980970",
+          "size": 10845,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/json.py",
+          "blob": "1e216a765d15d5dd9e379f9de4f8f91ab8063877",
+          "size": 4657,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/parse.py",
+          "blob": "2a92e62b7b2e8dab77cbe0c2dbb79c810af7f452",
+          "size": 2511,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/deprecated/tools.py",
+          "blob": "5ad7faef2ec69eaa737a58d3587770a612a510d8",
+          "size": 3330,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/env_settings.py",
+          "blob": "cd0b04e6a43c1bb3767dd136a19a9873fa547514",
+          "size": 148,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/error_wrappers.py",
+          "blob": "2985419abf23f5e529af43883f1d365452e4190a",
+          "size": 150,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/errors.py",
+          "blob": "33851bded20b1125a3b55ecc03727692ed78e1db",
+          "size": 6013,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/__init__.py",
+          "blob": "5b5add10921077da0928529592a75e7ada7ecee5",
+          "size": 104,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/arguments_schema.py",
+          "blob": "af4a8f3be3242519b529668e321dd8393241f7ea",
+          "size": 1866,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/missing_sentinel.py",
+          "blob": "3e7f820ceda3b8d984f01ad0aaa1e150f06beda3",
+          "size": 127,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/experimental/pipeline.py",
+          "blob": "9ead658f06ff547613803ac852be85e643bfc584",
+          "size": 23956,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/fields.py",
+          "blob": "ede966fa8010c070fede69d8f048b618a1b38f17",
+          "size": 82023,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_serializers.py",
+          "blob": "ed6333694a99892db37497f6ccc587ecd72fe1aa",
+          "size": 18117,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/functional_validators.py",
+          "blob": "558e99c1e7a09e3c894d769c96cb28e25dc537ca",
+          "size": 31724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/generics.py",
+          "blob": "3f1070d08f3ac5bd554794401734eb349373ab8e",
+          "size": 144,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json.py",
+          "blob": "bcaff9f57958b8c0938255fd8f937293c5850cbd",
+          "size": 140,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/json_schema.py",
+          "blob": "296547074e86c9a87ec7225b4d7117c30863ac5d",
+          "size": 126176,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/main.py",
+          "blob": "2ed62e5f3eded5d1e6b0052130e8d5f8627a60c6",
+          "size": 85334,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/mypy.py",
+          "blob": "ed4c30869b87b79ed908c7be556a7c04283ec618",
+          "size": 60971,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/networks.py",
+          "blob": "4015bad6b0db49006923bc1ba05fd0b8c06e072a",
+          "size": 42102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/parse.py",
+          "blob": "68b7f0464ece32edfb955eec0cb24655752716d6",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/__init__.py",
+          "blob": "840d20a09ef27b084440ad16e221403bddd2ac3a",
+          "size": 7333,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_loader.py",
+          "blob": "e8226fafe98131afa3bee9b70d0324d694c72da5",
+          "size": 2213,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/plugin/_schema_validator.py",
+          "blob": "492cc39cba7f1244b8c152df244064067270e2d7",
+          "size": 5445,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/root_model.py",
+          "blob": "d2900433ed5d2d186f3dca0cbdaabfeecaaf5cde",
+          "size": 6394,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/schema.py",
+          "blob": "a3245a61afd0f59143f38ee809ee2d784d9198eb",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/tools.py",
+          "blob": "fdc68c4f4a35e8d8200b3aafcda63d43839da375",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/type_adapter.py",
+          "blob": "d962305f2c923a6046b8234a334bdca0e644b159",
+          "size": 36123,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/types.py",
+          "blob": "467bc8285b4d6a1fa271d0aaa7d1f6fb7735c7a0",
+          "size": 105961,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/typing.py",
+          "blob": "0bda22d02ffc59f306ded475805343aef2855f49",
+          "size": 138,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/utils.py",
+          "blob": "8d1e2a81c5f0d1bd858bf12ccf15b1461008cf99",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/__init__.py",
+          "blob": "6ad3f466684df5c377480a8e181971a1b2f0016a",
+          "size": 2946,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/_hypothesis_plugin.py",
+          "blob": "b62234d50750cbcf6d3ebba02d2ee54afb8c7347",
+          "size": 14847,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/annotated_types.py",
+          "blob": "d9eaaafd5b6b2617baf3b3c889659c5bac807ff2",
+          "size": 3157,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/class_validators.py",
+          "blob": "2f68fc8600038d8de10017b0d02a3fde77a06ba6",
+          "size": 14672,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/color.py",
+          "blob": "b0bbf78f4367c3e13a5aac0df09b5824d8f7e6ea",
+          "size": 16844,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/config.py",
+          "blob": "18f7c999bee0fab95293b2434047fd20532a6446",
+          "size": 6532,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/dataclasses.py",
+          "blob": "bd1670291d6622a28ecb5b8e9ad68f4bac9305d7",
+          "size": 18172,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/datetime_parse.py",
+          "blob": "a7598fc6c56688c4dd6526fc6e8b8e03682f62e8",
+          "size": 7724,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/decorator.py",
+          "blob": "2c7c2c2ffdb45ca50cd2b7e57bde1fc711adb851",
+          "size": 10339,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/env_settings.py",
+          "blob": "5f6f217500d8ca1e7717f59ae372ee9a27660fe3",
+          "size": 14105,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/error_wrappers.py",
+          "blob": "bc7f263146ee4f1701391a2436ab38e5e16f0e1a",
+          "size": 5196,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/errors.py",
+          "blob": "6e8644258a6ccf999a19f69c359452a109e54ffe",
+          "size": 17726,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/fields.py",
+          "blob": "002b60cde1bf28bbbf20af824638503d598fbc60",
+          "size": 50649,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/generics.py",
+          "blob": "fa1dcec42d7fc6310f0f243dd1a50f296d0146f4",
+          "size": 17829,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/json.py",
+          "blob": "41d0d5fcae0d946401c2d089b69143f540618b90",
+          "size": 3390,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/main.py",
+          "blob": "36e9c44c98735ece2d784f5ad1d60b783e39ce59",
+          "size": 45697,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/mypy.py",
+          "blob": "0a77569218ce6f832e7221b1f557d811318402e7",
+          "size": 38860,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/networks.py",
+          "blob": "ba07b74867b83beaaabc3afe2e19d77d71544338",
+          "size": 22124,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/parse.py",
+          "blob": "431d75a6406f3cf79ae4fcd26a2ad35fb5030526",
+          "size": 1821,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/schema.py",
+          "blob": "a91fe2cd4ae12e619a0ca34baf14400ded5f14cf",
+          "size": 47801,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/tools.py",
+          "blob": "6838a23ecc7419f0478449d9d680c230a99c20e0",
+          "size": 2881,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/types.py",
+          "blob": "e1840d99f79683412aebfc23ced893d0716c1400",
+          "size": 35455,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/typing.py",
+          "blob": "c5c59794b9b3d29765e24bfb05880de78e6f5a25",
+          "size": 20102,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/utils.py",
+          "blob": "2094e84fad951d6620635cf86f7f5fb647c5c20b",
+          "size": 26014,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/validators.py",
+          "blob": "c0940e8114a47ceacf21f4df946a6401946b9b8f",
+          "size": 22187,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/v1/version.py",
+          "blob": "6ba1cb08332b03fc85194d29ee76ab993ea951c9",
+          "size": 1039,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validate_call_decorator.py",
+          "blob": "4bc899146d96b216fa7b02b951bc271243bdf3ee",
+          "size": 4416,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/validators.py",
+          "blob": "7921b04f05d5ef0ad20365e7372a48d86724dc51",
+          "size": 146,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/version.py",
+          "blob": "56fbdcda0d2948e081c90079915d6db3d31b7c46",
+          "size": 3985,
+          "mode": "100644"
+        },
+        {
+          "path": "pydantic/warnings.py",
+          "blob": "02323b8da5924aa3285dd557b2a33533053534bd",
+          "size": 4822,
+          "mode": "100644"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "tests": 43,
+  "failures": [
+    [
+      "test_unrelated_lambda_body (shared_scope_tests.ConventionalDevelopmentTests.test_unrelated_lambda_body)",
+      "Traceback (most recent call last):\n  File \"/workspace/scratch/8586be0c300d/research/value-compounds/tests/test_conventional.py\", line 87, in test_unrelated_lambda_body\n    self.check(\"g=lambda: globals()\\ndef f(a=1): pass\", \"def f(a): pass\", \"call_loss\")\n  File \"/workspace/scratch/8586be0c300d/research/value-compounds/tests/test_conventional.py\", line 22, in check\n    self.assertEqual(actual[name][\"status\"], expected, report)\nAssertionError: 'unresolved' != 'call_loss'\n- unresolved\n+ call_loss\n : {'schema': 'call-compatibility-dossier/v1', 'module': 'development', 'status': 'partial', 'functions': [{'name': 'f', 'before_line': 2, 'after_line': 1, 'warnings': [], 'status': 'unresolved', 'witness': None, 'reason': 'module-or-binding-outside-supported-scope'}], 'findings': [], 'coverage': {'before_direct': 1, 'after_direct': 1, 'compared': 0, 'call_loss': 0, 'unresolved': 1}, 'source_ids': ['d1a62d31a221e00a6d4bee5a5d88f69f43a93f5c84f781a113979f4f447bc66a', '58321ff0ea64605dfd73da53c464f9b6c10013a0bf98d34afb4bdea1c0f86227'], 'source_hashes': {'before': 'd1a62d31a221e00a6d4bee5a5d88f69f43a93f5c84f781a113979f4f447bc66a', 'after': '58321ff0ea64605dfd73da53c464f9b6c10013a0bf98d34afb4bdea1c0f86227'}, 'limits': ['Direct static declarations only; import aliases, methods, decorators and dynamic bindings are unresolved.', 'No-loss concerns argument binding only, not behavior, types, defaults, async contract or operational approval.'], 'meter': {'wall_ns': 1102274, 'cpu_ns': 1103011, 'input_bytes': 50, 'source_parses': 2, 'runtime_model_calls': 0, 'network_requests': 0}}\n"
+    ]
+  ],
+  "errors": [],
+  "excluded_comparator_instrumentation": [
+    "test_changed_source_invalidates_reuse",
+    "test_exact_content_reuse_and_mutation_isolation",
+    "test_griffe_broader_alerts_are_retained"
+  ]
+}

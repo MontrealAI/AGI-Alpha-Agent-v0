@@ -1,0 +1,3724 @@
+{
+  "schema": "value-compounds-confirmation-selection/v3",
+  "selection_rule": "five latest published non-prerelease GitHub releases per selected dependency within declared package major ranges; four adjacent chronological release transitions; no code or outcome inspection",
+  "supersedes": "confirmation-metadata-v2.json; retained unchanged",
+  "source_inspected": false,
+  "cutoff_utc": "2026-10-26T13:18:45Z",
+  "limitations": [
+    "Historical publicly available source, held out from builders within this study; not prospective releases or secret data.",
+    "Model pretraining or prior general knowledge may include these histories.",
+    "Dependency declaration is evidence of project relevance, not current upgrade permission or proof a lock change is safe.",
+    "Per-package .py snapshots exclude tests/fixtures and do not establish dynamic behavior, semantic compatibility or deployment acceptance."
+  ],
+  "alpha_dependency_evidence": [
+    {
+      "path": "pyproject.toml",
+      "source": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "git_blob": "e0289e898e486e15b20f86d104e1912f33de090c",
+      "lines": [
+        {
+          "line": 14,
+          "text": "    \"fastapi>=0.116,<1\","
+        },
+        {
+          "line": 17,
+          "text": "    \"pydantic>=2.11,<3\","
+        }
+      ]
+    },
+    {
+      "path": "alpha_factory_v1/requirements-core.txt",
+      "source": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "git_blob": "b196a4e30e5e54fdc97c2b360b81163bc92e31ca",
+      "lines": [
+        {
+          "line": 20,
+          "text": "requests~=2.32"
+        }
+      ]
+    },
+    {
+      "path": "requirements.lock",
+      "source": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "git_blob": "9b58d492f4ddc5277fb5ba008caf2513c4158a57",
+      "sha256": "61fde634ec556b525b8a745072288704f26e99fe1003b87d1dcd1b4434ba2f44",
+      "bytes": 197097,
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/eb07086ac42799ff45f7b1c946a2f7c514bd3bbc/requirements.lock",
+      "lines": [
+        {
+          "line": 2026,
+          "text": "requests==2.32.4 \\"
+        },
+        {
+          "line": 2027,
+          "text": "    --hash=sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c \\"
+        },
+        {
+          "line": 2028,
+          "text": "    --hash=sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
+        },
+        {
+          "line": 2029,
+          "text": "    # via"
+        },
+        {
+          "line": 2030,
+          "text": "    #   -r alpha_factory_v1/requirements-core.txt"
+        },
+        {
+          "line": 2031,
+          "text": "    #   google-adk"
+        },
+        {
+          "line": 2032,
+          "text": "    #   google-api-core"
+        },
+        {
+          "line": 2033,
+          "text": "    #   google-cloud-bigquery"
+        },
+        {
+          "line": 2034,
+          "text": "    #   google-cloud-storage"
+        },
+        {
+          "line": 2035,
+          "text": "    #   google-genai"
+        },
+        {
+          "line": 2036,
+          "text": "    #   huggingface-hub"
+        },
+        {
+          "line": 2037,
+          "text": "    #   openai-agents"
+        },
+        {
+          "line": 2038,
+          "text": "    #   opentelemetry-resourcedetector-gcp"
+        },
+        {
+          "line": 2039,
+          "text": "    #   tiktoken"
+        },
+        {
+          "line": 2040,
+          "text": "rich==14.1.0 \\"
+        },
+        {
+          "line": 2441,
+          "text": "urllib3==2.5.0 \\"
+        },
+        {
+          "line": 2442,
+          "text": "    --hash=sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760 \\"
+        },
+        {
+          "line": 2443,
+          "text": "    --hash=sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc"
+        },
+        {
+          "line": 2444,
+          "text": "    # via"
+        },
+        {
+          "line": 2445,
+          "text": "    #   requests"
+        },
+        {
+          "line": 2446,
+          "text": "    #   types-requests"
+        },
+        {
+          "line": 2447,
+          "text": "uvicorn==0.35.0 \\"
+        },
+        {
+          "line": 2448,
+          "text": "    --hash=sha256:197535216b25ff9b785e29a0b79199f55222193d47f820816e7da751e9bc8d4a \\"
+        },
+        {
+          "line": 2449,
+          "text": "    --hash=sha256:bc662f087f7cf2ce11a1d7fd70b90c9f98ef2e2831556dd078d131b96cc94a01"
+        },
+        {
+          "line": 2450,
+          "text": "    # via"
+        },
+        {
+          "line": 2451,
+          "text": "    #   -r alpha_factory_v1/requirements-core.txt"
+        },
+        {
+          "line": 2452,
+          "text": "    #   google-adk"
+        },
+        {
+          "line": 2453,
+          "text": "    #   mcp"
+        },
+        {
+          "line": 2454,
+          "text": "uvloop==0.21.0 ; sys_platform != \"win32\" and sys_platform != \"darwin\" \\"
+        },
+        {
+          "line": 2455,
+          "text": "    --hash=sha256:0878c2640cf341b269b7e128b1a5fed890adc4455513ca710d77d5e93aa6d6a0 \\"
+        }
+      ],
+      "interpretation": "urllib3 is pinned 2.5.0 via Requests, with other listed dependents. Chosen newer stable releases are compatibility-review candidates, not automatically accepted lock updates."
+    }
+  ],
+  "missions": [
+    {
+      "id": "fastapi-1",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.159.1",
+      "before_commit": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "after_tag": "0.160.0",
+      "after_commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T16:54:31Z"
+    },
+    {
+      "id": "fastapi-2",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.160.0",
+      "before_commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "after_tag": "0.161.0",
+      "after_commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T18:30:24Z"
+    },
+    {
+      "id": "fastapi-3",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.161.0",
+      "before_commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "after_tag": "0.161.1",
+      "after_commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-22T22:21:50Z"
+    },
+    {
+      "id": "fastapi-4",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "before_tag": "0.161.1",
+      "before_commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "after_tag": "0.162.0",
+      "after_commit": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-10-23T18:47:17Z"
+    },
+    {
+      "id": "requests-1",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.33.0",
+      "before_commit": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761",
+      "after_tag": "v2.33.1",
+      "after_commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-03-30T16:12:09Z"
+    },
+    {
+      "id": "requests-2",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.33.1",
+      "before_commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "after_tag": "v2.34.0",
+      "after_commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-11T19:40:27Z"
+    },
+    {
+      "id": "requests-3",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.34.0",
+      "before_commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "after_tag": "v2.34.1",
+      "after_commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-13T19:23:51Z"
+    },
+    {
+      "id": "requests-4",
+      "project": "requests",
+      "repo": "psf/requests",
+      "before_tag": "v2.34.1",
+      "before_commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "after_tag": "v2.34.2",
+      "after_commit": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-14T19:27:15Z"
+    },
+    {
+      "id": "urllib3-1",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "before_tag": "2.6.1",
+      "before_commit": "bfe8e198a13800e3ee8ef8124a8928acb170c843",
+      "after_tag": "2.6.2",
+      "after_commit": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2025-12-11T15:59:07Z"
+    },
+    {
+      "id": "urllib3-2",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "before_tag": "2.6.2",
+      "before_commit": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "after_tag": "2.6.3",
+      "after_commit": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-01-07T16:30:23Z"
+    },
+    {
+      "id": "urllib3-3",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "before_tag": "2.6.3",
+      "before_commit": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "after_tag": "2.7.0",
+      "after_commit": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-05-07T16:32:49Z"
+    },
+    {
+      "id": "urllib3-4",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "before_tag": "2.7.0",
+      "before_commit": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "after_tag": "2.8.0",
+      "after_commit": "b1d30ab61fe0db8f11092805e8c5ac43e091064a",
+      "trigger": "a distinct published dependency release revision",
+      "release_date": "2026-09-15T19:40:51Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "tag": "0.162.0",
+      "published_at": "2026-10-23T18:47:17Z",
+      "created_at": "2026-10-23T18:45:33Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.162.0",
+      "target_commitish": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 834473,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "0796611f0de72123bc552991d36bb7e08ea8d6c4",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "247d0265ddf319323cca3a80d9f331559db3166a",
+          "size": 55433,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4"
+    },
+    {
+      "tag": "0.161.1",
+      "published_at": "2026-10-22T22:21:50Z",
+      "created_at": "2026-10-22T19:13:01Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.161.1",
+      "target_commitish": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835245,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "07446a7e0d90dcd2a3eaa4dbe3613daa3ef68841",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "24f4be23cd5ec202d4e6e1f518171dff2a9bd9f4",
+          "size": 56205,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "69ddc2badf9da1123bba4d360225ae6b085985f6"
+    },
+    {
+      "tag": "0.161.0",
+      "published_at": "2026-10-22T18:30:24Z",
+      "created_at": "2026-10-22T18:27:20Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.161.0",
+      "target_commitish": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835116,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "a217ac08d4e4a67c79947f9575156ef2917b67a9",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "b24b3e887ec78b460379d468be7d7a469370d0db",
+          "size": 56076,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "80c8742d141e67beaf747343405c8facf999bc0c"
+    },
+    {
+      "tag": "0.160.0",
+      "published_at": "2026-10-22T16:54:31Z",
+      "created_at": "2026-10-22T16:49:26Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.160.0",
+      "target_commitish": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 835476,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "0fd0c21adcbf68dea95820eb28d039d89c8bbb82",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "5c7cbc82ba12e30d18887f170ca1704b59c8f915",
+          "size": 8092,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "92c423249506d94cd0a616921a99d982dfbe3cbd",
+          "size": 56436,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "a3f8043c9e326e7f95ad2f9239d2951e1985732c",
+          "size": 260393,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "addd0778e996cf886972b8024113d79f8d0a3580"
+    },
+    {
+      "tag": "0.159.1",
+      "published_at": "2026-10-21T20:59:13Z",
+      "created_at": "2026-10-21T20:49:11Z",
+      "url": "https://github.com/fastapi/fastapi/releases/tag/0.159.1",
+      "target_commitish": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "project": "fastapi",
+      "repo": "fastapi/fastapi",
+      "commit": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "prefix": "fastapi/",
+      "file_count": 52,
+      "total_bytes": 838950,
+      "files": [
+        {
+          "path": "fastapi/__init__.py",
+          "blob": "69a29978dba78b1f16a5e441e0c2802866503ca1",
+          "size": 1081,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/__main__.py",
+          "blob": "fc36465f5f40701bf333de8811d76d3484f211e6",
+          "size": 37,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/__init__.py",
+          "blob": "4581c38c88ede0d70f9c40a67fbc9ee79529cffd",
+          "size": 2095,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/shared.py",
+          "blob": "8d4720a2ed3a31531efaf3e0bc3cf4b2a3763ac5",
+          "size": 7323,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/_compat/v2.py",
+          "blob": "640e8622840145af68f9bef5c4d08c1add2c8494",
+          "size": 17954,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/applications.py",
+          "blob": "07790d591f1d458e31963820d0ce2d2d94263e52",
+          "size": 185155,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/background.py",
+          "blob": "37932a49e2eabbd561a8e9f195cf1797e553da25",
+          "size": 2039,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/cli.py",
+          "blob": "243b3ab61cc499ef3fa82c8e5465475977f544a0",
+          "size": 454,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/concurrency.py",
+          "blob": "76a5a2eb128bc8c22d61d986ab2cdc434178dd24",
+          "size": 1489,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/datastructures.py",
+          "blob": "1da784cf0927ed55ec6abeb051d89a6ce1e90630",
+          "size": 5321,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/models.py",
+          "blob": "047f49d7ac288d05d1d5a15400c331b97fe22b87",
+          "size": 8152,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/dependencies/utils.py",
+          "blob": "bef2ebea550608888c3ef471b539107d608c7c1f",
+          "size": 59747,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/encoders.py",
+          "blob": "e578768dac5b33556087b42bd6a2e0782a9d5379",
+          "size": 11713,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exception_handlers.py",
+          "blob": "475dd7bdd9891a7595b6df5db97cd3840179c8fa",
+          "size": 1275,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/exceptions.py",
+          "blob": "d7065c52fe20220e12b7d20db4da7cbeadaf171a",
+          "size": 7453,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/logger.py",
+          "blob": "5b2c4ad5250b589aa0c8f8d1cc9125b91b10edb0",
+          "size": 54,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/__init__.py",
+          "blob": "620296d5ad6ca2cc49eb5d0dc140bcbc3204e9b4",
+          "size": 58,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/asyncexitstack.py",
+          "blob": "4ce3f5a625548a00514f872d1653194bd3669a73",
+          "size": 637,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/cors.py",
+          "blob": "8dfaad0dbb3ff5300cccb2023748cd30f54bc920",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/gzip.py",
+          "blob": "bbeb2cc7861a735d6cd5c0e29aeb6dbf8457023a",
+          "size": 79,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/httpsredirect.py",
+          "blob": "b7a3d8e078574e87dc6e345d621f5a596c3bdc1e",
+          "size": 115,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/trustedhost.py",
+          "blob": "08d7e035315677856fd2cd0be2044689b57619bf",
+          "size": 109,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/middleware/wsgi.py",
+          "blob": "69e4dcab96370cac0ab93039a1eb9376d1659120",
+          "size": 107,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/constants.py",
+          "blob": "d724ee3cfdbcda1c39f39511046c7a884186ca98",
+          "size": 153,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/docs.py",
+          "blob": "0d9242f9fa6a5212114b8f4036adfaf0e518020f",
+          "size": 12425,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/models.py",
+          "blob": "ca26bf931e196fa9c5ef367838c98bdff730b230",
+          "size": 14608,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/openapi/utils.py",
+          "blob": "a59a3d3527e516e042e720d86475ca4a634bd5ed",
+          "size": 29114,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/param_functions.py",
+          "blob": "708e0ed1f98cfd1bf9b8a2dbf77c9e63fa2c33f8",
+          "size": 74969,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/params.py",
+          "blob": "f4d841d99813dfa6e92e5ed0cc002916bf8cde78",
+          "size": 28792,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/requests.py",
+          "blob": "d16552c0a9535e1c0bd7f701987301681832eba5",
+          "size": 142,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/responses.py",
+          "blob": "29df4b7a614b411237700d25c4ac27b985811730",
+          "size": 4144,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/routing.py",
+          "blob": "9a14ebf6512ae8865110e2699aad69808bec8a9d",
+          "size": 260496,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/__init__.py",
+          "blob": "3aa6bf21e44f3069adb94242fbba5c8160532a1c",
+          "size": 881,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/api_key.py",
+          "blob": "587b86893d04ecdcd6dab9c5222827f17ad7aba6",
+          "size": 9776,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/base.py",
+          "blob": "c43555deb8ea83b14241a5631c9ea451c96f6e7f",
+          "size": 141,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/http.py",
+          "blob": "d1cfa9079dbfc71e60595ed33397badd7bb9ab1d",
+          "size": 13487,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/oauth2.py",
+          "blob": "293392223900fb68dbcd69488182c45cefa70187",
+          "size": 24206,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/open_id_connect_url.py",
+          "blob": "6bddd67ee8ed59cd893600fb76c7ccc83c736f05",
+          "size": 3150,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/security/utils.py",
+          "blob": "8ee66fd3812be2af9d9a3587feffb83cd8e512c3",
+          "size": 261,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/sse.py",
+          "blob": "c31334835032570d8244526a623ac249ffc77284",
+          "size": 7083,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/staticfiles.py",
+          "blob": "299015d4fef268cde91273790251f35192e1c8a6",
+          "size": 69,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/__init__.py",
+          "blob": "d31e7d1638e6b16ae8b6127584f4e5a0fb7c5b47",
+          "size": 161,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_api.py",
+          "blob": "03334ae6c54c44b946ef316d1e7c687ce0fc9d60",
+          "size": 9912,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_asgi.py",
+          "blob": "3945ebd5d79f8f07a683313dd02309ef9477b9c7",
+          "size": 17315,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/telemetry/_runtime.py",
+          "blob": "d99050c32130fff0e499081c189d9142635ac88d",
+          "size": 9996,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/templating.py",
+          "blob": "0cb868486edd9dda38f90c65f314597813128cf8",
+          "size": 76,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/testclient.py",
+          "blob": "4012406aa76f743c5c5d1ab8ff56d6d67cfb6653",
+          "size": 66,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/types.py",
+          "blob": "1fb86e13b126ff7d20432d414f00b6bc372554a6",
+          "size": 438,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/utils.py",
+          "blob": "12eaa2bf089c827f20a72dd82cbdb75deaac970a",
+          "size": 4341,
+          "mode": "100644"
+        },
+        {
+          "path": "fastapi/websockets.py",
+          "blob": "55a4ac4a1a918720bb3b94eaea6f8737b968216a",
+          "size": 222,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0"
+    },
+    {
+      "tag": "v2.34.2",
+      "published_at": "2026-05-14T19:27:15Z",
+      "created_at": "2026-05-14T19:21:52Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.2",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217284,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "fea814e58271ecb7a1088ce9ac636791a2cc1289",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "b2273d612b17726609afb45a29058625b79eae60",
+          "size": 5838,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "59b5615960d19849d2dd4a85de4fdc079969ddae",
+          "size": 41783,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "feaf34053a911d4b9051069aeb57e595b4d00165",
+          "size": 34248,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3"
+    },
+    {
+      "tag": "v2.34.1",
+      "published_at": "2026-05-13T19:23:51Z",
+      "created_at": "2026-05-13T19:17:24Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.1",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217345,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "bf5a4e9bc25d541cd0466cc5fee28e6597f21e0d",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "f4573cdd07d27edbe5a75c344cb196c502e135b0",
+          "size": 5845,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "78eb52c311a99b3b60d06b7e6fa511d6e619452a",
+          "size": 41837,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "feaf34053a911d4b9051069aeb57e595b4d00165",
+          "size": 34248,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "b7b549b54571d03950b16afd2d01bc6ff0348224"
+    },
+    {
+      "tag": "v2.34.0",
+      "published_at": "2026-05-11T19:40:27Z",
+      "created_at": "2026-05-11T19:24:57Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.34.0",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "prefix": "src/requests/",
+      "file_count": 19,
+      "total_bytes": 217261,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "ad842400b99c65c91988579e76419cf48224a680",
+          "size": 5922,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "872a8aaa227c3b6a38008d06c4c433c80e30a3e9",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "0466a7d347db4ed34a37db51b75fc8e80bc06055",
+          "size": 1542,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "blob": "963867b0126c72d73f9c4edca94f5bd4d78d9515",
+          "size": 5882,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "40fe8a6d5a6168ba7303b91477af925db0aa3914",
+          "size": 28064,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "eeb3b54d7f27e2c843080dfe81dfdb0d460c2b31",
+          "size": 7152,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "2af481dbf59e31965bde74c2e27d73517a39d7ac",
+          "size": 12233,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "deab3c091fed207315c5af60fb415d7407a08b48",
+          "size": 2465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "2e3fc215095fad13817562bbaee871cba57eec08",
+          "size": 21549,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "cb5e9510e3b1cf4804ac6091fd7fdb55e9f2745b",
+          "size": 4564,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "9269cc71263e3f5938a89a9d6c2fed5a4274cc14",
+          "size": 4210,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "11ff9e9f27e76f5ef6b9b609e88c2f418d655e16",
+          "size": 1138,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "4142f2a4bbf39820b46b414a15af805a34b1a013",
+          "size": 41698,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "8f13887d187deda256e08f305950a56a9c145ea5",
+          "size": 34266,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "6c59d6baec83bd82055106a5d2cea08fa1195274",
+          "size": 4351,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "7675eaf15a181dada66c02bb0468dc00d6f523b3",
+          "size": 4134,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "120336ddc6ed5d802735685349c3c3cd42e0c597",
+          "size": 36322,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "0b401c76b6e80a4eecf3c690085b2553f6e261ca"
+    },
+    {
+      "tag": "v2.33.1",
+      "published_at": "2026-03-30T16:12:09Z",
+      "created_at": "2026-03-30T16:07:00Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.33.1",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "prefix": "src/requests/",
+      "file_count": 18,
+      "total_bytes": 186945,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "8ecd8b81499e6b966c6029ea6a6bb90c145ee6e1",
+          "size": 5044,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "7f8a52c8565c69b396e9cdc81a60fefdfe032dd7",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "b7cf4695b0702cf5ffaad181980b223279702eb1",
+          "size": 1502,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "98f74465f211078899448fc1737127aa5435db4a",
+          "size": 26172,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "5960744552e7f8eea815429e7bdad38b0cc2741d",
+          "size": 6449,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "c39b645189ddaf03a5700e62521f39dcc24ecb0a",
+          "size": 10170,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "7f9d754350c9fe28db41e328ea880b9e4b20cc8b",
+          "size": 2142,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "f69d0cda9e1c893401015a09f2db2de5a5960fd2",
+          "size": 18590,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "6e71506e968e85c6f539e8292706aa566146f48a",
+          "size": 4261,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "5d5107895eed204996d3ab9a1a21afe8f6304925",
+          "size": 3802,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "5976bc7d0f22ad5769194eb7965b2e3fe7302048",
+          "size": 734,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "2d043f59cff71257048fe5d039525d388a54e5a4",
+          "size": 35465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "578cc44d5c17a81982c28308b6396760ab9d5946",
+          "size": 30645,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "c7945a2f06897ed980cc575df2f48d9e6c1a9f7e",
+          "size": 4322,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "188e13e4829591facb23ae0e2eda84b9807cb818",
+          "size": 2912,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "42238375c8fd5f0937a473eac7ff5fbe183a284e",
+          "size": 32966,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "111d2b77790bf49943c0dfa09b365371c24aec7e"
+    },
+    {
+      "tag": "v2.33.0",
+      "published_at": "2026-03-25T16:38:25Z",
+      "created_at": "2026-03-25T15:06:17Z",
+      "url": "https://github.com/psf/requests/releases/tag/v2.33.0",
+      "target_commitish": "main",
+      "project": "requests",
+      "repo": "psf/requests",
+      "commit": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761",
+      "prefix": "src/requests/",
+      "file_count": 18,
+      "total_bytes": 187064,
+      "files": [
+        {
+          "path": "src/requests/__init__.py",
+          "blob": "8ecd8b81499e6b966c6029ea6a6bb90c145ee6e1",
+          "size": 5044,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "blob": "567b49f54927efec4922b4c5b694b7db6e504e97",
+          "size": 435,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "blob": "8c7c05190c798283e6ddc38f283c9431946283c7",
+          "size": 1496,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "blob": "98f74465f211078899448fc1737127aa5435db4a",
+          "size": 26172,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/api.py",
+          "blob": "5960744552e7f8eea815429e7bdad38b0cc2741d",
+          "size": 6449,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/auth.py",
+          "blob": "c39b645189ddaf03a5700e62521f39dcc24ecb0a",
+          "size": 10170,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/certs.py",
+          "blob": "4f85ac070bc0230af8155bcadfaa96165268cede",
+          "size": 430,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "blob": "7f9d754350c9fe28db41e328ea880b9e4b20cc8b",
+          "size": 2142,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "blob": "f69d0cda9e1c893401015a09f2db2de5a5960fd2",
+          "size": 18590,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/exceptions.py",
+          "blob": "6e71506e968e85c6f539e8292706aa566146f48a",
+          "size": 4261,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/help.py",
+          "blob": "5d5107895eed204996d3ab9a1a21afe8f6304925",
+          "size": 3802,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/hooks.py",
+          "blob": "5976bc7d0f22ad5769194eb7965b2e3fe7302048",
+          "size": 734,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/models.py",
+          "blob": "2d043f59cff71257048fe5d039525d388a54e5a4",
+          "size": 35465,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/packages.py",
+          "blob": "5ab3d8e250de8475cb22553f564e5444e02c7460",
+          "size": 904,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "blob": "578cc44d5c17a81982c28308b6396760ab9d5946",
+          "size": 30645,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "blob": "c7945a2f06897ed980cc575df2f48d9e6c1a9f7e",
+          "size": 4322,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "blob": "188e13e4829591facb23ae0e2eda84b9807cb818",
+          "size": 2912,
+          "mode": "100644"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "blob": "54959bb8aba33d35583b0ed34ae395a3eb1f3999",
+          "size": 33091,
+          "mode": "100644"
+        }
+      ],
+      "tree_api_ref": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761"
+    },
+    {
+      "tag": "2.8.0",
+      "published_at": "2026-09-15T19:40:51Z",
+      "created_at": "2026-09-15T19:19:34Z",
+      "url": "https://github.com/urllib3/urllib3/releases/tag/2.8.0",
+      "target_commitish": "main",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "prefix": "src/urllib3/",
+      "commit": "b1d30ab61fe0db8f11092805e8c5ac43e091064a",
+      "tree_api_ref": "b1d30ab61fe0db8f11092805e8c5ac43e091064a",
+      "file_count": 35,
+      "total_bytes": 434151,
+      "files": [
+        {
+          "path": "src/urllib3/__init__.py",
+          "blob": "3fe782c8a45bbabcf240f3cac4303ac12b0ec274",
+          "size": 6979,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_base_connection.py",
+          "blob": "992ec1657a9d0a98354b56b2a55d54b75db0eaa3",
+          "size": 5580,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_collections.py",
+          "blob": "bc72773454866cc53c8f2567986732cd880653b5",
+          "size": 17669,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_request_methods.py",
+          "blob": "297c271bf401c1cb48c6225f8822e78f58c3ca56",
+          "size": 9931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connection.py",
+          "blob": "3bf3f57ac77ae9909c7295dddf67769d69dc5a27",
+          "size": 47903,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connectionpool.py",
+          "blob": "5ed9444df6bd53b52f6913c4e58edb9c36d9aea3",
+          "size": 45250,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/__init__.py",
+          "blob": "e5b62b25e932566f7ae7599c1cedec2b8f30d95b",
+          "size": 836,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/connection.py",
+          "blob": "63f79dd3be803db09671c909f79316c3f65d6916",
+          "size": 8960,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/fetch.py",
+          "blob": "612cfddc4c28d2f0edf47522278fa6d9b7906623",
+          "size": 23520,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/request.py",
+          "blob": "e692e692bd0d38f6a0677992a6993fc68050dff3",
+          "size": 566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/response.py",
+          "blob": "ec1e1dbe83722c5fb16290a852859252ae616826",
+          "size": 9719,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "blob": "62887ba406a3c11230fc19890941eb4c67ed25ae",
+          "size": 21494,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/socks.py",
+          "blob": "67fceb080ad552d380fc1746c188af8c57aa59e6",
+          "size": 7566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/exceptions.py",
+          "blob": "3d7e9b93d307ffe7d54868122227a165cc98383c",
+          "size": 9945,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/fields.py",
+          "blob": "fe68e177324bc67f145091e464556a69b89bcda7",
+          "size": 10801,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/filepost.py",
+          "blob": "14f70b05b4778f91137e4a9e7059d7514aa44d28",
+          "size": 2388,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/__init__.py",
+          "blob": "133e1d8f237f6fddd557ae1c0e0cf738f7cc2748",
+          "size": 1741,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/connection.py",
+          "blob": "8cab76d1f4880825e4604fb0b326a795d49b44a3",
+          "size": 12613,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/probe.py",
+          "blob": "9ea900764f0885eafaac9454523417d86e33df2d",
+          "size": 3014,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/poolmanager.py",
+          "blob": "df7cff936cc9e9cfff9e1e14acab91247998cb5f",
+          "size": 25026,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/response.py",
+          "blob": "ec7d30833075a56915ccd60f47407cfcee1a032d",
+          "size": 54628,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/__init__.py",
+          "blob": "534126033c083203649022fa9b753a433f005556",
+          "size": 1001,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/connection.py",
+          "blob": "f92519ee9124e91e5da7d60ccc3f274312ed3514",
+          "size": 4444,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/proxy.py",
+          "blob": "908fc6621d0afbed16bde2c1957a5cf28d3a84d8",
+          "size": 1148,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/request.py",
+          "blob": "8c6c7fbdcfd2bae3ba337d7edf17b9cb068c3c2d",
+          "size": 10228,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/response.py",
+          "blob": "0f4578696fa2e17a900c6890ec26d65e860b0b72",
+          "size": 3374,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "blob": "868f2930358c0bf8e544d7c9f0fae1c63f9d789e",
+          "size": 20151,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_.py",
+          "blob": "f6445a41dae75f4c2c461578dc0f455c2aa7b287",
+          "size": 17856,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_match_hostname.py",
+          "blob": "94994f25ae1570211c0b98353790f669ef4585fa",
+          "size": 5479,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssltransport.py",
+          "blob": "6d59bc3bce2489c3a0aa5bcb83b737dcf33c033b",
+          "size": 8847,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/timeout.py",
+          "blob": "4bb1be11d9cb06900dd82ecebd06aa6a7c5de916",
+          "size": 10346,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/url.py",
+          "blob": "8a9f7146842e2d2a5dacf08a21d56739d17d37ab",
+          "size": 19579,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/util.py",
+          "blob": "35c77e4025842f548565334a3c04cba90f9283d6",
+          "size": 1146,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/wait.py",
+          "blob": "aeca0c7ad5b232eeb1ad9c43d315bd1d74eaed9a",
+          "size": 4423,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "2.7.0",
+      "published_at": "2026-05-07T16:32:49Z",
+      "created_at": "2026-05-07T16:03:24Z",
+      "url": "https://github.com/urllib3/urllib3/releases/tag/2.7.0",
+      "target_commitish": "main",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "prefix": "src/urllib3/",
+      "commit": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "tree_api_ref": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "file_count": 35,
+      "total_bytes": 416612,
+      "files": [
+        {
+          "path": "src/urllib3/__init__.py",
+          "blob": "3fe782c8a45bbabcf240f3cac4303ac12b0ec274",
+          "size": 6979,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_base_connection.py",
+          "blob": "992ec1657a9d0a98354b56b2a55d54b75db0eaa3",
+          "size": 5580,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_collections.py",
+          "blob": "ee9ca662b625ce6b0a4743d05a186301b9a30ee6",
+          "size": 17522,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_request_methods.py",
+          "blob": "297c271bf401c1cb48c6225f8822e78f58c3ca56",
+          "size": 9931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connection.py",
+          "blob": "84e1dab9452d18ad0a2020c55f1966f4920f56c2",
+          "size": 42786,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connectionpool.py",
+          "blob": "70fbc5e725aee571654b1a58748537fa167b498d",
+          "size": 44164,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/__init__.py",
+          "blob": "e5b62b25e932566f7ae7599c1cedec2b8f30d95b",
+          "size": 836,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/connection.py",
+          "blob": "63f79dd3be803db09671c909f79316c3f65d6916",
+          "size": 8960,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/fetch.py",
+          "blob": "612cfddc4c28d2f0edf47522278fa6d9b7906623",
+          "size": 23520,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/request.py",
+          "blob": "e692e692bd0d38f6a0677992a6993fc68050dff3",
+          "size": 566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/response.py",
+          "blob": "ec1e1dbe83722c5fb16290a852859252ae616826",
+          "size": 9719,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "blob": "f06b8599920fdcf6b8a2f869141378709a30c84c",
+          "size": 19734,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/socks.py",
+          "blob": "d37da8fc2049a7b3f7e18d2f64e79c205cfe3d3e",
+          "size": 7639,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/exceptions.py",
+          "blob": "3d7e9b93d307ffe7d54868122227a165cc98383c",
+          "size": 9945,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/fields.py",
+          "blob": "fe68e177324bc67f145091e464556a69b89bcda7",
+          "size": 10801,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/filepost.py",
+          "blob": "14f70b05b4778f91137e4a9e7059d7514aa44d28",
+          "size": 2388,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/__init__.py",
+          "blob": "133e1d8f237f6fddd557ae1c0e0cf738f7cc2748",
+          "size": 1741,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/connection.py",
+          "blob": "0a026da0a8357e324ded47b82b24042713b9bf06",
+          "size": 12578,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/probe.py",
+          "blob": "9ea900764f0885eafaac9454523417d86e33df2d",
+          "size": 3014,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/poolmanager.py",
+          "blob": "8f2c56745cdf5ee206767e22fd61c2fb6bc21e55",
+          "size": 23895,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/response.py",
+          "blob": "e9246b75e36215b7f956700aa4cb363e8423e526",
+          "size": 53219,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/__init__.py",
+          "blob": "534126033c083203649022fa9b753a433f005556",
+          "size": 1001,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/connection.py",
+          "blob": "f92519ee9124e91e5da7d60ccc3f274312ed3514",
+          "size": 4444,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/proxy.py",
+          "blob": "908fc6621d0afbed16bde2c1957a5cf28d3a84d8",
+          "size": 1148,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/request.py",
+          "blob": "6c2372ba7e777826a4eb124ddfb54f0240b65d67",
+          "size": 8363,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/response.py",
+          "blob": "0f4578696fa2e17a900c6890ec26d65e860b0b72",
+          "size": 3374,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "blob": "7649898e1d9930724a456c1c6fdecb66e078b4cc",
+          "size": 19577,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_.py",
+          "blob": "e66549a76c4b5821e639e5facfeb63dd1a39d543",
+          "size": 17742,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_match_hostname.py",
+          "blob": "94994f25ae1570211c0b98353790f669ef4585fa",
+          "size": 5479,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssltransport.py",
+          "blob": "6d59bc3bce2489c3a0aa5bcb83b737dcf33c033b",
+          "size": 8847,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/timeout.py",
+          "blob": "4bb1be11d9cb06900dd82ecebd06aa6a7c5de916",
+          "size": 10346,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/url.py",
+          "blob": "db057f17be610174f30928748b5004dcbf6c501c",
+          "size": 15205,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/util.py",
+          "blob": "35c77e4025842f548565334a3c04cba90f9283d6",
+          "size": 1146,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/wait.py",
+          "blob": "aeca0c7ad5b232eeb1ad9c43d315bd1d74eaed9a",
+          "size": 4423,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "2.6.3",
+      "published_at": "2026-01-07T16:30:23Z",
+      "created_at": "2026-01-07T16:19:16Z",
+      "url": "https://github.com/urllib3/urllib3/releases/tag/2.6.3",
+      "target_commitish": "main",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "prefix": "src/urllib3/",
+      "commit": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "tree_api_ref": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "file_count": 35,
+      "total_bytes": 417454,
+      "files": [
+        {
+          "path": "src/urllib3/__init__.py",
+          "blob": "3fe782c8a45bbabcf240f3cac4303ac12b0ec274",
+          "size": 6979,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_base_connection.py",
+          "blob": "dc0f318c0b380926eed0f4209d395c79963eaf9e",
+          "size": 5568,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_collections.py",
+          "blob": "0378aab1b1aba0b61cb2741156dea652591ca2bf",
+          "size": 17595,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_request_methods.py",
+          "blob": "297c271bf401c1cb48c6225f8822e78f58c3ca56",
+          "size": 9931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connection.py",
+          "blob": "2ceeb0a5483bef1927a57d03c3dd2cab0d8c9f8f",
+          "size": 42800,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connectionpool.py",
+          "blob": "3a0685b4cdd0562e508b9dd032765b5c759ea61e",
+          "size": 43371,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/__init__.py",
+          "blob": "e5b62b25e932566f7ae7599c1cedec2b8f30d95b",
+          "size": 836,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/connection.py",
+          "blob": "63f79dd3be803db09671c909f79316c3f65d6916",
+          "size": 8960,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/fetch.py",
+          "blob": "612cfddc4c28d2f0edf47522278fa6d9b7906623",
+          "size": 23520,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/request.py",
+          "blob": "e692e692bd0d38f6a0677992a6993fc68050dff3",
+          "size": 566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/response.py",
+          "blob": "cb1088a1826d089e1b603c51e85560b8583a3e3d",
+          "size": 9507,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "blob": "8e05d3d785d53021a97a713cbdbb1f43708c9150",
+          "size": 19724,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/socks.py",
+          "blob": "e3239b569d93c6139f9c6a86118a5884daf1dabd",
+          "size": 7547,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/exceptions.py",
+          "blob": "58723faeb0ca7e5d8e3ba319f8d5acc79c91409c",
+          "size": 9952,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/fields.py",
+          "blob": "97c4730cff0df570e1ab47f77e6aa879ec3c36e7",
+          "size": 10829,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/filepost.py",
+          "blob": "14f70b05b4778f91137e4a9e7059d7514aa44d28",
+          "size": 2388,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/__init__.py",
+          "blob": "133e1d8f237f6fddd557ae1c0e0cf738f7cc2748",
+          "size": 1741,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/connection.py",
+          "blob": "0a026da0a8357e324ded47b82b24042713b9bf06",
+          "size": 12578,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/probe.py",
+          "blob": "9ea900764f0885eafaac9454523417d86e33df2d",
+          "size": 3014,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/poolmanager.py",
+          "blob": "28ec82f0168543a8aee7cdb79a4b46f10bb2cc91",
+          "size": 23811,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/response.py",
+          "blob": "ff6d1f4911c2e304a2d7822059d9574536f81aea",
+          "size": 52931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/__init__.py",
+          "blob": "534126033c083203649022fa9b753a433f005556",
+          "size": 1001,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/connection.py",
+          "blob": "f92519ee9124e91e5da7d60ccc3f274312ed3514",
+          "size": 4444,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/proxy.py",
+          "blob": "908fc6621d0afbed16bde2c1957a5cf28d3a84d8",
+          "size": 1148,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/request.py",
+          "blob": "6c2372ba7e777826a4eb124ddfb54f0240b65d67",
+          "size": 8363,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/response.py",
+          "blob": "0f4578696fa2e17a900c6890ec26d65e860b0b72",
+          "size": 3374,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "blob": "b21b4b64ebbd4748eb6fa4301f947b0d4965da8b",
+          "size": 19235,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_.py",
+          "blob": "56fe9093adaa86b30085aef2435e49f84841df12",
+          "size": 19929,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_match_hostname.py",
+          "blob": "25d91000419ea4a860f511ebe669fe171b79254c",
+          "size": 5845,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssltransport.py",
+          "blob": "6d59bc3bce2489c3a0aa5bcb83b737dcf33c033b",
+          "size": 8847,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/timeout.py",
+          "blob": "4bb1be11d9cb06900dd82ecebd06aa6a7c5de916",
+          "size": 10346,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/url.py",
+          "blob": "db057f17be610174f30928748b5004dcbf6c501c",
+          "size": 15205,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/util.py",
+          "blob": "35c77e4025842f548565334a3c04cba90f9283d6",
+          "size": 1146,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/wait.py",
+          "blob": "aeca0c7ad5b232eeb1ad9c43d315bd1d74eaed9a",
+          "size": 4423,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "2.6.2",
+      "published_at": "2025-12-11T15:59:07Z",
+      "created_at": "2025-12-11T15:45:04Z",
+      "url": "https://github.com/urllib3/urllib3/releases/tag/2.6.2",
+      "target_commitish": "main",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "prefix": "src/urllib3/",
+      "commit": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "tree_api_ref": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "file_count": 35,
+      "total_bytes": 416401,
+      "files": [
+        {
+          "path": "src/urllib3/__init__.py",
+          "blob": "3fe782c8a45bbabcf240f3cac4303ac12b0ec274",
+          "size": 6979,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_base_connection.py",
+          "blob": "dc0f318c0b380926eed0f4209d395c79963eaf9e",
+          "size": 5568,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_collections.py",
+          "blob": "0378aab1b1aba0b61cb2741156dea652591ca2bf",
+          "size": 17595,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_request_methods.py",
+          "blob": "297c271bf401c1cb48c6225f8822e78f58c3ca56",
+          "size": 9931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connection.py",
+          "blob": "2ceeb0a5483bef1927a57d03c3dd2cab0d8c9f8f",
+          "size": 42800,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connectionpool.py",
+          "blob": "3a0685b4cdd0562e508b9dd032765b5c759ea61e",
+          "size": 43371,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/__init__.py",
+          "blob": "8a3c5bebdc151eef715663628a697118bb2932ed",
+          "size": 733,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/connection.py",
+          "blob": "a5a353f8e8a36d5d1f23fccb1b80329a353b85a7",
+          "size": 8885,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/fetch.py",
+          "blob": "612cfddc4c28d2f0edf47522278fa6d9b7906623",
+          "size": 23520,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/request.py",
+          "blob": "e692e692bd0d38f6a0677992a6993fc68050dff3",
+          "size": 566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/response.py",
+          "blob": "cb1088a1826d089e1b603c51e85560b8583a3e3d",
+          "size": 9507,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "blob": "8e05d3d785d53021a97a713cbdbb1f43708c9150",
+          "size": 19724,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/socks.py",
+          "blob": "e3239b569d93c6139f9c6a86118a5884daf1dabd",
+          "size": 7547,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/exceptions.py",
+          "blob": "58723faeb0ca7e5d8e3ba319f8d5acc79c91409c",
+          "size": 9952,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/fields.py",
+          "blob": "97c4730cff0df570e1ab47f77e6aa879ec3c36e7",
+          "size": 10829,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/filepost.py",
+          "blob": "14f70b05b4778f91137e4a9e7059d7514aa44d28",
+          "size": 2388,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/__init__.py",
+          "blob": "133e1d8f237f6fddd557ae1c0e0cf738f7cc2748",
+          "size": 1741,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/connection.py",
+          "blob": "7534b770a87a666f0e6e6c586b5f2aadccbc3ed7",
+          "size": 12674,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/probe.py",
+          "blob": "9ea900764f0885eafaac9454523417d86e33df2d",
+          "size": 3014,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/poolmanager.py",
+          "blob": "28ec82f0168543a8aee7cdb79a4b46f10bb2cc91",
+          "size": 23811,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/response.py",
+          "blob": "f6266f1a938ff145d3355fe0f4dc7ee82b29bde2",
+          "size": 52736,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/__init__.py",
+          "blob": "534126033c083203649022fa9b753a433f005556",
+          "size": 1001,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/connection.py",
+          "blob": "f92519ee9124e91e5da7d60ccc3f274312ed3514",
+          "size": 4444,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/proxy.py",
+          "blob": "908fc6621d0afbed16bde2c1957a5cf28d3a84d8",
+          "size": 1148,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/request.py",
+          "blob": "6c2372ba7e777826a4eb124ddfb54f0240b65d67",
+          "size": 8363,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/response.py",
+          "blob": "0f4578696fa2e17a900c6890ec26d65e860b0b72",
+          "size": 3374,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "blob": "0456cceba47b16ae6784458cc17eaa528a517ffa",
+          "size": 18459,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_.py",
+          "blob": "56fe9093adaa86b30085aef2435e49f84841df12",
+          "size": 19929,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_match_hostname.py",
+          "blob": "25d91000419ea4a860f511ebe669fe171b79254c",
+          "size": 5845,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssltransport.py",
+          "blob": "6d59bc3bce2489c3a0aa5bcb83b737dcf33c033b",
+          "size": 8847,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/timeout.py",
+          "blob": "4bb1be11d9cb06900dd82ecebd06aa6a7c5de916",
+          "size": 10346,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/url.py",
+          "blob": "db057f17be610174f30928748b5004dcbf6c501c",
+          "size": 15205,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/util.py",
+          "blob": "35c77e4025842f548565334a3c04cba90f9283d6",
+          "size": 1146,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/wait.py",
+          "blob": "aeca0c7ad5b232eeb1ad9c43d315bd1d74eaed9a",
+          "size": 4423,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "tag": "2.6.1",
+      "published_at": "2025-12-08T15:27:19Z",
+      "created_at": "2025-12-08T15:06:11Z",
+      "url": "https://github.com/urllib3/urllib3/releases/tag/2.6.1",
+      "target_commitish": "main",
+      "project": "urllib3",
+      "repo": "urllib3/urllib3",
+      "prefix": "src/urllib3/",
+      "commit": "bfe8e198a13800e3ee8ef8124a8928acb170c843",
+      "tree_api_ref": "bfe8e198a13800e3ee8ef8124a8928acb170c843",
+      "file_count": 35,
+      "total_bytes": 416183,
+      "files": [
+        {
+          "path": "src/urllib3/__init__.py",
+          "blob": "3fe782c8a45bbabcf240f3cac4303ac12b0ec274",
+          "size": 6979,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_base_connection.py",
+          "blob": "dc0f318c0b380926eed0f4209d395c79963eaf9e",
+          "size": 5568,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_collections.py",
+          "blob": "0378aab1b1aba0b61cb2741156dea652591ca2bf",
+          "size": 17595,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/_request_methods.py",
+          "blob": "297c271bf401c1cb48c6225f8822e78f58c3ca56",
+          "size": 9931,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connection.py",
+          "blob": "2ceeb0a5483bef1927a57d03c3dd2cab0d8c9f8f",
+          "size": 42800,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/connectionpool.py",
+          "blob": "3a0685b4cdd0562e508b9dd032765b5c759ea61e",
+          "size": 43371,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/__init__.py",
+          "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/__init__.py",
+          "blob": "8a3c5bebdc151eef715663628a697118bb2932ed",
+          "size": 733,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/connection.py",
+          "blob": "a5a353f8e8a36d5d1f23fccb1b80329a353b85a7",
+          "size": 8885,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/fetch.py",
+          "blob": "612cfddc4c28d2f0edf47522278fa6d9b7906623",
+          "size": 23520,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/request.py",
+          "blob": "e692e692bd0d38f6a0677992a6993fc68050dff3",
+          "size": 566,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/emscripten/response.py",
+          "blob": "cb1088a1826d089e1b603c51e85560b8583a3e3d",
+          "size": 9507,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "blob": "8e05d3d785d53021a97a713cbdbb1f43708c9150",
+          "size": 19724,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/contrib/socks.py",
+          "blob": "e3239b569d93c6139f9c6a86118a5884daf1dabd",
+          "size": 7547,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/exceptions.py",
+          "blob": "58723faeb0ca7e5d8e3ba319f8d5acc79c91409c",
+          "size": 9952,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/fields.py",
+          "blob": "97c4730cff0df570e1ab47f77e6aa879ec3c36e7",
+          "size": 10829,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/filepost.py",
+          "blob": "14f70b05b4778f91137e4a9e7059d7514aa44d28",
+          "size": 2388,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/__init__.py",
+          "blob": "133e1d8f237f6fddd557ae1c0e0cf738f7cc2748",
+          "size": 1741,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/connection.py",
+          "blob": "7534b770a87a666f0e6e6c586b5f2aadccbc3ed7",
+          "size": 12674,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/http2/probe.py",
+          "blob": "9ea900764f0885eafaac9454523417d86e33df2d",
+          "size": 3014,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/poolmanager.py",
+          "blob": "28ec82f0168543a8aee7cdb79a4b46f10bb2cc91",
+          "size": 23811,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/response.py",
+          "blob": "219b5d9894ceffed0a90090ff602040538a5af2f",
+          "size": 52518,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/__init__.py",
+          "blob": "534126033c083203649022fa9b753a433f005556",
+          "size": 1001,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/connection.py",
+          "blob": "f92519ee9124e91e5da7d60ccc3f274312ed3514",
+          "size": 4444,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/proxy.py",
+          "blob": "908fc6621d0afbed16bde2c1957a5cf28d3a84d8",
+          "size": 1148,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/request.py",
+          "blob": "6c2372ba7e777826a4eb124ddfb54f0240b65d67",
+          "size": 8363,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/response.py",
+          "blob": "0f4578696fa2e17a900c6890ec26d65e860b0b72",
+          "size": 3374,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "blob": "0456cceba47b16ae6784458cc17eaa528a517ffa",
+          "size": 18459,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_.py",
+          "blob": "56fe9093adaa86b30085aef2435e49f84841df12",
+          "size": 19929,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssl_match_hostname.py",
+          "blob": "25d91000419ea4a860f511ebe669fe171b79254c",
+          "size": 5845,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/ssltransport.py",
+          "blob": "6d59bc3bce2489c3a0aa5bcb83b737dcf33c033b",
+          "size": 8847,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/timeout.py",
+          "blob": "4bb1be11d9cb06900dd82ecebd06aa6a7c5de916",
+          "size": 10346,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/url.py",
+          "blob": "db057f17be610174f30928748b5004dcbf6c501c",
+          "size": 15205,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/util.py",
+          "blob": "35c77e4025842f548565334a3c04cba90f9283d6",
+          "size": 1146,
+          "mode": "100644"
+        },
+        {
+          "path": "src/urllib3/util/wait.py",
+          "blob": "aeca0c7ad5b232eeb1ad9c43d315bd1d74eaed9a",
+          "size": 4423,
+          "mode": "100644"
+        }
+      ]
+    }
+  ],
+  "amendment": {
+    "reason": "Pre-confirmation exposure correction: native development inventory imported installed Pydantic 2.14.1. Replace Pydantic with urllib3, an actual locked Requests dependency, before fetching primary source bodies or observing outcomes.",
+    "selection_basis": "Dependency relevance, metadata availability, same deterministic latest five stable release rule; not outcome-based.",
+    "retained_development": "HTTPX historical migration",
+    "removed_package": "pydantic",
+    "added_package": "urllib3",
+    "no_candidate_outcome_driven_change": true
+  }
+}

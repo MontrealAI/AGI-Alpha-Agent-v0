@@ -1,0 +1,3268 @@
+{
+  "schema": "value-compounds-results/v1",
+  "unique_substantive_historical_transitions": 12,
+  "project_clusters": 3,
+  "actual_paid_customer_jobs": 0,
+  "timing_evaluations": 108,
+  "repetitions_are_jobs": false,
+  "all_reported_counts_unit": "Callable rows and call sites are not distinct bugs or customer missions.",
+  "totals": {
+    "incumbent": {
+      "validated_scoped_packets": 0,
+      "source_binding_loss_rows": 0,
+      "griffe_alerts": 0,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 0.164,
+      "range_of_mission_medians_seconds": [
+        0.1,
+        0.459
+      ],
+      "sum_median_cpu_seconds": 1.955809688
+    },
+    "retained": {
+      "validated_scoped_packets": 9,
+      "source_binding_loss_rows": 3,
+      "griffe_alerts": 0,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 12.0175,
+      "range_of_mission_medians_seconds": [
+        11.249,
+        13.081
+      ],
+      "sum_median_cpu_seconds": 141.013857916
+    },
+    "conventional": {
+      "validated_scoped_packets": 12,
+      "source_binding_loss_rows": 3,
+      "griffe_alerts": 6,
+      "native_refusals": 102,
+      "strict_consumer_losses": 0,
+      "candidate_consumer_losses": 0,
+      "median_of_mission_medians_seconds": 12.4205,
+      "range_of_mission_medians_seconds": [
+        11.791,
+        13.034
+      ],
+      "sum_median_cpu_seconds": 144.869852123
+    }
+  },
+  "missions": [
+    {
+      "id": "fastapi-1",
+      "repository": "fastapi/fastapi",
+      "before_ref": "4bdfbe4513084b19e22421ce1f916d8c1ac462a0",
+      "after_ref": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "before_tag": "0.159.1",
+      "after_tag": "0.160.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 0.443,
+          "min_workbench_seconds": 0.323,
+          "max_workbench_seconds": 0.472,
+          "median_cpu_seconds": 0.259266549,
+          "input_bytes": 1674426,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 207407959,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 207425805
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 421545860,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 421579581
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 259266549,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 259293015
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0001-fastapi-1-incumbent.json",
+            "sha256": "77daf2c6f78ff5be1ce9f3285a352b61da2480a1d8fe96a2d4ff32605ad40910",
+            "bytes": 43424
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-1-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "call_loss": 3,
+            "no_call_loss": 22
+          },
+          "binding_losses": 3,
+          "binding_loss_details": [
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "request_body_to_args",
+              "witness": {
+                "keyword_names": [
+                  "body_fields",
+                  "embed_body_fields",
+                  "known_param_names",
+                  "received_body"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            },
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "request_params_to_args",
+              "witness": {
+                "keyword_names": [
+                  "fields",
+                  "known_param_names",
+                  "received_params"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            },
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "solve_dependencies",
+              "witness": {
+                "keyword_names": [
+                  "_request_param_names",
+                  "async_exit_stack",
+                  "dependant",
+                  "embed_body_fields",
+                  "request"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            }
+          ],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 13.081,
+          "min_workbench_seconds": 11.2,
+          "max_workbench_seconds": 13.478,
+          "median_cpu_seconds": 12.595989419,
+          "input_bytes": 1674426,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 63060,
+                "hits": 0,
+                "misses": 8
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 10839066935,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10839972867
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 63060,
+                "hits": 0,
+                "misses": 8
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12595989419,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12623743035
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 63060,
+                "hits": 0,
+                "misses": 8
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 13207472452,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 13209718637
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0002-fastapi-1-retained.json",
+            "sha256": "b548f92c844570e7b7e13842f516a119c1492e64e1430121f558d5b774f57d1d",
+            "bytes": 15653602
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-1-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "call_loss": 3,
+            "no_call_loss": 22
+          },
+          "binding_losses": 3,
+          "binding_loss_details": [
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "request_body_to_args",
+              "witness": {
+                "keyword_names": [
+                  "body_fields",
+                  "embed_body_fields",
+                  "known_param_names",
+                  "received_body"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            },
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "request_params_to_args",
+              "witness": {
+                "keyword_names": [
+                  "fields",
+                  "known_param_names",
+                  "received_params"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            },
+            {
+              "path": "fastapi/dependencies/utils.py",
+              "name": "solve_dependencies",
+              "witness": {
+                "keyword_names": [
+                  "_request_param_names",
+                  "async_exit_stack",
+                  "dependant",
+                  "embed_body_fields",
+                  "request"
+                ],
+                "positional_count": 0
+              },
+              "status": "call_loss"
+            }
+          ],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 3,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 12.417,
+          "min_workbench_seconds": 12.332,
+          "max_workbench_seconds": 13.446,
+          "median_cpu_seconds": 12.148593115,
+          "input_bytes": 1674426,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 8,
+                "source_bytes": 655478
+              },
+              "cpu_ns": 12044998030,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12047058220
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 8,
+                "source_bytes": 655478
+              },
+              "cpu_ns": 12148593115,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12155900651
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 8,
+                "source_bytes": 655478
+              },
+              "cpu_ns": 12910590025,
+              "input_bytes": 1674426,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12914649717
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0003-fastapi-1-conventional.json",
+            "sha256": "898723b41ecec47a305ea104c7be21ca695491a27c8d72efa126582e7f38e848",
+            "bytes": 16714249
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-1-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 4
+    },
+    {
+      "id": "fastapi-2",
+      "repository": "fastapi/fastapi",
+      "before_ref": "addd0778e996cf886972b8024113d79f8d0a3580",
+      "after_ref": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "before_tag": "0.160.0",
+      "after_tag": "0.161.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.168,
+          "min_workbench_seconds": 0.155,
+          "max_workbench_seconds": 0.371,
+          "median_cpu_seconds": 0.109853133,
+          "input_bytes": 1670592,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 98976533,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 98984680
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 109853133,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 109868773
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 321728144,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 321796650
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0006-fastapi-2-incumbent.json",
+            "sha256": "3fe027c3965f5e3af664955b37eb2b419015867930ef83b530937d9ec5685fa9",
+            "bytes": 24705
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-2-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.676,
+          "min_workbench_seconds": 11.211,
+          "max_workbench_seconds": 12.486,
+          "median_cpu_seconds": 11.381453616,
+          "input_bytes": 1670592,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 13131,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11381453616,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11383636633
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13131,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 10993874392,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10997077918
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13131,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12218585279,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12222375936
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0004-fastapi-2-retained.json",
+            "sha256": "ef1572d474ee9d697c5f44a7132274af2320656cd679a29d8d7c0a38e868265d",
+            "bytes": 15608722
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-2-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.999,
+          "min_workbench_seconds": 11.183,
+          "max_workbench_seconds": 12.027,
+          "median_cpu_seconds": 11.715671846,
+          "input_bytes": 1670592,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 10,
+                "source_bytes": 712635
+              },
+              "cpu_ns": 11738119115,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11739925689
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 10,
+                "source_bytes": 712635
+              },
+              "cpu_ns": 10905265217,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10907918683
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 10,
+                "source_bytes": 712635
+              },
+              "cpu_ns": 11715671846,
+              "input_bytes": 1670592,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11717985692
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0005-fastapi-2-conventional.json",
+            "sha256": "ef5e84364234d406af245729fa329493c229eb76accb720cdd6349a695706d32",
+            "bytes": 15752360
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-2-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 2
+    },
+    {
+      "id": "fastapi-3",
+      "repository": "fastapi/fastapi",
+      "before_ref": "80c8742d141e67beaf747343405c8facf999bc0c",
+      "after_ref": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "before_tag": "0.161.0",
+      "after_tag": "0.161.1",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.156,
+          "min_workbench_seconds": 0.144,
+          "max_workbench_seconds": 0.185,
+          "median_cpu_seconds": 0.104553513,
+          "input_bytes": 1670361,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 94763622,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 94777090
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 108640387,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 108649295
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 104553513,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 104561756
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0008-fastapi-3-incumbent.json",
+            "sha256": "aeb70dadce9bb5d8a238e2951398ecd825dafd2af718ec2c5f6a90bd99e8953d",
+            "bytes": 17997
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-3-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.9,
+          "min_workbench_seconds": 11.648,
+          "max_workbench_seconds": 12.037,
+          "median_cpu_seconds": 11.664974449,
+          "input_bytes": 1670361,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11274948804,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11277663947
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11664974449,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11666325130
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11768860069,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11772840694
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0009-fastapi-3-retained.json",
+            "sha256": "0468bcb6e137399bc02bd4744609d8830feca20cf0ce6ec80cb50b398dc872e6",
+            "bytes": 15602013
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-3-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 12.386,
+          "min_workbench_seconds": 11.317,
+          "max_workbench_seconds": 12.418,
+          "median_cpu_seconds": 12.121347183,
+          "input_bytes": 1670361,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 12,
+                "source_bytes": 769921
+              },
+              "cpu_ns": 11048156622,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11050346921
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 12,
+                "source_bytes": 769921
+              },
+              "cpu_ns": 12147439838,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12148428493
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 12,
+                "source_bytes": 769921
+              },
+              "cpu_ns": 12121347183,
+              "input_bytes": 1670361,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12122517170
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0007-fastapi-3-conventional.json",
+            "sha256": "aafd8b5cf2b46fe5a1bbb19248f421613738f60a8a733763b0cb0c110547970a",
+            "bytes": 15746340
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-3-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 2
+    },
+    {
+      "id": "fastapi-4",
+      "repository": "fastapi/fastapi",
+      "before_ref": "69ddc2badf9da1123bba4d360225ae6b085985f6",
+      "after_ref": "7a0a3f0b286c6c865cf4398ea0e957a87b8bffa4",
+      "before_tag": "0.161.1",
+      "after_tag": "0.162.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.158,
+          "min_workbench_seconds": 0.144,
+          "max_workbench_seconds": 0.176,
+          "median_cpu_seconds": 0.104589287,
+          "input_bytes": 1669718,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 92888862,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 92896239
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 104589287,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 104597599
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 105705368,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 105713724
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0010-fastapi-4-incumbent.json",
+            "sha256": "fc8e97fd951e70243b04ce6c4b40c6e4e53c6ebed58e47a1d29de913c6ac7fb2",
+            "bytes": 18743
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-4-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 12.45,
+          "min_workbench_seconds": 11.768,
+          "max_workbench_seconds": 12.496,
+          "median_cpu_seconds": 11.670362322,
+          "input_bytes": 1669718,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11670362322,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11672292735
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12232721546,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12239186396
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 13169,
+                "bytes_written": 13169,
+                "hits": 2,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11555263487,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11556212809
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0011-fastapi-4-retained.json",
+            "sha256": "ebb79326a3b35b3fac0aed4bde2d8e781bd20d1e7af6cd32a4b65f51dc082be9",
+            "bytes": 15602762
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-4-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 15
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "dependency-import-reference": 57,
+              "other-import-reference": 2705,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 12.476,
+          "min_workbench_seconds": 11.652,
+          "max_workbench_seconds": 12.646,
+          "median_cpu_seconds": 12.031814073,
+          "input_bytes": 1669718,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 14,
+                "source_bytes": 826435
+              },
+              "cpu_ns": 11367482785,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11369466648
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 14,
+                "source_bytes": 826435
+              },
+              "cpu_ns": 12389374001,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12395190781
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 14,
+                "source_bytes": 826435
+              },
+              "cpu_ns": 12031814073,
+              "input_bytes": 1669718,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12034818169
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0012-fastapi-4-conventional.json",
+            "sha256": "322fb03b7a0212f105eff5188d296c468cdbd2645fdd29318837d3d81c9e9336",
+            "bytes": 15747084
+          },
+          "pack": "results/confirmation/repeat-1/fastapi-4-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 2
+    },
+    {
+      "id": "requests-1",
+      "repository": "psf/requests",
+      "before_ref": "bc04dfd6dad4cb02cd92f5daa81eb562d280a761",
+      "after_ref": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "before_tag": "v2.33.0",
+      "after_tag": "v2.33.1",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.1,
+          "min_workbench_seconds": 0.089,
+          "max_workbench_seconds": 0.106,
+          "median_cpu_seconds": 0.056780986,
+          "input_bytes": 374009,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 49739185,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 49744994
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 61598037,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 61622755
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 56780986,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 56787369
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0015-requests-1-incumbent.json",
+            "sha256": "75817adfcc62207ef14ec3d4dc1cdfe65c81cf2cad35b922b8ea06cd8d6ba0fe",
+            "bytes": 13450
+          },
+          "pack": "results/confirmation/repeat-1/requests-1-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 38,
+            "unresolved": 2
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.249,
+          "min_workbench_seconds": 10.841,
+          "max_workbench_seconds": 12.399,
+          "median_cpu_seconds": 11.02677178,
+          "input_bytes": 374009,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 28512,
+                "hits": 0,
+                "misses": 6
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 10593507797,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10594394415
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 28512,
+                "hits": 0,
+                "misses": 6
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11026771780,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11027921714
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 28512,
+                "hits": 0,
+                "misses": 6
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12163277623,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12166106750
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0013-requests-1-retained.json",
+            "sha256": "eadf2d497c031856711092350b1d77369921ec58b8586051e8120d60c0322e7b",
+            "bytes": 15577642
+          },
+          "pack": "results/confirmation/repeat-1/requests-1-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 38,
+            "unresolved": 2
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.887,
+          "min_workbench_seconds": 11.04,
+          "max_workbench_seconds": 12.595,
+          "median_cpu_seconds": 11.624901022,
+          "input_bytes": 374009,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 20,
+                "source_bytes": 896360
+              },
+              "cpu_ns": 10784856738,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10785636452
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 20,
+                "source_bytes": 896360
+              },
+              "cpu_ns": 11624901022,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11629377070
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 20,
+                "source_bytes": 896360
+              },
+              "cpu_ns": 12321314835,
+              "input_bytes": 374009,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12322442404
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0014-requests-1-conventional.json",
+            "sha256": "f09ec5315f3e50f7814c5b2325a86318b9e15dddf8cc4c2eba871b5d16fe7a84",
+            "bytes": 15672115
+          },
+          "pack": "results/confirmation/repeat-1/requests-1-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 3
+    },
+    {
+      "id": "requests-2",
+      "repository": "psf/requests",
+      "before_ref": "111d2b77790bf49943c0dfa09b365371c24aec7e",
+      "after_ref": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "before_tag": "v2.33.1",
+      "after_tag": "v2.34.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 22,
+          "median_workbench_seconds": 0.459,
+          "min_workbench_seconds": 0.404,
+          "max_workbench_seconds": 0.667,
+          "median_cpu_seconds": 0.406669678,
+          "input_bytes": 404206,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 618756178,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 618985649
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 406669678,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 406739081
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 350938789,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 351059041
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0017-requests-2-incumbent.json",
+            "sha256": "17b95f38e7037ba7b012e744dd1c9e8373665dda1b79b72e71218e5addf76a9b",
+            "bytes": 181930
+          },
+          "pack": "results/confirmation/repeat-1/requests-2-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "added": 1,
+            "no_call_loss": 67,
+            "unresolved": 10
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 22,
+          "median_workbench_seconds": 12.178,
+          "min_workbench_seconds": 12.111,
+          "max_workbench_seconds": 12.966,
+          "median_cpu_seconds": 11.944081029,
+          "input_bytes": 404206,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 14256,
+                "bytes_written": 82901,
+                "hits": 3,
+                "misses": 31
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11944081029,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11947908201
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 14256,
+                "bytes_written": 82901,
+                "hits": 3,
+                "misses": 31
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11880383098,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11881758843
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 14256,
+                "bytes_written": 82901,
+                "hits": 3,
+                "misses": 31
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12567532122,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12572442856
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0018-requests-2-retained.json",
+            "sha256": "fd35cc8ec31ffffefafe88e82bf9a427031ea37c22357e4734906ce2197fe242",
+            "bytes": 15791111
+          },
+          "pack": "results/confirmation/repeat-1/requests-2-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "added": 1,
+            "no_call_loss": 67,
+            "unresolved": 10
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 22,
+          "median_workbench_seconds": 12.742,
+          "min_workbench_seconds": 10.986,
+          "max_workbench_seconds": 13.078,
+          "median_cpu_seconds": 12.396109915,
+          "input_bytes": 404206,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 51,
+                "source_bytes": 1262995
+              },
+              "cpu_ns": 10608069191,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10610824010
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 51,
+                "source_bytes": 1262995
+              },
+              "cpu_ns": 12795840481,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12797099475
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 51,
+                "source_bytes": 1262995
+              },
+              "cpu_ns": 12396109915,
+              "input_bytes": 404206,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12400296968
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0016-requests-2-conventional.json",
+            "sha256": "3e564b1e18a5c63d786123445e5125b006acf005635f8ea7b12dfda7bc3e03d8",
+            "bytes": 16519537
+          },
+          "pack": "results/confirmation/repeat-1/requests-2-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 17
+    },
+    {
+      "id": "requests-3",
+      "repository": "psf/requests",
+      "before_ref": "0b401c76b6e80a4eecf3c690085b2553f6e261ca",
+      "after_ref": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "before_tag": "v2.34.0",
+      "after_tag": "v2.34.1",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 0.205,
+          "min_workbench_seconds": 0.19,
+          "max_workbench_seconds": 0.214,
+          "median_cpu_seconds": 0.145826066,
+          "input_bytes": 434606,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 145826066,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 145833589
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 143657269,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 143987474
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 154034319,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 154042997
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0019-requests-3-incumbent.json",
+            "sha256": "ca0c839e384bf6e2866302d9fbd7f57143d97d3299ce3f85013078375cc2b2e3",
+            "bytes": 17063
+          },
+          "pack": "results/confirmation/repeat-1/requests-3-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 7,
+            "unresolved": 1
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 11.656,
+          "min_workbench_seconds": 10.885,
+          "max_workbench_seconds": 11.83,
+          "median_cpu_seconds": 11.398346249,
+          "input_bytes": 434606,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 12448,
+                "bytes_written": 12475,
+                "hits": 4,
+                "misses": 4
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 10682680172,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10684342258
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 12448,
+                "bytes_written": 12475,
+                "hits": 4,
+                "misses": 4
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11398346249,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11404059992
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 12448,
+                "bytes_written": 12475,
+                "hits": 4,
+                "misses": 4
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11614779026,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11619326960
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0020-requests-3-retained.json",
+            "sha256": "ebf92086eb8ce8867b600c627d376df4dd44c01dfc96334ce13db97573eb7053",
+            "bytes": 15562650
+          },
+          "pack": "results/confirmation/repeat-1/requests-3-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 7,
+            "unresolved": 1
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 1,
+          "native_source_refusals": 4,
+          "median_workbench_seconds": 12.568,
+          "min_workbench_seconds": 12.26,
+          "max_workbench_seconds": 12.686,
+          "median_cpu_seconds": 12.289345765,
+          "input_bytes": 434606,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 55,
+                "source_bytes": 1345360
+              },
+              "cpu_ns": 11586890745,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11590433001
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 55,
+                "source_bytes": 1345360
+              },
+              "cpu_ns": 12289345765,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12293931031
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 55,
+                "source_bytes": 1345360
+              },
+              "cpu_ns": 12291935676,
+              "input_bytes": 434606,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12295394312
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0021-requests-3-conventional.json",
+            "sha256": "e7a1b11b4046fcd441158fdbf5723a1a686409c50147fc5bd34f3b427863142d",
+            "bytes": 15900875
+          },
+          "pack": "results/confirmation/repeat-1/requests-3-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 4
+    },
+    {
+      "id": "requests-4",
+      "repository": "psf/requests",
+      "before_ref": "b7b549b54571d03950b16afd2d01bc6ff0348224",
+      "after_ref": "6e83187b8feb273ed4c6cdab5efd8d54901dfab3",
+      "before_tag": "v2.34.1",
+      "after_tag": "v2.34.2",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.16,
+          "min_workbench_seconds": 0.16,
+          "max_workbench_seconds": 0.173,
+          "median_cpu_seconds": 0.116841354,
+          "input_bytes": 434629,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 124793039,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 124800946
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 116841354,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 116848847
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 112581494,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 112589937
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0024-requests-4-incumbent.json",
+            "sha256": "ce7fa64b4890bab1c4e46aaa24309ad2d0c13b909088ca655855c52a28ff5282",
+            "bytes": 12958
+          },
+          "pack": "results/confirmation/repeat-1/requests-4-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 3,
+            "unresolved": 1
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.626,
+          "min_workbench_seconds": 11.596,
+          "max_workbench_seconds": 12.098,
+          "median_cpu_seconds": 11.408317461,
+          "input_bytes": 434629,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 8521,
+                "bytes_written": 8487,
+                "hits": 3,
+                "misses": 3
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11685780249,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11688122805
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 8521,
+                "bytes_written": 8487,
+                "hits": 3,
+                "misses": 3
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11408317461,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11412156818
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 8521,
+                "bytes_written": 8487,
+                "hits": 3,
+                "misses": 3
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11361893311,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11363182133
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0022-requests-4-retained.json",
+            "sha256": "cf233fe3e50c7dbbc76551296a3749c1be06da41461da14d4fa9e358d3362fdd",
+            "bytes": 15554258
+          },
+          "pack": "results/confirmation/repeat-1/requests-4-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 3,
+            "unresolved": 1
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.791,
+          "min_workbench_seconds": 11.443,
+          "max_workbench_seconds": 12.168,
+          "median_cpu_seconds": 11.529674903,
+          "input_bytes": 434629,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 58,
+                "source_bytes": 1393416
+              },
+              "cpu_ns": 11717751425,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11722294859
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 58,
+                "source_bytes": 1393416
+              },
+              "cpu_ns": 11529674903,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11532015152
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 58,
+                "source_bytes": 1393416
+              },
+              "cpu_ns": 11178751215,
+              "input_bytes": 434629,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11182580412
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0023-requests-4-conventional.json",
+            "sha256": "e9f2a1bc08f76f062d2f3e134a4041c8aa0c9509e281ffe2d41ef843fecad083",
+            "bytes": 15779665
+          },
+          "pack": "results/confirmation/repeat-1/requests-4-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 3
+    },
+    {
+      "id": "urllib3-1",
+      "repository": "urllib3/urllib3",
+      "before_ref": "bfe8e198a13800e3ee8ef8124a8928acb170c843",
+      "after_ref": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "before_tag": "2.6.1",
+      "after_tag": "2.6.2",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 0.107,
+          "min_workbench_seconds": 0.102,
+          "max_workbench_seconds": 0.444,
+          "median_cpu_seconds": 0.060822752,
+          "input_bytes": 832584,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 60822752,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 60830290
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 390790807,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 390931626
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 52744338,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 52751835
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0026-urllib3-1-incumbent.json",
+            "sha256": "de68a1f3ed3bee83d05b40ea537bd1152916826c81831220928cc183074d3b61",
+            "bytes": 10932
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-1-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 6
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 11.528,
+          "min_workbench_seconds": 11.523,
+          "max_workbench_seconds": 11.879,
+          "median_cpu_seconds": 11.308660425,
+          "input_bytes": 832584,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 12078,
+                "hits": 0,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11494443576,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11496996286
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 12078,
+                "hits": 0,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11308660425,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11310426034
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 0,
+                "bytes_written": 12078,
+                "hits": 0,
+                "misses": 2
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11274283341,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11276182891
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0027-urllib3-1-retained.json",
+            "sha256": "52cd5863590c97f1dac37cc4afd862f5e0f83d359824aede04795f7751e6a100",
+            "bytes": 15553569
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-1-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 6
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 2,
+          "median_workbench_seconds": 12.091,
+          "min_workbench_seconds": 12.017,
+          "max_workbench_seconds": 12.456,
+          "median_cpu_seconds": 11.841627749,
+          "input_bytes": 832584,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 60,
+                "source_bytes": 1498670
+              },
+              "cpu_ns": 12005169399,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12007854568
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 60,
+                "source_bytes": 1498670
+              },
+              "cpu_ns": 11841627749,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11844509166
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 60,
+                "source_bytes": 1498670
+              },
+              "cpu_ns": 11749032005,
+              "input_bytes": 832584,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11750734096
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0025-urllib3-1-conventional.json",
+            "sha256": "4e5575bb85a839499e0649dc42f5dcd45a7a94c2abce574e5c4c4534f9e19adf",
+            "bytes": 15696447
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-1-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 1
+    },
+    {
+      "id": "urllib3-2",
+      "repository": "urllib3/urllib3",
+      "before_ref": "83f8643ffb5b7f197457379148e2fa118ab0fcdc",
+      "after_ref": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "before_tag": "2.6.2",
+      "after_tag": "2.6.3",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 8,
+          "median_workbench_seconds": 0.149,
+          "min_workbench_seconds": 0.143,
+          "max_workbench_seconds": 0.178,
+          "median_cpu_seconds": 0.099597577,
+          "input_bytes": 833855,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 99597577,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 99617139
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 96210987,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 96218865
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 124095035,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 124110094
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0028-urllib3-2-incumbent.json",
+            "sha256": "650d2c4bb4adb0a51c71d307cc4df644e6629d496ec3996c5993ea462c11a5f2",
+            "bytes": 20307
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-2-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+          "valid": false,
+          "functions": {
+            "no_call_loss": 12
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 8,
+          "median_workbench_seconds": 12.135,
+          "min_workbench_seconds": 11.667,
+          "max_workbench_seconds": 12.757,
+          "median_cpu_seconds": 11.867259617,
+          "input_bytes": 833855,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 6039,
+                "bytes_written": 27836,
+                "hits": 1,
+                "misses": 9
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11132627396,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11133826847
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 6039,
+                "bytes_written": 27836,
+                "hits": 1,
+                "misses": 9
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11867259617,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11868562016
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 6039,
+                "bytes_written": 27836,
+                "hits": 1,
+                "misses": 9
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12513685857,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12518236578
+            }
+          ],
+          "errors": [
+            {
+              "path": "src/urllib3/util/retry.py",
+              "errors": [
+                "Retry.__init__: status differs from independent source relation"
+              ],
+              "unknowns": []
+            }
+          ],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0029-urllib3-2-retained.json",
+            "sha256": "b5e026d8be1b99a2e0277b5cfdf8d3e2e37c9df6f26496a81141e27723314f5b",
+            "bytes": 15580065
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-2-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 11,
+            "unresolved": 1
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 8,
+          "median_workbench_seconds": 12.424,
+          "min_workbench_seconds": 11.113,
+          "max_workbench_seconds": 12.453,
+          "median_cpu_seconds": 12.189566813,
+          "input_bytes": 833855,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1296393
+              },
+              "cpu_ns": 12189566813,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12190837632
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1296393
+              },
+              "cpu_ns": 12198368862,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12201463336
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1296393
+              },
+              "cpu_ns": 10869975386,
+              "input_bytes": 833855,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 10873103787
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0030-urllib3-2-conventional.json",
+            "sha256": "8521b4eba9a8126f44668d0656da25f4ca21504c1caea7462d8cb510e83cc9c7",
+            "bytes": 15911246
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-2-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 5
+    },
+    {
+      "id": "urllib3-3",
+      "repository": "urllib3/urllib3",
+      "before_ref": "0248277dd7ac0239204889ca991353ad3e3a1ddc",
+      "after_ref": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "before_tag": "2.6.3",
+      "after_tag": "2.7.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 28,
+          "median_workbench_seconds": 0.288,
+          "min_workbench_seconds": 0.266,
+          "max_workbench_seconds": 0.297,
+          "median_cpu_seconds": 0.237573951,
+          "input_bytes": 834066,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 218570464,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 218586992
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 246189253,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 246205327
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 237573951,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 237591569
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0033-urllib3-3-incumbent.json",
+            "sha256": "25f7f2475c1e2df3091ba79cef7e54ecd7b324c0f834d5400b76d76b8aa8b4d2",
+            "bytes": 51344
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-3-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+          "valid": false,
+          "functions": {
+            "no_call_loss": 46,
+            "unresolved": 8
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 28,
+          "median_workbench_seconds": 12.921,
+          "min_workbench_seconds": 12.564,
+          "max_workbench_seconds": 13.887,
+          "median_cpu_seconds": 12.635597699,
+          "input_bytes": 834066,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 8881,
+                "bytes_written": 88721,
+                "hits": 2,
+                "misses": 26
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 13612017568,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 13617121795
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 8881,
+                "bytes_written": 88721,
+                "hits": 2,
+                "misses": 26
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12635597699,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12638535391
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 8881,
+                "bytes_written": 88721,
+                "hits": 2,
+                "misses": 26
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12326334671,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12327848415
+            }
+          ],
+          "errors": [
+            {
+              "path": "src/urllib3/contrib/pyopenssl.py",
+              "errors": [
+                "WrappedSocket.__init__: status differs from independent source relation"
+              ],
+              "unknowns": []
+            },
+            {
+              "path": "src/urllib3/util/retry.py",
+              "errors": [
+                "Retry.__init__: status differs from independent source relation"
+              ],
+              "unknowns": []
+            }
+          ],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0031-urllib3-3-retained.json",
+            "sha256": "0fa673de8eb8b228edfbfaf7493d4a79a74542d5a57fb9be40a97417ac43da03",
+            "bytes": 15655763
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-3-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 44,
+            "unresolved": 10
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 28,
+          "median_workbench_seconds": 13.034,
+          "min_workbench_seconds": 12.443,
+          "max_workbench_seconds": 13.162,
+          "median_cpu_seconds": 12.740185295,
+          "input_bytes": 834066,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1167492
+              },
+              "cpu_ns": 12896259811,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12898549863
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1167492
+              },
+              "cpu_ns": 12156749259,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12160029499
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1167492
+              },
+              "cpu_ns": 12740185295,
+              "input_bytes": 834066,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12741436033
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0032-urllib3-3-conventional.json",
+            "sha256": "91dc3196043fa0fe73af9f7a09d458c9b4522d008c8acbc0a693dfc723993044",
+            "bytes": 16673308
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-3-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 14
+    },
+    {
+      "id": "urllib3-4",
+      "repository": "urllib3/urllib3",
+      "before_ref": "9a950b92d999f906b6020bb2d1076ee56cddd5d2",
+      "after_ref": "b1d30ab61fe0db8f11092805e8c5ac43e091064a",
+      "before_tag": "2.7.0",
+      "after_tag": "2.8.0",
+      "arms": {
+        "incumbent": {
+          "decision": "INVENTORY_ONLY",
+          "valid": false,
+          "functions": {},
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": null,
+          "candidate_coverage": null,
+          "griffe_alert_count": 0,
+          "native_source_refusals": 24,
+          "median_workbench_seconds": 0.314,
+          "min_workbench_seconds": 0.29,
+          "max_workbench_seconds": 0.337,
+          "median_cpu_seconds": 0.253434842,
+          "input_bytes": 850763,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 238316903,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 238340981
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 273924861,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 273942196
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 253434842,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 253467964
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0035-urllib3-4-incumbent.json",
+            "sha256": "e0a14c60235b6b831ffa926b062ca60c5f99ec0b1326f800e6132db83bfb8b71",
+            "bytes": 79420
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-4-incumbent-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "retained": {
+          "decision": "ASSESSMENT_REQUIRES_CORRECTION",
+          "valid": false,
+          "functions": {
+            "no_call_loss": 36,
+            "unresolved": 4
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 0,
+          "native_source_refusals": 24,
+          "median_workbench_seconds": 12.343,
+          "min_workbench_seconds": 11.511,
+          "max_workbench_seconds": 12.83,
+          "median_cpu_seconds": 12.11204385,
+          "input_bytes": 850763,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": {
+                "bytes_read": 37290,
+                "bytes_written": 47521,
+                "hits": 10,
+                "misses": 14
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 11267209061,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11268603890
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 37290,
+                "bytes_written": 47521,
+                "hits": 10,
+                "misses": 14
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12112043850,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12115640545
+            },
+            {
+              "candidate_cache": {
+                "bytes_read": 37290,
+                "bytes_written": 47521,
+                "hits": 10,
+                "misses": 14
+              },
+              "consumer_bytes": 1061279,
+              "conventional_cache": null,
+              "cpu_ns": 12573038865,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12574000157
+            }
+          ],
+          "errors": [
+            {
+              "path": "src/urllib3/contrib/pyopenssl.py",
+              "errors": [
+                "WrappedSocket.__init__: status differs from independent source relation"
+              ],
+              "unknowns": []
+            },
+            {
+              "path": "src/urllib3/util/retry.py",
+              "errors": [
+                "Retry.__init__: status differs from independent source relation"
+              ],
+              "unknowns": []
+            }
+          ],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0036-urllib3-4-retained.json",
+            "sha256": "304796ddd3ee7f3eeda8bf7031238f07a02ec715074b9832321361d60ace1bbf",
+            "bytes": 15671277
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-4-retained-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        },
+        "conventional": {
+          "decision": "ASSESSMENT_READY",
+          "valid": true,
+          "functions": {
+            "no_call_loss": 34,
+            "unresolved": 6
+          },
+          "binding_losses": 0,
+          "binding_loss_details": [],
+          "strict_consumer_losses": 0,
+          "candidate_consumer_losses": 0,
+          "consumer_coverage": {
+            "consumer_files": 56,
+            "inspected_calls": 10172,
+            "potential_break": 0,
+            "preserved_binding": 0,
+            "scope_triage": {
+              "other-import-reference": 2762,
+              "unattributed-call": 7410
+            },
+            "unresolved": 10172,
+            "unvisited_call_nodes": 0
+          },
+          "candidate_coverage": {},
+          "griffe_alert_count": 2,
+          "native_source_refusals": 24,
+          "median_workbench_seconds": 12.511,
+          "min_workbench_seconds": 12.224,
+          "max_workbench_seconds": 12.803,
+          "median_cpu_seconds": 12.241014444,
+          "input_bytes": 850763,
+          "consumer_bytes": 1061279,
+          "resources_by_repeat": [
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1350346
+              },
+              "cpu_ns": 11955282326,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 11957805484
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1350346
+              },
+              "cpu_ns": 12241014444,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12242534415
+            },
+            {
+              "candidate_cache": null,
+              "consumer_bytes": 1061279,
+              "conventional_cache": {
+                "entries": 64,
+                "source_bytes": 1350346
+              },
+              "cpu_ns": 12470746968,
+              "input_bytes": 850763,
+              "network_requests": 0,
+              "runtime_model_calls": 0,
+              "wall_ns": 12472796431
+            }
+          ],
+          "errors": [],
+          "evidence": {
+            "path": "results/confirmation/repeat-1/evidence/0034-urllib3-4-conventional.json",
+            "sha256": "be56b50920196dae64e8ea87a6530d8c4c720ca4a4864babe3bd47dcf304897f",
+            "bytes": 16613576
+          },
+          "pack": "results/confirmation/repeat-1/urllib3-4-conventional-pack.json",
+          "unresolved_is_safe_clearance": false,
+          "whole_customer_upgrade_accepted": null
+        }
+      },
+      "changed_modules": 12
+    }
+  ],
+  "failures": [
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "errors": [
+            "WrappedSocket.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    },
+    {
+      "mission": "urllib3-4",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "errors": [
+            "WrappedSocket.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ]
+    }
+  ],
+  "process_resources": {
+    "schema": "campaign-process-resources/v1",
+    "started": "2026-10-26T13:34:18.740675+00:00",
+    "command": [
+      "node",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/src/campaign.mjs",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/results/confirmation"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 886.0528782680003,
+    "child_user_cpu_seconds": 884.047149,
+    "child_system_cpu_seconds": 3.572261,
+    "child_maxrss_kib": 383304,
+    "money_usd": null,
+    "scope": "Complete child campaign including Python workers, verification, serialization and native Workbench; excludes prior acquisition/construction and later publication. Shared-host contention possible; not a capacity guarantee."
+  },
+  "claim": "Useful scoped decision support with a strong conventional method; no proven complete economic return or algorithmic superiority.",
+  "economic_input": {
+    "schema": "value-compounds-economic-input/v1",
+    "capability_id": "call-compatibility",
+    "observed": {
+      "collections_minor": 0,
+      "missions": [
+        {
+          "mission_id": "fastapi-1",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0003-fastapi-1-conventional.json; SHA256 898723b41ecec47a305ea104c7be21ca695491a27c8d72efa126582e7f38e848; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "fastapi-2",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0005-fastapi-2-conventional.json; SHA256 ef5e84364234d406af245729fa329493c229eb76accb720cdd6349a695706d32; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "fastapi-3",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0007-fastapi-3-conventional.json; SHA256 aafd8b5cf2b46fe5a1bbb19248f421613738f60a8a733763b0cb0c110547970a; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "fastapi-4",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0012-fastapi-4-conventional.json; SHA256 322fb03b7a0212f105eff5188d296c468cdbd2645fdd29318837d3d81c9e9336; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "requests-1",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0014-requests-1-conventional.json; SHA256 f09ec5315f3e50f7814c5b2325a86318b9e15dddf8cc4c2eba871b5d16fe7a84; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "requests-2",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0016-requests-2-conventional.json; SHA256 3e564b1e18a5c63d786123445e5125b006acf005635f8ea7b12dfda7bc3e03d8; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "requests-3",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0021-requests-3-conventional.json; SHA256 e7a1b11b4046fcd441158fdbf5723a1a686409c50147fc5bd34f3b427863142d; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "requests-4",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0023-requests-4-conventional.json; SHA256 e9f2a1bc08f76f062d2f3e134a4041c8aa0c9509e281ffe2d41ef843fecad083; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "urllib3-1",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0025-urllib3-1-conventional.json; SHA256 4e5575bb85a839499e0649dc42f5dcd45a7a94c2abce574e5c4c4534f9e19adf; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "urllib3-2",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0030-urllib3-2-conventional.json; SHA256 8521b4eba9a8126f44668d0656da25f4ca21504c1caea7462d8cb510e83cc9c7; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "urllib3-3",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0032-urllib3-3-conventional.json; SHA256 91dc3196043fa0fe73af9f7a09d458c9b4522d008c8acbc0a693dfc723993044; accepted scoped research packet only, not a completed production upgrade"
+        },
+        {
+          "mission_id": "urllib3-4",
+          "acceptance": "accepted",
+          "reference": "results/confirmation/repeat-1/evidence/0034-urllib3-4-conventional.json; SHA256 be56b50920196dae64e8ea87a6530d8c4c720ca4a4864babe3bd47dcf304897f; accepted scoped research packet only, not a completed production upgrade"
+        }
+      ],
+      "resources": {
+        "complete_confirmation_campaign": {
+          "schema": "campaign-process-resources/v1",
+          "started": "2026-10-26T13:34:18.740675+00:00",
+          "command": [
+            "node",
+            "/workspace/scratch/8586be0c300d/research/value-compounds/src/campaign.mjs",
+            "/workspace/scratch/8586be0c300d/research/value-compounds/results/confirmation"
+          ],
+          "exit_code": 0,
+          "wall_seconds": 886.0528782680003,
+          "child_user_cpu_seconds": 884.047149,
+          "child_system_cpu_seconds": 3.572261,
+          "child_maxrss_kib": 383304,
+          "money_usd": null,
+          "scope": "Complete child campaign including Python workers, verification, serialization and native Workbench; excludes prior acquisition/construction and later publication. Shared-host contention possible; not a capacity guarantee."
+        },
+        "timing_evaluations": 108,
+        "unique_transitions": 12,
+        "runtime_model_calls": 0,
+        "runtime_network_requests": 0,
+        "construction_inference_tokens": null,
+        "construction_inference_usd": null
+      },
+      "limitations": [
+        "Historical research work, no paid demand.",
+        "Same captured consumer scope across revisions; unresolved dynamic and behavioral work persists.",
+        "Canonical acceptance means internally verified scoped packet, not customer acceptance or production qualification.",
+        "Construction includes the rejected custom candidate and all integration and validation attempts; costs unknown.",
+        "One scope-screen handling disagreement recurs across callable rows; no actual lost binding demonstrated in those disputed rows."
+      ]
+    }
+  }
+}
