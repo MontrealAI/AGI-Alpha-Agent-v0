@@ -83,8 +83,8 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
         added_dependencies = {"paper-scope"}
         if (name, key) == ("agent-release.yml", "package"):
             # The combined software release adds, never substitutes, its exact-source
-            # capability/browser/recovery gate. The delivery test binds that call.
-            added_dependencies.add("successor-capability")
+            # capability/browser/recovery and Strategy gates. Delivery tests bind those calls.
+            added_dependencies.update({"successor-capability", "strategy-engineering"})
         expected_dependencies = dependencies(before) | added_dependencies
         if (name, key) == ("agent-release.yml", "historical-ci"):
             # Waiting is deferred until every substantive package prerequisite completes.
@@ -619,3 +619,17 @@ def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path:
     assert not (tmp_path / "paper-preview").exists()
     assert not list(workspace.rglob("SOURCE_EXECUTED"))
     assert (tmp_path / "scope-output").read_text() == "mode=full\n"
+
+
+@pytest.mark.parametrize("job", ["package", "historical-ci"])
+def test_strategy_gate_cannot_be_removed_from_release_wait_or_package(job: str, monkeypatch) -> None:
+    original = workflow
+    current = original("agent-release.yml")
+    current["jobs"][job]["needs"].remove("strategy-engineering")
+
+    def changed(name: str, *, baseline: bool = False):
+        return original(name, baseline=True) if baseline else current
+
+    monkeypatch.setattr(sys.modules[__name__], "workflow", changed)
+    with pytest.raises(AssertionError):
+        test_runtime_gates_preserve_original_permissions_dependencies_and_failure_semantics("agent-release.yml")
