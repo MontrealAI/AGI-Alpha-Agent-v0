@@ -290,6 +290,12 @@ jobs:
             else
               status=$?
             fi
+            # Elevated installer descendants may outlive timeout; never race them
+            # with a same-host retry. A later isolated job may retry after termination.
+            if [[ "$status" == 124 || "$status" == 137 ]]; then
+              echo "::error::Chromium provisioning timed out; refusing a same-host retry."
+              exit "$status"
+            fi
             if [[ "$attempt" == 2 ]]; then
               exit "$status"
             fi
@@ -662,6 +668,12 @@ jobs:
               exit 0
             else
               status=$?
+            fi
+            # Elevated installer descendants may outlive timeout; never race them
+            # with a same-host retry. A later isolated job may retry after termination.
+            if [[ "$status" == 124 || "$status" == 137 ]]; then
+              echo "::error::Chromium provisioning timed out; refusing a same-host retry."
+              exit "$status"
             fi
             if [[ "$attempt" == 2 ]]; then
               exit "$status"
