@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/upgrade_decision/**'
       - 'contrib/productive-capability-ledger/automation-v1/**'
       - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
@@ -12,6 +13,7 @@ on:
     branches: [codex/strategy-succession-20261025-344b3126]
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/upgrade_decision/**'
       - 'contrib/productive-capability-ledger/automation-v1/**'
       - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
@@ -144,6 +146,30 @@ jobs:
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_lock_compiler_offline_boundary.py"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_results_directory_boundary.py"
+      - name: Qualify the bounded upgrade offering as a source overlay
+        timeout-minutes: 5
+        env:
+          PYTHONNOUSERSITE: '1'
+          UPGRADE_DECISION_EVIDENCE_DIR: ${{ github.workspace }}/evidence/strategy-engineering/upgrade-decision
+        run: |
+          set -euo pipefail
+          mkdir -p "$UPGRADE_DECISION_EVIDENCE_DIR"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m ruff check contrib/upgrade_decision
+          "$RUNNER_TEMP/strategy-env/bin/python" -m mypy --strict --follow-imports=silent contrib/upgrade_decision/core.py contrib/upgrade_decision/component.py contrib/upgrade_decision/delivery.py contrib/upgrade_decision/worker.py contrib/upgrade_decision/export_packet.py
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest --noconftest -o addopts= -q contrib/upgrade_decision --junitxml="$UPGRADE_DECISION_EVIDENCE_DIR/tests.xml"
+          node --test contrib/upgrade_decision/test_ui.mjs | tee "$UPGRADE_DECISION_EVIDENCE_DIR/ui.txt"
+          "$RUNNER_TEMP/strategy-env/bin/python" - <<'PY'
+          import json, os, pathlib, shutil, subprocess, sys
+          from contrib.strategy_succession.qa.collect_qualification import verify_junit
+          from contrib.upgrade_decision.worker import UpgradeDecisionWorker
+          output = pathlib.Path(os.environ['UPGRADE_DECISION_EVIDENCE_DIR'])
+          verify_junit(output / 'tests.xml')
+          browser = json.loads((output / 'browser-receipt.json').read_text())
+          assert len(browser['checks']) == 8 and browser['customerJobs'] == 0 and browser['chromium']
+          worker = UpgradeDecisionWorker(pathlib.Path('contrib/upgrade_decision/examples/catalog.json'), python=pathlib.Path(sys.executable), node=pathlib.Path(shutil.which('node')), git=pathlib.Path(shutil.which('git')))
+          record = {'scope':'CI_SOURCE_OVERLAY_ONLY', 'commit':os.environ['GITHUB_SHA'], 'checkoutCommit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), 'checkoutTree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(), 'passed':True, 'operatorAdopted':False, 'installedProduct':False, 'productionAuthority':False, 'sourceRecord':worker.source_record()}
+          (output / 'acceptance.json').write_text(json.dumps(record,indent=2)+'\n')
+          PY
       - name: Retain executed and failed evidence; never private operator homes
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

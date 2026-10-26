@@ -679,6 +679,8 @@ def assess(pack: dict[str, Any], *, conventional: bool = False) -> dict[str, Any
         if verification["defects"]:
             original = copy.deepcopy(record)
             record = create(pack, trees, conventional=True)
+            record["boundedPlan"] = plan
+            record["missionKey"] = mission_key(pack)
             corrections.append(
                 {
                     "defects": verification["defects"],

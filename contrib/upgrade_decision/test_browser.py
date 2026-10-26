@@ -153,6 +153,10 @@ def test_actual_chromium_native_packet_download_reconnect_language_and_mobile(ri
                 "customerJobs": 0,
             }
             (tmp_path / "browser-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+            if destination := os.environ.get("UPGRADE_DECISION_EVIDENCE_DIR"):
+                public = Path(destination)
+                public.mkdir(parents=True, exist_ok=True)
+                (public / "browser-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
             print(
                 json.dumps(
                     {

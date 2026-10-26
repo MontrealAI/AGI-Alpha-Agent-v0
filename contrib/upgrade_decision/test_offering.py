@@ -9,6 +9,7 @@ import copy
 import io
 import json
 import shutil
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
@@ -97,6 +98,37 @@ def test_no_issue_and_no_blanket_upgrade_authorization() -> None:
     assert result["calls"][0]["status"] == "BINDING_PRESERVED"
     assert result["nextAction"] == "RUN_BEHAVIOR_AND_SECURITY_CHECKS"
     assert result["review"]["critic"] == [] and result["review"]["corrections"] == []
+
+
+def test_substantiated_correction_retains_identity_plan_and_complete_download(monkeypatch: pytest.MonkeyPatch) -> None:
+    from contrib.upgrade_decision import core
+    from contrib.upgrade_decision.delivery import package
+
+    pack = request(
+        "def check(x=0, /, **kw): pass\n",
+        "def check(x=0, /, **kw): pass\n",
+        "from pkg.api import check\ncheck(x=1)\n",
+    )
+    # Fault-inject the creator, then exercise real source verification, the
+    # conventional correction, canonical accounting and complete ZIP packaging.
+    monkeypatch.setattr(core, "constraint_accepts", lambda signature, shape: False)
+    record = core.assess(pack)
+    assert record["engineeringAcceptance"] and record["review"]["corrections"]
+    assert record["missionKey"] == mission_key(pack) and record["boundedPlan"]["selectedCalls"] == 1
+    costs, ledger = accounting(record)
+    result = subprocess.run(
+        [str(shutil.which("node")), str(HERE / "costs.mjs")],
+        input=canonical({"accounting": costs, "ledger": ledger}),
+        capture_output=True,
+        check=True,
+        timeout=10,
+    )
+    raw = package(record, pack, costs, ledger, load(result.stdout), notices=(HERE / "NOTICES.md").read_bytes())
+    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+        assert archive.testzip() is None
+        saved = load(archive.read("decision-record.json"))
+        assert saved["missionKey"] == record["missionKey"] and saved["boundedPlan"] == record["boundedPlan"]
+        assert all(sha(archive.read(name)) == digest for name, digest in load(archive.read("checksums.json")).items())
 
 
 def test_nested_super_calls_are_bound_by_callee_as_well_as_location() -> None:

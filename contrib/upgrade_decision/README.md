@@ -183,8 +183,15 @@ verifier exit-2 test and 74-case qualification are under
 an incomplete execution or an unrelated nonzero exit remains refused.
 The subsequent unaliased-import correction and 79-case receipts are preserved in
 `evidence/review-correction-v3/`; earlier reviews and qualifications remain intact.
+Correction-to-download continuity and the fixed existing-workflow CI integration
+are recorded under `evidence/review-correction-v4/`: 80 component cases and 126
+existing release-contract cases pass locally. The same Strategy workflow now
+selects this component, runs its Python/UI/browser checks in its existing pinned
+environment, and retains sanitized receipts. That is source-overlay qualification;
+actual hosted completion and installed/operator adoption remain distinct.
 
 The source base is #4915 `c4a7febc02fb9d607e9da5ece2101c4b6b36fc64`; current-main
-and four-repository inspection are recorded separately. No owner source,
-publication, scientific original, security setting, credential or financial
-transaction is changed by this component.
+and four-repository inspection are recorded separately. Implementation stays in
+this component directory; the one shared-file edit wires its fixed tests into
+`.github/workflows/strategy-succession-engineering.yml` with the same read-only
+permissions and job budget. Runtime and publication ownership remain unchanged.
