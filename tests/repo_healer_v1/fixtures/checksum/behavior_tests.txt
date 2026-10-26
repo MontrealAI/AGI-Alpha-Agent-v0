@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Local integrity probes against real historical sources; not real CI jobs."""
+import base64
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+import types
+import pytest
+ROOT=Path(__file__).resolve().parents[1]
+
+@pytest.fixture
+def module(monkeypatch):
+    # Fake only dependency/transport; execute the entire unchanged historical file.
+    dependency=types.ModuleType('requests');adapters=types.ModuleType('requests.adapters')
+    adapters.HTTPAdapter=type('HTTPAdapter',(),{});adapters.Retry=type('Retry',(),{})
+    monkeypatch.setitem(sys.modules,'requests',dependency);monkeypatch.setitem(sys.modules,'requests.adapters',adapters)
+    path=ROOT/'scripts/fetch_assets.py'
+    assert path.is_file()
+    spec=importlib.util.spec_from_file_location('review_assets',path)
+    result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result)
+    class Response:
+        content=b'review payload'
+        def __enter__(self):return self
+        def __exit__(self,*args):return False
+        def raise_for_status(self):return None
+    class Session:
+        def get(self,url,timeout):
+            assert url=='https://test.invalid/asset' and timeout==60
+            return Response()
+    monkeypatch.setattr(result,'_session',Session)
+    return result
+
+@pytest.mark.parametrize('existing',[True,False])
+def test_invalid_checksum_preserves_destination(module,monkeypatch,tmp_path,existing):
+    monkeypatch.setattr(module,'CHECKSUMS',{'asset.bin':'sha256-'+hashlib.sha256(b'valid').hexdigest()})
+    dest=tmp_path/'asset.bin'
+    if existing:dest.write_bytes(b'prior valid bytes')
+    with pytest.raises(RuntimeError,match='Checksum mismatch'):
+        module.download('https://test.invalid/asset',dest)
+    if existing:assert dest.read_bytes()==b'prior valid bytes'
+    else:assert not dest.exists()
+
+@pytest.mark.parametrize('encoding',['hex','base64','no_checksum'])
+def test_success_bytes_preserved(module,monkeypatch,tmp_path,encoding):
+    digest=hashlib.sha256(b'review payload').digest()
+    ref=digest.hex() if encoding=='hex' else base64.b64encode(digest).decode()
+    checksums={} if encoding=='no_checksum' else {'asset.bin':'sha256-'+ref}
+    monkeypatch.setattr(module,'CHECKSUMS',checksums)
+    dest=tmp_path/'asset.bin';module.download('https://test.invalid/asset',dest)
+    assert dest.read_bytes()==b'review payload'
