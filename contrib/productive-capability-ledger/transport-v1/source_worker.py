@@ -37,6 +37,7 @@ SOURCES = (
     RUNNER,
     VERIFIER,
     "examples/ti-guide/guide.mjs",
+    "examples/successor-alpha/automated-costs.mjs",
     "examples/successor-alpha/engine.mjs",
     "examples/successor-alpha/research.mjs",
     "docs/assets/successor/engine.mjs",
@@ -129,10 +130,16 @@ class SourceAssuranceWorker:
             raise ValueError("the fixed runner requires an operator-selected Git executable named git")
         self.registry_bytes = _read(self.registry, 32768)
         value = json.loads(self.registry_bytes, object_pairs_hook=_unique)
-        if not isinstance(value, dict) or set(value) != {"schema", "scopes", "maxSeconds"}:
+        if not isinstance(value, dict) or set(value) not in (
+            {"schema", "scopes", "maxSeconds"},
+            {"schema", "scopes", "maxSeconds", "maxAttempts"},
+        ):
             raise ValueError("candidate registry fields changed")
         if value["schema"] != "alpha-source-assurance-candidate-profile/v1":
             raise ValueError("unsupported candidate registry")
+        self.max_attempts = value.get("maxAttempts", 1)
+        if type(self.max_attempts) is not int or not 1 <= self.max_attempts <= 4:
+            raise ValueError("candidate lifetime attempts must be 1–4, explicitly configured")
         self.max_seconds = value["maxSeconds"]
         if type(self.max_seconds) is not int or not 1 <= self.max_seconds <= 60:
             raise ValueError("candidate time limit must be 1–60 seconds")
@@ -176,6 +183,8 @@ class SourceAssuranceWorker:
             "GIT_TERMINAL_PROMPT": "0",
             "GIT_OPTIONAL_LOCKS": "0",
         }
+        if not math.isfinite(seconds) or seconds <= 0:
+            raise ValueError("original candidate elapsed budget exhausted")
         deadline = time.monotonic() + seconds
         checkpoint()
         with tempfile.TemporaryFile() as stdin, tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
@@ -184,6 +193,7 @@ class SourceAssuranceWorker:
             child = subprocess.Popen(
                 args, cwd=ROOT, env=environment, stdin=stdin, stdout=stdout, stderr=stderr, start_new_session=True
             )
+            self.last_pid = child.pid
             try:
                 while child.poll() is None:
                     checkpoint()
@@ -228,8 +238,8 @@ class SourceAssuranceWorker:
             "createdAt": created_at,
             "expiresAt": expires_at,
             "maxSeconds": self.max_seconds,
-            "maxAttempts": 1,
-            "maxTotalSeconds": self.max_seconds,
+            "maxAttempts": self.max_attempts,
+            "maxTotalSeconds": self.max_seconds * self.max_attempts,
         }
         result = self._process(
             [self.node, "--max-old-space-size=256", str(HERE / "bridge.mjs")],
@@ -253,8 +263,8 @@ class SourceAssuranceWorker:
             "offeringId": "committed-source-assurance",
             **scope,
             "maxSeconds": self.max_seconds,
-            "maxAttempts": 1,
-            "maxTotalSeconds": self.max_seconds,
+            "maxAttempts": self.max_attempts,
+            "maxTotalSeconds": self.max_seconds * self.max_attempts,
             "authority": "none",
         }
         if any(plan.get(k) != v for k, v in required.items()) or not IDENT.fullmatch(plan.get("runId", "")):
@@ -264,6 +274,68 @@ class SourceAssuranceWorker:
         if hashlib.sha256(_canonical(plan)).hexdigest() != payload["approval_digest"]:
             raise ValueError("source approval digest changed")
         return plan
+
+    def cancel_mission(self, payload: dict[str, Any]) -> None:
+        """Persist the existing specialist's cancellation marker for an orphan too."""
+        self._sources()
+        plan = self._payload(payload)
+        directory = self.output_root / plan["runId"]
+        if not directory.exists():
+            return  # The journal already fences every future dispatch.
+        if directory.is_symlink() or not directory.is_dir():
+            raise ValueError("cancelled source directory is not ordinary")
+        body = _canonical({"schema": "alpha-source-cancel-request/v1", "approvalDigest": payload["approval_digest"]})
+        path = directory / "CANCEL"
+        try:
+            descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        except FileExistsError:
+            if _read(path, 4096) != body:
+                raise ValueError("source cancellation marker changed")
+        else:
+            with os.fdopen(descriptor, "wb") as stream:
+                stream.write(body)
+                stream.flush()
+                os.fsync(stream.fileno())
+            parent = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+            try:
+                os.fsync(parent)
+            finally:
+                os.close(parent)
+
+    def before_recovery(self, payload: dict[str, Any], checkpoint: Callable[[], None]) -> None:
+        """Wait for an orphaned original writer before reserving another attempt.
+
+        PID existence is only a conservative refusal condition. Never signal,
+        replace or remove another writer; the original lease bounds this wait.
+        """
+        self._sources()
+        plan = self._payload(payload)
+        directory = self.output_root / plan["runId"]
+        while True:
+            checkpoint()
+            alive = False
+            for name in ("writer.lock", "recovery.lock"):
+                try:
+                    owner = json.loads(_read(directory / name, 4096), object_pairs_hook=_unique)
+                except FileNotFoundError:
+                    continue
+                if (
+                    not isinstance(owner, dict)
+                    or set(owner) != {"pid", "approvalDigest"}
+                    or owner["approvalDigest"] != payload["approval_digest"]
+                    or type(owner["pid"]) is not int
+                    or not 1 <= owner["pid"] <= 2**31 - 1
+                ):
+                    raise ValueError("original source ownership is ambiguous; inspect before replay")
+                try:
+                    os.kill(owner["pid"], 0)
+                    alive = True
+                except ProcessLookupError:
+                    pass
+            if not alive:
+                checkpoint()
+                return
+            time.sleep(0.02)
 
     def execute(
         self, method: str, payload: dict[str, Any], limits: dict[str, Any], checkpoint: Callable[..., None]
@@ -276,17 +348,28 @@ class SourceAssuranceWorker:
             not isinstance(wall, (int, float))
             or isinstance(wall, bool)
             or not math.isfinite(wall)
-            or wall < self.max_seconds * 2 + 5
+            or wall <= 0
+            or (self.max_attempts == 1 and wall < self.max_seconds * 2 + 5)
         ):
             raise ValueError("installed lease must cover bounded run and independent verification")
         if (
-            limits.get("service_work") != 1
+            limits.get("service_work") != self.max_attempts
             or any(limits.get(k) != 0 for k in ("improvement_work", "native_calls", "native_solve_seconds"))
             or not SHA.fullmatch(limits.get("source_hash", ""))
         ):
             raise ValueError("candidate requires exactly one separately reserved service unit")
         plan = self._payload(payload)
-        checkpoint(service_work=1)
+        if self.max_attempts > 1:
+            if (
+                limits.get("attempt_precharged") is not True
+                or not 1 <= limits.get("attempt_number", 0) <= self.max_attempts
+            ):
+                raise ValueError("recoverable attempt must be durably charged before child startup")
+            checkpoint()
+        else:
+            checkpoint(service_work=1)
+        deadline = time.monotonic() + wall
+        started = time.perf_counter_ns()
         result = self._process(
             [self.node, "--max-old-space-size=256", str(HERE / "bridge.mjs")],
             {
@@ -294,13 +377,17 @@ class SourceAssuranceWorker:
                 "plan": plan,
                 "approvalDigest": payload["approval_digest"],
                 "outputRoot": str(self.output_root),
+                "attemptNumber": limits.get("attempt_number", 1),
             },
-            self.max_seconds + 1,
+            min(self.max_seconds + 1, deadline - time.monotonic()),
             checkpoint,
         )
         directory = self.output_root / plan["runId"]
         acceptance = self._process(
-            [self.python, "-I", str(ROOT / VERIFIER), str(directory)], None, self.max_seconds, checkpoint
+            [self.python, "-I", str(ROOT / VERIFIER), str(directory)],
+            None,
+            min(self.max_seconds, deadline - time.monotonic()),
+            checkpoint,
         )
         if (
             result.get("accepted") is not True
@@ -349,9 +436,19 @@ class SourceAssuranceWorker:
                 },
                 "operationalAdoption": "NOT APPROVED",
                 "customerAcceptance": "unknown",
+                "accounting": result["accounting"],
+                "costSummary": result["costSummary"],
+                "executionObservations": {
+                    "workerWallMicroseconds": {
+                        "value": (time.perf_counter_ns() - started + 999) // 1000,
+                        "basis": "measured",
+                    },
+                    "modelCalls": {"value": 0, "basis": "measured"},
+                    "scope": "Current source worker attempt includes Node, Git, Python verification and packaging; excludes API preparation, parent transport/journal, interrupted attempts, setup/upkeep and currency prices.",
+                },
             },
             "costs": {
-                "service_work": 1,
+                "service_work": limits.get("attempt_number", 1),
                 "improvement_work": 0,
                 "native_calls": 0,
                 "native_solve_seconds": 0,
@@ -380,11 +477,12 @@ def candidate_policy(journal: Any, worker: SourceAssuranceWorker, *, max_request
     return ExecutorPolicy(
         "source-assurance-candidate-v1-git-" + environment["git_version"],
         sources,
-        {"run-mission": Limits(1)},
-        Limits(max_requests),
+        {"run-mission": Limits(worker.max_attempts)},
+        Limits(max_requests * worker.max_attempts),
         max_requests=max_requests,
-        request_seconds=worker.max_seconds * 2 + 5,
-        grant_seconds=worker.max_seconds * 2 + 60,
+        request_seconds=(worker.max_seconds * 2 + 5) * worker.max_attempts,
+        grant_seconds=(worker.max_seconds * 2 + 5) * worker.max_attempts + 55,
+        recovery_attempts=worker.max_attempts if worker.max_attempts > 1 else 0,
         max_output_bytes=1_000_000,
     )
 

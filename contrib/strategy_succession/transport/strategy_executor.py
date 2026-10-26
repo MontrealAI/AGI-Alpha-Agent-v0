@@ -6,6 +6,9 @@ production authority. Only operator-installed reviewed pure workers are callable
 from __future__ import annotations
 
 import hashlib
+import fcntl
+import os
+from contextlib import asynccontextmanager
 import json
 import math
 import re
@@ -77,6 +80,7 @@ class ExecutorPolicy:
     max_input_bytes: int = 32_768
     max_output_bytes: int = 512_000
     allow_native: bool = False
+    recovery_attempts: int = 0
 
     def __post_init__(self) -> None:
         if not re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", self.executor_id):
@@ -88,6 +92,11 @@ class ExecutorPolicy:
             raise ValueError("source identities must be explicit")
         if not self.methods or not set(self.methods) <= METHODS:
             raise ValueError("unsupported installed method")
+        if type(self.recovery_attempts) is not int or not 0 <= self.recovery_attempts <= 4:
+            raise ValueError("use zero or 1–4 explicitly installed pure-work attempts")
+        if self.recovery_attempts and (set(self.methods) != {"run-mission"} or self.allow_native
+                or self.methods["run-mission"] != Limits(self.recovery_attempts)):
+            raise ValueError("recovery requires only pure service work with one precharged unit per attempt")
         object.__setattr__(self, "methods", MappingProxyType(dict(self.methods)))
         for method, limit in self.methods.items():
             if method == "run-mission" and limit.improvement_work != 0:
@@ -127,12 +136,14 @@ def _bounded_json(value: Any, maximum: int) -> Any:
 
 
 class StrategyExecutor:
-    """Reserve exact local envelopes and never replay uncertain work automatically."""
+    """Reserve exact envelopes; recovery is disabled unless explicitly installed for pure work."""
 
     def __init__(self, journal: Journal, worker: FixedWorker, policy: ExecutorPolicy,
                  *, clock: Callable[[], float] = time.time) -> None:
         self.journal, self.worker, self.policy, self.clock = journal, worker, policy, clock
         self._owned_run: tuple[str, str] | None = None
+        self._closing = threading.Event()
+        self._recovery_thread: threading.Thread | None = None
         journal.verify()
         self.source_map = {s.label: s.sha256 for s in policy.sources}
         self.source_hash = digest(self.source_map)
@@ -147,6 +158,8 @@ class StrategyExecutor:
                                "grant_seconds": policy.grant_seconds, "request_seconds": policy.request_seconds,
                                "max_input_bytes": policy.max_input_bytes, "max_output_bytes": policy.max_output_bytes,
                                "allow_native": policy.allow_native})
+        if policy.recovery_attempts:
+            self.binding = digest({"base": self.binding, "recovery_attempts": policy.recovery_attempts})
         with _LOCKS_GUARD:
             self.execution_lock = _LOCKS.setdefault(str(journal.root), threading.Lock())
         with journal.transaction() as cx:
@@ -204,7 +217,8 @@ class StrategyExecutor:
                 "journal_identity": self.journal.identity, "active_after_browser_close": active,
                 "record_running": bool(running), "execution_observation": observation, "lease_state": lease_state,
                 "global_control": self.journal.latest("@control")["state"],
-                "connection": "local-authenticated", "max_concurrency": 1}
+                "connection": "local-authenticated", "max_concurrency": 1,
+                "recovery_attempts": self.policy.recovery_attempts}
 
     def prepare(self, request: dict[str, Any]) -> dict[str, Any]:
         if set(request) != {"method", "input", "request_id"}:
@@ -241,7 +255,7 @@ class StrategyExecutor:
             value["plans"][plan_id] = plan
             value["request_count"] += 1
             self._save(cx, value)
-            return plan
+            return cast(dict[str, Any], plan)
 
     def _plan(self, value: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
         if set(request) != {"plan_id", "plan_digest"}:
@@ -279,7 +293,66 @@ class StrategyExecutor:
                 raise Conflict("STOP is permanent for this installed envelope")
             value["state"] = state
             self._save(cx, value)
+        if state == "stopped":
+            cancel_worker = getattr(self.worker, "cancel_mission", None)
+            if callable(cancel_worker):
+                for plan in value["plans"].values():
+                    if plan["state"] in {"running", "unknown"} and plan.get("started_at"):
+                        cancel_worker(plan["input"])
+        if state == "ready":
+            self.start_recovery()
         return self.status()
+
+    def cancel(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Cancel one exact mission durably without clearing permanent STOP."""
+        with self.journal.transaction() as cx:
+            value = self._load(cx)
+            plan = self._plan(value, request)
+            if plan["state"] in {"completed", "rejected", "cancelled", "reconciled"}:
+                return plan
+            plan.update(cancel_requested=True, cancelled_at=self.clock())
+            if plan["state"] in {"prepared", "approved", "unknown"}:
+                plan["state"] = "cancelled"
+            self._save(cx, value)
+        cancel_worker = getattr(self.worker, "cancel_mission", None)
+        if callable(cancel_worker) and plan.get("started_at"):
+            cancel_worker(plan["input"])
+        return plan
+
+    def start_recovery(self) -> None:
+        """One bounded startup/resume pass; no periodic scheduler or new authorization."""
+        if (self.policy.recovery_attempts and not self._closing.is_set()
+                and not (self._recovery_thread and self._recovery_thread.is_alive())):
+            self._recovery_thread = threading.Thread(target=self.recover_pending,
+                                                     name="bounded-source-recovery", daemon=True)
+            self._recovery_thread.start()
+
+    def close(self) -> None:
+        self._closing.set()
+        if self._recovery_thread:
+            self._recovery_thread.join(timeout=2)
+
+    def recover_pending(self) -> list[str]:
+        recovered: list[str] = []
+        if not self.policy.recovery_attempts:
+            return recovered
+        for candidate in self._load()["plans"].values():
+            if candidate["state"] not in {"running", "unknown"} or self._closing.is_set():
+                continue
+            if self._owned_run == (candidate["plan_id"], candidate.get("lease_id")):
+                continue
+            request = {k: candidate[k] for k in ("plan_id", "plan_digest")}
+            try:
+                if self.run(request, _recover=True)["state"] == "completed":
+                    recovered.append(candidate["plan_id"])
+            except (Conflict, ValueError, OSError, KeyError):
+                with self.journal.transaction() as cx:
+                    value = self._load(cx)
+                    plan = value["plans"][candidate["plan_id"]]
+                    if plan["state"] in {"running", "unknown"}:
+                        plan["recovery_status"] = "not-resumed-inspect-original-envelope-and-retained-artifacts"
+                        self._save(cx, value)
+        return recovered
 
     def _partial_receipt(self, plan: dict[str, Any], receipt: Any) -> dict[str, Any]:
         """Check fixed phase bytes and attach source/plan-bound local attribution."""
@@ -320,6 +393,8 @@ class StrategyExecutor:
         return {**body, "transport_digest": digest(body)}
 
     def _checkpoint(self, plan_id: str, lease_id: str, *, receipt: Any = None, **increments: Any) -> None:
+        if self._closing.is_set():
+            raise Conflict("executor is shutting down; original envelope retained")
         if not set(increments) <= set(COUNTERS):
             raise ValueError("unknown work counter")
         self._source()
@@ -327,7 +402,7 @@ class StrategyExecutor:
             self._global_ready(cx)
             value = self._load(cx)
             plan = value["plans"][plan_id]
-            if value["state"] != "ready" or plan["state"] != "running" or plan["lease_id"] != lease_id:
+            if value["state"] != "ready" or plan["state"] != "running" or plan["lease_id"] != lease_id or plan.get("cancel_requested"):
                 raise Conflict("execution was stopped, paused or superseded")
             if self.clock() >= min(plan["expires_at"], plan["lease_expires_at"]):
                 raise Conflict("execution lease expired")
@@ -363,48 +438,110 @@ class StrategyExecutor:
             if increments or receipt_changed:
                 self._save(cx, value)
 
-    def run(self, request: dict[str, Any]) -> dict[str, Any]:
+    def run(self, request: dict[str, Any], *, _recover: bool = False) -> dict[str, Any]:
         if not self.execution_lock.acquire(blocking=False):
             # A completed duplicate can be returned without acquiring an execution slot.
             value = self._load()
             plan = self._plan(value, request)
-            if plan["state"] in {"completed", "rejected"}:
+            if plan["state"] in {"completed", "rejected", "cancelled"}:
                 return plan
             raise Conflict("one executor request is already active")
         plan_id: str | None = None
         lease_id = secrets.token_hex(16)
+        descriptor: int | None = None
         try:
+            descriptor = os.open(self.journal.root / ".strategy-execution.lock",
+                                 os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+            lock_info = os.fstat(descriptor)
+            if not stat.S_ISREG(lock_info.st_mode) or lock_info.st_nlink != 1:
+                raise Conflict("execution lock must remain an ordinary single-link file")
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise Conflict("another executor process owns this journal") from None
             self._source()
+            if _recover and self.policy.recovery_attempts:
+                pending = self._plan(self._load(), request)
+                if pending["state"] in {"running", "unknown"}:
+                    original_lease = pending.get("lease_id")
+                    def ownership_checkpoint() -> None:
+                        if self._closing.is_set():
+                            raise Conflict("recovery monitor is shutting down")
+                        self._source()
+                        with self.journal.transaction() as cx:
+                            self._global_ready(cx)
+                            current = self._plan(self._load(cx), request)
+                            if (self._load(cx)["state"] != "ready"
+                                    or current["state"] not in {"running", "unknown"}
+                                    or not current.get("approved_at") or not current.get("started_at")
+                                    or not original_lease or current.get("lease_id") != original_lease
+                                    or self.clock() >= min(current["expires_at"], current["lease_expires_at"])):
+                                raise Conflict("original recovery envelope is unavailable; no new attempt charged")
+                    before_recovery = getattr(self.worker, "before_recovery", None)
+                    if not callable(before_recovery):
+                        raise Conflict("this pure worker has no reviewed recovery ownership boundary")
+                    ownership_checkpoint()
+                    before_recovery(pending["input"], ownership_checkpoint)
             with self.journal.transaction() as cx:
                 self._global_ready(cx)
                 value = self._load(cx)
                 plan = self._plan(value, request)
-                if plan["state"] in {"completed", "rejected"}:
+                if plan["state"] in {"completed", "rejected", "cancelled"}:
                     return plan
                 if value["state"] != "ready" or self.clock() >= plan["expires_at"]:
                     raise Conflict("executor approval is paused, stopped or expired")
-                if plan["state"] != "approved" or any(p["state"] == "running" for p in value["plans"].values()):
+                recovering = bool(_recover and self.policy.recovery_attempts
+                                  and plan["state"] in {"running", "unknown"} and plan.get("approved_at")
+                                  and plan.get("lease_id") and plan.get("started_at"))
+                if plan.get("cancel_requested"):
+                    if recovering:
+                        plan.update(state="cancelled", cancellation_completed_at=self.clock(),
+                                    costs_status="cancelled-original-reservation-retained-no-refund")
+                        self._save(cx, value)
+                        return plan
+                    raise Conflict("mission cancellation is durable")
+                if ((plan["state"] != "approved" and not recovering)
+                        or any(p["state"] == "running" and p["plan_id"] != plan["plan_id"]
+                               for p in value["plans"].values())):
                     raise Conflict("request is unapproved, already running or requires reconciliation")
+                if recovering and self.clock() >= plan["lease_expires_at"]:
+                    raise Conflict("original execution lease expired; recovery cannot renew it")
                 total = asdict(self.policy.total)
-                if any(value["spent"][k] + value["reserved"][k] + plan["caps"][k] > total[k] for k in COUNTERS):
+                if not recovering and any(value["spent"][k] + value["reserved"][k] + plan["caps"][k] > total[k] for k in COUNTERS):
                     raise Conflict("separate installed account or native ceiling exhausted")
-                for name in COUNTERS:
-                    value["reserved"][name] += plan["caps"][name]
+                if not recovering:
+                    for name in COUNTERS:
+                        value["reserved"][name] += plan["caps"][name]
+                if recovering:
+                    lease_id = plan["lease_id"]
+                    plan.update(state="running", recovery_status="resuming-with-original-lease")
+                else:
+                    plan.update(state="running", lease_id=lease_id, started_at=self.clock(),
+                                lease_expires_at=min(plan["expires_at"], self.clock() + self.policy.request_seconds))
+                if self.policy.recovery_attempts:
+                    attempts = plan.setdefault("recovery_attempts", [])
+                    if len(attempts) >= self.policy.recovery_attempts or plan["observed"]["service_work"] >= plan["caps"]["service_work"]:
+                        raise Conflict("lifetime pure-work attempts exhausted; no renewal")
+                    plan["observed"]["service_work"] += 1
+                    attempts.append({"ordinal": len(attempts) + 1, "reserved_service_work": 1,
+                                     "started_at": self.clock(), "original_lease_id": lease_id})
                 plan_id = plan["plan_id"]
-                plan.update(state="running", lease_id=lease_id, started_at=self.clock(),
-                            lease_expires_at=min(plan["expires_at"], self.clock() + self.policy.request_seconds))
                 self._save(cx, value)
                 payload = _bounded_json(plan["input"], self.policy.max_input_bytes)
                 method, caps = plan["method"], dict(plan["caps"])
+            assert plan_id is not None
             self._owned_run = (plan_id, lease_id)
             def checkpoint(**units: Any) -> None:
-                self._checkpoint(cast(str, plan_id), lease_id, **units)
+                self._checkpoint(plan_id, lease_id, **units)
             def fixed_handler(action: ActionRequest) -> dict[str, Any]:
                 checkpoint()
                 if action.context_digest != plan["request_hash"] or action.target != method:
                     raise Conflict("gateway action context mismatch")
-                return self.worker.execute(method, payload, {**caps, "wall_seconds": self.policy.request_seconds,
-                                           "allow_native": self.policy.allow_native,
+                remaining = max(0.0, min(plan["expires_at"], plan["lease_expires_at"]) - self.clock())
+                recovery_limits = ({"attempt_precharged": True, "attempt_number": len(plan["recovery_attempts"])}
+                                   if self.policy.recovery_attempts else {})
+                return self.worker.execute(method, payload, {**caps, "wall_seconds": remaining if self.policy.recovery_attempts else self.policy.request_seconds,
+                                           **recovery_limits, "allow_native": self.policy.allow_native,
                                            "source_hash": self.source_hash}, checkpoint)
             gateway = ActionGateway({("strategy-fixed", "execute"): fixed_handler})
             action = ActionRequest(action_id="strategy-" + plan_id, subject=self.policy.executor_id,
@@ -419,6 +556,8 @@ class StrategyExecutor:
             costs = outcome["costs"]
             if not isinstance(costs, dict) or set(costs) != {*COUNTERS, "unknown_costs"}:
                 raise ValueError("fixed worker cost inventory is incomplete")
+            if self.policy.recovery_attempts:
+                costs["service_work"] = self._load()["plans"][plan_id]["observed"]["service_work"]
             if outcome["source_hash"] != self.source_hash or type(outcome["verified"]) is not bool:
                 raise ValueError("fixed worker source or verification field mismatch")
             if not isinstance(costs["unknown_costs"], list) or len(costs["unknown_costs"]) > 32 or any(
@@ -428,7 +567,7 @@ class StrategyExecutor:
                 self._global_ready(cx)
                 value = self._load(cx)
                 current = value["plans"][plan_id]
-                if value["state"] != "ready" or current["state"] != "running" or current["lease_id"] != lease_id:
+                if value["state"] != "ready" or current["state"] != "running" or current["lease_id"] != lease_id or current.get("cancel_requested"):
                     raise Conflict("completion lost its current executor lease")
                 if self.clock() >= min(current["expires_at"], current["lease_expires_at"]):
                     raise Conflict("completion arrived after executor expiry")
@@ -459,13 +598,15 @@ class StrategyExecutor:
                     value = self._load(cx)
                     current = value["plans"][plan_id]
                     if current["state"] == "running" and current["lease_id"] == lease_id:
-                        current.update(state="unknown", interrupted_at=self.clock(),
+                        current.update(state="cancelled" if current.get("cancel_requested") else "unknown", interrupted_at=self.clock(),
                                        error="Execution did not commit a verified outcome; inspect before new work.",
                                        costs_status="reserved-ceilings-remain-charged")
                         self._save(cx, value)
             raise
         finally:
             self._owned_run = None
+            if descriptor is not None:
+                os.close(descriptor)
             self.execution_lock.release()
 
     def reconcile(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -506,7 +647,15 @@ def create_strategy_app(journal: Journal, worker: FixedWorker, policy: ExecutorP
                         clock: Callable[[], float] = time.time) -> FastAPI:
     """Serve only fixed strategy routes behind Alpha's existing request boundary."""
     executor = StrategyExecutor(journal, worker, policy, clock=clock)
-    app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI) -> Any:
+        executor.start_recovery()
+        try:
+            yield
+        finally:
+            executor.close()
+
+    app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
     app.state.strategy_executor = executor
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]", "testserver"])
     app.add_middleware(RequestBoundary)
@@ -545,7 +694,7 @@ def create_strategy_app(journal: Journal, worker: FixedWorker, policy: ExecutorP
             raise ValueError("executor operation must be a JSON object")
         operations: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
             "prepare": executor.prepare, "approve": executor.approve, "run": executor.run,
-            "reconcile": executor.reconcile,
+            "reconcile": executor.reconcile, "cancel": executor.cancel,
             "control": lambda value: executor.control(value["state"]) if set(value) == {"state"} else
             (_ for _ in ()).throw(ValueError("control requires only state")),
         }

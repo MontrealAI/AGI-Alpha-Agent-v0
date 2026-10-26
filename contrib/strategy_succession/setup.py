@@ -64,6 +64,12 @@ class GuardedBuild(build_py):
     def run(self) -> None:
         guarded_sources()
         super().run()
+        built = Path(self.build_lib) / "strategy_succession_engineering"
+        expected = set(json.loads((ROOT / "ENGINEERING_MANIFEST.json").read_text())["files"])
+        expected.add("ENGINEERING_MANIFEST.json")
+        observed = {path.relative_to(built).as_posix() for path in built.rglob("*") if path.is_file()}
+        if observed != expected or any(path.is_symlink() for path in built.rglob("*")):
+            raise ValueError("Build output differs from the exact manifest; use a fresh build directory")
 
 
 setup(cmdclass={"build_py": GuardedBuild})

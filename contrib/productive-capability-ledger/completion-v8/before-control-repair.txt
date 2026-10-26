@@ -1,0 +1,229 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt[True] _
+
+rig = (<fastapi.applications.FastAPI object at 0x7f86c6954b60>, <alpha_factory_v1.core.runtime.store.Journal object at 0x7f8...620865c028ebdf84bbd07aa190b3812c440c0e4683255f54767ec4a51320bd02', 'plan_id': 'ad326562eb02806d7860163727141c61'}, ...)
+cancel_during_wait = True
+
+    @pytest.mark.parametrize("cancel_during_wait", [False, True, "stop"])
+    def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig, cancel_during_wait):
+        import multiprocessing
+    
+        _app, journal, registry, _worker, executor, ref, headers = rig
+        context = multiprocessing.get_context("fork")
+        notice = context.Queue()
+    
+        def server():
+            application = app_for(Journal(journal.root), registry)
+            active = application.state.strategy_executor
+            worker = application.state.source_assurance_worker
+            checkpoint = active._checkpoint
+            signalled = False
+    
+            def barrier(*args, **kwargs):
+                nonlocal signalled
+                prepared = worker.output_root / "recovery-one-job/stage-preparation.json"
+                if prepared.exists() and not signalled:
+                    signalled = True
+                    os.killpg(worker.last_pid, signal.SIGSTOP)
+                    notice.put(worker.last_pid)
+                    # Test-only parent barrier: the test kills this server, leaving
+                    # its real owned Node child alive with the canonical writer lock.
+                    time.sleep(10)
+                return checkpoint(*args, **kwargs)
+    
+            active._checkpoint = barrier
+            active.run(ref)
+    
+        process = context.Process(target=server)
+        process.start()
+        node_pid = None
+        try:
+            node_pid = notice.get(timeout=10)
+            process.kill()
+            process.join(5)
+            assert process.exitcode == -signal.SIGKILL
+            before = executor.status()["plans"][ref["plan_id"]]
+            assert before["state"] == "running" and len(before["recovery_attempts"]) == 1
+            reopened = app_for(Journal(journal.root), registry)
+            failures = []
+            real_run = reopened.state.strategy_executor.run
+    
+            def capture(*args, **kwargs):
+                try:
+                    return real_run(*args, **kwargs)
+                except Exception as error:
+                    failures.append(repr(error))
+                    raise
+    
+            reopened.state.strategy_executor.run = capture
+            with TestClient(reopened) as client:
+                # The survivor is deliberately stopped. A restart must monitor it
+                # without consuming the second and final lifetime attempt.
+                end = time.monotonic() + 0.2
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    assert len(current["recovery_attempts"]) == 1
+                    time.sleep(0.02)
+                if cancel_during_wait == "stop":
+                    response = client.post("/api/strategy-executor/control", json={"state": "stopped"}, headers=headers)
+                    assert response.status_code == 200 and response.json()["state"] == "stopped"
+                elif cancel_during_wait:
+                    response = client.post("/api/strategy-executor/cancel", json=ref, headers=headers)
+                    assert response.status_code == 200
+                    assert response.json()["cancel_requested"]
+                os.killpg(node_pid, signal.SIGCONT)
+                end = time.monotonic() + 10
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    if current["state"] in {"completed", "unknown", "cancelled", "rejected"}:
+                        break
+                    time.sleep(0.02)
+                if cancel_during_wait == "stop":
+                    marker = journal.root / "source-assurance/recovery-one-job/CANCELLED.json"
+                    end = time.monotonic() + 5
+                    while not marker.exists() and time.monotonic() < end:
+                        time.sleep(0.02)
+                    assert current["state"] in {"running", "unknown"}
+                    assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 1
+                    assert reopened.state.strategy_executor.status()["state"] == "stopped"
+                    with pytest.raises(Conflict):
+                        reopened.state.strategy_executor.control("ready")
+                    assert (journal.root / "source-assurance/recovery-one-job/CANCELLED.json").is_file()
+                    output = os.environ.get("SOURCE_ASSURANCE_EVIDENCE_DIR")
+                    if output:
+                        path = Path(output) / "server-stop-recovery.json"
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text(
+                            json.dumps(
+                                {
+                                    "passed": True,
+                                    "serverSignal": "SIGKILL",
+                                    "permanentStop": True,
+                                    "orphanSawCancellationMarker": True,
+                                    "chargedAttempts": 1,
+                                    "reservationRetained": 2,
+                                    "originalLeaseUnchanged": current["lease_expires_at"] == before["lease_expires_at"],
+                                    "source_hash": current["source_hash"],
+                                    "approvedOperator": "NOT RUN",
+                                },
+                                indent=2,
+                            )
+                            + "\n"
+                        )
+                    return
+                if cancel_during_wait:
+>                   assert current["state"] == "cancelled", failures or current
+E                   AssertionError: ["Conflict('original recovery envelope is unavailable; no new attempt charged')"]
+E                   assert 'running' == 'cancelled'
+E                     
+E                     - cancelled
+E                     + running
+
+alpha-control-before/contrib/productive-capability-ledger/transport-v1/test_source_recovery.py:394: AssertionError
+_ test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt[stop] _
+
+rig = (<fastapi.applications.FastAPI object at 0x7f86c6930ef0>, <alpha_factory_v1.core.runtime.store.Journal object at 0x7f8...a9e6a96fe73d1c198af313a76533a1060fbc5d651f34f54439e47eaa343f41de', 'plan_id': 'ad326562eb02806d7860163727141c61'}, ...)
+cancel_during_wait = 'stop'
+
+    @pytest.mark.parametrize("cancel_during_wait", [False, True, "stop"])
+    def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig, cancel_during_wait):
+        import multiprocessing
+    
+        _app, journal, registry, _worker, executor, ref, headers = rig
+        context = multiprocessing.get_context("fork")
+        notice = context.Queue()
+    
+        def server():
+            application = app_for(Journal(journal.root), registry)
+            active = application.state.strategy_executor
+            worker = application.state.source_assurance_worker
+            checkpoint = active._checkpoint
+            signalled = False
+    
+            def barrier(*args, **kwargs):
+                nonlocal signalled
+                prepared = worker.output_root / "recovery-one-job/stage-preparation.json"
+                if prepared.exists() and not signalled:
+                    signalled = True
+                    os.killpg(worker.last_pid, signal.SIGSTOP)
+                    notice.put(worker.last_pid)
+                    # Test-only parent barrier: the test kills this server, leaving
+                    # its real owned Node child alive with the canonical writer lock.
+                    time.sleep(10)
+                return checkpoint(*args, **kwargs)
+    
+            active._checkpoint = barrier
+            active.run(ref)
+    
+        process = context.Process(target=server)
+        process.start()
+        node_pid = None
+        try:
+            node_pid = notice.get(timeout=10)
+            process.kill()
+            process.join(5)
+            assert process.exitcode == -signal.SIGKILL
+            before = executor.status()["plans"][ref["plan_id"]]
+            assert before["state"] == "running" and len(before["recovery_attempts"]) == 1
+            reopened = app_for(Journal(journal.root), registry)
+            failures = []
+            real_run = reopened.state.strategy_executor.run
+    
+            def capture(*args, **kwargs):
+                try:
+                    return real_run(*args, **kwargs)
+                except Exception as error:
+                    failures.append(repr(error))
+                    raise
+    
+            reopened.state.strategy_executor.run = capture
+            with TestClient(reopened) as client:
+                # The survivor is deliberately stopped. A restart must monitor it
+                # without consuming the second and final lifetime attempt.
+                end = time.monotonic() + 0.2
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    assert len(current["recovery_attempts"]) == 1
+                    time.sleep(0.02)
+                if cancel_during_wait == "stop":
+                    response = client.post("/api/strategy-executor/control", json={"state": "stopped"}, headers=headers)
+                    assert response.status_code == 200 and response.json()["state"] == "stopped"
+                elif cancel_during_wait:
+                    response = client.post("/api/strategy-executor/cancel", json=ref, headers=headers)
+                    assert response.status_code == 200
+                    assert response.json()["cancel_requested"]
+                os.killpg(node_pid, signal.SIGCONT)
+                end = time.monotonic() + 10
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    if current["state"] in {"completed", "unknown", "cancelled", "rejected"}:
+                        break
+                    time.sleep(0.02)
+                if cancel_during_wait == "stop":
+                    marker = journal.root / "source-assurance/recovery-one-job/CANCELLED.json"
+                    end = time.monotonic() + 5
+                    while not marker.exists() and time.monotonic() < end:
+                        time.sleep(0.02)
+                    assert current["state"] in {"running", "unknown"}
+                    assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 1
+                    assert reopened.state.strategy_executor.status()["state"] == "stopped"
+                    with pytest.raises(Conflict):
+                        reopened.state.strategy_executor.control("ready")
+>                   assert (journal.root / "source-assurance/recovery-one-job/CANCELLED.json").is_file()
+E                   AssertionError: assert False
+E                    +  where False = is_file()
+E                    +    where is_file = (PosixPath('/tmp/pytest-of-root/pytest-45/test_server_sigkill_waits_for_2/journal') / 'source-assurance/recovery-one-job/CANCELLED.json').is_file
+E                    +      where PosixPath('/tmp/pytest-of-root/pytest-45/test_server_sigkill_waits_for_2/journal') = <alpha_factory_v1.core.runtime.store.Journal object at 0x7f86c6987560>.root
+
+alpha-control-before/contrib/productive-capability-ledger/transport-v1/test_source_recovery.py:370: AssertionError
+=============================== warnings summary ===============================
+alpha-source-eligible-env/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /tmp/alpha-source-eligible-env/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED alpha-control-before/contrib/productive-capability-ledger/transport-v1/test_source_recovery.py::test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt[True]
+FAILED alpha-control-before/contrib/productive-capability-ledger/transport-v1/test_source_recovery.py::test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt[stop]
+2 failed, 1 passed, 11 deselected, 1 warning in 29.60s

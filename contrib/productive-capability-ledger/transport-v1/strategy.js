@@ -26,11 +26,11 @@ export function planSummary(plan,language='en') {
     (fr?'Inventaire : ':'Manifest: ')+source.manifestPath+' · '+source.sourceCount+(fr?' fichiers publics':' public files'),
     (fr?'Expiration de la source : ':'Source approval expires: ')+source.expiresAt,
     (fr?'Expiration de l’exécuteur : ':'Executor approval expires: ')+expiry,
-    fr?`Une tentative source ; ${source.maxSeconds} s pour le travail, ${source.maxSeconds} s pour la vérification indépendante ; limite totale de la demande : ${plan.request_seconds} s.`:
-       `One source attempt; ${source.maxSeconds} s for work, ${source.maxSeconds} s for independent verification; total request elapsed cap: ${plan.request_seconds} s.`,
+    fr?`Jusqu’à ${source.maxAttempts} tentative(s) source dans la même autorisation ; ${source.maxSeconds} s pour le travail, ${source.maxSeconds} s pour la vérification indépendante ; limite totale de la demande : ${plan.request_seconds} s.`:
+       `Up to ${source.maxAttempts} source attempt(s) within the same authorization; ${source.maxSeconds} s for work, ${source.maxSeconds} s for independent verification; total request elapsed cap: ${plan.request_seconds} s.`,
     fr?'ZIP attendu : deux inventaires, écarts et actions CSV complets, espace de travail portable, rapport, plan et acceptations.':
        'Expected ZIP: both inventories, complete difference/action CSVs, portable workspace, report, plan and acceptance records.',
-    fr?'Aucune approbation du comportement du code, transaction ou reprise autonome.':'No source-behavior approval, transaction or unattended recovery.'
+    fr?'Aucune approbation du comportement du code ni transaction. Reprise limitée uniquement si le profil installé l’autorise ; aucune prolongation.':'No source-behavior approval or transaction. Bounded recovery only when the installed profile explicitly allows it; no renewal.'
   ].join('\n');
 }
 if(typeof document!=='undefined') {
@@ -38,13 +38,14 @@ if(typeof document!=='undefined') {
   let language='en',token='',selected=null,busy=false,executorState='disconnected';
   const words={connected:['Connected to the existing local executor.','Connecté à l’exécuteur local existant.'],
     disconnected:['Disconnected; the local approved request may still be active.','Déconnecté ; la demande locale approuvée peut rester active.'],
-    error:['Request failed. Inspect durable history before retrying; no automatic replay.','Demande échouée. Inspectez l’historique durable avant de réessayer ; aucune reprise automatique.'],
+    error:['Request failed. Inspect durable history; only an explicitly installed recovery allowance can resume the same mission.','Demande échouée. Inspectez l’historique ; seule une reprise explicitement installée peut continuer la même mission.'],
     input:['Import the exact owner-prepared input and a valid request ID.','Importez l’entrée exacte préparée par le responsable et un identifiant valide.'],
     prepared:['Review the exact finite plan before approval.','Examinez le plan fini exact avant approbation.'],
     approved:['Exact plan approved. You may now run its fixed mission.','Plan exact approuvé. Vous pouvez exécuter sa mission fixe.'],
     running:['Approved bounded work is running in the existing local process.','Le travail approuvé et borné s’exécute dans le processus local existant.'],
     complete:['Request returned. Inspect the retained outcome and verified download below.','Demande retournée. Examinez le résultat conservé et le téléchargement vérifié ci-dessous.'],
-    paused:['Paused. Interrupted work requires inspection; no automatic replay.','Suspendu. Le travail interrompu exige une inspection ; aucune reprise automatique.'],
+    paused:['Paused. Resume can recover eligible source work only within its original limits.','Suspendu. La reprise ne continue que le travail source admissible dans ses limites initiales.'],
+    cancelled:['Mission cancellation recorded durably.','Annulation durable de la mission enregistrée.'],
     stopped:['Permanent STOP recorded for this installed envelope.','ARRÊT permanent enregistré pour cette enveloppe installée.']};
   const say=key=>{$('status').textContent=words[key]?.[language==='fr'?1:0]||words.error[language==='fr'?1:0];};
   function controls(){
@@ -53,6 +54,7 @@ if(typeof document!=='undefined') {
     $('resume').disabled=!token||executorState!=='paused';
     $('approve').disabled=!token||busy||executorState!=='ready'||selected?.state!=='prepared';
     $('run').disabled=!token||busy||executorState!=='ready'||selected?.state!=='approved';
+    $('cancel').disabled=!token||!selected||['completed','rejected','cancelled','reconciled'].includes(selected.state);
     $('connect').disabled=busy;$('disconnect').disabled=!token;
   }
   async function api(action,body) {
@@ -75,6 +77,8 @@ if(typeof document!=='undefined') {
     for(const plan of Object.values(status.plans||{})) {
       const article=document.createElement('article'),label=document.createElement('p');
       label.textContent=plan.plan_id+' · '+plan.state;article.append(label);
+      const cost=document.createElement('small');
+      cost.textContent=(language==='fr'?'Coût monétaire total et prix client : inconnus. Tentatives imputées : ':'Full monetary cost and customer price: unknown. Charged attempts: ')+(plan.recovery_attempts?.length??plan.observed?.service_work??0);article.append(cost);
       const inspect=document.createElement('button');inspect.textContent=language==='fr'?'Examiner le plan':'Inspect plan';
       inspect.onclick=()=>select(plan);article.append(inspect);
       const evidence=document.createElement('button');evidence.textContent=language==='fr'?'Exporter l’historique signé':'Export signed history';
@@ -112,6 +116,7 @@ if(typeof document!=='undefined') {
   const ref=()=>({plan_id:selected.plan_id,plan_digest:selected.plan_digest});
   $('approve').onclick=()=>action(async()=>{select(await api('approve',ref()));say('approved');await history();});
   $('run').onclick=()=>action(async()=>{say('running');select(await api('run',ref()));say('complete');await history();});
+  $('cancel').onclick=async()=>{try{select(await api('cancel',ref()));say('cancelled');await history();}catch{say('error');}};
   $('refresh').onclick=()=>history().catch(()=>say('error'));
   const control=async(state,message)=>{try{await api('control',{state});say(message);await history();}catch{say('error');}};
   $('pause').onclick=()=>control('paused','paused');

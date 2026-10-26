@@ -253,3 +253,25 @@ def test_named_file_replacement_during_read_is_refused(tmp_path, monkeypatch):
     monkeypatch.setattr(module.os, "read", replace_after_read)
     with pytest.raises(ValueError, match="changed during inspection"):
         module._read(target)
+
+
+def test_stale_unlisted_wheel_payload_is_rejected(tmp_path):
+    source = tmp_path / "component"
+    shutil.copytree(
+        ROOT / "contrib/strategy_succession",
+        source,
+        ignore=shutil.ignore_patterns("build", "*.egg-info", "__pycache__", "receipts"),
+    )
+    output = tmp_path / "build"
+    stale = output / "strategy_succession_engineering/worker/retired.py"
+    stale.parent.mkdir(parents=True)
+    stale.write_text("unlisted stale payload")
+    result = subprocess.run(
+        [sys.executable, "setup.py", "build_py", "--build-lib", str(output)],
+        cwd=source,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert result.returncode != 0
+    assert "Build output differs from the exact manifest" in result.stderr

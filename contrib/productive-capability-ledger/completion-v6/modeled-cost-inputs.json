@@ -1,0 +1,865 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "connected-source-assurance-simulation",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": 400,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Declared capacity; future missions still require separate finite authorizations."
+      },
+      "utilizationBps": {
+        "value": 2500,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Demand/utilization assumption; no production demand observed."
+      },
+      "acceptanceBps": {
+        "value": 9500,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Accepted fraction assumption; not inferred from the internal qualification sample."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1200000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Mean attempts including failures/recovery; bounded by the declared two-attempt configuration."
+      },
+      "operations": [
+        {
+          "id": "included-preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-execution",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-verification",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-packaging",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-reporting",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "complete-attempt-resource-window",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 3000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Measured successful source-worker attempt wall time rounded up, plus2seconds assumed preparation/approval/parent overhead; failed-attempt distribution unmeasured."
+          },
+          "unitCostMicros": {
+            "value": 8,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Active-second allocation from an assumed30-day monthly host share. This is cost allocation/opportunity cost, not an observed extra cash invoice."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "provider-residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Residual provider exception frequency."
+          },
+          "minutesPerException": {
+            "value": 5,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Provider attention per exception; customer input/approval/review is separate and unknown."
+          },
+          "hourlyCostMicros": {
+            "value": 74420000,
+            "basis": "sourced",
+            "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "remaining-capacity-allocation",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": 19997120,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Remaining monthly hardware share after active-window allocation, so active and standby are not double counted."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: This scenario is the already-attributed source-offering share."
+          }
+        },
+        {
+          "id": "shared-upkeep",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 74420000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: One/two/eight professional reference hours per month; no permanently staffed execution service is assumed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        },
+        {
+          "id": "business-storage-and-delivery",
+          "kind": "business",
+          "amountMicros": {
+            "value": 20000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable storage/retention, delivery, administration and business expense allowance; no bills observed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "implementation-and-failed-construction",
+          "kind": "development",
+          "amountMicros": {
+            "value": 5000000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable implementation, evaluation, failures and authoring/model costs; actual complete expenditure unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Assumed useful life, not promised demand or payback."
+          }
+        },
+        {
+          "id": "one-time-operator-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 150000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Approved profile preparation, public input acquisition, installation and acceptance; actual setup cost unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Same declared useful life."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched competent human duration without AI unknown; ordinary Git tools are permitted in that baseline. Use break-even thresholds, not an invented savings ratio."
+        },
+        "hourlyCostMicros": {
+          "value": 74420000,
+          "basis": "sourced",
+          "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Declared capacity; future missions still require separate finite authorizations."
+      },
+      "utilizationBps": {
+        "value": 500,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Demand/utilization assumption; no production demand observed."
+      },
+      "acceptanceBps": {
+        "value": 8000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Accepted fraction assumption; not inferred from the internal qualification sample."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1800000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Mean attempts including failures/recovery; bounded by the declared two-attempt configuration."
+      },
+      "operations": [
+        {
+          "id": "included-preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-execution",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-verification",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-packaging",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-reporting",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "complete-attempt-resource-window",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 25000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Complete attempt-window sensitivity including preparation, verification, reporting and recovery overhead."
+          },
+          "unitCostMicros": {
+            "value": 31,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Active-second allocation from an assumed30-day monthly host share. This is cost allocation/opportunity cost, not an observed extra cash invoice."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "provider-residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Residual provider exception frequency."
+          },
+          "minutesPerException": {
+            "value": 10,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Provider attention per exception; customer input/approval/review is separate and unknown."
+          },
+          "hourlyCostMicros": {
+            "value": 74420000,
+            "basis": "sourced",
+            "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "remaining-capacity-allocation",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": 79930250,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Remaining monthly hardware share after active-window allocation, so active and standby are not double counted."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: This scenario is the already-attributed source-offering share."
+          }
+        },
+        {
+          "id": "shared-upkeep",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 148840000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: One/two/eight professional reference hours per month; no permanently staffed execution service is assumed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        },
+        {
+          "id": "business-storage-and-delivery",
+          "kind": "business",
+          "amountMicros": {
+            "value": 60000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable storage/retention, delivery, administration and business expense allowance; no bills observed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "implementation-and-failed-construction",
+          "kind": "development",
+          "amountMicros": {
+            "value": 12000000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable implementation, evaluation, failures and authoring/model costs; actual complete expenditure unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Assumed useful life, not promised demand or payback."
+          }
+        },
+        {
+          "id": "one-time-operator-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 400000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Approved profile preparation, public input acquisition, installation and acceptance; actual setup cost unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Same declared useful life."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched competent human duration without AI unknown; ordinary Git tools are permitted in that baseline. Use break-even thresholds, not an invented savings ratio."
+        },
+        "hourlyCostMicros": {
+          "value": 74420000,
+          "basis": "sourced",
+          "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": 400,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Declared capacity; future missions still require separate finite authorizations."
+      },
+      "utilizationBps": {
+        "value": 100,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Demand/utilization assumption; no production demand observed."
+      },
+      "acceptanceBps": {
+        "value": 5000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Accepted fraction assumption; not inferred from the internal qualification sample."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 2000000,
+        "basis": "estimated",
+        "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Mean attempts including failures/recovery; bounded by the declared two-attempt configuration."
+      },
+      "operations": [
+        {
+          "id": "included-preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-execution",
+          "stage": "execution",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-verification",
+          "stage": "verification",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-packaging",
+          "stage": "packaging",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-reporting",
+          "stage": "reporting",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "included-recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Stage is automated and included once in the complete attempt resource window below."
+          },
+          "unitCostMicros": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: No separately priced stage charge in this simulation; not a claim of free execution."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "complete-attempt-resource-window",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 45000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Complete attempt-window sensitivity including preparation, verification, reporting and recovery overhead."
+          },
+          "unitCostMicros": {
+            "value": 78,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Active-second allocation from an assumed30-day monthly host share. This is cost allocation/opportunity cost, not an observed extra cash invoice."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "provider-residual-exceptions",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 200000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Residual provider exception frequency."
+          },
+          "minutesPerException": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Provider attention per exception; customer input/approval/review is separate and unknown."
+          },
+          "hourlyCostMicros": {
+            "value": 74420000,
+            "basis": "sourced",
+            "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "remaining-capacity-allocation",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": 199971920,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Remaining monthly hardware share after active-window allocation, so active and standby are not double counted."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: This scenario is the already-attributed source-offering share."
+          }
+        },
+        {
+          "id": "shared-upkeep",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 595360000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: One/two/eight professional reference hours per month; no permanently staffed execution service is assumed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        },
+        {
+          "id": "business-storage-and-delivery",
+          "kind": "business",
+          "amountMicros": {
+            "value": 200000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable storage/retention, delivery, administration and business expense allowance; no bills observed."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable offering share."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "implementation-and-failed-construction",
+          "kind": "development",
+          "amountMicros": {
+            "value": 40000000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Attributable implementation, evaluation, failures and authoring/model costs; actual complete expenditure unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Assumed useful life, not promised demand or payback."
+          }
+        },
+        {
+          "id": "one-time-operator-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 1000000000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Approved profile preparation, public input acquisition, installation and acceptance; actual setup cost unknown."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Already-attributed source-offering share."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "ASSUMED illustrative operating scenario; not measured or sourced: Same declared useful life."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched competent human duration without AI unknown; ordinary Git tools are permitted in that baseline. Use break-even thresholds, not an invented savings ratio."
+        },
+        "hourlyCostMicros": {
+          "value": 74420000,
+          "basis": "sourced",
+          "reference": "US BLS ECEC civilian professional/related total compensation, June2026, released9Sep2026, https://www.bls.gov/news.release/ecec.t02.htm . Broad reference group; not a quoted task-specific rate."
+        }
+      }
+    }
+  ]
+}

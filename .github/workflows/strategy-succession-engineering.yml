@@ -137,9 +137,10 @@ jobs:
         run: |
           cp contrib/productive-capability-ledger/transport-v1/test_source_browser.py "$RUNNER_TEMP/test_source_browser.py"
           cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_worker.py" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_api.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-worker.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_worker.py" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_api.py" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_recovery.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-worker.xml"
           node --test "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/strategy.test.mjs"
           "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$RUNNER_TEMP/test_source_browser.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-browser.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/collect_source_delivery.py" "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/evidence/strategy-engineering"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_lock_compiler_offline_boundary.py"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_results_directory_boundary.py"

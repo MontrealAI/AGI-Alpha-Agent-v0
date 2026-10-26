@@ -1,0 +1,367 @@
+{
+  "schema": "alpha-automated-cost-summary/v1",
+  "offeringId": "connected-source-assurance-simulation",
+  "currency": "USD",
+  "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+  "scenarios": [
+    {
+      "name": "base",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": 100,
+        "attemptsPerMonth": 120,
+        "acceptedPerMonth": 95,
+        "utilizationBps": 2500,
+        "acceptanceBps": 9500
+      },
+      "costs": {
+        "nextRequestMicros": 62046,
+        "marginalMicrosPerAccepted": 65312,
+        "recurringMicrosPerAccepted": 1269702,
+        "fullyLoadedMicrosPerAccepted": 5787246,
+        "variableMonthlyMicros": 6204547,
+        "sharedMonthlyMicros": 114417120,
+        "amortizedMonthlyMicros": 429166667
+      },
+      "residualHumanMinutesPerRequest": 0.05,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 0.0526560205943507,
+          "breakEvenHumanSeconds": 4
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 1.023677845514081,
+          "breakEvenHumanSeconds": 62
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 4.665879291079082,
+          "breakEvenHumanSeconds": 280
+        }
+      },
+      "unknownInputs": [
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "included-preparation",
+            "stage": "preparation",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-planning",
+            "stage": "planning",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-execution",
+            "stage": "execution",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-verification",
+            "stage": "verification",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-correction",
+            "stage": "correction",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-packaging",
+            "stage": "packaging",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-reporting",
+            "stage": "reporting",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-recovery",
+            "stage": "recovery",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "complete-attempt-resource-window",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": 29
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "provider-residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": 62017
+          }
+        ],
+        "investments": [
+          {
+            "id": "implementation-and-failed-construction",
+            "kind": "development",
+            "amortizedMonthlyMicros": 416666667
+          },
+          {
+            "id": "one-time-operator-setup",
+            "kind": "setup",
+            "amortizedMonthlyMicros": 12500000
+          }
+        ]
+      }
+    },
+    {
+      "name": "conservative",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": 50,
+        "attemptsPerMonth": 90,
+        "acceptedPerMonth": 40,
+        "utilizationBps": 500,
+        "acceptanceBps": 8000
+      },
+      "costs": {
+        "nextRequestMicros": 621562,
+        "marginalMicrosPerAccepted": 776953,
+        "recurringMicrosPerAccepted": 7996209,
+        "fullyLoadedMicrosPerAccepted": 33829542,
+        "variableMonthlyMicros": 31078084,
+        "sharedMonthlyMicros": 288770250,
+        "amortizedMonthlyMicros": 1033333334
+      },
+      "residualHumanMinutesPerRequest": 0.5,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 0.6264058720773985,
+          "breakEvenHumanSeconds": 38
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 6.446822090835797,
+          "breakEvenHumanSeconds": 387
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 27.274556570814298,
+          "breakEvenHumanSeconds": 1637
+        }
+      },
+      "unknownInputs": [
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "included-preparation",
+            "stage": "preparation",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-planning",
+            "stage": "planning",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-execution",
+            "stage": "execution",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-verification",
+            "stage": "verification",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-correction",
+            "stage": "correction",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-packaging",
+            "stage": "packaging",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-reporting",
+            "stage": "reporting",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-recovery",
+            "stage": "recovery",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "complete-attempt-resource-window",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": 1395
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "provider-residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": 620167
+          }
+        ],
+        "investments": [
+          {
+            "id": "implementation-and-failed-construction",
+            "kind": "development",
+            "amortizedMonthlyMicros": 1000000000
+          },
+          {
+            "id": "one-time-operator-setup",
+            "kind": "setup",
+            "amortizedMonthlyMicros": 33333334
+          }
+        ]
+      }
+    },
+    {
+      "name": "stress",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": 4,
+        "attemptsPerMonth": 8,
+        "acceptedPerMonth": 2,
+        "utilizationBps": 100,
+        "acceptanceBps": 5000
+      },
+      "costs": {
+        "nextRequestMicros": 4968354,
+        "marginalMicrosPerAccepted": 9936707,
+        "recurringMicrosPerAccepted": 507602667,
+        "fullyLoadedMicrosPerAccepted": 3924269334,
+        "variableMonthlyMicros": 19873414,
+        "sharedMonthlyMicros": 995331920,
+        "amortizedMonthlyMicros": 6833333334
+      },
+      "residualHumanMinutesPerRequest": 4,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 8.011319537758666,
+          "breakEvenHumanSeconds": 481
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 409.2469766191884,
+          "breakEvenHumanSeconds": 24555
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": 3163.88282719699,
+          "breakEvenHumanSeconds": 189833
+        }
+      },
+      "unknownInputs": [
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "included-preparation",
+            "stage": "preparation",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-planning",
+            "stage": "planning",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-execution",
+            "stage": "execution",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-verification",
+            "stage": "verification",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-correction",
+            "stage": "correction",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-packaging",
+            "stage": "packaging",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-reporting",
+            "stage": "reporting",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "included-recovery",
+            "stage": "recovery",
+            "implementation": "implemented",
+            "costMicrosPerRequest": 0
+          },
+          {
+            "id": "complete-attempt-resource-window",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": 7020
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "provider-residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": 4961334
+          }
+        ],
+        "investments": [
+          {
+            "id": "implementation-and-failed-construction",
+            "kind": "development",
+            "amortizedMonthlyMicros": 6666666667
+          },
+          {
+            "id": "one-time-operator-setup",
+            "kind": "setup",
+            "amortizedMonthlyMicros": 166666667
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+  "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+}

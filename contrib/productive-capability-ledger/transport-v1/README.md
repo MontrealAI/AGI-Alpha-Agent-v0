@@ -17,6 +17,8 @@ download. It creates no additional API or scheduler.
 
 ## Permitted input and bounded execution
 
+The [bounded recovery continuation](../completion-v6/README.md) adds an explicit optional attempt allowance, durable cancellation and shared source accounting. The original one-attempt behavior described below remains the default; source adoption is still unapproved.
+
 An operator-selected inert registry declares 1–32 public scopes, each an exact
 local Git commit and committed manifest path. `scopes.example.json` demonstrates
 the schema with already public e250 source. Public origin/permission is an
