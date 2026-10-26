@@ -10,6 +10,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFLIGHT = "Release contract preflight before full regression"
+GUARD = "Preserve held native source identities (no behavioral qualification)"
 FULL = "Offline regression including notebooks (four held native tests excluded)"
 ORIGINAL_FULL_RUN_SHA256 = "6ba1fa02fcd483b1ae934ed2e398da8986c0111fcf21308ce7be12061102ab02"
 CONTRACTS = {
@@ -18,6 +19,7 @@ CONTRACTS = {
     "tests/test_capability_checkout_release_versions.py",
     "tests/test_capability_publication_edition.py",
     "tests/test_release_contract_preflight.py",
+    "tests/test_held_native_source_guard.py",
 }
 
 
@@ -30,7 +32,14 @@ def test_preflight_is_bounded_blocking_and_full_regression_is_unchanged():
     sequence = steps()
     early = next(step for step in sequence if step.get("name") == PREFLIGHT)
     full = next(step for step in sequence if step.get("name") == FULL)
-    assert sequence.index(early) + 1 == sequence.index(full)
+    guard = next(step for step in sequence if step.get("name") == GUARD)
+    assert sequence.index(early) + 1 == sequence.index(guard)
+    assert sequence.index(guard) + 1 == sequence.index(full)
+    assert guard == {
+        "name": GUARD,
+        "run": "mkdir -p evidence\npython scripts/check_held_native_source.py > "
+        "evidence/held-native-source-preservation.json\n",
+    }
     assert early["timeout-minutes"] == 5
     assert set(early) == {"name", "timeout-minutes", "run"}
     assert not full.get("continue-on-error") and "if" not in full
@@ -48,43 +57,51 @@ def test_preflight_is_bounded_blocking_and_full_regression_is_unchanged():
     assert hashlib.sha256(full["run"].encode()).hexdigest() == ORIGINAL_FULL_RUN_SHA256
 
 
-@pytest.mark.parametrize("exit_code", [0, 1, 124, 137])
-def test_failed_preflight_never_runs_full_suite_or_returns_success(tmp_path, exit_code):
+@pytest.mark.parametrize("exit_code,guard_exit", [(0, 0), (1, 0), (124, 0), (137, 0), (0, 1)])
+def test_failed_preflight_or_identity_guard_never_runs_full_suite(tmp_path, exit_code, guard_exit):
     sequence = steps()
     early = next(step["run"] for step in sequence if step.get("name") == PREFLIGHT)
     full = next(step["run"] for step in sequence if step.get("name") == FULL)
+    guard = next(step["run"] for step in sequence if step.get("name") == GUARD)
     binary = tmp_path / "bin"
     binary.mkdir()
     python = binary / "python"
     python.write_text(
         '#!/bin/bash\nprintf "%s\\n" "$*" >> "$CALLS"\n'
         'if [[ "$1" == "-m" && "$2" == "pytest" ]]; then exit "$PREFLIGHT_EXIT"; fi\n'
+        'if [[ "$1" == "scripts/check_held_native_source.py" ]]; then exit "$GUARD_EXIT"; fi\n'
         'if [[ "$1" == "-m" && "$2" == "scripts.run_local_tests" ]]; then touch .coverage; fi\n'
         "exit 0\n"
     )
     python.chmod(0o755)
     calls = tmp_path / "calls"
     result = subprocess.run(
-        ["bash", "-eu", "-o", "pipefail", "-c", early + "\n" + full],
+        ["bash", "-eu", "-o", "pipefail", "-c", early + "\n" + guard + "\n" + full],
         cwd=tmp_path,
         env={
             **os.environ,
             "PATH": f"{binary}:{os.environ['PATH']}",
             "CALLS": str(calls),
             "PREFLIGHT_EXIT": str(exit_code),
+            "GUARD_EXIT": str(guard_exit),
         },
         capture_output=True,
         timeout=5,
     )
-    assert result.returncode == exit_code, result.stderr
+    assert result.returncode == (exit_code or guard_exit), result.stderr
     observed = calls.read_text().splitlines()
     if exit_code:
         assert len(observed) == 1
         assert not (tmp_path / "evidence").exists()
+    elif guard_exit:
+        assert len(observed) == 2
+        assert observed[1] == "scripts/check_held_native_source.py"
+        assert not (tmp_path / ".coverage").exists()
     else:
-        assert len(observed) == 3
-        assert observed[1] == "-"
-        assert observed[2].startswith("-m scripts.run_local_tests -q --cov ")
-        assert "--cov-fail-under=80" in observed[2]
-        assert observed[2].count("--deselect=") == 4
+        assert len(observed) == 4
+        assert observed[1] == "scripts/check_held_native_source.py"
+        assert observed[2] == "-"
+        assert observed[3].startswith("-m scripts.run_local_tests -q --cov ")
+        assert "--cov-fail-under=80" in observed[3]
+        assert observed[3].count("--deselect=") == 4
         assert (tmp_path / "evidence/coverage.data").exists()
