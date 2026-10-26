@@ -80,6 +80,9 @@ small checkpoint from Hugging Face. If a custom `PYODIDE_BASE_URL` is unreachabl
 automatically retries using the official CDN. The deprecated `wasm-gpt2.tar`
 archive is no longer used.
 Set `FETCH_ASSETS_ATTEMPTS` to control the retry count when downloading assets.
+CI environments skip downloading the GPT‑2 checkpoint by default to avoid
+disk-pressure failures; set `FETCH_ASSETS_INCLUDE_LLM=1` when you need the full
+offline model in CI.
 Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors, for example:
 
 ```bash
