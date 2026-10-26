@@ -199,3 +199,9 @@ def test_all_preserved_exact_builtin_comparisons_reject_subclasses():
                 assert eval(expression, {"candidate": candidate}) is expected
             checked += 1
     assert checked == 51
+
+
+def test_directory_and_dot_cannot_expand_cli_targets(checkout):
+    for name in (".", "scripts"):
+        with pytest.raises(ValueError):
+            GUARD.run_ruff(checkout, [name])

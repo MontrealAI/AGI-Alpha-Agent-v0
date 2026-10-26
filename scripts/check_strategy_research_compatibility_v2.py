@@ -73,6 +73,7 @@ def _relative(name: str) -> None:
     path = PurePosixPath(name)
     if (
         not name
+        or not path.parts
         or path.is_absolute()
         or name.startswith("-")
         or "\\" in name
@@ -150,6 +151,8 @@ def run_ruff(root: Path, targets: list[str], batch_size: int = 200) -> int:
         raise ValueError("Batch size must be a positive integer")
     for name in targets:
         _relative(name)
+        if (root / name).is_dir():
+            raise ValueError("Lint targets must be filenames, not directories")
     report = require_preserved(root)
     prefix = [sys.executable, "-m", "ruff", "check", "--force-exclude"] + compatibility_args(report)
     result = 0
