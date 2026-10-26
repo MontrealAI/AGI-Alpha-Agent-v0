@@ -64,7 +64,7 @@ class OfflineLockCompilerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
             wheelhouse = Path(temporary) / "local wheels; literal value"
             wheelhouse.mkdir()
-            relative = os.path.relpath(wheelhouse, ROOT)
+            relative = os.path.relpath(wheelhouse, Path.cwd())
             for filename in SCRIPTS:
                 for compiler in (None, "/trusted/pip-compile"):
                     with self.subTest(script=filename, compiler=compiler):
