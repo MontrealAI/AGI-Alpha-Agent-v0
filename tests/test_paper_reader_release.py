@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_reader_patch_exact_workers_and_mixed_or_unknown_rejection(tmp_path: Path) -> None:
     raw = (ROOT / "tests/fixtures/capability-checkout-paper-readers-1461-workers.json").read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == "24394eed02308c148f06ad1e1ef3b32e889ea5b09833233adeacdc283ef631a7"
+    assert hashlib.sha256(raw).hexdigest() == "9537d6f85cdbf220a1889e55057b3271fb512902fc30b8fe9a79a53cc176591f"
     fixture = json.loads(raw)
     assert fixture["version"] == "1.46.1"
     assert fixture["sourceBase"] == "80b345828f34fd8a6e592977dd17ef37141305f4"

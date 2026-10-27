@@ -182,7 +182,7 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.46.0.** [Protected Flywheel operating boundaries](docs/agent/RELEASE_NOTES_1.46.0.md). [Additive Flywheel flagship](docs/agent/RELEASE_NOTES_1.45.0.md). [Explore the public simulation](https://montrealai.github.io/AGI-Alpha-Agent-v0/flywheel/). [Checked planning and repair](docs/agent/RELEASE_NOTES_1.44.0.md). [Configure the bounded Strategy Succession executor](docs/agent/STRATEGY_SUCCESSION.md). Published [1.43](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0) remains preserved.
+**Current experimental source candidate · 1.46.1.** [Exact approved paper readers](docs/agent/RELEASE_NOTES_1.46.1.md). [Protected Flywheel operating boundaries](docs/agent/RELEASE_NOTES_1.46.0.md). [Additive Flywheel flagship](docs/agent/RELEASE_NOTES_1.45.0.md). [Explore the public simulation](https://montrealai.github.io/AGI-Alpha-Agent-v0/flywheel/). [Checked planning and repair](docs/agent/RELEASE_NOTES_1.44.0.md). [Configure the bounded Strategy Succession executor](docs/agent/STRATEGY_SUCCESSION.md). Published [1.43](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0) remains preserved.
 The existing `alpha-agent successor-study` entry point can run an explicitly approved finite operation,
 retain a closed executable source-selection program and test it on later changed inputs. Pause/Stop,
 lease expiry, bounded retries and committed-child recovery keep their existing journal history.

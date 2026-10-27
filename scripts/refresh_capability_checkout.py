@@ -280,11 +280,11 @@ PROTECTED_FLYWHEEL_146_EXTRA_FILES = FLYWHEEL_145_EXTRA_FILES | {
 
 # Exact paper-reader patch edition; preserve every prior complete worker profile.
 PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
-    "docs/service-worker.js": (23649, "319e23eb93957340bca3e5e3640207bffe8d199ccc3f374e87c95ded6e68206a"),
-    "docs/assets/service-worker.js": (24089, "2c1ea8fec81b576ee1393281f06cf28ad960cf7d06dbe177a00aad2c2ff06144"),
+    "docs/service-worker.js": (23649, "45d5d9b5930a9665aa7b0728b129ececfef861d786d52bfe19aa8025c0310aa4"),
+    "docs/assets/service-worker.js": (24089, "8855c44e10a18d15e44fa2418d912bd75c226abfec6daff35f249fff2c350e02"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26729,
-        "1ed763393096f2122124198758476363349551db6432a4dbfa7ee32dc6968b5a",
+        "326f182573c0bc370b5efbd8a7d9bced6e0ddedd8033d7f9b5596abe5c9d2e89",
     ),
 }
 
