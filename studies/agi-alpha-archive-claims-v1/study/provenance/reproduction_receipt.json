@@ -1,0 +1,124 @@
+{
+  "commands": [
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/run_study.py",
+        "--out",
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/results/primary"
+      ],
+      "elapsed_seconds": 6.838753126008669,
+      "isolated_python": true,
+      "name": "core",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "origin-shared TRUE PASS\norigin-independent UNRESOLVED PASS\nconfirmation-000 UNRESOLVED PASS\nconfirmation-001 UNRESOLVED PASS\nconfirmation-002 UNRESOLVED PASS\nconfirmation-003 UNRESOLVED PASS\nconfirmation-004 UNRESOLVED PASS\nconfirmation-005 UNRESOLVED PASS\nconfirmation-006 FALSE PASS\nconfirmation-007 UNRESOLVED PASS\nconfirmation-008 UNRESOLVED PASS\nconfirmation-009 TRUE PASS\nconfirmation-010 UNRESOLVED PASS\nconfirmation-011 FALSE PASS\nconfirmation-012 FALSE PASS\nconfirmation-013 UNRESOLVED PASS\nconfirmation-014 UNRESOLVED PASS\nconfirmation-015 FALSE PASS\nconfirmation-016 UNRESOLVED PASS\nconfirmation-017 UNRESOLVED PASS\nconfirmation-018 FALSE PASS\nconfirmation-019 UNRESOLVED PASS\nconfirmation-020 UNRESOLVED PASS\nconfirmation-021 FALSE PASS\nconfirmation-022 UNRESOLVED PASS\nconfirmation-023 UNRESOLVED PASS\nconfirmation-024 TRUE PASS\nconfirmation-025 FALSE PASS\nconfirmation-026 UNRESOLVED PASS\nconfirmation-027 TRUE PASS\nconfirmation-028 UNRESOLVED PASS\nconfirmation-029 UNRESOLVED PASS\nconfirmation-030 FALSE PASS\nconfirmation-031 UNRESOLVED PASS\nconfirmation-032 FALSE PASS\nconfirmation-033 UNRESOLVED PASS\nconfirmation-034 UNRESOLVED PASS\nconfirmation-035 UNRESOLVED PASS\nsuccessor-000 UNRESOLVED PASS\nsuccessor-001 UNRESOLVED PASS\nsuccessor-002 UNRESOLVED PASS\nsuccessor-003 UNRESOLVED PASS\nsuccessor-004 UNRESOLVED PASS\nsuccessor-005 UNRESOLVED PASS\nsuccessor-006 UNRESOLVED PASS\nsuccessor-007 UNRESOLVED PASS\nsuccessor-008 UNRESOLVED PASS\nsuccessor-009 UNRESOLVED PASS\nsuccessor-010 UNRESOLVED PASS\nsuccessor-011 UNRESOLVED PASS\n{\n  \"origin\": {\n    \"cases\": 1,\n    \"all_reference_equal\": true,\n    \"all_witnesses_valid\": true,\n    \"decisions\": {\n      \"TRUE\": 1\n    },\n    \"worlds_enumerated\": 13056,\n    \"decorrelation_lost_decisions\": 1,\n    \"point_nonuniversal_claims\": 0\n  },\n  \"negative_control\": {\n    \"cases\": 1,\n    \"all_reference_equal\": true,\n    \"all_witnesses_valid\": true,\n    \"decisions\": {\n      \"UNRESOLVED\": 1\n    },\n    \"worlds_enumerated\": 39168,\n    \"decorrelation_lost_decisions\": 0,\n    \"point_nonuniversal_claims\": 1\n  },\n  \"confirmation\": {\n    \"cases\": 36,\n    \"all_reference_equal\": true,\n    \"all_witnesses_valid\": true,\n    \"decisions\": {\n      \"UNRESOLVED\": 24,\n      \"FALSE\": 9,\n      \"TRUE\": 3\n    },\n    \"worlds_enumerated\": 231648,\n    \"decorrelation_lost_decisions\": 6,\n    \"point_nonuniversal_claims\": 24\n  },\n  \"successor\": {\n    \"cases\": 12,\n    \"all_reference_equal\": true,\n    \"all_witnesses_valid\": true,\n    \"decisions\": {\n      \"UNRESOLVED\": 12\n    },\n    \"worlds_enumerated\": 593856,\n    \"decorrelation_lost_decisions\": 0,\n    \"point_nonuniversal_claims\": 12\n  }\n}\n"
+    },
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/economics/runner.py",
+        "check"
+      ],
+      "elapsed_seconds": 0.05504731099063065,
+      "isolated_python": true,
+      "name": "economics_check",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"checks\": \"passed\", \"compute_per_contract\": 0.37, \"loaded_compensation_rates\": {\"developer\": 95.45479999999999, \"scientist\": 98.477, \"domain\": 86.0378}}\n"
+    },
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/economics/runner.py",
+        "explore"
+      ],
+      "elapsed_seconds": 4.104954162990907,
+      "isolated_python": true,
+      "name": "economics_explore",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"frozen_price\": 800, \"exploratory_profit\": -852.2196850177861, \"launch_recommendation\": false}\n"
+    },
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/economics/runner.py",
+        "confirm"
+      ],
+      "elapsed_seconds": 10.088601476993063,
+      "isolated_python": true,
+      "name": "economics_confirm",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "[\n  {\n    \"scenario\": \"low\",\n    \"price\": 800,\n    \"contracts\": 1.2883333333333333,\n    \"useful_accepted_deliveries\": 0.23333333333333334,\n    \"operating_profit\": -2377.2288489395296,\n    \"profit_mean_ci95_low\": -2412.6308075639968,\n    \"peak_debt_p95\": 0.0\n  },\n  {\n    \"scenario\": \"baseline\",\n    \"price\": 800,\n    \"contracts\": 23.59,\n    \"useful_accepted_deliveries\": 9.165,\n    \"operating_profit\": -809.6844646127897,\n    \"profit_mean_ci95_low\": -951.271286435113,\n    \"peak_debt_p95\": 1184.1277399424366\n  },\n  {\n    \"scenario\": \"high\",\n    \"price\": 800,\n    \"contracts\": 48.69,\n    \"useful_accepted_deliveries\": 21.861666666666668,\n    \"operating_profit\": 6282.964874041343,\n    \"profit_mean_ci95_low\": 6094.827665865504,\n    \"peak_debt_p95\": 1299.9539982519073\n  },\n  {\n    \"scenario\": \"competent_human_fast\",\n    \"price\": 800,\n    \"contracts\": 0.0033333333333333335,\n    \"useful_accepted_deliveries\": 0,\n    \"operating_profit\": -2839.44465388,\n    \"profit_mean_ci95_low\": -2840.8891564053283,\n    \"peak_debt_p95\": 0.0\n  },\n  {\n    \"scenario\": \"no_buyer_advantage\",\n    \"price\": 800,\n    \"contracts\": 0.0,\n    \"useful_accepted_deliveries\": 0,\n    \"operating_profit\": -2838.40152,\n    \"profit_mean_ci95_low\": -2838.40152,\n    \"peak_debt_p95\": 0.0\n  },\n  {\n    \"scenario\": \"warm_inbound_acquisition_zero\",\n    \"price\": 800,\n    \"contracts\": 23.59,\n    \"useful_accepted_deliveries\": 9.165,\n    \"operating_profit\": -59.35059009841762,\n    \"profit_mean_ci95_low\": -200.90604151654273,\n    \"peak_debt_p95\": 552.7410893271119\n  },\n  {\n    \"scenario\": \"acquisition_15_per_origin\",\n    \"price\": 800,\n    \"contracts\": 23.59,\n    \"useful_accepted_deliveries\": 9.165,\n    \"operating_profit\": -2311.908571727793,\n    \"profit_mean_ci95_low\": -2453.6445290310385,\n    \"peak_debt_p95\": 2487.8676134667894\n  },\n  {\n    \"scenario\": \"acquisition_50_per_origin\",\n    \"price\": 800,\n    \"contracts\": 23.59,\n    \"useful_accepted_deliveries\": 9.165,\n    \"operating_profit\": -7604.0473100761155,\n    \"profit_mean_ci95_low\": -7746.553461383428,\n    \"peak_debt_p95\": 7501.025191455438\n  }\n]\n"
+    },
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/economics/runner.py",
+        "robustness"
+      ],
+      "elapsed_seconds": 10.538921667990508,
+      "isolated_python": true,
+      "name": "economics_robustness",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "[\n  {\n    \"source_hours\": 0.5,\n    \"outside_additional_minutes\": 30,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -2849.5165912326033,\n    \"min_corner_profit_mean_ci95_low\": -2869.726006530148,\n    \"max_corner_peak_debt_p95\": 0.0,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 0.5,\n    \"outside_additional_minutes\": 90,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -2167.059383708492,\n    \"min_corner_profit_mean_ci95_low\": -2394.966397284993,\n    \"max_corner_peak_debt_p95\": 461.8692146997057,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 0.5,\n    \"outside_additional_minutes\": 180,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -1614.788330810749,\n    \"min_corner_profit_mean_ci95_low\": -1927.2935979221702,\n    \"max_corner_peak_debt_p95\": 1217.7420546131814,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 1.0,\n    \"outside_additional_minutes\": 30,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -3113.7731125105597,\n    \"min_corner_profit_mean_ci95_low\": -3348.864080870904,\n    \"max_corner_peak_debt_p95\": 573.2264387536864,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 1.0,\n    \"outside_additional_minutes\": 90,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -2785.1080239251214,\n    \"min_corner_profit_mean_ci95_low\": -3044.53425507592,\n    \"max_corner_peak_debt_p95\": 3253.312048676887,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 1.0,\n    \"outside_additional_minutes\": 180,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -2627.1650307993227,\n    \"min_corner_profit_mean_ci95_low\": -2942.864942452788,\n    \"max_corner_peak_debt_p95\": 3649.730619665465,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 2.0,\n    \"outside_additional_minutes\": 30,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -6225.370117062028,\n    \"min_corner_profit_mean_ci95_low\": -6626.171057076193,\n    \"max_corner_peak_debt_p95\": 7116.560997738186,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 2.0,\n    \"outside_additional_minutes\": 90,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -6243.290541309289,\n    \"min_corner_profit_mean_ci95_low\": -6721.007849134652,\n    \"max_corner_peak_debt_p95\": 8138.030067247517,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 2.0,\n    \"outside_additional_minutes\": 180,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -6145.709604025695,\n    \"min_corner_profit_mean_ci95_low\": -6609.905982666015,\n    \"max_corner_peak_debt_p95\": 8818.011306177632,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 4.0,\n    \"outside_additional_minutes\": 30,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -10256.356227787404,\n    \"min_corner_profit_mean_ci95_low\": -10671.731510513278,\n    \"max_corner_peak_debt_p95\": 10051.727628180792,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 4.0,\n    \"outside_additional_minutes\": 90,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -10256.107346403134,\n    \"min_corner_profit_mean_ci95_low\": -10671.508573741756,\n    \"max_corner_peak_debt_p95\": 10051.727628180792,\n    \"robust_over_declared_grid\": false\n  },\n  {\n    \"source_hours\": 4.0,\n    \"outside_additional_minutes\": 180,\n    \"frozen_price\": 800,\n    \"min_corner_mean_profit\": -10256.107346403134,\n    \"min_corner_profit_mean_ci95_low\": -10671.508573741756,\n    \"max_corner_peak_debt_p95\": 10051.727628180792,\n    \"robust_over_declared_grid\": false\n  }\n]\n"
+    },
+    {
+      "arguments": [
+        "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/study/economics/runner.py",
+        "supplementary"
+      ],
+      "elapsed_seconds": 0.053653660987038165,
+      "isolated_python": true,
+      "name": "economics_supplementary",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\n  \"supplementary_files\": 4,\n  \"human_development\": [\n    {\n      \"scope\": \"finite_demonstrator_low\",\n      \"hours\": 30,\n      \"gross_wage_cost\": 1965.06,\n      \"employer_compensation_cost\": 2868.9876,\n      \"internal_cost_with_assumed_overhead\": 3442.78512,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    },\n    {\n      \"scope\": \"finite_demonstrator_central\",\n      \"hours\": 80,\n      \"gross_wage_cost\": 5241.38,\n      \"employer_compensation_cost\": 7652.4148000000005,\n      \"internal_cost_with_assumed_overhead\": 9182.89776,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    },\n    {\n      \"scope\": \"finite_demonstrator_high\",\n      \"hours\": 180,\n      \"gross_wage_cost\": 11742.9,\n      \"employer_compensation_cost\": 17144.634,\n      \"internal_cost_with_assumed_overhead\": 20573.560799999996,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    },\n    {\n      \"scope\": \"source_verified_deployment_low\",\n      \"hours\": 250,\n      \"gross_wage_cost\": 15888.7,\n      \"employer_compensation_cost\": 23197.502,\n      \"internal_cost_with_assumed_overhead\": 27837.0024,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    },\n    {\n      \"scope\": \"source_verified_deployment_central\",\n      \"hours\": 700,\n      \"gross_wage_cost\": 44719.6,\n      \"employer_compensation_cost\": 65290.616,\n      \"internal_cost_with_assumed_overhead\": 78348.7392,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    },\n    {\n      \"scope\": \"source_verified_deployment_high\",\n      \"hours\": 1600,\n      \"gross_wage_cost\": 101785.0,\n      \"employer_compensation_cost\": 148606.1,\n      \"internal_cost_with_assumed_overhead\": 178327.32,\n      \"price_or_quote\": false,\n      \"effort_evidence\": \"analyst scope decomposition, not measured human completion time\"\n    }\n  ],\n  \"retention_delta_zero_rejects\": true\n}\n"
+    }
+  ],
+  "comparisons": {
+    "core": {
+      "byte_identical_files": 189,
+      "canonical_manifest_sha256": "ac785eea5798b8e6ffc697feb5edadceb8e7d668c27506f0b637b70053b20799",
+      "compared_files": 189,
+      "ignored_files": [
+        "timings.json"
+      ],
+      "normalized_only_files": 0
+    },
+    "economics": {
+      "byte_identical_files": 22,
+      "canonical_manifest_sha256": "566b8a3807272fff592924cc4e1484ff4177a5e037e47f6df903d68aff347847",
+      "compared_files": 25,
+      "ignored_files": [],
+      "normalized_only_files": 3
+    }
+  },
+  "economic_policy_sha256": "f1a46b0d5e3ed2e35444f2b810a897a5a329ad16fbaf6f8c5eaac428fd4b290d",
+  "finished_utc": "2026-10-27T20:08:14.028514+00:00",
+  "input_sha256": {
+    "config/construction_protocol.json": "e1415683e58ffba09c06a60f8fe2a5e7967c6c008001f5df09ea0ad82737f4d8",
+    "economics/config.json": "14b985e852308e12b15cdb6ac6694b3ff77fe21c9672e7e3a6342a887af0ced2",
+    "economics/runner.py": "7b8c84b50f8a84da6cabe49d9e3adfce19f6c3ec54eab29b716b28fdc7d8a5a0",
+    "provenance/constructor_freeze.json": "2a75f591e247b5f59845dc390e7aabe8760e580aba9e84fa7cf6c4b58c0591be",
+    "provenance/model_manifest.json": "2c8b4df96104b66c71205192405482dbd955dc59c311c9625adea70684ce5d42",
+    "run_study.py": "92cbae25a6e159d1137195f1a3bfba0eef81c82a0e0a09c2fb2f2170be09de78",
+    "src/claim_engine.py": "dce5ac65b3c1cdaf625a2f9a0ee554df88d5d2853454ebad5d2cfc00265794db",
+    "src/exhaustive_reference.py": "5305088bfe1fb68b6a58366fca9ebeb46db3022c60b5836c467c3766beaf4c77"
+  },
+  "native_integration_rerun": false,
+  "normalization": [
+    "JSON object-key order and whitespace only; numeric values are not rounded",
+    "CSV column order only; all cell strings and row order are preserved",
+    "Core timings.json is present but excluded from equality checks",
+    "Capability ZIP is compared byte-for-byte; economic policy is compared as JSON"
+  ],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "schema": "agialpha.archive-claim.reproduction.v1",
+  "source_study": "/workspace/scratch/8285c42b25e1/study",
+  "staged_bytes_before_receipt": 879307,
+  "staging_root": "/tmp/agi-alpha-archive-claims-reproduce-audit-v1",
+  "started_utc": "2026-10-27T20:07:42.252090+00:00",
+  "status": "passed",
+  "working_directory": "/tmp/agi-alpha-archive-claims-reproduce-audit-v1/work",
+  "wrapper_sha256": "dbf798ac1e2ce8512126dd45d14253572abc7c060197089c1676d4f6f6d223d2"
+}

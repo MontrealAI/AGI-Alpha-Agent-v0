@@ -1,0 +1,38 @@
+{
+  "v1_status": "superseded: missing explicit channel-acquisition cash cost, buyer queue finance, pending collection/refund fee accrual and explicit bounded rework",
+  "v1_baseline_incomplete_profit": 466.82348737494215,
+  "preserved_under": "versions/v1_before_acquisition",
+  "v1_confirmation_reporting_failure_preserved": true,
+  "v2_new_exploration_seed": 271028401,
+  "v2_untouched_confirmation_seed": 271029987,
+  "v2_parameter_changes_are_audit_corrections": true,
+  "no_claim_v1_profit_is_complete": true,
+  "v2_pre_confirmation_comparator_correction": {
+    "preserved_under": "versions/v2_before_outside_option_correction",
+    "issue": "Provider-only hard-budget failure incorrectly reduced human outside-option success.",
+    "correction": "Separate q_offer and q_H and add reliability\u00d7value term in buyer comparison.",
+    "confirmation_seen_at_correction": false
+  },
+  "final_version": "v2.1",
+  "final_policy": {
+    "config_sha256": "14b985e852308e12b15cdb6ac6694b3ff77fe21c9672e7e3a6342a887af0ced2",
+    "confirmation_seed": 271029987,
+    "confirmation_used_for_selection": false,
+    "construction_protocol_sha256": "e1415683e58ffba09c06a60f8fe2a5e7967c6c008001f5df09ea0ad82737f4d8",
+    "exploration_file_sha256": "870b8a569a592f8870ec59c639bf465476c577520454fa953380b59ccac33aba",
+    "exploration_seed": 271028401,
+    "exploratory_launch_recommendation": false,
+    "model_manifest_sha256": "2c8b4df96104b66c71205192405482dbd955dc59c311c9625adea70684ce5d42",
+    "phase": "frozen_after_exploration_before_confirmation",
+    "price": 800,
+    "runner_sha256": "7b8c84b50f8a84da6cabe49d9e3adfce19f6c3ec54eab29b716b28fdc7d8a5a0",
+    "selection_rule": "Maximize baseline exploratory mean operating profit; tie chooses lower price. Freeze quote regardless; recommend launch only if exploratory mean is positive. Confirmation cannot change the price."
+  },
+  "final_baseline": {
+    "operating_profit": -809.6844646127897,
+    "loss_probability_modeled": 0.69,
+    "collected_modeled_cash": 11664.8,
+    "earned_modeled_revenue": 7115.56
+  },
+  "acquisition_paired_sensitivity_note": "Final $0/$5/$15/$50 origin-cost cases share final confirmation draws and frozen offer. Comparisons to earlier versions also contain stated source revisions and new seeds; they are not a pure causal acquisition effect."
+}

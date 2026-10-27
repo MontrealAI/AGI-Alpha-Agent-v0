@@ -1,0 +1,61 @@
+{
+  "study_date": "2026-10-27",
+  "currency": "USD",
+  "official_docs_retrieved": "2026-10-27",
+  "selected_for_hypothetical_delivery": [
+    {
+      "id": "gpt-6-astra",
+      "role": "discovery and difficult judgment",
+      "proposed_reasoning_effort": "max",
+      "reasoning_mode": "pro",
+      "input_per_million": 10,
+      "output_per_million": 50,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "access": "Responses API paid tiers; no dedicated API calls executed",
+      "notes": "Standard short-context price; fast 2x; above272k tokens input/cache2x output1.5x; model page provides no immutable dated snapshot."
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "role": "execution and second implementation",
+      "proposed_reasoning_effort": "high",
+      "reasoning_mode": "standard",
+      "input_per_million": 2,
+      "output_per_million": 10,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "access": "Responses API tools; no dedicated API calls executed"
+    }
+  ],
+  "observed_hosted_research": {
+    "model_label": "GPT-6 Astra Pro (runtime-provided)",
+    "agents": "Independent same-parent model tool-assisted runs, default model configuration; no override",
+    "exact_backend_snapshot": null,
+    "token_usage": null,
+    "monetary_charge": null,
+    "consumer_unlimited_access_assumed": false,
+    "closed_weights_used": false
+  },
+  "other_official_candidates": [
+    {
+      "id": "claude-fable-5-1",
+      "role": "demanding reasoning alternative",
+      "input_per_million": 10,
+      "output_per_million": 50,
+      "source": "https://platform.claude.com/docs/en/models/overview",
+      "executed": false
+    },
+    {
+      "id": "gemini-4-argon",
+      "role": "flagship reasoning alternative",
+      "source": "https://ai.google.dev/gemini-api/docs/models",
+      "price_verified": false,
+      "detail_fetch": "timeout",
+      "executed": false
+    }
+  ],
+  "tool_cost_assumptions": {
+    "web_search_per_1000": 10,
+    "container_1GB_per20min": 0.03,
+    "source": "https://developers.openai.com/api/docs/pricing"
+  },
+  "evidence_boundary": "Provider advertised capabilities are not measured mission-level success. API economics are scenarios; authoring costs unknown."
+}

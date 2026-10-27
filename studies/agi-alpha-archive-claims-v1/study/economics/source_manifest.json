@@ -1,0 +1,78 @@
+{
+  "as_of": "2026-10-27",
+  "currency": "USD",
+  "wages": {
+    "url": "https://www.bls.gov/news.release/ocwage.t01.htm",
+    "reference_period": "May 2025",
+    "hourly_medians": {
+      "software_developer": 65.38,
+      "computer_information_research_scientist": 67.45,
+      "physical_scientist_all_other": 58.93
+    }
+  },
+  "compensation": {
+    "url": "https://www.bls.gov/news.release/ecec.htm",
+    "reference_period": "June 2026",
+    "release_date": "2026-09-09",
+    "professional_scientific_technical_services": {
+      "wages_per_hour_worked": 51.88,
+      "total_compensation_per_hour_worked": 75.97
+    },
+    "adopted_rounded_proxy": 1.46
+  },
+  "model_prices_from_parent_manifest": [
+    {
+      "id": "gpt-6-astra",
+      "role": "discovery and difficult judgment",
+      "proposed_reasoning_effort": "max",
+      "reasoning_mode": "pro",
+      "input_per_million": 10,
+      "output_per_million": 50,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "access": "Responses API paid tiers; no dedicated API calls executed",
+      "notes": "Standard short-context price; fast 2x; above272k tokens input/cache2x output1.5x; model page provides no immutable dated snapshot."
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "role": "execution and second implementation",
+      "proposed_reasoning_effort": "high",
+      "reasoning_mode": "standard",
+      "input_per_million": 2,
+      "output_per_million": 10,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "access": "Responses API tools; no dedicated API calls executed"
+    }
+  ],
+  "tool_prices_from_parent_manifest": {
+    "web_search_per_1000": 10,
+    "container_1GB_per20min": 0.03,
+    "source": "https://developers.openai.com/api/docs/pricing"
+  },
+  "parent_manifest_sha256": "2c8b4df96104b66c71205192405482dbd955dc59c311c9625adea70684ce5d42",
+  "actual_revenue": 0,
+  "actual_hosted_research_cost": null,
+  "dedicated_api_calls": 0,
+  "not_sourced_as_facts": [
+    "customer_value",
+    "outside_option_effort",
+    "source_coverage_work",
+    "domain_admissibility_work",
+    "turnaround",
+    "decisiveness",
+    "acceptance",
+    "participation",
+    "refunds",
+    "defaults",
+    "payment_fees",
+    "overhead",
+    "capacity",
+    "human_development_hours",
+    "retention_gain",
+    "cash_channel_acquisition_per_origin",
+    "bounded_rework_probability",
+    "provider_budget_exhaustion_probability",
+    "maximum_attempt_budget",
+    "buyer_quoted_wait_opportunity_cost"
+  ],
+  "final_version": "v2.1"
+}

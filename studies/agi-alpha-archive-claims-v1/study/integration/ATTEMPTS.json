@@ -1,0 +1,51 @@
+{
+  "schema": "agi-alpha.native-bridge-development-attempts.v1",
+  "attempts": [
+    {
+      "id": "isolated-python-user-site",
+      "command": "python3 -I integration/native_bridge.py --input integration/example-input.json --output integration/fixture-run",
+      "outcome": "FAILED",
+      "error": "ModuleNotFoundError: No module named 'httpx'",
+      "boundary": "Python -I omits user-site dependencies in the observed environment. No native code ran or output directory was created.",
+      "correction": "Use the normal dependency-bearing Python environment; validate every loaded native module comes from the exact retained source closure. No upstream source or access policy changed."
+    },
+    {
+      "id": "unrelated-cwd-native-closure",
+      "working_directory": "/tmp",
+      "command": "python3 /workspace/scratch/8285c42b25e1/study/integration/native_bridge.py --input /workspace/scratch/8285c42b25e1/study/integration/example-input.json --output /workspace/scratch/8285c42b25e1/study/integration/fixture-run",
+      "outcome": "PASSED",
+      "observed": {
+        "source_files": 44,
+        "fusion_plan_valid": true,
+        "tampered_plan_refused": true,
+        "production_scope": "NOT_QUALIFIED",
+        "complete_cost_profit": null
+      },
+      "boundary": "Existing shared dependencies; not clean-install or complete production-runtime qualification. The earlier isolation failure remains preserved."
+    },
+    {
+      "id": "ruff-dynamic-export",
+      "outcome": "FAILED",
+      "findings": "11 F401 diagnostics: locally imported symbols returned through locals() were not statically visible to Ruff.",
+      "correction": "Replaced locals() export with explicit names; unchanged native code and behavior."
+    },
+    {
+      "id": "final-static-checks",
+      "outcome": "PASSED",
+      "checks": [
+        "Ruff lint",
+        "Ruff formatter at 120 columns",
+        "mypy --strict --follow-imports=skip on bridge only"
+      ],
+      "scope": "Only new bridge; unchanged upstream source not restyled or granted full typing qualification."
+    },
+    {
+      "id": "final-bridge-fixture",
+      "outcome": "PASSED",
+      "source_sha256": "7634e3985eb1abf79f4531e8f014a9d34e35cdea45f835806c7276bef347a58d",
+      "output": "fixture-final",
+      "working_directory": "/tmp",
+      "statement": "Executed final formatted bridge with explicit imports; all native controls pass."
+    }
+  ]
+}

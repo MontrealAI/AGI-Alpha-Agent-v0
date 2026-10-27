@@ -1,0 +1,35 @@
+{
+  "scope": "Preconfirmation typing/formatting of harness only; no execution or case generation",
+  "before_sha256": "7b2291eb3c521d52386414e40432993ed9644d140dc3c7bd717f4f2da1404ca8",
+  "initial_ruff": {
+    "outcome": "FAILED",
+    "findings": [
+      {
+        "rule": "E702",
+        "line": 203,
+        "message": "Multiple statements on one line: recipient.mkdir(); ordinary.mkdir()"
+      }
+    ]
+  },
+  "initial_mypy": "NOT_RUN because sequential command stopped at Ruff failure",
+  "constructor_source_read": false,
+  "harness_executed": false,
+  "cases_generated": false,
+  "after_sha256": "92cbae25a6e159d1137195f1a3bfba0eef81c82a0e0a09c2fb2f2170be09de78",
+  "annotation_stripped_function_ast_equal_except_declared_loader_guard": {
+    "write": true,
+    "sha": true,
+    "module": true,
+    "case_from": true,
+    "witness_valid": true,
+    "originating": true,
+    "invalid_cases": true,
+    "main": true
+  },
+  "all_scientific_algorithms_generators_seeds_checks_unchanged": true,
+  "only_runtime_change": "module() asserts the import specification and loader are non-None before invoking them; no scientific input, generation or validation changed.",
+  "final_ruff": "PASS",
+  "final_strict_mypy_follow_imports_skip": "PASS",
+  "full_harness_execution": "NOT_RUN before confirmation freeze",
+  "oracle_source_sha256": "5305088bfe1fb68b6a58366fca9ebeb46db3022c60b5836c467c3766beaf4c77"
+}
