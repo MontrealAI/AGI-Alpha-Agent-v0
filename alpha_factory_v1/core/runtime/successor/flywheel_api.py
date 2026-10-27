@@ -10,6 +10,7 @@ from ..store import Conflict
 
 from .flywheel_access import AccessRequest
 from .flywheel_capsules import Invocation, ProtectedLibrary
+from .flywheel_specialists import PlacementInvocation, capability_forms
 from .protocol import Digest, StrictModel, digest
 
 
@@ -23,7 +24,7 @@ class ChallengeRequest(StrictModel):
 
 class InvokeRequest(StrictModel):
     proof: AccessRequest
-    invocation: Invocation
+    invocation: Invocation | PlacementInvocation
 
 
 def install_routes(app: FastAPI, library: ProtectedLibrary | None) -> None:
@@ -53,6 +54,7 @@ def install_routes(app: FastAPI, library: ProtectedLibrary | None) -> None:
             "export_policy": "controlled-invocation-only",
             "wallet_actions": False,
             "customer_contact": False,
+            "capability_forms": capability_forms(),
         }
 
     @app.post("/api/flywheel/challenge")

@@ -50,13 +50,41 @@ def build(root: Path = ROOT) -> None:
     engine = visit(root / "examples/alpha-flywheel/engine.mjs")
     project = visit(root / "examples/successor-alpha/project.mjs")
     template = root / "scripts/templates/alpha-flywheel"
-    for path in [*template.iterdir(), root / "scripts/generate_alpha_flywheel.py",
-                 root / "examples/alpha-flywheel/README.md", root / "LICENSE"]:
+    for path in [
+        *template.iterdir(),
+        root / "scripts/generate_alpha_flywheel.py",
+        root / "examples/alpha-flywheel/README.md",
+        root / "LICENSE",
+    ]:
         if path.is_file():
             sources[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     code = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
     code += f"\nconst flywheel={engine},project={project},SOURCE_HASH={json.dumps(source_hash)};\n"
+    general_evidence = json.loads((template / "general-evidence.json").read_text(encoding="utf-8"))
+    code += "\nconst GENERAL_EVIDENCE=" + json.dumps(general_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+    specialist_evidence = json.loads((template / "specialist-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst SPECIALIST_EVIDENCE="
+        + json.dumps(specialist_evidence, ensure_ascii=True, separators=(",", ":"))
+        + ";\n"
+    )
+    enterprise_evidence = json.loads((template / "enterprise-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst ENTERPRISE_EVIDENCE="
+        + json.dumps(enterprise_evidence, ensure_ascii=True, separators=(",", ":"))
+        + ";\n"
+    )
+    discovery_evidence = json.loads((template / "discovery-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst DISCOVERY_EVIDENCE=" + json.dumps(discovery_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+    )
+    opportunity_evidence = json.loads((template / "opportunity-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst OPPORTUNITY_EVIDENCE="
+        + json.dumps(opportunity_evidence, ensure_ascii=True, separators=(",", ":"))
+        + ";\n"
+    )
     code += (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the Flywheel bundle")
@@ -72,8 +100,12 @@ def build(root: Path = ROOT) -> None:
     destination = root / "docs/flywheel"
     destination.mkdir(parents=True, exist_ok=True)
     (destination / "index.html").write_text(page, encoding="utf-8")
-    manifest = {"schema": "alpha-flywheel-source/v1", "sourceHash": source_hash, "sources": sources,
-                "pageSha256": hashlib.sha256(page.encode()).hexdigest()}
+    manifest = {
+        "schema": "alpha-flywheel-source/v1",
+        "sourceHash": source_hash,
+        "sources": sources,
+        "pageSha256": hashlib.sha256(page.encode()).hexdigest(),
+    }
     (destination / "sources.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 
 
