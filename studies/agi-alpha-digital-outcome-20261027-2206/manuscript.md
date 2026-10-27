@@ -178,7 +178,7 @@ budget covered fresh confirmation, independent checking, economics,
 reproducible delivery and publication preparation.
 
 <figure>
-<img src="figures/construction_time.svg"
+<img src="edition/figures/construction_time.svg"
 alt="Recorded construction time. Expert operation took longer in this single trial. This is elapsed construction time, not token usage, billable cost or a population estimate." />
 <figcaption aria-hidden="true">Recorded construction time. Expert
 operation took longer in this single trial. This is elapsed construction
@@ -307,7 +307,7 @@ deliberately emphasizes adverse numerical regimes. It is not a random
 sample of customer demand or the prevalence of bugs in software.
 
 <figure>
-<img src="figures/fresh_confirmation.svg"
+<img src="edition/figures/fresh_confirmation.svg"
 alt="Primary fresh confirmation: all three frozen workflows satisfy 56 numerical or endpoint cases and eight refusals. The separately disclosed known midpoint diagnostic is outside this denominator." />
 <figcaption aria-hidden="true">Primary fresh confirmation: all three
 frozen workflows satisfy 56 numerical or endpoint cases and eight

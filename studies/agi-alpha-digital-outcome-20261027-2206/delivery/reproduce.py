@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import time
@@ -17,6 +18,8 @@ from typing import Any
 
 ARMS = ("ordinary", "expert", "conventional")
 ROOT = Path(__file__).resolve().parents[1]
+VENDOR_MANIFEST_SHA256 = "a4cd4c283e6f1f860487b50195ec4c71bf5fd4b8c1e1c36ecf2b96e473092709"
+VENDOR_MANIFEST_BYTES = 127993
 
 
 def sha256(path: Path) -> str:
@@ -24,8 +27,66 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def regular_bytes(path: Path, expected_size: int) -> bytes:
+    """Read a bounded regular file without following a symlink or blocking on a special file."""
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode) or before.st_size != expected_size:
+            raise ValueError(f"Vendor file type or size mismatch: {path}")
+        data = stream.read(expected_size + 1)
+        after = os.fstat(stream.fileno())
+        if len(data) != expected_size or (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+            raise ValueError(f"Vendor file changed while reading: {path}")
+        return data
+
+
+def verify_vendor_closure(vendor_root: Path | None = None) -> dict[str, int]:
+    """Verify the complete pinned vendor inventory before any dependency is executed."""
+    vendor = vendor_root if vendor_root is not None else ROOT / "vendor"
+    manifest_bytes = regular_bytes(ROOT / "delivery/vendor_manifest.json", VENDOR_MANIFEST_BYTES)
+    if hashlib.sha256(manifest_bytes).hexdigest() != VENDOR_MANIFEST_SHA256:
+        raise ValueError("Vendor manifest identity mismatch")
+    manifest = json.loads(manifest_bytes)
+    required = manifest["required_files"]
+    optional = manifest["optional_historical_bytecode"]
+    expected = {**required, **optional}
+    for relative in expected:
+        path = Path(relative)
+        if path.is_absolute() or ".." in path.parts or path.as_posix() != relative:
+            raise ValueError("Unsafe vendor manifest path")
+    if not stat.S_ISDIR(vendor.lstat().st_mode):
+        raise ValueError("Vendor root must be an actual directory, not a symlink")
+    found: set[str] = set()
+    pending = [vendor]
+    while pending:
+        directory = pending.pop()
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                path = Path(entry.path)
+                relative = path.relative_to(vendor).as_posix()
+                metadata = entry.stat(follow_symlinks=False)
+                if stat.S_ISDIR(metadata.st_mode):
+                    pending.append(path)
+                    continue
+                if not stat.S_ISREG(metadata.st_mode):
+                    raise ValueError(f"Vendor symlink or special file refused: {relative}")
+                if relative not in expected:
+                    raise ValueError(f"Unexpected vendor file: {relative}")
+                record = expected[relative]
+                data = regular_bytes(path, record["bytes"])
+                if hashlib.sha256(data).hexdigest() != record["sha256"]:
+                    raise ValueError(f"Vendor content mismatch: {relative}")
+                found.add(relative)
+    missing = set(required) - found
+    if missing:
+        raise ValueError(f"Missing required vendor files: {sorted(missing)}")
+    return {"required_vendor_files": len(required), "verified_optional_cache_files": len(found & set(optional))}
+
+
 def verify_frozen_files() -> dict[str, Any]:
-    """Refuse modified experiment evidence or upstream module closure."""
+    """Refuse modified vendor dependencies, experiment evidence or upstream module closure."""
+    vendor_checks = verify_vendor_closure()
     experiment = ROOT / "experiment"
     manifest = json.loads((experiment / "source_freeze.json").read_text())
     for name, expected in manifest["files"].items():
@@ -40,7 +101,7 @@ def verify_frozen_files() -> dict[str, Any]:
     for name, expected in provenance["frozen_confirmation_sha256"].items():
         if sha256(ROOT / name) != expected:
             raise ValueError(f"Confirmation evidence mismatch: {name}")
-    return {"frozen_arm_files": len(manifest["files"]), "native_source_files": len(native["files"])}
+    return {"frozen_arm_files": len(manifest["files"]), "native_source_files": len(native["files"]), **vendor_checks}
 
 
 def run(command: list[str], cwd: Path, environment: dict[str, str], name: str, output: Path) -> dict[str, Any]:
@@ -77,15 +138,20 @@ def main() -> None:
     work = output / "work"
     experiment = work / "experiment"
     experiment.mkdir(parents=True)
-    # Link only immutable pinned dependencies. Arm sources and all compiler outputs are independent copies.
+    # The closed vendor inventory is verified before any imports or compilation and again after replay.
+    # Concurrent privileged filesystem attacks are outside this reproducibility check's threat model.
     (work / "vendor").symlink_to(ROOT / "vendor", target_is_directory=True)
     names = ["worker.py", "score.py", "reference.py", "fresh_cases.json", "fresh_case_metadata.json"]
     for name in names:
         shutil.copyfile(ROOT / "experiment" / name, experiment / name)
+    cache_root = output / "empty-bytecode-cache"
+    cache_root.mkdir(mode=0o700)
     environment = os.environ.copy()
     environment.update(
         {
             "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONPYCACHEPREFIX": str(cache_root),
+            "BETA_VENDOR_ROOT": str(work / "vendor"),
             "OPENBLAS_NUM_THREADS": "1",
             "OMP_NUM_THREADS": "1",
             "MKL_NUM_THREADS": "1",

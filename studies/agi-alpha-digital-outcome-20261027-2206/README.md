@@ -67,3 +67,21 @@ M is unknown additional model/tool cost per future engagement, including retries
 This is an additive **review edition** under the full mixed-source/data/HTML qualification lane. It does not update the canonical catalog, runtime, homepage, service workers, software release or Pages deployment. Existing owners and the 1.46.1 publication lease remain authoritative.
 
 Canonical publication needs exact-source owner review, required hosted checks, applicable integration/release qualification and actual served-byte verification. A pinned public reading page and matching downloads establish review availability, not canonical production release. The exact review commit and byte-verification receipt are recorded in the PR conversation and coordination issue #4850.
+
+## Review corrections
+
+The replay verifies a pinned inventory of 652 vendored dependency files before importing or compiling them. The archive builder rejects symlinks, paths outside the authorized input roots, and output paths that would overwrite or alias an input. Both figures in the GitHub reading edition resolve beneath `edition/figures/`. The original review findings, earlier source and archive identities, 29 archive safety checks, 16 dependency-integrity checks, independent audit and unchanged 64/64 replay results are preserved in the source/evidence ZIP. These delivery corrections do not revise the frozen experiment, paper, brief, HTML edition or economics.
+
+## Rebuild the paper, brief and browser edition
+
+Use a working copy of the extracted package. The authoring workflow needs Python with Matplotlib, Pandoc, XeLaTeX with standard Pandoc/TeX Live packages, and the DejaVu Serif, DejaVu Sans and DejaVu Sans Mono fonts. The style file lists its LaTeX packages. The checked PDF/SVG figure sources and complete generated LaTeX are already included.
+
+From the extracted root:
+
+```sh
+python edition/build_figures.py
+python edition/build_edition.py
+python edition/build_brief.py
+```
+
+The builders regenerate both PDFs, the complete self-contained HTML and the GitHub-readable Markdown in `edition/`. The main builder resolves the bibliography with Pandoc citeproc and runs XeLaTeX twice with shell escape disabled. The included `.tex` files can also be compiled directly with XeLaTeX from `edition/`; their bibliography text is already resolved. The published paper has 14 pages and the brief has two. PDF metadata and pagination can vary with the local TeX/font versions; the supplied checked originals and their hashes remain the publication record. When placing `edition/browser_reading.md` at the study root, prefix its two `figures/` image paths with `edition/`.
