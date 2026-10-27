@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+"""Fresh B mission checks; uses the unchanged retained artifact through the A runner."""
+from pathlib import Path
+import hashlib,json
+from run_audit import run
+ROOT=Path(__file__).resolve().parent
+reports=run('packet_b.json','reports_b.json')
+tasks=json.loads((ROOT/'packet_b.json').read_text())['tasks']
+assert len(reports)==12
+assert all(t['habitat']=='wet' and t['resource_mode']=='flower' and t['required_host']=='monarch' and t['region']=='fictional-provenance-wetland-B' for t in tasks)
+assert [r['source_screen_pass'] for r in reports]==[True]*4+[False]*8
+assert [bool(r['input_errors']) for r in reports]==[False]*11+[True]
+expected_counts=[
+    ((1,1,1),(1,1,1)),((2,3,3),(2,3,3)),((1,1,1),(1,1,1)),
+    ((1,2),(1,2)),((1,1,1),(1,1,1)),((1,1,1),(1,1,1)),
+    ((1,1,1),(0,0,1)),((1,1,1),(0,0,0)),((1,1,1),(0,0,1)),
+    ((0,0,0),(0,0,0)),((1,1,1),(1,0,1))]
+expected_blockers=[[],[],[],[],[],[(1,'habitat_not_documented')],
+    [(0,'lot_evidence_unknown'),(1,'lot_evidence_failed')],
+    [(0,'region_unknown'),(1,'region_mismatch'),(1,'availability_unknown'),(2,'unavailable_by_deadline')],
+    [(0,'unit_mismatch'),(1,'lot_taxon_mismatch')],[],[(1,'insufficient_lot_quantity')]]
+expected_source_hosts=[True,True,True,True,False,False,True,True,True,False,True]
+expected_supply_hosts=[True,True,True,True,False,False,False,False,False,False,False]
+for i,(src,supply) in enumerate(expected_counts):
+    t,r=tasks[i],reports[i]
+    assert tuple(r['source_coverage'][s]['count'] for s in t['required_seasons'])==src
+    assert tuple(r['supply_coverage'][s]['count'] for s in t['required_seasons'])==supply
+    assert sorted((b['row'],b['code']) for b in r['blockers'])==sorted(expected_blockers[i])
+    assert r['host']=={'required':'monarch','source_taxa':['asclepias_incarnata'] if expected_source_hosts[i] else [],'supply_taxa':['asclepias_incarnata'] if expected_supply_hosts[i] else [],'pass':expected_supply_hosts[i]}
+    assert len(r['original_unmet_obligations'])==sum(c<t['min_species_per_season'] for c in supply)+int(not expected_supply_hosts[i])
+# Check exact taxon identities for the positive high-minimum case and restricted-season task.
+assert reports[1]['source_coverage']=={
+    'early':{'taxa':['tradescantia_ohiensis','zizia_aurea'],'count':2,'required':2,'gap':0},
+    'mid':{'taxa':['asclepias_incarnata','eupatorium_perfoliatum','tradescantia_ohiensis'],'count':3,'required':2,'gap':0},
+    'late':{'taxa':['eupatorium_perfoliatum','helenium_autumnale','symphyotrichum_novae_angliae'],'count':3,'required':2,'gap':0}}
+assert reports[3]['source_coverage']=={
+    'late':{'taxa':['eupatorium_perfoliatum'],'count':1,'required':1,'gap':0},
+    'mid':{'taxa':['asclepias_incarnata','eupatorium_perfoliatum'],'count':2,'required':1,'gap':0}}
+assert reports[4]['original_unmet_obligations']==[{'kind':'host','host':'monarch'}]
+assert reports[5]['original_unmet_obligations']==[{'kind':'host','host':'monarch'}]
+assert len(reports[9]['original_unmet_obligations'])==4
+assert reports[10]['source_coverage']['mid']['taxa']==['asclepias_incarnata']
+assert reports[10]['supply_coverage']['mid']['taxa']==[]
+assert set(reports[11]['input_errors'])=={'invalid delivery_week','invalid rows[0].quantity'}
+# An independent per-row source/supply taxon reconstruction catches wrong species with right counts.
+catalog=json.loads((ROOT/'catalog.json').read_text())
+taxa={x['id']:x for x in catalog['taxa']}
+for task,report in zip(tasks[:11],reports[:11]):
+    source={row['taxon'] for row in task['rows'] if row['taxon'] in taxa and 'wet' in taxa[row['taxon']]['water']}
+    blocked_rows={b['row'] for b in report['blockers']}
+    qualified={row['taxon'] for i,row in enumerate(task['rows']) if i not in blocked_rows}
+    for season in task['required_seasons']:
+        assert report['source_coverage'][season]['taxa']==sorted(x for x in source if season in taxa[x]['seasons'])
+        assert report['supply_coverage'][season]['taxa']==sorted(x for x in qualified if season in taxa[x]['seasons'])
+assert json.loads((ROOT/'reports_b.json').read_text())==reports
+assert hashlib.sha256((ROOT/'reports_a.json').read_bytes()).hexdigest()=='ac5f3e94fbc281b872963a0c0e8564f376a1ef184aaa865b44fe22e78baf1798'
+assert hashlib.sha256((ROOT/'receipt_a.json').read_bytes()).hexdigest()=='3ec101e3aaf47c11482d8839685d81849b361a5d5bfb6315ec2b28f9cc19c1c2'
+print(json.dumps({'reports':12,'passed':4,'valid_negative':7,'invalid':1,'all_checks_passed':True,'A_files_unchanged':True}))

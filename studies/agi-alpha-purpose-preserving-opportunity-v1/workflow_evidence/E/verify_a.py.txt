@@ -1,0 +1,88 @@
+"""Independent, hand-derived checks for packet A and contract boundary checks."""
+import copy
+import json
+from pathlib import Path
+from audit import audit
+
+catalog = json.loads(Path('catalog.json').read_text())
+tasks = json.loads(Path('packet_a.json').read_text())['tasks']
+reports = json.loads(Path('reports_a.json').read_text())
+assert len(tasks) == len(reports) == 12
+fields = {'task_id','scope','original_purpose','input_errors','source_coverage','supply_coverage','host','blockers','original_unmet_obligations','source_screen_pass','field_outcomes_verified','customer_acceptance_verified','production_authorized'}
+C = 'coreopsis_lanceolata'
+O = 'oligoneuron_rigidum'
+Z = 'zizia_aurea'
+D = 'dalea_purpurea'
+L = 'liatris_ligulistylis'
+M = 'monarda_fistulosa'
+S = 'symphyotrichum_laeve'
+A = 'asclepias_tuberosa'
+expected_source = [
+    [[C],[C],[O]], [[Z],[D],[S]], [[C,Z],[C,L,M],[L,O]],
+    [[C],[C],[O]], [[],[A],[O]], [[],[M],[S]],
+    [[],[],[]], [[],[],[]], [[C],[C],[O]], [[C],[C],[O]],
+]
+expected_supply = copy.deepcopy(expected_source)
+expected_supply[8] = [[],[],[O]]
+expected_supply[9] = [[],[],[]]
+expected_blockers = [[], [], [], [], [], [(0,'habitat_not_documented')],
+    [(0,'nectar_unknown'),(1,'nectar_unknown'),(2,'nectar_unknown')],
+    [(0,'pollen_only'),(1,'nectar_unknown')],
+    [(0,'insufficient_lot_quantity'),(1,'insufficient_lot_quantity')],
+    [(0,'unknown_taxon'),(1,'unknown_lot'),(2,'missing_lot')],
+]
+for i, (task, report) in enumerate(zip(tasks, reports)):
+    assert set(report) == fields
+    assert report['task_id'] == task['id']
+    assert report['scope'] == 'documented-source-screen'
+    assert report['original_purpose'] == task['purpose']
+    assert all(report[k] is False for k in ['field_outcomes_verified','customer_acceptance_verified','production_authorized'])
+    assert report['host'] == {'required':None,'source_taxa':[],'supply_taxa':[],'pass':True}
+    assert report['source_screen_pass'] is (i < 4)
+    if i >= 10:
+        assert report['input_errors']
+        continue
+    assert report['input_errors'] == []
+    assert report['blockers'] == [{'row':row, 'code':code, 'lot_id':task['rows'][row].get('lot_id') or None} for row,code in expected_blockers[i]]
+    minimum = 2 if i == 2 else 1
+    for key, expected in [('source_coverage', expected_source[i]), ('supply_coverage', expected_supply[i])]:
+        assert list(report[key]) == ['early','mid','late']
+        for season, taxa in zip(['early','mid','late'], expected):
+            assert report[key][season] == {'taxa':taxa,'count':len(taxa),'required':minimum,'gap':max(0, minimum-len(taxa))}
+    expected_unmet = [{'kind':'seasonal','season':season,'required':minimum,'qualified':len(taxa),'gap':minimum-len(taxa)} for season,taxa in zip(['early','mid','late'],expected_supply[i]) if len(taxa)<minimum]
+    assert report['original_unmet_obligations'] == expected_unmet
+
+# A unit mismatch is excluded from arithmetic demand; a blocked duplicate does
+# not remove a separate qualifying row of the same taxon.
+x = copy.deepcopy(tasks[0])
+x['rows'].append(dict(x['rows'][0], unit='plants', quantity=100))
+r = audit(x, catalog)
+assert r['blockers'] == [{'row':2,'code':'unit_mismatch','lot_id':x['rows'][2]['lot_id']}]
+assert r['supply_coverage']['early']['taxa'] == [C]
+assert not r['source_screen_pass'] and not r['original_unmet_obligations']
+
+# Source host support does not imply supply host support.
+x = copy.deepcopy(tasks[4])
+x['required_host'] = 'monarch'
+x['lots'][0]['evidence_status'] = 'failed'
+r = audit(x, catalog)
+assert r['host'] == {'required':'monarch','source_taxa':[A],'supply_taxa':[],'pass':False}
+assert {'kind':'host','host':'monarch'} in r['original_unmet_obligations']
+
+# An empty proposal retains every seasonal and host obligation.
+x = copy.deepcopy(tasks[0])
+x['rows'] = []
+x['required_host'] = 'monarch'
+r = audit(x, catalog)
+assert len(r['original_unmet_obligations']) == 4
+assert r['blockers'] == [] and not r['source_screen_pass']
+
+# Unknown taxon stops biological checks, while all independent lot failures remain.
+x = copy.deepcopy(tasks[0])
+x['rows'] = [{'taxon':'unknown_test_taxon','quantity':21,'unit':'g','lot_id':x['lots'][0]['id']}]
+x['lots'][0]['evidence_status'] = 'unknown'
+x['lots'][0]['region'] = ''
+x['lots'][0].pop('available_week')
+r = audit(x, catalog)
+assert [b['code'] for b in r['blockers']] == ['unknown_taxon','lot_taxon_mismatch','lot_evidence_unknown','region_unknown','availability_unknown','insufficient_lot_quantity']
+print('Verified all 12 reports, exact A expectations, and four contract boundary scenarios.')

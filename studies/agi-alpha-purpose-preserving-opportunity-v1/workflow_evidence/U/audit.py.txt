@@ -1,0 +1,242 @@
+"""Source-screen audit implemented solely from the supplied PROTOCOL and SCOPE."""
+import argparse
+import json
+from collections import defaultdict
+from pathlib import Path
+
+SEASONS = {'early', 'mid', 'late'}
+HABITATS = {'dry', 'mesic', 'wet'}
+
+
+def integer(value, minimum=0):
+    return type(value) is int and value >= minimum
+
+
+def nonempty(value):
+    return isinstance(value, str) and len(value) > 0
+
+
+def validate_catalog(catalog):
+    errors = []
+    if not isinstance(catalog, dict) or not isinstance(catalog.get('taxa'), list):
+        return ['catalog.taxa must be an array']
+    ids = set()
+    for i, taxon in enumerate(catalog['taxa']):
+        p = f'catalog.taxa[{i}]'
+        if not isinstance(taxon, dict):
+            errors.append(f'{p} must be an object')
+            continue
+        tid = taxon.get('id')
+        if not nonempty(tid):
+            errors.append(f'{p}.id must be a nonempty string')
+        elif tid in ids:
+            errors.append(f'{p}.id must be unique')
+        else:
+            ids.add(tid)
+        for field, allowed in [('seasons', SEASONS), ('water', HABITATS)]:
+            value = taxon.get(field)
+            if not isinstance(value, list) or any(not isinstance(x, str) or x not in allowed for x in value):
+                errors.append(f'{p}.{field} must be an array of permitted values')
+        if 'nectar' not in taxon or not (taxon['nectar'] is None or type(taxon['nectar']) is bool):
+            errors.append(f'{p}.nectar must be boolean or null')
+        hosts = taxon.get('hosts')
+        if not isinstance(hosts, list) or any(not nonempty(x) for x in hosts):
+            errors.append(f'{p}.hosts must be an array of strings')
+        source = taxon.get('source')
+        if not isinstance(source, list) or not source or any(not nonempty(x) for x in source):
+            errors.append(f'{p}.source must be a nonempty array of source identifiers')
+    return errors
+
+
+def validate_task(task):
+    if not isinstance(task, dict):
+        return ['task must be an object']
+    errors = []
+    required = ('id', 'purpose', 'habitat', 'resource_mode', 'required_seasons',
+                'min_species_per_season', 'region', 'delivery_week', 'rows', 'lots',
+                'quoted_price_cents')
+    for key in required:
+        if key not in task:
+            errors.append(f'missing required task field: {key}')
+    for key in ('id', 'purpose', 'region'):
+        if key in task and not nonempty(task[key]):
+            errors.append(f'{key} must be a nonempty string')
+    for key, allowed in [('habitat', HABITATS), ('resource_mode', {'flower', 'nectar'})]:
+        if key in task and (not isinstance(task[key], str) or task[key] not in allowed):
+            errors.append(f'{key} must be a permitted string')
+    seasons = task.get('required_seasons')
+    if not isinstance(seasons, list) or not seasons or any(not isinstance(x, str) or x not in SEASONS for x in seasons):
+        errors.append('required_seasons must be a nonempty array of valid season names')
+    elif len(set(seasons)) != len(seasons):
+        errors.append('required_seasons must be unique')
+    for key, minimum in [('min_species_per_season', 1), ('delivery_week', 0), ('quoted_price_cents', 0)]:
+        if key in task and not integer(task[key], minimum):
+            errors.append(f'{key} must be an integer >= {minimum}; booleans and floats are invalid')
+    host = task.get('required_host')
+    if host is not None and host != 'monarch':
+        errors.append('required_host must be null or monarch')
+    rows = task.get('rows')
+    if not isinstance(rows, list):
+        errors.append('rows must be an array')
+    else:
+        for i, row in enumerate(rows):
+            p = f'rows[{i}]'
+            if not isinstance(row, dict):
+                errors.append(f'{p} must be an object')
+                continue
+            for key in ('taxon', 'unit'):
+                if not isinstance(row.get(key), str):
+                    errors.append(f'{p}.{key} must be a string')
+            if not integer(row.get('quantity'), 1):
+                errors.append(f'{p}.quantity must be a positive integer; booleans and floats are invalid')
+            if row.get('lot_id') is not None and not isinstance(row['lot_id'], str):
+                errors.append(f'{p}.lot_id must be a string or null when present')
+    lots = task.get('lots')
+    if not isinstance(lots, list):
+        errors.append('lots must be an array')
+    else:
+        ids = set()
+        for i, lot in enumerate(lots):
+            p = f'lots[{i}]'
+            if not isinstance(lot, dict):
+                errors.append(f'{p} must be an object')
+                continue
+            lid = lot.get('id')
+            if not nonempty(lid):
+                errors.append(f'{p}.id must be a nonempty string')
+            elif lid in ids:
+                errors.append(f'{p}.id duplicates lot identifier {lid}')
+            else:
+                ids.add(lid)
+            for key in ('taxon', 'unit'):
+                if not isinstance(lot.get(key), str):
+                    errors.append(f'{p}.{key} must be a string')
+            if not integer(lot.get('quantity'), 0):
+                errors.append(f'{p}.quantity must be a nonnegative integer; booleans and floats are invalid')
+            status = lot.get('evidence_status')
+            if not isinstance(status, str) or status not in {'verified', 'unknown', 'failed'}:
+                errors.append(f'{p}.evidence_status must be verified, unknown, or failed')
+            if lot.get('region') is not None and not isinstance(lot['region'], str):
+                errors.append(f'{p}.region must be a string or null when present')
+            if lot.get('available_week') is not None and not integer(lot['available_week'], 0):
+                errors.append(f'{p}.available_week must be a nonnegative integer or null')
+    return errors
+
+
+def audit(task, catalog):
+    safe_task = task if isinstance(task, dict) else {}
+    report = {
+        'task_id': safe_task.get('id'),
+        'scope': 'documented-source-screen',
+        'original_purpose': safe_task.get('purpose'),
+        'input_errors': validate_catalog(catalog) + validate_task(task),
+        'source_coverage': {},
+        'supply_coverage': {},
+        'host': {'required': safe_task.get('required_host'), 'source_taxa': [], 'supply_taxa': [],
+                 'pass': safe_task.get('required_host') is None},
+        'blockers': [],
+        'original_unmet_obligations': [],
+        'source_screen_pass': False,
+        'field_outcomes_verified': False,
+        'customer_acceptance_verified': False,
+        'production_authorized': False,
+    }
+    if report['input_errors']:
+        return report
+    taxa = {x['id']: x for x in catalog['taxa']}
+    lots = {x['id']: x for x in task['lots']}
+    demand = defaultdict(int)
+    for row in task['rows']:
+        lot = lots.get(row.get('lot_id'))
+        if lot is not None and row['unit'] == lot['unit']:
+            demand[lot['id']] += row['quantity']
+    source_taxa, supply_taxa = set(), set()
+    for index, row in enumerate(task['rows']):
+        tid = row['taxon']
+        lid = row.get('lot_id') or None
+        taxon = taxa.get(tid)
+        biological = []
+        if taxon is None:
+            biological.append('unknown_taxon')
+        else:
+            if task['habitat'] not in taxon['water']:
+                biological.append('habitat_not_documented')
+            if task['resource_mode'] == 'nectar':
+                if taxon['nectar'] is None:
+                    biological.append('nectar_unknown')
+                elif taxon['nectar'] is False:
+                    biological.append('pollen_only')
+        if not biological:
+            source_taxa.add(tid)
+        logistical = []
+        if lid is None:
+            logistical.append('missing_lot')
+        elif lid not in lots:
+            logistical.append('unknown_lot')
+        else:
+            lot = lots[lid]
+            if lot['taxon'] != tid:
+                logistical.append('lot_taxon_mismatch')
+            if lot['unit'] != row['unit']:
+                logistical.append('unit_mismatch')
+            if lot['evidence_status'] == 'unknown':
+                logistical.append('lot_evidence_unknown')
+            elif lot['evidence_status'] == 'failed':
+                logistical.append('lot_evidence_failed')
+            if not lot.get('region'):
+                logistical.append('region_unknown')
+            elif lot['region'] != task['region']:
+                logistical.append('region_mismatch')
+            if lot.get('available_week') is None:
+                logistical.append('availability_unknown')
+            elif lot['available_week'] > task['delivery_week']:
+                logistical.append('unavailable_by_deadline')
+            if lot['unit'] == row['unit'] and demand[lid] > lot['quantity']:
+                logistical.append('insufficient_lot_quantity')
+        for code in biological + logistical:
+            report['blockers'].append({'row': index, 'code': code, 'lot_id': lid})
+        if not biological and not logistical:
+            supply_taxa.add(tid)
+    minimum = task['min_species_per_season']
+    for label, qualified in [('source_coverage', source_taxa), ('supply_coverage', supply_taxa)]:
+        for season in task['required_seasons']:
+            ids = sorted(tid for tid in qualified if season in taxa[tid]['seasons'])
+            report[label][season] = {'taxa': ids, 'count': len(ids), 'required': minimum,
+                                     'gap': max(0, minimum - len(ids))}
+    for season in task['required_seasons']:
+        item = report['supply_coverage'][season]
+        if item['gap']:
+            report['original_unmet_obligations'].append({
+                'kind': 'seasonal', 'season': season, 'required': minimum,
+                'qualified': item['count'], 'gap': item['gap']})
+    host = task.get('required_host')
+    if host is not None:
+        report['host']['source_taxa'] = sorted(tid for tid in source_taxa if host in taxa[tid]['hosts'])
+        report['host']['supply_taxa'] = sorted(tid for tid in supply_taxa if host in taxa[tid]['hosts'])
+        report['host']['pass'] = bool(report['host']['supply_taxa'])
+        if not report['host']['pass']:
+            report['original_unmet_obligations'].append({'kind': 'host', 'host': host})
+    report['source_screen_pass'] = not report['blockers'] and not report['original_unmet_obligations']
+    return report
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--catalog', default='catalog.json')
+    parser.add_argument('--tasks', default='packet_a.json')
+    parser.add_argument('--out', default='reports_a.json')
+    args = parser.parse_args()
+    catalog = json.loads(Path(args.catalog).read_text())
+    packet = json.loads(Path(args.tasks).read_text())
+    tasks = packet['tasks'] if isinstance(packet, dict) else packet
+    reports = [audit(task, catalog) for task in tasks]
+    Path(args.out).write_text(json.dumps(reports, indent=2) + '\n')
+    for r in reports:
+        print(json.dumps({'task': r['task_id'], 'pass': r['source_screen_pass'],
+            'input_errors': r['input_errors'],
+            'source_counts': {s:x['count'] for s,x in r['source_coverage'].items()},
+            'supply_counts': {s:x['count'] for s,x in r['supply_coverage'].items()},
+            'blockers': r['blockers'], 'unmet': r['original_unmet_obligations']}))
+
+if __name__ == '__main__':
+    main()

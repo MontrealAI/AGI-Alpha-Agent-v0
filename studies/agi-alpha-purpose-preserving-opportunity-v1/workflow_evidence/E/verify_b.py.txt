@@ -1,0 +1,72 @@
+"""Hand-derived packet B expectations, independent of the retained audit code."""
+import hashlib
+import json
+from pathlib import Path
+
+tasks = json.loads(Path('packet_b.json').read_text())['tasks']
+reports = json.loads(Path('reports_b.json').read_text())
+assert len(tasks) == len(reports) == 12
+fields = {'task_id','scope','original_purpose','input_errors','source_coverage','supply_coverage','host','blockers','original_unmet_obligations','source_screen_pass','field_outcomes_verified','customer_acceptance_verified','production_authorized'}
+Z = 'zizia_aurea'
+A = 'asclepias_incarnata'
+H = 'helenium_autumnale'
+T = 'tradescantia_ohiensis'
+E = 'eupatorium_perfoliatum'
+S = 'symphyotrichum_novae_angliae'
+M = 'monarda_fistulosa'
+base = {'early':[Z], 'mid':[A], 'late':[H]}
+empty = {'early':[], 'mid':[], 'late':[]}
+expected_source = [
+    base,
+    {'early':[T,Z], 'mid':[A,E,T], 'late':[E,H,S]},
+    base,
+    {'late':[E], 'mid':[A,E]},
+    {'early':[Z], 'mid':[M], 'late':[H]},
+    {'early':[Z], 'mid':[M], 'late':[H]},
+    base, base, base, empty, base,
+]
+expected_supply = [
+    expected_source[0], expected_source[1], expected_source[2], expected_source[3],
+    expected_source[4], expected_source[5],
+    {'early':[], 'mid':[], 'late':[H]},
+    empty,
+    {'early':[], 'mid':[], 'late':[H]},
+    empty,
+    {'early':[Z], 'mid':[], 'late':[H]},
+]
+expected_blockers = [
+    [], [], [], [], [], [(1,'habitat_not_documented')],
+    [(0,'lot_evidence_unknown'),(1,'lot_evidence_failed')],
+    [(0,'region_unknown'),(1,'region_mismatch'),(1,'availability_unknown'),(2,'unavailable_by_deadline')],
+    [(0,'unit_mismatch'),(1,'lot_taxon_mismatch')],
+    [], [(1,'insufficient_lot_quantity')],
+]
+for i, (task, report) in enumerate(zip(tasks, reports)):
+    assert set(report) == fields, task['id']
+    assert report['task_id'] == task['id']
+    assert report['scope'] == 'documented-source-screen'
+    assert report['original_purpose'] == task['purpose']
+    assert all(report[k] is False for k in ['field_outcomes_verified','customer_acceptance_verified','production_authorized'])
+    assert report['source_screen_pass'] is (i < 4)
+    if i == 11:
+        assert len(report['input_errors']) >= 2
+        continue
+    assert report['input_errors'] == []
+    minimum = 2 if i == 1 else 1
+    for key, expected in [('source_coverage',expected_source[i]), ('supply_coverage',expected_supply[i])]:
+        assert list(report[key]) == task['required_seasons']
+        assert report[key] == {season:{'taxa':taxa, 'count':len(taxa), 'required':minimum, 'gap':max(0,minimum-len(taxa))} for season,taxa in expected.items()}
+    assert report['blockers'] == [{'row':row,'code':code,'lot_id':task['rows'][row].get('lot_id') or None} for row,code in expected_blockers[i]], task['id']
+    source_host = [] if i in {4,5,9} else [A]
+    supply_host = [A] if i < 4 else []
+    assert report['host'] == {'required':'monarch','source_taxa':source_host,'supply_taxa':supply_host,'pass':bool(supply_host)}, task['id']
+    unmet = [{'kind':'seasonal','season':season,'required':minimum,'qualified':len(taxa),'gap':minimum-len(taxa)} for season,taxa in expected_supply[i].items() if len(taxa)<minimum]
+    if not supply_host:
+        unmet.append({'kind':'host','host':'monarch'})
+    assert report['original_unmet_obligations'] == unmet, task['id']
+
+baseline = json.loads(Path('run_b_start.json').read_text())['preserved_a_sha256']
+assert all(hashlib.sha256(Path(name).read_bytes()).hexdigest() == sha for name,sha in baseline.items())
+a_receipt = json.loads(Path('receipt_a.json').read_text())
+assert hashlib.sha256(Path('audit.py').read_bytes()).hexdigest() == a_receipt['file_sha256']['audit.py']
+print('Verified all 12 B reports against hand-derived expectations; retained audit script and both A deliverables are unchanged.')

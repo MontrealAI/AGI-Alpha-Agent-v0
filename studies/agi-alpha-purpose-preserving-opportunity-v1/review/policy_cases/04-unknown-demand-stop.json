@@ -1,0 +1,126 @@
+{
+  "schema": "agialpha.feasible-policy-input.v1",
+  "information_set_id": "four-fixed-resources",
+  "world_weights_evidence": "assumed diagnostic weights; no market calibration",
+  "opening_cash_usd": 120,
+  "worlds": [
+    {
+      "id": "success",
+      "probability": 0.8
+    },
+    {
+      "id": "failure",
+      "probability": 0.2
+    }
+  ],
+  "alternatives": [
+    {
+      "id": "unknown-readiness",
+      "proposer": "constructed-proposer",
+      "configuration": "E",
+      "production_plan": "fictional audit; no real customer",
+      "retention_choice": "decline",
+      "development_choice": "decline",
+      "price_usd": 250,
+      "deposit_fraction": 0,
+      "independent_evidence": {
+        "readiness": {
+          "passed": null,
+          "independent": true,
+          "attestor": "fixture-evaluator",
+          "reference": "assumed-diagnostic-only",
+          "scope": "constructed fixed acceptance; not actual customer proof"
+        },
+        "acceptance": {
+          "passed": true,
+          "independent": true,
+          "attestor": "fixture-evaluator",
+          "reference": "assumed-diagnostic-only",
+          "scope": "constructed fixed acceptance; not actual customer proof"
+        }
+      },
+      "scenarios": [
+        {
+          "world_id": "success",
+          "costs_complete": true,
+          "cash_path_complete": true,
+          "earned_revenue_usd": 250,
+          "costs": {
+            "A": {
+              "monetary_expense_usd": 60,
+              "opportunity_cost_usd": 0
+            },
+            "B": {
+              "monetary_expense_usd": 0,
+              "opportunity_cost_usd": 0
+            },
+            "C": {
+              "monetary_expense_usd": 0,
+              "opportunity_cost_usd": 0
+            }
+          },
+          "cash_path": [
+            {
+              "label": "opening",
+              "cash_balance_usd": 120,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            },
+            {
+              "label": "complete payment before collection",
+              "cash_balance_usd": 60,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            },
+            {
+              "label": "closing",
+              "cash_balance_usd": 310,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            }
+          ]
+        },
+        {
+          "world_id": "failure",
+          "costs_complete": true,
+          "cash_path_complete": true,
+          "earned_revenue_usd": 0,
+          "costs": {
+            "A": {
+              "monetary_expense_usd": 60,
+              "opportunity_cost_usd": 0
+            },
+            "B": {
+              "monetary_expense_usd": 0,
+              "opportunity_cost_usd": 0
+            },
+            "C": {
+              "monetary_expense_usd": 0,
+              "opportunity_cost_usd": 0
+            }
+          },
+          "cash_path": [
+            {
+              "label": "opening",
+              "cash_balance_usd": 120,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            },
+            {
+              "label": "complete payment before collection",
+              "cash_balance_usd": 60,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            },
+            {
+              "label": "closing",
+              "cash_balance_usd": 60,
+              "restricted_for_obligations_usd": 0,
+              "operating_reserve_usd": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

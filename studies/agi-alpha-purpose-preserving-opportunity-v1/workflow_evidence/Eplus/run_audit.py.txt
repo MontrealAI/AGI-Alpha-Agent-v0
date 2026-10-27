@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Use the retained compiler on a qualified finite mission, preserving all critical fields."""
+from __future__ import annotations
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+CRITICAL = ('task_id', 'scope', 'original_purpose', 'input_errors', 'source_coverage',
+            'supply_coverage', 'host', 'blockers', 'original_unmet_obligations',
+            'source_screen_pass', 'field_outcomes_verified',
+            'customer_acceptance_verified', 'production_authorized')
+REQUIRED_TASK_FIELDS = {'id', 'purpose', 'habitat', 'resource_mode', 'required_seasons',
+                        'min_species_per_season', 'region', 'delivery_week', 'rows',
+                        'lots', 'quoted_price_cents'}
+
+def read(name):
+    return json.loads((ROOT / name).read_text())
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def run(packet_name='packet_a.json', output_name='reports_a.json'):
+    manifest, catalog = read('manifest.json'), read('catalog.json')
+    assert sha(ROOT / 'obligation_compiler.py') == manifest['implementation_sha256']
+    assert sha(ROOT / 'catalog.json') == manifest['catalog_sha256']
+    # Mission qualification against the reviewed artifact's supported scope.
+    # Contract gaps in its general validator (source, required price, host enum)
+    # are explicitly checked here before using the unmodified implementation.
+    for taxon in catalog['taxa']:
+        assert set(('id','seasons','water','nectar','hosts','source')) <= taxon.keys()
+        assert isinstance(taxon['source'], list) and taxon['source']
+    packet = read(packet_name)
+    tasks = packet['tasks'] if isinstance(packet, dict) else packet
+    assert isinstance(tasks, list)
+    for task in tasks:
+        assert REQUIRED_TASK_FIELDS <= task.keys()
+        assert task.get('required_host') in (None, 'monarch')
+        assert task['habitat'] in ('dry', 'mesic', 'wet')
+        assert task['resource_mode'] in ('flower', 'nectar')
+        assert all(row.get('lot_id') != '' for row in task['rows'])
+    spec = importlib.util.spec_from_file_location('retained_obligation_compiler', ROOT / 'obligation_compiler.py')
+    compiler = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(compiler)
+    reports = []
+    for task in tasks:
+        full = compiler.audit(task, catalog)
+        reports.append({key: full[key] for key in CRITICAL})
+    assert len(reports) == len(tasks)
+    assert [r['task_id'] for r in reports] == [t['id'] for t in tasks]
+    assert len({r['task_id'] for r in reports}) == len(reports)
+    taxa = {t['id']: t for t in catalog['taxa']}
+    for task, report in zip(tasks, reports):
+        assert set(report) == set(CRITICAL)
+        assert report['original_purpose'] == task['purpose']
+        assert report['scope'] == 'documented-source-screen'
+        assert all(report[f] is False for f in ('field_outcomes_verified', 'customer_acceptance_verified', 'production_authorized'))
+        if report['input_errors']:
+            assert report['source_screen_pass'] is False
+            continue
+        assert report['source_screen_pass'] == (not report['blockers'] and not report['original_unmet_obligations'])
+        assert set(report['source_coverage']) == set(task['required_seasons'])
+        assert set(report['supply_coverage']) == set(task['required_seasons'])
+        for season in task['required_seasons']:
+            for name in ('source_coverage', 'supply_coverage'):
+                item = report[name][season]
+                assert item['taxa'] == sorted(set(item['taxa']))
+                assert item['count'] == len(item['taxa'])
+                assert item['required'] == task['min_species_per_season']
+                assert item['gap'] == max(0, item['required'] - item['count'])
+                assert all(season in taxa[x]['seasons'] for x in item['taxa'])
+            assert set(report['supply_coverage'][season]['taxa']) <= set(report['source_coverage'][season]['taxa'])
+        expected_unmet = [{'kind':'seasonal', 'season':s, 'required':r['required'],
+                           'qualified':r['count'], 'gap':r['gap']}
+                          for s,r in report['supply_coverage'].items() if r['gap']]
+        if not report['host']['pass']:
+            expected_unmet.append({'kind':'host','host':task['required_host']})
+        assert report['original_unmet_obligations'] == expected_unmet
+        if task.get('required_host') is None:
+            assert report['host'] == {'required':None,'source_taxa':[],'supply_taxa':[],'pass':True}
+        for blocker in report['blockers']:
+            assert 0 <= blocker['row'] < len(task['rows'])
+            assert blocker['lot_id'] == (task['rows'][blocker['row']].get('lot_id') or None)
+    if packet_name == 'packet_a.json':
+        # Independent case-level expectations derived directly from the supplied
+        # contract and task rows, never from an oracle or protected report.
+        assert len(tasks) == 12
+        assert [r['source_screen_pass'] for r in reports] == [True]*4 + [False]*8
+        assert [bool(r['input_errors']) for r in reports] == [False]*10 + [True]*2
+        expected_counts = [
+            ((1,1,1),(1,1,1)), ((1,1,1),(1,1,1)),
+            ((2,3,2),(2,3,2)), ((1,1,1),(1,1,1)),
+            ((0,1,1),(0,1,1)), ((0,1,1),(0,1,1)),
+            ((0,0,0),(0,0,0)), ((0,0,0),(0,0,0)),
+            ((1,1,1),(0,0,1)), ((1,1,1),(0,0,0))]
+        expected_blockers = [[],[],[],[],[],
+            [(0,'habitat_not_documented')],
+            [(0,'nectar_unknown'),(1,'nectar_unknown'),(2,'nectar_unknown')],
+            [(0,'pollen_only'),(1,'nectar_unknown')],
+            [(0,'insufficient_lot_quantity'),(1,'insufficient_lot_quantity')],
+            [(0,'unknown_taxon'),(1,'unknown_lot'),(2,'missing_lot')]]
+        for index,(source_counts,supply_counts) in enumerate(expected_counts):
+            r=reports[index]
+            assert tuple(r['source_coverage'][s]['count'] for s in ('early','mid','late')) == source_counts
+            assert tuple(r['supply_coverage'][s]['count'] for s in ('early','mid','late')) == supply_counts
+            assert sorted((b['row'],b['code']) for b in r['blockers']) == sorted(expected_blockers[index])
+        assert reports[2]['source_coverage']['mid']['taxa'] == ['coreopsis_lanceolata','liatris_ligulistylis','monarda_fistulosa']
+        assert 'invalid rows[0].quantity' in reports[10]['input_errors']
+        assert 'invalid rows[0].quantity' in reports[11]['input_errors']
+        assert 'duplicate lot id' in reports[11]['input_errors']
+    output = ROOT / output_name
+    output.write_text(json.dumps(reports, indent=2, ensure_ascii=False, allow_nan=False)+'\n')
+    assert json.loads(output.read_text()) == reports
+    return reports
+
+if __name__ == '__main__':
+    reports = run()
+    print(json.dumps({'reports': len(reports), 'passed': sum(r['source_screen_pass'] for r in reports),
+                      'invalid': sum(bool(r['input_errors']) for r in reports), 'all_checks_passed': True}))

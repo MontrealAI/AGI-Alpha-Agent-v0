@@ -1,0 +1,248 @@
+{
+  "schema": "agialpha.final-verification.v1",
+  "recorded_at_utc": "2026-10-27T17:18:14.830188+00:00",
+  "source_base": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "scope": "isolated additive study; not full repository or production qualification",
+  "core_confirmation": {
+    "correct": 24,
+    "total": 24,
+    "source": "results/fresh_confirmation.json"
+  },
+  "saved_workflow_reports": {
+    "correct": 72,
+    "total": 72,
+    "unique_tasks": 24,
+    "source": "results/workflow_assay.json"
+  },
+  "post_trial_core_diagnostics": {
+    "exposed_failures": 5,
+    "selected_diagnostics": 5,
+    "source": "review/diagnostics.json",
+    "general_production_admission": false
+  },
+  "policy_diagnostics": {
+    "passed": 6,
+    "total": 6,
+    "source": "review/policy_results/validation.json"
+  },
+  "corruption_rejections": {
+    "passed": 7,
+    "total": 7,
+    "source": "review/replay_validation.json"
+  },
+  "native_integration": {
+    "passed": 18,
+    "total": 18,
+    "unit_tests": 7,
+    "source": "integration/evidence/validation.json"
+  },
+  "economics": {
+    "evaluations": 224,
+    "unit_tests": 9,
+    "source": "economics/results/verification.json",
+    "calibrated_operating_forecast": false
+  },
+  "code_checks": {
+    "ruff_all_study_python": "passed",
+    "mypy_strict_core_8_files": "passed",
+    "mypy_strict_packager": "passed",
+    "mypy_strict_native_2_files_follow_imports_silent": "passed",
+    "mypy_default_follow_imports_skip_attempt": "failed: four Any-import strict errors in adapter; unchanged source passes with --follow-imports=silent as in original validation",
+    "black": "blocked by installed pathspec.patterns.gitignore import; preserved in native validation",
+    "frozen_core_not_reformatted_after_confirmation": true
+  },
+  "pdfs": {
+    "paper/agi-alpha-flywheel.pdf": {
+      "pages": 19,
+      "sha256": "b4dfc867087e666c9d998baa267c0b04b10946d840aff5ec11371508a9544120",
+      "bytes": 200626,
+      "passive_repository_pdf_check": "passed",
+      "layout_overflow_or_missing_glyph_warnings": []
+    },
+    "paper/executive-brief.pdf": {
+      "pages": 2,
+      "sha256": "a06ec5d4e13a5ef7c579dfb7eeaed35e7c2b5d49904c7f2e3bb2c26609f9816a",
+      "bytes": 55346,
+      "passive_repository_pdf_check": "passed",
+      "layout_overflow_or_missing_glyph_warnings": []
+    },
+    "paper/evidence-companion.pdf": {
+      "pages": 5,
+      "sha256": "e2f17d46ffee493d01044c2ff1d7c51a5fd02e852f4400f23d1fa513e5a07b48",
+      "bytes": 71527,
+      "passive_repository_pdf_check": "passed",
+      "layout_overflow_or_missing_glyph_warnings": []
+    }
+  },
+  "visual_review": {
+    "all_pages_rendered": true,
+    "all_pages_inspected_in_contacts": true,
+    "detailed_cover_witness_brief_and_figure_checks": true,
+    "layout_repairs": "cover attribution separation, heading placement, title contrast, compact brief, chart tick labels; no scientific outcome edits"
+  },
+  "browser_demo": {
+    "schema": "agialpha.demo-qa.v1",
+    "recorded_case_renders": 48,
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "cases": [
+      "en:A-20261027-01",
+      "en:A-20261027-02",
+      "en:A-20261027-03",
+      "en:A-20261027-04",
+      "en:A-20261027-05",
+      "en:A-20261027-06",
+      "en:A-20261027-07",
+      "en:A-20261027-08",
+      "en:A-20261027-09",
+      "en:A-20261027-10",
+      "en:A-20261027-11",
+      "en:A-20261027-12",
+      "en:B-20261027-01",
+      "en:B-20261027-02",
+      "en:B-20261027-03",
+      "en:B-20261027-04",
+      "en:B-20261027-05",
+      "en:B-20261027-06",
+      "en:B-20261027-07",
+      "en:B-20261027-08",
+      "en:B-20261027-09",
+      "en:B-20261027-10",
+      "en:B-20261027-11",
+      "en:B-20261027-12",
+      "fr:A-20261027-01",
+      "fr:A-20261027-02",
+      "fr:A-20261027-03",
+      "fr:A-20261027-04",
+      "fr:A-20261027-05",
+      "fr:A-20261027-06",
+      "fr:A-20261027-07",
+      "fr:A-20261027-08",
+      "fr:A-20261027-09",
+      "fr:A-20261027-10",
+      "fr:A-20261027-11",
+      "fr:A-20261027-12",
+      "fr:B-20261027-01",
+      "fr:B-20261027-02",
+      "fr:B-20261027-03",
+      "fr:B-20261027-04",
+      "fr:B-20261027-05",
+      "fr:B-20261027-06",
+      "fr:B-20261027-07",
+      "fr:B-20261027-08",
+      "fr:B-20261027-09",
+      "fr:B-20261027-10",
+      "fr:B-20261027-11",
+      "fr:B-20261027-12"
+    ],
+    "witness_toggles": "passed both languages",
+    "retention_boundary": "25 uses: $6 break-even; $6.25 positive; $0 negative",
+    "download_json": "passed: B-20261027-08",
+    "responsive": [
+      {
+        "width": 390,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 768,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false
+      }
+    ],
+    "page_errors": [],
+    "missing_translations": [],
+    "status": "passed",
+    "not_claimed": [
+      "ecological execution",
+      "live model call",
+      "publication",
+      "external link availability"
+    ]
+  },
+  "browser_full_manuscript": {
+    "schema": "agialpha.browser-manuscript-qa.v1",
+    "status": "passed",
+    "source_section_count": 12,
+    "source_subsection_count": 23,
+    "rendered_main_sections_plus_references": 13,
+    "rendered_subsections": 23,
+    "exact_title": true,
+    "reference_count": 22,
+    "table_count": 7,
+    "source_and_html_table_row_counts": [
+      8,
+      7,
+      7,
+      6,
+      5,
+      4,
+      5
+    ],
+    "figure_count": 4,
+    "loaded_svg_figures": true,
+    "mathml_count": 27,
+    "broken_internal_links": [],
+    "responsive": [
+      {
+        "width": 390,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 768,
+        "horizontal_overflow": false
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false
+      }
+    ],
+    "page_errors": [],
+    "scope": "Presentation and full-content structure checks only; no additional scientific cases or publication verification."
+  },
+  "manuscript_internal_fact_check": "separate same-session editorial reviewer: no material overclaim found; not external peer review",
+  "initial_pdf_validator_failure": "Type3 plot-font CharProcs keys triggered unsupported-action detection; source plots explicitly switched to embedded TrueType; validator unchanged",
+  "full_repository_release_qualification": false,
+  "full_environment_record": "results/environment.json",
+  "actual_sales": 0,
+  "actual_collections_usd": 0,
+  "actual_complete_cost_usd": null,
+  "actual_complete_profit_usd": null,
+  "packed_replay": {
+    "archive_crc": "passed",
+    "manifest_files_verified": 183,
+    "archive_candidate_sha256": "ff2f866b9dcab0f2dc6aa71de59756b47c2ec871ccbb0be73ac6f81a40afe6a7",
+    "summary": {
+      "schema": "agialpha.replay.v1",
+      "accepted": 24,
+      "total": 24,
+      "ordinary_same_content_library_identical": true,
+      "frozen_confirmation_manifest_sha256": "b4ce719c72b90f63d375aed0e4e5b1b3004309a7a8910294f75a4d0645d99dc6",
+      "confirmation_hashes_verified": true,
+      "linked_method_manifest_verified": true,
+      "frozen_answers_reproduced": true,
+      "recorded_workflow_outputs": {
+        "status": "saved_outputs_regraded",
+        "agents_rerun": false,
+        "latency_remeasured": false,
+        "accepted": 72,
+        "total": 72
+      },
+      "feasible_policy_addendum": {
+        "status": "separate_frozen_policy_replayed",
+        "passed": 6,
+        "total": 6,
+        "all_hashes_and_freeze_order_verified": true,
+        "preserved_outputs_identical": true,
+        "scope": "constructed hypothetical decision diagnostics; no actual profit or live authority"
+      },
+      "scope": "source-screen artifact correctness; no customers, ecology, API billing or live ENS claims"
+    },
+    "isolated_workdir": "/tmp",
+    "scope": "candidate scientific source/data package; final public readback metadata may be added without scientific source changes"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "agialpha.protected-confirmation.v1",
+  "created_at_utc": "2026-10-27T16:40:33.112776+00:00",
+  "method_freeze_at_utc": "2026-10-27T16:37:51.615710+00:00",
+  "method_freeze_sha256": "29f86badb624d8039e903293864d9e33d0dcbd4d65bc2ac9ed779031ac017286",
+  "catalog_sha256": "6a22183309aae61954b4dcf27e643150c034bd6bdf86362cf1ce9b55ab541010",
+  "oracle_sha256": "6b6d0efcdab1eb8a28b6e40ba1c0cd20d18ddfa8b50ccd194a0e489dd6c8caf3",
+  "case_count": {
+    "A": 12,
+    "B": 12
+  },
+  "files": {
+    "evaluation/create_confirmation.py": {
+      "sha256": "1cc66acb475702ed0e0baa80af4c996c753e5bbb63d0f8e635f739efd6155080",
+      "bytes": 12969
+    },
+    "evaluation/packets/packet_a.json": {
+      "sha256": "ec9a98647e1348c42b9302e812df4de0f69a2ad5f3c75a28c255249c9b050436",
+      "bytes": 23312
+    },
+    "evaluation/packets/packet_b.json": {
+      "sha256": "9a37019071d2496dec44e1335033f189ee379dab6afc49e4a5459a27e80a4516",
+      "bytes": 25584
+    },
+    "evaluation/protected/expected_a.json": {
+      "sha256": "51422b250f67615cd2e07d64983a1b00e6e6a6a71bac6350b3324953e3f585a2",
+      "bytes": 23295
+    },
+    "evaluation/protected/expected_b.json": {
+      "sha256": "8ef4be095fc318f492de0be52d38dfaf7f69c5fe63dfd7bad945ca0379dd5b51",
+      "bytes": 25341
+    },
+    "evaluation/protected/case_provenance.json": {
+      "sha256": "3e426a5c1bdd5d1dd2f38eb1ae80ff1ff78251ecbd701d3c62c0897cb901f914",
+      "bytes": 3123
+    }
+  },
+  "protection": "procedural isolation: trial agents receive packets and approved instructions only; shared filesystem is not a security boundary",
+  "instructions_to_trial_agents": "Do not read evaluation/protected, create_confirmation.py, oracle.py, result files, or other condition outputs.",
+  "no_core_results_inspected": true
+}

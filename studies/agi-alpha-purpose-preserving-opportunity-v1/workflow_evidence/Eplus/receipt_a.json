@@ -1,0 +1,84 @@
+{
+  "condition": "E+",
+  "packet": "A",
+  "start_utc": "2026-10-27T16:42:24.414439+00:00",
+  "end_utc": "2026-10-27T16:43:47.071742+00:00",
+  "elapsed_seconds": 82.657303,
+  "clock_basis": "UTC execution timestamps; start is first recorded command, not an inferred provider dispatch time",
+  "time_cap_seconds": 480,
+  "tool_calls": [
+    {
+      "index": 1,
+      "orchestrator": "functions.exec",
+      "tool": "exec_command",
+      "purpose": "Read PROTOCOL.md, SCOPE.md, manifest.json, packet_a.json, catalog.json and retained compiler; record UTC start"
+    },
+    {
+      "index": 2,
+      "orchestrator": "functions.exec",
+      "tool": "exec_command",
+      "purpose": "Verify implementation and catalog SHA-256; reread packet and catalog in compact form after output truncation; inspect installed Python"
+    },
+    {
+      "index": 3,
+      "orchestrator": "functions.exec",
+      "tool": "exec_command",
+      "purpose": "Create local reusable runner, invoke unchanged retained compiler, check completeness and boundary cases, write and reread reports, record receipt"
+    }
+  ],
+  "logical_tool_operations": 3,
+  "functions_exec_calls": 3,
+  "exec_command_calls": 3,
+  "external_search_calls": 0,
+  "protected_answer_reads": 0,
+  "retained_artifact": {
+    "path": "obligation_compiler.py",
+    "version": "1.0.0",
+    "sha256": "f6fac1a211c884735bbdaab451e74d73e4877ad12556ffa22e3a02bbb63c0590",
+    "manifest_hash_match": true,
+    "catalog_manifest_hash_match": true,
+    "modified": false,
+    "used": true,
+    "qualification": "Reviewed documented-source-screen scope; dry is supported; flower and nectar modes are supported; all A missions retain their original purpose; packet values fit implementation bounds. Preflight checks cover required task fields, source presence and required-host enum omitted or broader in general compiler validation. Empty-string lot IDs do not occur in this packet."
+  },
+  "verification": {
+    "report_count": 12,
+    "task_order_preserved": true,
+    "critical_fields_complete": true,
+    "purpose_preserved": true,
+    "all_checks_passed": true,
+    "boundary_cases": [
+      "distinct taxa instead of row count",
+      "exact aggregate stock accepted",
+      "aggregate overdemand blocks both comparable rows",
+      "zero week and zero price accepted",
+      "two-species minimum",
+      "habitat absence remains undocumented",
+      "unknown nectar differs from pollen-only",
+      "unknown taxon and missing/unknown lots remain findings",
+      "floating and boolean quantities invalid",
+      "duplicate lot IDs invalid"
+    ],
+    "source_screen_pass_count": 4,
+    "valid_negative_count": 6,
+    "invalid_count": 2
+  },
+  "retries_corrections": [
+    {
+      "kind": "read_retry",
+      "detail": "The initial combined file output was truncated. Packet and catalog were reread compactly before execution."
+    }
+  ],
+  "report_corrections": 0,
+  "output_sha256": "ac5f3e94fbc281b872963a0c0e8564f376a1ef184aaa865b44fe22e78baf1798",
+  "provider_token_counts": null,
+  "provider_billing_usd": null,
+  "billing_status": "unknown; not exposed by available execution observations",
+  "limitations": [
+    "Finite supplied source-screen contract only; no oracle or protected answers inspected.",
+    "Source/catalog facts held fixed; no botanical inference, current inventory authentication or external verification.",
+    "Fictional lots, dates, provenance, quantities and prices do not establish ecological outcomes, customers, transactions or production authority.",
+    "No affordability decision is possible because the schema has no price cap.",
+    "Retained compiler has broader-contract validation limits outside this packet, including missing quoted price defaulting to zero, unrestricted nonempty host strings, absent source checks, bounded numeric/list limits, and empty lot identifiers not normalized in emitted blockers. A future mission requires renewed qualification."
+  ]
+}

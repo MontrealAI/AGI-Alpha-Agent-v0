@@ -1,0 +1,144 @@
+{
+  "schema": "agialpha.feasible-policy-confirmation.v1",
+  "executed_at_utc": "2026-10-27T17:00:30.228161+00:00",
+  "policy_source_sha256": "5a5bfb3ddd4ab6ea341e214b9cfc8177812e4e53534fc9d2cbeeb7c512ec0c28",
+  "policy_freeze_sha256": "fe5d82da91ba66b91f60b6a440ae1a20444e04473fe590ccc0f87c1e77725f35",
+  "case_freeze_sha256": "9845b6b27e7b045e3a4ac94314c5c9174f5cf345070ebb45e5fc769e9c1875de",
+  "freeze_order_verified": true,
+  "all_input_hashes_verified": true,
+  "passed": 6,
+  "total": 6,
+  "cases": [
+    {
+      "file": "01-funding-and-evidence.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "01-funding-and-evidence.json",
+        "selected_id": "funded-service",
+        "eligible_ranking": [
+          "funded-service"
+        ]
+      },
+      "observed_selection": {
+        "selected_id": "funded-service",
+        "eligible_ranking": [
+          "funded-service"
+        ],
+        "decision": "conditional_selection"
+      },
+      "stdout": "{\"decision\": \"conditional_selection\", \"selected_id\": \"funded-service\"}\n",
+      "stderr": "",
+      "output_sha256": "1f69e9c98da164034191decc5fd8888e2c4a1b19c5c0be7d593f596dc2dc39ab"
+    },
+    {
+      "file": "02-retention-can-qualify.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "02-retention-can-qualify.json",
+        "selected_id": "worthwhile-retention",
+        "eligible_ranking": [
+          "worthwhile-retention",
+          "funded-service"
+        ]
+      },
+      "observed_selection": {
+        "selected_id": "worthwhile-retention",
+        "eligible_ranking": [
+          "worthwhile-retention",
+          "funded-service"
+        ],
+        "decision": "conditional_selection"
+      },
+      "stdout": "{\"decision\": \"conditional_selection\", \"selected_id\": \"worthwhile-retention\"}\n",
+      "stderr": "",
+      "output_sha256": "64eac06f6279f52d0215b99e585a237b9d369f69ae34e8dba36711cf09bfffef"
+    },
+    {
+      "file": "03-negative-contribution-stop.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "03-negative-contribution-stop.json",
+        "selected_id": null,
+        "eligible_ranking": []
+      },
+      "observed_selection": {
+        "selected_id": null,
+        "eligible_ranking": [],
+        "decision": "stop"
+      },
+      "stdout": "{\"decision\": \"stop\", \"selected_id\": null}\n",
+      "stderr": "",
+      "output_sha256": "993c8fb3e83d03742b98a0f53f18b19d3515d2069943f297e85949e2cc4e7197"
+    },
+    {
+      "file": "04-unknown-demand-stop.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "04-unknown-demand-stop.json",
+        "selected_id": null,
+        "eligible_ranking": []
+      },
+      "observed_selection": {
+        "selected_id": null,
+        "eligible_ranking": [],
+        "decision": "stop"
+      },
+      "stdout": "{\"decision\": \"stop\", \"selected_id\": null}\n",
+      "stderr": "",
+      "output_sha256": "0571d5f629a175fdd4c564711294c53ab50f94368860078c24bb10c316551ae3"
+    },
+    {
+      "file": "05-baseline-progress.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "05-baseline-progress.json",
+        "selected_id": "improved-conventional",
+        "eligible_ranking": [
+          "improved-conventional",
+          "worthwhile-retention",
+          "funded-service"
+        ]
+      },
+      "observed_selection": {
+        "selected_id": "improved-conventional",
+        "eligible_ranking": [
+          "improved-conventional",
+          "worthwhile-retention",
+          "funded-service"
+        ],
+        "decision": "conditional_selection"
+      },
+      "stdout": "{\"decision\": \"conditional_selection\", \"selected_id\": \"improved-conventional\"}\n",
+      "stderr": "",
+      "output_sha256": "083440ee1576aff9b036fc3e19371c56393767968d7e433ca9f333d8590a5feb"
+    },
+    {
+      "file": "06-zero-weight-stress.json",
+      "passed": true,
+      "exit_code": 0,
+      "expected": {
+        "file": "06-zero-weight-stress.json",
+        "selected_id": null,
+        "eligible_ranking": []
+      },
+      "observed_selection": {
+        "selected_id": null,
+        "eligible_ranking": [],
+        "decision": "stop"
+      },
+      "stdout": "{\"decision\": \"stop\", \"selected_id\": null}\n",
+      "stderr": "",
+      "output_sha256": "782fd5e505289f9e70baa77782f1b0ca715e8b2bab87d0009190b8a6cdc74c1e"
+    }
+  ],
+  "evidence_class": "observed software selections on constructed hypothetical numeric diagnostics",
+  "actual_profit_established": false,
+  "actual_customer_acceptance": false,
+  "live_authority": false,
+  "original_224_accounting_study_unchanged": true
+}

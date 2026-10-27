@@ -1,0 +1,52 @@
+% SPDX-License-Identifier: Apache-2.0
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{edition}[2026/10/27 Research edition design]
+\RequirePackage[a4paper,left=24mm,right=24mm,top=23mm,bottom=25mm,headheight=16pt]{geometry}
+\RequirePackage{fontspec}
+\setmainfont{P052-Roman.otf}[BoldFont=P052-Bold.otf,ItalicFont=P052-Italic.otf,BoldItalicFont=P052-BoldItalic.otf]
+\setsansfont{NimbusSans-Regular.otf}[BoldFont=NimbusSans-Bold.otf,ItalicFont=NimbusSans-Italic.otf,BoldItalicFont=NimbusSans-BoldItalic.otf]
+\setmonofont[Scale=.82]{DejaVu Sans Mono}
+\RequirePackage{unicode-math}
+\setmathfont{Latin Modern Math}
+\RequirePackage{xcolor,graphicx,booktabs,tabularx,longtable,array,microtype}
+\RequirePackage{enumitem,titlesec,fancyhdr,caption,needspace,float}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{xurl}
+\RequirePackage{hyperref}
+\definecolor{navy}{HTML}{152B45}
+\definecolor{teal}{HTML}{138A8A}
+\definecolor{coral}{HTML}{B85439}
+\definecolor{fog}{HTML}{EDF4F5}
+\definecolor{ink}{HTML}{243844}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,pdfauthor={Vincent Boucher — President of MONTREAL.AI},pdftitle={AGI ALPHA FLYWHEEL — When Capability Creates Opportunity}}
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt}
+\setlength{\emergencystretch}{2em}
+\linespread{1.045}
+\titleformat{\section}{\sffamily\Large\bfseries\color{navy}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{navy}}{\thesubsection}{.7em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{19pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\setlist[itemize]{leftmargin=1.25em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=3pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.16}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\captionsetup{font=small,labelfont={bf,sf},labelsep=period}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{navy}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\sffamily\scriptsize\color{teal}RESEARCH EDITION · 27 OCTOBER 2026}
+\fancyfoot[L]{\sffamily\scriptsize MONTREAL.AI · Purpose, evidence, economics}
+\fancyfoot[R]{\sffamily\scriptsize\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\renewcommand{\footrulewidth}{0pt}
+\newtcolorbox{finding}[1][]{colback=fog,colframe=teal,boxrule=0pt,borderline west={2pt}{0pt}{teal},arc=0pt,left=10pt,right=10pt,top=8pt,bottom=8pt,fonttitle=\sffamily\bfseries,colbacktitle=navy,coltitle=white,breakable,#1}
+\newtcolorbox{boundary}[1][]{colback=coral!5,colframe=coral,boxrule=0pt,borderline west={2pt}{0pt}{coral},arc=0pt,left=10pt,right=10pt,top=8pt,bottom=8pt,fonttitle=\sffamily\bfseries,colbacktitle=coral,coltitle=white,breakable,#1}
+\newcommand{\evidence}[1]{{\sffamily\small\bfseries\color{teal}[#1]}}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\newcommand{\editiontitle}{AGI ALPHA FLYWHEEL — When Capability Creates Opportunity}
+\newcommand{\editionsubtitle}{Transformational Intelligence, Experience-Trained Specialists and the Expanding Frontier of Profitable Work}
+\newcommand{\editionauthor}{Vincent Boucher — President of MONTREAL.AI}
+\newcommand{\smalltitle}[1]{\begin{center}{\sffamily\bfseries\LARGE\color{navy}\editiontitle\par}\vspace{7pt}{\sffamily\large\editionsubtitle\par}\vspace{8pt}{\sffamily\bfseries\editionauthor\par}\vspace{9pt}{\sffamily\small\color{teal}#1 · 27 OCTOBER 2026}\end{center}\vspace{6pt}}

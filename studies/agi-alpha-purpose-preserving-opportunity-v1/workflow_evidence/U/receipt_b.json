@@ -1,0 +1,76 @@
+{
+  "condition": "U",
+  "packet": "B",
+  "start_utc": "2026-10-27T16:44:16Z",
+  "end_utc": "2026-10-27T16:44:45Z",
+  "elapsed_seconds": 29.0,
+  "clock_basis": "UTC from first tool-recorded start through report generation and verification, at one-second resolution",
+  "tool_call_count": 2,
+  "tool_call_count_basis": "Two exec_command invocations, each wrapped by one functions.exec invocation; wrappers listed separately rather than double-counted",
+  "orchestration_call_counts": {
+    "functions.exec": 2
+  },
+  "tool_calls": [
+    {
+      "sequence": 1,
+      "tool": "exec_command",
+      "purpose": "Record UTC start; hash own retained script and A deliverables; read complete packet B"
+    },
+    {
+      "sequence": 2,
+      "tool": "exec_command",
+      "purpose": "Run unchanged self-created audit.py on B, independently verify all 12 reports and A preservation, then write receipt_b.json"
+    }
+  ],
+  "retries_corrections": [],
+  "report_generation_runs": 1,
+  "report_corrections": 0,
+  "retained_script_reused": true,
+  "retained_script_changed": false,
+  "verification": {
+    "reports": 12,
+    "task_order_preserved": true,
+    "critical_fields_checked": true,
+    "valid_reports_checked_against_manual_expectations": 11,
+    "invalid_reports_checked": 1,
+    "passed_source_screens": 4,
+    "failed_valid_source_screens": 7,
+    "invalid_inputs": 1,
+    "all_assertions_passed": true,
+    "a_reports_and_receipt_preserved": true
+  },
+  "meaning_rechecked": {
+    "habitat": "wet",
+    "resource_mode": "flower",
+    "required_host": "monarch",
+    "provenance": "fictional-provenance-wetland-B",
+    "task_04_seasons": [
+      "late",
+      "mid"
+    ],
+    "host_requires_qualified_supply_row": true
+  },
+  "artifacts": {
+    "reports": "reports_b.json",
+    "receipt": "receipt_b.json",
+    "retained_script": "audit.py",
+    "reports_sha256": "14d9872efbcf50d6ae3c6a8f679d3b7a2ea5ae2490676f800ddc6b9c43b3221c",
+    "unchanged_a_and_script_sha256": {
+      "reports_a.json": "30016eaf56c83e9b94a46a2837e43db4621a4f8a678e94708e8c5df5972c8d92",
+      "receipt_a.json": "ffe38e73e94a0d4db84768840cb218e1d80d4f6614b23bef92d502b1154af5b9",
+      "audit.py": "98fe9877549a0471f22b3792f844206e1137ba8758b9831be26fcce5a81ac192"
+    }
+  },
+  "provider": null,
+  "input_tokens": null,
+  "output_tokens": null,
+  "billing_cost": null,
+  "billing_status": "unknown; provider/token billing was not exposed",
+  "limitations": [
+    "Audit is limited to the supplied source-screen definitions and finite catalog; no external botanical or inventory verification was performed.",
+    "No field outcomes, customer acceptance, or production authorization are established.",
+    "No protected oracle, answers, other workflow arms, existing external results, or study code were accessed; only own authorized A artifacts were hashed for preservation.",
+    "Start time was recorded on the first tool invocation; any pre-tool instruction-to-start latency is not observable here.",
+    "Provider and token billing are unavailable and remain unknown."
+  ]
+}

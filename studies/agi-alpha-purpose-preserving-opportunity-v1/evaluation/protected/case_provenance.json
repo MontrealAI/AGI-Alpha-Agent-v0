@@ -1,0 +1,33 @@
+{
+  "created_at_utc": "2026-10-27T16:40:33.112776+00:00",
+  "method_freeze_at_utc": "2026-10-27T16:37:51.615710+00:00",
+  "construction": "independent evaluator wrote cases after method freeze without inspecting core code",
+  "selection": "purposeful boundary/failure coverage, not random sampling or a natural population",
+  "no_post_confirmation_tuning": true,
+  "rationale": {
+    "A-20261027-01": "Positive: one documented taxon covers early and mid; another covers late.",
+    "A-20261027-02": "Positive boundary: zero reference week, exact deadline and stock, nonnegative zero quote.",
+    "A-20261027-03": "Positive: minimum two distinct taxa per requested season, unequal surplus across seasons.",
+    "A-20261027-04": "Positive: duplicate taxon/lot rows consume aggregate stock but count as one species.",
+    "A-20261027-05": "Valid negative: the proposal leaves early flowering demand unmet despite valid supplied lots.",
+    "A-20261027-06": "Valid negative: an early species lacks documented dry-context support; no suitability inference.",
+    "A-20261027-07": "Valid negative: all nectar fields are null; no nectar support is invented from flowering.",
+    "A-20261027-08": "Valid negative: explicit pollen-only evidence and unknown nectar are distinct findings.",
+    "A-20261027-09": "Valid negative: each duplicate row is below stock but their shared-lot total is above stock.",
+    "A-20261027-10": "Valid negative: unknown taxon, unknown lot, and missing lot remain separate audit findings.",
+    "A-20261027-11": "Invalid input: integral-looking JSON float must not be accepted as integer quantity.",
+    "A-20261027-12": "Invalid input: boolean quantity and ambiguous duplicate lot IDs must not pass.",
+    "B-20261027-01": "Positive transfer: wet context, documented monarch host, and different required provenance.",
+    "B-20261027-02": "Positive: pollen-only taxon qualifies for flower mode; two taxa per season and host are required.",
+    "B-20261027-03": "Positive: same host taxon in different valid lots does not inflate seasonal or host diversity.",
+    "B-20261027-04": "Positive: noncanonical season order, a subset of seasons, and exact delivery deadline.",
+    "B-20261027-05": "Valid negative: flowering coverage survives a substitution but the monarch-host obligation does not.",
+    "B-20261027-06": "Valid negative: substitute is a documented host elsewhere but lacks the requested wet context.",
+    "B-20261027-07": "Valid negative: source coverage remains visible while unknown/failed lot evidence blocks supply.",
+    "B-20261027-08": "Valid negative: unknown provenance, mismatched region, missing date, and delay are all preserved.",
+    "B-20261027-09": "Valid negative: no unauthorized unit conversion and no silent taxon substitution in a lot.",
+    "B-20261027-10": "Valid negative: an empty order does not erase original flowering or host demand.",
+    "B-20261027-11": "Valid negative: zero available stock is valid data, not missing data; host supply fails.",
+    "B-20261027-12": "Invalid input: zero requested quantity and a negative delivery week cannot pass."
+  }
+}
