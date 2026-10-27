@@ -1,0 +1,379 @@
+{
+  "study_id": "PAID-WORK-RETAINED-ALPHA-2026-10-26-v3",
+  "status": "Prespecified paid-job-learning study; parameters freeze before independent confirmation.",
+  "currency": "USD, pre-tax; transaction-tax pass-through and corporate-income-tax schedules excluded",
+  "train_seed": 951043,
+  "test_seed": 951251,
+  "months": 24,
+  "runoff_months": 3,
+  "seed_cash": 20000,
+  "discovery_cost": 5250.6,
+  "discovery_budget_counts": {
+    "asset_construction_unit": 12,
+    "asset_evaluation_unit": 8,
+    "asset_integration_unit": 30,
+    "intake_clarification": 40
+  },
+  "cost_register": "../evidence/workflow_costs_v3.json",
+  "human_reference": {
+    "central": 22856,
+    "low": 13014,
+    "high": 37175,
+    "basis": "Published GSA role rates multiplied by explicit assumed multidisciplinary effort; not a received quote or proof of human-only methods."
+  },
+  "price_fractions": [
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0,
+    1.05,
+    1.1,
+    1.15,
+    1.2
+  ],
+  "fixed_price_ablation": 0.65,
+  "operations": {
+    "monthly_control_cost": 200,
+    "monthly_business_automation_cost": 300,
+    "monthly_workbench_minutes": 46080,
+    "monthly_token_quota": 500000000,
+    "research_fraction_limit": 0.7,
+    "reserve_months": 3,
+    "warranty_reserve_fraction": 0.06,
+    "payment_fraction": 0.029,
+    "payment_fixed": 0.3,
+    "storage_per_delivery": 3,
+    "max_queue_age_months": 1,
+    "max_corrections": 2,
+    "postdelivery_discovery": 0.8,
+    "admission_abstention": 0.06,
+    "monthly_common_burst_probability": 0.06,
+    "burst_capacity_multiplier": 0.65,
+    "burst_semantic_penalty": 0.12,
+    "burst_shared_error_increment": 0.06,
+    "routine_provider_human_minutes": 0,
+    "qualification_units_per_opportunity": 2,
+    "collection_timing": "collection_probability is observed payment authorization at delivery. Authorized amounts settle after collection_lag months; no later counterparty default is modeled. Failed authorization is known at delivery and incurs all work costs. Only cleared cash may fund spending.",
+    "fixed_automation_scope": "Monthly control and business-automation fees cover deterministic monitoring, billing/listings and orchestration subscriptions, not unmetered frontier-model calls."
+  },
+  "market": {
+    "value_grid": [
+      0.9,
+      1.3,
+      1.8
+    ],
+    "trust_grid": [
+      0.04,
+      0.14,
+      0.3
+    ],
+    "prior_weights": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "value_log_sigma": 0.3,
+    "taste_scale_fraction": 0.12,
+    "human_quality_belief": 0.96,
+    "our_quality_belief": 0.9,
+    "human_review_fraction": 0.04,
+    "our_review_fraction": 0.06,
+    "integration_fraction": 0.08,
+    "postpone_utility_fraction": 0.02,
+    "arrival_prior_shape": 2,
+    "arrival_prior_rate": 0.5,
+    "observed_choice": "Only our purchase/nonpurchase; other choices are analyst-only latent labels.",
+    "price_game": "Seller posts a bounded-grid price; buyers best respond among our package, human service, retain current method and decline. Outside-provider prices are exogenous in primary; no Nash claim.",
+    "base_delivery_days": 5,
+    "human_delivery_days": 5,
+    "delay_cost_fraction_per_day": 0.002,
+    "switching_fraction_within_integration": 0.03,
+    "observed_incident_trust_coefficient": 1.0
+  },
+  "scope": {
+    "domains": 6,
+    "recipient_agents": 12,
+    "base_share": 0.7,
+    "rich_human_reference_multiplier": 1.6,
+    "rich_activity_multiplier": 1.8,
+    "supported_domain_fraction": 0.85,
+    "partial_reconstruction_saving": 0.35,
+    "existing_equivalent_R": 0.25,
+    "existing_equivalent_V": 0.2,
+    "partial_equivalent_probability": 0.25,
+    "ordinary_case_specific_learning_probability": 0.06,
+    "sampling_unit": "A distinct buyer/deployment or genuinely new integration/schema contract producing the full executable decision-engine package. Repeated allocation answers or changing cost/capacity/eligibility inputs inside a sold engine are included and create no additional full-package sale.",
+    "domain_names": [
+      "new_capacity_schema_deployment",
+      "new_eligibility_schema_deployment",
+      "new_cost_model_deployment",
+      "new_source_adapter_deployment",
+      "new_compound_schema_deployment",
+      "unsupported_nonlinear_extension"
+    ],
+    "ordinary_case_specific_learning_description": "Observed approved deliveries may leave narrow setup/context metadata. This reduces a small fraction of later reconstruction activity but never increases mechanical or semantic correctness; it does not create a broad admitted component or free transfer.",
+    "domain_weights": [
+      0.23,
+      0.2,
+      0.2,
+      0.19,
+      0.18
+    ],
+    "domain_semantic_penalties": [
+      0,
+      0.02,
+      0.03,
+      0.04,
+      0.06,
+      0
+    ],
+    "recipient_specialties": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "specialist_routing_fraction": 0.7
+  },
+  "assets": {
+    "R": {
+      "bit": 1,
+      "campaign": "R",
+      "domains": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "lifetime_months": 18,
+      "obsolescence_probability": 0.02,
+      "pilot_cases": 24,
+      "pilot_pass_threshold": 0.9
+    },
+    "V": {
+      "bit": 2,
+      "campaign": "V",
+      "domains": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "lifetime_months": 18,
+      "obsolescence_probability": 0.02,
+      "pilot_cases": 24,
+      "pilot_pass_threshold": 0.9
+    }
+  },
+  "policy": {
+    "forecast_months": 18,
+    "value_hurdle_fraction": 0,
+    "minimum_research_cash_headroom": 1000,
+    "financial_monthly_discount_rate": 0.005,
+    "allow_seed_funded_research": true,
+    "pilot_only_observable": true,
+    "exploration": "None in primary price controller; Bayesian learning uses endogenous purchased/nonpurchased offers. Optional exploration is a separate ablation.",
+    "objective": "Approximate posterior expected terminal pre-tax cash net of seed; receding-horizon one-campaign lookahead, not globally optimal POMDP. Cash/reserve and conservative next-period solvency constraints are separate eligibility constraints.",
+    "risk_constraint": "Deterministic protection of known liabilities, reserve-month fixed obligations and cash headroom; no claim of a general probabilistic cash-shortfall guarantee. Monte Carlo insolvency is reported separately."
+  },
+  "scenarios": {
+    "conservative": {
+      "human_reference": 13014,
+      "arrivals_month": 1,
+      "arrival_growth": 0,
+      "world_arrival_log_sigma": 0.45,
+      "buyer_value_multiplier": 0.9,
+      "buyer_trust_fraction": 0.3,
+      "semantic_correctness": 0.68,
+      "reconstruction_correctness": 0.84,
+      "retained_component_correctness": 0.96,
+      "semantic_validator_sensitivity": 0.75,
+      "mechanical_validator_sensitivity": 0.94,
+      "validator_specificity": 0.97,
+      "shared_fault_probability": 0.1,
+      "shared_fault_miss": 0.4,
+      "correction_success": 0.45,
+      "collection_probability": 0.9,
+      "collection_lag": 2,
+      "asset_build_success": 0.65,
+      "transfer_success": 0.65,
+      "activity_quantity_multiplier": 1.5
+    },
+    "central": {
+      "human_reference": 22856,
+      "arrivals_month": 4,
+      "arrival_growth": 0.01,
+      "world_arrival_log_sigma": 0.35,
+      "buyer_value_multiplier": 1.3,
+      "buyer_trust_fraction": 0.14,
+      "semantic_correctness": 0.85,
+      "reconstruction_correctness": 0.93,
+      "retained_component_correctness": 0.985,
+      "semantic_validator_sensitivity": 0.88,
+      "mechanical_validator_sensitivity": 0.98,
+      "validator_specificity": 0.98,
+      "shared_fault_probability": 0.05,
+      "shared_fault_miss": 0.25,
+      "correction_success": 0.68,
+      "collection_probability": 0.96,
+      "collection_lag": 1,
+      "asset_build_success": 0.8,
+      "transfer_success": 0.82,
+      "activity_quantity_multiplier": 1.0
+    },
+    "favorable": {
+      "human_reference": 37175,
+      "arrivals_month": 8,
+      "arrival_growth": 0.02,
+      "world_arrival_log_sigma": 0.25,
+      "buyer_value_multiplier": 1.8,
+      "buyer_trust_fraction": 0.04,
+      "semantic_correctness": 0.94,
+      "reconstruction_correctness": 0.97,
+      "retained_component_correctness": 0.995,
+      "semantic_validator_sensitivity": 0.95,
+      "mechanical_validator_sensitivity": 0.995,
+      "validator_specificity": 0.99,
+      "shared_fault_probability": 0.02,
+      "shared_fault_miss": 0.12,
+      "correction_success": 0.82,
+      "collection_probability": 0.99,
+      "collection_lag": 1,
+      "asset_build_success": 0.9,
+      "transfer_success": 0.92,
+      "activity_quantity_multiplier": 0.8
+    }
+  },
+  "nonclaims": [
+    "No novel optimization algorithm is claimed.",
+    "Synthetic mechanism correctness does not calibrate frontier model accuracy.",
+    "No real buyers, provider model execution, transactions or ENS authentication are represented as observed.",
+    "No prescribed price discount or minimum number of investments defines success.",
+    "Missing retained assets do not remove the frontier baseline's ability to reconstruct the same compiler and checker.",
+    "Candidate, validated artifact, admitted positive expected Alpha and realized net value are distinct.",
+    "Moving Beta schedules and modeled net-Alpha estimates are assumptions, not observed autonomous invention or a permanent moat.",
+    "Shared versus private network policies have identical agent counts and aggregate provider quotas."
+  ],
+  "network": {
+    "creator_recipient": 0,
+    "admission_mean_gain_prior": 0.0,
+    "admission_prior_effective_cases": 8,
+    "assessment_minimum_cases": 12,
+    "scope": "Authenticated direct-label *.agent.agi.eth members; simulated identity checks only. All shareable admitted Alpha is discoverable and optionally usable by every member subject to scope, versions, prerequisites, freshness and revocation. No club authority changes.",
+    "beta_epochs": [
+      {
+        "month": 1,
+        "version": "beta-1",
+        "reconstruction_quantity_factor": 1.0,
+        "public_equivalent_probability_per_month": 0.015
+      },
+      {
+        "month": 9,
+        "version": "beta-2",
+        "reconstruction_quantity_factor": 0.8,
+        "public_equivalent_probability_per_month": 0.05
+      },
+      {
+        "month": 17,
+        "version": "beta-3",
+        "reconstruction_quantity_factor": 0.65,
+        "public_equivalent_probability_per_month": 0.08
+      }
+    ],
+    "alpha_forecast_horizon_months": 12,
+    "reassessment_cases": 16,
+    "retirement_if_nonpositive": true,
+    "fixed_compute_comparison": true,
+    "initial_beta_description": "Competent current frontier models, public optimization tools and every already available recipient-compatible retained or equivalent capability; no absence-of-file incapability assumption.",
+    "evidence_max_age_months": 4,
+    "periodic_reassessment_months": 3,
+    "alpha_activity_effect_fraction": 1.0,
+    "alpha_quality_effect_fraction": 1.0,
+    "effect_interpretation": "Named reconstructible activities are avoided only after supported admission and successful recipient adaptation. Fractions expose uncertain transfer of component activity/reliability into complete project work; they are not a generic expert-use bonus."
+  },
+  "paid_job_learning": {
+    "enabled": true,
+    "scan_probability": 0.35,
+    "candidate_probability_given_scan": 0.25,
+    "rights_available_probability": 0.95,
+    "retention_generalization_success": 0.85,
+    "primary_scope_domains": 1,
+    "optional_research_enabled": true,
+    "local_artifact_reuse_in_beta": true,
+    "candidate_trigger": "Observable validated delivery, irrespective of latent material correctness or future collections. Source rights and portability are simulated and may fail.",
+    "scope_boundary": "One source-job-bound schema capsule. No global capability emerges from one bespoke job. Original installed-engine uses remain included and are never new full-package sales.",
+    "local_reuse_boundary": "The originator retains ordinary useful source artifacts in its competent Beta. Paid Alpha retention pays only incremental sanitized portability/generalization and new evidence.",
+    "assessment_strata": [
+      "dense_standard",
+      "sparse_eligibility",
+      "tight_capacity",
+      "ties_and_degeneracy"
+    ],
+    "free_ordinary_reuse_across_agents": false
+  }
+}

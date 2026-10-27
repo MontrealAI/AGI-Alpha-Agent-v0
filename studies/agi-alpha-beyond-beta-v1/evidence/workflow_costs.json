@@ -1,0 +1,685 @@
+{
+  "schema_version": 1,
+  "study": "Verified Optimization Foundry",
+  "evidence_date": "2026-10-26",
+  "currency": "USD",
+  "status": "Proposed cost quantities for fresh pre-run protocol; official tariffs verified, quantities unmeasured. Final frozen simulator configuration controls execution.",
+  "tariffs": {
+    "astra_input_per_million": 10.0,
+    "astra_output_per_million": 50.0,
+    "terra_input_per_million": 1.0,
+    "terra_output_per_million": 5.0,
+    "container_16gb_20minute_usd": 0.48,
+    "web_search_call_usd": 0.01,
+    "file_search_gb_day_usd": 0.1
+  },
+  "stages": [
+    {
+      "id": "intake_clarification",
+      "astra_input": 240000,
+      "astra_output": 40000,
+      "terra_input": 400000,
+      "terra_output": 40000,
+      "container_sessions_16gb": 1,
+      "tools_usd": 0.2,
+      "other_usd": 0.0,
+      "resource_minutes": 60,
+      "description": "Automated scope negotiation, schema checks, clarification, safe non-safety-critical boundary, and buyer-provided constraint confirmation.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 5.68,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 20
+    },
+    {
+      "id": "frontier_formulation",
+      "astra_input": 3000000,
+      "astra_output": 600000,
+      "terra_input": 500000,
+      "terra_output": 80000,
+      "container_sessions_16gb": 12,
+      "tools_usd": 0.8,
+      "other_usd": 0.0,
+      "resource_minutes": 360,
+      "description": "Astra Pro reasons over the new domain, objectives, constraints, alternatives and acceptance evidence. New-job reasoning is retained in full.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 67.46,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "max"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 80
+    },
+    {
+      "id": "semantic_compiler_reconstruction",
+      "astra_input": 800000,
+      "astra_output": 160000,
+      "terra_input": 400000,
+      "terra_output": 64000,
+      "container_sessions_16gb": 14,
+      "tools_usd": 0.16,
+      "other_usd": 0.0,
+      "resource_minutes": 160,
+      "description": "Reconstruct the reusable DSL parser, typed constraint lowering and compiler core when the recipient lacks an equivalent admitted asset.",
+      "potentially_reusable_by": "R",
+      "unavoidable_fraction": 0,
+      "derived_usd": 23.6,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 16
+    },
+    {
+      "id": "task_specific_compiler_adapter",
+      "astra_input": 200000,
+      "astra_output": 40000,
+      "terra_input": 100000,
+      "terra_output": 16000,
+      "container_sessions_16gb": 4,
+      "tools_usd": 0.04,
+      "other_usd": 0.0,
+      "resource_minutes": 60,
+      "description": "Create and verify the new buyer-specific mapping and adapter, even when the compiler core is reused.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 6.14,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 4
+    },
+    {
+      "id": "solver_interface_reconstruction",
+      "astra_input": 800000,
+      "astra_output": 120000,
+      "terra_input": 2000000,
+      "terra_output": 300000,
+      "container_sessions_16gb": 30,
+      "tools_usd": 0.1,
+      "other_usd": 0.0,
+      "resource_minutes": 180,
+      "description": "Reconstruct the reusable solver adapter, executable API and packaging scaffold; the underlying public optimization algorithm is not claimed as a new discovery.",
+      "potentially_reusable_by": "R",
+      "unavoidable_fraction": 0,
+      "derived_usd": 32.0,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 10
+    },
+    {
+      "id": "project_integration",
+      "astra_input": 800000,
+      "astra_output": 120000,
+      "terra_input": 2000000,
+      "terra_output": 300000,
+      "container_sessions_16gb": 30,
+      "tools_usd": 0.1,
+      "other_usd": 0.0,
+      "resource_minutes": 180,
+      "description": "Integrate new task data, configuration, API contracts and executable handoff; automated execution is charged even with retained assets.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 32.0,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 10
+    },
+    {
+      "id": "independent_semantic_validation",
+      "astra_input": 1000000,
+      "astra_output": 200000,
+      "terra_input": 800000,
+      "terra_output": 80000,
+      "container_sessions_16gb": 20,
+      "tools_usd": 0.2,
+      "other_usd": 0.0,
+      "resource_minutes": 180,
+      "description": "Astra Pro independently checks the original buyer constraints, objective and scope; Terra executes evidence checks. Shared specification error remains possible.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 31.0,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "max"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 20
+    },
+    {
+      "id": "certificate_checker_reconstruction",
+      "astra_input": 600000,
+      "astra_output": 120000,
+      "terra_input": 800000,
+      "terra_output": 100000,
+      "container_sessions_16gb": 30,
+      "tools_usd": 0.1,
+      "other_usd": 0.0,
+      "resource_minutes": 180,
+      "description": "Reconstruct the residual-certificate checker, original-capacity checks and counterexample localization when no equivalent verifier asset exists.",
+      "potentially_reusable_by": "V",
+      "unavoidable_fraction": 0,
+      "derived_usd": 27.8,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 10
+    },
+    {
+      "id": "adversarial_harness_reconstruction",
+      "astra_input": 200000,
+      "astra_output": 40000,
+      "terra_input": 200000,
+      "terra_output": 30000,
+      "container_sessions_16gb": 10,
+      "tools_usd": 0.05,
+      "other_usd": 0.0,
+      "resource_minutes": 90,
+      "description": "Reconstruct the reusable mutation/property/stress-test harness. Reuse avoids harness construction, not fresh test execution.",
+      "potentially_reusable_by": "V",
+      "unavoidable_fraction": 0,
+      "derived_usd": 9.2,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 5
+    },
+    {
+      "id": "fresh_stress_and_holdout_execution",
+      "astra_input": 200000,
+      "astra_output": 40000,
+      "terra_input": 200000,
+      "terra_output": 30000,
+      "container_sessions_16gb": 30,
+      "tools_usd": 0.05,
+      "other_usd": 0.0,
+      "resource_minutes": 150,
+      "description": "Generate and execute fresh cases, held-out tests, fault injection and failure analysis under the new project specification.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 18.8,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 5
+    },
+    {
+      "id": "packaging_handoff",
+      "astra_input": 320000,
+      "astra_output": 48000,
+      "terra_input": 800000,
+      "terra_output": 80000,
+      "container_sessions_16gb": 6,
+      "tools_usd": 0.1,
+      "other_usd": 0.0,
+      "resource_minutes": 60,
+      "description": "Generate reproducible package, evidence manifest, scope limitations, API instructions and automated buyer handoff.",
+      "potentially_reusable_by": null,
+      "unavoidable_fraction": 1,
+      "derived_usd": 9.78,
+      "evidence_class": "assumed usage quantities priced at documented tariffs",
+      "astra_configuration": {
+        "model": "gpt-6-astra",
+        "reasoning_mode": "pro",
+        "reasoning_effort": "xhigh"
+      },
+      "terra_configuration": {
+        "model": "gpt-6.1-terra",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "high"
+      },
+      "provider_human_minutes": 0,
+      "web_search_calls": 10
+    }
+  ],
+  "correction": {
+    "id": "correction",
+    "astra_input": 800000,
+    "astra_output": 160000,
+    "terra_input": 1200000,
+    "terra_output": 160000,
+    "container_sessions_16gb": 40,
+    "tools_usd": 0.1,
+    "other_usd": 0.0,
+    "resource_minutes": 240,
+    "description": "Astra Pro diagnoses the failed evidence and designs a repair; Terra implements and executes it. Full revalidation is charged separately.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 37.3,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 10
+  },
+  "revalidation": {
+    "id": "revalidation",
+    "astra_input": 2000000,
+    "astra_output": 400000,
+    "terra_input": 2000000,
+    "terra_output": 240000,
+    "container_sessions_16gb": 90,
+    "tools_usd": 0.4,
+    "other_usd": 0.0,
+    "resource_minutes": 600,
+    "description": "Full independent semantic/certificate/adversarial revalidation after correction; no assumed free validator.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 86.8,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 40
+  },
+  "recovery": {
+    "id": "recovery",
+    "astra_input": 160000,
+    "astra_output": 32000,
+    "terra_input": 800000,
+    "terra_output": 80000,
+    "container_sessions_16gb": 10,
+    "tools_usd": 0.05,
+    "other_usd": 0.0,
+    "resource_minutes": 90,
+    "description": "Bounded automated environment/tool recovery; repeated failure ends in paid abstention or rejection, not a hidden human team.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 9.25,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 5
+  },
+  "asset_construction_unit": {
+    "id": "asset_construction_unit",
+    "astra_input": 6000000,
+    "astra_output": 1200000,
+    "terra_input": 6000000,
+    "terra_output": 800000,
+    "container_sessions_16gb": 180,
+    "tools_usd": 2.0,
+    "other_usd": 0.0,
+    "resource_minutes": 1200,
+    "description": "One candidate reusable capability construction/research attempt, including unsuccessful attempts.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 218.4,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 200
+  },
+  "asset_evaluation_unit": {
+    "id": "asset_evaluation_unit",
+    "astra_input": 4000000,
+    "astra_output": 800000,
+    "terra_input": 4000000,
+    "terra_output": 400000,
+    "container_sessions_16gb": 240,
+    "tools_usd": 0.5,
+    "other_usd": 0.0,
+    "resource_minutes": 1800,
+    "description": "One independent Astra Pro evaluation plus fresh execution and adversarial tests for a capability candidate.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 201.7,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 50
+  },
+  "asset_integration_unit": {
+    "id": "asset_integration_unit",
+    "astra_input": 480000,
+    "astra_output": 80000,
+    "terra_input": 2000000,
+    "terra_output": 200000,
+    "container_sessions_16gb": 30,
+    "tools_usd": 0.1,
+    "other_usd": 0.0,
+    "resource_minutes": 240,
+    "description": "Capability versioning, typed dependency and scope integration, graph-admission evidence, and packaging.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 26.3,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 10
+  },
+  "asset_revalidation_unit": {
+    "id": "asset_revalidation_unit",
+    "astra_input": 400000,
+    "astra_output": 80000,
+    "terra_input": 1000000,
+    "terra_output": 100000,
+    "container_sessions_16gb": 20,
+    "tools_usd": 0.1,
+    "other_usd": 0.0,
+    "resource_minutes": 120,
+    "description": "Fresh version/freshness/revocation/composition revalidation for a retained capability.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 19.2,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 10
+  },
+  "asset_maintenance_month": {
+    "id": "asset_maintenance_month",
+    "astra_input": 200000,
+    "astra_output": 40000,
+    "terra_input": 400000,
+    "terra_output": 40000,
+    "container_sessions_16gb": 5,
+    "tools_usd": 0.02,
+    "other_usd": 0.0,
+    "resource_minutes": 60,
+    "description": "Automatic monthly monitoring, dependency refresh and bounded maintenance per active asset.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 7.02,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 2
+  },
+  "recipient_acquisition": {
+    "id": "recipient_acquisition",
+    "astra_input": 200000,
+    "astra_output": 32000,
+    "terra_input": 500000,
+    "terra_output": 80000,
+    "container_sessions_16gb": 8,
+    "tools_usd": 0.05,
+    "other_usd": 0.0,
+    "resource_minutes": 90,
+    "description": "Recipient capability-gap check, scope adaptation, admission test and integration; no benefit for an existing equivalent recipient.",
+    "potentially_reusable_by": null,
+    "unavoidable_fraction": 1,
+    "derived_usd": 8.39,
+    "evidence_class": "assumed usage quantities priced at documented tariffs",
+    "astra_configuration": {
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "xhigh"
+    },
+    "terra_configuration": {
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high"
+    },
+    "provider_human_minutes": 0,
+    "web_search_calls": 5
+  },
+  "investment_campaigns": {
+    "R": {
+      "counts": {
+        "asset_construction_unit": 12,
+        "asset_evaluation_unit": 12,
+        "asset_integration_unit": 16,
+        "asset_revalidation_unit": 20,
+        "intake_clarification": 20
+      },
+      "derived_budget_usd": 5959.6,
+      "evidence_class": "assumed finite research campaign; quantity-derived cost, not a paid quote",
+      "note": "Pays for all declared attempts, evaluation, integration and fresh tests. No commercial efficacy or success is assumed by this budget.",
+      "astra_input": 140480000,
+      "astra_output": 27680000,
+      "terra_input": 180000000,
+      "terra_output": 20400000,
+      "container_sessions_16gb": 5940,
+      "resource_minutes": 43440
+    },
+    "V": {
+      "counts": {
+        "asset_construction_unit": 12,
+        "asset_evaluation_unit": 24,
+        "asset_integration_unit": 16,
+        "asset_revalidation_unit": 40,
+        "intake_clarification": 20
+      },
+      "derived_budget_usd": 8764.0,
+      "evidence_class": "assumed finite research campaign; quantity-derived cost, not a paid quote",
+      "note": "Pays for all declared attempts, evaluation, integration and fresh tests. No commercial efficacy or success is assumed by this budget.",
+      "astra_input": 196480000,
+      "astra_output": 38880000,
+      "terra_input": 248000000,
+      "terra_output": 27200000,
+      "container_sessions_16gb": 9220,
+      "resource_minutes": 67440
+    },
+    "bundle": {
+      "counts": {
+        "asset_construction_unit": 20,
+        "asset_evaluation_unit": 36,
+        "asset_integration_unit": 24,
+        "asset_revalidation_unit": 50,
+        "intake_clarification": 20
+      },
+      "derived_budget_usd": 13334.0,
+      "evidence_class": "assumed finite research campaign; quantity-derived cost, not a paid quote",
+      "note": "Pays for all declared attempts, evaluation, integration and fresh tests. No commercial efficacy or success is assumed by this budget.",
+      "astra_input": 300320000,
+      "astra_output": 59520000,
+      "terra_input": 370000000,
+      "terra_output": 41000000,
+      "container_sessions_16gb": 13980,
+      "resource_minutes": 101760
+    }
+  },
+  "totals": {
+    "first_complete_attempt_usd": 263.46,
+    "resource_minutes_per_first_attempt": 1660,
+    "container_minutes_per_first_attempt": 3740,
+    "astra_billed_input": 8160000,
+    "astra_billed_output": 1528000,
+    "terra_billed_input": 8200000,
+    "terra_billed_output": 1120000,
+    "R_avoidable_reconstruction_usd": 55.6,
+    "V_avoidable_reconstruction_usd": 37.0
+  },
+  "rules": [
+    "All token quantities are aggregate billed usage, including Pro subwork and reasoning. Do not add reasoning tokens twice.",
+    "Requests are assumed decomposed at no more than 240000 input tokens each. A context-budget breach activates documented long-context tariffs or causes paid rejection; it is not free compaction.",
+    "No cached-input, Batch, Flex, subscription, negotiated discount, free tool quota or unlimited concurrency is assumed.",
+    "Resource minutes are unmeasured critical workbench occupancy with at most four experimental containers in parallel; container minutes are separate billed compute time.",
+    "Reusability removes named reconstruction stages only after scope-compatible admission and successful recipient integration. No generic expert-use multiplier or automatic quality bonus is assigned.",
+    "Novel problem formulation, independent semantic judgment, current specification checks, fresh stress tests, integration and packaging remain charged.",
+    "Buyer-side effort and delay affect demand; provider-side human review and manual onboarding are zero in this automated primary configuration. Failure remains rejection/abstention with all automated costs retained.",
+    "Up to two bounded automated correction/revalidation rounds are included in the offered scope. Charge each invoked round fully; do not charge an unused round or assume either round is free.",
+    "Construction/evaluation campaign cost belongs to the investment ledger only; do not charge it again to delivery. Maintenance and recipient acquisition are separate."
+  ],
+  "exploratory_quantity_range": [
+    0.5,
+    4.0
+  ],
+  "other_cost_assumptions": {
+    "indexed_evidence_gb_per_project": 1.0,
+    "evidence_retention_days": 30,
+    "derived_index_storage_usd_per_project": 3.0,
+    "control_plane_monthly_usd_range": [
+      50,
+      1000
+    ],
+    "control_plane_monthly_usd_proposed": 200,
+    "payment_fee_us_domestic_card": {
+      "fraction": 0.029,
+      "fixed_usd": 0.3,
+      "source": "https://stripe.com/pricing",
+      "note": "Illustrative published US domestic-card tariff, not user account eligibility or the AGI Jobs settlement mechanism."
+    }
+  },
+  "source_urls": [
+    "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/guides/latest-model",
+    "https://developers.openai.com/api/docs/guides/reasoning",
+    "https://openai.com/index/introducing-gpt-6-1-terra/"
+  ],
+  "supported_revision_rounds": 2
+}

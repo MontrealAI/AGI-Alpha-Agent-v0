@@ -1,0 +1,137 @@
+{
+  "schema": "recipient-prior-final-independent-review/v1",
+  "status": "PASS",
+  "created_at_utc": "2026-10-27T00:39:39.378993+00:00",
+  "basis": "Independent complete-history accounting audit and posthoc verification of separately frozen synthetic diagnostic claims",
+  "histories": 300,
+  "matched_world_ids": 100,
+  "monthly_rows": 8100,
+  "paid_capital_purchases": 512,
+  "paid_job_retention_purchases": 510,
+  "complete_cash_resource_audit": "qa/posterior_diagnostic_reconciliation.json",
+  "complete_cash_resource_audit_sha256": "3660a77d384937471c5fc0ce1d5770f5e470b38093aea93cb85e884caaa59ffd",
+  "freeze_closures": {
+    "results/paid_work_final/freeze.json": {
+      "files": 19,
+      "matched": true,
+      "changed": []
+    },
+    "results/paid_work_prior_diagnostic/freeze.json": {
+      "files": 28,
+      "matched": true,
+      "changed": []
+    }
+  },
+  "run_began_after_freeze": true,
+  "run_completed_at_utc": "2026-10-27T00:36:03.744724+00:00",
+  "source_diff_scope": "Approved prior helper/call and quality-effect multiplier only; actual compound multiplier=1.0. No latent source truth enters prior.",
+  "reported_summary_checks": [
+    {
+      "metric": "posterior_network_minus_beta",
+      "mean_residual": 0.0,
+      "pass": true
+    },
+    {
+      "metric": "posterior_network_minus_frozen",
+      "mean_residual": 0.0,
+      "pass": true
+    },
+    {
+      "metric": "posterior_quality_adjusted_minus_beta",
+      "mean_residual": 0.0,
+      "pass": true
+    }
+  ],
+  "independently_recomputed": {
+    "frozen_network_minus_beta": {
+      "n": 100,
+      "mean": -1300.1927359840274,
+      "median": -1243.6751999771222,
+      "p05": -2074.078079992812,
+      "p95": -589.8547199673023,
+      "min": -6158.3183999583125,
+      "max": -316.49280000384897,
+      "positive": 0,
+      "negative": 100,
+      "zero": 0
+    },
+    "posterior_network_minus_beta": {
+      "n": 100,
+      "mean": -1172.6495039840136,
+      "median": -1180.5439999792725,
+      "p05": -1894.4651200005785,
+      "p95": -589.8547199673023,
+      "min": -2281.225599948317,
+      "max": -316.49280000384897,
+      "positive": 0,
+      "negative": 100,
+      "zero": 0
+    },
+    "posterior_network_minus_frozen": {
+      "n": 100,
+      "mean": 127.54323200001382,
+      "median": 0.0,
+      "p05": 0.0,
+      "p95": 543.5327200014144,
+      "min": -152.43039999902248,
+      "max": 4243.078399995342,
+      "positive": 36,
+      "negative": 1,
+      "zero": 63
+    },
+    "posterior_quality_adjusted_minus_beta": {
+      "n": 100,
+      "mean": -1172.6495039840136,
+      "median": -1180.5439999792725,
+      "p05": -1894.4651200005785,
+      "p95": -589.8547199673023,
+      "min": -2281.225599948317,
+      "max": -316.49280000384897,
+      "positive": 0,
+      "negative": 100,
+      "zero": 0
+    },
+    "posterior_true_projects_minus_beta": {
+      "n": 100,
+      "mean": 0.0,
+      "median": 0.0,
+      "p05": 0.0,
+      "p95": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "positive": 0,
+      "negative": 0,
+      "zero": 100
+    },
+    "posterior_useful_recipient_projects": {
+      "n": 100,
+      "mean": 1.53,
+      "median": 0.0,
+      "p05": 0.0,
+      "p95": 7.049999999999997,
+      "min": 0.0,
+      "max": 10.0,
+      "positive": 36,
+      "negative": 0,
+      "zero": 64
+    }
+  },
+  "useful_retention_worlds": 36,
+  "optional_C_worlds": 1,
+  "claim_clearance": [
+    "Useful retained capabilities are deployed in 36 of 100 exploratory worlds after changing a decision prior.",
+    "Average total-policy value improves by about $127.54 relative to the frozen network policy; the median difference is zero.",
+    "Every exploratory network world remains less profitable than the matched competent Beta policy; average difference is about minus $1,172.65.",
+    "There are zero additional true accepted projects relative to Beta in every world.",
+    "This does not establish positive additional Alpha, asset-level repayment, self-financing of the extra retention programme beyond competent Beta, or self-acceleration.",
+    "Frozen ordinary Beta commercial findings are unaffected."
+  ],
+  "limits": [
+    "Useful-retention counts are capability-project pairs and may count multiple retained nodes on one project.",
+    "Policy changes can affect later pricing/allocation; mean profit changes do not isolate any individual asset.",
+    "All actual quality, costs, paid tests, demand and Beta assumptions remain unchanged and uncalibrated where previously labeled.",
+    "The scenario was selected after inspecting the original result; this is exploratory, not replacement primary confirmation.",
+    "Ordinary paid-work local learning is already retained inside competent Beta; this diagnostic does not isolate its causal economic contribution or deny its modeled benefit."
+  ],
+  "no_further_tuning_or_experiment": true
+}

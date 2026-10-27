@@ -1,0 +1,32 @@
+{
+  "status": "SOURCE_REVIEW_CLEAR_FOR_FREEZE",
+  "reviewed_at_utc": "2026-10-26T23:52:59.366810+00:00",
+  "basis": "Independent source review plus executable software checks; not empirical or commercial confirmation",
+  "test_command": "cd sim && python -m unittest test_economy_v3 test_graph_lifecycle_v3",
+  "tests_run": 32,
+  "tests_passed": 32,
+  "kernel_sha256": "921912699da45b9ae95ba7d6973d46bbb6a4d62183438f3d1400b5d916680bfd",
+  "reviewed_hashes": {
+    "sim/economy_v3.py": "921912699da45b9ae95ba7d6973d46bbb6a4d62183438f3d1400b5d916680bfd",
+    "sim/test_economy_v3.py": "22a02bdb20d3197903f195b8fd593bda665c2bb8fe827bbd268911f786d96975",
+    "sim/graph_lifecycle_v3.py": "ea7808682a0b8cddfa7f246db3abcb3faff3e68dae3fc6a6e9ae21480f0ed40f",
+    "sim/test_graph_lifecycle_v3.py": "b9ab31850e29b4eb330d810e7dd5177357e0316c301d552fb5a250cd8b9ec766",
+    "sim/config_v3.json": "bc3eb9e12584cab2e783f9baf156ebe1c96158b0284bbcd66096d786c15e93ba",
+    "evidence/workflow_costs_v3.json": "cb8c820058be0514ad636ef1d9d92b4032c075b337e5e72525296d370f118a2a",
+    "baseline/reconcile_v3.mjs": "a5976dcb200767848c8ea42d4e6a6a892b6911221a4a38fcad09bcb93ba759e4"
+  },
+  "branch_reconciliation_receipts": [
+    "qa/paid_job_funded_reconciliation.json",
+    "qa/paid_job_recovery_reconciliation.json"
+  ],
+  "required_before_confirmation": [
+    "Freeze final protocol, source, config and cost register together"
+  ],
+  "remaining_material_source_defects": [],
+  "limits": [
+    "Forecasts are bounded heuristics, not globally optimal control",
+    "Directed branch fixtures do not estimate commercial success",
+    "Component tests map to monetary value through uncalibrated assumptions",
+    "Final frozen confirmation requires all-history canonical reconciliation"
+  ]
+}

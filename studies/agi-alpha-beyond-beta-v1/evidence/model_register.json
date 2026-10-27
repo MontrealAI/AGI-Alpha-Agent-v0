@@ -1,0 +1,150 @@
+{
+  "evidence_date": "2026-10-26",
+  "classification": "external official reported evidence; not observed production usage",
+  "sources": [
+    {
+      "id": "OAI-01",
+      "title": "GPT-6 Astra model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn16view0",
+      "claim": "Official model specification and tariff. Standard input $10/M, cached $1/M, output $50/M; 1,050,000 context and 128,000 output. Undated alias only in displayed snapshots.",
+      "limits": "Do not infer job-level success, immutable version or user API entitlement."
+    },
+    {
+      "id": "OAI-02",
+      "title": "GPT-6.1 Terra model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn16view1",
+      "claim": "Official model specification and tariff. Standard input $1/M, cached $0.05/M, output $5/M. Tool calling uses Responses API.",
+      "limits": "No claimed equivalence between Pro subscription and API capacity; benchmark suitability is not project accuracy."
+    },
+    {
+      "id": "OAI-03",
+      "title": "API pricing",
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn16view2",
+      "claim": "Web search $10/1,000 calls plus content tokens; 16GB container $0.48/20-minute session; indexed file storage $0.10/GB-day. Eligible containers use minute billing with five-minute minimum.",
+      "limits": "Costs use the conservative full 20-minute unit; storage rate is indexed file storage, not every form of cloud storage."
+    },
+    {
+      "id": "OAI-04",
+      "title": "Using GPT-6",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn16view3",
+      "claim": "GPT-6 supports Pro execution mode. reasoning.mode=pro aggregates extra model work and bills its tokens at selected-model rates.",
+      "limits": "Some examples still name GPT-5.6. The model slug remains gpt-6-astra; Pro is an execution setting, not unlimited free infrastructure."
+    },
+    {
+      "id": "OAI-05",
+      "title": "GPT-6.1 Terra announcement",
+      "url": "https://openai.com/index/introducing-gpt-6-1-terra/",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn17view0",
+      "claim": "Official launch describes visual reasoning, efficient computer use and writing capability.",
+      "limits": "Reported capabilities motivate execution routing but do not calibrate this workflow or warrant a numerical expert bonus."
+    },
+    {
+      "id": "OAI-06",
+      "title": "Reasoning models guide",
+      "url": "https://developers.openai.com/api/docs/guides/reasoning",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn29view1",
+      "claim": "Reasoning usage must be budgeted as billed output, including Pro work.",
+      "limits": "Reasoning-token detail is a subset of reported output usage; do not add it twice."
+    },
+    {
+      "id": "PAY-01",
+      "title": "Stripe US standard domestic-card tariff",
+      "url": "https://stripe.com/pricing",
+      "retrieved": "2026-10-26",
+      "web_ref": "turn29view0",
+      "claim": "Published domestic-card price 2.9% plus $0.30 per successful transaction.",
+      "limits": "Illustrative payment-cost comparator, not account availability, authorization, settlement migration or a transaction."
+    }
+  ],
+  "models": {
+    "astra": {
+      "model_id": "gpt-6-astra",
+      "roles": [
+        "invention",
+        "strategy",
+        "problem formulation",
+        "builder reasoning",
+        "independent semantic validation",
+        "improvement evaluation",
+        "recovery diagnosis"
+      ],
+      "reasoning_mode": "pro",
+      "reasoning_effort": [
+        "xhigh",
+        "max"
+      ],
+      "input_usd_per_million": 10,
+      "cached_input_usd_per_million": 1,
+      "output_usd_per_million": 50,
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "supported_tools": [
+        "web search",
+        "file search",
+        "code interpreter",
+        "hosted shell",
+        "apply patch",
+        "skills",
+        "computer use",
+        "MCP"
+      ],
+      "snapshot_limit": "Only undated gpt-6-astra alias was displayed; execution version must be recorded in a future live study."
+    },
+    "terra": {
+      "model_id": "gpt-6.1-terra",
+      "roles": [
+        "visual and computer-use execution",
+        "tool execution",
+        "implementation iterations",
+        "test harness execution",
+        "packaging"
+      ],
+      "reasoning_mode": "standard",
+      "reasoning_effort": "high",
+      "input_usd_per_million": 1,
+      "cached_input_usd_per_million": 0.05,
+      "output_usd_per_million": 5,
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "tool_call_endpoint": "Responses API",
+      "snapshot_limit": "Only undated gpt-6.1-terra alias was displayed; execution version must be recorded in a future live study."
+    }
+  },
+  "common_conditions": {
+    "long_context_trigger_input_tokens": 272000,
+    "long_context_input_multiplier": 2,
+    "long_context_output_multiplier": 1.5,
+    "fast_mode_multiplier": 2,
+    "assumed_request_input_limit": 240000,
+    "account_tiers_reported": {
+      "Build": {
+        "rpm": 5000,
+        "tpm": 1000000
+      },
+      "Launch": {
+        "rpm": 10000,
+        "tpm": 4000000
+      },
+      "Grow": {
+        "rpm": 15000,
+        "tpm": 40000000
+      }
+    },
+    "access": "API access, spend budget, tools and concurrency are assumptions. No credentials, purchases or live frontier calls used for this economic edition. ChatGPT Pro is an access plan and is not interchangeable with API metering.",
+    "primary_billing": "Standard uncached tokens, no discounted Batch/Flex or free subscription inference; output includes all billed reasoning/Pro usage."
+  }
+}
