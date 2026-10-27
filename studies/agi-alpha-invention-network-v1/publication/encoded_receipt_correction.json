@@ -1,0 +1,69 @@
+{
+  "schema": "public-receipt-encoding-correction/v1",
+  "recorded_utc": "2026-10-27T12:45:43.409193+00:00",
+  "initial_public_commit": "c45176d4304c4fb8399184caacf1c7644049166e",
+  "initial_public_tree": "1b3bbe45504ce6a3f17af082bc5630d3427be8be",
+  "pull_request": 4962,
+  "classification": "Draft public-source projection mistake identified before research-release publication",
+  "finding": "The initial text tree included lifecycle/results.json with two base64 copies of the actual v2 NPY transport payload. A text extension did not make these opaque archive-only artifact bytes appropriate for the public source projection.",
+  "original_full_receipt": {
+    "archive_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/results.json",
+    "sha256": "d94645af55c835dbe57ad8d5a308f8150d079ecfa649d7a22f28d310cd937f84",
+    "bytes": 2066896,
+    "preserved_unchanged": true
+  },
+  "public_review_projection": {
+    "repository_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/review_summary.json",
+    "sha256": "0fec7b4281d4895990c443b02db3cba62eccc7956ccc370ffb8a57fb7da060a2",
+    "bytes": 252297,
+    "contains_opaque_binary_payload": false
+  },
+  "payload_references": [
+    {
+      "json_pointer": "/synthetic_positive_control/shared/operations/0/result/transferredArtifact/content",
+      "original_encoded_characters": 908800,
+      "decoded_bytes": 681600,
+      "artifact_sha256": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5",
+      "public_replacement": {
+        "kind": "archive-only-binary-artifact-reference",
+        "content_omitted_from_public_projection": true,
+        "sha256": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5",
+        "decoded_bytes": 681600,
+        "original_content_encoding": "base64",
+        "artifact_archive_relative_path": "studies/agi-alpha-invention-network-v1/technical_dev_final/artifacts/v2.npy",
+        "received_artifact_archive_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/B_received_v2.npy",
+        "full_receipt_archive_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/results.json",
+        "full_receipt_sha256": "d94645af55c835dbe57ad8d5a308f8150d079ecfa649d7a22f28d310cd937f84",
+        "full_receipt_json_pointer": "/synthetic_positive_control/shared/operations/0/result/transferredArtifact/content",
+        "reason": "Opaque binary payload is retained in the complete authorized research archive; public text review carries an explicit reference, not an alternate encoding."
+      }
+    },
+    {
+      "json_pointer": "/synthetic_positive_control/private/operations/1/result/transferredArtifact/content",
+      "original_encoded_characters": 908800,
+      "decoded_bytes": 681600,
+      "artifact_sha256": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5",
+      "public_replacement": {
+        "kind": "archive-only-binary-artifact-reference",
+        "content_omitted_from_public_projection": true,
+        "sha256": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5",
+        "decoded_bytes": 681600,
+        "original_content_encoding": "base64",
+        "artifact_archive_relative_path": "studies/agi-alpha-invention-network-v1/technical_dev_final/artifacts/v2.npy",
+        "received_artifact_archive_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/B_received_v2.npy",
+        "full_receipt_archive_relative_path": "studies/agi-alpha-invention-network-v1/lifecycle/results.json",
+        "full_receipt_sha256": "d94645af55c835dbe57ad8d5a308f8150d079ecfa649d7a22f28d310cd937f84",
+        "full_receipt_json_pointer": "/synthetic_positive_control/private/operations/1/result/transferredArtifact/content",
+        "reason": "Opaque binary payload is retained in the complete authorized research archive; public text review carries an explicit reference, not an alternate encoding."
+      }
+    }
+  ],
+  "public_tree_action": "Remove the full payload-bearing lifecycle/results.json from the public source tree and classify it as archive-only; publish review_summary.json and this correction record. The complete authorized archive retains the original full receipt and artifacts.",
+  "scientific_results_changed": false,
+  "technical_sources_changed": false,
+  "economic_sources_changed": false,
+  "frozen_artifacts_changed": false,
+  "verification": "Reversing only the two declared content replacements, the public schema label and projection metadata exactly reconstructs the parsed original receipt. Full original file SHA-256 is checked again after writing.",
+  "retained_history": "The initial exact-commit verification and encoded-artifact inspection remain in research_notes; the correction does not pretend the initial public projection omitted the payloads.",
+  "qualification": "This packaging correction does not change empirical rejection, synthetic authority, unknown actual expenses or NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE."
+}

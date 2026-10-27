@@ -1,0 +1,158 @@
+{
+  "schema": "agi-alpha-invention-demo-receipt/v1",
+  "language": "fr",
+  "evidence": "Observed local numerical experiment; enterprise outcomes and identities simulated; no live admission, actual sales or frontier API calls",
+  "identities": {
+    "technical_source": "6f799942848e0df334d103131c5349eabd9423b2e434da95e840758d0068a512",
+    "technical_results": "5fa313a4cdc0ea4b92303a15ca026f67982a1959a999d631d4dcd66f7bcfc99e",
+    "technical_freeze": "eee66dbe43d5f6dd622e0a6c80e32f9186d60a73f3f280ee072c5a21c71b7fec",
+    "v1": "1e4e10c5b804a867280364a77cb4734094570f275fba2ede6db1a359911b9e29",
+    "v2": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5",
+    "economics": "17f3a08d6ded517338da6a3b139e633b6603c72d7a5079a63765e6b7effacca9"
+  },
+  "case": "transfer-3782992105-0",
+  "comparison": {
+    "family": "all",
+    "baseline": "spectral_pcg",
+    "methods": {
+      "spectral_pcg": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 2.130263741719318,
+        "iterations": 12.6484375,
+        "raw_error": null,
+        "raw_accepted": 0
+      },
+      "direct": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 4.629719313356873,
+        "iterations": 0,
+        "raw_error": null,
+        "raw_accepted": 0
+      },
+      "ilu_gmres": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 19.24757563313051,
+        "iterations": 44.046875,
+        "raw_error": null,
+        "raw_accepted": 0
+      },
+      "v1": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 2.0421631885483293,
+        "iterations": 11.2421875,
+        "raw_error": 0.015950574228886953,
+        "raw_accepted": 0
+      },
+      "v2": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 2.0041373051071787,
+        "iterations": 9.8203125,
+        "raw_error": 0.0006008478249044055,
+        "raw_accepted": 9
+      },
+      "improved_generalist": {
+        "count": 128,
+        "accepted": 128,
+        "complete_ms": 2.0157251168484436,
+        "iterations": 12.6484375,
+        "raw_error": null,
+        "raw_accepted": 0
+      }
+    },
+    "pairs": {
+      "spectral_pcg": {
+        "saving_ms": 0.12612643661213951,
+        "ci_ms": [
+          0.03790644707919455,
+          0.20392167470504313
+        ]
+      },
+      "direct": {
+        "saving_ms": 2.625582008249694,
+        "ci_ms": [
+          2.2643530541841983,
+          3.2297781422016665
+        ]
+      },
+      "ilu_gmres": {
+        "saving_ms": 17.24343832802333,
+        "ci_ms": [
+          16.492135439264644,
+          18.059718293002902
+        ]
+      },
+      "improved_generalist": {
+        "saving_ms": 0.011587811741264886,
+        "ci_ms": [
+          -0.0954188143424517,
+          0.12192742156287294
+        ]
+      }
+    }
+  },
+  "composition": {
+    "competent_generalist": {
+      "count": 16,
+      "accepted": 16,
+      "complete_ms": 40.15897306271654,
+      "iterations": 0,
+      "raw_error": null,
+      "raw_accepted": 0
+    },
+    "combination": {
+      "count": 16,
+      "accepted": 16,
+      "complete_ms": 39.39410375642183,
+      "iterations": 0,
+      "raw_error": null,
+      "raw_accepted": 0
+    },
+    "v1_combination": {
+      "count": 16,
+      "accepted": 16,
+      "complete_ms": 42.39966831028141,
+      "iterations": 0,
+      "raw_error": null,
+      "raw_accepted": 0
+    },
+    "fixed_sensor_ablation": {
+      "count": 16,
+      "accepted": 16,
+      "complete_ms": 38.91370506516978,
+      "iterations": 0,
+      "raw_error": null,
+      "raw_accepted": 0
+    },
+    "solver_only": {
+      "count": 16,
+      "accepted": 16,
+      "complete_ms": 38.143443440276315,
+      "iterations": 0,
+      "raw_error": null,
+      "raw_accepted": 0
+    }
+  },
+  "economic_scenario": "forced_retention",
+  "source_freeze": {
+    "schema": "invention-network-technical-freeze/v1",
+    "created_utc": "2026-10-27T12:04:34.688405+00:00",
+    "frozen_repository": "80b345828f34fd8a6e592977dd17ef37141305f4",
+    "seed": 3782992104,
+    "count_per_forward_family": 64,
+    "files": {
+      "technical.py": "6f799942848e0df334d103131c5349eabd9423b2e434da95e840758d0068a512",
+      "technical_protocol.json": "1d25cf64a3ca37afe22008c68ee0d9e9daeb6b1db99d1ce3a3801d9b532fbac8",
+      "test_technical.py": "0c11dcdfdaf140ad2c3047b5339900e8bea4b0cd53db2cb7ff13e008f11b87fd",
+      "technical_dev_final/selection.json": "66fbcedae52e1a6b57573b4a641728214b31e5840a92b8bc309f1b448c3b972f",
+      "technical_dev_final/results.json": "6c97a82f08753ddb8806bf062f02b6aeb3ccf5f79bcf7f24c2c64a7f08bd1dca",
+      "technical_dev_final/artifacts/v1.npy": "1e4e10c5b804a867280364a77cb4734094570f275fba2ede6db1a359911b9e29",
+      "technical_dev_final/artifacts/v2.npy": "1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5"
+    },
+    "rule": "No candidate or hypothesis changes after confirmation; preserve invalidated runs if an implementation defect requires repair."
+  }
+}

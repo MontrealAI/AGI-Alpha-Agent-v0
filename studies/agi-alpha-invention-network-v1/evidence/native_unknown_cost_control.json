@@ -1,0 +1,56 @@
+{
+  "schema": "native-cost-ledger-replay/v1",
+  "report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "collected_revenue": 0,
+    "delivery_profit": null,
+    "complete_cost_profit": null,
+    "cash": 0,
+    "obligations": null,
+    "known_obligations": 0,
+    "reserve": 0,
+    "available_funds": null,
+    "complete": false,
+    "bucket_complete": {
+      "A": false,
+      "B": false,
+      "C": false
+    },
+    "unknown_costs": true,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "verified_journal": {
+    "valid": true,
+    "events": 6
+  },
+  "commands": [
+    {
+      "action": "charge",
+      "record": {
+        "activity_id": "known-local-compute",
+        "mission_id": "local-research",
+        "bucket": "C",
+        "category": "compute",
+        "accrued_micro_usd": null,
+        "paid_micro_usd": 0,
+        "basis": "unknown",
+        "note": "SIMULATED amount; executed accounting; not a provider invoice",
+        "evidence_digest": "c39c9305ed1e57da72676d1df976882ef70dda3eee1abd54ee1ba98b19ba047a"
+      }
+    },
+    {
+      "action": "reserve",
+      "record": 0
+    }
+  ],
+  "input_basis": "SIMULATED_ACCOUNTING_ATTESTATIONS",
+  "actual_collections_micro_usd": 0,
+  "credentials": "ephemeral local test keys; no exported keys or live account"
+}

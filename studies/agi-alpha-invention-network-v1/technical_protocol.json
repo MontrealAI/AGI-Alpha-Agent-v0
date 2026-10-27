@@ -1,0 +1,99 @@
+{
+  "schema": "agi-alpha-invention-pde-relay/v1",
+  "status": "development_complete_pending_owner_freeze_and_fresh_confirmation",
+  "scientific_claim": "Whether an explicitly researcher-constructed numerical learning system develops a transferable reduced PDE basis, and whether its benefit survives strong ordinary numerical methods and full measured costs.",
+  "nonclaims": [
+    "Autonomous invention",
+    "Executed frontier-model performance",
+    "Specialist ASI",
+    "Physical validation",
+    "Customer sales",
+    "Live ENS authentication",
+    "Production-admitted PDE capability"
+  ],
+  "domain": {
+    "equation": "-(kx*dxx + ky*dyy + contrast*div(patch*grad))u + reaction*(1+0.5*sin(pi*x)*sin(pi*y))*u = source",
+    "geometry": "Unit square, homogeneous Dirichlet boundary, 44 by 44 interior grid",
+    "degrees_of_freedom": 1936,
+    "operator": "Symmetric positive definite 5-point flux stencil. Four affine sparse matrices; positive conductivities and nonnegative contrast/reaction.",
+    "units": "Nondimensional computational quantities; no real material calibration",
+    "source": "Gaussian heat/source term plus a bounded signed sinusoidal secondary term",
+    "boundary_purpose": "No intervention changes sources, boundary conditions, material parameters or requested numerical accuracy"
+  },
+  "relay": {
+    "A": "Return twelve accepted thermal-response fields for a scientific software commissioning mission; retain rank-12 orthogonal basis learned by orthogonalizing actual solved fields.",
+    "B": "Transfer frozen checkpoint and executable solver to new heterogeneous diffusion/reaction cases; also use it for a distinct finite-grid anisotropic-conductivity inverse mission.",
+    "C": "Compose transferred solver with a known greedy information-based sensor-design procedure. Compare fixed-sensor, solver-only, sensor-design-only competent generalist, and combination arms with identical forward parameter candidates, sensor counts and noise fields.",
+    "rights": "Synthetic researcher-generated fields and Apache-2.0 code. Checkpoint is a numerical basis, not proprietary model weights. No customer data or protected test outcomes in shared checkpoint."
+  },
+  "gym": {
+    "environment_class": "technical.ResidualGym",
+    "reset": "Copy paid-work initial basis; open a fixed 72-case public training pool; set remaining action count to 32",
+    "observation": "Current rank, remaining actions, available training indices, current independent discrete residuals for approximate projected solutions on those training inputs",
+    "action": "solve_and_enrich(index): choose one available training index, run an ordinary accurate sparse solve, append its orthogonal residual direction to the checkpoint, remove that index",
+    "policy": "Choose maximal observed relative residual; fixed index order resolves exact ties",
+    "transition": "Measured reference solve, twice-reorthogonalized basis update, one action consumed, state/history receipt emitted",
+    "termination": "Exactly 32 successful enrich actions; further step calls fail",
+    "protected_answers": "Gym has no confirmation cases, seeds, outputs or scorer answers. Development assessments are not protected confirmation.",
+    "candidate_checkpoints": [
+      20,
+      28,
+      36,
+      44
+    ],
+    "search_budget": "One founder checkpoint plus four Gym checkpoints; no learned-policy or task-space search after confirmation",
+    "candidate_selection": "On 20 development cases: maximize exact accepted count, then raw approximation accepted count, then minimize mean raw relative error, then lower rank. Training may fail economically even if raw error improves.",
+    "all_costs": "Founder solves and checkpoint extraction are A delivery costs. All 32 Gym solves, residual-pool observations, checkpoint updates and failed/rejected candidate assessments are separately recorded. No stage receives guaranteed improvement."
+  },
+  "methods": {
+    "direct": "SciPy SuperLU sparse factorization with ordering; factor reused for its solve. Every distinct parameter candidate has a distinct operator. No valid factor reuse is withheld.",
+    "ilu_gmres": "SciPy spilu drop_tol 0.001 fill_factor 8, GMRES restart 40 max 15 cycles, rtol 1e-10. Nonsymmetric ILU is never used with CG.",
+    "spectral_pcg": "Known sine-transform SPD preconditioner, zero start, CG rtol 1e-10 max 600 iterations",
+    "v1": "Paid-work reduced basis predicts a starting field; identical spectral-PCG correction then independently checks it",
+    "v2": "Selected Gym-enriched basis predicts a starting field; identical spectral-PCG correction then independently checks it",
+    "primary_beta": "Fastest mean full-runtime ordinary numerical method on the 20 development cases, frozen before confirmation; no per-test hindsight oracle",
+    "improved_generalist": "A measured ordinary-tools upgrade: choose sparse direct when min(kx,ky)<0.3 or contrast>4, otherwise spectral-PCG. Rule fixed from development and applicable input features, never hidden outcomes. This is a numerical baseline upgrade, not an observed stronger frontier model.",
+    "sensor_design": "Greedy regularized log-determinant sampling of six principal response-variation features. Procedure is researcher supplied and known in the literature; no autonomous invention or global design optimum is claimed.",
+    "composition_primary_comparator": "competent_generalist uses ordinary numerical baseline plus the same sensor-design procedure. fixed_sensor_ablation is not the headline competent-generalist comparison."
+  },
+  "acceptance": {
+    "final_relative_residual_max": 2e-08,
+    "final_reference_relative_error_max": 2e-06,
+    "raw_approximation_relative_residual_max": 0.002,
+    "raw_approximation_relative_error_max": 0.0002,
+    "independent_check": "Independent flux-stencil application, not the assembled sparse matrix multiply used by the solver",
+    "discrete_bound": "alpha=(kx+ky)*4*sin(pi/(2*(n+1)))^2/h^2 + reaction*min(reaction_field). Since contrast term is PSD, ||u-u_hat||_2 <= ||residual||_2/alpha. Relative bound divides by ||u_hat|| minus the absolute bound when positive. Floating-point numerical certificate, not interval-verified arithmetic or physical-model error.",
+    "reference_role": "Accurate direct solution is extra research assessment, not a required operational truth oracle. Its time is retained separately; operational residual checking is included in each complete serve time.",
+    "inverse_mission": "Recover the correct one of 16 specified candidate conductivity pairs from noisy sampled fields, with every forward field independently accepted",
+    "inverse_limits": "Finite synthetic candidate identification; no continuous inverse-problem generalization, actual measurement trial or physical parameter recovery claim"
+  },
+  "splits": {
+    "founder_seed": 2026102701,
+    "gym_pool_seed": 2026102702,
+    "development_thermal_seed": 2026102711,
+    "development_transfer_seed": 2026102712,
+    "development_ood_seed": 2026102713,
+    "development_composition_seed": 2026102714,
+    "warmup_seed": 2026102799,
+    "confirmation": "Owner supplies distinct seed after source/protocol/checkpoint hashes are frozen; thermal uses seed, transfer seed+1, OOD seed+2, inverse seed+3",
+    "confirmation_repeats": "At least 24 independent cases per field family; recommended 64 for precise paired timing. Composition max(12,count/2) independent inverse instances.",
+    "ood": "Low x conductivity, high y conductivity, higher local contrast/reaction, sharp and displaced sources. Report negative transfer and every correction.",
+    "inverse_conditions": "Even indexed trials: 2 sensors and noise SD 5% of peak true field. Odd indexed trials: 6 sensors and 1.8%. Conditions declared before confirmation and reported separately."
+  },
+  "resource_accounting": {
+    "threads": 1,
+    "warmup": "Fixed public input warms code paths; shared environment warmup excluded from comparative serving latency",
+    "paired_order": "Rotate method order by case index",
+    "per_outcome": "Assembly + solver-specific setup + initial approximation and exact correction + independent residual check",
+    "recipient_setup": "Load checkpoint and project four affine operators once; recorded by version and charged separately",
+    "same_resources": "Same processor thread, input cases, discretization, final accuracy and correction iteration cap. Full attained time is charged; methods do not receive extra forward problems or hidden information.",
+    "composition": "All policies pay for the same 16 forward parameter candidates and their own sensor-design/inference work. Shared measured forward executions avoid redundant benchmark work but full costs are allocated to every arm.",
+    "time_limits": "No latency threshold tuned from confirmation. Any economically feasible latency boundary is derived descriptively after complete costs; not a prospectively validated service-level claim.",
+    "unknown_costs": "Assistant authoring, problem selection and research review labor were not instrumented and must not be silently priced at zero. Enterprise monetization remains an explicit scenario."
+  },
+  "development_history": {
+    "iteration_1": "technical_dev: original run; rank44 selected. Six-sensor inverse missions all reached success, exposing an uninformative ceiling. Original outcomes remain unchanged.",
+    "iteration_2": "technical_dev_iteration2: explicit environment, discrete error bound, stronger numerical router, field retention and 2/6-sensor conditions. Retained unchanged.",
+    "iteration_3": "technical_dev_final: metering-only correction adds founder verification/artifact-write charges, process CPU seconds and one-time domain/warmup setup. Same four candidates, identical checkpoint hashes and selected rank; no new scientific candidate search."
+  }
+}

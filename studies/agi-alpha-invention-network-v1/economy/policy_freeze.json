@@ -1,0 +1,136 @@
+{
+  "prices": {
+    "thermal": 0.75,
+    "transfer": 0.75,
+    "composition": 0.75
+  },
+  "development_trials": [
+    {
+      "fraction": 0.3,
+      "development_objective_usd_per_opportunity": 1476.8938480065685
+    },
+    {
+      "fraction": 0.45,
+      "development_objective_usd_per_opportunity": 2233.8687827934577
+    },
+    {
+      "fraction": 0.6,
+      "development_objective_usd_per_opportunity": 2720.663862415089
+    },
+    {
+      "fraction": 0.75,
+      "development_objective_usd_per_opportunity": 2753.445253062134
+    },
+    {
+      "fraction": 0.9,
+      "development_objective_usd_per_opportunity": 2400.2862490339994
+    },
+    {
+      "fraction": 1.05,
+      "development_objective_usd_per_opportunity": 1862.5325939408222
+    }
+  ],
+  "limits": "Finite common price grid, declared reference belief and one-opportunity contribution objective. Includes estimated correction/default/refund/processing costs; excludes fixed overhead, capacity competition and learning. Not a global optimum or observed customer price.",
+  "development_timing": {
+    "thermal": {
+      "direct": 0.005296759623888647,
+      "ilu_gmres": 0.02591090325404366,
+      "spectral_pcg": 0.0025059811250685016,
+      "v1": 0.002531780124627403,
+      "v2": 0.0021955965021334123,
+      "improved_generalist": 0.0022848768767289585
+    },
+    "transfer": {
+      "spectral_pcg": 0.0027162379204431395,
+      "v1": 0.0025481208346415465,
+      "v2": 0.0027693262539590555,
+      "improved_generalist": 0.002958209501230158,
+      "direct": 0.005783415825135307,
+      "ilu_gmres": 0.020957361829156678
+    },
+    "ood": {
+      "direct": 0.005639128496113699,
+      "ilu_gmres": 0.012235343756401562,
+      "spectral_pcg": 0.009459300628805067,
+      "v1": 0.009802007998587214,
+      "v2": 0.010187156878600945,
+      "improved_generalist": 0.005665345872330363
+    },
+    "composition": {
+      "fixed_sensor_ablation": 0.04649734452686971,
+      "solver_only": 0.04258253900964822,
+      "competent_generalist": 0.0478582396923836,
+      "combination": 0.043492258841676325,
+      "v1_combination": 0.046130337007828835
+    }
+  },
+  "numerical_baselines": {
+    "thermal": "spectral_pcg",
+    "transfer": "spectral_pcg",
+    "ood": "direct",
+    "composition": "competent_generalist"
+  },
+  "development_acceptance": {
+    "thermal": {
+      "direct": 1.0,
+      "ilu_gmres": 1.0,
+      "spectral_pcg": 1.0,
+      "v1": 1.0,
+      "v2": 1.0,
+      "improved_generalist": 1.0
+    },
+    "transfer": {
+      "spectral_pcg": 1.0,
+      "v1": 1.0,
+      "v2": 1.0,
+      "improved_generalist": 1.0,
+      "direct": 1.0,
+      "ilu_gmres": 1.0
+    },
+    "ood": {
+      "direct": 1.0,
+      "ilu_gmres": 1.0,
+      "spectral_pcg": 1.0,
+      "v1": 1.0,
+      "v2": 1.0,
+      "improved_generalist": 1.0
+    },
+    "composition": {
+      "fixed_sensor_ablation": 0.6666666666666666,
+      "solver_only": 0.6666666666666666,
+      "competent_generalist": 1.0,
+      "combination": 1.0,
+      "v1_combination": 1.0
+    }
+  },
+  "campaign_costs": {
+    "founder_delivery_s": 0.06710233198828064,
+    "founder_solution_s": 0.06214093398011755,
+    "founder_basis_construction_s": 0.004343004009569995,
+    "founder_artifact_write_s": 0.000618393998593092,
+    "gym_enrichment_s": 0.8127713480207603,
+    "all_rank_search_assessment_s": 0.5656967579998309,
+    "baseline_selection_assessment_s": 1.1535520299948985,
+    "retention_assessment_s": {
+      "v1": 0.1292477550014155,
+      "v2": 0.13229394209338352
+    },
+    "composition_assessment_s": 1.2856767772464082,
+    "candidate_ranks_paid_for": [
+      20,
+      28,
+      36,
+      44
+    ],
+    "evidence": "Observed local runtime; conversion uses a sourced equipment-rate proxy. Human work is estimated."
+  },
+  "source_sha256": {
+    "protocol": "1b01b8644484a2411267c8f62894f2613f644c33452d563fde748979a3f01cea",
+    "economics": "3fd07f72c9180e38a2d492edecaddb4df3b08eea7251947b0d6913e09a4039a4",
+    "development": "6c97a82f08753ddb8806bf062f02b6aeb3ccf5f79bcf7f24c2c64a7f08bd1dca",
+    "training": "20c75d4ace2d9df5db7e81a89d444381256ab7c276dad7fc0b08ef4f2e7201a4"
+  },
+  "protocol_sha256": "1b01b8644484a2411267c8f62894f2613f644c33452d563fde748979a3f01cea",
+  "economics_sha256": "3fd07f72c9180e38a2d492edecaddb4df3b08eea7251947b0d6913e09a4039a4",
+  "development_sha256": "6c97a82f08753ddb8806bf062f02b6aeb3ccf5f79bcf7f24c2c64a7f08bd1dca"
+}
