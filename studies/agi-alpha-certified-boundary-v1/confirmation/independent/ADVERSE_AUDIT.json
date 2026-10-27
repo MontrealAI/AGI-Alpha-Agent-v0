@@ -1,0 +1,506 @@
+{
+  "status": "PASS: frozen full proof and all specified adverse controls",
+  "wrapper_sha256": "c9b0e414d17f2058c40491912222b61336a407afda711540fd29ab2410018b27",
+  "witness_sha256": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+  "elapsed_seconds": 4.6842033599969,
+  "full_recomputation_seconds": 4.076139284006786,
+  "full_recomputation_passed": true,
+  "fresh_exact_cases_file": "lineage/FRESH_EXACT_CONFIRMATION.json",
+  "scope_cases": [
+    {
+      "name": "original one-dimensional universal request",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": 1,
+        "distinct_moduli": true,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": true,
+      "scope_admissible": true,
+      "result": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_strict_lower_bound": "1891871140656049/1929687500000000",
+        "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false,
+        "translation": "Integer interval translations preserve the residue-class assumptions."
+      }
+    },
+    {
+      "name": "weaker exact bound on finite translated interval",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 257,
+        "interval_start": -1000,
+        "distinct_moduli": false,
+        "lower_bound": "49/50"
+      },
+      "expected_scope_admissible": true,
+      "scope_admissible": true,
+      "result": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_strict_lower_bound": "49/50",
+        "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false,
+        "translation": "Integer interval translations preserve the residue-class assumptions."
+      }
+    },
+    {
+      "name": "at least three hits is a valid subset",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 3,
+        "interval_length": 601,
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": true,
+      "scope_admissible": true,
+      "result": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_strict_lower_bound": "1891871140656049/1929687500000000",
+        "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false,
+        "translation": "Integer interval translations preserve the residue-class assumptions."
+      }
+    },
+    {
+      "name": "zero lower bound is a valid weaker claim",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "0"
+      },
+      "expected_scope_admissible": true,
+      "scope_admissible": true,
+      "result": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_strict_lower_bound": "0",
+        "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false,
+        "translation": "Integer interval translations preserve the residue-class assumptions."
+      }
+    },
+    {
+      "name": "one-dimensional finite interval need not assert existence",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 2,
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": true,
+      "scope_admissible": true,
+      "result": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_strict_lower_bound": "1891871140656049/1929687500000000",
+        "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false,
+        "translation": "Integer interval translations preserve the residue-class assumptions."
+      }
+    },
+    {
+      "name": "bound above the certified integral",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "30269938250527659/30875000000000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "requested bound exceeds the proved certificate or is negative"
+      }
+    },
+    {
+      "name": "unsupported singletons",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 1,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "singletons are unsupported"
+      }
+    },
+    {
+      "name": "arbitrary arithmetic progression",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "arbitrary_arithmetic_progression",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "complete restricted residue classes are required"
+      }
+    },
+    {
+      "name": "two dimensions",
+      "request": {
+        "dimension": 2,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "only dimension one is proved"
+      }
+    },
+    {
+      "name": "overlapping covering",
+      "request": {
+        "dimension": 1,
+        "coverage": "at_least_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "an exact partition is required"
+      }
+    },
+    {
+      "name": "incomplete packing",
+      "request": {
+        "dimension": 1,
+        "coverage": "at_most_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "an exact partition is required"
+      }
+    },
+    {
+      "name": "float is not an exact bound string",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": 0.98
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "bound must be an exact rational string"
+      }
+    },
+    {
+      "name": "zero-denominator rational",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1/0"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "invalid rational"
+      }
+    },
+    {
+      "name": "nonrational text",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "NaN"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "malformed rational"
+      }
+    },
+    {
+      "name": "noninteger translation",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": "1/2",
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "interval start must be an integer"
+      }
+    },
+    {
+      "name": "boolean dimension",
+      "request": {
+        "dimension": true,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "only dimension one is proved"
+      }
+    },
+    {
+      "name": "boolean minimum hits",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": true,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "singletons are unsupported"
+      }
+    },
+    {
+      "name": "unknown schema field",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000",
+        "claim_is_approved": true
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "missing or unknown request fields"
+      }
+    },
+    {
+      "name": "length one not supported",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 1,
+        "interval_start": -37,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000"
+      },
+      "expected_scope_admissible": false,
+      "scope_admissible": false,
+      "result": {
+        "reason": "length must be all or an integer at least two"
+      }
+    }
+  ],
+  "malformed_direct_controls": [
+    {
+      "name": "nonobject",
+      "refused": true,
+      "reason": "request must be a JSON object"
+    },
+    {
+      "name": "missing fields",
+      "refused": true,
+      "reason": "missing or unknown request fields"
+    },
+    {
+      "name": "extra witness newline",
+      "refused": true,
+      "reason": "witness digest differs from the frozen certificate"
+    },
+    {
+      "name": "malformed witness bytes",
+      "refused": true,
+      "reason": "witness digest differs from the frozen certificate"
+    }
+  ],
+  "disposable_copy_controls": [
+    {
+      "case": "forged_witness",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "witness digest differs from the frozen certificate"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "missing_witness",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/independent/adverse_zd3s1br2/scout/revised_polynomial.json'"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "modified_checker",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "frozen checker changed: scout/certify_bernstein.py"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "malformed_rational_witness",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "witness digest differs from the frozen certificate"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "missing_checker",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/independent/adverse_qutmazwx/scout/certify_bernstein.py'"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "missing_protocol",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/independent/adverse_2f5yyv9q/study/confirmation_protocol.json'"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "malformed_request_json",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "optimized_python",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "run without -O; underlying research checkers use assertions"
+      },
+      "acceptance_file_created": false
+    },
+    {
+      "case": "existing_output",
+      "return_code": 2,
+      "refusal": {
+        "status": "REFUSED",
+        "reason": "choose a fresh output directory; preserved evidence is never overwritten"
+      },
+      "acceptance_file_created": false
+    }
+  ],
+  "source_hashes_before": {
+    "certificate_service.py": "c9b0e414d17f2058c40491912222b61336a407afda711540fd29ab2410018b27",
+    "study/confirmation_protocol.json": "1b5070c9ca8f38583e5343664842b1f6903978bd5c8c1ac3ea3876fd943cac0a",
+    "scout/revised_polynomial.json": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+    "scout/certify_bernstein.py": "8f752d85798f6acf2a7a4572fe7880a0300d0bb5c6de12cdebcf4ea60e57972c",
+    "lineage/myerson_independent_bounds.py": "bca91770fdd390ea1592ed2f81ed2855fad8f6aab44b970d5afdc03485cd4894",
+    "lineage/myerson_independent_bivariate.py": "02a4d6bfff1c2fc80168647a49fe8bc40c0805df6266d89b6ef930c0af1e9e55",
+    "study/midpoint_uniform.py": "b17ca8018e8d16a306df17c9f32ab7cb558a5f90178c88df288a30b1972f7569",
+    "lineage/myerson_independent_uniform.py": "fa94e7bd2227f1196e5ab323421599c12d0642b761337e9e282fac1feea7e380"
+  },
+  "source_hashes_after": {
+    "certificate_service.py": "c9b0e414d17f2058c40491912222b61336a407afda711540fd29ab2410018b27",
+    "study/confirmation_protocol.json": "1b5070c9ca8f38583e5343664842b1f6903978bd5c8c1ac3ea3876fd943cac0a",
+    "scout/revised_polynomial.json": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+    "scout/certify_bernstein.py": "8f752d85798f6acf2a7a4572fe7880a0300d0bb5c6de12cdebcf4ea60e57972c",
+    "lineage/myerson_independent_bounds.py": "bca91770fdd390ea1592ed2f81ed2855fad8f6aab44b970d5afdc03485cd4894",
+    "lineage/myerson_independent_bivariate.py": "02a4d6bfff1c2fc80168647a49fe8bc40c0805df6266d89b6ef930c0af1e9e55",
+    "study/midpoint_uniform.py": "b17ca8018e8d16a306df17c9f32ab7cb558a5f90178c88df288a30b1972f7569",
+    "lineage/myerson_independent_uniform.py": "fa94e7bd2227f1196e5ab323421599c12d0642b761337e9e282fac1feea7e380"
+  },
+  "original_sources_unchanged": true,
+  "limitations": "Same-session executable confirmation; no external peer review, model A/B or economic gain measured."
+}

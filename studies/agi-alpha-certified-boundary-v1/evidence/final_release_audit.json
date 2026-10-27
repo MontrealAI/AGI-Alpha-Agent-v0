@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "reviewer": "lineage_audit workstream",
+  "completed_utc": "2026-10-27T23:02:14.486433+00:00",
+  "scope": "Independent final package-selection, documentation, reproduction entry point, current receipts and claim-map audit. No mathematical or publication source changes.",
+  "actionable_blockers": [],
+  "closed_findings": [
+    {
+      "id": "PACKAGE-CITED-CAPACITY-EVIDENCE",
+      "observation": "Blanket capacity_prior_art exclusion initially removed two authored files cited by claim C10 and prior-art P11.",
+      "resolution": "Whitelisted LATEST_PRIOR_ART.md and tandon_arithmetic_reproduction.txt; both now selected and the unrelated upstream checkout remains excluded."
+    },
+    {
+      "id": "PUBLICATION-DEPENDENCY-DECLARATION",
+      "observation": "Figure regeneration required matplotlib without a specific dependency declaration.",
+      "resolution": "requirements-publication.txt now records numpy 2.3.2, matplotlib 3.10.8 and optional browser-QA playwright 1.54.0; README supplies installation instructions, and the package selector includes the file."
+    }
+  ],
+  "checks": {
+    "local_claim_and_prior_art_evidence_references_checked": 131,
+    "missing_local_evidence": [],
+    "omitted_referenced_nonpublication_evidence": [],
+    "native_closure_files_preserved": 44,
+    "native_license_and_notices": "All frozen closure files selected; original LICENSE and per-file notices preserved.",
+    "copyrighted_working_source_exclusions": "Both Emanuel full PDFs and extracted text working copies excluded; authored audits, citations and source hashes retained.",
+    "transient_replay_directories_excluded": true,
+    "default_reproduction": "Only standard-library mathematical and accounting scripts required; default and optional native entry points have seven successful current receipt steps with log hashes reconciled.",
+    "publication_sources": "LaTeX, bibliography, templates, figure-generating source and figure data selected; generated paper/brief PDF and HTML explicitly included despite general research-cache PDF/HTML exclusion.",
+    "final_claims": "README and claim map use h>=17902560/18258529, credit the conventional challenge, preserve the weaker polynomial result, distinguish same-session checks from external review, report zero actual receipts and unknown complete actual profit, and label financial scenarios conditional.",
+    "publication_status": "Research-review edition; no merged canonical release, hosted acceptance, human peer review or market validation claimed."
+  },
+  "hash_receipt_checks": {
+    "final_frozen_sources": {
+      "count": 5,
+      "mismatches": []
+    },
+    "native_metadata_final_artifacts": {
+      "count": 13,
+      "mismatches": []
+    },
+    "lineage/native/results_final": {
+      "files": 12,
+      "mismatches": []
+    },
+    "confirmation/package_reproduction_final/native_check": {
+      "files": 12,
+      "mismatches": []
+    },
+    "publication_build_manifest": {
+      "count": 13,
+      "mismatches": []
+    },
+    "conclusion_consistency_source_matches": true,
+    "complete_reproduction_receipt": {
+      "all_exit_zero": true,
+      "native_reproduced": true,
+      "log_hash_mismatches": []
+    },
+    "confirmation/final_root/acceptance.json": {
+      "relation": ">=",
+      "bound": "17902560/18258529",
+      "actual_revenue": 0,
+      "actual_complete_profit": null,
+      "no_exclusive_alpha": true,
+      "no_external_peer_review": true
+    },
+    "confirmation/final_independent/full_recomputation/acceptance.json": {
+      "relation": ">=",
+      "bound": "17902560/18258529",
+      "actual_revenue": 0,
+      "actual_complete_profit": null,
+      "no_exclusive_alpha": true,
+      "no_external_peer_review": true
+    }
+  },
+  "audited_source_sha256": {
+    "prepare_package.py": "94c8b7a9e0966f35e074a39876acac01546b58f32dc5e7042de573cde614754e",
+    "README.md": "d1e770b9aced0c8dcdae6623974b5eb72101931fa1b83e852bf0055854d720f1",
+    "reproduce.py": "b81d760c0c7f790bb190732352b062298dec7840c55d26cae03bc555e1567863",
+    "requirements-search.txt": "351913bb7609a01dc71474d2709040c4a93f8a6bde67800a72d6d95437f1d589",
+    "requirements-native.txt": "5eec1beaa924d626726892f3b47bf96f4bb5c079e48d70657a869fd4f1baaaa4",
+    "requirements-publication.txt": "a7af3dd0dbd0f2c9f04d4639c698685a02e0e0efb314a31783a3722cfd72ce7a",
+    "evidence/claim_to_evidence.csv": "7580bf3eca58fdf7c697f869368098e22e99a27284f3133fafadddb8901c96b8",
+    "evidence/prior_art.csv": "3443892272a0f7e5e9494b09ad8fb9c5b7da765ce2e3392752762144db792b93",
+    "NOTICE.md": "4aa19157c03522a10da45ac9c500ec26ca7b3d43bea6feb04d1ce57f75f47ad4"
+  },
+  "limits": "This checks the corrected selector and current files before final ZIP assembly; final archive integrity/manifest validation remains the packaging command responsibility. No new scientific claim or additional optional benchmark was introduced."
+}

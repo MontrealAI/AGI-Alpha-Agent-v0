@@ -1,0 +1,27 @@
+{
+  "status": "FROZEN_BEFORE_FRESH_CONFIRMATION_EXECUTION",
+  "witness_path": "scout/revised_polynomial.json",
+  "witness_sha256": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+  "exact_bound": "1891871140656049/1929687500000000",
+  "random_seed": 202610274850,
+  "fresh_exact_classes": 512,
+  "random_domain": {
+    "interval_length_n": [2, 1000000],
+    "modulus_m": "uniform integer from max(1,ceil(n/80)) through n-1",
+    "first_member_r": "uniform integer from 1 through min(m,n-m)"
+  },
+  "fresh_midpoint_lengths": [251, 257, 509, 601],
+  "evaluation": "Direct rational evaluation from explicit Chebyshev coefficient formula; no numerical LP or discovery search is reused.",
+  "adverse_obligations": [
+    "The original coarse-grid witness is rejected by its preserved exact finite-class counterexample.",
+    "The final certificate wrapper refuses altered witness bytes and a claimed bound not covered by its proof.",
+    "The final certificate wrapper refuses missing or malformed proof inputs rather than interpreting failure as acceptance."
+  ],
+  "resource_ceiling": {
+    "wall_seconds": 120,
+    "memory_mib": 512,
+    "external_spend_usd": 0
+  },
+  "acceptance": "All valid fresh exact inequalities and midpoint identities pass; all designed invalid inputs are refused. These samples confirm implementation behavior and do not substitute for the universal proof.",
+  "wrapper_note": "Final wrapper path and exact invocation will be supplied by the parent; no wrapper implementation is duplicated here."
+}

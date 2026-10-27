@@ -1,0 +1,14 @@
+{
+  "frozen_before_runs": true,
+  "date": "2026-10-27",
+  "target": "An independent set of at least 384 vertices in C15 strong-power 3",
+  "initial_construction": "Itty et al., arXiv:2607.21517v2, Table 9, 383 vertices",
+  "success": "At least 384 distinct triples in {0,...,14}^3, every pair has a circular coordinate distance at least two, independently verified",
+  "global_solver_seconds": 30,
+  "local_search_seconds_per_seed": 180,
+  "seeds": [20261027, 20261028],
+  "baseline": "Ordinary SciPy/HiGHS MILP with eight-vertex cube clique constraints and two-layer bound inequalities",
+  "construction_search": "Ordinary witness-seeded MILP large-neighborhood search",
+  "claim_if_failed": "No improvement found within the declared search budget; not a nonexistence proof",
+  "claim_if_succeeded": "Exact finite constructive improvement relative to retrieved published bound; no measured LLM superiority or commercial demand"
+}

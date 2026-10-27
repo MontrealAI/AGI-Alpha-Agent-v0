@@ -1,0 +1,129 @@
+{
+  "status": "PASS with low-severity pagination notes",
+  "pass": true,
+  "mathematical_rendering_pass": true,
+  "clipping_and_overflow_pass": true,
+  "major_heading_placement_pass": true,
+  "inspection_method": "All six requested final PNGs opened individually through tools.view_image at original resolution and visually inspected. This was targeted visual reinspection, with no additional numerical testing.",
+  "pages_checked": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "printed_page_numbers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "previous_issues": [
+    {
+      "id": "QA13-01",
+      "status": "RESOLVED",
+      "resolution": "Appendix A title is now at the top of physical page14, together with A.1 and its opening text."
+    },
+    {
+      "id": "QA14-01",
+      "status": "RESOLVED",
+      "resolution": "The closed domain lead-in and D_k display are together on physical page15."
+    },
+    {
+      "id": "QA16-01",
+      "status": "RESOLVED",
+      "resolution": "The integration lead-in and integral identity are together on physical page17."
+    },
+    {
+      "id": "QA17-01",
+      "status": "RESOLVED",
+      "resolution": "The paragraph ending Consequently and the domain inequalities are together on physical page18."
+    }
+  ],
+  "pages": [
+    {
+      "image": "paper_13.png",
+      "pdf_page": 13,
+      "printed_page": 12,
+      "pass": true,
+      "observations": "No stranded Appendix A heading. Remaining bottom whitespace is appropriate for the intentional new-page appendix start. Text, citations, headers and footer are unclipped.",
+      "issue_ids": []
+    },
+    {
+      "image": "paper_14.png",
+      "pdf_page": 14,
+      "printed_page": 13,
+      "pass": true,
+      "observations": "Appendix A begins cleanly with A.1, the correct non-strict boxed theorem, coefficient table, integral, variation and normalization. All symbols and fractions are legible. Minor equation lead-in continuation at A.2.",
+      "issue_ids": [
+        "FINAL14-01"
+      ]
+    },
+    {
+      "image": "paper_15.png",
+      "pdf_page": 15,
+      "printed_page": 14,
+      "pass": true,
+      "observations": "Domain, vertices, knot lines, cell polynomial, Hessian/ridge argument and crossing formula are clear and within margins. Previously separated closed-domain lead-in is fixed.",
+      "issue_ids": []
+    },
+    {
+      "image": "paper_16.png",
+      "pdf_page": 16,
+      "printed_page": 15,
+      "pass": true,
+      "observations": "Exact maximum and attaining progression now appear together. Long audit paths fit. Tail estimate, endpoint-jump explanation and cell-integral definition are legible. A.5 has substantive content below its heading. Minor lead-in continuation for normalized sample points.",
+      "issue_ids": [
+        "FINAL16-01"
+      ]
+    },
+    {
+      "image": "paper_17.png",
+      "pdf_page": 17,
+      "printed_page": 16,
+      "pass": true,
+      "observations": "Transfer identity and integration lead-in are together. The h>=J conclusion and normalization discussion are correct. Appendix B and B.1 have substantial following content; Chebyshev coefficients and polynomial definition are legible. Minor continuation before the exact I display.",
+      "issue_ids": [
+        "FINAL17-01"
+      ]
+    },
+    {
+      "image": "paper_18.png",
+      "pdf_page": 18,
+      "printed_page": 17,
+      "pass": true,
+      "observations": "Exact polynomial integral, B.2 domain, assigned weights, labels(B1)/(B2), B.3 parameterization and P_k expression all render correctly. No clipping or unsupported final-certificate strictness is present.",
+      "issue_ids": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "FINAL14-01",
+      "severity": "low",
+      "blocking": false,
+      "category": "equation lead-in continuation",
+      "location": "Physical page14 ends A.2 with For k>=2, consider the sum; S_k display starts page15.",
+      "recommendation": "If doing any further pagination adjustment, keep A.2 heading, introductory line and first display together. This is readable and does not block acceptance."
+    },
+    {
+      "id": "FINAL16-01",
+      "severity": "low",
+      "blocking": false,
+      "category": "equation lead-in continuation",
+      "location": "Physical page16 ends the class paragraph with its points; x_j(t) display starts page17.",
+      "recommendation": "Keeping the short lead-in and its display together would improve flow; no mathematical ambiguity or clipping results."
+    },
+    {
+      "id": "FINAL17-01",
+      "severity": "low",
+      "blocking": false,
+      "category": "equation lead-in continuation",
+      "location": "Physical page17 ends with the exact witness integral is; I display starts page18.",
+      "recommendation": "Keeping the integral lead-in and its display together would improve flow; the current continuation remains legible and unambiguous."
+    }
+  ],
+  "scope_note": "Only final physical PDF pages13\u201318 were reviewed; their printed page numbers are12\u201317. No paper, figure, PDF or code was edited. The earlier required orphan-heading correction is resolved; remaining notes are nonblocking."
+}

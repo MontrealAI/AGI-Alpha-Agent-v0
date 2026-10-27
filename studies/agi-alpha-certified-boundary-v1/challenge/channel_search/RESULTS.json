@@ -1,0 +1,105 @@
+{
+  "target": 384,
+  "published_start": 383,
+  "improved": false,
+  "global_milp": {
+    "stage": "global",
+    "seconds": 30.018912076950073,
+    "status": 1,
+    "message": "Time limit reached. (HiGHS Status 13: Time limit reached)",
+    "size": 338,
+    "valid": true,
+    "dual_bound": -389.9999999999994,
+    "gap": 0.153846153846152
+  },
+  "local_searches": [
+    {
+      "seed": 20261027,
+      "seconds": 180.08912897109985,
+      "iterations": 757,
+      "initial_size": 383,
+      "best_size": 383,
+      "valid": true
+    },
+    {
+      "seed": 20261028,
+      "seconds": 180.04134058952332,
+      "iterations": 769,
+      "initial_size": 383,
+      "best_size": 383,
+      "valid": true
+    }
+  ],
+  "verification": {
+    "positive_reports": [
+      {
+        "file": "c15_3_published383.json",
+        "sha256": "829d329108fd79439e93bb686a2e35349cf6e77d58cc2943ea65766d638ce5e6",
+        "accepted": true,
+        "messages": 383,
+        "pairs_checked": 73153,
+        "confusable_pairs": [],
+        "channel_output_collisions": [],
+        "accepted_output_words": 3064,
+        "roundtrips": 3064,
+        "refused_output_words": 311,
+        "channel_model": "Each coordinate outputs input or input+1 modulo q; no stronger error model is certified"
+      },
+      {
+        "file": "global_milp.json",
+        "sha256": "8e66fd678335166864d5c6a333f0d742eddef4a4f2e0581d24ed7540ad1bbb91",
+        "accepted": true,
+        "messages": 338,
+        "pairs_checked": 56953,
+        "confusable_pairs": [],
+        "channel_output_collisions": [],
+        "accepted_output_words": 2704,
+        "roundtrips": 2704,
+        "refused_output_words": 671,
+        "channel_model": "Each coordinate outputs input or input+1 modulo q; no stronger error model is certified"
+      },
+      {
+        "file": "local_search_seed20261027.json",
+        "sha256": "23c59631e242f1ea2a1c115789898bd261982bd1eb4afbb84832d998f0bc79a4",
+        "accepted": true,
+        "messages": 383,
+        "pairs_checked": 73153,
+        "confusable_pairs": [],
+        "channel_output_collisions": [],
+        "accepted_output_words": 3064,
+        "roundtrips": 3064,
+        "refused_output_words": 311,
+        "channel_model": "Each coordinate outputs input or input+1 modulo q; no stronger error model is certified"
+      },
+      {
+        "file": "local_search_seed20261028.json",
+        "sha256": "c293c9964f00d5de9c332d3c7e4c226be4056f39938aa0c0abe7ca59afb326e9",
+        "accepted": true,
+        "messages": 383,
+        "pairs_checked": 73153,
+        "confusable_pairs": [],
+        "channel_output_collisions": [],
+        "accepted_output_words": 3064,
+        "roundtrips": 3064,
+        "refused_output_words": 311,
+        "channel_model": "Each coordinate outputs input or input+1 modulo q; no stronger error model is certified"
+      }
+    ],
+    "negative_controls": [
+      {
+        "case": "duplicate",
+        "correct_refusal": true
+      },
+      {
+        "case": "out_of_range",
+        "correct_refusal": true
+      },
+      {
+        "case": "confusable",
+        "correct_refusal": true
+      }
+    ],
+    "all_pass": true
+  },
+  "conclusion": "No new construction found within the declared budget. The 383-word published construction was reproduced and verified. No nonexistence proof, capacity record, model advantage or commercial demand established."
+}

@@ -1,0 +1,35 @@
+{
+  "status": "PROSPECTIVE_PLAN_FROZEN_BEFORE_FINAL_WEIGHT_CONFIRMATION",
+  "mathematical_witness": {
+    "kind": "continuous piecewise-linear interpolation",
+    "knots": "j/20 for j=0,...,20",
+    "heights": [0,159,316,493,721,981,1240,1500,1658,1818,1858,1818,1658,1500,1240,981,721,493,316,159,0],
+    "integral": "1963/2",
+    "normalizing_maximum": "18258529/18240",
+    "non_strict_lower_bound": "17902560/18258529"
+  },
+  "seed": 202610274853,
+  "fresh_classes": 512,
+  "class_sampling": {
+    "first_256_target_lengths": [2,20],
+    "last_256_target_lengths": [21,250],
+    "modulus": [1,10000],
+    "first_member": "uniform integer from 1 through modulus",
+    "last_padding": "uniform integer from 0 through modulus-1",
+    "interval_length": "first_member+(class_length-1)*modulus+last_padding"
+  },
+  "fresh_exact_checks": [
+    "Direct phase sample values at an independently generated rational phase are bounded by the exact normalizing maximum.",
+    "Exact piecewise-quadratic antiderivatives give cell-average class weights satisfying m*sum weights<=normalizing maximum.",
+    "Cell weights telescope to the exact integral at n=2,3,7,19,20,21,47,123,257."
+  ],
+  "adverse_checks": [
+    "A frozen final wrapper recomputes both complete short-class certificates and the analytic tail.",
+    "An altered height, changed normalization, forged witness bytes, missing checker and modified checker are refused in disposable copies.",
+    "Claims above17902560/18258529, singletons, arbitrary arithmetic progressions, two-dimensional inputs and nonexact coverage are refused.",
+    "Malformed request schemas and rationals are refused; admissible scope alone is never reported as a recomputed proof."
+  ],
+  "same_asset_comparison": "Descriptive decisions from the exact theorem's assumptions may be compared with the specialized interface. This is not a model A/B or a blinded discovery comparison.",
+  "resource_ceiling": {"wall_seconds":120,"memory_mib":512,"external_spend_usd":0},
+  "rule": "Any exact counterexample or proof failure stops the final theorem claim. Preserve failed evidence and freeze a corrected wrapper before repeating confirmation; do not weaken the mathematical requirements."
+}

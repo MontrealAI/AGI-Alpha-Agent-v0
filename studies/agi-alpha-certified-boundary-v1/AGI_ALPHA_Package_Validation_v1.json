@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "archive_name": "AGI_ALPHA_Certified_Boundary_v1.zip",
+  "archive_sha256": "a37e93157333f24761361b0fcc5cfe02c890f6b0b66fcef0811271f96c2ed2b5",
+  "manifest_entries_verified": 449,
+  "reproduction": {
+    "status": "PASS: fixed certificates and accounting reconciled",
+    "executed_utc": "2026-10-27T23:03:04.811078+00:00",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executions": [
+      {
+        "command": [
+          "final_certificate.py",
+          "--request",
+          "study/final_request.json",
+          "--output",
+          "final_check"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.2491432160022669,
+        "log_sha256": "b36461f90d439d9d54ac2227403b71473bd6857822c150a329f155374a002552"
+      },
+      {
+        "command": [
+          "certificate_service.py",
+          "--request",
+          "study/accepted_request.json",
+          "--output",
+          "polynomial_check"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 3.9528284949919907,
+        "log_sha256": "8c5e8bb943dd0b4aab9c6e48331853a9cab5c3125712d04758be3a58e6735f62"
+      },
+      {
+        "command": [
+          "economics/model.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.04815546399913728,
+        "log_sha256": "74ebec46b990569b0d7469d9f360f565fd0a3f3fe975a33aaf8a2bd8c04d3e63"
+      },
+      {
+        "command": [
+          "economics/audit.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.04389849699509796,
+        "log_sha256": "07012c09d22d9496e33eaecd3f6e6b4ac897a6f49e32b69011430e6a1e96ba07"
+      },
+      {
+        "command": [
+          "lineage/economic_replay.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.027967706002527848,
+        "log_sha256": "4328a3dda2d048d64ce36a0944e07c95c2db550d3901fc5ece70429d02bf54b6"
+      },
+      {
+        "command": [
+          "economics/value_pricing.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.03732544300146401,
+        "log_sha256": "aa6602cd17fa1b42d7e2b0e35e3fc1b685c592c7918a40eb594427dc0981b423"
+      },
+      {
+        "command": [
+          "lineage/native/integration/native_bridge.py",
+          "--input",
+          "lineage/native/final_weight_metadata.json",
+          "--output",
+          "native_check"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.5973834929900477,
+        "log_sha256": "f8d38d3a2f69b217743c739a34cb0e5e94c7d1f39ca7417d60933131dd2b5fa0"
+      }
+    ],
+    "elapsed_seconds": 7.023078181009623,
+    "native_reproduced": true,
+    "claims": {
+      "final_heft_lower_bound": "17902560/18258529",
+      "relation": ">=",
+      "actual_revenue": 0,
+      "actual_complete_profit": null,
+      "conditional_central_full_project_profit_usd": 2408,
+      "exclusive_operational_or_discovery_alpha_established": false
+    }
+  },
+  "copied_economic_csv_files": [
+    "arrangements.csv",
+    "cash_ledger.csv",
+    "conditional_participation_discounts.csv",
+    "cost_detail.csv",
+    "fee_participation_grid.csv",
+    "scenarios.csv",
+    "value_pricing_grid.csv"
+  ],
+  "caveat": "Fresh extraction and fixed-artifact replay; no model rediscovery, external peer review or production qualification."
+}
