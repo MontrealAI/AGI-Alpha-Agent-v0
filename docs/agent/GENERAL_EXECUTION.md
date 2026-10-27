@@ -21,8 +21,15 @@ and maximum authorized envelope. Membership alone does not authorize execution.
 
 The concrete Responses transport sends `reasoning.effort`, preserves output/reasoning items and tool
 results in the next request, and uses strict function-call or native computer-call output records.
+An explicitly reported different reasoning effort refuses; an omitted report remains unverified.
+Supported empty pointer modifiers are normalized only on execution copies; raw history is preserved.
 Computer calls execute the validated existing primitives and return the resulting screenshot.
+A computer observation must be a bounded inline PNG; it cannot make the provider fetch an arbitrary image URL.
 A call marked completed by the provider still must execute through the actuator.
+
+Wire data uses the existing canonical protocol: exact integers, decimal strings, text and structured
+JSON, with no floating-point JSON numbers. Scientific tools must use exact units/decimal strings or
+an explicitly qualified conversion adapter. This version does not claim arbitrary API compatibility.
 
 The optional `HTTPToolEnvironment` targets an **application-owned, already approved sandbox service**;
 its protocol is not an OpenAI-hosted endpoint. That service must implement its own isolation,
