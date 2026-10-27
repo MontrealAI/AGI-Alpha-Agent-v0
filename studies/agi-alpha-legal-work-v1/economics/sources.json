@@ -1,0 +1,65 @@
+{
+  "as_of": "2026-10-26",
+  "currency_for_model": "CAD",
+  "sources": [
+    {
+      "id": "jobbank-ontario-lawyers",
+      "url": "https://www.jobbank.gc.ca/wagereport/occupation/15815",
+      "alternate_url": "https://www.jobbank.gc.ca/wagereport/location/on",
+      "publisher": "Government of Canada Job Bank, using Statistics Canada Labour Force Survey",
+      "claim": "Ontario hourly employee wages for NOC 41101: low CAD 32.05, median CAD 65.21, high CAD 112.98. Reference period 2023-2024; November 19, 2025 update.",
+      "use": "Sensitivity on employee opportunity-cost rate, not a law-firm billing rate or a measured avoidable cash cost.",
+      "limits": "Province-wide occupation data do not measure this service's task duration, specialism, loaded employment cost, actual cash saving, or willingness to pay. A labor-burden factor is an explicit scenario assumption."
+    },
+    {
+      "id": "lawgeex-nda-task",
+      "url": "https://www.superlegal.ai/blog/aivslawyer/",
+      "original_url": "https://www.lawgeex.com/AIvsLawyer/",
+      "publisher": "Superlegal / LawGeex, vendor report",
+      "date": "2022-10-24",
+      "claim": "Vendor describes 20 US-trained lawyers performing issue spotting on five standard NDAs. Mean time for all five was 92 minutes, shortest 51 and longest 156. Dividing by five gives 18.4 minutes per NDA as a descriptive arithmetic average, not an individual-document distribution.",
+      "use": "Task-level context only. Not used as a calibrated estimate for an accepted Ontario change-control/playbook packet.",
+      "limits": "Vendor-selected test; issue spotting, not complete accepted delivery; US lawyers; scope and licensing differ. Does not justify converting a token/runtime comparison into lawyer-invoice savings."
+    },
+    {
+      "id": "microsoft-blackline",
+      "url": "https://support.microsoft.com/en-au/word/compare-document-differences-using-the-legal-blackline-option",
+      "publisher": "Microsoft Support",
+      "claim": "Desktop Word has a legal blackline comparison that displays changes in a third document by default. Options control comparison granularity and handling of tracked changes.",
+      "use": "Competent human-only workflow includes ordinary non-AI comparison tools; zero-AI does not imply reading every character manually.",
+      "limits": "No measured time, recall, legal correctness or customer acceptance for this experiment."
+    },
+    {
+      "id": "draftable-pricing",
+      "url": "https://www.draftable.com/pricing",
+      "publisher": "Draftable",
+      "claim": "Official public list price retrieved October 26, 2026: legal-team desktop comparison US$261 per user annually; comparison API is quote-based. Listed legal features include redlines, departures tables and document-management integrations.",
+      "use": "Practical competitive context for version reconciliation. The CAD model does not silently convert or treat this USD desktop price as an API service cost.",
+      "limits": "Not purchased or executed. Vendor feature statements do not establish measured comparative quality."
+    },
+    {
+      "id": "spellbook-pricing",
+      "url": "https://spellbook.com/pricing",
+      "original_url": "https://www.spellbook.legal/pricing",
+      "publisher": "Spellbook",
+      "claim": "Contract review/drafting suite includes Word add-in and reusable playbooks; official pricing is customized by license size and does not publish a standard amount on the retrieved page.",
+      "use": "Strong commercial AI-assisted alternative; paid tool not executed. Scenario prices are arbitrary sensitivity coordinates, not Spellbook quotations.",
+      "limits": "No claimed superiority to a commercial product; no signup, quote request, new credentials or paid commitment."
+    },
+    {
+      "id": "legalon-customer-case",
+      "url": "https://www.legalontech.com/customers/tekscend",
+      "publisher": "LegalOn, vendor customer case study",
+      "claim": "Vendor attributes a reduction from two hours to 30 minutes for NDA reviews to a customer deployment.",
+      "use": "Evidence that commercially deployed alternatives address the same burden; not a causal estimate transferred to AGI ALPHA.",
+      "limits": "Vendor-published case study, selected customer and different scope. No raw matched times or independent adjudication for this experiment."
+    }
+  ],
+  "not_identified": [
+    "Independent measured Ontario NDA change-control/playbook packet duration",
+    "Observed professional review time for this implementation",
+    "Observed willingness to pay or buyer recurrence",
+    "Complete historical research cost",
+    "Executed commercial-tool comparator on the frozen cases"
+  ]
+}

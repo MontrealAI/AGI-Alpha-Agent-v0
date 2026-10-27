@@ -1,0 +1,303 @@
+{
+  "schema": "legal-study-publication-economic-claims-review/v1",
+  "reviewed_at": "2026-10-26T21:35:43.844096+00:00",
+  "reviewer": "economics agent, with frozen independent arithmetic audit evidence",
+  "status": "NUMERIC_RESULTS_AND_NEGATIVE_CONCLUSIONS_SUPPORTED;_REPORTING_CLARIFICATIONS_REQUESTED",
+  "scope": [
+    "paper cost accounting",
+    "finite-cash model description",
+    "scenario definitions",
+    "unit costs",
+    "reinvestment and break-even claims",
+    "secondary reconciliation thresholds"
+  ],
+  "review_input_identities": [
+    {
+      "path": "paper/AGI_ALPHA_Legal_Work_Advantage.tex",
+      "sha256": "bee439b44b5aa7dbf944297c8bafd0a9f38adcea79e76c3edd1292a06efb53a2"
+    },
+    {
+      "path": "economics/results/primary-v2/campaign.json",
+      "sha256": "749790867db4109d2922c44c7f810dbeee36996def185cff4ebf78eb054c438f"
+    },
+    {
+      "path": "economics/results/reconciliation/unit-thresholds.json",
+      "sha256": "9c8a1b14d323551f7c7ba2f5a38dcc052548598e7c61b2ac5bb82ca74d887873"
+    },
+    {
+      "path": "economics/parameters.json",
+      "sha256": "53c3eed46e0aacfc9d67481e9298a1dfbc9fd5edf3f562e63dedc221886d5128"
+    },
+    {
+      "path": "economics/legal-market.mjs",
+      "sha256": "3000e9976e0dbb802845e0f4ab9844ecfe667b185dd54a734e592c8005465e92"
+    },
+    {
+      "path": "economics/results/primary-v2/reporting-errata.json",
+      "sha256": "3135683197c876fb2981583061dc7c81d3143fde3408e110a5d95b45d2422888"
+    },
+    {
+      "path": "economics/findings.md",
+      "sha256": "57a873f5e80dfb02bdb1259c25b10c4c63ff304a8e8ccc96ea7ef4b74205590f"
+    },
+    {
+      "path": "economics/secondary-findings.md",
+      "sha256": "266969153c4334f87bfc5f603cd757b5e0102c66e0a578545177e9456e24ba0e"
+    }
+  ],
+  "frozen_result_integrity": [
+    {
+      "manifest": "economics/results/primary-v2/results-freeze.json",
+      "files_verified": 8,
+      "all_hashes_match": true
+    },
+    {
+      "manifest": "economics/results/reconciliation/results-freeze.json",
+      "files_verified": 9,
+      "all_hashes_match": true
+    }
+  ],
+  "verified_claims": {
+    "actual_ledger": {
+      "revenue": 0,
+      "fullCost": null,
+      "operatingMargin": null,
+      "reserve": null,
+      "unpaidObligations": null,
+      "afterReserves": null,
+      "availableSurplus": null,
+      "eligibleInvestment": null
+    },
+    "actual_costs_unknown_not_zero": true,
+    "actual_collections_cents": 0,
+    "scenario_worlds": 216,
+    "strategy_results": 1080,
+    "all_1080_cash_net_results_negative": true,
+    "first_earned_investment_worlds": 0,
+    "second_earned_investment_worlds": 0,
+    "reinvest_equal_to_baseline_in_all_worlds": true,
+    "reference_mean_cash_net_cents": -42891.666666666664,
+    "reference_p10_p90_cents": [
+      -45000,
+      -41400
+    ],
+    "reference_simulated_collections_cents": 0,
+    "positive_C1_minus_B_worlds": 14,
+    "positive_C_minus_D_worlds": 30,
+    "secondary_actual_available_surplus": null,
+    "secondary_fee_to_minutes": [
+      [
+        5,
+        3.5388626095572886
+      ],
+      [
+        10,
+        7.077725219114577
+      ],
+      [
+        20,
+        14.155450438229154
+      ]
+    ],
+    "primary_professional_acceptance_and_human_time_remain_unknown": true,
+    "no_new_retained_asset_in_secondary": true,
+    "no_independent_professional_correctness_claim_approved": true
+  },
+  "concrete_corrections": [
+    {
+      "id": "ECO-01",
+      "priority": "required clarification",
+      "location": "Finite-cash assumptions and scenario table/caption; approximately lines 250 and 277-289 of reviewed input",
+      "current_claim": "Scenario labels can be read as isolated changes, particularly correction, onboarding, repeat work and maintenance.",
+      "finding": "The favorable assumptions are cumulative. The high-maintenance row branches from the correction scenario, not from the high-repeat scenario. Interpreting the displayed rows as one-factor sensitivities would be incorrect.",
+      "suggested_text": "Rows 2-6 are cumulative: reduce all three review-time assumptions to 15 minutes; then reduce price to CAD5; then add 10 correction minutes for failed packets; then remove buyer onboarding; then raise weekly arrival probability to 0.8. Zero demand and the stronger alternative each branch from the reference. Higher maintenance branches from the 15-minute/CAD5/10-minute-correction condition, raising weekly upkeep from CAD2 to CAD20.",
+      "evidence": [
+        "economics/parameters.json:scenario_definitions"
+      ],
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-02",
+      "priority": "required clarification",
+      "location": "Reference assumptions acquisition charge; approximately line 250",
+      "current_claim": "CAD2 acquisition cost per prospect",
+      "finding": "The frozen model charges CAD2 at each arriving opportunity for a prospect who is not yet onboarded, including repeated arrivals and declines by the same prospect. It is not charged just once per unique prospect. This is materially relevant to reference costs despite zero deliveries.",
+      "suggested_text": "CAD2 acquisition/contact cost on each arrival from a prospect not yet onboarded, including repeat contacts and declined offers",
+      "evidence": [
+        "economics/legal-market.mjs:simulateLegal, acquire and !onboarded charge guard",
+        "economics/results/primary-v2/reference-ledger.json"
+      ],
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-03",
+      "priority": "required clarification",
+      "location": "Resource-cost figures CAD3.59 and CAD43.08; approximately lines 257-259",
+      "current_claim": "Reference B has CAD3.59 provider marginal cost per attempt; the 2/24 rate implies CAD43.08 per technically accepted packet.",
+      "finding": "CAD3.59 is correct for the frozen unit table, where operation CAD2.67 and support CAD0.67 round separately before adding CAD0.25 tools. The per-case cash engine rounds the combined five labor minutes once, to CAD3.33, then adds tools: CAD3.58 at reference. Consequently CAD43.08 is table-based conditional arithmetic, whereas the equivalent per-case cash extrapolation would be CAD42.96. Neither is a full accepted-service cost or forecast.",
+      "suggested_text": "The reference unit table reports a modeled marginal subtotal of CAD3.59 per attempt, with operations and support rounded separately. The case cash engine rounds their combined labor once and charges CAD3.58. Applying the authored 2/24 technical frequency hypothetically gives CAD43.08 using the table subtotal, or CAD42.96 using the case cash subtotal, before missing recurring costs; neither extrapolation is a validated production forecast.",
+      "evidence": [
+        "economics/results/primary-v2/campaign.json:unitEconomics.stages.B",
+        "economics/legal-market.mjs:unitCost and caseCost",
+        "economics/findings.md:Cost layers"
+      ],
+      "arithmetic_cents": {
+        "unit_table": 359,
+        "case_cash": 358,
+        "unit_table_per_technical_acceptance": 4308,
+        "case_cash_per_technical_acceptance": 4296
+      },
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-04",
+      "priority": "required terminology clarification",
+      "location": "Abstract, results prose, scenario table header and checked high-repeat example; approximately lines 82, 268, 277 and 291",
+      "current_claim": "profit / cash operating profit / operating profit",
+      "finding": "The reported quantity is simulated collections minus all modeled provider cash-cost categories, including prospective capability construction when applicable. Seed is excluded and unmeasured historical costs are excluded but remain unknown. It should not be mistaken for accrual operating profit, full project profit or observed earnings.",
+      "suggested_text": "Use simulated cash net result consistently, defined once as simulated collections less all modeled provider cash costs, including any new capability construction. State that seed is excluded and unknown historical/full actual costs remain unestimated. Rename the table column Mean cash net CAD.",
+      "evidence": [
+        "economics/legal-market.mjs:summary.cashOperatingProfitCents and providerCostCategoriesCents",
+        "economics/results/primary-v2/campaign.json:worlds"
+      ],
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-05",
+      "priority": "required arithmetic wording clarification",
+      "location": "Break-even example; approximately line 299",
+      "current_claim": "Even 50 uses require more than CAD8.25 gross saving per use; 100 uses require CAD4.25.",
+      "finding": "CAD8.25 and CAD4.25 are exact direct-cost equality thresholds for CAD400 fixed cost and CAD0.25 upkeep. Strictly more is needed for positive direct net benefit, and additional costs raise the worthwhile-investment threshold. The current more-than wording inconsistently mixes break-even and positive return.",
+      "suggested_text": "With CAD400 fixed cost and CAD0.25 upkeep, direct-cost break-even requires CAD8.25 gross saving per use over 50 uses, or CAD4.25 over 100 uses. A positive return after interruption, adaptation, validation and other costs requires more.",
+      "evidence": [
+        "economics/results/primary-v2/campaign.json:investmentSensitivity",
+        "economics/inherited/canonical/shadow-ledger.mjs:calculateInvestment"
+      ],
+      "arithmetic_cad": {
+        "50_uses": 8.25,
+        "100_uses": 4.25
+      },
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-06",
+      "priority": "recommended clarification",
+      "location": "Buyer price-and-attention comparison and reconciliation threshold; approximately lines 257 and 261-265",
+      "current_claim": "CAD80.64 buyer price-and-attention cost and full-loaded-wage saved-minutes thresholds",
+      "finding": "The figures are arithmetically correct using full loaded opportunity value. The primary buyer-choice simulation separately values only 50% of capacity. Explicitly distinguish the resource-cost table from simulated buyer utility so the paper does not imply that CAD80.64 is the utility input or measured willingness to pay.",
+      "suggested_text": "These resource-cost comparisons value professional capacity at the full assumed loaded wage; the primary buyer-choice simulation separately applies its 50% capacity-realization assumption. Neither measure establishes willingness to pay or avoidable payroll cash.",
+      "evidence": [
+        "economics/legal-market.mjs:unitEconomics and simulateLegal valueWage",
+        "economics/secondary-unit.mjs:demandThresholds"
+      ],
+      "arithmetic_cents": {
+        "review": 6358,
+        "buyer_onboarding": 706,
+        "price": 1000,
+        "total": 8064
+      },
+      "changes_model_or_results": false
+    },
+    {
+      "id": "ECO-07",
+      "priority": "recommended precision",
+      "location": "Technical rejection and hypothetical correction; approximately line 252",
+      "current_claim": "A mechanically rejected packet cannot invoice unless a corrected, accepted packet exists; none is invented.",
+      "finding": "Directionally correct. In this campaign sampled production rows are immutable and the assumed correction labor never creates a corrected output. Stating this directly makes the gate easier to audit.",
+      "suggested_text": "Only sampled packets already passing the deterministic gate may become invoices under the conditional acceptance draw. Hypothetical correction effort remains a cost and never changes a failed production row into an accepted one.",
+      "evidence": [
+        "economics/legal-market.mjs:accepted assignment and rejected invoice assertion",
+        "evidence/economics-independent-single-replay.json"
+      ],
+      "changes_model_or_results": false
+    }
+  ],
+  "complete_scenario_definition_map": [
+    {
+      "scenario": "reference-no-unmeasured-time-benefit",
+      "changes_from_reference": {}
+    },
+    {
+      "scenario": "conditional-15-minute-review",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15
+      }
+    },
+    {
+      "scenario": "conditional-lower-price-review",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15,
+        "offerPriceCents": 500
+      }
+    },
+    {
+      "scenario": "conditional-10-minute-correction-cost",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15,
+        "offerPriceCents": 500,
+        "technicalCorrectionMinutes": 10
+      }
+    },
+    {
+      "scenario": "conditional-no-buyer-onboarding",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15,
+        "offerPriceCents": 500,
+        "buyerOnboardingMinutes": 0,
+        "technicalCorrectionMinutes": 10
+      }
+    },
+    {
+      "scenario": "conditional-high-repeat-work",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15,
+        "offerPriceCents": 500,
+        "buyerOnboardingMinutes": 0,
+        "technicalCorrectionMinutes": 10,
+        "arrivalProbability": 0.8
+      }
+    },
+    {
+      "scenario": "zero-demand",
+      "changes_from_reference": {
+        "arrivalProbability": 0
+      }
+    },
+    {
+      "scenario": "strong-low-cost-alternative",
+      "changes_from_reference": {
+        "alternativeReviewMinutes": 10,
+        "alternativeToolCentsPerJob": 100
+      }
+    },
+    {
+      "scenario": "conditional-high-maintenance",
+      "changes_from_reference": {
+        "reviewMinutesB": 15,
+        "reviewMinutesC": 15,
+        "reviewMinutesD": 15,
+        "offerPriceCents": 500,
+        "technicalCorrectionMinutes": 10,
+        "maintenanceWeeklyCents": 2000
+      }
+    }
+  ],
+  "paper_modified_by_reviewer": false,
+  "frozen_source_or_results_modified": false,
+  "campaign_rerun": false,
+  "limitations": [
+    "This is a same-session technical economic-claims review, not an independent professional accounting opinion.",
+    "No verification can recover absent human time, invoice, professional acceptance or complete historical cost evidence.",
+    "Recommendations preserve frozen model/results and their negative conclusion; they do not introduce another simulation or favorable recalibration."
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "synthetic-mechanical-answer-key/v1",
+  "case_id": "PRIMARY-19",
+  "supported_scope": true,
+  "expected_statuses": {
+    "R1_PURPOSE": "pass",
+    "R2_CONFIDENTIALITY_TERM": "uncertain",
+    "R3_RETURN_DEADLINE": "uncertain",
+    "R4_COMPELLED_NOTICE": "pass",
+    "R5_RESIDUALS": "pass",
+    "R6_ASSIGNMENT": "pass",
+    "R7_GOVERNING_LAW": "pass",
+    "R8_REPRESENTATIVES": "uncertain"
+  },
+  "required_sources": [
+    {
+      "rule_id": "R1_PURPOSE",
+      "document": "revised",
+      "quote": "A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 340,
+      "end": 521
+    },
+    {
+      "rule_id": "R2_CONFIDENTIALITY_TERM",
+      "document": "revised",
+      "quote": "The general confidentiality obligation lasts 24 months after disclosure. For material qualifying as a trade secret, confidentiality continues for as long as trade-secret status persists.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 541,
+      "end": 727
+    },
+    {
+      "rule_id": "R3_RETURN_DEADLINE",
+      "document": "revised",
+      "quote": "After a written request, the Receiver shall return or destroy Protected Material within 15 calendar days, subject to commercially reasonable efforts.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 763,
+      "end": 912
+    },
+    {
+      "rule_id": "R4_COMPELLED_NOTICE",
+      "document": "revised",
+      "quote": "Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 942,
+      "end": 1090
+    },
+    {
+      "rule_id": "R5_RESIDUALS",
+      "document": "revised",
+      "quote": "A Receiver must not use residual information retained in unaided memory.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 1117,
+      "end": 1189
+    },
+    {
+      "rule_id": "R6_ASSIGNMENT",
+      "document": "revised",
+      "quote": "A party may assign this Agreement only after receiving the other party's prior written consent.",
+      "severity": 3,
+      "kind": "obligation",
+      "start": 1221,
+      "end": 1316
+    },
+    {
+      "rule_id": "R7_GOVERNING_LAW",
+      "document": "revised",
+      "quote": "The laws of Ontario, Canada govern this Agreement.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 1336,
+      "end": 1386
+    },
+    {
+      "rule_id": "R8_REPRESENTATIVES",
+      "document": "revised",
+      "quote": "Representatives may receive Protected Material only on a need-to-know basis for the evaluation. The Receiver expects its representatives to comply with this Agreement.",
+      "severity": 3,
+      "kind": "obligation",
+      "start": 1411,
+      "end": 1578
+    }
+  ],
+  "required_escalation_rules": [
+    "R2_CONFIDENTIALITY_TERM",
+    "R3_RETURN_DEADLINE",
+    "R8_REPRESENTATIVES"
+  ],
+  "required_escalation_codes": [],
+  "prohibited_substantive_response": false,
+  "rationale": {
+    "R1_PURPOSE": "Explicit provision satisfies the declared mechanical research policy.",
+    "R2_CONFIDENTIALITY_TERM": "The policy requires escalation of separate trade-secret survival rather than interpreting it.",
+    "R3_RETURN_DEADLINE": "Reasonable-efforts qualifier prevents an unconditional mechanical deadline conclusion.",
+    "R4_COMPELLED_NOTICE": "Explicit provision satisfies the declared mechanical research policy.",
+    "R5_RESIDUALS": "Explicit provision satisfies the declared mechanical research policy.",
+    "R6_ASSIGNMENT": "Explicit provision satisfies the declared mechanical research policy.",
+    "R7_GOVERNING_LAW": "Explicit provision satisfies the declared mechanical research policy.",
+    "R8_REPRESENTATIVES": "Expectation of compliance does not expressly establish continuing Receiver responsibility."
+  },
+  "stratum": "P5-absence-ambiguity",
+  "professional_legal_assessment": "NOT_ASSESSED",
+  "author": "/root/legal_scope",
+  "author_basis": "Frozen research playbook; original synthetic text; no engine or evaluator source inspected"
+}

@@ -1,0 +1,3128 @@
+{
+  "schema": "legal-study-whole-companion-ruff-audit/v1",
+  "checked_at": "2026-10-26T21:44:35.810694+00:00",
+  "command": [
+    "/workspace/scratch/2b1df9d13229/test-env/bin/ruff",
+    "check",
+    "--config",
+    "/workspace/scratch/c4e9aee15454/agi-alpha/pyproject.toml",
+    "--output-format",
+    "json",
+    "/workspace/scratch/9d2647fdda5a/legal-study"
+  ],
+  "exit_code": 1,
+  "stderr": "",
+  "configuration_sha256": "042380c2e3e90872027acc1053ebef09472cc34db142318af1ff2390aec5483f",
+  "finding_count": 94,
+  "counts_by_code": {
+    "I001": 12,
+    "UP017": 2,
+    "RUF100": 56,
+    "TRY004": 6,
+    "FURB192": 3,
+    "BLE001": 6,
+    "UP035": 2,
+    "SIM117": 3,
+    "SIM114": 1,
+    "PLC0206": 3
+  },
+  "counts_by_file": {
+    "evaluation/private-keys/author_corpus.py": 2,
+    "evaluation/private-keys/author_reconciliation.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py": 12,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py": 7,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py": 5,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_operation.py": 1,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/cli.py": 1,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py": 10,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_handoff.py": 1,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py": 5,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py": 10,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/mission.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py": 7,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/state.py": 4,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py": 5,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_math.py": 1,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_model.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py": 7,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/transport.py": 1,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/trust.py": 2,
+    "heritage/alpha/alpha_factory_v1/core/runtime/successor/workbench.py": 2,
+    "history/reconciliation-pre-review/reconcile.py": 1
+  },
+  "findings": [
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 46,
+        "row": 1
+      },
+      "filename": "evaluation/private-keys/author_corpus.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import copy\nimport datetime\nimport hashlib\nimport json\nimport pathlib\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 3
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "UP017",
+      "end_location": {
+        "column": 140,
+        "row": 275
+      },
+      "filename": "evaluation/private-keys/author_corpus.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import copy, datetime, hashlib, json, pathlib",
+            "end_location": {
+              "column": 46,
+              "row": 1
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          },
+          {
+            "content": "datetime.UTC",
+            "end_location": {
+              "column": 140,
+              "row": 275
+            },
+            "location": {
+              "column": 119,
+              "row": 275
+            }
+          }
+        ],
+        "message": "Convert to `datetime.UTC` alias"
+      },
+      "location": {
+        "column": 119,
+        "row": 275
+      },
+      "message": "Use `datetime.UTC` alias",
+      "name": "datetime-timezone-utc",
+      "noqa_row": 275,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/datetime-timezone-utc"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 40,
+        "row": 1
+      },
+      "filename": "evaluation/private-keys/author_reconciliation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import datetime\nimport hashlib\nimport json\nimport pathlib\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 3
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 1
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 1,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "UP017",
+      "end_location": {
+        "column": 155,
+        "row": 167
+      },
+      "filename": "evaluation/private-keys/author_reconciliation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "import datetime, hashlib, json, pathlib",
+            "end_location": {
+              "column": 40,
+              "row": 1
+            },
+            "location": {
+              "column": 1,
+              "row": 1
+            }
+          },
+          {
+            "content": "datetime.UTC",
+            "end_location": {
+              "column": 155,
+              "row": 167
+            },
+            "location": {
+              "column": 134,
+              "row": 167
+            }
+          }
+        ],
+        "message": "Convert to `datetime.UTC` alias"
+      },
+      "location": {
+        "column": 134,
+        "row": 167
+      },
+      "message": "Use `datetime.UTC` alias",
+      "name": "datetime-timezone-utc",
+      "noqa_row": 167,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/datetime-timezone-utc"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 75,
+        "row": 20
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 75,
+              "row": 20
+            },
+            "location": {
+              "column": 61,
+              "row": 20
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 63,
+        "row": 20
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 20,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 78,
+        "row": 23
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 78,
+              "row": 23
+            },
+            "location": {
+              "column": 64,
+              "row": 23
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 66,
+        "row": 23
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 23,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 82,
+        "row": 27
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 82,
+              "row": 27
+            },
+            "location": {
+              "column": 68,
+              "row": 27
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 70,
+        "row": 27
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 27,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 116,
+        "row": 31
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 116,
+              "row": 31
+            },
+            "location": {
+              "column": 102,
+              "row": 31
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 104,
+        "row": 31
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 31,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 56,
+        "row": 33
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 56,
+              "row": 33
+            },
+            "location": {
+              "column": 42,
+              "row": 33
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 44,
+        "row": 33
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 33,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 80,
+        "row": 40
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 80,
+              "row": 40
+            },
+            "location": {
+              "column": 66,
+              "row": 40
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 68,
+        "row": 40
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 40,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 85,
+        "row": 42
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 85,
+              "row": 42
+            },
+            "location": {
+              "column": 71,
+              "row": 42
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 73,
+        "row": 42
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 42,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 105,
+        "row": 44
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 105,
+              "row": 44
+            },
+            "location": {
+              "column": 91,
+              "row": 44
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 93,
+        "row": 44
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 44,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 62,
+        "row": 46
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 62,
+              "row": 46
+            },
+            "location": {
+              "column": 48,
+              "row": 46
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 50,
+        "row": 46
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 46,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 107,
+        "row": 48
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 107,
+              "row": 48
+            },
+            "location": {
+              "column": 93,
+              "row": 48
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 95,
+        "row": 48
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 48,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 83,
+        "row": 142
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 83,
+              "row": 142
+            },
+            "location": {
+              "column": 69,
+              "row": 142
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 71,
+        "row": 142
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 142,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 80,
+        "row": 144
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 80,
+              "row": 144
+            },
+            "location": {
+              "column": 66,
+              "row": 144
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 68,
+        "row": 144
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 144,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 43,
+        "row": 52
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 43,
+              "row": 52
+            },
+            "location": {
+              "column": 29,
+              "row": 52
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 31,
+        "row": 52
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 52,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 45,
+        "row": 89
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 45,
+              "row": 89
+            },
+            "location": {
+              "column": 31,
+              "row": 89
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 33,
+        "row": 89
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 89,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 81,
+        "row": 322
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 81,
+              "row": 322
+            },
+            "location": {
+              "column": 67,
+              "row": 322
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 69,
+        "row": 322
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 322,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 61,
+        "row": 348
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 61,
+              "row": 348
+            },
+            "location": {
+              "column": 47,
+              "row": 348
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 49,
+        "row": 348
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 348,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 77,
+        "row": 889
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 77,
+              "row": 889
+            },
+            "location": {
+              "column": 63,
+              "row": 889
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 65,
+        "row": 889
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 889,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 92,
+        "row": 891
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 92,
+              "row": 891
+            },
+            "location": {
+              "column": 78,
+              "row": 891
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 80,
+        "row": 891
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 891,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 109,
+        "row": 908
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/ascension.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 109,
+              "row": 908
+            },
+            "location": {
+              "column": 95,
+              "row": 908
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 97,
+        "row": 908
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 908,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 38
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport base64\nimport hashlib\nimport json\nimport os\nimport stat\nimport uuid\nfrom contextlib import closing\nfrom pathlib import Path\nfrom typing import Any, Literal\n\nfrom pydantic import Field, model_validator\n\nfrom ..store import Conflict, Journal\nfrom ..store import canonical as journal_canonical\nfrom ..store import digest as journal_digest\nfrom .protocol import canonical, digest\nfrom .transformation import (\n    KEY as DISCOVERY_KEY,\n)\nfrom .transformation import (\n    DiscoveryLoop,\n    DiscoveryRequest,\n    IntentCharter,\n    OperatorRegistry,\n    SelectionProgram,\n    SourceDocument,\n    TIModel,\n    _engine_digest,\n    assert_public_content,\n    validate_envelope,\n    validate_fresh_sources,\n)\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 40
+            },
+            "location": {
+              "column": 1,
+              "row": 9
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 9
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 9,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 67,
+        "row": 418
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "fix": null,
+      "location": {
+        "column": 21,
+        "row": 418
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 418,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 68,
+        "row": 453
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "fix": null,
+      "location": {
+        "column": 21,
+        "row": 453
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 453,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "FURB192",
+      "end_location": {
+        "column": 78,
+        "row": 679
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "fix": {
+        "applicability": "unsafe",
+        "edits": [
+          {
+            "content": "min(eligible, key=lambda item: (-item[0], item[1]))",
+            "end_location": {
+              "column": 78,
+              "row": 679
+            },
+            "location": {
+              "column": 21,
+              "row": 679
+            }
+          }
+        ],
+        "message": "Replace with `min`"
+      },
+      "location": {
+        "column": 21,
+        "row": 679
+      },
+      "message": "Prefer `min` over `sorted()` to compute the minimum value in a sequence",
+      "name": "sorted-min-max",
+      "noqa_row": 679,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/sorted-min-max"
+    },
+    {
+      "cell": null,
+      "code": "FURB192",
+      "end_location": {
+        "column": 29,
+        "row": 699
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "fix": {
+        "applicability": "unsafe",
+        "edits": [
+          {
+            "content": "min(complete, key=lambda run: (-run[\"terminal_score_ppm\"], run[\"search_units\"], run[\"campaign_id\"]))",
+            "end_location": {
+              "column": 29,
+              "row": 699
+            },
+            "location": {
+              "column": 34,
+              "row": 696
+            }
+          }
+        ],
+        "message": "Replace with `min`"
+      },
+      "location": {
+        "column": 34,
+        "row": 696
+      },
+      "message": "Prefer `min` over `sorted()` to compute the minimum value in a sequence",
+      "name": "sorted-min-max",
+      "noqa_row": 696,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/sorted-min-max"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 25,
+        "row": 427
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/campaign_operation.py",
+      "fix": null,
+      "location": {
+        "column": 16,
+        "row": 427
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 427,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 77,
+        "row": 32
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/cli.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "    from .campaign_experiment_cli import add_commands as add_study_commands\n    from .computer import add_commands as add_computer_commands\n    from .transformation import add_commands as add_transformation_commands\n    from .transformation_library_cli import add_commands as add_library_commands\n    from .transformation_model_cli import add_commands as add_model_commands\n    from .workbench import add_commands as add_work_commands\n",
+            "end_location": {
+              "column": 1,
+              "row": 33
+            },
+            "location": {
+              "column": 1,
+              "row": 27
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 5,
+        "row": 27
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 27,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 46,
+        "row": 34
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport base64\nimport hashlib\nimport json\nimport os\nimport queue\nimport re\nimport shutil\nimport stat\nimport subprocess\nimport sys\nimport tempfile\nimport threading\nimport time\nimport uuid\nfrom contextvars import ContextVar\nfrom pathlib import Path\nfrom typing import Any, Callable, Literal, Protocol\nfrom urllib.parse import urlsplit\n\nimport httpx\nfrom pydantic import Field, model_validator\n\nfrom ..store import Conflict, Journal, private_write\nfrom .computer_dependencies import MAX_DEPENDENCY_FRAME, READ_BOOTSTRAP, capture_dependencies\nfrom .protocol import StrictModel, canonical, digest, safe_json_loads\nfrom .state import ActionGateway, ActionRequest\nfrom .transport import read_document\nfrom .workbench import _change, write_receipt\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 36
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "UP035",
+      "end_location": {
+        "column": 52,
+        "row": 23
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from typing import Any, Literal, Protocol\nfrom collections.abc import Callable",
+            "end_location": {
+              "column": 52,
+              "row": 23
+            },
+            "location": {
+              "column": 1,
+              "row": 23
+            }
+          }
+        ],
+        "message": "Import from `collections.abc`"
+      },
+      "location": {
+        "column": 1,
+        "row": 23
+      },
+      "message": "Import from `collections.abc` instead: `Callable`",
+      "name": "deprecated-import",
+      "noqa_row": 23,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/deprecated-import"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 91,
+        "row": 133
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 91,
+              "row": 133
+            },
+            "location": {
+              "column": 77,
+              "row": 133
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 79,
+        "row": 133
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 133,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 84,
+        "row": 154
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 84,
+              "row": 154
+            },
+            "location": {
+              "column": 70,
+              "row": 154
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 72,
+        "row": 154
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 154,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "SIM117",
+      "end_location": {
+        "column": 27,
+        "row": 271
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "        with httpx.Client(timeout=30, trust_env=False, follow_redirects=False) as client, client.stream(\n            \"POST\",\n            self.identity[\"endpoint\"] + suffix,\n            json=payload,\n            headers={\"Authorization\": \"Bearer \" + self.api_key},\n        ) as response:\n            if response.status_code != 200:\n                raise ValueError(f\"provider HTTP {response.status_code}; no automatic retry\")\n            chunks = bytearray()\n            for part in response.iter_bytes():\n                chunks.extend(part)\n                if len(chunks) > 128_000:\n                    raise ValueError(\"provider response exceeds bound\")",
+            "end_location": {
+              "column": 76,
+              "row": 278
+            },
+            "location": {
+              "column": 1,
+              "row": 265
+            }
+          }
+        ],
+        "message": "Combine `with` statements"
+      },
+      "location": {
+        "column": 9,
+        "row": 265
+      },
+      "message": "Use a single `with` statement with multiple contexts instead of nested `with` statements",
+      "name": "multiple-with-statements",
+      "noqa_row": 265,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/multiple-with-statements"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 109,
+        "row": 287
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 109,
+              "row": 287
+            },
+            "location": {
+              "column": 95,
+              "row": 287
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 97,
+        "row": 287
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 287,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 101,
+        "row": 415
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 101,
+              "row": 415
+            },
+            "location": {
+              "column": 87,
+              "row": 415
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 89,
+        "row": 415
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 415,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 29,
+        "row": 484
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": null,
+      "location": {
+        "column": 20,
+        "row": 484
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 484,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 29,
+        "row": 506
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": null,
+      "location": {
+        "column": 20,
+        "row": 506
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 506,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 66,
+        "row": 695
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 66,
+              "row": 695
+            },
+            "location": {
+              "column": 52,
+              "row": 695
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 54,
+        "row": 695
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 695,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 66,
+        "row": 141
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_handoff.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 66,
+              "row": 141
+            },
+            "location": {
+              "column": 52,
+              "row": 141
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 54,
+        "row": 141
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 141,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 15,
+        "row": 16
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport base64\nimport ipaddress\nimport json\nimport socket\nimport ssl\nimport sys\nfrom typing import Any\nfrom urllib.parse import urlsplit\n\nimport certifi\nimport httpx\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 19
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 54,
+        "row": 34
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 54,
+              "row": 34
+            },
+            "location": {
+              "column": 40,
+              "row": 34
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 42,
+        "row": 34
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 34,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "SIM117",
+      "end_location": {
+        "column": 27,
+        "row": 51
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "fix": null,
+      "location": {
+        "column": 9,
+        "row": 45
+      },
+      "message": "Use a single `with` statement with multiple contexts instead of nested `with` statements",
+      "name": "multiple-with-statements",
+      "noqa_row": 45,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/multiple-with-statements"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 21,
+        "row": 73
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "fix": null,
+      "location": {
+        "column": 12,
+        "row": 73
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 73,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 21,
+        "row": 87
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "fix": null,
+      "location": {
+        "column": 12,
+        "row": 87
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 87,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 114,
+        "row": 129
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 114,
+              "row": 129
+            },
+            "location": {
+              "column": 100,
+              "row": 129
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 102,
+        "row": 129
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 129,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 97,
+        "row": 131
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 97,
+              "row": 131
+            },
+            "location": {
+              "column": 83,
+              "row": 131
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 85,
+        "row": 131
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 131,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 83,
+        "row": 134
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 83,
+              "row": 134
+            },
+            "location": {
+              "column": 69,
+              "row": 134
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 71,
+        "row": 134
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 134,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 108,
+        "row": 141
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 108,
+              "row": 141
+            },
+            "location": {
+              "column": 94,
+              "row": 141
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 96,
+        "row": 141
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 141,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 78,
+        "row": 150
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 78,
+              "row": 150
+            },
+            "location": {
+              "column": 64,
+              "row": 150
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 66,
+        "row": 150
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 150,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 72,
+        "row": 159
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 72,
+              "row": 159
+            },
+            "location": {
+              "column": 58,
+              "row": 159
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 60,
+        "row": 159
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 159,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 104,
+        "row": 169
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 104,
+              "row": 169
+            },
+            "location": {
+              "column": 90,
+              "row": 169
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 92,
+        "row": 169
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 169,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 112,
+        "row": 177
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 112,
+              "row": 177
+            },
+            "location": {
+              "column": 98,
+              "row": 177
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 100,
+        "row": 177
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 177,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 76,
+        "row": 317
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 76,
+              "row": 317
+            },
+            "location": {
+              "column": 62,
+              "row": 317
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 64,
+        "row": 317
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 317,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 68,
+        "row": 334
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 68,
+              "row": 334
+            },
+            "location": {
+              "column": 54,
+              "row": 334
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 56,
+        "row": 334
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 334,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 100,
+        "row": 148
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/mission.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 100,
+              "row": 148
+            },
+            "location": {
+              "column": 86,
+              "row": 148
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 88,
+        "row": 148
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 148,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 101,
+        "row": 256
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/mission.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 101,
+              "row": 256
+            },
+            "location": {
+              "column": 87,
+              "row": 256
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 89,
+        "row": 256
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 256,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 63,
+        "row": 63
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 63,
+              "row": 63
+            },
+            "location": {
+              "column": 49,
+              "row": 63
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 51,
+        "row": 63
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 63,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 44,
+        "row": 65
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 44,
+              "row": 65
+            },
+            "location": {
+              "column": 30,
+              "row": 65
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 32,
+        "row": 65
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 65,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 46,
+        "row": 68
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 46,
+              "row": 68
+            },
+            "location": {
+              "column": 32,
+              "row": 68
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 34,
+        "row": 68
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 68,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 47,
+        "row": 71
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 47,
+              "row": 71
+            },
+            "location": {
+              "column": 33,
+              "row": 71
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 35,
+        "row": 71
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 71,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 47,
+        "row": 73
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 47,
+              "row": 73
+            },
+            "location": {
+              "column": 33,
+              "row": 73
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 35,
+        "row": 73
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 73,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 57,
+        "row": 76
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 57,
+              "row": 76
+            },
+            "location": {
+              "column": 43,
+              "row": 76
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 45,
+        "row": 76
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 76,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 103,
+        "row": 180
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 103,
+              "row": 180
+            },
+            "location": {
+              "column": 89,
+              "row": 180
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 91,
+        "row": 180
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 180,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 39,
+        "row": 32
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/state.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport base64\nfrom collections.abc import Callable\nfrom datetime import UTC, datetime, timezone\nfrom decimal import Decimal\nfrom typing import Any, Literal\n\nfrom cryptography.exceptions import InvalidSignature\nfrom pydantic import BaseModel, ConfigDict, Field, model_validator\n\nfrom ..store import Conflict, Journal\nfrom .protocol import (\n    AdmissionDecision,\n    AuthorityEnvelope,\n    CandidateReleaseManifest,\n    ComparatorManifest,\n    EvidenceRecord,\n    Institution,\n    MemoryAdmission,\n    ProofReceipt,\n    SpecialistDesignationPolicy,\n    StrictModel,\n    canonical,\n    digest,\n    safe_json_loads,\n)\nfrom .signatures import verify_ed25519\nfrom .trust import JournalCheckpoint, SignedEnvelope, TrustRegistry\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 34
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 104,
+        "row": 51
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/state.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 104,
+              "row": 51
+            },
+            "location": {
+              "column": 90,
+              "row": 51
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 92,
+        "row": 51
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 51,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 100,
+        "row": 1101
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/state.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 100,
+              "row": 1101
+            },
+            "location": {
+              "column": 86,
+              "row": 1101
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 88,
+        "row": 1101
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 1101,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 72,
+        "row": 1127
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/state.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 72,
+              "row": 1127
+            },
+            "location": {
+              "column": 58,
+              "row": 1127
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 60,
+        "row": 1127
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 1127,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 92,
+        "row": 60
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 92,
+              "row": 60
+            },
+            "location": {
+              "column": 78,
+              "row": 60
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 80,
+        "row": 60
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 60,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 62,
+        "row": 715
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 62,
+              "row": 715
+            },
+            "location": {
+              "column": 48,
+              "row": 715
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 50,
+        "row": 715
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 715,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 78,
+        "row": 36
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport hashlib\nimport re\nimport secrets\nfrom pathlib import Path\nfrom typing import Any, Literal\nfrom urllib.parse import urlsplit\n\nimport httpx\nfrom cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey\nfrom cryptography.hazmat.primitives.serialization import Encoding, PublicFormat\nfrom pydantic import Field, model_validator\n\nfrom ..store import Conflict, Journal, _private_recovery_bytes, private_write\nfrom .ascension import MarketContext, MarketReader, address, hash32, list_settlements\nfrom .jobs import JobDispatcher, compile_jobs\nfrom .protocol import (\n    UTC,\n    ExecutionAuthorization,\n    Identifier,\n    Institution,\n    JobContract,\n    JobDependency,\n    JobGraph,\n    MissionConstitution,\n    StrictModel,\n    canonical,\n    digest,\n    safe_json_loads,\n)\nfrom .state import SuccessorStore\nfrom .trust import SignedEnvelope, sign_record, validate_external_trust_bytes\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 38
+            },
+            "location": {
+              "column": 1,
+              "row": 4
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 4
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 4,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "SIM117",
+      "end_location": {
+        "column": 27,
+        "row": 176
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "        with httpx.Client(timeout=15, follow_redirects=False, trust_env=False) as client, client.stream(\n            \"POST\", self.url, json={\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": method, \"params\": params}\n        ) as response:\n            response.raise_for_status()\n            raw = bytearray()\n            for chunk in response.iter_bytes():\n                raw.extend(chunk)\n                if len(raw) > 2_000_000:\n                    raise ValueError(\"RPC response exceeds its bounded limit\")",
+            "end_location": {
+              "column": 83,
+              "row": 182
+            },
+            "location": {
+              "column": 1,
+              "row": 173
+            }
+          }
+        ],
+        "message": "Combine `with` statements"
+      },
+      "location": {
+        "column": 9,
+        "row": 173
+      },
+      "message": "Use a single `with` statement with multiple contexts instead of nested `with` statements",
+      "name": "multiple-with-statements",
+      "noqa_row": 173,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/multiple-with-statements"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 107,
+        "row": 616
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 107,
+              "row": 616
+            },
+            "location": {
+              "column": 93,
+              "row": 616
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 95,
+        "row": 616
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 616,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 109,
+        "row": 633
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 109,
+              "row": 633
+            },
+            "location": {
+              "column": 95,
+              "row": 633
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 97,
+        "row": 633
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 633,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 105,
+        "row": 746
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 105,
+              "row": 746
+            },
+            "location": {
+              "column": 91,
+              "row": 746
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 93,
+        "row": 746
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 746,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 70,
+        "row": 31
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport hashlib\nimport inspect\nimport itertools\nimport os\nimport re\nimport stat\nimport sys\nimport time\nimport uuid\nfrom collections.abc import Callable\nfrom pathlib import Path\nfrom types import CodeType\nfrom typing import Any, Literal, Protocol\nfrom urllib.parse import unquote, urlsplit\n\nimport pydantic\nfrom pydantic import ConfigDict, Field, model_validator\n\nfrom ..store import Conflict, Journal, private_write\nfrom .protocol import StrictModel, canonical, digest, safe_json_loads\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 34
+            },
+            "location": {
+              "column": 1,
+              "row": 9
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 9
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 9,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "FURB192",
+      "end_location": {
+        "column": 25,
+        "row": 1097
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation.py",
+      "fix": {
+        "applicability": "unsafe",
+        "edits": [
+          {
+            "content": "min(eligible, key=lambda item: (-item[\"score\"], item[\"units\"], item[\"program_digest\"]))",
+            "end_location": {
+              "column": 25,
+              "row": 1097
+            },
+            "location": {
+              "column": 32,
+              "row": 1095
+            }
+          }
+        ],
+        "message": "Replace with `min`"
+      },
+      "location": {
+        "column": 32,
+        "row": 1095
+      },
+      "message": "Prefer `min` over `sorted()` to compute the minimum value in a sequence",
+      "name": "sorted-min-max",
+      "noqa_row": 1095,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/sorted-min-max"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 95,
+        "row": 27
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_math.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport argparse\nimport copy\nimport hashlib\nimport os\nimport platform\nimport stat\nimport time\nimport uuid\nfrom pathlib import Path\nfrom typing import Any, Literal\n\nimport pydantic\nfrom pydantic import Field, model_validator\n\nfrom ..store import Conflict, Journal, private_write\nfrom .protocol import StrictModel, canonical, digest\nfrom .transformation import Assumption, DiscoveryBudget, TransformationWitness, _engine_digest\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 30
+            },
+            "location": {
+              "column": 1,
+              "row": 9
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 9
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 9,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 2,
+        "row": 37
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_model.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport hashlib\nimport os\nimport stat\nimport uuid\nfrom pathlib import Path\nfrom typing import Any, Literal\nfrom urllib.parse import urlsplit\n\nfrom pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator\n\nfrom .. import provider\nfrom ..models import RuntimeConfig\nfrom ..store import Conflict, Journal\nfrom ..store import digest as runtime_digest\nfrom . import model_program_operator\nfrom .model_program_operator import FrozenProgramsOperator\nfrom .protocol import StrictModel, canonical, digest\nfrom .transformation import (\n    DiscoveryLoop,\n    DiscoveryRequest,\n    OperatorRegistry,\n    SelectionProgram,\n    SourceDocument,\n    _checked_source_bytes,\n    _engine_digest,\n    assert_public_content,\n    validate_envelope,\n)\n\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 40
+            },
+            "location": {
+              "column": 1,
+              "row": 9
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 9
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 9,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "BLE001",
+      "end_location": {
+        "column": 25,
+        "row": 333
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_model.py",
+      "fix": null,
+      "location": {
+        "column": 16,
+        "row": 333
+      },
+      "message": "Do not catch blind exception: `Exception`",
+      "name": "blind-except",
+      "noqa_row": 333,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/blind-except"
+    },
+    {
+      "cell": null,
+      "code": "I001",
+      "end_location": {
+        "column": 66,
+        "row": 33
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from __future__ import annotations\n\nimport ast\nimport copy\nimport hashlib\nimport itertools\nimport os\nimport re\nimport stat\nimport uuid\nfrom collections import Counter\nfrom collections.abc import Iterator\nfrom pathlib import Path\nfrom typing import Any, Literal\n\nfrom pydantic import Field, model_validator\n\nfrom ..store import Conflict, Journal\nfrom .measurement import KEY as MEASUREMENT_KEY\nfrom .measurement import EvaluationInstrument, MeasurementLedger\nfrom .protocol import Digest, StrictModel, canonical, digest\nfrom .transformation import _engine_digest, assert_public_content\nfrom .trust import SignedEnvelope\n\n",
+            "end_location": {
+              "column": 1,
+              "row": 35
+            },
+            "location": {
+              "column": 1,
+              "row": 11
+            }
+          }
+        ],
+        "message": "Organize imports"
+      },
+      "location": {
+        "column": 1,
+        "row": 11
+      },
+      "message": "Import block is un-sorted or un-formatted",
+      "name": "unsorted-imports",
+      "noqa_row": 11,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unsorted-imports"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 85,
+        "row": 123
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": null,
+      "location": {
+        "column": 9,
+        "row": 123
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 123,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "SIM114",
+      "end_location": {
+        "column": 46,
+        "row": 283
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": " or isinstance(left, bytes) and isinstance(right, bytes)",
+            "end_location": {
+              "column": 68,
+              "row": 280
+            },
+            "location": {
+              "column": 68,
+              "row": 280
+            }
+          },
+          {
+            "content": "",
+            "end_location": {
+              "column": 1,
+              "row": 284
+            },
+            "location": {
+              "column": 1,
+              "row": 282
+            }
+          }
+        ],
+        "message": "Combine `if` branches"
+      },
+      "location": {
+        "column": 17,
+        "row": 280
+      },
+      "message": "Combine `if` branches using logical `or` operator",
+      "name": "if-with-same-arms",
+      "noqa_row": 280,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/if-with-same-arms"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 87,
+        "row": 526
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": null,
+      "location": {
+        "column": 17,
+        "row": 526
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 526,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 84,
+        "row": 532
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": null,
+      "location": {
+        "column": 17,
+        "row": 532
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 532,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "PLC0206",
+      "end_location": {
+        "column": 26,
+        "row": 941
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": null,
+      "location": {
+        "column": 13,
+        "row": 941
+      },
+      "message": "Extracting value from dictionary without calling `.items()`",
+      "name": "dict-index-missing-items",
+      "noqa_row": 941,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/dict-index-missing-items"
+    },
+    {
+      "cell": null,
+      "code": "PLC0206",
+      "end_location": {
+        "column": 25,
+        "row": 960
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "fix": null,
+      "location": {
+        "column": 9,
+        "row": 960
+      },
+      "message": "Extracting value from dictionary without calling `.items()`",
+      "name": "dict-index-missing-items",
+      "noqa_row": 960,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/dict-index-missing-items"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 71,
+        "row": 73
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/transport.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 71,
+              "row": 73
+            },
+            "location": {
+              "column": 57,
+              "row": 73
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 59,
+        "row": 73
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 73,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 96,
+        "row": 123
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/trust.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 96,
+              "row": 123
+            },
+            "location": {
+              "column": 82,
+              "row": 123
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 84,
+        "row": 123
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 123,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "RUF100",
+      "end_location": {
+        "column": 63,
+        "row": 252
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/trust.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "",
+            "end_location": {
+              "column": 63,
+              "row": 252
+            },
+            "location": {
+              "column": 49,
+              "row": 252
+            }
+          }
+        ],
+        "message": "Remove unused `noqa` directive"
+      },
+      "location": {
+        "column": 51,
+        "row": 252
+      },
+      "message": "Unused `noqa` directive (non-enabled: `E721`)",
+      "name": "unused-noqa",
+      "noqa_row": 252,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/unused-noqa"
+    },
+    {
+      "cell": null,
+      "code": "UP035",
+      "end_location": {
+        "column": 33,
+        "row": 15
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/workbench.py",
+      "fix": {
+        "applicability": "safe",
+        "edits": [
+          {
+            "content": "from typing import Any\nfrom collections.abc import Callable",
+            "end_location": {
+              "column": 33,
+              "row": 15
+            },
+            "location": {
+              "column": 1,
+              "row": 15
+            }
+          }
+        ],
+        "message": "Import from `collections.abc`"
+      },
+      "location": {
+        "column": 1,
+        "row": 15
+      },
+      "message": "Import from `collections.abc` instead: `Callable`",
+      "name": "deprecated-import",
+      "noqa_row": 15,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/deprecated-import"
+    },
+    {
+      "cell": null,
+      "code": "TRY004",
+      "end_location": {
+        "column": 78,
+        "row": 162
+      },
+      "filename": "heritage/alpha/alpha_factory_v1/core/runtime/successor/workbench.py",
+      "fix": null,
+      "location": {
+        "column": 17,
+        "row": 162
+      },
+      "message": "Prefer `TypeError` exception for invalid type",
+      "name": "type-check-without-type-error",
+      "noqa_row": 162,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/type-check-without-type-error"
+    },
+    {
+      "cell": null,
+      "code": "PLC0206",
+      "end_location": {
+        "column": 29,
+        "row": 102
+      },
+      "filename": "history/reconciliation-pre-review/reconcile.py",
+      "fix": null,
+      "location": {
+        "column": 13,
+        "row": 102
+      },
+      "message": "Extracting value from dictionary without calling `.items()`",
+      "name": "dict-index-missing-items",
+      "noqa_row": 102,
+      "severity": "error",
+      "url": "https://docs.astral.sh/ruff/rules/dict-index-missing-items"
+    }
+  ],
+  "receipt_attempt_history": [
+    "First receipt-builder selected --output-format instead of the configuration pathname for hashing; corrected explicit pathname, no source or rule changes."
+  ],
+  "policy": "Read-only audit. Frozen and exact inherited sources are not rewritten, renamed or excluded to hide findings. This is not the full hosted lint wrapper or a passing repository qualification."
+}

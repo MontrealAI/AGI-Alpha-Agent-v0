@@ -1,0 +1,401 @@
+{
+  "schema": "legal-full-category-cost-ledger/v1",
+  "created_at": "2026-10-26T21:35:19.106722+00:00",
+  "currency": "CAD",
+  "actual_customer_collections_cents": 0,
+  "new_paid_commitments": 0,
+  "actual_financial_transactions": 0,
+  "token_proceeds_cents": 0,
+  "actual_marginal_accepted_service_cost_cents": null,
+  "actual_recurring_cost_cents": null,
+  "actual_fully_allocated_cost_cents": null,
+  "historical_research_cost_cents": null,
+  "actual_available_operating_surplus_cents": null,
+  "actual_costs_complete": false,
+  "categories": [
+    {
+      "category": "candidate_discovery",
+      "observed_boundary": "Four families, two prototypes selected within budget",
+      "evidence": "research/legal-scope/scope-and-offering.md",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "legal_research_access",
+      "observed_boundary": "Primary public sources inspected; no new paid subscription",
+      "evidence": "research/legal-scope/evidence.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "agent_authoring_and_inference",
+      "observed_boundary": "Agent effort and inference billing unmetered; not free",
+      "evidence": "evidence/capability-history.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "human_only_work",
+      "observed_boundary": "No competent-human task-level timing",
+      "evidence": "economics/parameters.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "production_compute",
+      "observed_boundary": "Recorded instrumented subtotals; actual hardware/inference tariff unknown",
+      "evidence": "evidence/production-summary.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "failed_attempts",
+      "observed_boundary": "All rejected packets retained; initial native callback timed out45s",
+      "evidence": "history/failures/subprocess-failure.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "verification",
+      "observed_boundary": "Automated independent checks measured separately; legal judgment unassessed",
+      "evidence": "evidence/reconciliation-independent-audit.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "correction_and_escalation",
+      "observed_boundary": "Rejected work preserved; no unobserved professionally accepted correction invented",
+      "evidence": "evidence/production-summary.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "professional_review",
+      "observed_boundary": "Required professional decision work unmeasured and unassessed",
+      "evidence": "protocol/scope.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "customer_integration_and_onboarding",
+      "observed_boundary": "No customer onboarded; scenario allocations explicit",
+      "evidence": "economics/parameters.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "acquisition",
+      "observed_boundary": "No customer outreach or paid campaign; repeated prospective arrivals priced only in simulation",
+      "evidence": "economics/findings.md",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "support_and_maintenance",
+      "observed_boundary": "No operating history; time and recurring cost assumptions varied",
+      "evidence": "economics/secondary-findings.md",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "capability_construction",
+      "observed_boundary": "Two original executable assets; actual costs unmetered",
+      "evidence": "evidence/capability-history.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "adaptation_revalidation_and_rollback",
+      "observed_boundary": "21adverse freshness/authority controls; real legal revalidation effort unknown",
+      "evidence": "graph/results/controls.json",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    },
+    {
+      "category": "publication_and_distribution",
+      "observed_boundary": "Paper/demo/companion construction and QA; actual inference/human allocation unmetered",
+      "evidence": "publication/",
+      "actual_money_cents": null,
+      "basis": "UNKNOWN_UNLESS_RESOURCE_UNITS_EXPLICITLY_REPORTED"
+    }
+  ],
+  "measured_resources": {
+    "first_prototype_instrumented_subtotals_by_cohort_and_arm": {
+      "primary": {
+        "B": {
+          "n": 24,
+          "total_seconds": 2.728335316001891,
+          "mean_seconds": 0.11368063816674545,
+          "median_seconds": 0.09874757099986545,
+          "min_seconds": 0.06640977499798373,
+          "max_seconds": 0.2619422179987578,
+          "total_cpu_seconds": 2.5419654789999995,
+          "accepted_cases": [
+            "PRIMARY-17",
+            "PRIMARY-20"
+          ]
+        },
+        "C1": {
+          "n": 24,
+          "total_seconds": 2.4892378569984692,
+          "mean_seconds": 0.10371824404160288,
+          "median_seconds": 0.09220692150134266,
+          "min_seconds": 0.061861555003350076,
+          "max_seconds": 0.21759417399684572,
+          "total_cpu_seconds": 2.495559461,
+          "accepted_cases": [
+            "PRIMARY-17",
+            "PRIMARY-20"
+          ]
+        },
+        "C": {
+          "n": 24,
+          "total_seconds": 2.4265206109955924,
+          "mean_seconds": 0.10110502545814969,
+          "median_seconds": 0.09271145899936437,
+          "min_seconds": 0.06489225800024724,
+          "max_seconds": 0.168540447997932,
+          "total_cpu_seconds": 2.4202105220000005,
+          "accepted_cases": [
+            "PRIMARY-17",
+            "PRIMARY-20"
+          ]
+        },
+        "D": {
+          "n": 24,
+          "total_seconds": 2.447596675011342,
+          "mean_seconds": 0.10198319479213924,
+          "median_seconds": 0.08932145950124504,
+          "min_seconds": 0.07001277600003959,
+          "max_seconds": 0.17777456000209713,
+          "total_cpu_seconds": 2.438167835,
+          "accepted_cases": []
+        },
+        "T": {
+          "n": 24,
+          "total_seconds": 2.8026389730130936,
+          "mean_seconds": 0.11677662387554556,
+          "median_seconds": 0.0964717525017627,
+          "min_seconds": 0.06254428400166034,
+          "max_seconds": 0.4595478680025183,
+          "total_cpu_seconds": 2.6829023280000004,
+          "accepted_cases": [
+            "PRIMARY-17",
+            "PRIMARY-20"
+          ]
+        }
+      },
+      "stress": {
+        "B": {
+          "n": 8,
+          "total_seconds": 0.7052332360007862,
+          "mean_seconds": 0.08815415450009828,
+          "median_seconds": 0.08369051000178218,
+          "min_seconds": 0.0632991369999745,
+          "max_seconds": 0.14773771299891542,
+          "total_cpu_seconds": 0.7414607569999999,
+          "accepted_cases": [
+            "STRESS-01",
+            "STRESS-02",
+            "STRESS-03"
+          ]
+        },
+        "C1": {
+          "n": 8,
+          "total_seconds": 0.6869940540004592,
+          "mean_seconds": 0.0858742567500574,
+          "median_seconds": 0.08168884250115283,
+          "min_seconds": 0.05851855299936415,
+          "max_seconds": 0.1555175839984472,
+          "total_cpu_seconds": 0.7612842099999998,
+          "accepted_cases": [
+            "STRESS-01",
+            "STRESS-02",
+            "STRESS-03"
+          ]
+        },
+        "C": {
+          "n": 8,
+          "total_seconds": 0.6633279200032544,
+          "mean_seconds": 0.0829159900004068,
+          "median_seconds": 0.07633586850041783,
+          "min_seconds": 0.05566853700154252,
+          "max_seconds": 0.14931329000144478,
+          "total_cpu_seconds": 0.7197738860000003,
+          "accepted_cases": [
+            "STRESS-01",
+            "STRESS-02",
+            "STRESS-03"
+          ]
+        },
+        "D": {
+          "n": 8,
+          "total_seconds": 0.6531590330032084,
+          "mean_seconds": 0.08164487912540105,
+          "median_seconds": 0.07468274200188924,
+          "min_seconds": 0.055750695999917756,
+          "max_seconds": 0.15169940199904147,
+          "total_cpu_seconds": 0.6916936900000004,
+          "accepted_cases": [
+            "STRESS-01",
+            "STRESS-02",
+            "STRESS-03",
+            "STRESS-04"
+          ]
+        },
+        "T": {
+          "n": 8,
+          "total_seconds": 0.6974490319968373,
+          "mean_seconds": 0.08718112899960466,
+          "median_seconds": 0.08182540400134235,
+          "min_seconds": 0.05731800599805456,
+          "max_seconds": 0.15034837099825815,
+          "total_cpu_seconds": 0.7564654770000003,
+          "accepted_cases": [
+            "STRESS-01",
+            "STRESS-02",
+            "STRESS-03"
+          ]
+        }
+      }
+    },
+    "first_subsequent_scoring_seconds": 9.465366472,
+    "second_prototype_method_subtotals": {
+      "characters": {
+        "cases": 12,
+        "accepted_independent": 12,
+        "valid_spans": 232,
+        "operations": 116,
+        "changed_operations": 53,
+        "original_codepoints": 8976,
+        "revised_codepoints": 9080,
+        "unchanged_codepoints": 8188,
+        "highlighted_original_codepoints": 788,
+        "highlighted_revised_codepoints": 892,
+        "amendments_preserved": 4,
+        "runtime_seconds": 0.5542233769995348,
+        "cpu_seconds": 0.654938799,
+        "mean_runtime_seconds": 0.04618528141662791,
+        "median_runtime_seconds": 0.046032493000146044,
+        "weighted_preserved_context_ratio": {
+          "original": 0.9122103386809269,
+          "revised": 0.9017621145374449
+        },
+        "professional_acceptance": "unknown",
+        "localization_assessed": false
+      },
+      "lines": {
+        "cases": 12,
+        "accepted_independent": 12,
+        "valid_spans": 78,
+        "operations": 39,
+        "changed_operations": 17,
+        "original_codepoints": 8976,
+        "revised_codepoints": 9080,
+        "unchanged_codepoints": 5448,
+        "highlighted_original_codepoints": 3528,
+        "highlighted_revised_codepoints": 3632,
+        "amendments_preserved": 4,
+        "runtime_seconds": 0.4008558290052288,
+        "cpu_seconds": 0.47497508,
+        "mean_runtime_seconds": 0.0334046524171024,
+        "median_runtime_seconds": 0.032924372999751754,
+        "weighted_preserved_context_ratio": {
+          "original": 0.606951871657754,
+          "revised": 0.6
+        },
+        "professional_acceptance": "unknown",
+        "localization_assessed": false
+      }
+    },
+    "second_subsequent_scoring_seconds": 0.003499164002278121,
+    "initial_failed_native_subprocess_wall_bound_seconds": 45,
+    "graph_selection_subtotals": {
+      "direct": {
+        "n": 50,
+        "identical_selected_recipe": true,
+        "construction": {
+          "elapsed_seconds": 0.00022215500000000076,
+          "cpu_seconds": 0.000208
+        },
+        "mean_wall_seconds": 0.0015094581600000071,
+        "mean_cpu_seconds": 0.0016020600000000002,
+        "min_wall_seconds": 0.0009709970000000112,
+        "max_wall_seconds": 0.005311717999999999,
+        "deterministic_checks_per_selection": {
+          "proof_checks": 0,
+          "attestation_checks": 2,
+          "root_authority_checks": 0,
+          "relationship_rows_examined": 1,
+          "relationship_traversals": 0,
+          "recipe_members_read": 2,
+          "file_reads": 10,
+          "bytes_hashed": 118351,
+          "model_calls": 0
+        }
+      },
+      "registry": {
+        "n": 50,
+        "identical_selected_recipe": true,
+        "construction": {
+          "elapsed_seconds": 0.0010275230000000022,
+          "cpu_seconds": 0.001329
+        },
+        "mean_wall_seconds": 0.005768827039999996,
+        "mean_cpu_seconds": 0.0064328799999999985,
+        "min_wall_seconds": 0.004611338999999987,
+        "max_wall_seconds": 0.009003586,
+        "deterministic_checks_per_selection": {
+          "proof_checks": 12,
+          "attestation_checks": 2,
+          "root_authority_checks": 1,
+          "relationship_rows_examined": 1,
+          "relationship_traversals": 0,
+          "recipe_members_read": 2,
+          "file_reads": 11,
+          "bytes_hashed": 122655,
+          "model_calls": 0
+        }
+      },
+      "graph": {
+        "n": 50,
+        "identical_selected_recipe": true,
+        "construction": {
+          "elapsed_seconds": 0.0008680420000000027,
+          "cpu_seconds": 0.001875
+        },
+        "mean_wall_seconds": 0.005557171260000004,
+        "mean_cpu_seconds": 0.00650426,
+        "min_wall_seconds": 0.004348841999999991,
+        "max_wall_seconds": 0.00827651800000001,
+        "deterministic_checks_per_selection": {
+          "proof_checks": 12,
+          "attestation_checks": 2,
+          "root_authority_checks": 1,
+          "relationship_rows_examined": 1,
+          "relationship_traversals": 1,
+          "recipe_members_read": 0,
+          "file_reads": 11,
+          "bytes_hashed": 122655,
+          "model_calls": 0
+        }
+      }
+    }
+  },
+  "assumption_ledgers": [
+    "economics/results/primary-v2/campaign.json",
+    "economics/results/primary-v2/reference-ledger.json",
+    "economics/results/reconciliation/unit-thresholds.json"
+  ],
+  "accounting_rules": [
+    "Unknown money is not converted to zero.",
+    "Do not compare a production subtotal with an accepted lawyer invoice.",
+    "Every failed production attempt remains in its arm aggregate; simulated rejection cannot invoice.",
+    "Seed cash is not earned operating surplus.",
+    "Customer capacity value is separate from avoided cash expenditure.",
+    "Simulated receipts are not actual collections.",
+    "Prospective model construction is charged once; historical research cost remains separately unidentified.",
+    "Graph fixtures and utility-token balances cannot create operating revenue."
+  ],
+  "rounding_note": "Primary unit table rounds operator/support components separately and displays CAD3.59; cash campaign rounds combined labor and charges CAD3.58 for corresponding Battempt. This is preserved/disclosed."
+}

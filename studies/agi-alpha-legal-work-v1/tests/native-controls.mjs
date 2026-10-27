@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: Apache-2.0
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {validateProduced,packageReview} from '../src/native_packaging.mjs';
+const base=JSON.parse(readFileSync(new URL('../evidence/development/two-stage/DEV-05/C/produced.json',import.meta.url),'utf8'));
+let checks=0;
+const attempt=(mutate,pattern)=>{const value=structuredClone(base);mutate(value);assert.throws(()=>validateProduced(value),pattern);checks++;};
+validateProduced(base);checks++;
+attempt(v=>v.packet.professional_acceptance='accepted',/LEGAL_ACCEPTANCE_BOUNDARY/);
+attempt(v=>v.packet.source_hashes.revised='0'.repeat(64),/SOURCE_HASH/);
+attempt(v=>v.packet.rule_results.push(v.packet.rule_results[0]),/RULE_COUNT/);
+attempt(v=>v.packet.rule_results[0].sources[0].quote='fabricated',/SOURCE_SPAN/);
+attempt(v=>v.packet.rule_results[0].sources[0].start=true,/SOURCE_SPAN/);
+attempt(v=>v.request.source_class='confidential',/REQUEST_BINDING/);
+attempt(v=>v.packet.case_id='other',/REQUEST_BINDING/);
+const result=await packageReview(base);
+assert.equal(result.inspection.authentication,'UNAUTHENTICATED_HISTORICAL_IMPORT');
+assert.deepEqual(result.inspection.activeAuthority,[]);
+assert.equal(result.pack.evaluation.admission,'HOLD');
+assert.equal(result.pack.evaluation.settlement,'NOT_CONNECTED');checks+=4;
+const record={checks,status:'PASS',sourceHash:result.runtime.sourceHash,qualified_legal_review:false,live_identity:false,scope:'Source-integrity/empty-authority controls; not legal correctness'};
+writeFileSync(new URL('../evidence/development/native-controls.json',import.meta.url),JSON.stringify(record,null,2)+'\n');
+console.log(JSON.stringify(record));

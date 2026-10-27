@@ -1,0 +1,262 @@
+{
+  "packet": {
+    "schema": "legal-support-packet/v1",
+    "case_id": "DEV-06",
+    "implementation_stage": "B",
+    "playbook_version": "ONT-NDA-RESEARCH-1.0",
+    "source_hashes": {
+      "original": "6904cebe24358bc8444e5940dd61d9771f8fb4de5010c7f305a87d8e01557ecc",
+      "revised": "d647a3cc294cbbfa8137efeb7ef306c92c38514dc919494de543d82edc5ecd0c"
+    },
+    "changes": [
+      {
+        "kind": "insert",
+        "original_span": null,
+        "revised_span": {
+          "document": "revised",
+          "start": 1072,
+          "end": 1187,
+          "quote": "9. Conflicting Duty. Notwithstanding Section 2, the confidentiality duty continues for 72 months after disclosure.\n"
+        }
+      }
+    ],
+    "obligations": [
+      {
+        "family": "R1_PURPOSE",
+        "source": {
+          "document": "revised",
+          "start": 52,
+          "end": 186,
+          "quote": "1. Purpose. Each Recipient shall use Confidential Information only to evaluate the proposed business relationship between the parties."
+        }
+      },
+      {
+        "family": "R2_CONFIDENTIALITY_TERM",
+        "source": {
+          "document": "revised",
+          "start": 187,
+          "end": 305,
+          "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 24 months after disclosure."
+        }
+      },
+      {
+        "family": "R2_CONFIDENTIALITY_TERM",
+        "source": {
+          "document": "revised",
+          "start": 1072,
+          "end": 1186,
+          "quote": "9. Conflicting Duty. Notwithstanding Section 2, the confidentiality duty continues for 72 months after disclosure."
+        }
+      },
+      {
+        "family": "R3_RETURN_DEADLINE",
+        "source": {
+          "document": "revised",
+          "start": 306,
+          "end": 463,
+          "quote": "3. Return. Upon the Discloser's written request, the Recipient must return or destroy the Confidential Information within 20 calendar days after the request."
+        }
+      },
+      {
+        "family": "R4_COMPELLED_NOTICE",
+        "source": {
+          "document": "revised",
+          "start": 464,
+          "end": 619,
+          "quote": "4. Compelled Disclosure. If disclosure is legally compelled, the Recipient must give prior written notice to the Discloser to the extent legally permitted."
+        }
+      },
+      {
+        "family": "R5_RESIDUALS",
+        "source": {
+          "document": "revised",
+          "start": 620,
+          "end": 708,
+          "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+        }
+      },
+      {
+        "family": "R6_ASSIGNMENT",
+        "source": {
+          "document": "revised",
+          "start": 709,
+          "end": 812,
+          "quote": "6. Assignment. Neither party may assign this Agreement without the other party's prior written consent."
+        }
+      },
+      {
+        "family": "R7_GOVERNING_LAW",
+        "source": {
+          "document": "revised",
+          "start": 813,
+          "end": 889,
+          "quote": "7. Governing Law. This Agreement is governed by the laws of Ontario, Canada."
+        }
+      },
+      {
+        "family": "R8_REPRESENTATIVES",
+        "source": {
+          "document": "revised",
+          "start": 890,
+          "end": 1071,
+          "quote": "8. Representatives. The Recipient may disclose Confidential Information to representatives only on a need-to-know basis and remains responsible for their breaches of this Agreement."
+        }
+      }
+    ],
+    "rule_results": [
+      {
+        "rule_id": "R1_PURPOSE",
+        "status": "pass",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 52,
+            "end": 186,
+            "quote": "1. Purpose. Each Recipient shall use Confidential Information only to evaluate the proposed business relationship between the parties."
+          }
+        ],
+        "reason": "Express exclusive evaluation-use wording was located."
+      },
+      {
+        "rule_id": "R2_CONFIDENTIALITY_TERM",
+        "status": "uncertain",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 187,
+            "end": 305,
+            "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 24 months after disclosure."
+          },
+          {
+            "document": "revised",
+            "start": 1072,
+            "end": 1186,
+            "quote": "9. Conflicting Duty. Notwithstanding Section 2, the confidentiality duty continues for 72 months after disclosure."
+          }
+        ],
+        "reason": "Reference-dependent wording requires the retained resolver or manual review."
+      },
+      {
+        "rule_id": "R3_RETURN_DEADLINE",
+        "status": "pass",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 306,
+            "end": 463,
+            "quote": "3. Return. Upon the Discloser's written request, the Recipient must return or destroy the Confidential Information within 20 calendar days after the request."
+          }
+        ],
+        "reason": "Explicit return period: 20 days; policy range 1-30 calendar days."
+      },
+      {
+        "rule_id": "R4_COMPELLED_NOTICE",
+        "status": "pass",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 464,
+            "end": 619,
+            "quote": "4. Compelled Disclosure. If disclosure is legally compelled, the Recipient must give prior written notice to the Discloser to the extent legally permitted."
+          }
+        ],
+        "reason": "Required prior notice with an express legal-permission condition was located."
+      },
+      {
+        "rule_id": "R5_RESIDUALS",
+        "status": "pass",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 620,
+            "end": 708,
+            "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+          }
+        ],
+        "reason": "Express residual-use prohibition was located."
+      },
+      {
+        "rule_id": "R6_ASSIGNMENT",
+        "status": "pass",
+        "severity": 3,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 709,
+            "end": 812,
+            "quote": "6. Assignment. Neither party may assign this Agreement without the other party's prior written consent."
+          }
+        ],
+        "reason": "Prior written consent restriction was located."
+      },
+      {
+        "rule_id": "R7_GOVERNING_LAW",
+        "status": "pass",
+        "severity": 5,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 813,
+            "end": 889,
+            "quote": "7. Governing Law. This Agreement is governed by the laws of Ontario, Canada."
+          }
+        ],
+        "reason": "Express Ontario governing-law wording was located; enforceability is not assessed."
+      },
+      {
+        "rule_id": "R8_REPRESENTATIVES",
+        "status": "pass",
+        "severity": 3,
+        "sources": [
+          {
+            "document": "revised",
+            "start": 890,
+            "end": 1071,
+            "quote": "8. Representatives. The Recipient may disclose Confidential Information to representatives only on a need-to-know basis and remains responsible for their breaches of this Agreement."
+          }
+        ],
+        "reason": "Need-to-know limitation and responsibility wording were located."
+      }
+    ],
+    "escalations": [
+      {
+        "code": "R2_CONFIDENTIALITY_TERM",
+        "detail": "Reference-dependent wording requires the retained resolver or manual review.",
+        "sources": [
+          {
+            "document": "revised",
+            "start": 187,
+            "end": 305,
+            "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 24 months after disclosure."
+          },
+          {
+            "document": "revised",
+            "start": 1072,
+            "end": 1186,
+            "quote": "9. Conflicting Duty. Notwithstanding Section 2, the confidentiality duty continues for 72 months after disclosure."
+          }
+        ]
+      }
+    ],
+    "proposed_revisions": [],
+    "superseded_passages": [],
+    "supported_scope": true,
+    "professional_acceptance": "unknown",
+    "legal_correctness": "NOT_ASSESSED",
+    "decision": "COUNSEL_REVIEW_REQUIRED",
+    "scope": "Source-linked NDA change-control and explicit playbook-support packet",
+    "limitations": [
+      "Original synthetic research documents; not real client work.",
+      "A mechanical policy match is not a conclusion about legal sufficiency or enforceability.",
+      "Every packet requires independent qualified professional review before legal reliance.",
+      "No automatic legal revision, negotiation, filing, signature or settlement."
+    ]
+  },
+  "runtime_seconds": 0.008802522999758366,
+  "errors": []
+}

@@ -1,0 +1,42 @@
+{
+  "registered_at": "2026-10-26T21:14:57.097486+00:00",
+  "primary_inputs_or_keys_read": false,
+  "primary_outcomes_inspected": false,
+  "sha256": "e88a125012b8d6985dd5b7460969504228797d8c4ccbd889068b3dbaae4921fe",
+  "purpose": "Descriptive secondary metrics plus independent document-scoped coverage control; frozen acceptance unchanged",
+  "checks": [
+    {
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/ruff",
+        "check",
+        "--config",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/pyproject.toml",
+        "audit_predictions.py"
+      ],
+      "exit": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "audit_predictions.py"
+      ],
+      "exit": 0,
+      "stdout": "Success: no issues found in 1 source file\n",
+      "stderr": ""
+    }
+  ],
+  "development_control": {
+    "frozen_scorer": [
+      0,
+      1
+    ],
+    "strict_document_check": [
+      1,
+      1
+    ]
+  }
+}

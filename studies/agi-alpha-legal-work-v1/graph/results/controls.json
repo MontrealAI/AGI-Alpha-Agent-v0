@@ -1,0 +1,182 @@
+{
+  "scope": "Fixture authority and freshness only",
+  "controls": [
+    {
+      "id": "live-mode-with-no-authenticated-agent",
+      "refused": true,
+      "reasons": [
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "ineligible-research.club.agi.eth",
+      "refused": true,
+      "reasons": [
+        "INELIGIBLE_DIRECT_AGENT"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "ineligible-research.agent.agi.eth.evil",
+      "refused": true,
+      "reasons": [
+        "INELIGIBLE_DIRECT_AGENT",
+        "HISTORICAL_IDENTITY_NOT_FOUND",
+        "CURRENT_IDENTITY_NOT_FOUND"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "ineligible-x.research.agent.agi.eth",
+      "refused": true,
+      "reasons": [
+        "INELIGIBLE_DIRECT_AGENT",
+        "HISTORICAL_IDENTITY_NOT_FOUND",
+        "CURRENT_IDENTITY_NOT_FOUND"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "changed-playbook",
+      "refused": true,
+      "reasons": [
+        "CURRENT_SCOPEDIGEST_MISMATCH"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-jurisdiction",
+      "refused": true,
+      "reasons": [
+        "CURRENT_SCOPEDIGEST_MISMATCH"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-law-epoch",
+      "refused": true,
+      "reasons": [
+        "CURRENT_SCOPEDIGEST_MISMATCH"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-document-format",
+      "refused": true,
+      "reasons": [
+        "CURRENT_ENVIRONMENTDIGEST_MISMATCH"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-playbook-policy",
+      "refused": true,
+      "reasons": [
+        "CONTEXT_REPLAY"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-rights",
+      "refused": true,
+      "reasons": [
+        "CURRENT_RIGHTSDIGEST_MISMATCH"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "changed-source-digest",
+      "refused": true,
+      "reasons": [
+        "SKILL_OR_EVIDENCE_CONTEXT_MISMATCH"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "changed-dependency-digest",
+      "refused": true,
+      "reasons": [
+        "SKILL_OR_EVIDENCE_CONTEXT_MISMATCH"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "expired-skill-and-attestation",
+      "refused": true,
+      "reasons": [
+        "ATTESTATION_EXPIRED",
+        "SKILL_EXPIRED"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "revoked-skill",
+      "refused": true,
+      "reasons": [
+        "SKILL_REVOKED"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "revoked-attestation",
+      "refused": true,
+      "reasons": [
+        "ATTESTATION_REVOKED"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "revoked-agent-current-state",
+      "refused": true,
+      "reasons": [
+        "CURRENT_IDENTITY_INACTIVE"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "expired-agent-current-state",
+      "refused": true,
+      "reasons": [
+        "CURRENT_IDENTITY_INACTIVE"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "old-valid-attestation-after-supersession",
+      "refused": true,
+      "reasons": [
+        "SKILL_SUPERSEDED"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "attestation-role-cannot-commit-root",
+      "refused": true,
+      "reasons": [
+        "HISTORICAL_SIGNER_NOT_CONTROLLER_OR_DELEGATE",
+        "HISTORICAL_OPERATION_NOT_GRANTED",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE",
+        "CURRENT_OPERATION_NOT_GRANTED"
+      ],
+      "historyValid": false
+    },
+    {
+      "id": "rollback-old-root-without-revalidation",
+      "refused": true,
+      "reasons": [
+        "ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "UNEXPECTED_GRAPH_ROOT"
+      ],
+      "historyValid": true
+    },
+    {
+      "id": "missing-evidence",
+      "refused": true,
+      "reasons": [
+        "EVIDENCE_UNAVAILABLE"
+      ],
+      "historyValid": true
+    }
+  ]
+}

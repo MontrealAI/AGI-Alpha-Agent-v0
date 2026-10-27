@@ -1,0 +1,499 @@
+{
+  "schema": "agi-alpha.authority-fixture.v1",
+  "mode": "FIXTURE_ONLY",
+  "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+  "cryptographicAuthentication": false,
+  "liveIdentityEnforcement": "NOT_RUN",
+  "description": "Predetermined simulated authority states. No ENS lookup, live signatures, credentials, or transactions. Signer tokens are labels, not accounts. Node digests are not ENS namehashes. The explicit renewal-only grant is an adverse control: grants cannot replace controller authority.",
+  "snapshots": [
+    {
+      "id": "fixture-state-100",
+      "mode": "FIXTURE_ONLY",
+      "chainId": 31337,
+      "registry": "fixture:ens-v1",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "blockNumber": 100,
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "observedAt": 100,
+      "validUntil": 10000,
+      "names": {
+        "research.agent.agi.eth": {
+          "normalizedName": "research.agent.agi.eth",
+          "node": "fixture-name-digest:6fa5a241944752597409953fdcb3e967b123291f87c6fad7f3294de4886572f1",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-1",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        },
+        "wrapped.agent.agi.eth": {
+          "normalizedName": "wrapped.agent.agi.eth",
+          "node": "fixture-name-digest:dfa56b73af8e68a32100164cb9e4a585d858b63ad9793dd30466c1363bacea90",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": true,
+          "registryOwner": "fixture:name-wrapper",
+          "wrapper": "fixture:name-wrapper",
+          "wrappedOwner": "fixture:wrapped-owner",
+          "wrapperExpiry": 10000,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:wrapped-owner",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:wrapped-owner",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:wrapped-owner",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:wrapped-owner",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        },
+        "research.club.agi.eth": {
+          "normalizedName": "research.club.agi.eth",
+          "node": "fixture-name-digest:a1408c5dd6ad406a1cdd3288db463f16386c98d9812d5ee6d745ecc0690a21cd",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-1",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        },
+        "child.research.agent.agi.eth": {
+          "normalizedName": "child.research.agent.agi.eth",
+          "node": "fixture-name-digest:1768a9d3b95ac8a05b2e37cd317683ea083b3ce2e59e429ae5b521ce9c8ca8a8",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-1",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fixture-state-200",
+      "mode": "FIXTURE_ONLY",
+      "chainId": 31337,
+      "registry": "fixture:ens-v1",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "blockNumber": 200,
+      "blockHash": "46e98aa13e2f0176bc1dd6a620f24633394eb63f1d4aa172e95766ac76ca6ada",
+      "observedAt": 200,
+      "validUntil": 10000,
+      "names": {
+        "research.agent.agi.eth": {
+          "normalizedName": "research.agent.agi.eth",
+          "node": "fixture-name-digest:6fa5a241944752597409953fdcb3e967b123291f87c6fad7f3294de4886572f1",
+          "authorityEpoch": 2,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-2",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-2"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-2"
+            ]
+          },
+          "delegations": []
+        },
+        "wrapped.agent.agi.eth": {
+          "normalizedName": "wrapped.agent.agi.eth",
+          "node": "fixture-name-digest:dfa56b73af8e68a32100164cb9e4a585d858b63ad9793dd30466c1363bacea90",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": true,
+          "registryOwner": "fixture:name-wrapper",
+          "wrapper": "fixture:name-wrapper",
+          "wrappedOwner": "fixture:wrapped-owner",
+          "wrapperExpiry": 10000,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:wrapped-owner",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:wrapped-owner",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:wrapped-owner",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:wrapped-owner",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        },
+        "research.club.agi.eth": {
+          "normalizedName": "research.club.agi.eth",
+          "node": "fixture-name-digest:a1408c5dd6ad406a1cdd3288db463f16386c98d9812d5ee6d745ecc0690a21cd",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-1",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        },
+        "child.research.agent.agi.eth": {
+          "normalizedName": "child.research.agent.agi.eth",
+          "node": "fixture-name-digest:1768a9d3b95ac8a05b2e37cd317683ea083b3ce2e59e429ae5b521ce9c8ca8a8",
+          "authorityEpoch": 1,
+          "validFrom": 0,
+          "expiresAt": 10000,
+          "revoked": false,
+          "retired": false,
+          "wrapped": false,
+          "registryOwner": "fixture:owner-1",
+          "wrapper": null,
+          "wrappedOwner": null,
+          "wrapperExpiry": null,
+          "operatorsForAll": [
+            "fixture:full-operator"
+          ],
+          "renewalManagers": [
+            "fixture:renewal-only"
+          ],
+          "grants": {
+            "ISSUE_SKILL_ATTESTATION": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:attestation-delegate",
+              "fixture:renewal-only"
+            ],
+            "COMMIT_GRAPH_ROOT": [
+              "fixture:owner-1",
+              "fixture:full-operator",
+              "fixture:root-delegate",
+              "fixture:renewal-only"
+            ]
+          },
+          "delegations": [
+            {
+              "signer": "fixture:attestation-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "ISSUE_SKILL_ATTESTATION"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            },
+            {
+              "signer": "fixture:root-delegate",
+              "delegator": "fixture:owner-1",
+              "authorityEpoch": 1,
+              "actions": [
+                "COMMIT_GRAPH_ROOT"
+              ],
+              "notBefore": 0,
+              "expiresAt": 10000,
+              "revoked": false,
+              "graphId": null,
+              "policyDigest": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
