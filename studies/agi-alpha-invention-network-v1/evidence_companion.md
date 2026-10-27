@@ -1,0 +1,336 @@
+# Evidence companion: The Network That Learns to Invent
+
+**Vincent Boucher**  
+**President of MONTREAL.AI**  
+Research edition, 27 October 2026
+
+This companion identifies what the edition actually executes, the provenance of each claim, the limitations of its accounting and the steps needed to reproduce it. The paper's central object is a real numerical basis learned from solved synthetic problems. The commercial network around it is a conditional experiment. These evidence classes must remain distinct when the figures, demonstration or paper are reused.
+
+## 1. Findings supported by the numerical record
+
+The founder mission returns twelve accepted thermal response fields and a rank-12 orthogonal basis. Thirty-two residual-directed Gym actions extend that basis through four saved candidates, at ranks 20, 28, 36 and 44. Development selects rank 44 using the published accuracy-based rule. The candidate and the ordinary comparator are frozen before the owner runs the confirmation cases. These observations establish an identifiable change in a numerical representation. The learner, environment and selection rule were constructed by the AI-assisted research team; the experiment does not establish autonomous invention.
+
+On the 64 fresh transfer cases, raw relative error decreases from a mean of **0.0286891** for v1 to **0.00109098** for v2, about **26.3 times** lower. Neither raw checkpoint passes the fixed approximation acceptance on those cases: v1 and v2 each have **0/64 raw passes**. Both become accepted after the same ordinary spectral-PCG correction and independent checks. An approximation improvement is therefore measured even though the retained component does not independently satisfy the final deliverable.
+
+The frozen competent ordinary baseline is spectral PCG. Its transfer mean runtime is **2.10581 ms**, versus **2.12145 ms** for v1 and **1.98062 ms** for v2. The v2 paired mean saving is **0.125190 ms**; the post-confirmation descriptive percentile-bootstrap interval is approximately **[0.052130, 0.199036] ms**. Against the upgraded ordinary input-feature router, v2 saves only **0.056319 ms**, with a descriptive interval approximately **[-0.007290, 0.124868] ms**. These are within-run measurements on one host, not independent-machine or external-customer validation. Sources: `technical_confirm/results.json`, `evidence/descriptive_statistics.json`, `analyze_results.py`.
+
+The shifted distribution exposes negative transfer. The v2 mean is **6.70236 ms**, compared with **6.30579 ms** for the frozen spectral baseline and **4.50791 ms** for the upgraded ordinary router. v2 uses more mean correction iterations than the original ordinary method in this regime. A component can reduce its raw approximation error and still make accepted delivery slower. All shifted cases remain in the record.
+
+Composition consists of 32 inverse instances per arm. In the two-sensor, 5%-noise condition, informative sensor design with the competent ordinary solver succeeds on **10/16** instances; v2 plus the same design succeeds on **10/16**. Fixed-sensor and solver-only ablations each succeed on **7/16**. In the six-sensor, 1.8%-noise control, every arm succeeds on **16/16**. The result supports the known sensor-design procedure in the difficult condition; it does not establish an exclusive network capability or a reliability expansion beyond the equally equipped generalist. Sources: `technical_confirm/results.json` → `composition.mission_records`.
+
+There are **2,688 scored forward-method rows**, all finally accepted. That count includes several methods on the same cases and sixteen candidate forward problems within each inverse instance; it is not 2,688 independent customer missions. The primary family counts are 64 thermal, 64 transfer and 64 shifted cases. The 32 inverse instances generate 160 mission-policy rows across five composition arms. Raw approximation failures and incorrect inverse identifications are preserved despite the accepted forward fields.
+
+At the stipulated equipment proxy of USD3.52/hour, the mean v2 transfer time saving represents about **USD0.0000001224 per solve** before retention, assessment, serving, upkeep or Gym costs. For illustration, a separately assumed USD0.002 invocation cost already exceeds this amount by many orders of magnitude. Such a comparison is a scale diagnostic, not a measured bill or a justified extrapolation to industrial simulators. The physical machine tariff and complete research expense are unknown.
+
+## 2. Evidence classification and claim boundaries
+
+| Quantity or claim | Evidence class | Concrete record | What the record does not establish |
+| --- | --- | --- | --- |
+| Numerical fields, changed basis entries, iterations and measured timing | Observed local execution | `technical_dev_final/`, `technical_confirm/` | Autonomous invention, real material fidelity, human expert superiority or another host's performance |
+| Founder task and beneficiary | Researcher-defined computational mission | `founder_mission.json`, technical protocol | A paying customer, accepted commercial contract or customer endorsement |
+| Numerical acceptance | Executed finite checker with independently coded stencil and research reference | Per-case residual/error/bound fields; six numerical tests | Institutional independence, physical correctness, interval-arithmetic proof or adversarial validation |
+| Training versus confirmation separation | Procedural source and artifact freeze; distinct case seeds | `technical_freeze.json`, manifests, selection hashes | A privately operated external benchmark service; protection after public release |
+| Forward and inverse task distributions | Explicit synthetic assumptions | Generators and full case manifests | Customer-demand frequencies or industrial representativeness |
+| Trained-component transfer | Actual numerical bytes retrieved and locally executed in the research control | Lifecycle transfer payload digest and B replay receipt | An economically admitted scientific candidate or a live protected specialist service |
+| ENS names, validator and root authority in research lifecycle | Synthetic fixtures | `authorityMode: FIXTURE_ONLY` | Current on-chain ownership, live revocation or authenticated enterprise operation |
+| Native accounting execution | Actual imported software using temporary local signed commands | Native report and journal verification | Provider invoices, actual cash collections or completeness of unknown real research expenses |
+| Public model identifiers, tariffs, tools and advertised limits | Sourced official documentation, retrieved 27 October 2026 | `sources/primary_sources.json` | Account entitlement, measured model behavior on the relay, live available quota or an immutable dated model snapshot |
+| Commercial model behavior and work consumption | Explicit assumptions and simulation | Economic protocol, policy freeze, worlds and histories | Observed competent frontier delivery or an empirically calibrated acceptance probability |
+| Human-service hourly anchors | Sourced university service pages | SDSU, Vanderbilt and UTEP source records | A scope-matched quote or a customer's willingness to pay |
+| Human project hours, learning review effort, price response and recurrence | Researcher estimates or declared priors | Economic protocol | Observed customer demand or a validated market forecast |
+| Prices, collections, refunds, profit and expansion | Conditional simulation | `economy/` | Earned revenue, capital-market valuation, token value or actual investment |
+| Numerical stronger-baseline comparison | Observed ordinary-software router | `improved_generalist` rows | A live upgrade from one frontier API model to another |
+| Frontier successor effects in enterprise | Scenario assumptions | Economic protocol and stress results | A forecast or measured capability improvement |
+| Specialist ASI, graph advantage, self-acceleration | Not established | Explicit nonclaims | None may be inferred from a larger basis, successful fixture or more simulated revenue |
+
+The AI-assisted construction and interpretation used general-purpose assistant capabilities. The experiment itself records zero frontier-model calls. Authoring-model usage and research labor were not metered into an actual invoice. They remain unknown costs, not zero-cost work.
+
+## 3. A useful mission with intact requirements
+
+The proposed beneficiary is a scientific-software or engineering team comparing heterogeneous thermal and diffusion responses. A complete computational deliverable includes the runnable solver, input specifications, output fields, a response envelope, residual checks and reproducible evidence. The related inverse offering adds a sensor plan, observations under a declared noise model, a finite inferred parameter pair and retained failures. Neither offering is a physical product.
+
+The model has 1,936 interior unknowns on a 44-by-44 square grid, with homogeneous Dirichlet boundaries and a symmetric positive-definite affine diffusion/reaction operator. Parameters, sources and boundary conditions are identical across paired methods. No method may simplify the objective by changing those requirements. The raw surrogate is separately scored; final accepted delivery requires the original numerical accuracy.
+
+The accepted solution requires relative independently recomputed residual at most `2e-8` and reference-relative field error at most `2e-6`. A conservative discrete coercivity bound gives an additional floating-point solution-error estimate. It does not quantify discretization error, physical-model error or actual material properties. The reference solution is extra research assessment, not an operational oracle that the recipient is assumed to obtain without cost.
+
+The three commercial human-work estimates are 72, 96 and 120 hours, with a central USD84/hour reference yielding USD6,048, USD8,064 and USD10,080. These are scope estimates, not quotes. The cost and demand model must price context preparation, integration, correction, verification, documentation, delivery and support through its declared assumptions. No whole-project human saving is assigned to a numerical sub-millisecond improvement. Recurring design revisions are plausible use cases, but recurrence and willingness to buy were not observed.
+
+## 4. What the Gym learns
+
+The stored numerical basis changes, rather than the language model's weights or an agent's general intelligence. Agent A's twelve actual solved fields create v1. The residual Gym starts with that basis and a separate 72-case practice pool. It exposes current basis rank, remaining actions, available indices and residuals of approximate solutions. A permitted `solve_and_enrich(index)` action runs an accurate ordinary solve, twice reorthogonalizes the resulting direction, updates the basis, removes the chosen case and consumes one of 32 available actions. Unsupported actions, reused cases and post-termination actions fail.
+
+The policy chooses the largest observed practice residual. Four checkpoint ranks are evaluated on 20 development cases. Selection maximizes final accepted count, then raw accepted count, then minimizes mean raw error, with rank as the final tie-breaker. All four candidates and their assessment work are retained. The selection rule never maximizes protected confirmation performance or assigns a guaranteed economic uplift.
+
+The chosen artifact is a compatible trained numerical component, not proprietary neural weights. The executable solver is a separate transfer form. A protected specialist-service deployment is not provided. Receiving a method description would not reproduce the learned matrix; conversely, invoking a service would not give the caller independent possession of that service's intelligence.
+
+The sensor-design specialist is a researcher-supplied conventional procedure applied to each fresh mission's response fields. It is not itself a newly trained general skill-selection policy. The primary generalist has the same procedure and tools. This prevents the fixed-sensor ablation from becoming an artificially weak headline baseline.
+
+## 5. Chronology, protection and analysis status
+
+The chronology is deliberately narrower than a fully preregistered study:
+
+1. `technical_dev/` records the original campaign. All six-sensor development inverse cases succeeded, exposing a ceiling. Those observations remain unchanged.
+2. `technical_dev_iteration2/` records the revised executable Gym, explicit discrete error bound, stronger ordinary router, retained fields and two/six-sensor conditions. This was development, before the primary confirmation.
+3. `technical_dev_final/` adds metering corrections: founder verification and artifact-write expense, true process CPU counters and one-time domain/warmup costs. The same four candidate identities and selected rank remain. It is not an additional search for a favorable protected result.
+4. The owner writes `evidence/technical_freeze.json` at **2026-10-27 12:04:34.688405 UTC**, binding the technical source, protocol, numerical tests, final selection, development results and v1/v2 artifacts. The primary confirmation uses root-supplied seed **3782992104** and **64** cases per forward family. The technical sources and artifacts are unchanged by later lifecycle work.
+5. The owner communicated the **twelve-cluster, index-modulo-twelve, all-transfer-cases, runtime-dollar** lifecycle assay rule to the integration implementer before this confirmation run. The implementer accepted that rule before the run. This communication is the prospective rule declaration.
+6. The lifecycle wrapper code and its written protocol were finalized **after** the numerical confirmation was run, by an implementer who had **not yet inspected its results**. No claim is made that these late files were included in the earlier technical source freeze. The prospective rule and the later implementation are different provenance events.
+7. Descriptive summaries, bootstrap intervals, figures, browser examples and economic interpretation were produced after confirmation. The evidence companion was written after the integration implementer was explicitly authorized to inspect the final data. These analyses are descriptive unless their separate protocol says otherwise.
+8. A separate lifecycle/economic record was written at **12:14:04.856806 UTC**, before enterprise confirmation. After the final enterprise export adopted integer nano-USD, the single-exemplar adapter was corrected at **12:17:23.654532 UTC** to consume those exact transactions and convert once per aggregate to native micro-USD. The prior freeze is preserved; `evidence/lifecycle_exemplar_schema_update.json` identifies old and new wrapper hashes, the reason and passing directed checks. This post-freeze compatibility change did not change the scientific assay, numerical source, artifacts, economic protocol, simulator or policy. The integration author had by then read the numerical results; that later access is disclosed.
+
+The saved freeze timestamp is a record generated within this research session, not an independent timestamp authority. Case manifests and source hashes permit inspection of the declared procedure. Research roles were separated during development and confirmation, but the shared team, common implementation and public distributions are not a substitute for independent replication.
+
+Now that the confirmation cases and outputs are published, rerunning their seed is reproducibility testing. It is not another protected fresh evaluation. New adaptive development requires a new freeze and previously unseen cases, with earlier failures preserved.
+
+### Scope of statistical statements
+
+Per-case results support paired comparisons on their generated workload. The figure builder uses a deterministic percentile bootstrap over paired case differences after confirmation. The browser builder uses its own declared bootstrap resampling seed and 10,000 draws for descriptive display. These intervals are not identical inferential objects to the lifecycle's prospective twelve-cluster, one-sided Student-t assessment. None covers host-wide timing bias, physical-model validity, customer selection or correlated semantic failures in frontier agents.
+
+The fixed modulo rule includes every transfer case, giving twelve cluster means of five or six cases in this 64-case population. Those means are the inferential units in the lifecycle assay. It does not treat all method rows as independent evidence. Its independence approximation relies on case generation, while timing still shares one processor and run.
+
+## 6. Lifecycle reuse, admission and local B execution
+
+The frozen production capsule is expressly limited to `bounded-public-source-selection/v1`. Native `retain` accepts a `SelectionProgram`; `accepted_native_delivery` requires exact completed, approved native public-source Research. A PDE basis cannot be coerced into this schema while preserving its qualified meaning. Scientific production admission therefore remains:
+
+**`NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE`**
+
+The study instead reuses the existing generic research lifecycle from #4951 at immutable commit `2727262caa52766a78916f2ed81f5afaf668edce`. Eleven source-exact files, their original Git blobs, byte lengths and SHA-256 values are recorded in `upstream/SOURCE_MANIFEST.json`; its Apache-2.0 license is included. The bridge verifies these identities before every replay. The authority primitives retain their earlier originating provenance as well. This is reuse of an existing research implementation, not a competing registry or a production-adapter assertion.
+
+The empirical assay compares v1 and v2 with the frozen competent baseline using **negative complete elapsed-runtime cost** at the USD3.52/hour proxy. It separately requires equivalent acceptance. The 100 future eligible uses are an explicit prospective scenario, not observed demand. B includes assessment and the economic protocol's review, packaging and admission estimates; v2 additionally includes optional Gym development in C. Founder development remains in A. A candidate-specific counterfactual projection is not summed with another candidate's projection as if both were additional paid campaigns.
+
+The unchanged upstream economic gate requires integer cents. The observed numerical differences are much smaller than a cent. Therefore the runner preserves an authoritative decimal diagnostic and applies only a **conservative compatibility projection** for upstream conformance: baseline cost is rounded down, candidate cost up, then both are negated. It cannot turn a small observed gain into a larger artificial positive gain. The projected cent-sized disadvantage is not the measured performance magnitude. Actual complete-cost economic admission is unavailable while real expenses are unknown.
+
+The positive control is deliberately separate: synthetic monetary pair outcomes allow the pre-existing fixture lifecycle to exercise a successful admission. It carries the exact real v2 artifact bytes, then retrieves them for the synthetic peer `lyra.agent.agi.eth`. B writes those returned bytes, checks their digest, loads the numerical matrix and executes the first prespecified transfer case locally. Its result is compared with the archived confirmation solution. This proves byte transport and compatible local execution under the control; it does not prove that the measured scientific asset earned admission, nor that this post-confirmation replay is a fresh trial.
+
+Private owner access, private peer denial, shared peer access, export denial and future access after revocation are separately checked. A direct ordinary-library control has identical bytes and access decisions. Equality supports no graph-specific efficiency claim. Revocation prevents future mediated retrieval; it cannot erase previously disclosed plaintext. Synthetic direct-label ENS names, local fixture roots and temporary accounting signatures are clearly labeled. Cryptographic provenance identifies an object and an authorized fixture action; it does not prove scientific utility or actual ENS ownership.
+
+### Executed lifecycle result
+
+The release replay is saved in `lifecycle/results.json`. Both empirical candidates are **REJECTED** in the existing research lifecycle. All 64 transfer cases enter all twelve prespecified clusters; both candidates meet final numerical acceptance. The decimal findings are:
+
+| Candidate | Cluster-mean advantage USD/use | One-sided lower bound USD/use | Compute-only 100-use incremental subtotal | Conditional fixed B/C subtotal |
+| --- | ---: | ---: | ---: | ---: |
+| v1 | -2.0615779e-08 | -1.9692918e-07 | USD-0.016451850 | USD-234.016451850 |
+| v2 | 1.2512559e-07 | 3.7942667e-08 | USD-0.017223072 | USD-402.017223072 |
+
+These fixed-cost projections are optimistic subtotals before future invocation and maintenance charges; adding those expenses cannot rescue the rejection. Each alternative bears the declared program assessment allocation, rather than summing both counterfactual alternatives into cash spent. Cluster means weight the twelve groups equally; the five/six-case group sizes make their estimate slightly different from the pooled per-case descriptive mean.
+
+The artificial positive controls are admitted under fixture authority only. The shared control returns v2 SHA-256 `1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5`. B executes case `transfer-3782992105-0` from those returned bytes, passes final acceptance and reproduces the archived solution **bitwise**, with maximum absolute difference `0.0`. This is a replay after confirmation, not another fresh mission. All five ordinary-library permission comparisons match; future retrieval after revocation is blocked. The numerical solution replay and the admission scope remain separate.
+
+The native actual-research ledger verifies its signed journal, records **zero collections**, and leaves complete profit and available funds **unknown**. Its known proxy accrual subtotal is USD0.018370, with additional real costs unknown; this is not a paid invoice or a complete expense estimate. The separately simulated reference exemplar replays **one** history. Its native profit, cash and available funds each differ from source nano-USD accounting by `-333` nano-USD (USD-0.000000333), within the declared one-micro-USD tolerance. All reconciliation assertions pass. The first complete lifecycle execution succeeded; no failed full-run directory was discarded.
+
+## 7. Accounting boundaries and commercial experiment
+
+The experiment keeps three disjoint expense buckets:
+
+| Bucket | Included activity | Anti-double-counting rule |
+| --- | --- | --- |
+| A — delivery | Founder solve, verification and artifact extraction required for that computational outcome; modeled paid-job delivery, corrections and overhead | Paid-job learning is not charged again merely because the artifact is retained |
+| B — assessment and retention | Development comparisons, failed/rejected candidate assessment, fresh confirmation, packaging, admission, serving and upkeep beyond the paid outcome | A/B/C activity IDs are unique; alternative policy allocations are not added as duplicate cash outflows |
+| C — optional additional development | Extra Gym actions and optional R&D or expansion | Training is optional; failed campaigns remain expenses; no mandatory reinvestment percentage |
+
+Measured per-outcome elapsed time includes assembly, solver-specific setup, learned approximation where used, correction and independent residual verification. Recipient loading/projected-operator setup is separate. Accurate research-reference solves, numerical comparison work, design and inverse routines belong to assessment where appropriate. Development total time minus the disjoint founder and Gym times gives the development B remainder. Confirmation assessment uses measured invocation subtotals, counting a shared reference once and each actually executed design routine once. Untimed orchestration and other work remain explicitly unknown.
+
+Native research accounting imports the unchanged foundation `Journal`, `TrustRegistry`, signing routines and `CostLedger`. It records observed elapsed subtotals at an attributed rate proxy, with zero asserted cash payments. Available true process CPU seconds are stored as provenance; they do not become another expense. Unknown authoring, model, human, hosting and overhead amounts remain `None` with `basis=unknown`. Completeness sealing fails for those unknown buckets, so complete real profit and available real funds are not asserted. Actual customer revenue is zero.
+
+The simulated enterprise separately treats seed capital, collections, accrued costs, paid costs, refunds, receivables, obligations, reserves and available funds. Human-service hourly anchors come from primary university pages; task hours and matched scope remain estimates. Delivery token/tool consumption, accepted quality, repeat demand, trust, payment default, collection delay and model obsolescence remain assumptions. The declared price search selects from a finite grid using development worlds and its stipulated demand belief. It is neither a global optimum nor a learned real-market willingness-to-pay curve.
+
+All policies start with the same opportunities, conditions and resources. Competent Beta, private retention, optional private Gym, selective sharing and shared Gym/composition are compared. Frozen selection can decline retention entirely. Separate stress runs investigate forced retention, weak demand, low willingness to pay, congestion, correlated errors, late collections, earlier obsolescence and surplus-funded expansion. Extra capacity purchased with surplus is reported as a distinct experiment, not as proof that learning compounded at fixed resources.
+
+One saved reference world (`900000`, `shared_gym_composition`) can be reconciled through the actual native ledger. This is an exemplar only. The large enterprise ensemble uses its own executable simulator accounting and is not represented as native replay. Every simulator transaction is retained in integer nano-USD. The native ledger requires integer micro-USD, so each exported aggregate is rounded once to the nearest micro-USD, with every input difference recorded and resulting profit/cash/available-funds differences checked against a one-micro-USD bound. Tiny source transactions are not individually rounded away. For the exemplar, gross collections remain collections, aggregate modeled delivery bundles are disclosed as undissected category allocations, and refunds map explicitly to A correction expense because the native interface lacks a refund action. This mapping preserves the reconciled accounting boundary while making clear why its category totals differ from an economic report that displays refunds separately.
+
+### Recorded enterprise outcomes
+
+The completed ensemble contains **8,500 modeled histories**: 200 worlds per primary profile for each of five policies, plus 100 worlds for each policy in eleven declared diagnostics. Its independent transaction reconstruction checks **6,108,937 exported events** with zero cash-identity failures and no negative cash balance. Every full history, including diagnostics and failures, is in `economy/all_histories.jsonl.gz`. These are executable simulator audits, not native-ledger or bank attestations.
+
+The frozen price search selects a common factor **0.75** of the assumed human-service references: USD4,536 for thermal response, USD6,048 for diffusion transfer and USD7,560 for inverse experiment design. This is a conditional finite-grid choice. It is not a fixed discount rule imposed before optimization, a customer quote or an observed sale.
+
+| Primary profile, Beta only | Mean gross collections | Mean refunds | Mean A/B/C complete modeled cost | Mean operating profit | Positive-profit share | Mean reserve | Mean available funds |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| adverse | USD9,933.84 | USD468.72 | USD19,638.69 | USD-10,173.57 | 8% | USD800.00 | USD9,026.43 |
+| reference | USD228,077.64 | USD3,175.20 | USD33,016.36 | USD191,886.08 | 100% | USD800.00 | USD211,086.08 |
+| favorable | USD759,583.44 | USD6,282.36 | USD62,595.19 | USD690,705.89 | 100% | USD800.00 | USD709,905.89 |
+
+All optional primary policies retain **zero** candidates, execute **zero** extra commercial Gym campaigns and make **zero** shared specialist uses. The whole-program numerical study did run its Gym; the commercial policies are different counterfactual choices and do not inherit that research expense as free demonstrated operating investment. Primary policies pay a screen where one is triggered: the mean increment relative to Beta is -USD1.368 in the adverse profile and -USD2.40 in reference and favorable profiles. Private/shared/Gym variants tie because the upper-bound screen already declines the opportunity. This identifies no additional economic benefit of sharing or optional training at this scale.
+
+| Diagnostic | Relevant result for shared Gym/composition relative to matched Beta | Interpretation |
+| --- | ---: | --- |
+| forced_retention | USD-641.71 | Forced purchase despite rejection; all assessment, elected Gym, serving and maintenance retained. |
+| forced_high_training_cost | USD-2,153.71 | Additional development estimate multiplied by ten; no fabricated training gain. |
+| forced_high_serving_cost | USD-690.94 | Serving expense multiplied by one thousand; gross technical effect is unchanged. |
+| forced_negative_transfer | USD-641.71 | Every eligible selected field use shifted out of scope; realized slower work remains charged. |
+| congestion | USD61.18 | Zero retained assets; the difference is below its Monte Carlo standard error and cannot be attributed to learning. |
+| surplus_funded_expansion | USD61.18 | Every policy buys one capacity expansion; increased output comes from purchased resources, not retained skills. |
+
+The congestion increment is USD61.18 with Monte Carlo standard error USD111.01, while retained/trained/shared/composed counts remain zero. Screening's small cash expense changes some later cash-admission/order combinations in a finite-capacity simulation; no capability mechanism is operating. The same incidental increment accompanies the distinct expansion experiment. A positive simulated dollar difference must not be presented as network Alpha merely because its policy name includes sharing.
+
+Late collections leave mean receivables of USD9,344.16 and refund exposure of USD8,996.40; they are separately reported, with reserves, rather than converted into available earnings. Under no demand, Beta loses USD18,464.00 and buys no optional assets. Correlated-error, early-successor and low-value results remain in the full report. Repeating worlds quantifies Monte Carlo variability conditional on these assumptions, not whether they describe real customers.
+
+Actual customer collections for this entire study are **USD0**. Positive reference or favorable simulated operating profit is a valid conditional Beta result; it does not establish a commercial enterprise or a positive retention program.
+
+## 8. Preserved failures and contrary evidence
+
+The original six-sensor development ceiling is retained. The subsequent two-sensor challenge was introduced during development and is reported alongside the original control. Ranks 20, 28 and 36 remain as unselected candidates; rank 44 remains selected even where its final runtime is worse than a cheaper candidate might have been. There is no confirmation-driven replacement of the candidate.
+
+The raw surrogate's transfer failures remain visible despite successful exact correction. v1's fresh transfer slowdown, v2's shifted-distribution slowdown, the upgraded generalist's advantages and every incorrect inverse identification remain in the released data. Failed lifecycle admissions, blocked rights, duplicate versions, stale evidence and revocation are preserved as explicit records or directed conformance tests. A rejected empirical candidate is not relabeled successful because a separate synthetic control passes.
+
+Earlier editions also remain intact:
+
+| Earlier source | Reported negative finding | Implication here |
+| --- | --- | --- |
+| [Profitable Work First, #4954](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4954) | Primary optional retention not purchased; a separate declared-prior repair underperformed Beta in all 100 explored worlds, mean incremental value -USD1,172.65 | Beta profit and retention profit are different hypotheses; cheaper retention cannot simply be assumed |
+| [The Advantage That Survives](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6431997626) | Reference and favorable network-minus-Beta losses of USD1,754.91 and USD6,861.33; corrected forecast admitted no assets in 192 fresh primary worlds; ordinary identical-content library tied | Correct screening and useful access do not establish enterprise value or graph superiority |
+| [When Paid Work Teaches the Network](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6433039856) | Primary retention off; separate mechanism cohort had 123 useful reuses, 86 peer reuses, yet mean direct whole-program balance -USD1,019.77 and paired enterprise increment -USD139,214.64 | Useful individual assets need not repay their acquisition program; displaced delivery matters |
+
+These are sourced prior-study reports, not replications performed here. Their horizons, assumptions and currency aggregations differ and are not pooled. The present study changes the technical opportunity to a real numerical representation; it does not erase prior failures, inherit guaranteed benefits or claim that a larger graph fixes their economics.
+
+## 9. Foundation, developer and publication boundaries
+
+The native foundation is repository commit `80b345828f34fd8a6e592977dd17ef37141305f4`. The inspected general-execution owner is [draft #4960](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4960) at head `2163c2e12c1a7385241aca9bf813815b40c6e82c`, on the v1.46 foundation. Its real function/computer execution work and scripted finite probes are ongoing implementation evidence, not this study's live operation. The specialist-network lane announced coordination on top of that branch in [issue #4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6441112681). The study reuses actual available interfaces and preserves the unsupported scientific boundary. These are inspected source identities, not a promise that active developer branches remain unchanged afterward.
+
+The current source-release lease for v1.46 is held by the existing publication lane. This study does not acquire that lease, bump the release, overwrite earlier studies, deploy a parallel registry or publish a competing stable link. No live Jobs validator role, `*.club.agi.eth` authority, USDC route, AGIALPHA mechanism, provider account, key custody, runtime trust file or settlement boundary was changed by this research. Token issuance, venture valuation and customer savings are not treated as operating revenue.
+
+The supplied foundations are read as architectures and research definitions, with coverage disclosed:
+
+| Work | Original inspected | Coverage and boundary |
+| --- | --- | --- |
+| Transformational Intelligence | Frozen repository `docs/Transformational_Intelligence.tex` and [original PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/80b345828f34fd8a6e592977dd17ef37141305f4/docs/Transformational_Intelligence.pdf) | Purpose, formulation, instrument and finite causal-example sections; proposed architecture is not empirical superior performance |
+| VSG, GoalOS V97.4 | [Original PDF](https://github.com/MontrealAI/goalos-agialpha-sovereign-machine-economy/blob/1e9a5675b1662e98074fb1c71cf2c5b94c7d259f/docs/paper/goalos_private_onchain_zk_vsg.pdf) | All eight pages' extracted text read; direct-label authority, private payloads/public commitments, scope and revocation are design constraints |
+| Proof Loops v2 author edition | [Original PDF](https://github.com/MontrealAI/goalos-agialpha-sovereign-machine-economy/blob/1e9a5675b1662e98074fb1c71cf2c5b94c7d259f/docs/paper/PROOF_LOOPS_research_paper_v2_author_edition.pdf) | All twelve pages' extracted text read; evidence, admission and subsequent influence remain distinct |
+| Gym, Specialist ASI and Successor Ω v2.1.0 | [Original 83-page PDF](https://github.com/MontrealAI/MontrealAI.github.io/blob/a9cc143bc05495405ac63b0e2645c425d66410b8/GoalOS_Gym_Specialist_ASI_Successor_Omega_v2_1_0_US_LETTER.pdf) | Physical pages 18–21, 33–35, 39–44, 46–52, 69 and 72–80 inspected; not a claim of reading all 83 pages |
+
+The original PDF byte identities are provided in the source map below. Architecture diagrams, simulated examples and cryptographic constructions in those works are not calibration for this study's demand, prices, learning curves or utility.
+
+## 10. External source register
+
+The complete machine-readable register is `sources/primary_sources.json`; it gives retrieval dates, exact URLs, bibliographic metadata, read status and limitations. `sources/sources.bib` supports paper citations. Source assertions remain sourced evidence, not executed observations of the present enterprise. The following map covers every primary source used or carried by this edition:
+
+| Source ID | Primary source | Evidential use and limitation |
+| --- | --- | --- |
+| `openai_astra_2026` | [GPT-6 Astra Model](https://developers.openai.com/api/docs/models/gpt-6-astra) | API model ID gpt-6-astra. Public documentation does not establish this account's model entitlement or effective rate limits; No live API call was made for this research memo; Published snapshot section exposes gpt-6-astra, not a dated immutable snapshot. |
+| `openai_sol_2026` | [GPT-6.1 Sol Model](https://developers.openai.com/api/docs/models/gpt-6.1-sol) | API model ID gpt-6.1-sol. Near-Astra performance is the provider's description, not a task-specific measured equivalence; No account access verified. |
+| `openai_terra_2026` | [GPT-6.1 Terra Model](https://developers.openai.com/api/docs/models/gpt-6.1-terra) | API model ID gpt-6.1-terra. No account access verified; No measured computer-use trajectory in this study is established by this page. |
+| `openai_pricing_2026` | [Pricing](https://developers.openai.com/api/docs/pricing) | Standard short-context rates match the individual model pages. Rendered pricing page exposes several selectable rate tables; individual model pages specify >272K input full-request uplifts of 2x input/cache and 1.5x output, while an alternate table renders 2x output. Avoid using long-context prices without re-verification; Container table and accompanying per-minute wording are not sufficient for an unambiguous detailed duration assumption. |
+| `openai_using_gpt6_2026` | [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model) | Astra is positioned for demanding reasoning, coding, research and professional workflows. Documentation claims are not independent benchmark evidence for the study's specific mission. |
+| `openai_computer_use_2026` | [Computer use](https://developers.openai.com/api/docs/guides/tools-computer-use) | The application provides a driver/environment, executes actions and returns observations. A model name alone is not an operating computer-use integration. |
+| `openai_limits_2026` | [Rate limits](https://developers.openai.com/api/docs/guides/rate-limits) | Limits are model-, organization- and project-dependent. Published tier limits are not this user's entitlement or guaranteed throughput. |
+| `chatgpt_pricing_2026` | [Pricing: ChatGPT Work and Codex](https://learn.chatgpt.com/docs/pricing) | Subscription usage and API token prices are separate. ChatGPT Pro is a subscription plan, not an API model ID or evidence of a funded API project. |
+| `silver_sutton_2025` | [Welcome to the Era of Experience](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf) | Motivates continual interaction, actions and observations, environmental feedback and experience-derived learning. A research agenda, not evidence that the present study reproduces its proposed systems. |
+| `ineffable_2026` | [Ineffable Intelligence: Mission and A Note from Dave](https://www.ineffable.ai/) | Company states a reinforcement-learning and experience-driven superlearner mission. Aspirational company statements; no reproduced results, affiliation or equivalent method implied. |
+| `alphaevolve_2025` | [AlphaEvolve: A coding agent for scientific and algorithmic discovery](https://arxiv.org/abs/2506.13131) | Describes evaluator-guided evolutionary code improvement and computational application results. External precedent; not reproduced here. |
+| `alphaevolve_results_2025` | [Results of AlphaEvolve](https://github.com/google-deepmind/alphaevolve_results) | Provides mathematical result verification notebook. Downloading verification artifacts would not reproduce the discovery training pipeline. |
+| `funsearch_2024` | [Mathematical discoveries from program search with large language models](https://www.nature.com/articles/s41586-023-06924-6) | Pairs a frozen pretrained LLM with systematic program evaluation. Does not validate the present study's autonomous invention or commercial demand. |
+| `rozza_2008` | [Reduced basis approximation and a posteriori error estimation for affinely parametrized elliptic coercive partial differential equations](https://iris.sissa.it/handle/20.500.11767/12327) | Combines low-dimensional Galerkin projection, greedy sampling, error estimation and offline-online decomposition. Full publisher PDF not retrieved; only institutional abstract inspected; These are established numerical methods, not inventions of this study. |
+| `grassle_2020` | [Model Order Reduction by Proper Orthogonal Decomposition](https://arxiv.org/abs/1906.05188) | Reviews POD/SVD, parametric PDE surrogates, error certification, adaptivity and basis updates. Reference method; not evidence for this artifact's measured accuracy. |
+| `hinze_kunkel_2010` | [Residual Based Sampling in POD Model Order Reduction of Drift-Diffusion Equations in Parametrized Electrical Networks](https://arxiv.org/abs/1003.0551) | Studies adaptive POD construction over parameter ranges for drift-diffusion models. Different physical/equation setting; cited for residual-guided basis-development precedent, not an equivalent replication. |
+| `manohar_2018` | [Data-Driven Sparse Sensor Placement for Reconstruction](https://arxiv.org/abs/1701.07569) | Uses training-derived low-dimensional features, SVD and pivoted QR to select sparse sensors for reconstruction. Data-dependent sensing can fail under distribution change; no general superiority is inferred. |
+| `alexanderian_saibaba_2018` | [Efficient D-optimal design of experiments for infinite-dimensional Bayesian linear inverse problems](https://arxiv.org/abs/1711.05878) | Uses low-rank structure for computationally efficient log-determinant experimental-design objectives in PDE inverse problems. D-optimality is conditional on the specified statistical model, design space and computational procedure. |
+| `attia_2018` | [Goal-Oriented Optimal Design of Experiments for Large-Scale Bayesian Linear Inverse Problems](https://arxiv.org/abs/1802.06517) | Targets posterior uncertainty in a downstream quantity of interest rather than only unknown parameters. Changing the design objective must preserve the beneficiary's original required outcome. |
+| `pymor_coercive_2026` | [pymor.reductors.coercive](https://docs.pymor.org/2026-1-1/autoapi/pymor/reductors/coercive/index.html) | Coercive reduced-basis estimator uses residual dual norm. Residual size alone is not a general error certificate. |
+| `scipy_cg_2026` | [scipy.sparse.linalg.cg](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.cg.html) | CG requires Hermitian positive-definite operator and positive-definite preconditioner. A small solver residual does not quantify physical model error. |
+| `scipy_splu_2026` | [scipy.sparse.linalg.splu](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.splu.html) | Sparse LU returns a reusable object with a solve method. Ordinary within-mission factor reuse belongs in a competent baseline when matrices repeat. |
+| `sdsu_services_2026` | [Computational Science Research Center: Services](https://www.csrc.sdsu.edu/services/) | Published external rate $80 per hour. Rate is not a binding quote for this mission; Required hours and equivalence are researcher estimates; No published effective date; retrieval date recorded. |
+| `vanderbilt_rse_2026` | [Research Software Engineering Service](https://www.vanderbilt.edu/accre/research-software-engineering-service/) | General software engineering tasks start at $84 per hour. Starting rate is not a difficult-mission price or universal expert rate; Availability is primarily described for university research. |
+| `utep_design_2026` | [Data Analytics Laboratory: Services](https://www.utep.edu/science/data-analytics-lab/services.html) | Rates effective August 10 2026: external analyst $190.31/hour, computational equipment $3.52/hour. Statistical consulting scope is adjacent to the numerical sensor-design mission; no matched deliverable quote obtained; A human-team service estimate must expose task hours separately. |
+
+OpenAI model pages establish current public identifiers and documented configurations, not entitlement. The source team recorded short-context Standard rates for `gpt-6-astra`, `gpt-6.1-sol` and `gpt-6.1-terra`, tool support, reasoning settings and advertised limits. It also recorded conflicting rendering details for long-context price multipliers and an ambiguous container-duration table. The edition does not silently resolve those ambiguities into a favorable price assumption. ChatGPT Pro remains a subscription plan, not an API model identifier.
+
+Silver and Sutton's experience-driven learning agenda, Ineffable Intelligence's mission, FunSearch and AlphaEvolve are motivations or external precedents. No affiliation, equivalent method or reproduction of their discovery systems is implied. Reduced bases, residual-driven development, POD and sensor-design methods are established scientific techniques. This study's contribution is the inspectable lifecycle and economic test around its concrete learned component, not a claim of inventing those techniques. The Rozza source was read through an institutional abstract; the full publisher PDF was not retrieved.
+
+## 11. Source identities and complete artifact map
+
+The technical freeze is authoritative for the primary numerical experiment. The main native source closure and the vendored research lifecycle have separate immutable inventories. Hashes identify the files; they do not prove scientific truth. Final presentation files and late analysis wrappers should be bound by the edition's final manifest, not falsely inserted into the earlier technical freeze.
+
+### Primary numerical freeze
+
+| Path | SHA-256 |
+| --- | --- |
+| `technical.py` | `6f799942848e0df334d103131c5349eabd9423b2e434da95e840758d0068a512` |
+| `technical_protocol.json` | `1d25cf64a3ca37afe22008c68ee0d9e9daeb6b1db99d1ce3a3801d9b532fbac8` |
+| `test_technical.py` | `0c11dcdfdaf140ad2c3047b5339900e8bea4b0cd53db2cb7ff13e008f11b87fd` |
+| `technical_dev_final/selection.json` | `66fbcedae52e1a6b57573b4a641728214b31e5840a92b8bc309f1b448c3b972f` |
+| `technical_dev_final/results.json` | `6c97a82f08753ddb8806bf062f02b6aeb3ccf5f79bcf7f24c2c64a7f08bd1dca` |
+| `technical_dev_final/artifacts/v1.npy` | `1e4e10c5b804a867280364a77cb4734094570f275fba2ede6db1a359911b9e29` |
+| `technical_dev_final/artifacts/v2.npy` | `1ad5a46e04ea81f732325263237cb1620d868adc5fc45b03f926e095343f09e5` |
+
+### Imported native foundation closure
+
+| Repository-relative path | SHA-256 |
+| --- | --- |
+| `alpha_factory_v1/__init__.py` | `065ed77bc53191bf762d2402be898be7d1e605ee94ea05ae2d3bc9eeaf5b3421` |
+| `alpha_factory_v1/core/__init__.py` | `b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd` |
+| `alpha_factory_v1/core/runtime/__init__.py` | `58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa` |
+| `alpha_factory_v1/core/runtime/models.py` | `9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab` |
+| `alpha_factory_v1/core/runtime/store.py` | `12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa` |
+| `alpha_factory_v1/core/runtime/successor/__init__.py` | `d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771` |
+| `alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py` | `8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620` |
+| `alpha_factory_v1/core/runtime/successor/flywheel_costs.py` | `4d2e19b937471bdc247a9b0bb66bd4c315da5a9c6498591bc9f24496e07feb13` |
+| `alpha_factory_v1/core/runtime/successor/protocol.py` | `25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd` |
+| `alpha_factory_v1/core/runtime/successor/signatures.py` | `044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386` |
+| `alpha_factory_v1/core/runtime/successor/transformation.py` | `47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e` |
+| `alpha_factory_v1/core/runtime/successor/transformation_library.py` | `c78903802ba0379cdd1907c6472630e488d55cbfe7b1fb99ce0d275bb758d172` |
+| `alpha_factory_v1/core/runtime/successor/trust.py` | `d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd` |
+
+### Unchanged research lifecycle closure
+
+| Path under `upstream/beyond_beta/` | SHA-256 |
+| --- | --- |
+| `graph/README.md` | `1effce673ce862fb92c82dd9b69d9388c38bf29aa19c493b69052523909b0e8a` |
+| `graph/lifecycle.mjs` | `72d3e4cb4bdb98a881fdd53d31abd647f87c2e1ba0c6468468bb1c523956148e` |
+| `graph/simulation_adapter.mjs` | `14f9b859116d61dcb8ceb17d2ec03ff7c543fdaeb5bf8df23dc7f58fc183cce1` |
+| `graph/encoding.mjs` | `6eb2e82e6240acc1bfe37c8ac54cd8b5aa3867c6773762721b79ec19e3e6cfbf` |
+| `graph/crypto_capsule.mjs` | `bfc232c95ed71652b1ab22de2cc61cf355d2ab8c70f198cb1eacb152b4d02b11` |
+| `upstream/graph/authority.mjs` | `5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1` |
+| `upstream/graph/commitments.mjs` | `454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e` |
+| `upstream/graph/authority-fixture.json` | `c130af4be60ab8ab5e61292ddbdd7f9588f2f8817c0edca150ccfc8709624da4` |
+| `upstream/graph/LICENSE` | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` |
+| `upstream/PROVENANCE.json` | `f59197f7c2087f851c66b3b886e86ef9aba4a031a0239dd32b89635cf6372c68` |
+| `model/alpha_gate.mjs` | `76df01fa9729b7e64b54b441727940bd2238af80a6226816321d0a96c9309760` |
+
+### Original foundation PDF identities
+
+| Original | SHA-256 |
+| --- | --- |
+| Transformational Intelligence | `d7170e8217e3bf6aa1b84868c1c76c5994c6995c5297ed092d7e72a6430c664f` |
+| VSG | `ab140a1f7420a6e7c907f4e2f4e51fdb7075ac521b0ffca2bbf59b8e63cbbe2e` |
+| Proof Loops | `2c41599a893c4c5ac0eacdf9b4416f4420b3d47ee73c04ed868049b29a6055db` |
+| Gym, Specialist ASI and Successor Ω v2.1.0 | `98eabf107d9cde42e9f30b5ea2a62fdd4a2c461cd4ee1d755ec820492eb75ff2` |
+
+| Record family | Exact path and contents |
+| --- | --- |
+| Numerical implementation | `technical.py`; `technical_protocol.json`; `test_technical.py` |
+| Founder | `technical_dev_final/founder_mission.json`; `artifacts/founder_fields.npy`; v1 checkpoint |
+| Every practice action | `technical_dev_final/training.json`, including founder cases, Gym pool, selected case, residual observation, solve/update times, action budget and basis rank |
+| Every candidate | `technical_dev_final/candidate_assessment.json`; `artifacts/candidate-r20.npy`, `candidate-r28.npy`, `candidate-r36.npy`, `candidate-r44.npy` |
+| Selection and development | `technical_dev_final/selection.json`, `results.json`, `solutions.npz`; earlier campaign directories retained separately |
+| Protected inputs | `technical_confirm/case_manifest.json`, `ood_case_manifest.json`; inverse inputs and true indices retained in `results.json` after evaluation |
+| Protected outputs | `technical_confirm/results.json`, `solutions.npz`, `ood_solutions.npz` |
+| Statistical summaries | `evidence/descriptive_statistics.json`, generated from complete method rows |
+| Commercial protocol and engine | `economic_protocol.json`, `economics.py`, economic policy freeze, `all_histories.jsonl.gz`, `example_histories.json.gz` and aggregate worlds |
+| Research lifecycle integration | `lifecycle_bridge.py`, `run_research_lifecycle.py`, `lifecycle_protocol.json`, both directed lifecycle test files |
+| Native source closure | `evidence/native_import_closure.json`, importing thirteen foundation Python files with exact hashes |
+| Post-freeze schema adaptation | `evidence/lifecycle_exemplar_schema_update.json`, binding the prior and corrected native-exemplar wrapper and preserving both earlier technical/economic freezes |
+| Prior lifecycle closure | `upstream/SOURCE_MANIFEST.json`, eleven source-exact files and included license/provenance |
+| Human-readable integration evidence | `integration_audit.md`, this companion and `README.md` |
+| Source papers and rates | `sources/primary_sources.json`, `source_memo.md`, `sources.bib` |
+| Publication and demonstration | `paper/paper.tex` and generated includes/figures; `demo/index.html`, `demo/paper.html`, `demo/evidence.html` and their build records |
+
+## 12. Validation scope and reproducibility limits
+
+The numerical implementation has **six directed tests**: independent stencil versus assembled operator, symmetric-positive-definite operator/preconditioner properties on a small finite instance, acceptance across solvers, a discrete error-bound check, Gym transition/budget enforcement with actual artifact change, and case/artifact identity checks. The technical owner's recorded receipt is `technical_ready.json`; its early status describes the moment before confirmation and is not overwritten to pretend the chronology was different.
+
+The lifecycle bridge and assay have **seventeen directed tests**: exact imported sources and bytes; rights; negative economic evidence; protected material exclusion; frozen artifacts; explicit evidence requirements; direct-label names; network-wide sharing rights; revocation and stronger-Beta invalidation; duplicate versions and previously exposed probes; native capital/revenue/reserve separation; unknown expenses; double-charge rejection; all-case clustering and conservative rounding; failed-outcome inclusion; missing/duplicate/extra arms; measured-cost invocation counting; and single-exemplar accounting reconciliation. Some tests combine related assertions in one test function. The count is tests, not independently validated business claims.
+
+The economic implementation has **sixteen directed tests**, recorded in `sources/economics_audit.md`: token-tariff reconciliation and documented context limits; subcent precision; complete inverse-mission timing; independent cash reconstruction and setup inclusion; no serving on capacity declines; finite-cash closure; future-obsolescence isolation; realized negative transfer; optional-training rejection; ordinary-only upper-bound screening without candidate foresight; founder A/all-rank B/Gym C separation; preservation of ordinary sensor-design tools; nonclairvoyant receivables; refunds/processing fees; zero-outcome denominators; and detection of an omitted setup transaction. The three groups total **39 directed tests**, reported at their actual local scopes rather than as full repository CI.
+
+Ruff passed for the new numerical, economic and integration files at their recorded checks. Scoped strict mypy passed for `lifecycle_bridge.py` and `run_research_lifecycle.py` with imported modules skipped; it is not a type-check of the whole repository. Black could not start because the installed `pathspec` lacks `pathspec.patterns.gitignore`; Ruff formatting was used, with AST identity recorded for the numerical files before the freeze. The research dependency checker reported required packages available. These local results do not claim that all repository CI, source/browser parity, production release checks or the original upstream test suites were newly executed.
+
+The exact installed Python research dependency closure is `requirements-research.txt`. Observed versions include Python 3.12.14, NumPy 2.3.2, SciPy 1.17.0, threadpoolctl 3.6.0, cryptography 50.0.2 and pydantic 2.11.7. The research lifecycle ran on Node v24.22.1; this is separate from the repository's Node22.17.1 production qualification target. The requirements file does not freeze operating-system libraries, BLAS builds, CPU frequency, resource contention or wheel hashes. Exact timing reproduction is therefore not promised.
+
+The README provides commands that create fresh output directories, reproduce the public cases, freeze an economic policy and exercise the lifecycle. A successful local replay proves only the tested software behavior and recorded numerical outcomes. Stable public publication, browser inspection, PDF visual checks and broader CI each require their own verification record. This companion is not a substitute for those gates.
+
+## 13. What remains to establish
+
+Profitable Beta delivery would require observed equivalent accepted customer outcomes, full operational cost and collected prices. The local numerical representation change is established within its finite workload. Useful transport and replay can be established under the synthetic research authority; live authenticated scientific admission remains unsupported. Positive net retention, training and network-sharing value are separate hypotheses, and neither a small technical saving nor an artificial positive fixture proves them.
+
+A credible next investigation would locate a workload in which repeated expensive solves are a real bottleneck, obtain scope-matched customer or expert acceptance, retain equally competent ordinary methods, measure the complete delivery and validation expense, then run newly frozen confirmation. The present result supplies neither a guaranteed expensive-simulator scaling factor nor a promise that another candidate will succeed. Specialist ASI and growing productive advantage across successive fresh invention remain ambitions requiring substantially stronger independent evidence.

@@ -1,0 +1,313 @@
+{
+  "schema": "invention-network-economic-protocol/v1",
+  "currency": "USD",
+  "evidence": "Conditional synthetic enterprise; no observed customers, frontier execution, ENS authentication, collections or revenue",
+  "horizon_weeks": 104,
+  "runoff_weeks": 12,
+  "initial_cash": 20000,
+  "weekly_capacity_hours": 40,
+  "weekly_overhead": 100,
+  "setup_hours": 96,
+  "setup_rate": 84,
+  "reserve_weeks": 8,
+  "compute_usd_per_hour": 3.52,
+  "compute_rate_evidence": "Sourced UTEP equipment service rate used as a proxy; not a measured host bill or cloud tariff",
+  "price_fractions": [
+    0.3,
+    0.45,
+    0.6,
+    0.75,
+    0.9,
+    1.05
+  ],
+  "offerings": {
+    "thermal": {
+      "human_hours": 72,
+      "human_rate": 84,
+      "base_model_cost": 66,
+      "integration_tools_cost": 38,
+      "base_agent_hours": 6,
+      "acceptance_cost": 22,
+      "model_token_bundle": [
+        {
+          "model": "gpt-6-astra",
+          "input_tokens": 400000,
+          "cached_input_tokens": 0,
+          "output_tokens": 800000,
+          "calls": 20
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "input_tokens": 1000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 1000000,
+          "calls": 20
+        },
+        {
+          "model": "gpt-6.1-terra",
+          "input_tokens": 2000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 1600000,
+          "calls": 20
+        }
+      ],
+      "model_cost_formula": "sum((uncached_input_tokens * input_rate + cached_input_tokens * cache_rate + output_tokens * output_rate) / 1000000); tokens aggregate over calls",
+      "integration_cost_components": {
+        "operator_hours_at_84": 0.25,
+        "execution_tools_usd": 12,
+        "data_and_infrastructure_usd": 5
+      },
+      "acceptance_cost_components": {
+        "reviewer_hours_at_84": 0.25,
+        "validation_tools_usd": 1
+      }
+    },
+    "transfer": {
+      "human_hours": 96,
+      "human_rate": 84,
+      "base_model_cost": 96,
+      "integration_tools_cost": 54,
+      "base_agent_hours": 9,
+      "acceptance_cost": 32,
+      "model_token_bundle": [
+        {
+          "model": "gpt-6-astra",
+          "input_tokens": 600000,
+          "cached_input_tokens": 0,
+          "output_tokens": 1200000,
+          "calls": 24
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "input_tokens": 1000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 1500000,
+          "calls": 24
+        },
+        {
+          "model": "gpt-6.1-terra",
+          "input_tokens": 3000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 2000000,
+          "calls": 30
+        }
+      ],
+      "model_cost_formula": "sum((uncached_input_tokens * input_rate + cached_input_tokens * cache_rate + output_tokens * output_rate) / 1000000); tokens aggregate over calls",
+      "integration_cost_components": {
+        "operator_hours_at_84": 0.4,
+        "execution_tools_usd": 15,
+        "data_and_infrastructure_usd": 5.4
+      },
+      "acceptance_cost_components": {
+        "reviewer_hours_at_84": 0.35,
+        "validation_tools_usd": 2.6
+      }
+    },
+    "composition": {
+      "human_hours": 120,
+      "human_rate": 84,
+      "base_model_cost": 138,
+      "integration_tools_cost": 68,
+      "base_agent_hours": 12,
+      "acceptance_cost": 48,
+      "model_token_bundle": [
+        {
+          "model": "gpt-6-astra",
+          "input_tokens": 800000,
+          "cached_input_tokens": 0,
+          "output_tokens": 1600000,
+          "calls": 32
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "input_tokens": 2000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 2500000,
+          "calls": 32
+        },
+        {
+          "model": "gpt-6.1-terra",
+          "input_tokens": 6000000,
+          "cached_input_tokens": 0,
+          "output_tokens": 3000000,
+          "calls": 40
+        }
+      ],
+      "model_cost_formula": "sum((uncached_input_tokens * input_rate + cached_input_tokens * cache_rate + output_tokens * output_rate) / 1000000); tokens aggregate over calls",
+      "integration_cost_components": {
+        "operator_hours_at_84": 0.5,
+        "execution_tools_usd": 20,
+        "data_and_infrastructure_usd": 6
+      },
+      "acceptance_cost_components": {
+        "reviewer_hours_at_84": 0.5,
+        "validation_tools_usd": 6
+      }
+    }
+  },
+  "offering_evidence": "Source-backed short-context tariffs multiplied by assumed aggregate token/call counts, not measured consumption. Human hours, model/tool usage, operator/reviewer time, turnaround, demand and collection parameters are estimates. Human rate USD84/hour is a Vanderbilt RSE starting service rate, not a matched quoted contract. PDE timing/acceptance are locally observed computational records, not frontier-model performance.",
+  "policies": [
+    "beta",
+    "private",
+    "private_gym",
+    "shared",
+    "shared_gym_composition"
+  ],
+  "selection": "Prices and technical routes freeze on development evidence only. Candidate selection uses the declared decision prior, never actual future obsolescence or latent job correctness. Development evidence is supplied equally to all policies as a research calibration; adopting an artifact is charged its full reproduction, assessment and admission scope. No autonomous anticipation of v2 results is claimed. No commercial quality or demand uplift is imputed from tiny numerical samples. One candidate screen after an observed accepted thermal delivery is allowed; further search requires a different registered study.",
+  "candidate_screen_usd": 2.4,
+  "retention_assessment_usd": 168,
+  "retention_packaging_usd": 24,
+  "gym_development_usd": 168,
+  "sharing_admission_usd": 42,
+  "maintenance_usd_per_week": 1,
+  "specialist_invocation_usd": 0.002,
+  "economics_of_learning_evidence": "Additional human scopes are estimated at USD84/hour; measured founder/Gym/all-candidate-assessment runtime is added at the explicit USD3.52/hour equipment proxy. Tool orchestration and research-team labour were not metered; actual total research cost is unknown, not zero. No monetary savings beyond measured numerical runtime are attributed to a retained skill.",
+  "profiles": {
+    "adverse": {
+      "weekly_opportunities": 0.25,
+      "trust": 0.35,
+      "quality": 0.68,
+      "model_cost_multiplier": 3,
+      "value_multiplier": 0.65,
+      "collection_default": 0.12,
+      "obsolescence_week": 26
+    },
+    "reference": {
+      "weekly_opportunities": 0.8,
+      "trust": 0.75,
+      "quality": 0.92,
+      "model_cost_multiplier": 1,
+      "value_multiplier": 1,
+      "collection_default": 0.03,
+      "obsolescence_week": 52
+    },
+    "favorable": {
+      "weekly_opportunities": 1.8,
+      "trust": 0.9,
+      "quality": 0.98,
+      "model_cost_multiplier": 0.7,
+      "value_multiplier": 1.2,
+      "collection_default": 0.01,
+      "obsolescence_week": 78
+    }
+  },
+  "frontier_successor": "At an exogenous event observed when it occurs, all policies receive an assumed 25 percent reduction in model-bundle cost and 0.03 quality increase. Optional artifacts retire; no residual advantage is assumed. The date is hidden from the investment rule. This is a scenario, not verified successor-model performance; numerical factor-reuse sensitivity is a separate technical experiment.",
+  "stress_dimensions": [
+    "low demand",
+    "correlated validator errors",
+    "willingness to pay",
+    "higher training costs",
+    "out-of-scope negative transfer",
+    "capacity congestion",
+    "serving cost",
+    "rapid obsolescence",
+    "late collections",
+    "forced Gym and composition",
+    "surplus-funded expansion"
+  ],
+  "development_world_ids": [
+    10000,
+    10001,
+    10002,
+    10003,
+    10004,
+    10005,
+    10006,
+    10007
+  ],
+  "confirmation_worlds_per_profile": 200,
+  "accounting": "Cash-basis operating result = gross collections - paid refunds - all A/B/C costs. Seed capital is excluded from profit. Every modelled cash movement, including setup, is logged. Receivables are outstanding invoice face values, not clairvoyant future collections. Fees on outstanding invoices and gross receipts within warranty are separately reserved; actual payable obligations are zero under the no-credit fully reserved model. Unpaid future receipts do not finance operations. Foregone orders consume no serving cost and are reported as capacity/cash rejections, not charged as additional cash opportunity costs.",
+  "forbidden_claims": [
+    "observed API capability",
+    "earned revenue",
+    "live authenticated peer transfer",
+    "graph advantage",
+    "autonomous invention",
+    "specialist ASI",
+    "physical validation"
+  ],
+  "protocol_status": "Draft until policy_freeze.json records source and development hashes; confirmation refuses source drift",
+  "money_precision": "Integer nano-USD for accrual-free cash ledger; modelled subcent compute and serving charges are retained, not rounded away",
+  "model_tariffs": {
+    "retrieved_utc_date": "2026-10-27",
+    "currency": "USD",
+    "unit": "per million tokens",
+    "context_regime": "Standard short context, at most 272000 input tokens per call; no cache assumed; tool execution is separately budgeted",
+    "source": "https://developers.openai.com/api/docs/pricing",
+    "models": {
+      "gpt-6-astra": {
+        "input": 10,
+        "cached_input": 1,
+        "output": 50
+      },
+      "gpt-6.1-sol": {
+        "input": 2,
+        "cached_input": 0.1,
+        "output": 10
+      },
+      "gpt-6.1-terra": {
+        "input": 1,
+        "cached_input": 0.05,
+        "output": 5
+      }
+    },
+    "access": "Public documentation only; no API entitlement, successful model call, actual token usage, or unsupported proprietary fine-tuning claimed",
+    "token_scope": "Output token budgets include any billed reasoning tokens; all counts and request counts are assumed aggregate workflow budgets, never observed logs."
+  },
+  "operator_capacity_evidence": "base_agent_hours is automated workflow occupancy, not an additional human wage charge. Estimated human operation/review is itemized in integration/acceptance; setup covers 96 estimated engineering and commercial establishment hours; weekly overhead covers ongoing administration, acquisition and platform upkeep. Profit is pretax; no taxes, financing, token issuance or venture valuation are revenue.",
+  "human_rate_source": "https://www.vanderbilt.edu/accre/research-software-engineering-service/",
+  "compute_rate_source": "https://www.utep.edu/science/data-analytics-lab/services.html",
+  "collection_fee_fraction": 0.03,
+  "collection_fee_fixed_usd": 0.3,
+  "refund_discovery_probability": 0.85,
+  "refund_window_weeks": 4,
+  "collection_delay_weeks": 4,
+  "settlement_assumptions": "Three percent plus USD0.30 collection fee is assumed, not a processor quote. Fee budget is reserved on invoice acceptance. Gross receipts are refundable and reserved until the four-week warranty expires; fees are not recovered on refunds. Default is revealed only at the due date. No borrowing: unfundable weekly operations close, discretionary overhead then stops, invoices and warranties still run off.",
+  "decision_prior": {
+    "weekly_opportunities": 0.8,
+    "trust": 0.75,
+    "applicability_fraction": 0.5,
+    "forecast_lifetime_weeks": 52,
+    "quality": 0.92,
+    "collection_default": 0.03,
+    "actor_count": 3,
+    "family_probabilities": {
+      "thermal": 0.4,
+      "transfer": 0.35,
+      "composition": 0.25
+    }
+  },
+  "composition_assessment_usd": 168,
+  "composition_packaging_usd": 24,
+  "composition_invocation_usd": 0.002,
+  "campaign_accounting": "The founder deliverable requests a reusable numerical engine: all required solution generation and basis construction are A, charged exactly once on the first attempted founder thermal mission to every policy. Extra retention packaging is B. Every candidate assessment, including all four rank candidates and nonselected candidates, is B once. Only the additional 32-step Gym enrichment and estimated additional development labour are C. USD24 packaging and USD168 assessment/Gym scopes are human-work estimates. Main policies may decline after the USD2.40 screen; forced diagnostics deploy policy-appropriate v1, v2, or v2 plus design despite a negative forecast and are not rational-policy optima. The computational founder mission was executed, but no actual paid customer job is claimed.",
+  "numerical_replay": "Replay a keyed fresh measured case for each simulated opportunity, preserving case-level time and technical acceptance. Method routing is frozen from development; confirmation can reveal slower timing or lower acceptance. Composition uses its own complete inverse-mission records including design/forward/inversion time, never a single transfer solve as proxy. Out-of-scope stress replays the separately protected OOD records. No added commercial quality lift is assigned.",
+  "expansion": {
+    "cash_cost_usd": 6000,
+    "extra_hours_per_week": 20,
+    "lookback_weeks": 8,
+    "minimum_history_weeks": 8,
+    "forecast_weeks": 26,
+    "maximum_expansions": 1
+  },
+  "expansion_evidence": "Separate diagnostic only. Expansion uses preceding observed capacity-rejected orders and quoted margins, no future arrivals. It requires cash exceeding original seed capital plus all current reserves by the investment. It changes resources and is not evidence of compounding.",
+  "evidence_labels": {
+    "numerical_runtime_and_acceptance": "observed local computational experiment",
+    "frontier_tariffs_and_hourly_service_rates": "sourced public documentation",
+    "token_counts_human_hours_tools_review_setup_and_demand": "assumed",
+    "enterprise_choices_collections_prices_refunds_identities": "simulated",
+    "numerical_replay_distribution": "calibrated empirical replay; not a customer-demand or reliability estimate",
+    "actual_sales_actual_frontier_calls_live_ENS": "not observed"
+  },
+  "per_job_numerical_budget_seconds": {
+    "thermal": 10,
+    "transfer": 10,
+    "composition": 300,
+    "ood": 10
+  },
+  "budget_information": "Job admission reserves a declared numerical time budget and one correction, without reading a protected fresh runtime or outcome. Fresh empirical measurements are revealed only after route and admission decisions. Runs reject evidence exceeding the preregistered numerical budget. Model bundle and known human/tool scopes are paid per attempt, including failures.",
+  "artifact_initialization_allowance_s": 1.0,
+  "initialization_evidence": "A conservative assumed one-second one-time numeric component initialization allowance is charged in B; it is not an observed timing. Domain construction, warm-up and ordinary baseline assessment recorded in development are A. Shared references and numerical forward fields are charged once during assessment.",
+  "ordinary_tools": "Competent generalists retain ordinary D-optimal sensor design. Solver transfer on inverse work therefore uses the v2-plus-D-optimal result even in a private policy; fixed-sensor solver_only is an ablation, not the ceiling of competent Beta. The forced two-specialist arm additionally pays specialist design assessment, coordination and serving without assuming an exclusive quality advantage.",
+  "screening_rule": "First bound the cash value of perfect elimination of all ordinary numerical work using only ordinary development timing and the declared demand/lifetime prior. Ignore Gym, maintenance and serving costs in this optimistic upper bound. If even this cannot repay minimum assessment/packaging/admission cost, decline without consulting v1/v2 candidate outcomes. This bound covers measured compute-only value; absent evidence, no saving in human/frontier workflow effort or customer demand/quality is imputed. Only a passing opportunity proceeds to research-calibrated candidate comparison."
+}

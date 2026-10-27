@@ -1,0 +1,23 @@
+{
+  "schema": "scientific-lifecycle-protocol/v1",
+  "prespecified_before_confirmation_inspection": true,
+  "scientific_comparisons": ["v1", "v2"],
+  "baseline": "development selection.json baseline, never selected from confirmation",
+  "population": "Every transfer case in confirmation case_manifest.json in its saved order; fail on missing or duplicate arms; never discard failed outcomes",
+  "clusters": 12,
+  "cluster_assignment": "Zero-based transfer case index modulo 12; each cluster contributes one mean runtime-cost difference",
+  "paired_value": "Negative complete elapsed runtime seconds multiplied by USD 3.52 / 3600; quality equivalence required separately",
+  "compute_usd_per_hour": "3.52",
+  "proxy_scope": "Sourced equipment service-rate proxy; neither measured cloud tariff nor provider invoice. CPU seconds are separately observed and never substituted for elapsed seconds.",
+  "inference": "One-sided 95 percent Student-t lower bound over the twelve cluster mean deltas; conditional on independent case generation and this proxy; no distribution-free guarantee",
+  "forecast_eligible_uses": 100,
+  "forecast_basis": "Explicit prospective reuse scenario, fixed before confirmation; not observed demand or forecast accuracy",
+  "acceptance": "All candidate and baseline confirmation transfer outcomes must pass the independently specified acceptance condition; no net-value claim may be made from rejected outputs",
+  "monetary_precision": "Decimal arithmetic retains the input JSON decimal values. The unchanged upstream gate only supports integer cents: project baseline cost down and candidate cost up, then negate costs. Never round a positive advantage into existence.",
+  "incremental_costs": "B includes measured assessment subtotal plus economic_protocol retention_assessment_usd, retention_packaging_usd and sharing_admission_usd. C for v2 includes measured extra Gym plus economic_protocol gym_development_usd. v1 has no additional Gym. Founder development is A and is not charged again. Each candidate is an alternative decision, not summed campaign expenditure.",
+  "actual_research_ledger": "Each measured activity enters one A/B/C bucket only; labor, model authoring, untimed orchestration and actual hosting bills remain unknown. No complete real profit or earned revenue claim.",
+  "conformance_control": "A separate synthetic positive monetary fixture encrypts and transfers the real v2 bytes. B executes those returned bytes on the first saved transfer case and compares the archived solution. This is post-confirmation replay, not independent economic admission or another fresh trial.",
+  "ordinary_library": "Same local artifact bytes, authorized members and operation rights, with matching revocation state. Compare content hashes and allow/deny decisions; do not infer graph search or efficiency superiority.",
+  "native_scope": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "enterprise_exemplar": "At most one selected reference world 900000, shared_gym_composition policy, replayed through the native ledger. The ensemble runs its own simulator accounting; never label the entire ensemble native replay."
+}
