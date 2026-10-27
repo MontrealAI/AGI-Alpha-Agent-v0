@@ -1,0 +1,60 @@
+{
+  "schema": "shared-observation-integration-source-record/v1",
+  "capture_phase": "After recorded local conformance, recipient and modeled native runs; this is not the protected technical prefreeze.",
+  "core_prefreeze": "evidence/technical-freeze-v1_0_1.json",
+  "files": {
+    "integration/bundle.py": {
+      "sha256": "95b3ba55b6fb2e1f1ca8a3d9f39079161b913ad9fd24bb67754ae905d839d906",
+      "bytes": 4813
+    },
+    "integration/transfer_recipient.py": {
+      "sha256": "be78773368608937f807a084bdbbc958c66714312da62e25a5a77b7b925a96f6",
+      "bytes": 11097
+    },
+    "integration/native_replay.py": {
+      "sha256": "1285cc284cf44599c47e8931f78225faaf4a85e796328d80111aba6e159b65f7",
+      "bytes": 1942
+    },
+    "integration/prepare_native_reference.py": {
+      "sha256": "b378ae4c52925f5fa74a715be15f17ac683d155b3b0f7f8fb41764b28665012a",
+      "bytes": 7682
+    },
+    "integration/test_bundle.py": {
+      "sha256": "90ea52a3106159faeb0a3d3f83a75c123b3c624ab5fea4ecbf90142cf8c76827",
+      "bytes": 4249
+    }
+  },
+  "checks": {
+    "bundle_boundary_tests": {
+      "passed": 7,
+      "total": 7
+    },
+    "upstream_source_files": {
+      "verified": 34
+    },
+    "native_fixture_controls": {
+      "passed": 29,
+      "total": 29
+    },
+    "recipient_controls": {
+      "passed": 13,
+      "total": 13
+    },
+    "independent_semantic_comparisons": {
+      "checks": 174,
+      "failures": 0
+    },
+    "native_modeled_reconciliation": {
+      "passed": 8,
+      "total": 8
+    }
+  },
+  "lint": {
+    "initial_attempt": "ruff executable not found on PATH",
+    "recovery": "python -m ruff check on new integration sources",
+    "result": "pass"
+  },
+  "full_repository_tests": "not_run_by_this_integration_subtask",
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0
+}

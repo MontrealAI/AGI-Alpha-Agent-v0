@@ -1,0 +1,101 @@
+$if(compact)$
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.75in,headheight=15pt]{geometry}
+$else$
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.86in,headheight=15pt]{geometry}
+$endif$
+\usepackage{fontspec}
+\setmainfont{P052-Roman.otf}[Path=/usr/share/fonts/opentype/urw-base35/,BoldFont=P052-Bold.otf,ItalicFont=P052-Italic.otf,BoldItalicFont=P052-BoldItalic.otf]
+\setsansfont{NimbusSans-Regular.otf}[Path=/usr/share/fonts/opentype/urw-base35/,BoldFont=NimbusSans-Bold.otf,ItalicFont=NimbusSans-Italic.otf,BoldItalicFont=NimbusSans-BoldItalic.otf]
+\setmonofont[Scale=0.83]{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,calc,graphicx,xcolor,enumitem,fancyhdr,titlesec,microtype}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{needspace}
+\AddToHook{cmd/section/before}{\Needspace{6\baselineskip}}
+\AddToHook{cmd/subsection/before}{\Needspace{4\baselineskip}}
+\definecolor{navy}{HTML}{16324A}
+\definecolor{teal}{HTML}{087F8C}
+\definecolor{gold}{HTML}{B78332}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal,pdftitle={$title$},pdfauthor={$author$}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{navy}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\sffamily\scriptsize\color{navy}$shorttitle$}
+\fancyfoot[L]{\sffamily\scriptsize MONTREAL.AI\quad |\quad Research edition 1.0.0}
+\fancyfoot[R]{\sffamily\scriptsize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\titleformat{\section}{\sffamily\Large\bfseries\color{navy}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{teal}}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{1.25em}{0.55em}
+\titlespacing*{\subsection}{0pt}{0.85em}{0.35em}
+\setlength{\parindent}{0pt}
+$if(compact)$
+\setlength{\parskip}{0.4em}
+$else$
+\setlength{\parskip}{0.55em}
+$endif$
+\setlength{\emergencystretch}{3em}
+\brokenpenalty=10000
+$if(compact)$
+\titlespacing*{\section}{0pt}{0.8em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.65em}{0.3em}
+$endif$
+\setlist{nosep,leftmargin=1.5em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\passthrough}[1]{#1}
+\newenvironment{CSLReferences}[2]{\setlength{\parindent}{0pt}\setlength{\parskip}{0.6em}\small}{ }
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{#1}
+\newcommand{\CSLRightInline}[1]{#1}
+\newcommand{\CSLIndent}[1]{\hspace{1em}#1}
+\newcommand{\pandocbounded}[1]{#1}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>0.78\textheight0.78\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\begin{document}
+$if(cover)$
+\begin{titlepage}
+\color{navy}
+{\sffamily\small\bfseries MONTREAL.AI\hfill RESEARCH EDITION\quad 27 OCTOBER 2026\par}
+\vspace{1.4cm}
+{\sffamily\small\color{teal} TRANSFORMATIONAL INTELLIGENCE:\\ LEARNING TO CHANGE THE GAME\par}
+\vspace{0.8cm}
+{\sffamily\fontsize{28}{33}\selectfont\bfseries AGI ALPHA FLYWHEEL\\[0.35cm]
+\fontsize{24}{29}\selectfont — When Capability\\ Creates Opportunity\par}
+\vspace{0.65cm}
+{\sffamily\large Transformational Intelligence, Experience-Trained Specialists\\
+and the Expanding Frontier of Profitable Work\par}
+\vspace{0.8cm}
+{\large\bfseries Vincent Boucher --- President of MONTREAL.AI\par}
+\vspace{0.9cm}
+{\sffamily\color{teal}\bfseries FIND YOUR ALPHA. BUILD YOUR SUCCESSOR \(\Omega\).\par}
+\vfill
+\rule{\textwidth}{0.5pt}
+{\sffamily\large\bfseries One observation. Several protected decisions.\par}
+{\normalsize An executed finite study of a conditional shared service, its reusable instrument,
+complete modeled economics and fresh recipient use.\par}
+\vspace{0.5cm}
+{\small\itshape ``As Columbus braved the seas, we now venture into the vast oceans of AGI.
+The age of AGI exploration has dawned, and the horizons are boundless.
+Dare to dream, dare to explore.'' --- \(\alpha\)-AGI Agent\par}
+\vspace{0.5cm}
+{\sffamily\footnotesize Executed software and synthetic-world results. No live customer receipts or spacecraft authority.}
+\end{titlepage}
+$else$
+$if(compact)$
+{\sffamily\fontsize{17}{20}\selectfont\bfseries\color{navy}AGI ALPHA FLYWHEEL\\— When Capability Creates Opportunity\par}
+{\sffamily\normalsize\color{teal}$subtitle$\par}
+$else$
+{\sffamily\fontsize{18}{22}\selectfont\bfseries\color{navy}AGI ALPHA FLYWHEEL\\— When Capability Creates Opportunity\par}
+{\sffamily\large\color{teal}$subtitle$\par}
+$endif$
+{\normalsize $author$\hfill 27 October 2026\par}
+\vspace{0.3cm}\hrule\vspace{0.3cm}
+$endif$
+$body$
+\end{document}

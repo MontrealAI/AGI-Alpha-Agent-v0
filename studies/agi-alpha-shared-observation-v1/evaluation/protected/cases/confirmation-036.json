@@ -1,0 +1,176 @@
+{
+  "schema": "shared-observation-mission/v1",
+  "mission_id": "confirmation-036",
+  "evidence_type": "synthetic",
+  "calibration_scope": "shared-secondary-risk-v1",
+  "states": [
+    "secondary-state-0",
+    "secondary-state-1",
+    "secondary-state-2"
+  ],
+  "prior": [
+    0.1796116689,
+    0.1710558638,
+    0.6493324673
+  ],
+  "observation": {
+    "id": "assumed-sensor-confirmation-036",
+    "usable": false,
+    "rights_cleared": true,
+    "calibration_scope": "shared-secondary-risk-v1",
+    "outcomes": [
+      {
+        "id": "signal-0",
+        "likelihood": [
+          0.70555605,
+          0.03466301,
+          0.09136041
+        ],
+        "arrival_hours": 0.354483
+      },
+      {
+        "id": "signal-1",
+        "likelihood": [
+          0.07988542,
+          0.85065855,
+          0.09136041
+        ],
+        "arrival_hours": 0.335582
+      },
+      {
+        "id": "signal-2",
+        "likelihood": [
+          0.07988542,
+          0.03466301,
+          0.69959967
+        ],
+        "arrival_hours": 0.399186
+      },
+      {
+        "id": "no-result",
+        "likelihood": [
+          0.13467311,
+          0.08001543,
+          0.11767951
+        ],
+        "arrival_hours": null
+      }
+    ]
+  },
+  "operators": [
+    {
+      "id": "operator-0",
+      "risk_limit": 8.0111298e-05,
+      "decision_deadline_hours": 1.21773,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            2.411968e-06,
+            0.000708967882,
+            7.05297e-06
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 1.51773
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            5.247318e-06,
+            5.435679e-06,
+            1.135047e-06
+          ],
+          "cost_usd": 185.98,
+          "latest_start_hours": 1.41773
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            1.311829e-06,
+            1.35892e-06,
+            2.83762e-07
+          ],
+          "cost_usd": 251.07,
+          "latest_start_hours": 1.41773
+        }
+      ]
+    },
+    {
+      "id": "operator-1",
+      "risk_limit": 0.000110304959,
+      "decision_deadline_hours": 2.377625,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            0.000970663784,
+            2.6020947e-05,
+            1.7034165e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 2.677625
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            1.2267124e-05,
+            7.195006e-06,
+            1.2901706e-05
+          ],
+          "cost_usd": 237.2,
+          "latest_start_hours": 2.5776250000000003
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            3.066781e-06,
+            1.798752e-06,
+            3.225427e-06
+          ],
+          "cost_usd": 320.22,
+          "latest_start_hours": 2.5776250000000003
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "risk_limit": 0.000132585798,
+      "decision_deadline_hours": 1.238269,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            7.373121e-06,
+            0.000776465677,
+            7.114717e-06
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 1.538269
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            1.3465805e-05,
+            3.594988e-06,
+            1.5709852e-05
+          ],
+          "cost_usd": 215.88,
+          "latest_start_hours": 1.438269
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            3.366451e-06,
+            8.98747e-07,
+            3.927463e-06
+          ],
+          "cost_usd": 291.44,
+          "latest_start_hours": 1.438269
+        }
+      ]
+    }
+  ]
+}

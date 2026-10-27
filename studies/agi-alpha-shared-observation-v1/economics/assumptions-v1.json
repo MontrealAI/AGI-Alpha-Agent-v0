@@ -1,0 +1,131 @@
+{
+  "B_retention_admission_cost": 180.0,
+  "B_upkeep_per_use": 2.0,
+  "C_optional_calibration_cost": 240.0,
+  "Eplus_cash_saving_range": [
+    0.0,
+    5.0,
+    10.0,
+    20.0,
+    30.0
+  ],
+  "U_E_grid": {
+    "baseline_acceptance": [
+      0.6,
+      0.8,
+      0.95
+    ],
+    "cost_multipliers": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "delta_E": [
+      -0.05,
+      0.0,
+      0.05,
+      0.1
+    ],
+    "delta_Eplus": [
+      -0.05,
+      0.0,
+      0.05
+    ],
+    "maximum_attempts": [
+      1,
+      2
+    ],
+    "retry_success_fraction": 0.5
+  },
+  "acquisition_cost": 600.0,
+  "acquisition_cost_range": [
+    100.0,
+    300.0,
+    600.0,
+    1000.0,
+    2000.0
+  ],
+  "common_package_failure_probability": 0.05,
+  "conditional_payment_default_probability": 0.03,
+  "constraints": {
+    "acquisition_deposits_are_pass_through": true,
+    "acquisition_excluded_from_technical_costs": true,
+    "common_package_failure_is_not_sensor_outage": true,
+    "no_live_API_billing": true,
+    "no_live_collections": true,
+    "operator_action_reserves_remain_restricted": true,
+    "support_paid_at_final_settlement": true
+  },
+  "currency": "USD",
+  "customer_adaptation_cost": 20.0,
+  "customer_adaptation_range": [
+    0.0,
+    20.0,
+    50.0,
+    100.0
+  ],
+  "evidence": "explicit_research_assumptions_not_market_quotes",
+  "failure_handling_per_operator": 10.0,
+  "fee_deposit_fraction": 0.3,
+  "first_pass_acceptance": {
+    "E": 0.9,
+    "Eplus": 0.9,
+    "U": 0.9
+  },
+  "fixed_A_delivery_cost": 60.0,
+  "frozen_at": "2026-10-27T17:00:18.681884+00:00",
+  "human_service": {
+    "annual_hours_divisor": 2080.0,
+    "annual_wage": 134960.0,
+    "burden_multipliers": [
+      1.5,
+      2.0,
+      2.5
+    ],
+    "hours": [
+      8.0,
+      16.0,
+      24.0
+    ],
+    "note": "Estimated equivalent-service effort and burden are assumptions; BLS wage is not a commercial quote.",
+    "reference_period": "May 2025",
+    "source": "https://www.bls.gov/ooh/architecture-and-engineering/aerospace-engineers.htm"
+  },
+  "modeled_Astra_workload": {
+    "included_in_fixed_A_not_added_again": true,
+    "output_tokens": 10000,
+    "uncached_input_tokens": 30000
+  },
+  "package_fee": 80.0,
+  "package_fee_range": [
+    0.0,
+    40.0,
+    80.0,
+    120.0,
+    200.0
+  ],
+  "per_operator_A_delivery_cost": 20.0,
+  "per_operator_quote_cost": 2.0,
+  "precommit_withdrawal_probability": 0.1,
+  "provider_reserve": 300.0,
+  "schema": "shared-observation-economics-assumptions-v1",
+  "seed_capital": 1500.0,
+  "support_per_accepted_operator": 5.0,
+  "tariffs": {
+    "Astra": {
+      "cached_per_million": 1.0,
+      "input_per_million": 10.0,
+      "model": "gpt-6-astra",
+      "output_per_million": 50.0
+    },
+    "Terra": {
+      "cached_per_million": 0.05,
+      "input_per_million": 1.0,
+      "model": "gpt-6.1-terra",
+      "output_per_million": 5.0
+    },
+    "as_of": "2026-10-27",
+    "source": "https://developers.openai.com/api/docs/pricing"
+  }
+}

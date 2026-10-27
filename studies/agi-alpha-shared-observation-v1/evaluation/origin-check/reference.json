@@ -1,0 +1,172 @@
+{
+  "schema": "shared-observation-result/v1",
+  "mission_id": "origin-three-operators",
+  "input_sha256": "3452255abf5ef13cc6e1d810a5aa867c36a3d58866a718c5e39cd72814e920ba",
+  "observation_accepted": true,
+  "operators": [
+    {
+      "id": "operator-1",
+      "baseline_cost": 500.0,
+      "baseline_action": "maneuver",
+      "contingent_cost": 135.0,
+      "value_of_information": 365.0,
+      "valid": true,
+      "peak_action_reserve": 500.0,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.73,
+          "posterior": [
+            0.9863013698630136,
+            0.0136986301369863
+          ],
+          "observed_at_hours": 2.0,
+          "action": "coast",
+          "risk": 1.1945205479452055e-05,
+          "cost_usd": 0.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.218,
+          "posterior": [
+            0.22018348623853212,
+            0.7798165137614679
+          ],
+          "observed_at_hours": 2.0,
+          "action": "maneuver",
+          "risk": 8.018348623853211e-07,
+          "cost_usd": 500.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.052,
+          "posterior": [
+            0.6153846153846154,
+            0.38461538461538464
+          ],
+          "observed_at_hours": 4.0,
+          "action": "maneuver",
+          "risk": 4.4615384615384615e-07,
+          "cost_usd": 500.0,
+          "valid": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "baseline_cost": 650.0,
+      "baseline_action": "maneuver",
+      "contingent_cost": 175.5,
+      "value_of_information": 474.5,
+      "valid": true,
+      "peak_action_reserve": 650.0,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.73,
+          "posterior": [
+            0.9863013698630136,
+            0.0136986301369863
+          ],
+          "observed_at_hours": 2.0,
+          "action": "coast",
+          "risk": 1.4684931506849315e-05,
+          "cost_usd": 0.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.218,
+          "posterior": [
+            0.22018348623853212,
+            0.7798165137614679
+          ],
+          "observed_at_hours": 2.0,
+          "action": "maneuver",
+          "risk": 8.018348623853211e-07,
+          "cost_usd": 650.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.052,
+          "posterior": [
+            0.6153846153846154,
+            0.38461538461538464
+          ],
+          "observed_at_hours": 4.0,
+          "action": "maneuver",
+          "risk": 4.4615384615384615e-07,
+          "cost_usd": 650.0,
+          "valid": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "id": "operator-3",
+      "baseline_cost": 800.0,
+      "baseline_action": "maneuver",
+      "contingent_cost": 216.0,
+      "value_of_information": 584.0,
+      "valid": true,
+      "peak_action_reserve": 800.0,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.73,
+          "posterior": [
+            0.9863013698630136,
+            0.0136986301369863
+          ],
+          "observed_at_hours": 2.0,
+          "action": "coast",
+          "risk": 2.1534246575342464e-05,
+          "cost_usd": 0.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.218,
+          "posterior": [
+            0.22018348623853212,
+            0.7798165137614679
+          ],
+          "observed_at_hours": 2.0,
+          "action": "maneuver",
+          "risk": 8.018348623853211e-07,
+          "cost_usd": 800.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.052,
+          "posterior": [
+            0.6153846153846154,
+            0.38461538461538464
+          ],
+          "observed_at_hours": 4.0,
+          "action": "maneuver",
+          "risk": 4.4615384615384615e-07,
+          "cost_usd": 800.0,
+          "valid": true,
+          "reachable": true
+        }
+      ]
+    }
+  ],
+  "total_baseline_cost": 1950.0,
+  "total_contingent_cost": 526.5,
+  "total_value_of_information": 1423.5,
+  "execution_authorized": false,
+  "reference_method": "independent finite enumeration with rational arithmetic"
+}

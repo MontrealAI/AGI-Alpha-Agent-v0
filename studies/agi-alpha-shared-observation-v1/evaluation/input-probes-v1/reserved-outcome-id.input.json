@@ -1,0 +1,126 @@
+{
+  "schema": "shared-observation-mission/v1",
+  "mission_id": "origin-three-operators",
+  "evidence_type": "synthetic",
+  "calibration_scope": "shared-secondary-risk-v1",
+  "states": [
+    "offset-far",
+    "offset-near"
+  ],
+  "prior": [
+    0.8,
+    0.2
+  ],
+  "observation": {
+    "id": "shared-offset-observation",
+    "usable": true,
+    "rights_cleared": true,
+    "calibration_scope": "shared-secondary-risk-v1",
+    "outcomes": [
+      {
+        "id": "__timeout__",
+        "likelihood": [
+          0.9,
+          0.05
+        ],
+        "arrival_hours": 2
+      },
+      {
+        "id": "closer-approach",
+        "likelihood": [
+          0.06,
+          0.85
+        ],
+        "arrival_hours": 2
+      },
+      {
+        "id": "no-result",
+        "likelihood": [
+          0.04,
+          0.1
+        ],
+        "arrival_hours": null
+      }
+    ]
+  },
+  "operators": [
+    {
+      "id": "operator-1",
+      "risk_limit": 0.0001,
+      "decision_deadline_hours": 4,
+      "fallback_action": "maneuver",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1e-06,
+            0.0008
+          ],
+          "cost_usd": 0,
+          "latest_start_hours": 8
+        },
+        {
+          "id": "maneuver",
+          "risk_by_state": [
+            1e-07,
+            1e-06
+          ],
+          "cost_usd": 500,
+          "latest_start_hours": 4
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "risk_limit": 0.0001,
+      "decision_deadline_hours": 4,
+      "fallback_action": "maneuver",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1e-06,
+            0.001
+          ],
+          "cost_usd": 0,
+          "latest_start_hours": 8
+        },
+        {
+          "id": "maneuver",
+          "risk_by_state": [
+            1e-07,
+            1e-06
+          ],
+          "cost_usd": 650,
+          "latest_start_hours": 4
+        }
+      ]
+    },
+    {
+      "id": "operator-3",
+      "risk_limit": 0.0001,
+      "decision_deadline_hours": 4,
+      "fallback_action": "maneuver",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1e-06,
+            0.0015
+          ],
+          "cost_usd": 0,
+          "latest_start_hours": 8
+        },
+        {
+          "id": "maneuver",
+          "risk_by_state": [
+            1e-07,
+            1e-06
+          ],
+          "cost_usd": 800,
+          "latest_start_hours": 4
+        }
+      ]
+    }
+  ]
+}

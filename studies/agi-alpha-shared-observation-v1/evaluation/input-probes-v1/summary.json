@@ -1,0 +1,153 @@
+{
+  "schema": "shared-observation-input-probes/v1",
+  "phase": "post-confirmation diagnostic",
+  "at_utc": "2026-10-27T17:05:31.009545+00:00",
+  "probe_count": 12,
+  "pass_count": 12,
+  "rows": [
+    {
+      "probe": "prior-not-normalized",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Prior is not normalized",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "nonfinite-prior",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Number outside the declared domain",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "negative-action-cost",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Number outside the declared domain",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "negative-arrival",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Number outside the declared domain",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "likelihood-not-normalized",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Observation likelihood columns are not normalized",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "missing-fallback",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Fallback action does not exist",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "duplicate-outcome-id",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Duplicate identifier",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "reserved-outcome-id",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Reserved outcome identifier",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "empty-operators",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Record count outside scope",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "seven-operators",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Record count outside scope",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "boolean-cost",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "A finite number is required",
+        "execution_authorized": false
+      }
+    },
+    {
+      "probe": "nonboolean-prerequisite",
+      "pass": true,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "",
+      "result": {
+        "accepted": false,
+        "error": "Observation prerequisites must be booleans",
+        "execution_authorized": false
+      }
+    }
+  ]
+}

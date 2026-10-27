@@ -1,0 +1,389 @@
+{
+  "actual_complete_research_cost": null,
+  "actual_customer_collections": 0,
+  "all_commit_accept_pay_branch": {
+    "A_cash_cost": 135.0,
+    "accepted": 3,
+    "bad_debt": 0.0,
+    "buyer_liquidity_verified": false,
+    "cash_path": [
+      {
+        "available_funds": 1194.0,
+        "cash": 1494.0,
+        "cash_change": -6.0,
+        "day": 0,
+        "event": "quote",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      },
+      {
+        "available_funds": 1080.0,
+        "cash": 2166.0,
+        "cash_change": 672.0,
+        "day": 1,
+        "event": "conditional_deposits",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 114.0
+      },
+      {
+        "available_funds": 465.0,
+        "cash": 1452.0,
+        "cash_change": -714.0,
+        "day": 2,
+        "event": "acquire_and_prepare",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 15.0
+      },
+      {
+        "available_funds": 1305.0,
+        "cash": 1620.0,
+        "cash_change": 168.0,
+        "day": 3,
+        "event": "accept_default_or_refund",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 15.0
+      },
+      {
+        "available_funds": 1305.0,
+        "cash": 1605.0,
+        "cash_change": -15.0,
+        "day": 4,
+        "event": "support_settled",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      }
+    ],
+    "collected_service_revenue": 240.0,
+    "common_failure": false,
+    "customer_expected_action_savings": 1423.5,
+    "customer_net_value": 523.5,
+    "defaults": 0,
+    "earned_gross_service_revenue": 240.0,
+    "end_available_funds": 1305.0,
+    "end_cash": 1605.0,
+    "extra_financing_required": 0.0,
+    "gross_customer_cash_receipts": 840.0,
+    "minimum_available_funds": 465.0,
+    "operating_profit_before_BC": 105.0,
+    "participants": 3,
+    "pass_through_collected": 600.0,
+    "pass_through_refunded": 0.0,
+    "refunds": 0.0,
+    "required_buyer_cash": [
+      800.0,
+      950.0,
+      1100.0
+    ],
+    "sensor_paid": 600.0,
+    "statuses": [
+      "paid",
+      "paid",
+      "paid"
+    ]
+  },
+  "buyer_liquidity": "required full fee and fallback reserves reported; financing unverified",
+  "evidence": "conditional_simulation_only",
+  "expected_A_components": {
+    "common_failure_sunk_acquisition": 24.3,
+    "construction_preparation_correction": 43.74,
+    "failed_or_rejected_handling": 3.406050000000027,
+    "per_operator_delivery": 46.98000000000003,
+    "quotes_all_invitations": 6.0,
+    "support": 10.041974999999994
+  },
+  "factorial": {
+    "T0_A0_ablation": {
+      "A_cash_cost": 6.000000000000001,
+      "buyer_net_value": 0.0,
+      "launch_probability": 0.0,
+      "operating_profit_before_BC": -6.000000000000001,
+      "service_collections": 0.0
+    },
+    "T0_A1_ablation": {
+      "A_cash_cost": 6.000000000000001,
+      "buyer_net_value": 0.0,
+      "launch_probability": 0.0,
+      "operating_profit_before_BC": -6.000000000000001,
+      "service_collections": 0.0
+    },
+    "T1_A0_individual": {
+      "A_cash_cost": 6.000000000000001,
+      "buyer_net_value": 0.0,
+      "launch_probability": 0.0,
+      "operating_profit_before_BC": -6.000000000000001,
+      "service_collections": 0.0
+    },
+    "T1_A1_joint": {
+      "A_cash_cost": 134.46802499999995,
+      "buyer_net_value": 294.58935360000004,
+      "launch_probability": 0.81,
+      "operating_profit_before_BC": 22.829471400000003,
+      "service_collections": 157.29749639999994
+    },
+    "competent_unrestricted_E": {
+      "A_cash_cost": 134.46802499999995,
+      "buyer_net_value": 294.58935360000004,
+      "launch_probability": 0.81,
+      "operating_profit_before_BC": 22.829471400000003,
+      "service_collections": 157.29749639999994
+    }
+  },
+  "human_reference": {
+    "hourly_wage_proxy": 64.88461538461539,
+    "market_quote": false,
+    "scenarios": [
+      {
+        "burden": 1.5,
+        "estimated_cost": 778.6153846153846,
+        "hours": 8.0
+      },
+      {
+        "burden": 2.0,
+        "estimated_cost": 1038.1538461538462,
+        "hours": 8.0
+      },
+      {
+        "burden": 2.5,
+        "estimated_cost": 1297.6923076923076,
+        "hours": 8.0
+      },
+      {
+        "burden": 1.5,
+        "estimated_cost": 1557.2307692307693,
+        "hours": 16.0
+      },
+      {
+        "burden": 2.0,
+        "estimated_cost": 2076.3076923076924,
+        "hours": 16.0
+      },
+      {
+        "burden": 2.5,
+        "estimated_cost": 2595.3846153846152,
+        "hours": 16.0
+      },
+      {
+        "burden": 1.5,
+        "estimated_cost": 2335.846153846154,
+        "hours": 24.0
+      },
+      {
+        "burden": 2.0,
+        "estimated_cost": 3114.4615384615386,
+        "hours": 24.0
+      },
+      {
+        "burden": 2.5,
+        "estimated_cost": 3893.0769230769233,
+        "hours": 24.0
+      }
+    ],
+    "source": "https://www.bls.gov/ooh/architecture-and-engineering/aerospace-engineers.htm"
+  },
+  "no_value_acquisition_order": 0.0,
+  "no_value_quote_loss": -6.000000000000001,
+  "opportunity_costs": {
+    "actual_unpaid_provider_engineering": null,
+    "modeled_A_paid_effort": "included in 60 fixed plus 20 per participating operator",
+    "provider_unpriced_opportunity_cost_erasing_expected_profit": 22.829471400000003,
+    "required_residual_customer_attention": null
+  },
+  "positive_profit_probability": 0.7205226249933,
+  "postcommit_withdrawal_diagnostic": {
+    "A_cash_cost": 140.0,
+    "accepted": 2,
+    "bad_debt": 0.0,
+    "buyer_liquidity_verified": false,
+    "cash_path": [
+      {
+        "available_funds": 1194.0,
+        "cash": 1494.0,
+        "cash_change": -6.0,
+        "day": 0,
+        "event": "quote",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      },
+      {
+        "available_funds": 1080.0,
+        "cash": 2166.0,
+        "cash_change": 672.0,
+        "day": 1,
+        "event": "conditional_deposits",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 114.0
+      },
+      {
+        "available_funds": 460.0,
+        "cash": 1452.0,
+        "cash_change": -714.0,
+        "day": 2,
+        "event": "acquire_and_prepare",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 20.0
+      },
+      {
+        "available_funds": 1220.0,
+        "cash": 1530.0,
+        "cash_change": 78.0,
+        "day": 3,
+        "event": "accept_default_or_refund",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 10.0
+      },
+      {
+        "available_funds": 1220.0,
+        "cash": 1520.0,
+        "cash_change": -10.0,
+        "day": 4,
+        "event": "support_settled",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      }
+    ],
+    "collected_service_revenue": 160.0,
+    "common_failure": false,
+    "customer_expected_action_savings": 1058.5,
+    "customer_net_value": 238.5,
+    "defaults": 0,
+    "earned_gross_service_revenue": 160.0,
+    "end_available_funds": 1220.0,
+    "end_cash": 1520.0,
+    "extra_financing_required": 0.0,
+    "gross_customer_cash_receipts": 784.0,
+    "minimum_available_funds": 460.0,
+    "operating_profit_before_BC": 20.0,
+    "participants": 3,
+    "pass_through_collected": 600.0,
+    "pass_through_refunded": 0.0,
+    "refunds": 24.0,
+    "required_buyer_cash": [
+      800.0,
+      950.0,
+      1100.0
+    ],
+    "sensor_paid": 600.0,
+    "statuses": [
+      "withdraw_after_commit",
+      "paid",
+      "paid"
+    ]
+  },
+  "pricing": "80 USD illustrative fixed fee; not optimized and not a discount from human wage proxy",
+  "primary_Operational_Alpha": "unmeasured; q_U=q_E=q_Eplus=0.90; competent E ties E+",
+  "retention_thresholds": [
+    {
+      "B_initial": 180.0,
+      "C_optional": 0.0,
+      "admission_decision": "reject_before_assessment",
+      "admission_reachable": false,
+      "assumed_cash_saving_per_fresh_use": 0.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": null,
+      "net_per_use_after_upkeep": -2.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 240.0,
+      "admission_decision": "reject_before_assessment",
+      "admission_reachable": false,
+      "assumed_cash_saving_per_fresh_use": 0.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": null,
+      "net_per_use_after_upkeep": -2.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 0.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 5.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 61,
+      "net_per_use_after_upkeep": 3.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 240.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 5.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 141,
+      "net_per_use_after_upkeep": 3.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 0.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 10.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 23,
+      "net_per_use_after_upkeep": 8.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 240.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 10.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 53,
+      "net_per_use_after_upkeep": 8.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 0.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 20.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 11,
+      "net_per_use_after_upkeep": 18.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 240.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 20.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 24,
+      "net_per_use_after_upkeep": 18.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 0.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 30.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 7,
+      "net_per_use_after_upkeep": 28.0
+    },
+    {
+      "B_initial": 180.0,
+      "C_optional": 240.0,
+      "admission_decision": "hold_pending_fresh_cost_evidence",
+      "admission_reachable": true,
+      "assumed_cash_saving_per_fresh_use": 30.0,
+      "gain_observed": false,
+      "minimum_uses_for_strict_positive_increment": 16,
+      "net_per_use_after_upkeep": 28.0
+    }
+  ],
+  "worst_operating_profit": -750.0,
+  "zero_seed_extra_financing_maximum": 1050.0,
+  "zero_seed_liquidity_failure_probability": 1.0
+}
