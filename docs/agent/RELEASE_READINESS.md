@@ -1,5 +1,22 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.47.0 connected discovery and operating evidence
+
+This prospective additive candidate integrates the existing executor, specialist, enterprise,
+discovery, cancellation closure, customer-funds and Operational Alpha comparison paths. Its bilingual
+Insight experience joins the existing Flywheel. See [scope and limitations](RELEASE_NOTES_1.47.0.md).
+Conventional exact search matches the finite research-access construction; no technical-breakthrough,
+discovery superiority, paid demand, retained Alpha or autonomous compounding claim is established.
+
+Preserve the preceding 1.46.1 publication lease and all earlier immutable artifacts. Configured review,
+applicable exact-head checks, full resulting-main security/coverage/integrity, representative platform
+and clean package installation, tested-site publication and actual public served bytes are required.
+The new complete generated worker edition needs its own acceptance; historical workers, fixtures,
+53-source scientific catalogue, five held source pins and validation/settlement authority stay intact.
+No old green result substitutes for qualification of the composed source.
+
+## Preserved 1.46.1 preparation record
+
 # Release readiness — 1.46.1 exact research browser readers
 
 This publication-only successor adds two exact research PDFs and accessible browser readers,

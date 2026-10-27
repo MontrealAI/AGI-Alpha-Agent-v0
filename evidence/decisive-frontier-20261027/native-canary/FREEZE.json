@@ -1,0 +1,43 @@
+{
+  "schema": "released-native-canary-freeze/v1",
+  "frozen_at": "2026-10-27T22:21:24.710973+00:00",
+  "phase": "Before released147 native confirmation; no canary run yet",
+  "missions": [
+    {
+      "id": "fresh-allocation",
+      "file": "fresh-allocation.json",
+      "sha256": "14279cb4912a6fdffae3dea40240b3f5f8dc5a4562a00c3eae698001dc109011"
+    },
+    {
+      "id": "fresh-schedule",
+      "file": "fresh-schedule.json",
+      "sha256": "171914247a0f371e292456eb083f5dc2a2776b2081a1c3c7280deef9ea215941"
+    }
+  ],
+  "access": "Existing offline native CLI; local owned test identity only. No ENS, buyer, network or model permission created.",
+  "acceptance": [
+    "Imported runtime must be outside checkout and match downloaded release source identity",
+    "Both distinct input families preserve their original constraints and pass independent checks",
+    "Original request identities, result hashes and journal records persist across processes",
+    "An idempotent duplicate creates no second job or execution",
+    "Pause/refusal and explicit recovery preserve stopped work",
+    "Public export verifies against the local public key and altered export refuses"
+  ],
+  "resource_ceiling": {
+    "paid_api_usd": 0,
+    "model_calls": 0,
+    "subprocesses": 20,
+    "seconds_per_subprocess": 30,
+    "aggregate_wall_seconds": 120
+  },
+  "stop_conditions": [
+    "Source/receipt mismatch",
+    "Unexpected external action or model call",
+    "Acceptance, identity or constraint failure",
+    "Unaccounted repeated work or resource ceiling exceeded"
+  ],
+  "money": "Complete installation/authorship/compute cost unknown, not zero; no sale or customer acceptance",
+  "generality": "Two authored finite software canaries, not a frontier-model or market trial",
+  "retention": "None admitted; ordinary-library parity remains",
+  "production_authority": false
+}

@@ -9,7 +9,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.46.0
+## Current runnable path — 1.47.0
 
 **Mode:** Offline simulation. Runs bounded smart-city episodes with local accounting.
 

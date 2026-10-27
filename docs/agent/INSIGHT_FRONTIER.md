@@ -172,3 +172,48 @@ Sources checked: [Ready-PV](https://www.readypv.eu/procedure/),
 [W3C ODRL](https://www.w3.org/TR/odrl-model/),
 [OpenAI models](https://developers.openai.com/api/docs/models),
 [OpenAI pricing](https://developers.openai.com/api/docs/pricing).
+
+## Conventional challenge and connected engineering
+
+The bounded follow-up freezes 24 cases and a 90-process-CPU-second ceiling. An independent workstream
+constructs an ordinary uniform-cost planner with identical information, permissions, resource caps,
+original obligations and ranking. It ties all **23 complete comparisons**; the deliberately one-node
+case remains incomplete in both methods. Five adverse witness probes refuse. Twenty-two cases are
+newly authored digital examples across three semantic settings, but share related finite planning
+structure. They are not customer briefs or a generality trial. The original run, type-only correction,
+same-input confirmation and exact sources remain in `evidence/decisive-frontier-20261027/conventional/`.
+The technical-breakthrough claim stops. Execution after disclosure cannot establish a discovery advantage.
+
+The useful software path continues independently. The composed source includes the original execution,
+specialist and enterprise lineage, terminal cancelled-permit closure, accepted-delivery receipts/refunds,
+execution-derived comparison reports and Insight. Current execution and accounting signers are rechecked
+before comparisons qualify; revoked supporting authority leaves historical observations intact. An
+unexecuted plan cannot become actual model evidence. Current source-bound packets are re-executed;
+historical failure and qualification editions remain unchanged.
+
+The same access-feasibility offering now compares existing human development, technical change alone,
+coordination alone, the joint arrangement and an equally capable conventional shared arrangement.
+The joint and conventional shared arrangements receive identical cost assumptions. No algorithm or
+economic premium is attributed to the checker. A low/base/high human development pathway costs
+USD800/2000/4800, separate from willingness to pay. Full A assumptions remain USD80/260/800 per attempt;
+support and overhead include residual corrections, acquisition, administration, hosting and maintenance.
+Additional B and optional C are separate; the reserve is cash held, not an expense. No complete accepted
+outcome is asserted for the technical component alone. Every proposed commercial arrangement remains HOLD.
+
+Lossless standard gzip packaging keeps all customer evidence values and exact exports inside the existing
+2 MB self-contained-page ceiling. Modern browser decompression is required; no external connection or new
+authority is introduced. English/French link state is retained across repeated language toggles.
+
+The proposed 1.47 source is a software candidate, not a publication receipt. The preceding 1.46.1 lease,
+configured exact-source review, hosted checks, full main acceptance, immutable artifacts, deployed byte
+identities and fresh installation remain separate gates. `MODEL_ACCESS.json` records official profiles
+and missing API credentials; no paid trial or live authenticated peer canary has occurred. Read-only
+public browser checks of the preceding release do not qualify this candidate. Use the established
+release's stopped-home rollback procedure; retain old journals and exports rather than rewriting them.
+
+En français : le contrôle conventionnel égale les 23 comparaisons complètes ; un cas reste incomplet des
+deux côtés. Aucune percée technique, découverte supérieure, vente ou capacité auto-améliorante n’est
+établie. L’intégration logicielle reste utile et suit les contrôles de publication existants. Les coûts
+monétaires sont modélisés ; les encaissements réels sont nuls et le coût réel complet reste inconnu.
+
+Vincent Boucher — President of MONTREAL.AI

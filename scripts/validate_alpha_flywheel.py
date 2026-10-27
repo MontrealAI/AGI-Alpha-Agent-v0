@@ -38,6 +38,8 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/insight-evidence.json",
     "scripts/templates/alpha-flywheel/insight-section.html",
     "scripts/templates/alpha-flywheel/insight.js",
+    "scripts/templates/alpha-flywheel/customer-evidence.json",
+    "scripts/templates/alpha-flywheel/comparison-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -342,9 +344,9 @@ def browser_acceptance(
             manual_receipt = json.loads(page.locator("#result-receipt").text_content() or "{}")
             assert manual_receipt["summary"]["offeredPrice"] == 10000
             page.locator("#replay").click()
-            assert (
-                json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt
-            ), "Repeating an imported replay must preserve its explicit price and economics"
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt, (
+                "Repeating an imported replay must preserve its explicit price and economics"
+            )
             expect(page.locator("#price-mode")).to_be_visible()
             for preset in ("stress", "frontier", "baseline"):
                 page.locator("#preset").select_option(preset)
@@ -476,17 +478,44 @@ def browser_acceptance(
                 assert enterprise["summary"]["actual_admission"] == "rejected"
                 assert not enterprise["summary"]["live_qualified"]
             checks.append("enterprise-offering-decision-qualification-en-fr-export-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#customer-stage option")).to_have_count(7)
+                for stage in range(7):
+                    page.locator("#customer-stage").select_option(str(stage))
+                    expect(page.locator("#customer-operating-boundary")).to_contain_text(
+                        "0,00" if language == "fr" else "$0.00"
+                    )
+                expect(page.locator("#customer-alpha")).to_contain_text(
+                    "non mesuré" if language == "fr" else "unmeasured"
+                )
+                with page.expect_download() as customer_download:
+                    page.locator("#customer-export").click()
+                customer_file = output / ("customer-evidence-" + language + ".json")
+                customer_download.value.save_as(str(customer_file))
+                customer = json.loads(customer_file.read_bytes())
+                assert customer["summary"]["actual_customer_collections_micro_usd"] == 0
+                assert customer["summary"]["production_authority_created"] is False
+                assert len(customer["connected_path"]["stages"]) == 7
+                stages = customer["connected_path"]["stages"]
+                assert len({row["report"]["cash"] for row in stages}) == 1
+                assert stages[3]["report"]["customer_funds_by_mode"]["synthetic"]["pending_refunds"] == 400_000_000
+                assert stages[4]["report"]["customer_funds_by_mode"]["synthetic"]["pending_refunds"] == 0
+            checks.append("customer-acceptance-deposit-refund-due-custody-en-fr-export-mode-isolation")
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
+                for link in page.locator("a[href*='/try/']").all():
+                    assert parse_qs(urlsplit(link.get_attribute("href") or "").query).get("lang") == [language]
                 page.set_viewport_size({"width": width, "height": 1050})
-                assert page.evaluate(
-                    "document.documentElement.scrollWidth<=innerWidth+1"
-                ), f"Horizontal overflow: {width}"
+                assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (
+                    f"Horizontal overflow: {width}"
+                )
                 if axe_script:
                     page.evaluate(axe_script.read_text() + ";void 0")
                     audit = page.evaluate(
-                        "axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
+                        "axe.run(document,{runOnly:{type:'tag',"
+                        "values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
                     )
                     report["accessibility"].append(
                         {"width": width, "language": language, "violations": audit["violations"]}

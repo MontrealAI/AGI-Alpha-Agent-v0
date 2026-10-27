@@ -288,6 +288,16 @@ PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
     ),
 }
 
+# Exact connected Insight 1.47 edition; every historical profile remains immutable.
+INSIGHT_FRONTIER_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "de5815981d4eef8056a8dda1302fc7ed60f1d48b3bb09e70c15502f4e383926d"),
+    "docs/assets/service-worker.js": (24089, "70c2e651da23c750b2d0ba834e092aa6904a4347e04bf3393477ca7f6b457fbf"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "bd55ce1a7de1db9d5b0b4f8088b793a047199bd49fd387796a1f56126f7ae965",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -369,6 +379,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

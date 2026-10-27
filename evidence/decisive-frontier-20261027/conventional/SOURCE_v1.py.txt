@@ -1,0 +1,342 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Frozen finite-planning conventional challenge; no external action or authority."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import heapq
+import json
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from alpha_factory_v1.core.runtime.successor.flywheel_access_path import (
+    AccessProblem,
+    construct_access,
+)
+from alpha_factory_v1.core.runtime.successor.protocol import digest
+
+ROOT = Path(__file__).resolve().parents[1]
+CPU_LIMIT_SECONDS = 90
+CASE_LIMIT = 24
+
+
+def conventional(problem: AccessProblem) -> dict[str, Any]:
+    """Use ordinary uniform-cost state-space search, caching chosen-step subsets."""
+    steps = problem.steps
+    queue: list[tuple[int, int, int, tuple[str, ...], int, frozenset[str]]] = [
+        (0, 0, 0, (), 0, frozenset(problem.starting_facts))
+    ]
+    reached: dict[int, tuple[str, ...]] = {0: ()}
+    visited = 0
+    while queue:
+        if visited >= problem.search_node_cap:
+            return {"status": "incomplete", "rank": None, "steps": [], "visited_nodes": visited}
+        pending, cost, seconds, path, mask, facts = heapq.heappop(queue)
+        visited += 1
+        if reached[mask] != path:
+            continue
+        if set(problem.required_outputs) <= facts:
+            return {
+                "status": "conditional-plan" if pending else "declared-plan",
+                "rank": [pending, cost, seconds, list(path)],
+                "steps": list(path),
+                "visited_nodes": visited,
+            }
+        for index, step in enumerate(steps):
+            if (
+                mask & (1 << index)
+                or step.permission == "denied"
+                or not set(step.requires) <= facts
+                or not set(problem.obligations) <= set(step.preserves)
+                or set(step.produces) <= facts
+            ):
+                continue
+            next_cost = cost + step.estimated_cost_micro_usd
+            next_seconds = seconds + step.duration_seconds
+            if next_cost > problem.cost_cap_micro_usd or next_seconds > problem.seconds_cap:
+                continue
+            next_path = path + (step.step_id,)
+            next_mask = mask | (1 << index)
+            if next_mask in reached and reached[next_mask] <= next_path:
+                continue
+            reached[next_mask] = next_path
+            heapq.heappush(
+                queue,
+                (
+                    pending + int(step.permission == "required"),
+                    next_cost,
+                    next_seconds,
+                    next_path,
+                    next_mask,
+                    facts | frozenset(step.produces),
+                ),
+            )
+    return {"status": "no-plan", "rank": None, "steps": [], "visited_nodes": visited}
+
+
+def independent_witness(problem: AccessProblem, step_ids: list[str]) -> dict[str, Any]:
+    """Check original predicates, obligations, permissions, budgets and no repetition."""
+    lookup = {step.step_id: step for step in problem.steps}
+    facts = set(problem.starting_facts)
+    selected: set[str] = set()
+    cost = seconds = pending = 0
+    for step_id in step_ids:
+        if step_id in selected or step_id not in lookup:
+            return {"valid": False}
+        step = lookup[step_id]
+        if (
+            step.permission == "denied"
+            or any(item not in facts for item in step.requires)
+            or any(item not in step.preserves for item in problem.obligations)
+            or all(item in facts for item in step.produces)
+        ):
+            return {"valid": False}
+        selected.add(step_id)
+        facts.update(step.produces)
+        cost += step.estimated_cost_micro_usd
+        seconds += step.duration_seconds
+        pending += step.permission == "required"
+    valid = (
+        all(item in facts for item in problem.required_outputs)
+        and cost <= problem.cost_cap_micro_usd
+        and seconds <= problem.seconds_cap
+    )
+    return {"valid": valid, "rank": [pending, cost, seconds, step_ids] if valid else None}
+
+
+def fresh_problem(family: str, variant: str) -> dict[str, Any]:
+    """Author small digital obligations; these are synthetic, not customer briefs."""
+    if family == "release-assurance":
+        start = ["public-source", "approved-scope"]
+        goals = ["release-packet", "recoverable-history"]
+        obligations = ["preserve-source-identity", "no-production-authority"]
+        raw = [
+            ("build", ["public-source"], ["package"], "documented", 3, 5),
+            ("scan", ["package"], ["safety-report"], "documented", 2, 4),
+            ("accept", ["safety-report", "approved-scope"], ["accepted"], "required", 1, 3),
+            ("checkpoint", ["package"], ["recoverable-history"], "documented", 1, 2),
+            ("assemble", ["accepted", "recoverable-history"], ["release-packet"], "documented", 2, 3),
+            ("managed-service", ["public-source"], goals, "documented", 40, 20),
+        ]
+    elif family == "open-transport":
+        start = ["public-feed", "licence-text"]
+        goals = ["shareable-report"]
+        obligations = ["preserve-attribution", "exclude-personal-data", "preserve-error-report"]
+        raw = [
+            ("rights", ["licence-text"], ["scope-known"], "documented", 1, 2),
+            ("parse", ["public-feed"], ["parsed-feed", "error-report"], "documented", 3, 4),
+            ("minimise", ["parsed-feed", "scope-known"], ["bounded-data"], "required", 2, 3),
+            ("validate", ["bounded-data", "error-report"], ["checked-data"], "documented", 3, 5),
+            ("package", ["checked-data"], goals, "documented", 1, 2),
+            ("managed-service", start, goals, "documented", 40, 20),
+        ]
+    else:
+        start = ["public-archive", "declared-licence"]
+        goals = ["reproduction-packet", "manifest"]
+        obligations = ["preserve-original-bytes", "no-secret-material"]
+        raw = [
+            ("inventory", start, ["source-inventory"], "documented", 2, 3),
+            ("hash", ["source-inventory"], ["manifest"], "documented", 2, 3),
+            ("reproduce", ["source-inventory"], ["execution-result"], "required", 5, 8),
+            ("compare", ["execution-result", "manifest"], ["comparison"], "documented", 2, 4),
+            ("package", ["comparison"], ["reproduction-packet"], "documented", 1, 2),
+            ("managed-service", start, goals, "documented", 40, 20),
+        ]
+    steps = [
+        {
+            "step_id": step_id,
+            "purpose": f"Synthetic {family} {step_id}",
+            "requires": requires,
+            "produces": produces,
+            "preserves": obligations[:],
+            "permission": permission,
+            "permission_basis": "Authored declaration; no external approval or production authority",
+            "estimated_cost_micro_usd": cost,
+            "duration_seconds": seconds,
+        }
+        for step_id, requires, produces, permission, cost, seconds in raw
+    ]
+    value: dict[str, Any] = {
+        "mission_id": f"challenge-{family}-{variant}",
+        "useful_purpose": f"Produce a checkable conditional {family} packet without external effects",
+        "starting_facts": start,
+        "required_outputs": goals,
+        "obligations": obligations,
+        "steps": steps,
+        "cost_cap_micro_usd": 50,
+        "seconds_cap": 60,
+        "search_node_cap": 20000,
+        "mode": "synthetic",
+        "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim",
+    }
+    if variant == "documented":
+        for step in steps:
+            step["permission"] = "documented"
+    elif variant == "denied":
+        for step in steps:
+            if any(goal in step["produces"] for goal in goals):
+                step["permission"] = "denied"
+    elif variant == "cost-refusal":
+        value["cost_cap_micro_usd"] = 2
+    elif variant == "time-refusal":
+        value["seconds_cap"] = 2
+    elif variant == "obligation-refusal":
+        for step in steps:
+            step["preserves"] = obligations[:1]
+    elif variant == "missing-input":
+        value["starting_facts"] = []
+    elif variant == "node-cap":
+        value["search_node_cap"] = 1
+    return AccessProblem.model_validate(value).model_dump()
+
+
+def source_hash() -> str:
+    return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
+
+def freeze(path: Path) -> None:
+    """Write requirements and all fresh input bytes before any comparison run."""
+    from scripts.record_insight_frontier import problem
+
+    cases = [problem().model_dump(), problem("research-data-origin", "data").model_dump()]
+    variants = [
+        "conditional",
+        "documented",
+        "denied",
+        "cost-refusal",
+        "time-refusal",
+        "obligation-refusal",
+        "missing-input",
+    ]
+    for family in ("release-assurance", "open-transport", "public-reproduction"):
+        cases.extend(fresh_problem(family, variant) for variant in variants)
+    cases.append(fresh_problem("release-assurance", "node-cap"))
+    assert len(cases) == CASE_LIMIT
+    payload = {
+        "schema": "insight-conventional-challenge-freeze/v1",
+        "frozen_at": datetime.now(timezone.utc).isoformat(),
+        "source_sha256": source_hash(),
+        "candidate_source_sha256": hashlib.sha256(
+            (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_access_path.py").read_bytes()
+        ).hexdigest(),
+        "requirements": "Same finite predicates, resource caps, permission declarations, original obligations and objective",
+        "conventional_method": "Uniform-cost shortest-path search with chosen-step subset caching; standard library heapq",
+        "objective": "Fewest pending permissions, then declared cost, elapsed duration, lexicographic step identities",
+        "budget": {"max_cases": CASE_LIMIT, "max_process_cpu_seconds": CPU_LIMIT_SECONDS, "model_calls": 0},
+        "acceptance": "Compare complete status and exact rank; independently verify every positive witness; retain incomplete runs",
+        "early_stop": "Execution parity stops the technical-breakthrough claim; do not infer discovery advantage or human impossibility",
+        "development_disclosure": "Original target and implementation inspected before freeze; no blinded discovery evaluation",
+        "freshness": "22 newly authored digital cases plus 2 disclosed original cases; structures are related finite planning problems",
+        "cases": cases,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x") as handle:
+        json.dump(payload, handle, indent=2, ensure_ascii=False)
+        handle.write("\n")
+
+
+def run(frozen_path: Path, output: Path) -> None:
+    """Execute the unchanged frozen campaign with CPU, case and source ceilings."""
+    frozen = json.loads(frozen_path.read_text())
+    if frozen["source_sha256"] != source_hash():
+        raise ValueError("challenge source changed after freeze")
+    candidate_path = ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_access_path.py"
+    if hashlib.sha256(candidate_path.read_bytes()).hexdigest() != frozen["candidate_source_sha256"]:
+        raise ValueError("candidate source changed after freeze")
+    if len(frozen["cases"]) > CASE_LIMIT:
+        raise ValueError("case budget exceeded")
+    cpu_start, wall_start = time.process_time(), time.perf_counter()
+    rows = []
+    for raw in frozen["cases"]:
+        if time.process_time() - cpu_start >= CPU_LIMIT_SECONDS:
+            raise RuntimeError("CPU ceiling reached; no further case executes")
+        problem = AccessProblem.model_validate(raw)
+        started = time.process_time()
+        candidate = construct_access(problem)
+        candidate_cpu = time.process_time() - started
+        started = time.process_time()
+        control = conventional(problem)
+        control_cpu = time.process_time() - started
+        candidate_steps = [step["step_id"] for step in candidate["steps"]]
+        candidate_witness = independent_witness(problem, candidate_steps)
+        control_witness = independent_witness(problem, control["steps"])
+        complete = candidate["status"] != "incomplete" and control["status"] != "incomplete"
+        rank_equal = candidate_witness.get("rank") == control["rank"]
+        parity = complete and candidate["status"] == control["status"] and rank_equal
+        positive = candidate["status"] in {"conditional-plan", "declared-plan"}
+        control_positive = control["status"] in {"conditional-plan", "declared-plan"}
+        rows.append(
+            {
+                "mission_id": problem.mission_id,
+                "problem_digest": digest("insight-access-problem/v1", problem),
+                "candidate": {
+                    "status": candidate["status"],
+                    "steps": candidate_steps,
+                    "rank": candidate_witness.get("rank"),
+                    "visited_nodes": candidate["visited_nodes"],
+                    "process_cpu_seconds": candidate_cpu,
+                },
+                "conventional": {**control, "process_cpu_seconds": control_cpu},
+                "positive_witness_checks_pass": (not positive or candidate_witness["valid"])
+                and (not control_positive or control_witness["valid"]),
+                "complete_comparison": complete,
+                "exact_execution_parity": parity,
+                "candidate_grants_no_authority": candidate["authority_granted"] is False,
+            }
+        )
+    report = {
+        "schema": "insight-conventional-challenge-result/v1",
+        "freeze_sha256": hashlib.sha256(frozen_path.read_bytes()).hexdigest(),
+        "source_sha256": source_hash(),
+        "started_after_freeze": True,
+        "mode": "synthetic",
+        "cases": rows,
+        "summary": {
+            "total": len(rows),
+            "complete": sum(row["complete_comparison"] for row in rows),
+            "exact_execution_parity": sum(row["exact_execution_parity"] for row in rows),
+            "positive_witness_failures": sum(not row["positive_witness_checks_pass"] for row in rows),
+            "incomplete_cases": [row["mission_id"] for row in rows if not row["complete_comparison"]],
+            "process_cpu_seconds": time.process_time() - cpu_start,
+            "wall_seconds": time.perf_counter() - wall_start,
+        },
+        "verdict": "Known methods meet this finite declared target; technical-breakthrough claim stopped. Discovery advantage untested.",
+        "money": {
+            "model_calls": 0,
+            "customer_receipts": 0,
+            "compute_usd": None,
+            "authorship_and_review_usd": None,
+            "basis": "CPU and wall time measured; complete monetary costs unknown, not zero",
+        },
+        "authority_granted": False,
+        "customer_acceptance": False,
+    }
+    with output.open("x") as handle:
+        json.dump(report, handle, indent=2, ensure_ascii=False)
+        handle.write("\n")
+    print(json.dumps(report["summary"]))
+    if any(not row["positive_witness_checks_pass"] for row in rows):
+        raise SystemExit("witness failure retained")
+    if any(row["complete_comparison"] and not row["exact_execution_parity"] for row in rows):
+        raise SystemExit("comparison difference retained")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("action", choices=("freeze", "run"))
+    parser.add_argument("--freeze", type=Path, required=True)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    if args.action == "freeze":
+        freeze(args.freeze)
+    else:
+        if args.output is None:
+            parser.error("run requires --output")
+        run(args.freeze, args.output)
+
+
+if __name__ == "__main__":
+    main()

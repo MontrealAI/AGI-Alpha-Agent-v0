@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import subprocess
 import sys
 import tempfile
@@ -93,6 +94,44 @@ SOURCES = [
         "summary": "Permissions, prohibitions, constraints and duties already have a standardized policy representation. Combining declared conditions is established prior art.",
     },
 ]
+
+
+def conventional_challenge(root: Path = ROOT) -> dict[str, Any]:
+    """Bind the completed conventional challenge without promoting it to discovery evidence."""
+    directory = root / "evidence/decisive-frontier-20261027/conventional"
+    freeze_raw = (directory / "FREEZE_typecorrected.json").read_bytes()
+    freeze = json.loads(freeze_raw)
+    result_raw = (directory / "RESULT_typecorrected.json").read_bytes()
+    result = json.loads(result_raw)
+    source_paths = {
+        "source_sha256": "scripts/insight_conventional_challenge.py",
+        "candidate_source_sha256": "alpha_factory_v1/core/runtime/successor/flywheel_access_path.py",
+    }
+    if result["freeze_sha256"] != hashlib.sha256(freeze_raw).hexdigest():
+        raise ValueError("conventional result differs from its frozen inputs")
+    for field, name in source_paths.items():
+        if freeze[field] != hashlib.sha256((root / name).read_bytes()).hexdigest():
+            raise ValueError("conventional challenge requires its exact recorded source")
+    if result["source_sha256"] != freeze["source_sha256"]:
+        raise ValueError("conventional result differs from its recorded comparator")
+    summary = {
+        name: format(value, ".17g") if isinstance(value, float) else value for name, value in result["summary"].items()
+    }
+    return {
+        "summary": summary,
+        "timing_encoding": "Measured process CPU and wall seconds are decimal strings; original JSON bytes remain bound",
+        "mode": result["mode"],
+        "verdict": result["verdict"],
+        "money": result["money"],
+        "customer_acceptance": result["customer_acceptance"],
+        "authority_granted": result["authority_granted"],
+        "freeze_sha256": result["freeze_sha256"],
+        "result_sha256": hashlib.sha256(result_raw).hexdigest(),
+        "source_sha256": freeze["source_sha256"],
+        "scope": "Execution challenge after disclosure; type-corrected same-input confirmation, not a discovery trial",
+        "technical_breakthrough_claim": "stopped",
+        "discovery_advantage": "untested",
+    }
 
 
 def problem(identity: str = "research-access-origin", family: str = "facility") -> AccessProblem:
@@ -339,6 +378,54 @@ def economics(source: EvidenceRef) -> dict[str, Any]:
         "buyer_value_usd": values,
         "buyer_value_evidence": "unvalidated hypothetical avoided development/delay value, separate from human pathway cost",
         "residual_effort_basis": "0.25 / 1 / 3 hours of unresolved customer/supplier fact coordination at an assumed loaded USD100/hour; automated witness checks have no extra manual-review fee",
+        "business_cost_scope": {
+            "support": "Residual customer corrections and warranty handling; not the automated witness check",
+            "overhead": "Allocated acquisition, administration, hosting and required maintenance; no demonstrated unit-cost quote",
+            "reserve": "USD500 fictional cash buffer held separately; a reserve is not an expense or revenue",
+            "measurement": "All monetary costs here are assumptions; authoring and shared tool bills remain unknown",
+        },
+        "arrangement_comparison": [
+            {
+                "id": "existing",
+                "name_en": "Human-led existing arrangement",
+                "name_fr": "Organisation actuelle dirigée par des humains",
+                "cost_range_usd": [800, 2000, 4800],
+                "basis": "The scoped development hours/rates above; not a service selling-price quote",
+                "accepted_outcome": "Unverified; requires the same source, rights and acceptance checks",
+            },
+            {
+                "id": "technical-only",
+                "name_en": "Technical change alone",
+                "name_fr": "Changement technique seul",
+                "cost_range_usd": None,
+                "basis": "Finite planning works, but trustworthy real declarations, supplier coordination and recipient acceptance are not supplied by the checker",
+                "accepted_outcome": "Not established; a component's running cost cannot price the complete outcome",
+            },
+            {
+                "id": "coordination-only",
+                "name_en": "Commercial coordination alone",
+                "name_fr": "Coordination commerciale seule",
+                "cost_range_usd": [800, 2000, 4800],
+                "basis": "Competent provider-assisted human development, with no assumed automation saving",
+                "accepted_outcome": "Unverified; no signed buyer/provider terms",
+            },
+            {
+                "id": "joint",
+                "name_en": "Joint arrangement with checked construction",
+                "name_fr": "Organisation conjointe avec construction vérifiée",
+                "cost_range_usd": [sum(costs[level].values()) for level in ("low", "base", "high")],
+                "basis": "The same complete A scenarios, not measured savings; B/C and cash obligations remain separate",
+                "accepted_outcome": "Conditional model only; every priced arrangement remains HOLD",
+            },
+            {
+                "id": "conventional-shared",
+                "name_en": "Equally capable conventional shared arrangement",
+                "name_fr": "Organisation conventionnelle partagée aussi compétente",
+                "cost_range_usd": [sum(costs[level].values()) for level in ("low", "base", "high")],
+                "basis": "Identical information and cost assumptions; independent finite execution control ties, so no premium or measured cost benefit is attributed to the new checker",
+                "accepted_outcome": "Same conditional feasibility and HOLD; real utility and demand untested",
+            },
+        ],
         "policies": policies,
         "retention": {
             "decision": "no-retention",
@@ -808,6 +895,7 @@ def record() -> dict[str, Any]:
             "offering_id": offering.offering_id,
             "cost_report": state["costs"].report("access-construction-actual"),
             "fresh_local_work": fresh,
+            "conventional_challenge": conventional_challenge(),
             "model_calls": 0,
             "model_call_scope": "Controlled experiment API calls only; session authorship and tool use are unmetered and not a frontier-model trial",
             "actual_customer_collections_usd": 0,
@@ -841,8 +929,9 @@ def main() -> None:
     if args.output.exists() or args.output.is_symlink():
         raise FileExistsError("preserve earlier evidence; choose a new output")
     result = record()
+    payload = canonical(result) + b"\n"
     with args.output.open("xb") as stream:
-        stream.write(canonical(result) + b"\n")
+        stream.write(payload)
 
 
 if __name__ == "__main__":

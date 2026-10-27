@@ -1,0 +1,815 @@
+{
+  "actual_complete_monetary_cost": null,
+  "actual_customer_collections_micro_usd": 0,
+  "actual_frontier_calls": 0,
+  "actual_profit": null,
+  "dependencies": {
+    "cryptography": "50.0.2",
+    "eth-account": "0.14.0",
+    "pydantic": "2.11.7"
+  },
+  "disclaimer": "This repository is a conceptual research prototype. References to \"AGI\" and \"superintelligence\" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.",
+  "live_or_commercial_qualification": false,
+  "observations": {
+    "caught_preflight_launch": {
+      "decision_digest": "aeac546c083b0b8cea4b137c17293be16b3ad0214d99efd37c4de33992773291",
+      "decision_id": "first-decision",
+      "digest": "38f0563cdd9f1199bd5cb8d37e8bbe6decb10550c4f65871eea38a26c7cb0ef8",
+      "execution_digest": null,
+      "execution_permit_digest": "426cc8edf604587fec3fe42ac44ab1d89e9ae1a295b197eda08886c8ad3d113e",
+      "id": "@flywheel-enterprise:launch:52f8a4bb9b9b26e13161e7ab55136aaf1365237d0261868ec49ee4693b26f18a",
+      "ledger_mission_id": "placement-origin",
+      "offering_spec_digest": "9f9d89c4ba1ca24cad58de60d32468225a73a8f13deb50ec7b536a2861916120",
+      "profile_digest": "71aa5d7b8045c1ea270dc640d7de6796f0dde81f51d4d86be1dde7b346b96ac5",
+      "request_digest": "ec35e5321c9db449a11f4d171e5b70fb9ac399732b7826d1a5d9ebd439263e51",
+      "revision": 18,
+      "source": "3e502e9a4c1d6dc2fba10c1d0944d02c3cdd354320d497171b7e12d3124c007b",
+      "status": "failed-or-uncertain"
+    },
+    "fixture_accounting": {
+      "available_funds": 9999999,
+      "bucket_complete": {
+        "A": true,
+        "B": false,
+        "C": false
+      },
+      "cash": 10000000,
+      "collected_revenue": 0,
+      "complete": true,
+      "complete_cost_profit": -1,
+      "costs": {
+        "A": 1,
+        "B": 0,
+        "C": 0
+      },
+      "currency": "USD",
+      "delivery_profit": -1,
+      "evidence_basis": "configured accounting signer attestations",
+      "known_obligations": 1,
+      "obligations": 1,
+      "reserve": 0,
+      "token_movements_included": false,
+      "unit": "micro_usd",
+      "unknown_costs": false
+    },
+    "fresh_decision": {
+      "accounting": {
+        "available_funds": 10000000,
+        "bucket_complete": {
+          "A": true,
+          "B": false,
+          "C": false
+        },
+        "cash": 10000000,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": 0,
+        "costs": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": 0,
+        "evidence_basis": "configured accounting signer attestations",
+        "known_obligations": 0,
+        "obligations": 0,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "alternatives": [
+        {
+          "alternative": {
+            "action": "prototype",
+            "alternative_id": "deliver",
+            "capability_digest": null,
+            "cash_cost_cap_micro_usd": 1000,
+            "evidence": [
+              {
+                "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                "schema_version": 1
+              }
+            ],
+            "lower_benefit_micro_usd": 2000,
+            "offering_id": "resilient-placement",
+            "opportunity_cost_micro_usd": 0,
+            "price_micro_usd": null,
+            "schema_version": 1,
+            "seconds": 1800,
+            "slots": 1,
+            "uncertainty": "FICTIONAL research value forecast; no revenue",
+            "upper_benefit_micro_usd": 3000
+          },
+          "eligible": true,
+          "lower_net_value_micro_usd": 1000,
+          "offering_head": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+          "reasons": []
+        },
+        {
+          "alternative": {
+            "action": "hold",
+            "alternative_id": "hold",
+            "capability_digest": null,
+            "cash_cost_cap_micro_usd": 0,
+            "evidence": [
+              {
+                "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                "schema_version": 1
+              }
+            ],
+            "lower_benefit_micro_usd": 0,
+            "offering_id": null,
+            "opportunity_cost_micro_usd": 0,
+            "price_micro_usd": null,
+            "schema_version": 1,
+            "seconds": 0,
+            "slots": 0,
+            "uncertainty": "Hold preserves available funds",
+            "upper_benefit_micro_usd": 0
+          },
+          "eligible": true,
+          "lower_net_value_micro_usd": 0,
+          "offering_head": null,
+          "reasons": []
+        }
+      ],
+      "authority": "recommendation only; separate exact execution, Gym or protected invocation permit required",
+      "consumed": false,
+      "context": {
+        "active": "04b8a2e9667d3b233ad14310c777d350d92bdd3cbeb64fc82230e67c97d90be5",
+        "capabilities": "88f7afde1d7eff74ab3825c0d8781356eae42c6c5ab2fa6d1b86cfaa91acec07",
+        "control": "4a6fe680b309634aa08132e844b9e0044faa549f3f750d18d21616c6478f86b0",
+        "ledger": "cc3f64827373cac312c8faf554546a949e0c688f8f9903c3e3b8516fc353e8f3",
+        "source": "3e502e9a4c1d6dc2fba10c1d0944d02c3cdd354320d497171b7e12d3124c007b"
+      },
+      "digest": "99369cb6d13de51fe6889347689cfdae1c5b8e1f402a22cf50d20d2a151b3a71",
+      "id": "@flywheel-enterprise:decision:796663fbf186dd0efa42eeb317a211245d772cf25c6f7a71991b825564b1ec2e",
+      "policy": "max conservative net value among supplied feasible alternatives; lower cash then lexical tie break",
+      "reason": "Current signed evidence and forecasts only; finite menu, no claim of universal optimality",
+      "request": {
+        "alternatives": [
+          {
+            "action": "prototype",
+            "alternative_id": "deliver",
+            "capability_digest": null,
+            "cash_cost_cap_micro_usd": 1000,
+            "evidence": [
+              {
+                "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                "schema_version": 1
+              }
+            ],
+            "lower_benefit_micro_usd": 2000,
+            "offering_id": "resilient-placement",
+            "opportunity_cost_micro_usd": 0,
+            "price_micro_usd": null,
+            "schema_version": 1,
+            "seconds": 1800,
+            "slots": 1,
+            "uncertainty": "FICTIONAL research value forecast; no revenue",
+            "upper_benefit_micro_usd": 3000
+          },
+          {
+            "action": "hold",
+            "alternative_id": "hold",
+            "capability_digest": null,
+            "cash_cost_cap_micro_usd": 0,
+            "evidence": [
+              {
+                "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                "schema_version": 1
+              }
+            ],
+            "lower_benefit_micro_usd": 0,
+            "offering_id": null,
+            "opportunity_cost_micro_usd": 0,
+            "price_micro_usd": null,
+            "schema_version": 1,
+            "seconds": 0,
+            "slots": 0,
+            "uncertainty": "Hold preserves available funds",
+            "upper_benefit_micro_usd": 0
+          }
+        ],
+        "available_slots": 1,
+        "decision_id": "fresh-authority",
+        "extra_reserve_micro_usd": 0,
+        "horizon_seconds": 1800,
+        "max_cash_micro_usd": 1000,
+        "schema_version": 1
+      },
+      "revision": 45,
+      "selected": "deliver",
+      "signed": {
+        "domain": "flywheel-enterprise-command",
+        "payload": {
+          "action": "decide",
+          "expected_head": null,
+          "expires_at": 1793128935,
+          "journal_identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+          "operation_id": "fresh-authority",
+          "record": {
+            "alternatives": [
+              {
+                "action": "prototype",
+                "alternative_id": "deliver",
+                "capability_digest": null,
+                "cash_cost_cap_micro_usd": 1000,
+                "evidence": [
+                  {
+                    "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                    "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                    "schema_version": 1
+                  }
+                ],
+                "lower_benefit_micro_usd": 2000,
+                "offering_id": "resilient-placement",
+                "opportunity_cost_micro_usd": 0,
+                "price_micro_usd": null,
+                "schema_version": 1,
+                "seconds": 1800,
+                "slots": 1,
+                "uncertainty": "FICTIONAL research value forecast; no revenue",
+                "upper_benefit_micro_usd": 3000
+              },
+              {
+                "action": "hold",
+                "alternative_id": "hold",
+                "capability_digest": null,
+                "cash_cost_cap_micro_usd": 0,
+                "evidence": [
+                  {
+                    "journal_key": "@flywheel-enterprise:offering:2ebc91def5402533660b06214f697547a6264c6932e10f2b065e61510aaf8486",
+                    "record_digest": "eff9324a564b0324e3826da6e5e4b6fa8529eecbc8b11d52a52fa76989749161",
+                    "schema_version": 1
+                  }
+                ],
+                "lower_benefit_micro_usd": 0,
+                "offering_id": null,
+                "opportunity_cost_micro_usd": 0,
+                "price_micro_usd": null,
+                "schema_version": 1,
+                "seconds": 0,
+                "slots": 0,
+                "uncertainty": "Hold preserves available funds",
+                "upper_benefit_micro_usd": 0
+              }
+            ],
+            "available_slots": 1,
+            "decision_id": "fresh-authority",
+            "extra_reserve_micro_usd": 0,
+            "horizon_seconds": 1800,
+            "max_cash_micro_usd": 1000,
+            "schema_version": 1
+          },
+          "schema_version": 1
+        },
+        "principal": "controller",
+        "signature": "8xxEKAS1OiUBZGRlSrqVI1OJSJ6dUrUwia+qlH0B6VdIiihFksHWC5qxtlqQyRKWdo7TYyNFMPa0qlozsuviBA=="
+      }
+    },
+    "fresh_delivery": {
+      "acceptance": "unqualified",
+      "actions": 1,
+      "actual_charges_micro_usd": null,
+      "call_ids": [
+        "experiment-1"
+      ],
+      "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+      "digest": "442c1caf2a6112d9308d387956ab0d6ec5ae6029d95834d76b036db0e1fae024",
+      "elapsed_ms": 71,
+      "finished_at": 1793125335,
+      "history": [
+        {
+          "content": "{\"schema_version\": 1, \"schema_name\": \"flywheel-execution/v1\", \"mission_id\": \"fresh-delivery\", \"beneficiary\": \"Internal systems engineering research team\", \"goal\": \"A checkable service placement surviving one failure-domain loss\", \"challenged_assumption\": \"Cheap replicas can share a failure domain\", \"deliverable\": \"Executable placement result and independent exhaustive acceptance\", \"acceptance_criteria\": [\"Capacity and domain constraints\", \"Exact minimum or proven infeasibility\"], \"inputs\": {\"problem\": {\"capacities\": [9, 12, 6, 12], \"costs\": [[5, 45, 13, 8], [25, 26, 20, 7], [47, 43, 24, 2], [25, 27, 41, 21]], \"demands\": [1, 4, 3, 1], \"failure_domains\": [\"a\", \"b\", \"c\", \"a\"], \"node_budget\": 250000, \"schema_version\": 1}}, \"sharing_rights\": \"Apache-2.0 synthetic work\", \"stop_conditions\": [\"Refuse unapproved actions\"], \"mode\": \"hybrid\", \"components\": {\"acceptance\": \"executed-local\", \"identity\": \"simulated\", \"market\": \"simulated\", \"model\": \"simulated\", \"tools\": \"executed-local\"}, \"max_turns\": 24, \"max_actions\": 100, \"max_seconds\": 1800, \"max_history_bytes\": 1000000}",
+          "role": "user"
+        },
+        {
+          "arguments": "{\"problem\": {\"schema_version\": 1, \"capacities\": [9, 12, 6, 12], \"failure_domains\": [\"a\", \"b\", \"c\", \"a\"], \"demands\": [1, 4, 3, 1], \"costs\": [[5, 45, 13, 8], [25, 26, 20, 7], [47, 43, 24, 2], [25, 27, 41, 21]], \"node_budget\": 250000}}",
+          "call_id": "experiment-1",
+          "name": "placement_experiment",
+          "type": "function_call"
+        },
+        {
+          "call_id": "experiment-1",
+          "output": "{\"outcome\":{\"cost\":125,\"logical_units\":209,\"placement\":[[0,2],[1,3],[2,3],[1,3]],\"scope\":\"finite synthetic planning; no infrastructure deployment\",\"search_nodes\":35,\"status\":\"optimal\",\"workflow_digest\":\"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"},\"problem\":{\"capacities\":[9,12,6,12],\"costs\":[[5,45,13,8],[25,26,20,7],[47,43,24,2],[25,27,41,21]],\"demands\":[1,4,3,1],\"failure_domains\":[\"a\",\"b\",\"c\",\"a\"],\"node_budget\":250000,\"schema_version\":1},\"verification\":{\"accepted_finite_result\":true,\"actual_customer_acceptance\":false,\"feasible\":true,\"frontier_model_advantage\":\"unmeasured\",\"oracle_assignments\":1296,\"oracle_cost\":125,\"oracle_enumerated\":true}}",
+          "type": "function_call_output"
+        },
+        {
+          "content": [
+            {
+              "text": "{\"deliverable\": {\"cost\": 125, \"logical_units\": 209, \"placement\": [[0, 2], [1, 3], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 35, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 125, \"oracle_enumerated\": true}, \"limitations\": [\"Scripted model; synthetic problem, identity, funding and market\", \"No frontier baseline or live peer reuse; no Alpha admission\"], \"artifacts\": [{\"kind\": \"placement-result\", \"content\": {\"outcome\": {\"cost\": 125, \"logical_units\": 209, \"placement\": [[0, 2], [1, 3], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 35, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"problem\": {\"capacities\": [9, 12, 6, 12], \"costs\": [[5, 45, 13, 8], [25, 26, 20, 7], [47, 43, 24, 2], [25, 27, 41, 21]], \"demands\": [1, 4, 3, 1], \"failure_domains\": [\"a\", \"b\", \"c\", \"a\"], \"node_budget\": 250000, \"schema_version\": 1}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 125, \"oracle_enumerated\": true}}, \"digest\": \"66babe830a638c76ea91c9f41e75bdf6c4e68b3e29185bb88d7f720e80a61aff\"}]}",
+              "type": "output_text"
+            }
+          ],
+          "role": "assistant",
+          "type": "message"
+        }
+      ],
+      "id": "@flywheel-execution:a157fa6a4ea3d2e21c6be22e8da70c6f8574ca4fe9e12e89adf5451b6b10516e",
+      "last_observation": {
+        "attempt": "model/1",
+        "event_digest": "df38ad7f78fb078643ab03a95d18e305d2c5974f6f6b52bb4135cb8d1c18a3a1"
+      },
+      "last_response": {
+        "id": "scripted-2",
+        "model": "scripted-protocol-fixture/v1",
+        "provider_transport": null,
+        "reported_reasoning": null,
+        "request_digest": "2d76dd29b0483541a274c5880d7b9eb0715ff62b256f87593608933ef6ee0a5b",
+        "response_digest": "d08d4003afbd064d369d6580c183cbfdff7e4da373735eedae7c6cf4ecdb259f",
+        "served_reasoning": "provider-reported only; no independent attestation",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      "live_network_qualified": false,
+      "mission": {
+        "acceptance_criteria": [
+          "Capacity and domain constraints",
+          "Exact minimum or proven infeasibility"
+        ],
+        "beneficiary": "Internal systems engineering research team",
+        "challenged_assumption": "Cheap replicas can share a failure domain",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "simulated",
+          "tools": "executed-local"
+        },
+        "deliverable": "Executable placement result and independent exhaustive acceptance",
+        "goal": "A checkable service placement surviving one failure-domain loss",
+        "inputs": {
+          "problem": {
+            "capacities": [
+              9,
+              12,
+              6,
+              12
+            ],
+            "costs": [
+              [
+                5,
+                45,
+                13,
+                8
+              ],
+              [
+                25,
+                26,
+                20,
+                7
+              ],
+              [
+                47,
+                43,
+                24,
+                2
+              ],
+              [
+                25,
+                27,
+                41,
+                21
+              ]
+            ],
+            "demands": [
+              1,
+              4,
+              3,
+              1
+            ],
+            "failure_domains": [
+              "a",
+              "b",
+              "c",
+              "a"
+            ],
+            "node_budget": 250000,
+            "schema_version": 1
+          }
+        },
+        "max_actions": 100,
+        "max_history_bytes": 1000000,
+        "max_seconds": 1800,
+        "max_turns": 24,
+        "mission_id": "fresh-delivery",
+        "mode": "hybrid",
+        "schema_name": "flywheel-execution/v1",
+        "schema_version": 1,
+        "sharing_rights": "Apache-2.0 synthetic work",
+        "stop_conditions": [
+          "Refuse unapproved actions"
+        ]
+      },
+      "pending": null,
+      "permit": {
+        "domain": "flywheel-execution-permit",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+          "permit": {
+            "bucket": "A",
+            "config_digest": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "environment_digest": "a8e73b75ebe55fa2071b3340f36564ccf52cb605c9c0dcd1183ed7d7a5a18bc0",
+            "expires_at": 1793128935,
+            "max_authorized_micro_usd": 1000,
+            "operation_id": "fresh-delivery",
+            "pricing_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+            "profile_digest": "71aa5d7b8045c1ea270dc640d7de6796f0dde81f51d4d86be1dde7b346b96ac5",
+            "quota_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+            "request_digest": "850380bd5b8f142eda9d2be0af08ba17c423e5582bbaa9c7cbae9c3322020700",
+            "schema_version": 1
+          }
+        },
+        "principal": "controller",
+        "signature": "80QdYI45gGzEQQ2i3f+4kuDl9GTpVHd6FybecjphSCowrCkvxT+GqXsCyIoBMm2gMlersqXt64kn3Wsm8SwODg=="
+      },
+      "profile": {
+        "max_context_bytes": 750000,
+        "max_output_tokens": 16384,
+        "model_id": "scripted-protocol-fixture/v1",
+        "model_request_cap_micro_usd": null,
+        "model_revision": null,
+        "qualification_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "reasoning_effort": "high",
+        "reasoning_mode": "standard",
+        "schema_version": 1,
+        "supported_efforts": [
+          "high"
+        ],
+        "tool_request_caps_micro_usd": {},
+        "tools": [
+          {
+            "description": "Bounded placement tool",
+            "name": "placement_experiment",
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {},
+              "type": "object"
+            },
+            "strict": true,
+            "type": "function"
+          }
+        ]
+      },
+      "reserved_request_caps_micro_usd": 0,
+      "result": {
+        "artifacts": [
+          {
+            "content": {
+              "outcome": {
+                "cost": 125,
+                "logical_units": 209,
+                "placement": [
+                  [
+                    0,
+                    2
+                  ],
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    2,
+                    3
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ],
+                "scope": "finite synthetic planning; no infrastructure deployment",
+                "search_nodes": 35,
+                "status": "optimal",
+                "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+              },
+              "problem": {
+                "capacities": [
+                  9,
+                  12,
+                  6,
+                  12
+                ],
+                "costs": [
+                  [
+                    5,
+                    45,
+                    13,
+                    8
+                  ],
+                  [
+                    25,
+                    26,
+                    20,
+                    7
+                  ],
+                  [
+                    47,
+                    43,
+                    24,
+                    2
+                  ],
+                  [
+                    25,
+                    27,
+                    41,
+                    21
+                  ]
+                ],
+                "demands": [
+                  1,
+                  4,
+                  3,
+                  1
+                ],
+                "failure_domains": [
+                  "a",
+                  "b",
+                  "c",
+                  "a"
+                ],
+                "node_budget": 250000,
+                "schema_version": 1
+              },
+              "verification": {
+                "accepted_finite_result": true,
+                "actual_customer_acceptance": false,
+                "feasible": true,
+                "frontier_model_advantage": "unmeasured",
+                "oracle_assignments": 1296,
+                "oracle_cost": 125,
+                "oracle_enumerated": true
+              }
+            },
+            "digest": "66babe830a638c76ea91c9f41e75bdf6c4e68b3e29185bb88d7f720e80a61aff",
+            "kind": "placement-result"
+          }
+        ],
+        "deliverable": {
+          "cost": 125,
+          "logical_units": 209,
+          "placement": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "scope": "finite synthetic planning; no infrastructure deployment",
+          "search_nodes": 35,
+          "status": "optimal",
+          "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+        },
+        "limitations": [
+          "Scripted model; synthetic problem, identity, funding and market",
+          "No frontier baseline or live peer reuse; no Alpha admission"
+        ],
+        "verification": {
+          "accepted_finite_result": true,
+          "actual_customer_acceptance": false,
+          "feasible": true,
+          "frontier_model_advantage": "unmeasured",
+          "oracle_assignments": 1296,
+          "oracle_cost": 125,
+          "oracle_enumerated": true
+        }
+      },
+      "revision": 62,
+      "schema_name": "flywheel-execution/v1",
+      "started_at": 1793125335,
+      "status": "delivered-awaiting-independent-acceptance-and-costs",
+      "turn": 2,
+      "usage_events": [
+        {
+          "id": "scripted-1",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "887979bdbc24f48c5e4ccc181977c67be2a7c920a3ea68bd5114ef61f4246f04",
+          "response_digest": "c45a14f930d1fa0484294adff2fb3f2d92afffe8e2346dcfbe3625ec58c552ab",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        },
+        {
+          "id": "scripted-2",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "2d76dd29b0483541a274c5880d7b9eb0715ff62b256f87593608933ef6ee0a5b",
+          "response_digest": "d08d4003afbd064d369d6580c183cbfdff7e4da373735eedae7c6cf4ecdb259f",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        }
+      ]
+    },
+    "independent_finite_acceptance": {
+      "acceptance": {
+        "domain": "flywheel-general-acceptance",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+          "operation_id": "accept-fresh-delivery",
+          "record": {
+            "execution_record_digest": "442c1caf2a6112d9308d387956ab0d6ec5ae6029d95834d76b036db0e1fae024",
+            "operation_id": "fresh-delivery",
+            "output_digest": "4452121f8f9efd30ff39cbe428e906a6bf2b3da2285ec355001d118958e32a3f",
+            "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        },
+        "principal": "acceptor",
+        "signature": "ye3hn4eprI2w+idycwp6ECNxVkKp1qQJNbPi6zlWKJlMb+Ecclk6e2XFV7KFSN36zbOWjLkInKRmGYHPx7KoBw=="
+      },
+      "record_digest": "442c1caf2a6112d9308d387956ab0d6ec5ae6029d95834d76b036db0e1fae024"
+    },
+    "journal_verification": {
+      "events": 85,
+      "head": "8fa4871b2e7162314585e0dc5186dbc25460302a1a315cd91f0f0bfaae9bf31d",
+      "identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+      "valid": true
+    },
+    "non_execution_closure": {
+      "authority_granted": false,
+      "digest": "7373a1783d19fd3619cd7ab26ad2670825a7e62c8f942524af4fbb5053e41d3f",
+      "execution_permit_digest": "426cc8edf604587fec3fe42ac44ab1d89e9ae1a295b197eda08886c8ad3d113e",
+      "execution_started": false,
+      "id": "@flywheel-execution:964603e4474d62e95429305518a0e2e8be880a3eae69fe4d09ecb3c856371a6c",
+      "launch_digest": "38f0563cdd9f1199bd5cb8d37e8bbe6decb10550c4f65871eea38a26c7cb0ef8",
+      "ledger_mission_id": "placement-origin",
+      "profile_digest": "71aa5d7b8045c1ea270dc640d7de6796f0dde81f51d4d86be1dde7b346b96ac5",
+      "reconciliation_command": {
+        "action": "reconcile",
+        "expected_head": "38f0563cdd9f1199bd5cb8d37e8bbe6decb10550c4f65871eea38a26c7cb0ef8",
+        "expires_at": 1793128935,
+        "journal_identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+        "operation_id": "close-unused",
+        "record": {
+          "evidence": [
+            {
+              "journal_key": "@control",
+              "record_digest": "134da9f819958fdc35a9f0b1b032b25754c8b50f91149173fb0a2a191032c514",
+              "schema_version": 1
+            }
+          ],
+          "execution_operation": "placement-origin"
+        },
+        "schema_version": 1
+      },
+      "request_digest": "ec35e5321c9db449a11f4d171e5b70fb9ac399732b7826d1a5d9ebd439263e51",
+      "revision": 40,
+      "schema_name": "flywheel-execution-closure/v1",
+      "status": "cancelled-before-execution"
+    },
+    "old_permit_refusal_after_conditions_recover": "mission already attempted; reconciliation is required before any new permit",
+    "reconciled_launch": {
+      "authority_restored": false,
+      "closure_digest": "7373a1783d19fd3619cd7ab26ad2670825a7e62c8f942524af4fbb5053e41d3f",
+      "decision_digest": "aeac546c083b0b8cea4b137c17293be16b3ad0214d99efd37c4de33992773291",
+      "decision_id": "first-decision",
+      "digest": "825bc650be7443b65d504b218ff89b0040a8d986a9aeb94dfb500a4ded4ff45d",
+      "execution_digest": null,
+      "execution_permit_digest": "426cc8edf604587fec3fe42ac44ab1d89e9ae1a295b197eda08886c8ad3d113e",
+      "failure_kind": "caught-preflight-failure-without-execution-record",
+      "id": "@flywheel-enterprise:launch:52f8a4bb9b9b26e13161e7ab55136aaf1365237d0261868ec49ee4693b26f18a",
+      "ledger_mission_id": "placement-origin",
+      "offering_spec_digest": "9f9d89c4ba1ca24cad58de60d32468225a73a8f13deb50ec7b536a2861916120",
+      "profile_digest": "71aa5d7b8045c1ea270dc640d7de6796f0dde81f51d4d86be1dde7b346b96ac5",
+      "request_digest": "ec35e5321c9db449a11f4d171e5b70fb9ac399732b7826d1a5d9ebd439263e51",
+      "revision": 42,
+      "signed": {
+        "domain": "flywheel-enterprise-command",
+        "payload": {
+          "action": "reconcile",
+          "expected_head": "38f0563cdd9f1199bd5cb8d37e8bbe6decb10550c4f65871eea38a26c7cb0ef8",
+          "expires_at": 1793128935,
+          "journal_identity": "urn:agialpha:ed25519:b3ab3597b95346be5905036b1c189941633ffb37aa645b49e3176e3adcd21356",
+          "operation_id": "close-unused",
+          "record": {
+            "evidence": [
+              {
+                "journal_key": "@control",
+                "record_digest": "134da9f819958fdc35a9f0b1b032b25754c8b50f91149173fb0a2a191032c514",
+                "schema_version": 1
+              }
+            ],
+            "execution_operation": "placement-origin"
+          },
+          "schema_version": 1
+        },
+        "principal": "controller",
+        "signature": "rKUVvbbI1Zst+EnWwhWcxUTQW9Vw3BxUwMfBh6lg1p1b5iVN3ECGTln3JeLmURvKT+6ucet4jUwSnp2fBVTjBQ=="
+      },
+      "source": "3e502e9a4c1d6dc2fba10c1d0944d02c3cdd354320d497171b7e12d3124c007b",
+      "status": "reconciled-failure"
+    },
+    "reconciliation_posts_no_charge": true
+  },
+  "python": "3.12.14",
+  "schema": "flywheel-reconciliation-closure-conformance/v1",
+  "scope": "Executed local tools and signatures; fictional model, identities, funding and billing",
+  "sources": {
+    "alpha_factory_v1/core/runtime/__init__.py": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
+    "alpha_factory_v1/core/runtime/api.py": "e979bedd41902d6204c70af5c2506bf373c223ac8f7da19d02dba56cb185108f",
+    "alpha_factory_v1/core/runtime/ascension.py": "8b8dd3afec69de64f1d063f580946e9943e57ae969991e8b00f805288f158d6e",
+    "alpha_factory_v1/core/runtime/budget.py": "2ddb71554923be55b9c26e5375318788e1ec7a4ceb707856af48c88bd688e832",
+    "alpha_factory_v1/core/runtime/chain.py": "adde986423301e7ed53df57bf39a7814a3ea6e2ccb0f5f1edc9b9c446c11aa5c",
+    "alpha_factory_v1/core/runtime/cli.py": "929eab708e63033609eb20ea5900041ea59d66321d28296921a59dcfa9c7f19f",
+    "alpha_factory_v1/core/runtime/container.py": "0829db887ef3a5afe4a269569c43f42dbe907793e70225be76cd8c6b8b74b166",
+    "alpha_factory_v1/core/runtime/ecosystem.py": "37af4a982ad4c307cf79e89d7d49c5eb9ba021e50be43876967feaff4631a14d",
+    "alpha_factory_v1/core/runtime/ecosystem_operator.py": "3e35aed39376f09ee34a7f87ead1a909c11c9a99536f11e480bf09615a198078",
+    "alpha_factory_v1/core/runtime/engine.py": "f353c7b545721b25b6fd523837ca7b69bd7edec383e2d43b1421b53714fb4c1f",
+    "alpha_factory_v1/core/runtime/fleet_work.py": "235dc4da4a803db29075a5ed1e212832ac2db2c369b6e13cf2be3042324f60eb",
+    "alpha_factory_v1/core/runtime/models.py": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+    "alpha_factory_v1/core/runtime/provider.py": "21152a3e0e021ca5a5f5ed5a1b8f1507efb4ff102fa6974a37b55aca4cca58de",
+    "alpha_factory_v1/core/runtime/samples.py": "f13d9ba3acf2139fcf30b7acb8921472d8844a69b94529102ccaafde70203103",
+    "alpha_factory_v1/core/runtime/store.py": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+    "alpha_factory_v1/core/runtime/successor/__init__.py": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771",
+    "alpha_factory_v1/core/runtime/successor/aggregation.py": "4779279b8de95071208d8ebc934b01be5fc925fdd57534ae1fa2bfbe8fb241c0",
+    "alpha_factory_v1/core/runtime/successor/ascension.py": "937773331ce2c58f7b9c3928b8845cce3895987c204f1cc969c0dbdf3a7d99dd",
+    "alpha_factory_v1/core/runtime/successor/campaign_experiment.py": "bae3c0567837ff57ac0e713f80ed8c43c975aebb3b2fb3c5b22b371d1b30ecf0",
+    "alpha_factory_v1/core/runtime/successor/campaign_experiment_cli.py": "aa5d1d01565207e23034d35012cbfc5e38a637e6b8ff802157e6a2d6f924307f",
+    "alpha_factory_v1/core/runtime/successor/campaign_operation.py": "2e5455df23a7c786e6cdae6f275331219cdfc570f08bad1d6e15da892afa3988",
+    "alpha_factory_v1/core/runtime/successor/cli.py": "ec11a8a602b3b480d58e2cdf91866378982dfcb4ecf0630b2e45ca7f509a8069",
+    "alpha_factory_v1/core/runtime/successor/computer.py": "40fc670a63f15d62db6be73c3497b2e24e041a6f3c3b7218bb1a801e6815b63b",
+    "alpha_factory_v1/core/runtime/successor/computer_dependencies.py": "12e9cfa979b76d1fc9954b2c3ae2883c13ec24fcdac37f08a17a06ff8fba3939",
+    "alpha_factory_v1/core/runtime/successor/computer_handoff.py": "f474fa00ee2ce86903d56a3c075c82d986be3c131de2475d1b8de604bf374be6",
+    "alpha_factory_v1/core/runtime/successor/computer_read.py": "fd5c650272499f11bc6bb736e4ec0615c200915cc4afe4a1d753f5c49e85d21d",
+    "alpha_factory_v1/core/runtime/successor/computer_worker.py": "d48f97cabdfbb2cb1b2db670609eaef814189ff071f01718f41b5b699b6f7c86",
+    "alpha_factory_v1/core/runtime/successor/evaluation.py": "df0edc5ae2abafac579e4f9e8ee5f3ca5d94c75689d4a63ec606a279e86fc766",
+    "alpha_factory_v1/core/runtime/successor/flywheel_access.py": "c464333c819f0e89e32dda8223ed544c1ce1784754c1f996483cea7ae4a7b055",
+    "alpha_factory_v1/core/runtime/successor/flywheel_api.py": "062b28a3d7a9d408ec8e46514e9d1d0cc9be8fcb27b5d7299ee2b61ee35b5a3e",
+    "alpha_factory_v1/core/runtime/successor/flywheel_arrangements.py": "5d41556f7a6c00a3ba2e5da2cf348a1a1df2a8eebb5ddb4311e1c491bdc44b30",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "25323ff5c66ef51052500dc34d8ddb2ec03841a357ab864fc422516e5ecc9cf1",
+    "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "4d2e19b937471bdc247a9b0bb66bd4c315da5a9c6498591bc9f24496e07feb13",
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "4a592e55b6270e7abd64a700157c8b570582499dc82d7f2b199bab6a83aad418",
+    "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py": "f0f778292ad01d0a3b29bf754eef027b674292bb3aa050fcecd20b97eb76ed7d",
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "2ae17f650a3826e29e21aad9da54ee599907b8430dbfd3a6f5577f01d18ca75a",
+    "alpha_factory_v1/core/runtime/successor/flywheel_experiments.py": "823415747a30dc34f630cbd6cb9ad1320c1b6d7a20f4ab2d076b9de509aed519",
+    "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "2aab5786244ffa2927d322a5c0821824f2cfb9d1ba679d73251a6747f0d5b221",
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py": "a648f5214206dec4f3911ff325da21dc222a2e81e67d459a23d0090f7da163da",
+    "alpha_factory_v1/core/runtime/successor/flywheel_learning.py": "2129b61750485d765fc234058507e7112ae1a5d9c51d64ea4303e9f6bf84548d",
+    "alpha_factory_v1/core/runtime/successor/flywheel_operator.py": "8a684b55ef09a4d27080b657267718d38995282ed262319f9d3e06b79496629e",
+    "alpha_factory_v1/core/runtime/successor/flywheel_probe.py": "cb386ad3dc3001a585351730a7ba4476ec5657c5215c3e9a26c3194e122594c7",
+    "alpha_factory_v1/core/runtime/successor/flywheel_specialists.py": "854e678e463c65647d417edef362b7ce96271e3c5388b328a5fd799b021ccf7d",
+    "alpha_factory_v1/core/runtime/successor/jobs.py": "ab95e2f1d50bc1c91b6c2570fc08c6c09038de81dcf6d1efcf98b24d010226f6",
+    "alpha_factory_v1/core/runtime/successor/measurement.py": "9bff6c3d9e7d8ba0caf52f805b783db84b1ba618118aabdc7933e46746e622a9",
+    "alpha_factory_v1/core/runtime/successor/mission.py": "29e1c4133c223cf7190e58d39428f0719c65cd754e2bf974cdc14baa8a51a676",
+    "alpha_factory_v1/core/runtime/successor/model_program_operator.py": "7654685cb9960334f25668bb7caf73cb15555e66e59f66b507d29d597be2e51b",
+    "alpha_factory_v1/core/runtime/successor/orchestration.py": "40781b6efc0d504eb519e82fe5ade802b96064d9e027b9edcd223346db7bfb3a",
+    "alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+    "alpha_factory_v1/core/runtime/successor/signatures.py": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+    "alpha_factory_v1/core/runtime/successor/state.py": "048772bb3c311a71b19402f816f7bfbed69f80d1bc619407afb4fadedf026241",
+    "alpha_factory_v1/core/runtime/successor/studio.py": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+    "alpha_factory_v1/core/runtime/successor/studio_operator.py": "1ed2f4b35f18642628385952ce0d5c3862b3b06b33f1d3d5cebe734510cfb78b",
+    "alpha_factory_v1/core/runtime/successor/transformation.py": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+    "alpha_factory_v1/core/runtime/successor/transformation_library.py": "c78903802ba0379cdd1907c6472630e488d55cbfe7b1fb99ce0d275bb758d172",
+    "alpha_factory_v1/core/runtime/successor/transformation_library_cli.py": "6cdeefff228cfc6a74d8df16f34ba6b0cff196bd5ebfab2034f7434331ad56cd",
+    "alpha_factory_v1/core/runtime/successor/transformation_math.py": "2615e7749dec8cd6e632cee8079d2e49d21d9f40beb3ec7006a15d0e12193f35",
+    "alpha_factory_v1/core/runtime/successor/transformation_model.py": "e613cf0dcf3656c7743644e1c517f45554e1231d2402e44dc476ff1f0dbc06d8",
+    "alpha_factory_v1/core/runtime/successor/transformation_model_cli.py": "4d8e0398ad39bc2ee36fbe0ca8aee0413a9424a96c9ab9cf8376278ac57a463e",
+    "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py": "2ad225701952de359a6faf69f9239812f3962ade671bc5a707cb58ac23da95ab",
+    "alpha_factory_v1/core/runtime/successor/transformation_source_audit_cli.py": "eae4b48cb5c1cdf9204cb0540674eb8b569b6398186b825583e0ccb92b92f292",
+    "alpha_factory_v1/core/runtime/successor/transport.py": "ef3877e00b94395fd72a921451d04bfa8eb187fd7b5b735dbdce659e7fbe42c4",
+    "alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+    "alpha_factory_v1/core/runtime/successor/workbench.py": "87ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492",
+    "alpha_factory_v1/core/runtime/supplier_browser.py": "a15884d2a4ab3054ef9fe757fd51a2b80fc6c94c2646227804df2f4f12f0eb32",
+    "alpha_factory_v1/core/runtime/supplier_browser_operator.py": "97bbc0b0b310c2c88e5a63b10b43f0823faae3bcd21c93dd8e795bad82d7a7a2",
+    "alpha_factory_v1/core/runtime/supplier_browser_spec.py": "0ccd63b1bf77d25d5a01fd5f6e8fd817f9a538531dddd723983fe957927c7cd8",
+    "alpha_factory_v1/core/runtime/transfer.py": "5dda08bab876f4ec925fde6c8900c24bbc54db100b5708a2c8c0f49acbd94f7e",
+    "alpha_factory_v1/core/runtime/work.py": "0dae1e55376f991a364cbe748fb7eccc3c91be29cfb8ed8a9a43e8366fe4c2c9",
+    "alpha_factory_v1/core/runtime/work_spec.py": "64fc1ac65ad850b7e8cf776d4481ff641ddcaed7492ed8df84d8de69c213b62f",
+    "scripts/record_flywheel_reconciliation_closure.py": "b27e1fd74584eca9fa9b8c6f45239f57e26b1f25be331004a2d6339f7fdef5de",
+    "scripts/record_general_flywheel.py": "2f06edc96e7d74913d8609df51e5ccb2a15a052e2503467051ab82a4c5687155",
+    "tests/runtime/test_flywheel_enterprise.py": "e8b4b02f86825347f2a3ebfe7b2857737f64bdac372311e370d47529b967b64a",
+    "tests/runtime/test_flywheel_protected.py": "e3f857b078fe9536aad928872bb815d3f152a442e26feab98a7462c697629a1d",
+    "tests/runtime/test_flywheel_reconciliation_closure.py": "b4872b2c7a9b7a3ca26cc102961dedd658c3d2da71e1556ded451d2749913457",
+    "tests/runtime/test_flywheel_specialists.py": "80612316bfa53a7de0a181223420712b4abd876f2d542957843c8be0670ffaf9"
+  }
+}

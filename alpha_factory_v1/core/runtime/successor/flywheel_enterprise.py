@@ -315,6 +315,27 @@ class Enterprise:
             raise Conflict("launch accounting scope differs from the original mission")
         if not self.costs.report(ledger_mission, cx)["bucket_complete"]["A"]:
             raise Conflict("complete failed-attempt liabilities must be reconciled before releasing capacity")
+        closure = None
+        if execution_digest is None:
+            operation = raw["execution_operation"]
+            if "execution/" + operation in self.costs.snapshot(cx)["charges"]:
+                raise Conflict("execution reservation without its receipt requires separate investigation")
+            closure = self.journal.append(
+                cx,
+                operation_key(operation),
+                {
+                    "schema_name": "flywheel-execution-closure/v1",
+                    "status": "cancelled-before-execution",
+                    "execution_started": False,
+                    "launch_digest": old["digest"],
+                    "execution_permit_digest": old["execution_permit_digest"],
+                    "request_digest": old["request_digest"],
+                    "profile_digest": old["profile_digest"],
+                    "ledger_mission_id": ledger_mission,
+                    "reconciliation_command": command.model_dump(),
+                    "authority_granted": False,
+                },
+            )
         active = self._read("active", "capacity", cx)
         reservations = active["reservations"] if active else {}
         reservations.pop(raw["execution_operation"], None)
@@ -327,6 +348,8 @@ class Enterprise:
             failure_kind=failure_kind,
             authority_restored=False,
         )
+        if closure is not None:
+            value["closure_digest"] = closure["digest"]
         return key("launch", raw["execution_operation"]), value
 
     def _advance(self, command: EnterpriseCommand, cx: Any) -> tuple[str, dict[str, Any]]:

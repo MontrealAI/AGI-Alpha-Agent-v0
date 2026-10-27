@@ -260,6 +260,7 @@ class ProtectedLibrary:
             raise ValueError("bounded deployment, trust and key custody inventory required")
         self.costs.checkpoint = checkpoint
         self.costs.custody_check = self._check_custody_files
+        self.costs.general_delivery_check = self._customer_general_delivery
         self._boot_execution_digest = self._execution_binding()
         with self.journal.transaction() as cx:
             state = self.library.snapshot()
@@ -275,6 +276,12 @@ class ProtectedLibrary:
                     "invocations": {},
                 }
                 self._commit(cx, state)
+
+    def _customer_general_delivery(self, operation: str, cx: Any) -> dict[str, Any]:
+        from .flywheel_learning import accepted_general_origin
+
+        self._state(cx)
+        return accepted_general_origin(self, operation, cx)[0]
 
     def _check_custody_files(self) -> None:
         for name, expected in self._custody_files.items():

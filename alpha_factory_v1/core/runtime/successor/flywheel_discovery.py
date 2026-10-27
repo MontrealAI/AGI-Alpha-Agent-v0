@@ -223,6 +223,26 @@ class ComparisonArm(StrictModel):
     baseline_definition: Text
 
 
+class ComparisonTrial(StrictModel):
+    role: Literal["U", "E", "E+"]
+    operation_id: Identifier
+    mission: ExecutionMission
+
+
+class ComparisonCase(StrictModel):
+    case_id: Identifier
+    recipient_id: Identifier
+    phase: Literal["primary", "fresh-recipient"]
+    shared_inputs_digest: Digest
+    trials: list[ComparisonTrial] = Field(min_length=3, max_length=3)
+
+
+class ComparisonCost(StrictModel):
+    role: Literal["U", "E", "E+"]
+    mission_id: Identifier
+    bucket: Literal["B", "C"]
+
+
 class ComparisonPlan(StrictModel):
     schema_name: Literal["flywheel-operational-alpha-comparison/v1"] = "flywheel-operational-alpha-comparison/v1"
     comparison_id: Identifier
@@ -235,6 +255,8 @@ class ComparisonPlan(StrictModel):
     fresh_instance_policy: Text
     complete_cost_policy: Text
     evidence: list[EvidenceRef] = Field(min_length=1, max_length=16)
+    cases: list[ComparisonCase] = Field(default_factory=list, max_length=16)
+    additional_costs: list[ComparisonCost] = Field(default_factory=list, max_length=32)
 
     @model_validator(mode="after")
     def matched(self) -> ComparisonPlan:
@@ -253,6 +275,49 @@ class ComparisonPlan(StrictModel):
             raise ValueError("only E+ receives the specific additional retained capability")
         if arms["E+"].retained_capability_digest is None or arms["E+"].workflow_digest != arms["E"].workflow_digest:
             raise ValueError("E+ must use E's exact workflow plus one explicit retained capability")
+        identities: set[str] = set()
+        missions: set[str] = set()
+        operations: set[str] = set()
+        for case in self.cases:
+            if case.case_id in identities or {trial.role for trial in case.trials} != {"U", "E", "E+"}:
+                raise ValueError("distinct comparison cases require exactly one trial per arm")
+            identities.add(case.case_id)
+            contracts = []
+            for trial in case.trials:
+                mission, arm = trial.mission, arms[trial.role]
+                if trial.operation_id in operations or mission.mission_id in missions:
+                    raise ValueError("comparison attempts and ledger missions cannot be reused as independent samples")
+                operations.add(trial.operation_id)
+                missions.add(mission.mission_id)
+                shared = {
+                    name: value
+                    for name, value in mission.inputs.items()
+                    if name not in {"comparison_workflow", "comparison_retained"}
+                }
+                if (
+                    digest("comparison-shared-inputs", shared) != case.shared_inputs_digest
+                    or digest("comparison-workflow", mission.inputs.get("comparison_workflow")) != arm.workflow_digest
+                    or mission.inputs.get("comparison_retained") != arm.retained_capability_digest
+                ):
+                    raise ValueError("comparison inputs must preserve the same task and frozen workflow condition")
+                if (
+                    mission.goal != self.purpose.useful_purpose
+                    or mission.deliverable != self.purpose.deliverable
+                    or mission.acceptance_criteria != self.purpose.acceptance_criteria
+                    or mission.max_actions != arm.resource_budget.tool_actions
+                    or mission.max_seconds != arm.resource_budget.seconds
+                ):
+                    raise ValueError("comparison trials must preserve original purpose, acceptance and resource limits")
+                contracts.append(mission.model_dump(exclude={"mission_id", "inputs"}))
+            if any(contract != contracts[0] for contract in contracts):
+                raise ValueError("matched trials must preserve component modes, rights and stopping conditions")
+        extra = [(scope.mission_id, scope.bucket) for scope in self.additional_costs]
+        if len(set(extra)) != len(extra) or any(identity in missions for identity, _ in extra):
+            raise ValueError("additional costs cannot duplicate trial missions or another additional allocation")
+        if self.additional_costs and not self.cases:
+            raise ValueError("additional comparison costs require a frozen cohort")
+        if len(canonical(self)) > 160_000:
+            raise ValueError("comparison exceeds its bounded frozen cohort budget")
         return self
 
 
@@ -370,6 +435,10 @@ class Discovery:
         return spec
 
     def inspect(self, kind: str, identity: str) -> dict[str, Any]:
+        if kind == "comparison-result":
+            from .flywheel_comparisons import comparison_report
+
+            return comparison_report(self, identity)
         from .flywheel_insight import KINDS
 
         if (
@@ -613,6 +682,9 @@ class Discovery:
             if comparison.purpose != opportunity.purpose:
                 raise ValueError("comparison must preserve identical original requirements")
             self._evidence(comparison.evidence, cx)
+            from .flywheel_comparisons import freeze_cohort
+
+            freeze_cohort(self, comparison, opportunity.mode, cx)
             return self._new("comparison", comparison.comparison_id, command.expected_head, cx), {
                 "spec": comparison.model_dump(),
                 "stage": "frozen-plan",

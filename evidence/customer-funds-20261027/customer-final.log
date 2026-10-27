@@ -1,0 +1,100 @@
+...............................FF.F.                                     [100%]
+=================================== FAILURES ===================================
+____________ test_durable_event_survives_operation_cache_compaction ____________
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f840d24f5f0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f840d26c710>, ...}, ...}
+
+    def test_durable_event_survives_operation_cache_compaction(setup: dict[str, Any]) -> None:
+        apply(setup, "customer-deposit", deposit(mode="live"), "old-deposit")
+        for i in range(130):
+            f.account(setup, "reserve", 0, f"compact-{i}")
+>       assert "old-deposit" not in setup["costs"].snapshot()["operations"]
+E       AssertionError: assert 'old-deposit' not in {'compact-100': 'e4b8fa689270d9d5ba5eda1e8eea7b99616af001350f59187961857840c4ce45', 'compact-101': '61012b1ca342acfbab...523a44e6038f47c00b2387c0bdb52', 'compact-103': 'a196da004b83c3dbd3d589318edebbba7e7003221accc3892f11666e70c1bd33', ...}
+
+tests/runtime/test_flywheel_customer.py:369: AssertionError
+_________ test_event_identity_is_shared_by_deposit_earning_and_refund __________
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f840d24ec30>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f840d26c6d0>, ...}, ...}
+
+    def test_event_identity_is_shared_by_deposit_earning_and_refund(setup: dict[str, Any]) -> None:
+        apply(setup, "customer-deposit", deposit())
+        apply(setup, "customer-refund", refund("used-event"))
+        with pytest.raises(Conflict, match="event identity"):
+>           apply(setup, "customer-deposit", deposit("used-event", mission_id="other"))
+
+tests/runtime/test_flywheel_customer.py:380: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_customer.py:68: in apply
+    f.account(state, action, record, operation or str(record.get("event_id", record.get("receipt_id"))))
+tests/runtime/test_flywheel_protected.py:244: in account
+    s["costs"].apply(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_costs.CostLedger object at 0x7f840d24e450>
+signed = SignedEnvelope(domain='flywheel-cost-command', principal='accountant', payload={'journal_identity': 'urn:agialpha:ed25...k transaction'}}, signature='Bp19QNRBSlAYKDl/qDR8celhg2IoEQa2gkmdsQg+zbEv6GPwFGZbW4mOQi+8oZ+5qMrxoY3Msf51rZ9RXzoPCg==')
+
+    def apply(self, signed: SignedEnvelope) -> dict[str, Any]:
+        signed = SignedEnvelope.model_validate(signed.model_dump())
+        payload = self.trust.verify(signed, "flywheel-cost-command", "accounting")
+        if payload.get("journal_identity") != self.journal.identity or set(payload) != {
+            "journal_identity",
+            "operation_id",
+            "action",
+            "record",
+        }:
+            raise ValueError("accounting command must bind this journal and exact terms")
+        operation_id = payload["operation_id"]
+        if not isinstance(operation_id, str) or not 1 <= len(operation_id) <= 128:
+            raise ValueError("bounded accounting operation identity required")
+        binding = digest("flywheel-cost-command", payload)
+        with self.journal.transaction() as cx:
+            state = self.snapshot(cx)
+            old = state["operations"].get(operation_id)
+            if old is None:
+                try:
+                    old = self.journal.latest("@flywheel-accounting-operation:" + operation_id, cx)["binding"]
+                except KeyError:
+                    pass
+            if old:
+                if old != binding:
+>                   raise Conflict("accounting operation identity already has different terms")
+E                   alpha_factory_v1.core.runtime.store.Conflict: accounting operation identity already has different terms
+
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:350: Conflict
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f840d24ec30>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f840d26c6d0>, ...}, ...}
+
+    def test_event_identity_is_shared_by_deposit_earning_and_refund(setup: dict[str, Any]) -> None:
+        apply(setup, "customer-deposit", deposit())
+        apply(setup, "customer-refund", refund("used-event"))
+>       with pytest.raises(Conflict, match="event identity"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'event identity'
+E        Input: 'accounting operation identity already has different terms'
+
+tests/runtime/test_flywheel_customer.py:379: AssertionError
+______ test_default_and_refunds_never_remove_attempt_or_processing_costs _______
+
+    def test_default_and_refunds_never_remove_attempt_or_processing_costs() -> None:
+        result = projection(2000)
+        branches = {r["scenario_id"]: r for r in result["assessment"]["branches"]}
+        assert branches["common-failure"]["projected_collections_micro_usd"] == 0
+        assert branches["common-failure"]["cash_costs_micro_usd"] == (600 + 120 + 3 * 500) * USD
+        assert branches["success"]["cash_costs_micro_usd"] == branches["quality-refund"]["cash_costs_micro_usd"]
+        assert branches["quality-refund"]["refunds_micro_usd"] == 400 * USD
+        assert branches["payment-default"]["defaulted_receivables_micro_usd"] == 2000 * USD
+        assert branches["withdrawal-stress"]["projected_collections_micro_usd"] == 4000 * USD
+>       assert expected(result) == Fraction(289_719, 100) * USD
+E       AssertionError: assert Fraction(2900205000, 1) == (Fraction(289719, 100) * 1000000)
+E        +  where Fraction(2900205000, 1) = expected({'assessment': {'actual_collections_micro_usd': None, 'arrangement_digest': '8e225ead72291e664ccbd5c458f6e4a7d64b9fb16...ssumed seed cash, independent of sales; no customer deposit funds optional investment', ...}, 'cost_percent': 100, ...})
+E        +  and   Fraction(289719, 100) = Fraction(289719, 100)
+
+tests/test_customer_funds_economics.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_customer.py::test_durable_event_survives_operation_cache_compaction
+FAILED tests/runtime/test_flywheel_customer.py::test_event_identity_is_shared_by_deposit_earning_and_refund
+FAILED tests/test_customer_funds_economics.py::test_default_and_refunds_never_remove_attempt_or_processing_costs
+3 failed, 33 passed in 12.31s
