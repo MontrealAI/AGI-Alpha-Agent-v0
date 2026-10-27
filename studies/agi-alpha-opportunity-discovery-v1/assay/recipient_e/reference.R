@@ -1,0 +1,17 @@
+args <- commandArgs(trailingOnly=TRUE)
+stopifnot(length(args)==1)
+if (!requireNamespace("metafor", quietly=TRUE)) stop("metafor is not installed; do not install or silently substitute")
+b <- args[[1]]
+d <- read.table(file.path(b,"data/sources/metadat/data-raw/dat.raudenbush1985.txt"), header=TRUE, stringsAsFactors=FALSE)
+stopifnot(nrow(d)==19, length(unique(d$study))==19, all(is.finite(d$yi)), all(is.finite(d$vi)), all(d$vi>0), all(round(d$sei^2,4)==d$vi))
+supplied_y <- d$yi; supplied_v <- d$vi
+e <- metafor::escalc(measure="SMD", yi=yi, vi=vi, ni=n1i+n2i, data=d, digits=4)
+stopifnot(isTRUE(all.equal(as.numeric(e$yi),supplied_y)), isTRUE(all.equal(as.numeric(e$vi),supplied_v)))
+fit <- metafor::rma.uni(yi=yi, vi=vi, data=e, method="REML", test="z", level=95)
+expected <- c(0.08370124239176027, 0.05164067172881493, 0.01881828872696908, -0.01751261433417277, 0.18491509911769333)
+actual <- c(as.numeric(fit$b), fit$se, fit$tau2, fit$ci.lb, fit$ci.ub)
+stopifnot(max(abs(actual-expected)) < 1e-6)
+cat("R:", R.version.string,"\nmetafor:",as.character(packageVersion("metafor")),"\n")
+cat("mu=",as.numeric(fit$b)," se=",fit$se," tau2=",fit$tau2," ci.lb=",fit$ci.lb," ci.ub=",fit$ci.ub," p=",fit$pval,"\n",sep="")
+cat("Conditional independence assumption remains unverified.\n")
+print(sessionInfo())

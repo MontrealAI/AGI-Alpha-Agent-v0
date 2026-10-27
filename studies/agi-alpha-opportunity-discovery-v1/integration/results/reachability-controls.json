@@ -1,0 +1,200 @@
+{
+  "schema": "admission-reachability-controls/v1",
+  "passed": 12,
+  "total": 12,
+  "controls": [
+    {
+      "name": "positive-control",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "800",
+        "minimum_net_cents": 1,
+        "structurally_reachable": true,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "zero-horizon",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "0",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "nonpositive-advantage",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "0",
+        "upper_lifetime_net_cents": "0",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "complete-cost-barrier",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "-1",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "exact-threshold",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "1",
+        "minimum_net_cents": 1,
+        "structurally_reachable": true,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "one-cent-below-threshold",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "0",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "risk-removes-advantage",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "0",
+        "upper_lifetime_net_cents": "0",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "fractional-horizon",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "1",
+        "minimum_net_cents": 1,
+        "structurally_reachable": true,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "fractional-floor-boundary",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "0",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "custom-hurdle",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "1000",
+        "minimum_net_cents": 1001,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "negative-benefit",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "-1",
+        "upper_lifetime_net_cents": "-10",
+        "minimum_net_cents": 1,
+        "structurally_reachable": false,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    },
+    {
+      "name": "costs-not-double-counted",
+      "passed": true,
+      "result": {
+        "schema": "prospective-admission-reachability/v1",
+        "upper_per_use_cents": "100",
+        "upper_lifetime_net_cents": "600",
+        "minimum_net_cents": 600,
+        "structurally_reachable": true,
+        "admission_granted": false,
+        "scope": "Necessary condition only, conditional on a valid per-use upper bound and forecast.",
+        "proof": "The one-sided t lower bound cannot exceed the sample mean; bounded deltas bound that mean.",
+        "historical_costs_refunded": false,
+        "policy_change": "A prospective prescreen changes later paths and requires fresh confirmation."
+      }
+    }
+  ],
+  "new_confirmatory_policy_result": false
+}

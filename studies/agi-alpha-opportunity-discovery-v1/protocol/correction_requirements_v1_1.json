@@ -1,0 +1,47 @@
+{
+  "schema": "prospective-snapshot-correction-requirements/v1.1",
+  "candidate": "instrument/continuity_v1_1.py",
+  "baseline": "instrument/continuity.py",
+  "scope": "Independent single-event snapshot revalidation; no source-event detection, chronology, cumulative state or production admission",
+  "seed": 91824067,
+  "generation_rule": "Generate fresh numeric values, row choices, source labels and unknown-field names only after the code, this requirements file and generator are hash-frozen. Save expected states and case hashes before execution.",
+  "policies": [
+    "Each supported event kind has an explicit top-level field allowlist.",
+    "Unknown or kind-incompatible fields hold with no numerical result, even if apparently harmless.",
+    "Correction events cannot carry source_id or covariance fields; these require upstream source/dependence qualification and a supported event representation.",
+    "The legacy optional no_change source_id is accepted only for an explicitly declared background source; arbitrary source identities hold.",
+    "Malformed replacement pairs reject; arbitrary event objects or unsupported kinds hold.",
+    "Every output states independent snapshot semantics and cumulative_history=false.",
+    "Explicit sequential or other batch mode holds without evaluating events.",
+    "Existing fresh purpose, packet identity, rights and execution-authority controls remain in force.",
+    "No output grants commercial acceptance or production admission. Semantic holds are control outcomes only."
+  ],
+  "expected_family_states": {
+    "unknown_field": "hold",
+    "unsupported_covariance": "hold",
+    "correction_source_id": "hold",
+    "unknown_background_source": "hold",
+    "unknown_no_change_source": "hold",
+    "sequential_event_fields": "hold",
+    "malformed_event": "hold",
+    "event_purpose_drift": "hold",
+    "mission_authority_drift": "hold",
+    "packet_drift": "hold",
+    "replacement_extra_field": "reject",
+    "valid_fresh_correction": "recomputed",
+    "valid_fresh_withdrawal": "recomputed",
+    "explicit_overlap": "hold",
+    "explicit_no_change": "unchanged",
+    "sequential_batch": "hold",
+    "independent_batch": "evaluated"
+  },
+  "regression_rule": "Replay all original 64 saved events and mission mutations against their original packets. Preserve prior expected statuses and numerical results within 2e-6; old data are not new confirmation.",
+  "numeric_rule": "Fresh eligible updates must match an independently applied update and analytic REML score-equation solution within 2e-6 for k, estimate, se, tau2 and normal interval bounds.",
+  "acceptance": "All fresh declared conformance cases and all 64 regressions conform; all hold/reject outputs omit numerical results; every output preserves no commercial/production admission; frozen v1 and recipient bytes remain unchanged.",
+  "limits": [
+    "Bounded generated cases do not estimate real-world reliability or validate unmodeled event semantics.",
+    "No fresh recipient transfer of v1.1 is tested.",
+    "No cumulative ledger, source monitoring, cryptographic mission authority or scientific validity is added.",
+    "A caller still supplies an already qualified snapshot, scoped event and local authority/rights fixture."
+  ]
+}

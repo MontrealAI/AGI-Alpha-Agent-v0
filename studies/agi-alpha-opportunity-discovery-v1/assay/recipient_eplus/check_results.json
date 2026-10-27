@@ -1,0 +1,94 @@
+{
+  "status": "passed",
+  "artifact_archive_sha256": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+  "actual_inherited_file_sha256": {
+    "mapping_validator.py": "6fe494f269b59b5010b544336fc1e159587602917b64f0367316745ac21ad985",
+    "continuity.py": "2e792a6324b7da90d33f26839437784bad9308f11cf4fc5584fe5054883dae2e",
+    "manifest.json": "6a86dbd688ae12eeb3180fabaa159de2d7472126b0c3bfa63c07737e7ea5dff0",
+    "expert_method.txt": "d5a4ade15fa08262b0e0d3b42618d4dbc60f439414cfe5b3f5f85e26c7b78e1e"
+  },
+  "fresh_mapping_validator_issues": [],
+  "teacher_rows": 19,
+  "unique_ids": 19,
+  "direct_inputs_preserved": true,
+  "positive_finite_variances": true,
+  "sei_squared_round4_matches_supplied_vi": 19,
+  "max_abs_vi_minus_sei_squared": 3.899999999998349e-05,
+  "unequal_arm_ids": [
+    "1",
+    "2",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "12",
+    "14",
+    "15",
+    "17",
+    "18",
+    "19"
+  ],
+  "unequal_arm_count": 14,
+  "weeks_range": [
+    0.0,
+    24.0
+  ],
+  "same_author_year_arm_sizes_ambiguity": {
+    "ids": [
+      "4",
+      "5"
+    ],
+    "author": "Pellegrini & Hicks",
+    "year": 1972,
+    "n1i": 11,
+    "n2i": 22,
+    "tester": [
+      "aware",
+      "blind"
+    ],
+    "conclusion": "Neither independence nor duplication can be inferred from labels."
+  },
+  "conditional_inherited_reml": {
+    "k": 19,
+    "estimate": 0.08370124231718894,
+    "se": 0.051640671675398,
+    "ci_lower": -0.017512614304048837,
+    "ci_upper": 0.18491509893842673,
+    "tau2": 0.01881828864103483,
+    "method": "intercept-only REML; normal interval",
+    "interpretation": "Conditional quantitative reproduction; no causal, editorial or practice verdict"
+  },
+  "independent_score_reference": {
+    "tau2": 0.01881828814022061,
+    "estimate": 0.08370124188259645,
+    "se": 0.05164067136409069,
+    "absolute_differences": {
+      "tau2": 5.008142199558474e-10,
+      "estimate": 4.345924869975093e-10,
+      "se": 3.1130731326101113e-10
+    },
+    "tolerance": 1e-07
+  },
+  "negative_controls": {
+    "smd_as_kg_ha": [
+      "standardized_effect_cannot_be_relabelled_as_physical_units"
+    ],
+    "unsupported_equal_arms": [
+      "unsupported_equal_arm_assumption"
+    ],
+    "changed_source_hash": "Source identity changed; qualify a new packet"
+  },
+  "writing_origin_requalification": {
+    "rows": 48,
+    "matches_supplied_R_formula_in_Python": true,
+    "original_source_sha256": "f2054192181c0209926c99adb00453e85b5a57552b41d34bbe4d56eb552fb879",
+    "limitation": "Not a cross-runtime R rounding test; equal-arm assumption remains source-specific."
+  },
+  "limitations": [
+    "The mapping validator checks selected fields and constraints; passing it does not establish provenance, semantic validity, independence, rights or scientific truth.",
+    "The independent analytic REML score check confirms numerical agreement, not validity of row independence.",
+    "No original primary-study reports, arm outcome SDs, cohort ledger, crop RDS, package lockfile or independent R/metafor execution were supplied or used."
+  ]
+}
