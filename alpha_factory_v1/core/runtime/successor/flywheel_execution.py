@@ -515,6 +515,7 @@ class MissionExecutor:
     def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
         mission = ExecutionMission.model_validate_json(canonical(mission))
         profile = ExecutionProfile.model_validate_json(canonical(profile))
+        signed = SignedEnvelope.model_validate_json(canonical(signed))
         authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
         if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
             raise ValueError("execution permit must bind this exact journal")

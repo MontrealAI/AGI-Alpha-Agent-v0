@@ -591,3 +591,21 @@ def test_provider_metadata_decimal_lexeme_is_exact() -> None:
     value = _provider_envelope(raw)
     assert value["top_p"] == "1e-4"
     assert value["_provider_transport"]["decimal_metadata"] == [{"path": ["top_p"], "literal": "1e-4"}]
+
+
+def test_signed_execution_authority_is_snapshotted_before_environment_callbacks(setup: dict[str, Any]) -> None:
+    s, task, p, env = setup, mission(), profile(), LocalExperiment()
+    signed = permit(s, task, p, env)
+    original = copy.deepcopy(signed.model_dump())
+
+    def qualification_check() -> None:
+        signed.payload["permit"]["max_authorized_micro_usd"] = 1
+
+    result = MissionExecutor(
+        s["journal"], s["trust"], s["costs"], ScriptedTransport([done()]), env, qualification_check
+    ).run(task, p, signed)
+    assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+    assert result["permit"] == original
+    charge = s["costs"].snapshot()["charges"]["execution/fixture-run"]
+    assert charge["signed"] == original
+    assert signed.payload["permit"]["max_authorized_micro_usd"] == 1
