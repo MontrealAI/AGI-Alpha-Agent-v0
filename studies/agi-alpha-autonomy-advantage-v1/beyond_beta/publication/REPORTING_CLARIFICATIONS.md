@@ -1,0 +1,8 @@
+# Mechanical reporting clarifications
+
+Recorded after the source freeze and before inspecting calibrated outcomes. The frozen engine, protocol, policy selection and simulated histories are unchanged. The frozen analysis source is retained for exact provenance.
+
+1. The analyzer's `retentionFunding` helper looks for an earlier field name, `fundingOrigin`. The final engine records `assessmentFundingOrigin`, `constructionFundingOrigin` and `wholeInitialProgramFundingOrigin`. Publication uses those explicit fields and reports them separately. This is a field-name correction, not a change to cash or a funding rule.
+2. The analyzer's `recurringPerAccepted` includes every B charge. Its correct interpretation is broad recurring-business allocation, including initial retention. Publication additionally reports A delivery, recurring reuse/upkeep/integration, one-time initial B qualification, C research, shared operations and financial adjustments separately. Fully allocated cost and profit do not change.
+3. The principal causal results use complete enterprise profit and all unsuccessful attempts. No favorable reclassification of an expense can change that total. Break-even workload calculations hold the observed asset program and work mix fixed; they are diagnostic thresholds rather than additional simulated demand forecasts.
+4. A paid-job source means customer-commissioned work under an accepted-delivery contract. The actual modeled invoice can still be pending, cancelled or defaulted. Demonstrations display its collection status; the source label alone never establishes cash receipt.

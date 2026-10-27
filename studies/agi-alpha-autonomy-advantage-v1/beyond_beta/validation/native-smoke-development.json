@@ -1,0 +1,13 @@
+{
+  "schema": "beyond-beta-control-development/v1",
+  "calibratedEconomicWorlds": 0,
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "CONTROL_FIXTURE_BINDING_REFUSED",
+      "reason": "The fixture attempted to hash the entire CashBook bill, including continuous-day float fields, using the graph integer-only canonicalizer.",
+      "refusal": "ONLY_FINITE_INTEGER_JSON; use explicit monetary/time units",
+      "correction": "Bind immutable bill id, ref, amountMicros and category; retain the complete bill in native smoke evidence. No runtime or economic assumption changed."
+    }
+  ]
+}

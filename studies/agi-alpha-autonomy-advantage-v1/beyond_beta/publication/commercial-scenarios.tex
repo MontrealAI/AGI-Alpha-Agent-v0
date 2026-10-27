@@ -1,0 +1,42 @@
+\section{All prespecified commercial-core conditions}\label{app:commercial-core-conditions}
+
+Every row applies the same independently selected Beta pricing policy without retained Alpha; it is not separately selected for each condition. Training denotes policy selection on separate simulated histories, not foundation-model training. Price and human reference are acceptance-weighted on the same useful jobs. Full cost divides all company costs, including zero-output worlds, by useful acceptances. Profit is the mean per enterprise before the tax reserve. A dash denotes an undefined denominator, not zero cost or certified quality. Positive-profit and closure columns retain frequencies.
+
+{\scriptsize\setlength{\tabcolsep}{3pt}
+
+\resizebox{\linewidth}{!}{%
+
+{\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+Condition & Useful & Price / human & Full / useful & Profit / world & Positive & Closed & False / tech \\
+\midrule
+Reference & 793 & \$10,000 / \$47,448 & \$914 & \$171,139 & 27/40 & 13/40 & 0.9\% \\
+Beta supplies contracts & 875 & \$10,000 / \$48,986 & \$862 & \$191,885 & 27/40 & 13/40 & 0.6\% \\
+Beta supplies all equivalents & 871 & \$10,000 / \$47,380 & \$865 & \$192,661 & 27/40 & 13/40 & 0.5\% \\
+Zero Alpha effect & 776 & \$10,000 / \$47,278 & \$925 & \$169,303 & 26/40 & 14/40 & 0.8\% \\
+Harmful Alpha effect & 793 & \$10,000 / \$48,644 & \$923 & \$171,946 & 27/40 & 12/40 & 1.0\% \\
+High initial overlap & 852 & \$10,000 / \$47,621 & \$872 & \$184,673 & 27/40 & 13/40 & 0.4\% \\
+Adaptation fails & 792 & \$10,000 / \$45,066 & \$921 & \$173,757 & 25/40 & 13/40 & 0.4\% \\
+Collections delayed & 823 & \$10,000 / \$48,985 & \$912 & \$180,492 & 27/40 & 13/40 & 0.4\% \\
+Low repeat demand & 277 & \$10,000 / \$48,354 & \$1,991 & \$54,212 & 27/40 & 13/40 & 0.7\% \\
+Resource prices x4 & 789 & \$10,000 / \$45,301 & \$1,274 & \$165,116 & 27/40 & 13/40 & 0.5\% \\
+Correlated specification errors & 771 & \$10,000 / \$47,890 & \$939 & \$166,158 & 27/40 & 13/40 & 0.8\% \\
+Rapid Beta & 902 & \$10,000 / \$46,729 & \$837 & \$199,119 & 27/40 & 13/40 & 0.6\% \\
+No demand & 0 & \textemdash / \textemdash & \textemdash & -\$10,148 & 0/40 & 40/40 & \textemdash \\
+Repeat opportunities x6 & 3,470 & \$10,000 / \$47,630 & \$470 & \$793,706 & 27/40 & 13/40 & 0.4\% \\
+Slow Beta & 941 & \$10,000 / \$47,041 & \$839 & \$207,258 & 27/40 & 13/40 & 0.3\% \\
+High repeat / slow Beta & 3,129 & \$10,000 / \$49,084 & \$494 & \$713,595 & 27/40 & 13/40 & 0.4\% \\
+More composed jobs & 920 & \$10,000 / \$53,487 & \$854 & \$201,606 & 26/40 & 13/40 & 0.2\% \\
+Tight quotas & 862 & \$10,000 / \$46,305 & \$867 & \$185,570 & 27/40 & 13/40 & 0.2\% \\
+Short asset lifetime & 844 & \$10,000 / \$47,277 & \$878 & \$183,731 & 26/40 & 14/40 & 0.7\% \\
+\bottomrule
+\end{tabular}
+}
+
+}
+
+}
+
+\par\smallskip False-pass rates use technical accepts as denominator and are held-out observations inside the simulation. The training selection bound is not a confirmation certificate. Conditions are sensitivity interventions, not samples from a market distribution; their outcomes are not pooled into an expected market profit. The JSON companion preserves offered-price distributions, customer-effort and latency measures, reserves, closure reasons, all three cost layers, profile composition and separate Alpha contrasts for every condition.

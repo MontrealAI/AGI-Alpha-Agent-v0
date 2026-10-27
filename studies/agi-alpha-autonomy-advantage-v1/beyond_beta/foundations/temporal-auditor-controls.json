@@ -1,0 +1,31 @@
+{
+  "schema": "beyond-beta-independent-temporal-audit-controls/v1",
+  "basis": "FICTIONAL_CASH_AND_EXECUTED_OFFLINE_GRAPH_NO_ECONOMIC_SAMPLER",
+  "status": "PASS",
+  "controls": [
+    {
+      "id": "executed-offline-admission-current-at-use",
+      "passed": true
+    },
+    {
+      "id": "retired-before-reuse-refused",
+      "passed": true,
+      "refusal": "No revoked or retired history is revived"
+    },
+    {
+      "id": "beta_advanced-before-reuse-refused",
+      "passed": true,
+      "refusal": "Reuse compares against the current Beta version"
+    },
+    {
+      "id": "cash-prefix-replay-excludes-seed-from-earned-funds",
+      "passed": true
+    },
+    {
+      "id": "future-collection-prefix-refused",
+      "passed": true,
+      "refusal": "Cash checkpoint excludes future events"
+    }
+  ],
+  "economicWorldsExecuted": 0
+}

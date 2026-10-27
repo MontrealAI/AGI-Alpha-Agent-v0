@@ -1,0 +1,63 @@
+{
+  "schema": "beyond-beta-frontier-configuration/v1",
+  "evidenceDate": "2026-10-26",
+  "basis": "OFFICIAL_DOCUMENTATION_FOR_CAPABILITIES_AND_PRICES; TASK_PERFORMANCE_ASSUMED",
+  "models": [
+    {
+      "id": "gpt-6-astra",
+      "versionBinding": "Current official alias at retrieval; no dated immutable production snapshot was executed",
+      "roles": ["producer reasoning", "invention", "specification", "independent critique", "correction", "skill qualification", "economic judgment"],
+      "accessRoute": "Modeled Responses API",
+      "reasoningMode": "pro",
+      "reasoningEffort": "high; xhigh/max escalation for demanding reasoning within the aggregate budget",
+      "inputUsdPerMillion": 10,
+      "outputUsdPerMillion": 50,
+      "cachedInputUsdPerMillion": 1,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    },
+    {
+      "id": "gpt-6.1-terra",
+      "versionBinding": "Current official alias at retrieval; no dated immutable production snapshot was executed",
+      "roles": ["visual interpretation", "supported computer use", "tool execution", "intake and packaging"],
+      "accessRoute": "Modeled Responses API",
+      "reasoningMode": "standard; pro escalation only where the declared workflow warrants its cost",
+      "reasoningEffort": "high within the aggregate budget",
+      "inputUsdPerMillion": 1,
+      "outputUsdPerMillion": 5,
+      "cachedInputUsdPerMillion": 0.05,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+    }
+  ],
+  "modeSource": "https://developers.openai.com/api/docs/guides/reasoning",
+  "pricingSource": "https://developers.openai.com/api/docs/pricing",
+  "requiredLatestGuide": "https://developers.openai.com/api/docs/guides/latest-model",
+  "requiredTerraAnnouncement": "https://openai.com/index/introducing-gpt-6-1-terra/",
+  "documentationQualification": "The latest-model page retains GPT-5.6 wording in some Pro paragraphs; the current reasoning guide explicitly includes GPT-6. No model-specific quality increment is inferred from mode availability.",
+  "billing": {
+    "tier": "Standard",
+    "aggregateProWorkIncluded": true,
+    "hiddenReasoningIncludedAsOutput": true,
+    "cacheDiscountUsed": false,
+    "subscriptionCreditOrUnlimitedCapacityAssumed": false,
+    "subscriptionAllocationUsd": 0,
+    "subscriptionReason": "Modeled production uses billed API access, with no purchased subscription required. Actual research account cost is unknown, not zero.",
+    "maximumRequestInputTokens": 260000,
+    "maximumRequestOutputTokens": 120000,
+    "longContextBoundaryInputTokens": 272000,
+    "longContextRule": "Above the boundary the full request input/cache rates double and output rate is multiplied by1.5; primary decomposition stays below it.",
+    "proofContainer4gbUsdPer20Minutes": 0.12,
+    "normalizedContainerHourUsd": 0.36,
+    "webSearchUsdPerCall": 0.01,
+    "storageUsdPerGbDay": 0.012,
+    "storageEvidenceClass": "ASSUMED"
+  },
+  "quota": {
+    "publishedBuildTierRequestsPerMinute": 5000,
+    "publishedBuildTierTokensPerMinute": 1000000,
+    "actualEntitlementVerified": false,
+    "model": "Shared planning constraint; exact application capacity and intra-minute bursts remain unmeasured."
+  },
+  "performance": "No expert-use bonus, benchmark-to-acceptance conversion or model-authoring-a-script substitution. Stage budgets and task probabilities are explicit unmeasured scenario assumptions. Same competence and ordinary tools are available to Beta and Alpha roles.",
+  "actualProductionModelCalls": 0,
+  "actualCompleteResearchCostUsd": null
+}

@@ -1,0 +1,84 @@
+\section{Buyer-choice thresholds and comparison limits}
+\label{app:buyer-thresholds}
+
+This post-freeze appendix derives the frozen buyer-choice equations; it does not
+run alternative worlds or revise their inputs. Its source is the registered
+\texttt{economy.py} functions \texttt{utilities}, \texttt{opportunity}, and
+\texttt{quoted\_precision}, with the frozen protocol. Exact source identities and
+the longer derivation are retained in \texttt{BUYER\_THRESHOLDS.md}.
+
+\textbf{Primary model limitation: asymmetric quality screening.}
+The network must meet the buyer's explicit precision threshold, whereas the human
+alternative is not subjected to that same hard gate. Human quality instead enters
+utility as the fixed weight $q_H=0.985$. Thus a human offer may remain available
+even when the buyer's threshold exceeds $0.985$. This is a stipulated comparison
+asymmetry, not evidence that equivalent customers actually screen the two services
+this way. Human delivery is also fixed at 20 model calendar days, a separate
+assumption that can favor the network through discounting and deadline eligibility.
+
+Let $V$ denote assumed project value, $P_A$ the network price, $P_H$ the hypothetical
+human-service price, and $t_A,t_H$ their quoted delays in days. Let $q_A$ be the
+network's public precision estimate conditional on technical acceptance, $d=0.85$
+its fixed delivery weight, and $\tau$ the buyer's distinct trust discount. Customer
+intake effort has dollar value $E$ on both sides; $S$ is the additional first-use
+network switching burden. Write
+$D_A=e^{-\delta t_A/7}$, $D_H=e^{-\delta t_H/7}$, and $w_A=\tau d q_A$, with weekly
+decay $\delta=0.015$. Before eligibility restrictions, the exact utilities are
+\begin{align}
+ U_A &= w_A(VD_A-P_A)-E-S, \label{eq:buyer-network}\\
+ U_H &= q_H(VD_H-P_H)-E,\\
+ U_W &= \max\{0,\gamma q_H(Ve^{-\delta T_W}-P_H)-E-C_W\},
+\end{align}
+where postponement uses $\gamma=0.60$, $T_W=8$ weeks and $C_W=200$ USD; decline has
+utility zero. These weights are assumptions, not measured model or professional
+performance. Postponement is a reduced-form outside option, not a deferred-job
+queue. Later opportunities are generated separately.
+
+The network also requires $q_A\ge q_{\min}$, $P_A\le R$ and $t_A\le D$, where $R$
+is the buyer's remaining annual budget and $D$ its deadline. The provider must be
+open and able to fund and schedule the public maximum delivery reservation. The
+human offer requires $P_H\le R$ and $t_H\le D$. Ineligible offers have utility
+$-\infty$. Define $U_* = \max\{0,U_W,U_H\text{ if eligible}\}$. The network loses
+ties to the earlier-listed outside options. Consequently, for $w_A>0$, its exact
+one-opportunity adoption condition is
+\begin{equation}
+ \boxed{P_A < VD_A-\frac{E+S+U_*}{w_A}},
+ \label{eq:buyer-complete-ceiling}
+\end{equation}
+in addition to the eligibility conditions. A nonpositive ceiling admits no
+nonnegative winning price. If $w_A=0$, nonnegative effort and switching burdens
+prevent the network from beating decline.
+
+Against an eligible human offer alone, the ceiling simplifies to
+\begin{equation}
+ P_A < VD_A-\frac{q_H}{w_A}(VD_H-P_H)-\frac{S}{w_A}.
+ \label{eq:buyer-human-ceiling}
+\end{equation}
+Common intake effort cancels in this pairwise comparison but still matters
+against decline. Equivalently, when $VD_A>P_A$, required trust is
+$\tau>(E+S+U_*)/[d q_A(VD_A-P_A)]$; a requirement above one is infeasible. These
+analytical ceilings are not prices or private buyer information supplied to the
+provider. Its adaptive controller learns from its own quote/conversion history.
+
+\textbf{Human latency sensitivity.}
+The fixed $t_H=20$ is neither observed professional turnaround nor inferred from
+the 64/180/488-hour work breakdown; staffing, parallel work and expedited human
+service are not modeled. Holding one buyer state fixed,
+\begin{equation}
+ \frac{\partial P_A^{\max,H}}{\partial t_H}
+ =\frac{q_H}{w_A}\frac{\delta}{7}V e^{-\delta t_H/7}>0.
+\end{equation}
+Faster human service therefore lowers the human-relative network price ceiling.
+It can also restore an otherwise excluded human offer: $D<20$ removes that offer
+in the frozen model, affecting one fifth of the assumed uniform 10--60-day
+deadline draws. This is not an empirical market share or an adoption estimate.
+
+At a fixed state, applying the same hard precision gate to both services could
+only remove human options; it cannot make the network less attractive. The frozen
+AI-only gate therefore weakens, or leaves unchanged, the network's adoption case
+relative to that symmetric counterfactual. This directional observation does not
+establish an overall conservative model: the 20-day human-delay assumption and
+other inputs can act in the opposite direction. Changes to choices would alter
+later cash, queues, trust, learning and prices, so no dynamic-profit or investment
+claim follows from these static inequalities. Profitable accepted delivery and
+incremental retained Alpha remain separate tests.
