@@ -1,0 +1,400 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-supports] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbb1f9b0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbf283b0>, ...}, ...}
+interpretation = 'supports', sealed_costs = False, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-falsifies] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbab0e90>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fddcca30>, ...}, ...}
+interpretation = 'falsifies', sealed_costs = False, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-inconclusive] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fc1de630>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fdd5cff0>, ...}, ...}
+interpretation = 'inconclusive', sealed_costs = False, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-supports] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbd1bda0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbd5e3d0>, ...}, ...}
+interpretation = 'supports', sealed_costs = True, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-falsifies] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fc690710>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbd87a90>, ...}, ...}
+interpretation = 'falsifies', sealed_costs = True, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-inconclusive] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbd1aea0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbdb6830>, ...}, ...}
+interpretation = 'inconclusive', sealed_costs = True, receipt_field = 'omitted'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-supports] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fdf05100>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fc043bd0>, ...}, ...}
+interpretation = 'supports', sealed_costs = False, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-falsifies] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbd1aed0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbddf810>, ...}, ...}
+interpretation = 'falsifies', sealed_costs = False, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-inconclusive] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fc1ce810>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fddcc710>, ...}, ...}
+interpretation = 'inconclusive', sealed_costs = False, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-supports] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbab15e0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbf2a9d0>, ...}, ...}
+interpretation = 'supports', sealed_costs = True, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-falsifies] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fbe785c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbd5ffb0>, ...}, ...}
+interpretation = 'falsifies', sealed_costs = True, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+_ test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-inconclusive] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67fe132990>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67fbd84650>, ...}, ...}
+interpretation = 'inconclusive', sealed_costs = True, receipt_field = 'null'
+
+    @pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+    @pytest.mark.parametrize("sealed_costs", [False, True])
+    @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+    def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+        setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+    ) -> None:
+        state = setup
+        register_witness(state)
+        mission = e.execution(state)[1]
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        if sealed_costs:
+            s.seal(state, "construction-costs", "A")
+        raw = observation(state, spec).model_dump()
+        raw["interpretation"] = interpretation
+        if receipt_field == "omitted":
+            raw.pop("execution_operation")
+        signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+        before = state["journal"].verify()
+        before_costs = state["costs"].report()
+        before_checkpoint = state["service"].checkpoint.path.read_bytes()
+    
+>       with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_discovery.py:545: Failed
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-supports]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-falsifies]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-False-inconclusive]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-supports]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-falsifies]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[omitted-True-inconclusive]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-supports]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-falsifies]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-False-inconclusive]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-supports]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-falsifies]
+FAILED tests/runtime/test_flywheel_discovery.py::test_frozen_execution_cannot_be_replaced_by_receipt_free_research[null-True-inconclusive]
+12 failed, 40 deselected in 5.58s

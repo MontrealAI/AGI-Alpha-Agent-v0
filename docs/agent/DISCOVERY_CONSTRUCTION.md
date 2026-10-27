@@ -36,7 +36,15 @@ Executed observations bind the frozen mission, exact artifact-bearing terminal
 receipt, evidence mode, actual permit bucket, elapsed-time lower bound and original
 requirements. Accepted placement outputs use the existing independent acceptance
 service. Other interpretations remain explicitly attested and unqualified.
-Research artifacts can be recorded without inventing execution receipts.
+Research artifacts can be recorded without inventing execution receipts only when
+the planned step has no frozen execution request. A step that pins a mission must
+bind its actual execution receipt even for an inconclusive or falsifying observation.
+Refusal leaves the bundle, command identity, cost allocation and checkpoint unchanged;
+a corrected observation can then use the actual receipt without replaying execution.
+
+The receipt-binding repair and a fresh source-bound local replay are retained in
+`evidence/discovery-frozen-execution-20261027/`. The original embedded dossier and
+earlier qualification packet remain historical evidence for their own source.
 
 An operation/bucket can be allocated once across all bundles. This reads the
 existing ledger rather than charging it again. Unknown costs pause the package.
