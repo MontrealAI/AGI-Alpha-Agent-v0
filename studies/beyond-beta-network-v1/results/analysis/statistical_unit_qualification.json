@@ -1,0 +1,31 @@
+{
+  "schema": "paid-alpha-statistical-unit-qualification/v1",
+  "sourceResultsUnchanged": true,
+  "primary": {
+    "rawField": "confirmation.json independentWorlds",
+    "rawValue": 384,
+    "interpretation": "384 scenario/world evaluations;128 fresh seed labels reused across3 scenarios. Within each scenario128 seeds are independent. Cross-scenario outcomes are paired, not384 jointly independent draws.",
+    "policyHistories": 4608
+  },
+  "sensitivity": {
+    "caseCount": 136,
+    "seedLabels": 20,
+    "conditionWorldEvaluations": 2720,
+    "policyHistories": 5440,
+    "interpretation": "20 independent paired seeds per condition; seed labels reused across conditions. Do not treat all2720 condition/world cells as independent."
+  },
+  "capacity": {
+    "developmentSeedLabels": 12,
+    "developmentConditions": 18,
+    "holdoutSeedLabels": 12,
+    "holdoutConditions": 3,
+    "holdoutConditionWorldEvaluations": 36,
+    "interpretation": "12 fresh paired seeds per selected demand level, reused across3 levels. No claim of36 jointly independent network worlds."
+  },
+  "meta": {
+    "independentCampaigns": 256,
+    "candidateAttemptsPerCampaign": 96,
+    "interpretation": "Descendant jobs, policy arms and candidates within a campaign are not independent invention campaigns."
+  },
+  "effectOnNumericalResults": "None. Intervals were computed within condition. This corrects the interpretation of an overbroad aggregate count label."
+}

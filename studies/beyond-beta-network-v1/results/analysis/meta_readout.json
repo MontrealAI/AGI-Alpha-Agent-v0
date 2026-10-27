@@ -1,0 +1,203 @@
+{
+  "schema": "beyond-beta-independent-meta-readout/v1",
+  "analysisStatus": "Post-freeze read-only analysis of all registered saved outcomes; no simulator rerun or source change",
+  "rootFreezeSHA256": "850e6978a3946f8f9d01dd0c6920b49916e955d12b420a65c1241d3c5cd675f6",
+  "metaProtocolSHA256": "ff291328207561087b66e8abb666d803510f6091d3b00ec643af78be71647599",
+  "inputs": {
+    "summary.json": {
+      "bytes": 26938,
+      "sha256": "d0ead6ccd0cf44142de13f89776aa3a2832d8ceb0f6eb9c6ef8d7fccfb49c25d"
+    },
+    "campaigns.jsonl.gz": {
+      "bytes": 332034,
+      "sha256": "5ac06fcf41d2fd55f3722b33d8227d2c3fcdee2033be86016cd2fa5b9da89b35"
+    },
+    "manifest.json": {
+      "bytes": 850,
+      "sha256": "b8508d937e4fc53e6f3e2de14eea418dc97d11ee18ee1bfc27c1478f18ff6ebc"
+    }
+  },
+  "audit": {
+    "passed": true,
+    "frozenSourceFilesVerified": 57,
+    "independentCampaigns": 256,
+    "plansReconciled": 1245,
+    "exactZeroIncrementPairs": 256,
+    "registeredSeedsDisjointFromTrainingAndConfirmation": true
+  },
+  "arms": {
+    "expert_baseline": {
+      "campaigns": 256,
+      "usefulMethods": 131,
+      "locallyAcceptedOutputsIncludingMisclassifiedFallbacks": 152,
+      "locallyAcceptedActualMethodProposals": 147,
+      "localFalsePasses": 21,
+      "falsePassFractionOfLocalAcceptance": 0.13815789473684212,
+      "falseAcceptedActualMethodProposals": 16,
+      "falseAcceptedNonInventiveFallbacks": 5,
+      "meanVariableCampaignCostUSD": 332.70375,
+      "variableCostPerUsefulMethodUSD": 650.1691603053436,
+      "meanResources": {
+        "input": 16133734.375,
+        "output": 2828076.171875,
+        "cpu": 1652.4635546875018,
+        "validation": 31.0104296875,
+        "service": 249.975763671875
+      }
+    },
+    "retained_family_screen": {
+      "campaigns": 256,
+      "usefulMethods": 132,
+      "locallyAcceptedOutputsIncludingMisclassifiedFallbacks": 153,
+      "locallyAcceptedActualMethodProposals": 148,
+      "localFalsePasses": 21,
+      "falsePassFractionOfLocalAcceptance": 0.13725490196078433,
+      "falseAcceptedActualMethodProposals": 16,
+      "falseAcceptedNonInventiveFallbacks": 5,
+      "meanVariableCampaignCostUSD": 329.6629296875,
+      "variableCostPerUsefulMethodUSD": 639.3462878787878,
+      "meanResources": {
+        "input": 16134867.1875,
+        "output": 2828191.40625,
+        "cpu": 1590.3466406250006,
+        "validation": 30.48726562500001,
+        "service": 242.21315624999986
+      }
+    },
+    "zero_increment_control": {
+      "campaigns": 256,
+      "usefulMethods": 131,
+      "locallyAcceptedOutputsIncludingMisclassifiedFallbacks": 152,
+      "locallyAcceptedActualMethodProposals": 147,
+      "localFalsePasses": 21,
+      "falsePassFractionOfLocalAcceptance": 0.13815789473684212,
+      "falseAcceptedActualMethodProposals": 16,
+      "falseAcceptedNonInventiveFallbacks": 5,
+      "meanVariableCampaignCostUSD": 332.70375,
+      "variableCostPerUsefulMethodUSD": 650.1691603053436,
+      "meanResources": {
+        "input": 16133734.375,
+        "output": 2828076.171875,
+        "cpu": 1652.4635546875018,
+        "validation": 31.0104296875,
+        "service": 249.975763671875
+      }
+    }
+  },
+  "postFreezeEndpointCaveat": {
+    "frozenSourceAndResultsChanged": false,
+    "issue": "The optional meta runner treats invalid_pass with selected=null as a proposed improvement, unlike the correctly bounded main engine and Alpha probe.",
+    "classification": {
+      "expert_baseline": {
+        "nonInventiveFallbacksMisclassifiedAsProposed": 6,
+        "falseAcceptedFallbacks": 5,
+        "unnecessaryReviewCostCents": 8135,
+        "seeds": [
+          1040063,
+          1040085,
+          1040103,
+          1040179,
+          1040206,
+          1040208
+        ]
+      },
+      "retained_family_screen": {
+        "nonInventiveFallbacksMisclassifiedAsProposed": 6,
+        "falseAcceptedFallbacks": 5,
+        "unnecessaryReviewCostCents": 8135,
+        "seeds": [
+          1040063,
+          1040085,
+          1040103,
+          1040179,
+          1040206,
+          1040208
+        ]
+      },
+      "zero_increment_control": {
+        "nonInventiveFallbacksMisclassifiedAsProposed": 6,
+        "falseAcceptedFallbacks": 5,
+        "unnecessaryReviewCostCents": 8135,
+        "seeds": [
+          1040063,
+          1040085,
+          1040103,
+          1040179,
+          1040206,
+          1040208
+        ]
+      }
+    },
+    "pairedCashSavingUnchangedForEveryCampaignAfterRemovingIdenticalUnneededReviewCharges": true,
+    "usefulMethodCountsUnchanged": true,
+    "resourceSavingBreakEvenUnchanged": true,
+    "mainCommercialAndAlphaAcceptanceUnaffected": true,
+    "reporting": "Of the21 local false passes in each arm,16 are invalid actual method proposals and5 are non-inventive fallbacks. Six fallback outputs were unnecessarily reviewed in each arm, costing81.35USD per arm in total. These are not graph admissions.",
+    "status": "Post-freeze diagnostic classification of saved traces, not a replacement experiment or a rerun."
+  },
+  "paired": {
+    "meanVariableSavingUSD": 3.0408203125,
+    "meanVariableSavingMC95USD": [
+      2.8373835814713497,
+      3.24425704352865
+    ],
+    "relativeMeanVariableCostReduction": 0.009139723590431427,
+    "campaignsWithPositiveSaving": 248,
+    "campaignsWithNegativeSaving": 1,
+    "campaignsWithNoSaving": 7,
+    "minimumSavingUSD": -4.39,
+    "maximumSavingUSD": 9.87,
+    "usefulMethodDifference": 1,
+    "usefulRateDifference": 0.00390625,
+    "usefulRateDifferenceMC95": [
+      -0.00375,
+      0.0115625
+    ]
+  },
+  "completeCostAndCapacity": {
+    "fullOptionalResearchLifecycleUSD": 3209.91,
+    "fixedMaintenanceAloneUSD": 1560.0,
+    "usefulLifetimeWeeks": 65,
+    "pointBreakEvenFreshCampaigns": 1056,
+    "breakEvenUsingLowerMonteCarloMeanSaving": 1132,
+    "maximumCampaignsByNecessaryResourceBound": {
+      "input": 44,
+      "output": 65,
+      "cpu": 114,
+      "validation": 2433,
+      "service": 134
+    },
+    "maximumCampaignsBeforeOrdinaryCustomerWork": 44,
+    "limitingResource": "input",
+    "maximumGrossSavingAtThatBoundUSD": 133.79609375,
+    "netSavingAtThatBoundUSD": -3076.11390625,
+    "maximumAffordableCompleteLifecycleAtThatBoundUSD": 133.79609375,
+    "fractionOfLifecycleCostRecoverableAtThatBound": 0.04168219475000857,
+    "capacityAtBreakEvenAsFractionOfLifetime": {
+      "input": 21.918331730769232,
+      "output": 15.368975,
+      "cpu": 8.676928474358977,
+      "validation": 0.46170580128205135,
+      "service": 7.8128863705738665
+    },
+    "necessaryBoundIsNotASchedulabilityGuarantee": true
+  },
+  "interpretation": {
+    "modeledVariableEvaluationCostReduction": true,
+    "qualityImprovementEstablished": false,
+    "lifecycleRecoveryWithinRegisteredCapacityEstablished": false,
+    "selfFinancingAccelerationEstablished": false,
+    "networkAlphaAdmissionEstablishedByThisExperiment": false,
+    "actualFrontierCalls": 0,
+    "actualNewAlgorithms": 0,
+    "actualCommercialTransactions": 0,
+    "limits": [
+      "Intervals describe Monte Carlo variation inside assumptions, not real frontier performance uncertainty.",
+      "The useful retained ordering is conditional; autonomous discovery of that ordering was not observed.",
+      "The local falseAdmissions field includes misclassified non-inventive fallbacks:16 invalid method proposals plus5 fallback false passes per arm, not graph Alpha admission.",
+      "A projected future campaign count is neither guaranteed demand nor collected revenue.",
+      "The resource upper bound allocates capacity solely to this experiment; ordinary service work would reduce it.",
+      "The experiment charges optional C research, not retention of learning already paid in customer A."
+    ]
+  }
+}

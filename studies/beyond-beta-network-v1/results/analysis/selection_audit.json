@@ -1,0 +1,54 @@
+{
+  "schema": "beyond-beta-selection-audit/v1",
+  "passed": true,
+  "selectedPoliciesSHA256": "eaf2b21e7851a93f8970f94b6498700154ef17c95fa1fb390d96638baa16dc37",
+  "amendmentSHA256": "4150f6d01fafbbc73e486eafc17ad853e6ee150ceadc39118332e28cf308aaa9",
+  "originalPolicyHistories": 3240,
+  "additionalSymmetricBetaHistories": 1440,
+  "originalNetworkWinnersPreserved": true,
+  "confirmationResultsUsed": false,
+  "selectionChecks": {
+    "conservative": {
+      "networkPolicyUnchanged": "p0.5-s0-h1.25-r1",
+      "symmetricBetaWinner": "beta-p0.5-s0-r1",
+      "enterpriseWinner": "beta-p0.5-s0-r1",
+      "trainingRiskConstraintSatisfied": true,
+      "priceRatio": 0.5,
+      "scarcityCoefficient": 0,
+      "reserveFactor": 1,
+      "scientificConfirmationClaim": false
+    },
+    "central": {
+      "networkPolicyUnchanged": "p0.5-s0.1-h1.25-r1",
+      "symmetricBetaWinner": "beta-p0.5-s0.1-r1",
+      "enterpriseWinner": "beta-p0.5-s0.1-r1",
+      "trainingRiskConstraintSatisfied": true,
+      "priceRatio": 0.5,
+      "scarcityCoefficient": 0.1,
+      "reserveFactor": 1,
+      "scientificConfirmationClaim": false
+    },
+    "favorable": {
+      "networkPolicyUnchanged": "p0.65-s0.1-h1.25-r1",
+      "symmetricBetaWinner": "beta-p0.65-s0.1-r1",
+      "enterpriseWinner": "beta-p0.65-s0.1-r1",
+      "trainingRiskConstraintSatisfied": true,
+      "priceRatio": 0.65,
+      "scarcityCoefficient": 0.1,
+      "reserveFactor": 1,
+      "scientificConfirmationClaim": false
+    }
+  },
+  "zeroInsolvenciesWilsonUpper95ByWorldCount": {
+    "12": 0.24249400665524087,
+    "24": 0.1379762046749802,
+    "128": 0.029136956273508416
+  },
+  "interpretation": [
+    "The fairness amendment was registered after the first development screen and before any confirmation.",
+    "Beta received the same price/scarcity/reserve freedoms; network winners were not retuned upward.",
+    "The enterprise selecting Beta in training is a development decision, not evidence of confirmed dominance.",
+    "A sample insolvency constraint does not prove the true modeled frequency is at most5%. Use fresh-confirmation Wilson intervals.",
+    "A capacity holdout of12 independent worlds cannot establish a5% upper insolvency risk: even zero events has a24.25% Wilson upper bound."
+  ]
+}

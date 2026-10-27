@@ -1,0 +1,21 @@
+% SPDX-License-Identifier: Apache-2.0
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec,microtype,needspace}
+\definecolor{studyaccent}{HTML}{5B2B87}
+\definecolor{studymuted}{HTML}{666273}
+\pagestyle{fancy}\fancyhf{}
+\setlength{\headheight}{15pt}
+\fancyhead[L]{\small\color{studymuted}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\small\color{studymuted}Evidence and calibration}
+\fancyfoot[L]{\small\color{studymuted}TRANSFORMATIONAL INTELLIGENCE ∞}
+\fancyfoot[R]{\small\color{studymuted}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\titleformat{\section}{\large\bfseries\color{studyaccent}}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{studyaccent}}{}{0pt}{}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{5pt}
+\setlength{\tabcolsep}{4pt}
+\let\studysection\section
+\renewcommand{\section}{\Needspace{7\baselineskip}\studysection}
+\let\studysubsection\subsection
+\renewcommand{\subsection}{\Needspace{5\baselineskip}\studysubsection}

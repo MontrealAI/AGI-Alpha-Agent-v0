@@ -1,0 +1,49 @@
+{
+  "checked_date": "2026-10-26",
+  "evidence_category": "Reported by external sources",
+  "verification": "Reopened official model, pricing, latest-model, reasoning, billing, and Terra announcement pages. No model API call, access purchase, or subscription entitlement inference.",
+  "sources": [
+    {"id":"OAI-ASTRA","url":"https://developers.openai.com/api/docs/models/gpt-6-astra","ref":"turn31view0"},
+    {"id":"OAI-TERRA","url":"https://developers.openai.com/api/docs/models/gpt-6.1-terra","ref":"turn31view2"},
+    {"id":"OAI-PRICE","url":"https://developers.openai.com/api/docs/pricing","ref":"turn34view4"},
+    {"id":"OAI-MODE","url":"https://developers.openai.com/api/docs/guides/reasoning","ref":"turn36view0"},
+    {"id":"OAI-GUIDE","url":"https://developers.openai.com/api/docs/guides/latest-model","ref":"turn34view3"},
+    {"id":"OAI-BILLING","url":"https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform","ref":"turn42view0"},
+    {"id":"OAI-TERRA-ANNOUNCE","url":"https://openai.com/index/introducing-gpt-6-1-terra/","ref":"turn42view1"}
+  ],
+  "models": [
+    {
+      "id":"gpt-6-astra","date_pinned_snapshot":null,"selected_mode":"pro","selected_effort":"max",
+      "access_route":"Responses API; API usage billed separately from ChatGPT subscription",
+      "supported_efforts":["low","medium","high","xhigh","max"],
+      "context_tokens":1050000,"max_output_tokens_per_call":128000,"knowledge_cutoff":"2026-04-30",
+      "standard_usd_per_million":{"ordinary_input":10,"cache_read":1,"cache_write_30m":12.5,"cache_write_12h":25,"output_including_reasoning":50},
+      "role_suitability":"Officially described for demanding reasoning, coding, computer use, research and document creation; this does not calibrate algorithm invention or customer acceptance."
+    },
+    {
+      "id":"gpt-6.1-terra","date_pinned_snapshot":null,"selected_mode":"standard","selected_effort":"max",
+      "access_route":"Responses API for tools; API usage billed separately from ChatGPT subscription",
+      "supported_efforts":["none","low","medium","high","xhigh","max"],
+      "context_tokens":1050000,"max_output_tokens_per_call":128000,"knowledge_cutoff":"2026-06-01",
+      "standard_usd_per_million":{"ordinary_input":1,"cache_read":0.05,"cache_write_30m":1.25,"cache_write_12h":2.5,"output_including_reasoning":5},
+      "role_suitability":"Officially described for visual reasoning, computer use and writing; visual/execution role selected where supported, with no assumed generic expertise gain."
+    }
+  ],
+  "billing_rules":{
+    "pro":"Aggregates internal model work at selected model standard token rates; no fixed Pro multiplier.",
+    "reasoning":"Included in billed output; do not add twice.",
+    "input_partition":"Ordinary input equals total minus cache reads and writes; write tariff replaces ordinary input tariff.",
+    "long_context":"More than 272000 input tokens in one request: 2x input/cache and 1.5x output for the whole request.",
+    "short_request_assumption":"New workflow explicitly splits aggregate role work into requests of at most 200000 input and 128000 output tokens. This is a modeled orchestration choice, not an observed trace.",
+    "subscription":"ChatGPT subscription and API billing are separate. No subscription-funded unlimited production is assumed."
+  },
+  "tools":{
+    "web_search_usd_per_call":0.01,"file_search_usd_per_call":0.0025,"file_storage_usd_per_gb_day_after_free_allowance":0.10,
+    "container_reference_usd_per_20minutes":{"1GB":0.03,"4GB":0.12,"16GB":0.48,"64GB":1.92},
+    "container_note":"The current page also states eligible sessions can bill per minute with a five-minute minimum. Conservative 20-minute blocks may be assumed explicitly; do not silently assert all sessions qualify.",
+    "cpu_solver_price":"Separate external compute calibration required; CPU-hours are not inferred from API container memory-session prices."
+  },
+  "changes_from_same_day_prior_check":"The model and tool price numbers are unchanged. The new record explicitly notes the eligible per-minute container billing clause.",
+  "capacity":"Concurrency, token throughput, deadlines and quotas remain model assumptions; official model support is not evidence of account-specific allowance.",
+  "performance_transfer":"No vendor evaluation score is converted to customer acceptance, correctness, buyer demand, or invention probability."
+}
