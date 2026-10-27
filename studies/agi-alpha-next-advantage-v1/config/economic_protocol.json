@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "stage": "pre-economic-confirmation",
+  "date": "2026-10-27",
+  "source_sha256": "05ccb8e35033fcc5c01cbdc931d1639e3141ad9da96ab3d128cffd91f6d26c2f",
+  "policy_specifications": [
+    {
+      "name": "beta",
+      "retain": false,
+      "share": false,
+      "gym": false,
+      "compose": false,
+      "new_offering": false,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "private",
+      "retain": true,
+      "share": false,
+      "gym": true,
+      "compose": false,
+      "new_offering": false,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "shared",
+      "retain": true,
+      "share": true,
+      "gym": false,
+      "compose": false,
+      "new_offering": false,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "shared_gym",
+      "retain": true,
+      "share": true,
+      "gym": true,
+      "compose": true,
+      "new_offering": false,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "opportunity",
+      "retain": true,
+      "share": true,
+      "gym": true,
+      "compose": true,
+      "new_offering": true,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "beta_open",
+      "retain": false,
+      "share": false,
+      "gym": false,
+      "compose": false,
+      "new_offering": true,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "private_open",
+      "retain": true,
+      "share": false,
+      "gym": true,
+      "compose": true,
+      "new_offering": true,
+      "stronger_beta": false,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "library",
+      "retain": true,
+      "share": true,
+      "gym": true,
+      "compose": true,
+      "new_offering": true,
+      "stronger_beta": false,
+      "library": true,
+      "expand": false
+    },
+    {
+      "name": "beta_upgrade",
+      "retain": false,
+      "share": false,
+      "gym": false,
+      "compose": false,
+      "new_offering": true,
+      "stronger_beta": true,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "opportunity_upgrade",
+      "retain": true,
+      "share": true,
+      "gym": true,
+      "compose": true,
+      "new_offering": true,
+      "stronger_beta": true,
+      "library": false,
+      "expand": false
+    },
+    {
+      "name": "surplus_expansion",
+      "retain": true,
+      "share": true,
+      "gym": true,
+      "compose": true,
+      "new_offering": true,
+      "stronger_beta": false,
+      "library": false,
+      "expand": true
+    }
+  ],
+  "scenarios": {
+    "central": {
+      "lead_probability": 0.22,
+      "buyer_intercept": 1.4,
+      "cost_scale": 1.0,
+      "trust_shift": 0.0,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0
+    },
+    "thin_demand": {
+      "lead_probability": 0.045,
+      "buyer_intercept": 0.2,
+      "cost_scale": 1.0,
+      "trust_shift": -0.5,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0
+    },
+    "costly_delivery": {
+      "lead_probability": 0.22,
+      "buyer_intercept": 1.4,
+      "cost_scale": 6.0,
+      "trust_shift": 0.0,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0
+    },
+    "adverse_market": {
+      "lead_probability": 0.1,
+      "buyer_intercept": 0.6,
+      "cost_scale": 3.0,
+      "trust_shift": -0.7,
+      "correlated_failure": 0.1,
+      "reference_scale": 0.6
+    },
+    "congested": {
+      "lead_probability": 0.7,
+      "buyer_intercept": 1.4,
+      "cost_scale": 1.0,
+      "trust_shift": 0.0,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0
+    },
+    "fast_obsolescence": {
+      "lead_probability": 0.22,
+      "buyer_intercept": 1.4,
+      "cost_scale": 1.0,
+      "trust_shift": 0.0,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0,
+      "obsolete_after_days": 14
+    },
+    "fragile_learning": {
+      "lead_probability": 0.22,
+      "buyer_intercept": 1.4,
+      "cost_scale": 1.0,
+      "trust_shift": 0.0,
+      "correlated_failure": 0.025,
+      "reference_scale": 1.0,
+      "campaign_probability_scale": 0.4,
+      "transfer_reliability": 0.55
+    }
+  },
+  "price_search": [
+    0.35,
+    0.5,
+    0.65,
+    0.8,
+    0.95,
+    1.1
+  ],
+  "algorithm": "finite-price expected-margin choice; conservative finite-horizon investment value with capacity shadow cost",
+  "scope": "bounded policy class; no global optimality claim; no policy tuning on economic confirmation",
+  "development": "actual numerical development only; confirmation hidden from action selection",
+  "seed_domains": {
+    "enterprise_confirmation": [
+      70000,
+      70127
+    ],
+    "frontier": [
+      90000,
+      90063
+    ]
+  },
+  "primary_metrics": [
+    "complete-cost profit",
+    "collections",
+    "available funds",
+    "quality-adjusted productivity",
+    "downside"
+  ],
+  "limitations": [
+    "assumed buyer choice and demand",
+    "researcher-authored opportunity menu",
+    "no live frontier-model task evaluation",
+    "public algorithmic rather than independently locked holdouts"
+  ]
+}

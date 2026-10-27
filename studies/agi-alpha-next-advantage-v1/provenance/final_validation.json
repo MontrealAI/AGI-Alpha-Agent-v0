@@ -1,0 +1,68 @@
+{
+  "schema": "next-advantage-final-validation/v1",
+  "date": "2026-10-27",
+  "upstream_base": "80b345828f34fd8a6e592977dd17ef37141305f4",
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "checks": [
+    {
+      "command": "PYTHONPATH=/tmp/next-advantage-ortools python -m pytest -q tests --noconftest",
+      "scope": "Standalone research suite from study root; not full repository coverage or release acceptance.",
+      "exit_code": 0,
+      "result": "............................................                             [100%]\n44 passed in 2.52s",
+      "log": "provenance/validation_logs/pytest.txt"
+    },
+    {
+      "command": "python -m ruff check src tests web/build_web.py verify_evidence.py",
+      "exit_code": 0,
+      "result": "All checks passed!",
+      "log": "provenance/validation_logs/ruff.txt"
+    },
+    {
+      "command": "python -m mypy --strict src web/build_web.py verify_evidence.py",
+      "exit_code": 1,
+      "result": "12 errors in 7 files; checked 10 source files. Frozen experimental files preserved. This is not a type-check pass.",
+      "log": "provenance/validation_logs/mypy.txt"
+    }
+  ],
+  "browser": {
+    "record": "evidence/web_validation.json",
+    "record_sha256": "1d5e3bcf0b7e3f2b55098569133b9fc7b4a721aeb24aee80fb5d27b3d35ec1ff",
+    "selections": 154,
+    "viewports": [
+      [
+        1440,
+        1100
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "errors": 0,
+    "external_requests": 0,
+    "manifest_link": "Created after browser validation; final manifest verifies this report."
+  },
+  "pdf": {
+    "command": "latexmk -cd -pdf -interaction=nonstopmode -halt-on-error paper/enterprise-next-advantage.tex",
+    "exit_code": 0,
+    "pages": 21,
+    "raster_command": "pdftoppm -scale-to 1100 -png paper/enterprise-next-advantage.pdf /tmp/next-advantage-pdf-final/page",
+    "visual_qa": "All pages rendered and contact-sheet inspected; key figures/tables/references inspected at full raster resolution. No clipping, overlaps or overfull boxes observed.",
+    "log": "provenance/validation_logs/latex.txt"
+  },
+  "not_passed_or_not_run": {
+    "strict_typing": "12 errors retained in exact log",
+    "black": "Installed command failed earlier from pathspec dependency incompatibility; not counted as passing. Formatting feedback is advisory, not a substitute for type-checks.",
+    "full_repository_suite": "Not run for this additive standalone study.",
+    "full_pre_commit": "Not completed; targeted Ruff and actual study tests recorded, no waived hosted gates.",
+    "full_software_release": "Not qualified; existing owner lease and required source-specific checks preserved.",
+    "repository_node_pin": "Native research fixtures used Node 24.22.1; repository prescribes 22.17.1.",
+    "complete_dependency_lock": "Direct observed versions pinned; no transitive lock/container digest.",
+    "live_frontier_customers_payments_ens": "Not run; modeled markets and synthetic identity fixtures remain labeled."
+  }
+}
