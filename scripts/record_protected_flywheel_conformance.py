@@ -148,7 +148,8 @@ def record() -> dict[str, Any]:
                 "manifest": candidate["manifest"],
                 "plan": candidate["plan"],
                 "assessment": candidate["decision"],
-                "invocation": network["invocations"]["fresh-peer"],
+                "invocation": service.inspect_invocation("fresh-peer")["receipt"],
+                "invocation_request": service.inspect_invocation("fresh-peer")["request"],
                 "costs": state["costs"].report(),
                 "fictional_payment_reconciliation": {
                     "before": before_payment,

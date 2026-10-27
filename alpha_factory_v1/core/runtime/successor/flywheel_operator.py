@@ -77,6 +77,8 @@ def add_commands(commands: Any) -> None:
     parser.add_argument("--output", type=Path, required=True)
     actions = parser.add_subparsers(dest="flywheel_action", required=True)
     actions.add_parser("status", help="Report connector and operating qualification limits without invoking providers")
+    receipt = actions.add_parser("receipt", help="Export an existing durable invocation request and receipt")
+    receipt.add_argument("mission_id")
     for action in (
         "configure",
         "plan",
@@ -87,6 +89,8 @@ def add_commands(commands: Any) -> None:
         "rotate-key",
         "reuse-acceptance",
         "account",
+        "archive",
+        "migrate",
     ):
         sub = actions.add_parser(action, help="Apply a separately signed bounded " + action + " decision")
         sub.add_argument("signed", type=Path)
@@ -119,7 +123,9 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",
             "capsule_export": "controlled-invocation-only",
         }
-    if action == "status":
+    if action == "receipt":
+        result = service.inspect_invocation(args.mission_id)
+    if action in {"status", "receipt"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:
@@ -154,6 +160,10 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         service.rotate(signed)
     elif action == "reuse-acceptance":
         result = service.accept_reuse(signed)
+    elif action == "archive":
+        result = service.archive(signed)
+    elif action == "migrate":
+        service.migrate(signed)
     else:
         raise ValueError("unsupported protected Flywheel command")
     private_write(args.output, canonical({"action": action, "result": result, "spending_authority_granted": False}))

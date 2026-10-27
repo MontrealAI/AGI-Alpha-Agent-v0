@@ -1685,7 +1685,7 @@ def test_interrupted_selector_keeps_consumed_proof_and_unknown_cost(
     with pytest.raises(SystemExit):
         s["service"].invoke(ident, request, token)
     reopened = Journal(s["journal"].root)
-    receipt = reopened.latest("@transformation-library:v1")[BRANCH]["invocations"][request.mission_id]
+    receipt = reopened.latest("@flywheel-invocation:" + request.mission_id)["receipt"]
     assert receipt["status"] == "executing-or-uncertain" and receipt["successful_reuse"] is False
     assert reopened.latest("@flywheel-challenge:" + token.challenge_id)["used"] is True
     assert s["costs"].snapshot()["charges"]["reuse/" + request.mission_id]["accrued_micro_usd"] is None
@@ -1913,3 +1913,187 @@ def test_total_rpc_deadline_cancels_stalling_headers_and_trickling_body(
         rpc.call("eth_chainId", [], deadline=started + 0.08)
     assert time.monotonic() - started < 0.5
     assert closed
+
+
+def close_zero_cost_attempt(s: dict[str, Any], mission_id: str) -> None:
+    for category in sorted(CATEGORIES):
+        charge = Charge(
+            activity_id="reuse/" + mission_id if category == "compute" else f"close/{mission_id}/{category}",
+            mission_id=mission_id,
+            bucket="B",
+            category=category,
+            accrued_micro_usd=0,
+            paid_micro_usd=0,
+            basis="attested",
+            evidence_digest=ZERO,
+            note="Explicitly fictional zero-cost storage conformance fixture",
+        )
+        account(
+            s, "resolve" if category == "compute" else "charge", charge.model_dump(), f"close/{mission_id}/{category}"
+        )
+    account(
+        s,
+        "seal-reuse",
+        {"mission_id": mission_id, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+        "seal/" + mission_id,
+    )
+
+
+def test_invocation_history_is_durable_beyond_the_bounded_working_cache(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+    from alpha_factory_v1.core.runtime.successor.protocol import canonical
+
+    s = setup
+    ident = admitted(s)
+    monkeypatch.setattr(flywheel_capsules, "execute_selection", lambda *args: {"blob": "x" * 70_000})
+    for index in range(34):
+        s["wallet"] = Account.create()
+        for reader in s["rpc"]:
+            reader.owners[namehash("two.agent.agi.eth").hex()] = s["wallet"].address.lower()
+        request = invocation().model_copy(update={"mission_id": f"capacity-{index}"})
+        receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+        assert receipt["status"] == "executed-awaiting-acceptance-and-complete-cost"
+        close_zero_cost_attempt(s, request.mission_id)
+    current = s["library"].snapshot()
+    assert len(current[BRANCH]["invocations"]) == 32
+    assert "capacity-0" not in current[BRANCH]["invocations"]
+    assert len(canonical(current)) < 200_000
+    stored = s["service"].inspect_invocation("capacity-0")
+    assert stored["receipt"]["result"]["blob"] == "x" * 70_000
+    request = Invocation.model_validate(stored["request"])
+    s["wallet"] = Account.create()
+    for reader in s["rpc"]:
+        reader.owners[namehash("two.agent.agi.eth").hex()] = s["wallet"].address.lower()
+    with pytest.raises(Conflict, match="already attempted"):
+        s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+
+
+@pytest.mark.parametrize("capacity", ["bytes", "nodes"])
+def test_shared_capacity_reserves_completion_and_full_unicode_revocation(setup: dict[str, Any], capacity: str) -> None:
+    from alpha_factory_v1.core.runtime.successor.protocol import MAX_JSON_NODES, canonical
+    from alpha_factory_v1.core.runtime.successor.transformation_library import MAX_SHARED_LIBRARY_BYTES
+
+    s = setup
+    ident = admitted(s)
+    with s["journal"].transaction() as cx:
+        state, network = s["service"]._state(cx)
+        if capacity == "bytes":
+            state["capacity_padding"] = ""
+            remaining = MAX_SHARED_LIBRARY_BYTES - len(canonical(state)) - network["reserved_capacity_bytes"] - 1024
+            state["capacity_padding"] = "x" * remaining
+        else:
+            pending: list[Any] = [state]
+            nodes = 0
+            while pending:
+                item = pending.pop()
+                nodes += 1
+                if isinstance(item, dict):
+                    pending.extend(item.values())
+                elif isinstance(item, list):
+                    pending.extend(item)
+            state["capacity_padding"] = [None] * (MAX_JSON_NODES - nodes - network["reserved_capacity_nodes"] - 64)
+        s["service"]._commit(cx, state)
+    with s["journal"].transaction() as cx:
+        state = s["library"].snapshot()
+        state["legacy_growth"] = "x" * 5000 if capacity == "bytes" else [None] * 512
+        with pytest.raises(Conflict, match="reserves"):
+            s["library"]._persist(cx, state)
+    request = invocation()
+    receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+    assert receipt["result"] and receipt["status"] == "executed-awaiting-acceptance-and-complete-cost"
+    decision = {
+        "candidate_digest": ident,
+        "previous_digest": digest("flywheel-entry", entry(s, ident)),
+        "reason": "🛰" * 4000,
+        "expires_at": int(time.time()) + 60,
+    }
+    s["service"].control(signed(s, "revoke", "controller", decision, "capacity-revocation"), "revoke")
+    assert entry(s, ident)["state"] == "revoked"
+    assert s["service"].inspect_invocation(request.mission_id)["receipt"] == receipt
+
+
+def test_oversized_output_is_a_durable_failed_attempt_not_a_lost_completion(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+
+    s = setup
+    ident = admitted(s)
+    monkeypatch.setattr(flywheel_capsules, "execute_selection", lambda *args: {"blob": "x" * 1_100_000})
+    request = invocation()
+    receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+    assert receipt["status"] == "failed" and receipt["error"] == "OutputStorageBudgetExceeded"
+    assert receipt["result"] is None
+    assert s["service"].inspect_invocation(request.mission_id)["receipt"] == receipt
+    assert s["costs"].report()["unknown_costs"]
+
+
+def test_terminal_archive_preserves_encrypted_history_and_cannot_be_reactivated(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    control(s, ident, "revoke")
+    prior = entry(s, ident)
+    result = s["service"].archive(
+        signed(
+            s,
+            "archive",
+            "controller",
+            {
+                "candidate_digest": ident,
+                "previous_digest": digest("flywheel-entry", prior),
+                "reason": "Archive terminal conformance fixture",
+            },
+            "archive-terminal",
+        )
+    )
+    stored = s["journal"].latest(result["journal_key"])
+    assert stored["entry"] == prior and stored["entry"]["ciphertext"]
+    assert "ciphertext" not in entry(s, ident)
+    for action in ("admit", "validate", "revoke"):
+        with pytest.raises(Conflict):
+            control(s, ident, action, "archived-" + action)
+    s["service"].configure(
+        signed(s, "configure", "controller", {"beta_digest": "d" * 64, "policy_digest": POLICY}, "after-archive")
+    )
+    assert entry(s, ident)["state"] == "revoked"
+    s["service"].keys["new-key"] = secrets_bytes()
+    s["service"].active_key = "new-key"
+    s["service"].rotate(signed(s, "rotate-key", "controller", {"target_key_id": "new-key"}, "rotate-after-archive"))
+    assert s["journal"].latest(result["journal_key"])["entry"] == prior
+
+
+def test_unqualified_pre_release_migration_is_signed_stopped_and_preserves_originals(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+    with s["journal"].transaction() as cx:
+        state, network = s["service"]._state(cx)
+        network.pop("storage_schema")
+        network["invocations"] = {request.mission_id: receipt}
+        s["service"]._commit(cx, state)
+    old = s["library"].snapshot()[BRANCH]
+    binding = digest("flywheel-pre-release-state", old)
+    authorization = signed(
+        s,
+        "migrate",
+        "controller",
+        {"previous_digest": binding, "reason": "Retire unqualified pre-release records without relabeling evidence"},
+        "migrate-fixture",
+    )
+    with pytest.raises(Conflict, match="stopped|stop the runtime"):
+        s["service"].migrate(authorization)
+    with pytest.raises(Conflict, match="migration"):
+        s["service"].inspect_invocation(request.mission_id)
+    s["journal"].control(True)
+    s["service"].migrate(authorization)
+    current = s["library"].snapshot()[BRANCH]
+    assert current["storage_schema"] == 2 and current["active"] == {}
+    assert entry(s, ident)["state"] == "revoked"
+    assert s["journal"].latest("@flywheel-pre-release:" + binding)["network"] == old
+    stored = s["service"].inspect_invocation(request.mission_id)
+    assert stored["receipt"] == receipt and stored["legacy_unqualified"] is True and stored["request"] is None
+    with pytest.raises(Conflict):
+        s["service"].migrate(authorization)

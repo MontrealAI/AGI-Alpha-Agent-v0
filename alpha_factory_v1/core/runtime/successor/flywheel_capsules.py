@@ -37,10 +37,13 @@ from .transformation import (
     assert_public_content,
     _checked_source_bytes,
 )
-from .transformation_library import KEY, TransformationLibrary
+from .transformation_library import KEY, PROTECTED_BRANCH, TransformationLibrary
 from .trust import SignedEnvelope
 
-BRANCH = "protected_network_v1"
+BRANCH = PROTECTED_BRANCH
+MAX_INVOCATION_INPUT_BYTES = 250_000
+MAX_INVOCATION_RECORD_BYTES = 1_000_000
+REVOCATION_RESERVE_BYTES = 25_000
 
 
 def source_fingerprints(document: SourceDocument) -> set[str]:
@@ -164,6 +167,7 @@ class FrontierRun(StrictModel):
             or not self.usage
             or len(self.usage) > 32
             or any(type(v) is not int or not 0 <= v <= 10**12 for v in self.usage.values())
+            or any(not 1 <= len(key) <= 80 for key in self.usage)
         ):
             raise ValueError("complete bounded usage and execution interval required")
         return self
@@ -234,6 +238,7 @@ class ProtectedLibrary:
             state = self.library.snapshot()
             if BRANCH not in state:
                 state[BRANCH] = {
+                    "storage_schema": 2,
                     "entries": {},
                     "active": {},
                     "beta_digest": None,
@@ -317,8 +322,14 @@ class ProtectedLibrary:
         return self._boot_execution_digest
 
     def _commit(self, cx: Any, state: dict[str, Any]) -> None:
-        canonical(state)
-        self.journal.append(cx, KEY, state)
+        network = state[BRANCH]
+        revocable = sum(
+            not entry.get("archive") and entry["state"] != "revoked" for entry in network["entries"].values()
+        )
+        pending = sum(row["status"] == "executing-or-uncertain" for row in network["invocations"].values())
+        network["reserved_capacity_bytes"] = 32_768 + REVOCATION_RESERVE_BYTES * revocable + 128 * pending
+        network["reserved_capacity_nodes"] = 2048 + 64 * revocable + 8 * pending
+        self.library._persist(cx, state)
         self.checkpoint.advance(self.journal, cx)
 
     def _state(self, cx: Any) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -328,7 +339,34 @@ class ProtectedLibrary:
             raise Conflict("runtime configuration changed; restart and requalify")
         self.checkpoint.verify(self.journal, cx)
         state = self.journal.document(self.journal.latest(KEY, cx))
+        if state[BRANCH].get("storage_schema") != 2:
+            raise Conflict("unqualified pre-release storage requires explicit signed migration while stopped")
         return state, state[BRANCH]
+
+    @staticmethod
+    def _invocation_key(mission_id: str) -> str:
+        return "@flywheel-invocation:" + mission_id
+
+    def inspect_invocation(self, mission_id: str) -> dict[str, Any]:
+        """Operator-only durable request/receipt history, including evicted cache rows."""
+        with self.journal.transaction() as cx:
+            self._state(cx)
+            return self.journal.document(self.journal.latest(self._invocation_key(mission_id), cx))
+
+    def _cache_invocation(self, network: dict[str, Any], mission_id: str, receipt: dict[str, Any]) -> None:
+        index = network["invocations"]
+        index[mission_id] = {
+            "status": receipt["status"],
+            "receipt_digest": digest("flywheel-reuse-receipt", receipt),
+            "journal_key": self._invocation_key(mission_id),
+            "updated_at_ms": time.time_ns() // 1_000_000,
+        }
+        completed = sorted(
+            (key for key in index if index[key]["status"] != "executing-or-uncertain"),
+            key=lambda key: index[key]["updated_at_ms"],
+        )
+        for key in completed[:-32]:
+            del index[key]
 
     def _signed(self, signed: SignedEnvelope, action: str, role: str) -> dict[str, Any]:
         payload = self.trust.verify(signed, "flywheel-" + action, role)
@@ -339,17 +377,33 @@ class ProtectedLibrary:
             raise ValueError("protected transition requires exact journal-bound signed terms")
         return payload
 
-    def _begin(self, network: dict[str, Any], signed: SignedEnvelope) -> str:
+    def _begin(self, network: dict[str, Any], signed: SignedEnvelope, cx: Any) -> str:
         payload = signed.payload
         operation = payload["operation_id"]
         if not isinstance(operation, str) or not 1 <= len(operation) <= 128:
             raise ValueError("bounded protected operation identity required")
+        try:
+            self.journal.latest("@flywheel-operation:" + operation, cx)
+        except KeyError:
+            pass
+        else:
+            raise Conflict("protected transition already consumed; inspect current durable state")
         if operation in network["operations"]:
             raise Conflict("protected transition already consumed; inspect current durable state")
-        if len(network["operations"]) >= 4096:
-            raise Conflict("protected library capacity reached")
         network["operations"][operation] = digest("flywheel-operation", signed.model_dump())
-        network["history"].append({"signed": signed.model_dump(), "at": int(time.time())})
+        while len(network["operations"]) > 128:
+            del network["operations"][next(iter(network["operations"]))]
+        self.journal.append(
+            cx, "@flywheel-operation:" + operation, {"signed": signed.model_dump(), "at": int(time.time())}
+        )
+        network["history"] = [
+            *network["history"][-63:],
+            {
+                "operation_id": operation,
+                "digest": digest("flywheel-operation", signed.model_dump()),
+                "at": int(time.time()),
+            },
+        ]
         return operation
 
     def configure(self, signed: SignedEnvelope) -> None:
@@ -369,12 +423,12 @@ class ProtectedLibrary:
             raise ValueError("configuration must bind the actual installed execution environment")
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             if record != {k: network.get(k) for k in record}:
                 network.update(record)
                 network["active"] = {}
                 for entry in network["entries"].values():
-                    if entry["state"] not in {"revoked", "rejected"}:
+                    if not entry.get("archive") and entry["state"] not in {"revoked", "rejected"}:
                         entry["state"] = "requires-requalification"
             self._commit(cx, state)
 
@@ -397,7 +451,7 @@ class ProtectedLibrary:
         ciphertext = AESGCM(self.keys[self.active_key]).encrypt(nonce, canonical(program), aad)
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             if ident in network["entries"] or len(network["entries"]) >= 128:
                 raise Conflict("duplicate candidate or capsule capacity reached")
             versions = [
@@ -448,7 +502,7 @@ class ProtectedLibrary:
         plan = EvaluationPlan.model_validate(payload["record"])
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             entry = network["entries"][plan.candidate_digest]
             if (
                 entry["state"] not in {"candidate", "requires-requalification"}
@@ -502,7 +556,7 @@ class ProtectedLibrary:
         evidence = AlphaEvidence.model_validate(payload["record"])
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             matches = [
                 (ident, entry)
                 for ident, entry in network["entries"].items()
@@ -637,9 +691,11 @@ class ProtectedLibrary:
             raise ValueError("control must bind current state, reason and expiry")
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             ident = record["candidate_digest"]
             entry = network["entries"][ident]
+            if entry.get("archive"):
+                raise Conflict("archived lifecycle is terminal; retain a new version")
             if digest("flywheel-entry", entry) != record["previous_digest"]:
                 raise Conflict("candidate changed since signed control decision")
             if entry["state"] == "revoked":
@@ -654,7 +710,7 @@ class ProtectedLibrary:
                     added = {
                         key
                         for key, child in network["entries"].items()
-                        if key not in changed and set(child["manifest"]["dependency_digests"]) & changed
+                        if key not in changed and set(child["manifest"].get("dependency_digests", [])) & changed
                     }
                     if not added:
                         break
@@ -811,6 +867,8 @@ class ProtectedLibrary:
 
     def invoke(self, ident: str, invocation: Invocation, proof: AccessRequest) -> dict[str, Any]:
         invocation = Invocation.model_validate(invocation.model_dump())
+        if len(canonical(invocation)) > MAX_INVOCATION_INPUT_BYTES:
+            raise ValueError("invocation input exceeds the durable record budget")
         request_hash = digest("flywheel-invocation", invocation)
         prepared = self.access.prepare(proof, ident, "invoke", request_hash)
         activity = "reuse/" + invocation.mission_id
@@ -850,7 +908,11 @@ class ProtectedLibrary:
                 raise ValueError(
                     "reuse requires fresh source material outside origin and historical evaluation exposure"
                 )
-            if invocation.mission_id in network["invocations"]:
+            try:
+                self.journal.latest(self._invocation_key(invocation.mission_id), cx)
+            except KeyError:
+                pass
+            else:
                 raise Conflict("mission invocation already attempted; inspect durable receipt")
             costs = self.costs.snapshot(cx)
             self.costs.require_open(costs, invocation.mission_id, "B")
@@ -892,7 +954,12 @@ class ProtectedLibrary:
                 "qualification_digest": digest("flywheel-plan", entry["plan"]),
             }
             costs["charges"][activity] = {**pending.model_dump(), "signed": None}
-            network["invocations"][invocation.mission_id] = receipt
+            self.journal.append(
+                cx,
+                self._invocation_key(invocation.mission_id),
+                {"request": invocation.model_dump(), "receipt": receipt},
+            )
+            self._cache_invocation(network, invocation.mission_id, receipt)
             self.journal.append(cx, COST_KEY, costs)
             self._commit(cx, state)
             # This committed reservation survives process interruption. No paid or
@@ -934,12 +1001,19 @@ class ProtectedLibrary:
             error=error,
             status="executed-awaiting-acceptance-and-complete-cost" if result is not None else "failed",
         )
+        try:
+            if len(canonical({"request": invocation, "receipt": receipt})) > MAX_INVOCATION_RECORD_BYTES:
+                raise ValueError("result exceeds durable record budget")
+        except (TypeError, ValueError):
+            receipt.update(result=None, status="failed", error="OutputStorageBudgetExceeded")
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            current = network["invocations"][invocation.mission_id]
+            stored = self.journal.document(self.journal.latest(self._invocation_key(invocation.mission_id), cx))
+            current = stored["receipt"]
             if current["status"] != "executing-or-uncertain" or current["attempt_digest"] != attempt_digest:
                 raise Conflict("invocation changed; preserve its durable uncertain attempt")
-            network["invocations"][invocation.mission_id] = receipt
+            self.journal.append(cx, self._invocation_key(invocation.mission_id), {**stored, "receipt": receipt})
+            self._cache_invocation(network, invocation.mission_id, receipt)
             self._commit(cx, state)
         return copy.deepcopy(receipt)
 
@@ -950,8 +1024,11 @@ class ProtectedLibrary:
         record = ReuseAcceptance.model_validate(payload["record"])
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
-            receipt = network["invocations"][record.mission_id]
+            self._begin(network, signed, cx)
+            stored = self.journal.document(self.journal.latest(self._invocation_key(record.mission_id), cx))
+            if stored.get("legacy_unqualified"):
+                raise Conflict("legacy unqualified receipt cannot become qualified reuse")
+            receipt = stored["receipt"]
             entry = self._eligible(network, receipt["candidate_digest"])
             self._dependencies(network, entry)
             current_plan = entry["plan"]["payload"]["record"]
@@ -1025,8 +1102,121 @@ class ProtectedLibrary:
                 baseline_output_digest=baseline.output_digest,
                 cost_report=costs,
             )
+            if len(canonical({**stored, "receipt": receipt})) > MAX_INVOCATION_RECORD_BYTES:
+                raise ValueError("acceptance evidence exceeds the durable record budget")
+            self.journal.append(cx, self._invocation_key(record.mission_id), {**stored, "receipt": receipt})
+            self._cache_invocation(network, record.mission_id, receipt)
             self._commit(cx, state)
             return copy.deepcopy(receipt)
+
+    def _archive_entry(self, cx: Any, ident: str, entry: dict[str, Any], provenance: str) -> dict[str, Any]:
+        key = "@flywheel-capsule-archive:" + ident
+        binding = digest("flywheel-entry", entry)
+        self.journal.append(cx, key, {"entry": entry, "entry_digest": binding, "provenance": provenance})
+        return {
+            "manifest": {name: entry["manifest"][name] for name in ("skill_id", "version")},
+            "state": entry["state"],
+            "producer": entry["producer"],
+            "plan": None,
+            "evidence": None,
+            "archive": {"journal_key": key, "entry_digest": binding},
+        }
+
+    def archive(self, signed: SignedEnvelope) -> dict[str, Any]:
+        """Compact only terminal entries; immutable encrypted history stays in this Journal."""
+        signed = SignedEnvelope.model_validate(copy.deepcopy(signed.model_dump()))
+        payload = self._signed(signed, "archive", "controller")
+        record = payload["record"]
+        if (
+            not isinstance(record, dict)
+            or set(record) != {"candidate_digest", "previous_digest", "reason"}
+            or not isinstance(record["reason"], str)
+            or not 1 <= len(record["reason"]) <= 4000
+        ):
+            raise ValueError("archive requires exact current entry and reason")
+        with self.journal.transaction() as cx:
+            state, network = self._state(cx)
+            self._begin(network, signed, cx)
+            ident = record["candidate_digest"]
+            entry = network["entries"][ident]
+            if entry.get("archive") or entry["state"] not in {"revoked", "rejected"}:
+                raise Conflict("only terminal inactive entries can be archived")
+            if digest("flywheel-entry", entry) != record["previous_digest"]:
+                raise Conflict("entry changed since archive decision")
+            self.library._distinct(signed.principal, "controller", entry["producer"], "producer")
+            terminal = self._archive_entry(cx, ident, entry, "signed-terminal-archive/v1")
+            network["entries"][ident] = terminal
+            self._commit(cx, state)
+            return copy.deepcopy(terminal["archive"])
+
+    def migrate(self, signed: SignedEnvelope) -> None:
+        """Explicitly retire unqualified pre-release storage, preserving every original record."""
+        signed = SignedEnvelope.model_validate(copy.deepcopy(signed.model_dump()))
+        payload = self._signed(signed, "migrate", "controller")
+        record = payload["record"]
+        if (
+            not isinstance(record, dict)
+            or set(record) != {"previous_digest", "reason"}
+            or not isinstance(record["reason"], str)
+            or not 1 <= len(record["reason"]) <= 4000
+        ):
+            raise ValueError("migration requires exact pre-release state and retirement reason")
+        self._check_custody_files()
+        with self.journal.transaction() as cx:
+            self.checkpoint.verify(self.journal, cx)
+            if self.journal.latest("@control", cx)["state"] != "paused":
+                raise Conflict("stop the runtime before retiring unqualified pre-release state")
+            state = self.journal.document(self.journal.latest(KEY, cx))
+            old = state[BRANCH]
+            if old.get("storage_schema") not in {None, 1}:
+                raise Conflict("pre-release migration does not reinterpret current or future storage")
+            binding = digest("flywheel-pre-release-state", old)
+            if binding != record["previous_digest"]:
+                raise Conflict("pre-release state changed since migration approval")
+            self.journal.append(
+                cx,
+                "@flywheel-pre-release:" + binding,
+                {"network": old, "signed": signed.model_dump(), "qualification": "unqualified-pre-release"},
+            )
+            network = {
+                **old,
+                "storage_schema": 2,
+                "entries": {},
+                "active": {},
+                "operations": {},
+                "history": [],
+                "invocations": {},
+                "beta_digest": None,
+                "policy_digest": None,
+                "execution_digest": None,
+            }
+            for ident, entry in old["entries"].items():
+                terminal = self._archive_entry(cx, ident, entry, "unqualified-pre-release-retirement/v1")
+                terminal["state"] = "revoked"
+                network["entries"][ident] = terminal
+            for operation, fingerprint in old.get("operations", {}).items():
+                key = "@flywheel-operation:" + operation
+                try:
+                    self.journal.latest(key, cx)
+                except KeyError:
+                    self.journal.append(cx, key, {"legacy_operation_digest": fingerprint})
+            for mission, receipt in old.get("invocations", {}).items():
+                if "request_digest" not in receipt:
+                    continue
+                self.journal.append(
+                    cx,
+                    self._invocation_key(mission),
+                    {
+                        "request": None,
+                        "receipt": receipt,
+                        "legacy_unqualified": True,
+                        "request_recovery": "original request was not retained by the pre-release format",
+                    },
+                )
+                self._cache_invocation(network, mission, {**receipt, "status": "legacy-unqualified"})
+            state[BRANCH] = network
+            self._begin(network, signed, cx)
+            self._commit(cx, state)
 
     def rotate(self, signed: SignedEnvelope) -> None:
         """Reencrypt under a separately provisioned key; preserve historical key custody."""
@@ -1036,8 +1226,10 @@ class ProtectedLibrary:
             raise ValueError("rotation must bind the separately provisioned active key")
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            self._begin(network, signed)
+            self._begin(network, signed, cx)
             for ident, entry in network["entries"].items():
+                if entry.get("archive"):
+                    continue
                 if entry["key_id"] == self.active_key:
                     continue
                 aad = canonical(

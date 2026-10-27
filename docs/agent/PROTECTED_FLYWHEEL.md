@@ -180,6 +180,28 @@ manifest. Historical signed Journal snapshots preserve ciphertext and audit hist
 backups preserve that history; they contain the runtime identity key and remain private.
 Encryption keys are separately provisioned and excluded from those backups, bundles, logs and public pages.
 
+Invocation requests and full receipts use separate versioned records in that same Journal. The shared
+working record retains every uncertain attempt and only 32 completed receipt references; eviction never
+removes the durable request, result, cost obligation or replay protection. Signed operations are also
+durable individual records, with bounded working caches. The native `flywheel receipt MISSION_ID` command
+exports a private operator receipt. Inputs are limited to 250,000 canonical bytes and full invocation
+records to 1,000,000. Oversized results become durable failed attempts with unresolved billing, not lost
+completions or successful reuse.
+
+Every writer of the shared library preserves byte and JSON-node reserves before accepting new work.
+These include completion space and 25,000 bytes per revocable entry, covering a maximum-length Unicode
+reason. The existing two-megabyte, 100,000-node journal-record limits remain unchanged. Capacity exhaustion
+refuses new work before execution. A signed controller can archive a revoked/rejected entry into immutable
+encrypted Journal history; its terminal tombstone still prevents reactivation. This bounded slice retains
+the 128 candidate-identity limit; archival does not promise unlimited admissions or storage.
+
+Existing v1.45 local structural records require no migration. An unreleased protected-storage prototype
+cannot silently become qualified storage. With the runtime paused, an exact-state signed controller
+`flywheel migrate` operation preserves the original prototype records, retires its candidates, and starts
+unconfigured current storage. Missing original invocation inputs remain explicitly unknown; historical
+receipts cannot be relabeled qualified reuse. `flywheel archive` and `flywheel migrate` require signed
+records through the existing native operator, never public-page actions.
+
 The service owner must designate key custody, encrypted independent backup, rotation and recovery.
 Rotation reencrypts current records under a separately provisioned active key. Historical backups still
 require historical keys; removing an old key does not rewrite immutable history. Loss of necessary keys
@@ -375,6 +397,29 @@ distincts des programmes chiffrés AES-GCM ; les données associées lient servi
 versionné. L’historique signé et les sauvegardes privées existantes conservent chiffrement et audit.
 Ces sauvegardes contiennent la clé d’identité du runtime et doivent rester privées. Les clés de chiffrement
 sont provisionnées séparément et exclues des sauvegardes, bundles, journaux et pages publics.
+
+Requêtes d’invocation et reçus complets occupent des objets versionnés distincts dans ce même Journal.
+Le registre de travail garde toutes les tentatives incertaines et seulement 32 références terminées ;
+une éviction ne supprime ni requête durable, résultat, obligation ou protection contre la répétition.
+Les opérations signées sont également des objets durables, avec caches bornés. La commande native
+`flywheel receipt MISSION_ID` exporte un reçu privé pour l’opérateur. Limites : 250 000 octets canoniques
+en entrée, 1 000 000 pour l’objet complet. Une sortie excessive devient un échec durable avec facturation
+non rapprochée, jamais une fin perdue ou une réutilisation réussie.
+
+Chaque écriture dans la bibliothèque partagée préserve des réserves d’octets et de nœuds JSON avant
+d’accepter du travail. Elles couvrent la fin d’exécution et 25 000 octets par entrée révocable, y compris
+une raison Unicode de longueur maximale. Les limites existantes de deux mégaoctets et 100 000 nœuds par
+objet restent inchangées. Une capacité insuffisante bloque le nouveau travail avant exécution. Le
+contrôleur peut archiver une entrée révoquée/rejetée dans l’historique chiffré immuable ; sa marque terminale
+empêche toute réactivation. Cette tranche bornée conserve la limite de 128 identités candidates ;
+l’archivage ne promet ni admissions ni stockage illimités.
+
+Les objets structurels locaux v1.45 ne nécessitent aucune migration. Un prototype protégé non publié ne
+devient jamais implicitement qualifié. Runtime en pause, `flywheel migrate`, signé par le contrôleur et lié
+à l’état exact, conserve les originaux, retire ses candidats et initialise le stockage actuel sans
+configuration. Les entrées d’invocation originales manquantes restent explicitement inconnues ; les anciens
+reçus ne deviennent pas une réutilisation qualifiée. `flywheel archive` et `flywheel migrate` exigent des
+objets signés via l’opérateur natif existant, jamais une action depuis la page publique.
 
 Le propriétaire doit définir garde, sauvegarde chiffrée indépendante, rotation et récupération des clés.
 La rotation rechiffre les objets courants sous une clé active séparément provisionnée. Les sauvegardes
