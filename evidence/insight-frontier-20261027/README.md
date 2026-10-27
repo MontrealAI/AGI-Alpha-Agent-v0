@@ -10,8 +10,8 @@ is `scripts/templates/alpha-flywheel/insight-evidence.json`; the new EN/FR inspe
 existing generated `docs/flywheel/index.html`. `docs/agent/INSIGHT_FRONTIER.md` supplies reproduction,
 contracts, economics, permissions, rollback and the next decisive experiment.
 
-Observed engineering: 280 runtime tests, including 35 directed tests; 54 publication checks; strict
-typing of 73 runtime files; 92.64% focused statement coverage of the two new modules; 51 new browser
+Observed engineering: 291 runtime tests, including 46 directed tests; 54 publication checks; strict
+typing of 73 runtime files; 97.57% focused statement coverage of the two new modules; 51 new browser
 checks and 22 preserved journey checks, with two new and six full-page axe audits. These are software
 checks, not counts of customers, independent discovery experiments or scientific samples. The 73
 runtime source files match an unpublished development wheel exactly; installed-target-first replay
@@ -41,3 +41,10 @@ review, applicable PR CI, full resulting-main security/coverage/platform/install
 served artifact identity verification. The canonical public URL is not claimed to contain this increment.
 
 Vincent Boucher — President of MONTREAL.AI
+
+Configured review of `5d89b4c` found three P2s. Current ledger evidence, the complete bundle
+inventory and a compatible sixteen-review limit now gate qualification. `prereview-behavior.json`
+confirms five substantive original-source violations and one valid control; `prereview-probe.py`
+is the compatible local fixture probe. Qualified seed/plan inheritance rechecks current cost and
+construction eligibility. The environment precheck now passes; earlier bootstrap/Black failures
+retain their original outcomes.

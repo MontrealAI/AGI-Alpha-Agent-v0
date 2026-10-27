@@ -18,6 +18,7 @@ Dimension = Literal["novelty", "usefulness", "feasibility", "commercial-plausibi
 DIMENSIONS = {"novelty", "usefulness", "feasibility", "commercial-plausibility"}
 ACTIONS = {"search-freeze", "search-submit", "search-review", "search-assess", "research-seed", "research-plan"}
 KINDS = {"search", "search-submission", "search-review", "search-assessment", "research-seed", "research-plan"}
+MAX_REVIEWS = 16
 
 
 class SearchSource(StrictModel):
@@ -143,7 +144,7 @@ class SearchReview(StrictModel):
 class SearchAssessment(StrictModel):
     assessment_id: Identifier
     submission: EvidenceRef
-    reviews: list[EvidenceRef] = Field(max_length=16)
+    reviews: list[EvidenceRef] = Field(max_length=MAX_REVIEWS)
     construction_observation: EvidenceRef | None
     leakage_audit: EvidenceRef | None
     leakage_disposition: Literal["unassessed", "no-known-leakage", "leakage-found"]
@@ -236,6 +237,114 @@ def _review_inventory(discovery: Any, terms: SearchAssessment, cx: Any) -> None:
         discovery._evidence([observation.artifact, *observation.evidence], cx)
 
 
+def _search_accounting(discovery: Any, sub: SearchSubmission, freeze: SearchFreeze, cx: Any) -> dict[str, Any]:
+    report = discovery.costs.report(sub.cost_mission_id, cx)
+    cap = next(arm.budget.cost_cap_micro_usd for arm in freeze.arms if arm.arm_id == sub.arm_id)
+    known = sum(report["costs"].values())
+    reasons = []
+    if not report["complete"]:
+        reasons.append("search-costs-incomplete")
+    if known > cap:
+        reasons.append("search-ledger-budget-overrun")
+    if known > sub.usage.cost_cap_micro_usd:
+        reasons.append("search-declared-cost-understates-ledger")
+    return {
+        "report": report,
+        "known_cost_micro_usd": known,
+        "frozen_cap_micro_usd": cap,
+        "declared_cost_ceiling_micro_usd": sub.usage.cost_cap_micro_usd,
+        "eligible": not reasons,
+        "reasons": reasons,
+    }
+
+
+def _construction_state(
+    discovery: Any, ref: EvidenceRef | None, sub: SearchSubmission, cx: Any
+) -> tuple[dict[str, Any] | None, list[str]]:
+    from .flywheel_discovery import ExperimentObservation
+
+    if ref is None:
+        return None, ["no-linked-construction"]
+    record = _read_ref(discovery, ref, cx)
+    observation = ExperimentObservation.model_validate(record["terms"])
+    bundle_record = discovery._read("bundle", observation.bundle_id, cx)
+    if bundle_record is None:
+        raise ValueError("construction bundle is missing")
+    bundle = ExplorationBundle.model_validate(bundle_record["spec"])
+    steps = {step.step_id: step for step in bundle.steps}
+    step = steps.get(observation.step_id)
+    if step is None:
+        raise ValueError("construction observation is not a step of its original bundle")
+    mission = discovery._ledger_mission(observation, record["execution_digest"], cx)
+    allocation = discovery._read("mission-cost-allocation", cost_scope(mission, step.cost_bucket), cx)
+    if (
+        allocation is None
+        or ref.journal_key != key("observation", allocation["observation_id"])
+        or allocation["bundle_id"] != observation.bundle_id
+        or not any(item == discovery.journal.document(record) for item in bundle_record["observations"])
+    ):
+        raise ValueError("construction requires the original observation and ledger allocation")
+    witness = discovery._witness(bundle.witness_id, bundle.witness_spec_digest, cx)
+    if witness.opportunity_id != sub.opportunity_id or witness.opportunity_spec_digest != sub.opportunity_spec_digest:
+        raise ValueError("construction belongs to another opportunity or purpose")
+    reasons = []
+    inventory = []
+    seen: set[str] = set()
+    total_cost, elapsed = 0, 0
+    for row in bundle_record["observations"]:
+        terms = ExperimentObservation.model_validate(row["terms"])
+        if terms.step_id not in steps or terms.step_id in seen or terms.bundle_id != bundle.bundle_id:
+            raise ValueError("construction inventory must preserve distinct original bundle steps")
+        current_step = steps[terms.step_id]
+        if not set(current_step.dependencies) <= seen:
+            raise ValueError("construction inventory changes the original dependency order")
+        seen.add(terms.step_id)
+        discovery._evidence([terms.artifact, *terms.evidence], cx)
+        current_mission = discovery._ledger_mission(terms, row["execution_digest"], cx)
+        report = discovery.costs.report(current_mission, cx)
+        cost = report["costs"][current_step.cost_bucket]
+        total_cost += cost
+        elapsed += terms.elapsed_seconds
+        if not report["bucket_complete"][current_step.cost_bucket]:
+            reasons.append("construction-costs-incomplete")
+        if cost > current_step.cost_cap_micro_usd or terms.elapsed_seconds > current_step.seconds_cap:
+            reasons.append("construction-budget-overrun")
+        if terms.interpretation != "supports":
+            reasons.append("construction-has-adverse-or-inconclusive-observations")
+        inventory.append(
+            {
+                "step_id": terms.step_id,
+                "interpretation": terms.interpretation,
+                "ledger_mission_id": current_mission,
+                "current_cost_report": report,
+            }
+        )
+    if total_cost > bundle.total_cost_cap_micro_usd or elapsed > bundle.total_seconds_cap:
+        reasons.append("construction-budget-overrun")
+    if seen != set(steps) or bundle_record["status"] != "completed":
+        reasons.append("construction-not-completed-and-supporting")
+    if record["execution_digest"] is None or observation.acceptance == "not-claimed":
+        reasons.append("construction-acceptance-unqualified")
+    return {
+        "observation": ref.model_dump(),
+        "bundle_digest": bundle_record["digest"],
+        "bundle_status": bundle_record["status"],
+        "inventory": inventory,
+    }, reasons
+
+
+def _inheritance_guard(discovery: Any, assessment: dict[str, Any], cx: Any) -> None:
+    terms = SearchAssessment.model_validate(assessment["spec"])
+    _, sub = _submission(discovery, terms.submission, cx)
+    _, freeze = _freeze(discovery, sub.search_id, cx)
+    _review_inventory(discovery, terms, cx)
+    if assessment["disposition"] == "bounded-discovery-candidate":
+        accounting = _search_accounting(discovery, sub, freeze, cx)
+        _, reasons = _construction_state(discovery, terms.construction_observation, sub, cx)
+        if accounting["reasons"] or reasons:
+            raise Conflict("qualified assessment dependencies changed; reassess current costs and full construction")
+
+
 def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str, Any]]:
     """Dispatch under Discovery's signed controller, transaction, replay and checkpoint boundary."""
     if command.action == "search-freeze":
@@ -302,6 +411,7 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
             "spec": sub.model_dump(),
             "freeze_record_digest": freeze_record["digest"],
             "cost_report_at_submission": discovery.costs.report(sub.cost_mission_id, cx),
+            "resource_qualification": _search_accounting(discovery, sub, freeze, cx),
             "performance_claim": "recorded provenance only; no independently verified model performance",
         }
     if command.action == "search-review":
@@ -311,6 +421,15 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
             raise ValueError("failed or empty search is retained, not scored as a candidate")
         _freeze(discovery, sub.search_id, cx)
         discovery._evidence(review.evidence, cx)
+        accepted_reviews = [
+            row[0]
+            for row in cx.execute(
+                "SELECT DISTINCT mission FROM events WHERE mission GLOB ?", (PREFIX + "search-review:*",)
+            )
+            if SearchReview.model_validate(discovery.journal.latest(row[0], cx)["spec"]).submission == review.submission
+        ]
+        if len(accepted_reviews) >= MAX_REVIEWS:
+            raise ValueError("review inventory reached the frozen representation limit; start a new review protocol")
         return discovery._new("search-review", review.review_id, command.expected_head, cx), {
             "spec": review.model_dump()
         }
@@ -341,46 +460,10 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
             reasons.append("leakage-not-cleared")
         if sub.origin not in {"agent-output", "human-output"} or freeze.design != "prospective":
             reasons.append("nonprospective-or-supplied")
-        construction = None
-        if terms.construction_observation:
-            record = _read_ref(discovery, terms.construction_observation, cx)
-            from .flywheel_discovery import ExperimentObservation
-
-            observation = ExperimentObservation.model_validate(record["terms"])
-            bundle_record = discovery._read("bundle", observation.bundle_id, cx)
-            if bundle_record is None:
-                raise ValueError("construction bundle is missing")
-            bundle = ExplorationBundle.model_validate(bundle_record["spec"])
-            step = next((step for step in bundle.steps if step.step_id == observation.step_id), None)
-            if step is None:
-                raise ValueError("construction observation is not a step of its original bundle")
-            allocation = discovery._read(
-                "mission-cost-allocation", cost_scope(record["ledger_mission_id"], step.cost_bucket), cx
-            )
-            if (
-                allocation is None
-                or terms.construction_observation.journal_key != key("observation", allocation["observation_id"])
-                or allocation["bundle_id"] != observation.bundle_id
-                or not any(item == discovery.journal.document(record) for item in bundle_record["observations"])
-            ):
-                raise ValueError("construction requires the original observation and ledger allocation")
-            witness = discovery._witness(bundle.witness_id, bundle.witness_spec_digest, cx)
-            if (
-                witness.opportunity_id != sub.opportunity_id
-                or witness.opportunity_spec_digest != sub.opportunity_spec_digest
-            ):
-                raise ValueError("construction belongs to another opportunity or purpose")
-            discovery._evidence([observation.artifact, *observation.evidence], cx)
-            construction = {
-                "observation": terms.construction_observation.model_dump(),
-                "bundle_status": bundle_record["status"],
-            }
-            if observation.interpretation != "supports" or bundle_record["status"] != "completed":
-                reasons.append("construction-not-completed-and-supporting")
-            if record["execution_digest"] is None or observation.acceptance == "not-claimed":
-                reasons.append("construction-acceptance-unqualified")
-        else:
-            reasons.append("no-linked-construction")
+        construction, construction_reasons = _construction_state(discovery, terms.construction_observation, sub, cx)
+        accounting = _search_accounting(discovery, sub, freeze, cx)
+        reasons.extend(construction_reasons)
+        reasons.extend(accounting["reasons"])
         if not any(r.review_relationship != "same-operator" for r in reviews):
             reasons.append("same-operator-review-only")
         return discovery._new("search-assessment", terms.assessment_id, command.expected_head, cx), {
@@ -390,6 +473,7 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
             "disposition": "bounded-discovery-candidate" if not reasons else "exploratory",
             "limitations": sorted(set(reasons)),
             "construction": construction,
+            "search_accounting": accounting,
             "beyond_human_foresight_established": False,
             "novelty_truth_established": False,
             "commercial_delivery_established": False,
@@ -402,7 +486,7 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
         terms = SearchAssessment.model_validate(assessment["spec"])
         if seed.assessment.journal_key != key("search-assessment", terms.assessment_id):
             raise ValueError("Nova-Seed requires a recorded discovery assessment")
-        _review_inventory(discovery, terms, cx)
+        _inheritance_guard(discovery, assessment, cx)
         _, sub = _submission(discovery, terms.submission, cx)
         if sub.opportunity_id is None:
             raise ValueError("Nova-Seed requires a candidate hypothesis")
@@ -441,7 +525,7 @@ def apply_insight(discovery: Any, command: Any, cx: Any) -> tuple[str, dict[str,
     assessment = _read_ref(discovery, seed_spec.assessment, cx)
     assessment_terms = SearchAssessment.model_validate(assessment["spec"])
     _submission(discovery, assessment_terms.submission, cx)
-    _review_inventory(discovery, assessment_terms, cx)
+    _inheritance_guard(discovery, assessment, cx)
     discovery._evidence(seed_spec.rights_evidence, cx)
     opportunity = discovery._opportunity(seed_record["opportunity_id"], seed_record["opportunity_spec_digest"], cx)
     bundle_record = discovery._read("bundle", plan.bundle_id, cx)

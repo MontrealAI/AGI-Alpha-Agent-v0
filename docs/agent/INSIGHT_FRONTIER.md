@@ -37,16 +37,23 @@ require reassessment before a new seed/plan can be made.
    unavailable in the delivered replay. Source dates and semantic leakage controls remain attestations.
 2. `search-submit` binds each output, failed-attempt evidence, input digest, source IDs, original
    accounting mission and opportunity specification. Missing, failed and empty slots retain their place
-   in the denominator. An old output or already-recorded opportunity cannot become a prospective result.
+   in the denominator. Known costs are reconciled against both the frozen cap and declared ceiling;
+   incomplete or contradictory accounting remains explicitly ineligible. Assessments read current ledger
+   evidence again rather than trusting the original usage declaration. An old output or already-recorded opportunity cannot become a prospective result.
    Invalid submissions refuse atomically; missing records remain missing, never successful or cost-free.
 3. The existing `opportunity`, `witness`, `bundle` and `observe` actions bind original purpose,
    construction, falsifiers, milestone budgets and exact accounting. The local result has **unknown actual
    costs**, so its bundle is `paused-uncertain`. No customer acceptance is inherited from a witness check.
 4. `search-review` and `search-assess` preserve separate judgments and the original construction
    observation/allocation. Reviews are controller-recorded relationship attestations, not independent
-   identity verification. Agreement alone establishes no truth. Fixture inputs, incomplete construction,
+   identity verification. At most sixteen reviews are accepted per submission, atomically, so every
+   accepted review fits the all-review assessment. Agreement alone establishes no truth. Fixture inputs, incomplete construction,
    unknown leakage, established prior art and missing review dimensions prevent stronger qualification.
-   Even a bounded candidate never establishes beyond-human foresight or commercial/retained Alpha.
+   The complete bundle inventory must support construction. Continuing a checkpoint after a falsifier
+   does not erase it or qualify the resulting bundle. Current costs, completeness and resource bounds
+   are rechecked. Previously qualified assessments cannot authorize new research seeds/plans when these
+   dependencies become disqualifying. Even a bounded candidate never establishes beyond-human foresight
+   or commercial/retained Alpha.
 5. `research-seed` makes a consecutive versioned **off-chain research Nova-Seed**. It binds provenance,
    opportunity, uncertainty, rights evidence, transformation and next experiment. Its domain-separated
    commitment establishes integrity of recorded bytes; it establishes no truth, market ownership or return.

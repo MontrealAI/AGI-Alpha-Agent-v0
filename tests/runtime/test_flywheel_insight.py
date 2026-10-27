@@ -13,6 +13,8 @@ import pytest
 from alpha_factory_v1.core.runtime.store import Conflict
 from alpha_factory_v1.core.runtime.successor.flywheel_access_path import AccessProblem, check_access, construct_access
 from alpha_factory_v1.core.runtime.successor.flywheel_discovery import Discovery, ResourceBudget
+from alpha_factory_v1.core.runtime.successor.flywheel_costs import Charge
+from alpha_factory_v1.core.runtime.successor.flywheel_discovery import key
 from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import EvidenceRef
 from alpha_factory_v1.core.runtime.successor.flywheel_insight import (
     ResearchPlan,
@@ -32,6 +34,8 @@ from scripts.record_discovery_flywheel import append
 from scripts.record_insight_frontier import problem, record
 import test_flywheel_discovery as d
 import test_flywheel_protected as f
+import test_flywheel_enterprise as e
+import test_flywheel_specialists as s
 
 
 @pytest.fixture
@@ -468,3 +472,249 @@ def test_seed_versions_and_late_adverse_review_invalidate_new_plans(setup: dict[
         apply(state, "research-seed", seed.model_copy(update={"version": 3}), "seed-after-review", current["digest"])
     with pytest.raises(Conflict, match="every recorded review"):
         apply(state, "search-assess", terms.model_copy(update={"assessment_id": "cherry-picked"}), "cherry-picked")
+
+
+def cost(
+    state: dict[str, Any], mission: str, amount: int | None, identity: str = "search-model", bucket: str = "A"
+) -> None:
+    f.account(
+        state,
+        "charge",
+        Charge(
+            activity_id=identity,
+            mission_id=mission,
+            bucket=bucket,
+            category="model",
+            accrued_micro_usd=amount,
+            paid_micro_usd=0,
+            basis="unknown" if amount is None else "attested",
+            evidence_digest=f.ZERO,
+            note="Fictional resource reconciliation control",
+        ).model_dump(),
+        "charge-" + identity,
+    )
+
+
+@pytest.mark.parametrize(
+    "amount,declared,expected",
+    [
+        (150, 0, "search-ledger-budget-overrun"),
+        (50, 0, "search-declared-cost-understates-ledger"),
+        (None, 0, "search-costs-incomplete"),
+        (50, 50, None),
+    ],
+)
+def test_search_accounting_uses_actual_known_cost_and_preserves_unknowns(
+    setup: dict[str, Any], amount: int | None, declared: int, expected: str | None
+) -> None:
+    state = setup
+    protocol = freeze(state)
+    apply(state, "search-freeze", protocol, "freeze")
+    sub = submission(state, protocol)
+    sub = sub.model_copy(update={"usage": sub.usage.model_copy(update={"cost_cap_micro_usd": declared})})
+    cost(state, sub.cost_mission_id, amount)
+    if amount is not None:
+        s.seal(state, sub.cost_mission_id, "A")
+    recorded = apply(state, "search-submit", sub, "submit")
+    qualification = recorded["resource_qualification"]
+    assert qualification["eligible"] is (expected is None)
+    if expected is not None:
+        assert expected in qualification["reasons"]
+    terms = SearchAssessment(
+        assessment_id="cost-assessment",
+        submission=EvidenceRef(journal_key=recorded["id"], record_digest=recorded["digest"]),
+        reviews=[],
+        construction_observation=None,
+        leakage_audit=None,
+        leakage_disposition="unassessed",
+        limitations="No performance claim",
+    )
+    assessed = apply(state, "search-assess", terms, "assess")
+    if expected is not None:
+        assert expected in assessed["limitations"]
+    if amount is None:
+        raw = next(row for row in state["costs"].snapshot()["charges"].values() if row["activity_id"] == "search-model")
+        fields = {name: raw[name] for name in Charge.model_fields if name in raw}
+        fields.update(accrued_micro_usd=150, basis="attested")
+        f.account(state, "resolve", fields, "resolve-search")
+        s.seal(state, sub.cost_mission_id, "A")
+        updated = apply(state, "search-assess", terms.model_copy(update={"assessment_id": "reconciled"}), "reassess")
+        assert "search-ledger-budget-overrun" in updated["limitations"]
+        assert updated["search_accounting"]["report"]["complete"] is True
+
+
+def constructed_assessment(state: dict[str, Any], last: str, search_cost: int = 50) -> tuple[Any, Any, Any, Any]:
+    protocol = freeze(state, prospective=True)
+    apply(state, "search-freeze", protocol, "freeze")
+    sub = submission(state, protocol, origin="agent-output")
+    sub = sub.model_copy(update={"usage": sub.usage.model_copy(update={"cost_cap_micro_usd": 50})})
+    cost(state, sub.cost_mission_id, search_cost)
+    s.seal(state, sub.cost_mission_id, "A")
+    submitted = apply(state, "search-submit", sub, "submit")
+    sub_ref = EvidenceRef(journal_key=submitted["id"], record_digest=submitted["digest"])
+    execution = e.launch(state)
+    e.accept(state, execution)
+    candidate = d.opportunity(state, "test-candidate")
+    witness = d.witness(state, candidate)
+    apply(state, "witness", witness, "witness")
+    bundle = d.bundle(state, mission=e.execution(state)[1], bucket="A").model_copy(
+        update={"witness_spec_digest": digest("discovery-witness", witness)}
+    )
+    started = apply(state, "bundle", bundle, "bundle")
+    first = d.executed_observation(state, bundle, "placement-origin")
+    first.update(interpretation="supports", acceptance="existing-placement-acceptance")
+    apply(state, "observe", first, "first-observation", started["digest"])
+    continued = d.checkpoint(state, bundle.bundle_id)
+    s.seal(state, "arrangement-costs", "C")
+    second = d.observation(state, bundle).model_copy(
+        update={"step_id": "arrange", "cost_operation": "arrangement-costs", "interpretation": last}
+    )
+    apply(state, "observe", second, "last-observation", continued["digest"])
+    completed = d.checkpoint(state, bundle.bundle_id)
+    assert completed["status"] == "completed"
+    refs = []
+    for dimension in ("novelty", "usefulness", "feasibility", "commercial-plausibility"):
+        row = apply(
+            state,
+            "search-review",
+            SearchReview(
+                review_id=dimension,
+                submission=sub_ref,
+                reviewer_id="fixture-reviewer",
+                dimension=dimension,
+                score=4,
+                rationale="Explicit conformance fixture, not a real independent model result",
+                evidence=[protocol.sources[0].evidence],
+                review_relationship="separate-model",
+                prior_art="not-found-in-bounded-search",
+                limitations="Fictional protocol inputs grant no live authority",
+            ),
+            "review-" + dimension,
+        )
+        refs.append(EvidenceRef(journal_key=row["id"], record_digest=row["digest"]))
+    audit = append(state, "@fixture-leakage-audit", {"scope": "Synthetic controller attestation only"})
+    observation = state["journal"].latest(key("observation", "first-observation"))
+    assessed = apply(
+        state,
+        "search-assess",
+        SearchAssessment(
+            assessment_id="constructed-assessment",
+            submission=sub_ref,
+            reviews=refs,
+            construction_observation=EvidenceRef(journal_key=observation["id"], record_digest=observation["digest"]),
+            leakage_audit=audit,
+            leakage_disposition="no-known-leakage",
+            limitations="Protocol-only fixture; no real discovery or independent model performance",
+        ),
+        "assess",
+    )
+    return assessed, sub, witness, bundle
+
+
+@pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+def test_selected_accepted_observation_cannot_hide_other_bundle_outcomes(
+    setup: dict[str, Any], interpretation: str
+) -> None:
+    assessed, _, _, _ = constructed_assessment(setup, interpretation)
+    if interpretation == "supports":
+        assert assessed["disposition"] == "bounded-discovery-candidate"
+    else:
+        assert assessed["disposition"] == "exploratory"
+        assert "construction-has-adverse-or-inconclusive-observations" in assessed["limitations"]
+    assert len(assessed["construction"]["inventory"]) == 2
+    assert not assessed["authority_granted"] and not assessed["beyond_human_foresight_established"]
+
+
+def test_late_accounting_cannot_inherit_old_qualified_disposition(setup: dict[str, Any]) -> None:
+    from alpha_factory_v1.core.runtime.ascension import JobSpec
+
+    state = setup
+    assessed, sub, witness, bundle = constructed_assessment(state, "supports")
+    evidence = d.evidence(state)
+    seed = ResearchSeed(
+        seed_id="qualified-fixture-seed",
+        version=1,
+        assessment=EvidenceRef(journal_key=assessed["id"], record_digest=assessed["digest"]),
+        witness_id=witness.witness_id,
+        witness_spec_digest=digest("discovery-witness", witness),
+        rights_evidence=[evidence],
+        rights_statement="Fixture source only",
+        uncertainty="No actual discovery or performance",
+        next_experiment="Real independent trial",
+    )
+    seeded = apply(state, "research-seed", seed, "seed")
+    cost(state, sub.cost_mission_id, 100, "late-search-cost", "B")
+    s.seal(state, sub.cost_mission_id, "B")
+    with pytest.raises(Conflict, match="dependencies changed"):
+        apply(state, "research-seed", seed.model_copy(update={"version": 2}), "seed-v2", seeded["digest"])
+    plan = ResearchPlan(
+        plan_id="stale-qualified-plan",
+        seed=EvidenceRef(journal_key=seeded["id"], record_digest=seeded["digest"]),
+        bundle_id=bundle.bundle_id,
+        bundle_spec_digest=digest("discovery-bundle", bundle),
+        draft_jobs=[
+            JobSpec(
+                goal=step.question,
+                successMetric=step.decisive_check,
+                duration=step.seconds_cap,
+                bounty="100",
+                priceWeight=0,
+            )
+            for step in bundle.steps
+        ],
+        required_permissions=["Separate approval"],
+        commercial_assumptions="No commitment",
+    )
+    with pytest.raises(Conflict, match="dependencies changed"):
+        apply(state, "research-plan", plan, "plan")
+
+
+def test_seventeenth_review_refuses_before_it_can_exceed_assessment_capacity(setup: dict[str, Any]) -> None:
+    state = setup
+    protocol = freeze(state)
+    apply(state, "search-freeze", protocol, "freeze")
+    submitted = apply(state, "search-submit", submission(state, protocol), "submit")
+    sub_ref = EvidenceRef(journal_key=submitted["id"], record_digest=submitted["digest"])
+    refs = []
+    for index in range(16):
+        terms = SearchReview(
+            review_id=f"review-{index}",
+            submission=sub_ref,
+            reviewer_id=f"reviewer-{index}",
+            dimension="novelty",
+            score=1,
+            rationale="Bounded inventory fixture",
+            evidence=[protocol.sources[0].evidence],
+            review_relationship="same-operator",
+            limitations="No discovery claim",
+        )
+        row = apply(state, "search-review", terms, f"review-{index}")
+        refs.append(EvidenceRef(journal_key=row["id"], record_digest=row["digest"]))
+    before = state["journal"].verify()
+    with pytest.raises(ValueError, match="inventory reached"):
+        apply(state, "search-review", terms.model_copy(update={"review_id": "seventeenth"}), "seventeenth")
+    assert state["journal"].verify() == before
+    result = apply(
+        state,
+        "search-assess",
+        SearchAssessment(
+            assessment_id="all-sixteen",
+            submission=sub_ref,
+            reviews=refs,
+            construction_observation=None,
+            leakage_audit=None,
+            leakage_disposition="unassessed",
+            limitations="Every accepted review retained",
+        ),
+        "assess",
+    )
+    assert result["disposition"] == "exploratory"
+
+
+@pytest.mark.parametrize("amount", [60, 150])
+def test_complete_search_cost_contradiction_prevents_stronger_disposition(setup: dict[str, Any], amount: int) -> None:
+    assessed, _, _, _ = constructed_assessment(setup, "supports", search_cost=amount)
+    assert assessed["disposition"] == "exploratory"
+    assert "search-declared-cost-understates-ledger" in assessed["limitations"]
+    if amount > 100:
+        assert "search-ledger-budget-overrun" in assessed["limitations"]
