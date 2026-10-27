@@ -1,0 +1,20 @@
+{
+  "capability_id": "durable-service-contract-workflow",
+  "version": "1.0.0",
+  "origin": "researcher-constructed before the development job",
+  "contribution": "established expert operating method E, not newly learned Alpha",
+  "scope": "bounded Python stateful-service repair with a complete public contract",
+  "prerequisites": ["source and contract rights", "isolated Python execution", "independent acceptance"],
+  "method": [
+    "Read the complete public contract and existing code. Map each public operation to its state transition, identity key, authorization rule and failure semantics.",
+    "Write down the few invariants that must hold after every successful operation and every rejected operation. Distinguish legitimate retries from changed-intent conflicts.",
+    "Reproduce the reported failure, then repair the smallest coherent transition. Stage validation before mutation or use a transactional state copy when atomicity requires it.",
+    "Add executable regression probes for normal use, repeated calls, changed payload under the same identity, failure after partial progress, boundary values and caller mutation where the contract requires these.",
+    "Run public tests and your probes, inspect failures, correct within the shared budget, and deliver the patch, tests and a short scope/limitations note. Do not infer general safety from passing finite tests."
+  ],
+  "model_change": false,
+  "weight_update": false,
+  "rights": "Apache-2.0 researcher-authored method; no customer information",
+  "limits": ["not a domain solver", "no private acceptance cases", "no guaranteed benefit", "not qualified for native production capsule scope"],
+  "construction_cost": {"actual_cash_usd": null, "actual_total_cost_usd": null, "basis": "hosted research assistance; no metered invoice or token telemetry"}
+}

@@ -1,0 +1,164 @@
+[
+  {
+    "case": "c5",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_composition/cases/c5",
+    "seed": 6102751,
+    "accepted": false,
+    "passed": 3,
+    "total": 14,
+    "checks": [
+      {
+        "category": "identical-common-components",
+        "passed": true
+      },
+      {
+        "category": "fresh-complete-campaign-0",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': 'a490f04228c273344499ca31bd6cf84f65568474d0d6cdc10c4182c546afd194', 'reasons': [], 'summary': {'jobs': 4, 'succeeded': 4, 'running_units': 0, 'artifact_bytes': 58, 'wallets': {'alpha': {'available': 956, 'reserved': 0, 'spent': 44}, 'beta': {'available': 984, 'reserved': 0, 'spent': 16}}, 'settled_credits': {'alpha': 44, 'beta': 16}, 'usage_sink': 60}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '5b12e83d10a6368fafd04748620de475725627aba404a6ba53e07593ffbba2b5', 'reasons': [], 'summary': {'jobs': 4, 'succeeded': 4, 'running_units': 0, 'artifact_bytes': 58, 'wallets': {'alpha': {'available': 956, 'reserved': 0, 'spent': 44}, 'beta': {'available': 984, 'reserved': 0, 'spent': 16}}, 'settled_credits': {'alpha': 44, 'beta': 16}, 'usage_sink': 60}}"
+      },
+      {
+        "category": "fresh-complete-campaign-1",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': 'cbca9694b3f5e46ecf79cc549790d09b49917409d170f034c5a9759a5df58d56', 'reasons': [], 'summary': {'jobs': 5, 'succeeded': 5, 'running_units': 0, 'artifact_bytes': 144, 'wallets': {'alpha': {'available': 946, 'reserved': 0, 'spent': 54}, 'beta': {'available': 913, 'reserved': 0, 'spent': 87}}, 'settled_credits': {'alpha': 54, 'beta': 87}, 'usage_sink': 141}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '209c54a65fbf86b33773b6e71943216ac267b1daa84662cd8c5222864c6775bb', 'reasons': [], 'summary': {'jobs': 5, 'succeeded': 5, 'running_units': 0, 'artifact_bytes': 144, 'wallets': {'alpha': {'available': 946, 'reserved': 0, 'spent': 54}, 'beta': {'available': 913, 'reserved': 0, 'spent': 87}}, 'settled_credits': {'alpha': 54, 'beta': 87}, 'usage_sink': 141}}"
+      },
+      {
+        "category": "fresh-complete-campaign-2",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '1eaf8b0a6cfec4660d92cedf8255259e5210630d435c2eb3cccbed0fdfad1274', 'reasons': [], 'summary': {'jobs': 6, 'succeeded': 6, 'running_units': 0, 'artifact_bytes': 199, 'wallets': {'alpha': {'available': 863, 'reserved': 0, 'spent': 137}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 137, 'beta': 0}, 'usage_sink': 137}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '2864579fd16ae9a3b63cd639b5e1c327a3fe3cefe6477b58223e6022b8318aab', 'reasons': [], 'summary': {'jobs': 6, 'succeeded': 6, 'running_units': 0, 'artifact_bytes': 199, 'wallets': {'alpha': {'available': 863, 'reserved': 0, 'spent': 137}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 137, 'beta': 0}, 'usage_sink': 137}}"
+      },
+      {
+        "category": "fresh-complete-campaign-3",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '6bbc00edfd365c6da8d9a839d48da07f92dece7a7dfbdfb369d8e049afe1173f', 'reasons': [], 'summary': {'jobs': 7, 'succeeded': 7, 'running_units': 0, 'artifact_bytes': 189, 'wallets': {'alpha': {'available': 919, 'reserved': 0, 'spent': 81}, 'beta': {'available': 956, 'reserved': 0, 'spent': 44}}, 'settled_credits': {'alpha': 81, 'beta': 44}, 'usage_sink': 125}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '22c90d2cf771fa946461fa1f7e68378cd6f9d3973e984eb7d16045db51b44d22', 'reasons': [], 'summary': {'jobs': 7, 'succeeded': 7, 'running_units': 0, 'artifact_bytes': 189, 'wallets': {'alpha': {'available': 919, 'reserved': 0, 'spent': 81}, 'beta': {'available': 956, 'reserved': 0, 'spent': 44}}, 'settled_credits': {'alpha': 81, 'beta': 44}, 'usage_sink': 125}}"
+      },
+      {
+        "category": "complete-evidence-digest",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "'7f11cdcd269b820ecb3c9a9c642779a0fefbb21cb66d1122258d60d12eb67ed9' != 'a04fba4106933ace30bbd4cb929dfbf82dee0a90a99b0f6be761212d846d4e9f'"
+      },
+      {
+        "category": "completed-execution-required",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "'release' != 'hold'"
+      },
+      {
+        "category": "artifact-tenant-binding",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "'release' != 'hold'"
+      },
+      {
+        "category": "committed-artifact-evidence-required",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "'release' != 'hold'"
+      },
+      {
+        "category": "per-job-settlement-binding",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "'release' != 'hold'"
+      },
+      {
+        "category": "all-component-failures-held",
+        "passed": true
+      },
+      {
+        "category": "zero-consumption-boundary",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': 'cd4067d96302f579e961d80e9911148f160ae58ced6d9983c48b5b758ddd89a9', 'reasons': [], 'summary': {'jobs': 1, 'succeeded': 1, 'running_units': 0, 'artifact_bytes': 0, 'wallets': {'alpha': {'available': 1000, 'reserved': 0, 'spent': 0}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 0, 'beta': 0}, 'usage_sink': 0}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '740eb75061a4e05db4884ea79404ff7b4b9041240e354f3a1eed7bd7e3e98466', 'reasons': [], 'summary': {'jobs': 1, 'succeeded': 1, 'running_units': 0, 'artifact_bytes': 0, 'wallets': {'alpha': {'available': 1000, 'reserved': 0, 'spent': 0}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 0, 'beta': 0}, 'usage_sink': 0}}"
+      },
+      {
+        "category": "read-only-schema-and-duplicate-scope",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': '7f11cdcd269b820ecb3c9a9c642779a0fefbb21cb66d1122258d60d12eb67ed9', 'reasons': [], 'summary': {'jobs': 3, 'succeeded': 3, 'running_units': 0, 'artifact_bytes': 56, 'wallets': {'alpha': {'available': 956, 'reserved': 0, 'spent': 44}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 44, 'beta': 0}, 'usage_sink': 44}} != {'schema': 'campaign-audit/1', 'decision': 'release', 'packet_sha256': 'a04fba4106933ace30bbd4cb929dfbf82dee0a90a99b0f6be761212d846d4e9f', 'reasons': [], 'summary': {'jobs': 3, 'succeeded': 3, 'running_units': 0, 'artifact_bytes': 56, 'wallets': {'alpha': {'available': 956, 'reserved': 0, 'spent': 44}, 'beta': {'available': 1000, 'reserved': 0, 'spent': 0}}, 'settled_credits': {'alpha': 44, 'beta': 0}, 'usage_sink': 44}}"
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.07663818300352432,
+    "source_sha256": "b9492ac6ae029ba1aee4cb91728ead465794e93ea87362221a9fa38388ee438b",
+    "version": "starter"
+  },
+  {
+    "case": "c5",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_composition/private/references/c5",
+    "seed": 6102751,
+    "accepted": true,
+    "passed": 14,
+    "total": 14,
+    "checks": [
+      {
+        "category": "identical-common-components",
+        "passed": true
+      },
+      {
+        "category": "fresh-complete-campaign-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-complete-campaign-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-complete-campaign-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-complete-campaign-3",
+        "passed": true
+      },
+      {
+        "category": "complete-evidence-digest",
+        "passed": true
+      },
+      {
+        "category": "completed-execution-required",
+        "passed": true
+      },
+      {
+        "category": "artifact-tenant-binding",
+        "passed": true
+      },
+      {
+        "category": "committed-artifact-evidence-required",
+        "passed": true
+      },
+      {
+        "category": "per-job-settlement-binding",
+        "passed": true
+      },
+      {
+        "category": "all-component-failures-held",
+        "passed": true
+      },
+      {
+        "category": "zero-consumption-boundary",
+        "passed": true
+      },
+      {
+        "category": "read-only-schema-and-duplicate-scope",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.07020064500102308,
+    "source_sha256": "e36c124c7b0e8d4dcf60a3a8ef305ff93a54c1f69e4cf189db73d8327ce15113",
+    "version": "reference"
+  }
+]

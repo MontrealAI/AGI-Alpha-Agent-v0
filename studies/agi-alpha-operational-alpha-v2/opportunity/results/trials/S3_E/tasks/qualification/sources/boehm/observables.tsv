@@ -1,0 +1,4 @@
+observableId	observableName	observableFormula	noiseFormula	observableTransformation	noiseDistribution
+pSTAT5A_rel		(100 * pApB + 200 * pApA * specC17) / (pApB + STAT5A * specC17 + 2 * pApA * specC17)	noiseParameter1_pSTAT5A_rel	lin	normal
+pSTAT5B_rel		-(100 * pApB - 200 * pBpB * (specC17 - 1)) / ((STAT5B * (specC17 - 1) - pApB) + 2 * pBpB * (specC17 - 1))	noiseParameter1_pSTAT5B_rel	lin	normal
+rSTAT5A_rel		(100 * pApB + 100 * STAT5A * specC17 + 200 * pApA * specC17) / (2 * pApB + STAT5A * specC17 + 2 * pApA * specC17 - STAT5B * (specC17 - 1) - 2 * pBpB * (specC17 - 1))	noiseParameter1_rSTAT5A_rel	lin	normal

@@ -1,0 +1,22 @@
+[
+  [
+    "if old != payload:",
+    "if len(old[0]) != len(operations):"
+  ],
+  [
+    "if set(expected) != touched:",
+    "if not set(expected).issubset(touched):"
+  ],
+  [
+    "balances = dict(self.balances)",
+    "balances = self.balances"
+  ],
+  [
+    "return deepcopy(receipt)",
+    "return receipt"
+  ],
+  [
+    "self.receipts[request] = (payload, deepcopy(receipt))",
+    "self.receipts[request] = (payload, receipt)"
+  ]
+]

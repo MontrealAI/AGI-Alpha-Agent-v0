@@ -1,0 +1,175 @@
+{
+  "schema": "compact-public-bootstrap-review/1",
+  "edition": "2.1.0",
+  "bootstrap_sha256": "c394c10f81eca2355df795bad66a6a63d592bcdcbc1d3db03d115ae76def1aec",
+  "manifest_sha256": "c71bcfe5fb15ce686fd9397fcaf4c675a11179d0167990c2b790b6d3ec0bcd28",
+  "omitted_paths_and_bytes": [
+    {
+      "path": "economics/results/development.json",
+      "bytes": 5187330,
+      "sha256": "ac5c22c7f1f2387b2a46094b77a0bc7bd48eeb18afa3fd6f4f3d18aff65acd48"
+    },
+    {
+      "path": "economics/results/confirmation.json",
+      "bytes": 8867397,
+      "sha256": "67bc1a37763c3ddf8c12686b05bda022ef3c74254c67f09821fba9f71a9a4111"
+    },
+    {
+      "path": "economics/results/events.jsonl.gz",
+      "bytes": 27763040,
+      "sha256": "a02df55db11f1b9de6d08965775052f669a1393da49adff92b6698dd3cc16d3b"
+    },
+    {
+      "path": "economics/value_results/confirmation.json",
+      "bytes": 19128346,
+      "sha256": "175bbeaabee0ec350731062007cd316bb43cd63cbc9906b021a7edc5120dcf12"
+    },
+    {
+      "path": "economics/value_results/events.jsonl.gz",
+      "bytes": 62832933,
+      "sha256": "b78dd1d7fe48f599fa2a7b333df75a4488f731f3a4f5079907e94bd85acb94b7"
+    },
+    {
+      "path": "economics/prescreen_results/prescreen_confirmation.json",
+      "bytes": 1937991,
+      "sha256": "bc0053389ddaf18f769caf9d73ba6025f38a4e999cc34173658bfdfe3f9e9c27"
+    },
+    {
+      "path": "opportunity/arrangement/results/conditional_frontier.json",
+      "bytes": 30287525,
+      "sha256": "154c7e322e68aad8dbd2d9a56647b038dfb5de2883aaa714d19e2f0fbdbce21a"
+    }
+  ],
+  "total_omitted_bytes": 156004562,
+  "restoration": {
+    "schema": "recorded-data-materialization-report/v1",
+    "edition": "2.1.0",
+    "mode": "restore-absent-only",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "zlib_compile_version": "1.3.2",
+    "zlib_runtime_version": "1.3.2",
+    "installed": [
+      "economics/results/development.json",
+      "economics/results/confirmation.json",
+      "economics/results/events.jsonl.gz",
+      "economics/value_results/confirmation.json",
+      "economics/value_results/events.jsonl.gz",
+      "economics/prescreen_results/prescreen_confirmation.json",
+      "opportunity/arrangement/results/conditional_frontier.json"
+    ],
+    "network_calls": 0,
+    "model_calls": 0,
+    "replay_only": true,
+    "manifest_sha256": "c71bcfe5fb15ce686fd9397fcaf4c675a11179d0167990c2b790b6d3ec0bcd28",
+    "declared_files": 7,
+    "declared_bytes": 156004562,
+    "initially_missing": [
+      "economics/results/development.json",
+      "economics/results/confirmation.json",
+      "economics/results/events.jsonl.gz",
+      "economics/value_results/confirmation.json",
+      "economics/value_results/events.jsonl.gz",
+      "economics/prescreen_results/prescreen_confirmation.json",
+      "opportunity/arrangement/results/conditional_frontier.json"
+    ],
+    "generation": [
+      {
+        "stage": "original development search",
+        "elapsed_seconds": 3.600047723011812,
+        "returncode": 0
+      },
+      {
+        "stage": "original confirmation and event stream",
+        "elapsed_seconds": 40.489098209989606,
+        "returncode": 0
+      },
+      {
+        "stage": "value-controller confirmation and event stream",
+        "elapsed_seconds": 54.697967558997334,
+        "returncode": 0
+      },
+      {
+        "stage": "prospective prescreen confirmation",
+        "elapsed_seconds": 0.11418448100448586,
+        "returncode": 0
+      },
+      {
+        "stage": "finite arrangement search",
+        "elapsed_seconds": 2.9678567559894873,
+        "returncode": 0
+      }
+    ],
+    "all_missing_bytes_verified_before_installation": true,
+    "passed": true,
+    "status": "missing recorded data restored exactly; existing evidence preserved",
+    "compression_reference": {
+      "original_events": {
+        "format": "gzip",
+        "mtime": 0,
+        "filename": "",
+        "compresslevel": 9
+      },
+      "value_events": {
+        "format": "gzip",
+        "mtime": 0,
+        "filename": "",
+        "compresslevel": 6
+      },
+      "byte_identity_limit": "Different Python, math or zlib builds can change generated or compressed bytes. Any SHA-256 mismatch stops installation; use the complete archive or matching environment. No approximate replacement is accepted."
+    },
+    "elapsed_seconds": 102.11876296599803
+  },
+  "restoration_exit_code": 0,
+  "generation_stderr": "Reconstructing original development search from frozen recorded inputs...\nReconstructing original confirmation and event stream from frozen recorded inputs...\nReconstructing value-controller confirmation and event stream from frozen recorded inputs...\nReconstructing prospective prescreen confirmation from frozen recorded inputs...\nReconstructing finite arrangement search from frozen recorded inputs...\n",
+  "restored_file_hashes_all_match": true,
+  "per_file_exact_match": {
+    "economics/results/development.json": true,
+    "economics/results/confirmation.json": true,
+    "economics/results/events.jsonl.gz": true,
+    "economics/value_results/confirmation.json": true,
+    "economics/value_results/events.jsonl.gz": true,
+    "economics/prescreen_results/prescreen_confirmation.json": true,
+    "opportunity/arrangement/results/conditional_frontier.json": true
+  },
+  "retained_files_unchanged_after_restore": true,
+  "restored_without_network_keys_or_model_calls": true,
+  "reproduce_all_default": {
+    "returncode": 0,
+    "passed": true,
+    "elapsed_seconds": 22.90202587300155,
+    "supporting_passed": true,
+    "opportunity_passed": true,
+    "full_economics_requested": false
+  },
+  "idempotent_existing_data": {
+    "passed": true,
+    "seconds": 0.1183404940093169
+  },
+  "unsafe_manifest_path_refused": {
+    "passed": true,
+    "failure": "Unsafe manifest path"
+  },
+  "mismatched_existing_evidence_refused": {
+    "passed": true,
+    "failure": "Existing recorded data differs; refusing overwrite: economics/prescreen_results/prescreen_confirmation.json"
+  },
+  "passed": true,
+  "wall_seconds": 126.28220734599745,
+  "scope": "Clean compact copy; exact historical regeneration then default complete-edition replay. No second full economic selected-history run, network retrieval, new trial, publication or all-repository CI.",
+  "canonical_full_data_still_unchanged": true,
+  "canonical_file_hash_checks": {
+    "economics/results/development.json": true,
+    "economics/results/confirmation.json": true,
+    "economics/results/events.jsonl.gz": true,
+    "economics/value_results/confirmation.json": true,
+    "economics/value_results/events.jsonl.gz": true,
+    "economics/prescreen_results/prescreen_confirmation.json": true,
+    "opportunity/arrangement/results/conditional_frontier.json": true
+  },
+  "scoped_static_checks": {
+    "ruff": "passed",
+    "mypy_strict_follow_imports_skip": "passed",
+    "formatted_with": "Ruff",
+    "full_repository_CI": "not run"
+  }
+}

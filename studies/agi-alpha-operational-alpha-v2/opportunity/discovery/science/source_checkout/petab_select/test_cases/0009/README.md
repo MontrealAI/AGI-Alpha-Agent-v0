@@ -1,0 +1,5 @@
+N.B. This original Blasi et al. problem is difficult to solve with a stepwise method. Many forward/backward/forward+backward variants failed. This test case was found by:
+1. performing 100 FAMoS starts, initialized at random models. Usually <5% of the starts ended at the best model.
+2. assessing reproducibility. Most of the starts that end at the best model are not reproducible. Instead, the path through model space can differ a lot despite "good" calibration, because many pairs of models differ in AICc by less than numerical noise.
+
+1 start was found that reproducibly ends at the best model. The initial model of that start is the predecessor model in this test case. However, the path through model space is not reproducible -- there are at least two possibilities, perhaps more, depending on simulation tolerances. Hence, you should expect to produce a similar `expected_summary.tsv`, but perhaps with a few rows swapped. If you see a different `summary.tsv`, please report (or retry a few times). In particular, a different `summary.tsv` file will have a different sequence of values in the `current model criterion` column (accounting for numerical noise).

@@ -1,0 +1,44 @@
+{
+  "packet_version": 1,
+  "missions": [
+    {
+      "id": "equilibrium",
+      "type": "stationary_qualification",
+      "source": "h4"
+    },
+    {
+      "id": "unsupported_clock",
+      "type": "clock_witness",
+      "source": "h4",
+      "normalized_time": 1.25,
+      "alternative_clock_scales": [
+        0.5,
+        3.0
+      ]
+    },
+    {
+      "id": "calibrated_clock",
+      "type": "calibrated_relaxation",
+      "source": "h4",
+      "calibration": {
+        "evidence_id": "HYPOTHETICAL-CLOCK-01",
+        "evidence_kind": "assumed",
+        "scale_per_physical_unit": [
+          0.4,
+          1.6
+        ],
+        "physical_unit": "minute"
+      }
+    },
+    {
+      "id": "new_mission",
+      "type": "inheritance_boundary",
+      "source": "boehm",
+      "inherited_source": "h4",
+      "contrast_times": [
+        5.0,
+        10.0
+      ]
+    }
+  ]
+}

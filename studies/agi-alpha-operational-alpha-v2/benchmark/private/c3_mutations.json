@@ -1,0 +1,18 @@
+[
+  [
+    "return (identifier(owner), identifier(upload))",
+    "identifier(owner)\n        return identifier(upload)"
+  ],
+  [
+    "cells = list(row[\"cells\"])",
+    "cells = row[\"cells\"]"
+  ],
+  [
+    "if hashlib.sha256(data).hexdigest() != row[\"digest\"]:",
+    "if row[\"state\"] == \"committed\" and hashlib.sha256(data).hexdigest() != row[\"digest\"]:"
+  ],
+  [
+    "row = deepcopy(source)",
+    "row = dict(source)"
+  ]
+]

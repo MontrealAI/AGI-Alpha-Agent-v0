@@ -1,0 +1,18 @@
+[
+  [
+    "self._owned(owner, dep)",
+    "identifier(dep)\n            if dep not in self.jobs:\n                raise ValueError(\"unknown dependency\")"
+  ],
+  [
+    "if lease in self.leases or row[\"state\"] != \"pending\":",
+    "if row[\"state\"] != \"pending\":"
+  ],
+  [
+    "if any(self.jobs[dep][\"state\"] != \"succeeded\" for dep in row[\"deps\"]):",
+    "if any(self.jobs[dep][\"state\"] == \"running\" for dep in row[\"deps\"]):"
+  ],
+  [
+    "if record[\"result\"] is not None:",
+    "if record[\"result\"]:"
+  ]
+]

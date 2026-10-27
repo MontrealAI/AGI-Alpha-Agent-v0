@@ -1,0 +1,2 @@
+Complete the source-bound scientific qualification portfolio in tasks/qualification/BRIEF.md. Use the available conventional mathematical tools and inspect the supplied evidence carefully. Produce a tested executable submission, packet and concise report. All filesystem and Python interactions must use the logged runner. Do not inspect other arms or protected evaluation material.
+Use the established versioned expert workflow in EXPERT_WORKFLOW.json.

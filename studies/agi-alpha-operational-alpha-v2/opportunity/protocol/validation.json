@@ -1,0 +1,178 @@
+{
+  "source_files_pinned": 52,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "dependencies": {
+    "numpy": "2.3.2",
+    "scipy": "1.17.0",
+    "yaml": "6.0.2"
+  },
+  "sympy": "not installed; direct algebra supported",
+  "ruff": "pass",
+  "conventional_acceptance": {
+    "accepted": true,
+    "passed": 4,
+    "total": 4,
+    "source_inputs_unchanged": true,
+    "campaigns": 1,
+    "source_families": 2,
+    "request_variants_per_mission": 2,
+    "unit_of_inference": "one four-mission computational campaign, not eight independent opportunities",
+    "variants": [
+      {
+        "variant": "declared",
+        "missions": [
+          {
+            "id": "equilibrium",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "conditional stationary prediction",
+              "necessary-only dimension bound"
+            ]
+          },
+          {
+            "id": "unsupported_clock",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "unchanged equilibrium under scaling",
+              "changed finite-time response",
+              "explicit evidence obligation"
+            ]
+          },
+          {
+            "id": "calibrated_clock",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "conditional concrete timed output",
+              "hypothetical calibration preserved"
+            ]
+          },
+          {
+            "id": "new_mission",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "fresh finite-time observation regime",
+              "inherited scope withdrawn",
+              "reference simulation correctly labeled"
+            ]
+          }
+        ],
+        "stdout": "{\"missions\": 4, \"elapsed_seconds\": 0.016522010002518073, \"actual_cost\": null, \"implementation\": \"researcher-authored conventional direct algebra\"}\n",
+        "stderr": ""
+      },
+      {
+        "variant": "changed_requests",
+        "missions": [
+          {
+            "id": "equilibrium-fresh-request",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "conditional stationary prediction",
+              "necessary-only dimension bound"
+            ]
+          },
+          {
+            "id": "unsupported_clock-fresh-request",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "unchanged equilibrium under scaling",
+              "changed finite-time response",
+              "explicit evidence obligation"
+            ]
+          },
+          {
+            "id": "calibrated_clock-fresh-request",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "conditional concrete timed output",
+              "hypothetical calibration preserved"
+            ]
+          },
+          {
+            "id": "new_mission-fresh-request",
+            "accepted": true,
+            "checks": [
+              "fresh core/source-evidence/request identity and no authority",
+              "fresh finite-time observation regime",
+              "inherited scope withdrawn",
+              "reference simulation correctly labeled"
+            ]
+          }
+        ],
+        "stdout": "{\"missions\": 4, \"elapsed_seconds\": 0.023034647994791158, \"actual_cost\": null, \"implementation\": \"researcher-authored conventional direct algebra\"}\n",
+        "stderr": ""
+      }
+    ],
+    "evaluator_elapsed_seconds": 0.8480635500018252,
+    "physical_validation": false,
+    "actual_cost": null
+  },
+  "negative_controls": {
+    "positive_missions_passed": 4,
+    "negative_controls": [
+      {
+        "negative_control": "reject_valid_stationary_use",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "claim_full_identifiability",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "invalid_selected_model_verdict",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "physical_clock_without_evidence",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "no_transient_counterexample",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "reversed_calibration_interval",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "assumption_called_measurement",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "stale_witness_on_new_source",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "source_identity_reused",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "simulation_called_observation",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "authority_inherited",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "simulation_evidence_not_bound",
+        "correctly_rejected": true
+      },
+      {
+        "negative_control": "stale_evidence_identity",
+        "correctly_rejected": true
+      }
+    ],
+    "negative_controls_rejected": 13,
+    "semantic_prose_review": "Human-readable explanations still require internal reviewer inspection; automated acceptance relies primarily on numerical/source and explicit scope fields.",
+    "external_scientific_validation": false
+  },
+  "actual_cost": null,
+  "receipt_identity_correction": "Applied before participant exposure. Prior freeze, code, contract and validation retained in history."
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "accessed_date": "2026-10-27",
+  "declared_budget": {
+    "queries_max": 12,
+    "primary_retrieval_attempts_max": 16,
+    "serious_candidates": 2
+  },
+  "actual_resources": {
+    "queries": 12,
+    "open_or_click_attempts": 16,
+    "failed_attempts": 4,
+    "implementation_runs": 0,
+    "actual_financial_cost": null
+  },
+  "sources": [
+    {
+      "id": "G1",
+      "title": "NGS Get Prepared",
+      "url": "https://beta.ngs.noaa.gov/new-datums/get-prepared.html",
+      "web_ref": "turn27view1",
+      "retrieval": "full_page",
+      "supported_claim": "Official distinction among resurvey, readjustment and transformation; metadata and accuracy requirements govern the choice."
+    },
+    {
+      "id": "G2",
+      "title": "NGS Track Our Progress",
+      "url": "https://beta.ngs.noaa.gov/new-datums/track-our-progress.html",
+      "web_ref": "turn23view4",
+      "retrieval": "full_page",
+      "supported_claim": "Current beta capabilities, remaining service gaps, and planned 2027 official transition; prospective dates are not guarantees."
+    },
+    {
+      "id": "G3",
+      "title": "NOAA VDatum",
+      "url": "https://vdatum.noaa.gov/",
+      "web_ref": "turn21view3",
+      "retrieval": "full_page",
+      "supported_claim": "Free existing transformation service; regional uncertainty notices materially limit automatic acceptance."
+    },
+    {
+      "id": "G4",
+      "title": "VDatum uncertainty",
+      "url": "https://vdatum.noaa.gov/docs/est_uncertainties.html",
+      "web_ref": "turn27view0",
+      "retrieval": "full_page",
+      "supported_claim": "Transformation/source uncertainty and systematic-error limits; regional SD is not maximum error."
+    },
+    {
+      "id": "G5",
+      "title": "PROJ cs2cs",
+      "url": "https://proj.org/en/stable/apps/cs2cs.html",
+      "web_ref": "turn23view5",
+      "retrieval": "full_page",
+      "supported_claim": "Existing accuracy, no-ballpark, only-best and area controls; mandatory competent baseline."
+    },
+    {
+      "id": "G6",
+      "title": "Portland Maine DEM metadata",
+      "url": "https://data.noaa.gov/metaview/page?header=none&view=getDataView&xml=NOAA/NESDIS/NGDC/MGG/DEM/iso/xml/606.xml",
+      "web_ref": "turn29view0",
+      "retrieval": "full_page",
+      "supported_claim": "Accessible real public metadata, stated MHW datum and tsunami modeling purpose; does not prove suitability for another mission."
+    },
+    {
+      "id": "G7a",
+      "title": "FME geospatial integration",
+      "url": "https://fme.safe.com/guides/spatial-computing/geospatial-data-integration/",
+      "web_ref": "turn38search1",
+      "retrieval": "primary_search_excerpt",
+      "supported_claim": "Existing automated cross-dataset CRS/metadata validation and transformation workflows narrow the candidate opportunity."
+    },
+    {
+      "id": "G7b",
+      "title": "FME QA tutorial",
+      "url": "https://support.safe.com/hc/en-us/articles/25407541088269-Tutorial-Data-Validation-and-QA-with-FME",
+      "web_ref": "turn38search5",
+      "retrieval": "primary_search_excerpt",
+      "supported_claim": "Existing identification, quantification and correction of data quality issues; no absence-of-product claim."
+    },
+    {
+      "id": "G8",
+      "title": "ArcGIS Data Reviewer",
+      "url": "https://pro.arcgis.com/en/pro-app/3.3/help/data/validating-data/get-started-with-data-reviewer.htm",
+      "web_ref": "turn38search14",
+      "retrieval": "primary_search_excerpt",
+      "supported_claim": "Existing automated quality-control system; version shown by retrieved source is 3.3, not asserted current latest."
+    },
+    {
+      "id": "P1",
+      "title": "PLCverif user documentation",
+      "url": "https://plcverif-oss.gitlab.io/plcverif-docs/userdocs/",
+      "web_ref": "turn21view2",
+      "retrieval": "full_page",
+      "supported_claim": "Established open verification frontend; translates code/requirements to external checking tools."
+    },
+    {
+      "id": "P2",
+      "title": "CERN-GSI PLC verification service case study",
+      "url": "https://arxiv.org/abs/2502.19150",
+      "web_ref": "turn21view0",
+      "retrieval": "full_page_and_pdf",
+      "supported_claim": "Real prior service and retained component models; explicit manual simulator work. No price or demand extrapolation."
+    },
+    {
+      "id": "P3",
+      "title": "PLCverif supported SCL features",
+      "url": "https://plcverif-oss.gitlab.io/plcverif-docs/s7frontend/SclFeatures.html",
+      "web_ref": "turn23view1",
+      "retrieval": "full_page",
+      "supported_claim": "Documented semantic/frontend coverage limits; requires rechecking actual installed source version."
+    },
+    {
+      "id": "P4",
+      "title": "PLCverif example walkthrough",
+      "url": "https://plcverif-oss.gitlab.io/plcverif-docs/userdocs/Demo.html",
+      "web_ref": "turn29view1",
+      "retrieval": "full_page",
+      "supported_claim": "Available small fixtures are already solved examples, unsuitable as a discovery flagship."
+    }
+  ],
+  "failed_retrievals": [
+    {
+      "url": "https://arxiv.org/abs/2606.23870",
+      "error": "DisabledError",
+      "consequence": "Potential newer PLC prior art unverified; no capability claim drawn."
+    },
+    {
+      "url": "https://www.usgs.gov/faqs/what-projection-horizontal-datum-vertical-datum-and-resolution-a-usgs-digital-elevation-model",
+      "error": "Timeout",
+      "consequence": "Search excerpt exists but dossier uses other primary evidence."
+    },
+    {
+      "url": "https://www.siemens.com/fr-ca/content/simatic-s5-renewal-service-japan/",
+      "error": "Timeout",
+      "consequence": "No quantitative migration-demand inference."
+    },
+    {
+      "url": "https://ngs.noaa.gov/datums/newdatums/GetPrepared.shtml",
+      "error": "502",
+      "consequence": "Equivalent beta page subsequently retrieved through official link."
+    }
+  ],
+  "classification": {
+    "observed": "Retrieved official documentation and research; no application execution or user trials.",
+    "sourced": "Existing tools, documented workflow gaps and the real CERN-GSI case.",
+    "hypothesized": "Added AI contribution, service demand, prices, consortium participation, reusable benefit.",
+    "not_claimed": [
+      "autonomous discovery",
+      "novel primitive",
+      "observed demand",
+      "earned revenue",
+      "new feasible offering",
+      "validated physical controller",
+      "certified engineering output"
+    ]
+  },
+  "selection": {
+    "ENG-1": "Conditional discovery check only; broad gap weakened by FME/ArcGIS prior art.",
+    "ENG-2": "Defer absent authorized vendor oracle and current successor prior-art resolution."
+  }
+}

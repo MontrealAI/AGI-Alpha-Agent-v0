@@ -1,0 +1,11 @@
+# Resumable artifact repair
+
+Upload identity now uses the full (owner, upload) pair. Equal upload names across tenants are independent, and sorted checkpoints follow that same pair order. Writes validate every overlapping byte before filling any positions, so a late conflict rejects the entire write. Every commit checks completeness and SHA-256 before changing state, including empty artifacts and first commits. Committed uploads accept only byte-consistent writes and remain committed; abort still clears active uploads, retries for aborted uploads, and rejects committed ones.
+
+Restoration deep-copies each checkpoint record and retains strict validation for record shape, identities, duplicate scoped keys, declaration bounds, state, cell length/types, aborted data and committed completeness/digest. Active declarations retain their supplied syntactically valid digest; data, including empty data, must match that digest to commit. Snapshot and restored state are independent from callers. Public API and supplied public test are unchanged.
+
+Validation: the original implementation produced four failures and two errors, reproducing tenant collisions, partial overlap mutation, unchecked digests and restored-cell aliasing. After repair, `python -m unittest -v test_public test_regression` passed 13 tests: 1 public and 12 regression tests. Tests cover all lifecycle states and begin retries, wrong owners, empty and maximum-size artifacts, malformed checkpoints, strict inputs, sorting, case sensitivity, caller mutation and restore continuation. A seeded exercise performs 1,000 chunk writes across 25 artifacts, retries each write, compares cells to an independent presence model, restores checkpoints periodically, then commits and restores each complete artifact.
+
+The supplied helper is used for rejection atomicity, immediate idempotence and returned snapshot independence. Separate assertions check checkpoint input isolation, malformed records and expected digest/data behavior; immutable bytes do not need a mutation probe.
+
+Limitations: finite sequential in-memory checks only. Filesystem durability, process crashes, concurrent uploads and authentication beyond the supplied owner are outside the written contract. No private evaluator or external service was accessed.
