@@ -1,0 +1,285 @@
+{
+  "schema": "complete-reproduction/v1",
+  "accepted": true,
+  "development_cases": 2,
+  "confirmation_cases": 4,
+  "confirmation_cells": 133,
+  "distinct_confirmation_checks": 38,
+  "economic_outputs_identical": 23,
+  "dependency_versions_matched": true,
+  "steps": [
+    {
+      "name": "independent_identity",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_audit.py",
+        "/workspace/scratch/f3e31b12a17f/study",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/identity.json"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.048179456003708765,
+      "stdout": "{\"accepted\": true, \"cases\": 4}\n",
+      "stderr": ""
+    },
+    {
+      "name": "03.06-Concat-And-Append unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/development/03.06-Concat-And-Append.ipynb",
+        "--case",
+        "03.06-Concat-And-Append",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-03.06-Concat-And-Append.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 1.7286144529934973,
+      "stdout": "{\"case\": \"03.06-Concat-And-Append\", \"completed_cells\": 7, \"expected_cells\": 16, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 0.3050470430025598}\n",
+      "stderr": ""
+    },
+    {
+      "name": "03.06-Concat-And-Append delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/03.06-Concat-And-Append/recovered.ipynb",
+        "--case",
+        "03.06-Concat-And-Append",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-03.06-Concat-And-Append.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/development_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.8211720399995102,
+      "stdout": "{\"case\": \"03.06-Concat-And-Append\", \"completed_cells\": 16, \"expected_cells\": 16, \"all_cells_completed\": true, \"accepted\": true, \"elapsed_seconds\": 0.24961784199695103}\n",
+      "stderr": ""
+    },
+    {
+      "name": "05.04-Feature-Engineering unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/development/05.04-Feature-Engineering.ipynb",
+        "--case",
+        "05.04-Feature-Engineering",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-05.04-Feature-Engineering.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 1.6589839419903,
+      "stdout": "{\"case\": \"05.04-Feature-Engineering\", \"completed_cells\": 3, \"expected_cells\": 18, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 1.0737449820007896}\n",
+      "stderr": ""
+    },
+    {
+      "name": "05.04-Feature-Engineering delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/05.04-Feature-Engineering/recovered.ipynb",
+        "--case",
+        "05.04-Feature-Engineering",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-05.04-Feature-Engineering.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/development_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 1.9569437830068637,
+      "stdout": "{\"case\": \"05.04-Feature-Engineering\", \"completed_cells\": 18, \"expected_cells\": 18, \"all_cells_completed\": true, \"accepted\": true, \"elapsed_seconds\": 1.2425879910006188}\n",
+      "stderr": ""
+    },
+    {
+      "name": "03.02-Data-Indexing-and-Selection unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/03.02-Data-Indexing-and-Selection.ipynb",
+        "--case",
+        "03.02-Data-Indexing-and-Selection",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-03.02-Data-Indexing-and-Selection.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 0.737557945001754,
+      "stdout": "{\"case\": \"03.02-Data-Indexing-and-Selection\", \"completed_cells\": 29, \"expected_cells\": 35, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 0.17304993799189106}\n",
+      "stderr": ""
+    },
+    {
+      "name": "03.02-Data-Indexing-and-Selection delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_run.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/03.02-Data-Indexing-and-Selection/recovered.ipynb",
+        "--case",
+        "03.02-Data-Indexing-and-Selection",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-03.02-Data-Indexing-and-Selection.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 1.5116183159989305,
+      "stdout": "{\"case\": \"03.02-Data-Indexing-and-Selection\", \"nonempty_code_cells\": 35, \"executed_code_cells\": 35, \"accepted\": true, \"elapsed_seconds\": 0.6043100460083224}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "name": "03.05-Hierarchical-Indexing unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/03.05-Hierarchical-Indexing.ipynb",
+        "--case",
+        "03.05-Hierarchical-Indexing",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-03.05-Hierarchical-Indexing.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 0.8122795469971607,
+      "stdout": "{\"case\": \"03.05-Hierarchical-Indexing\", \"completed_cells\": 16, \"expected_cells\": 45, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 0.17842974700033665}\n",
+      "stderr": ""
+    },
+    {
+      "name": "03.05-Hierarchical-Indexing delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_run.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/03.05-Hierarchical-Indexing/recovered.ipynb",
+        "--case",
+        "03.05-Hierarchical-Indexing",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-03.05-Hierarchical-Indexing.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 1.3896300420019543,
+      "stdout": "{\"case\": \"03.05-Hierarchical-Indexing\", \"nonempty_code_cells\": 45, \"executed_code_cells\": 45, \"accepted\": true, \"elapsed_seconds\": 0.6782694050052669}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "name": "05.02-Introducing-Scikit-Learn unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/05.02-Introducing-Scikit-Learn.ipynb",
+        "--case",
+        "05.02-Introducing-Scikit-Learn",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-05.02-Introducing-Scikit-Learn.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 3.2155989419989055,
+      "stdout": "{\"case\": \"05.02-Introducing-Scikit-Learn\", \"completed_cells\": 14, \"expected_cells\": 32, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 2.5424306919885566}\n",
+      "stderr": ""
+    },
+    {
+      "name": "05.02-Introducing-Scikit-Learn delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_run.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/05.02-Introducing-Scikit-Learn/recovered.ipynb",
+        "--case",
+        "05.02-Introducing-Scikit-Learn",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-05.02-Introducing-Scikit-Learn.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 9.580183155005216,
+      "stdout": "{\"case\": \"05.02-Introducing-Scikit-Learn\", \"nonempty_code_cells\": 32, \"executed_code_cells\": 32, \"accepted\": true, \"elapsed_seconds\": 8.302646654003183}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "name": "05.03-Hyperparameters-and-Model-Validation unchanged baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py",
+        "/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/05.03-Hyperparameters-and-Model-Validation.ipynb",
+        "--case",
+        "05.03-Hyperparameters-and-Model-Validation",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/baseline-05.03-Hyperparameters-and-Model-Validation.json"
+      ],
+      "expected_exit": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 2.039507705005235,
+      "stdout": "{\"case\": \"05.03-Hyperparameters-and-Model-Validation\", \"completed_cells\": 4, \"expected_cells\": 21, \"all_cells_completed\": false, \"accepted\": false, \"elapsed_seconds\": 1.3294813630054705}\n",
+      "stderr": ""
+    },
+    {
+      "name": "05.03-Hyperparameters-and-Model-Validation delivered",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_run.py",
+        "/tmp/agi-alpha-capsule-reproduction-bgg09g_s/05.03-Hyperparameters-and-Model-Validation/recovered.ipynb",
+        "--case",
+        "05.03-Hyperparameters-and-Model-Validation",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/accepted-05.03-Hyperparameters-and-Model-Validation.json",
+        "--checks",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_checks.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 5.40730608200829,
+      "stdout": "{\"case\": \"05.03-Hyperparameters-and-Model-Validation\", \"nonempty_code_cells\": 21, \"executed_code_cells\": 21, \"accepted\": true, \"elapsed_seconds\": 4.473969964994467}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "name": "adverse_controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/independent_controls.py",
+        "/workspace/scratch/f3e31b12a17f/study",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/adverse"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 11.601995029006503,
+      "stdout": "{\"all_expected_rejections\": true, \"controls\": 5}\n",
+      "stderr": ""
+    },
+    {
+      "name": "economic_study",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/economics/run_economics.py"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.37064198999723885,
+      "stdout": "{\n  \"human_reference\": {\n    \"low\": 336.0,\n    \"central\": 1192,\n    \"high\": 3984\n  },\n  \"scenarios\": [\n    {\n      \"scenario\": \"downside\",\n      \"accepted_revenue\": 10800.0,\n      \"operating_profit\": -20743.019999999997,\n      \"full_project_return\": -28943.019999999997,\n      \"minimum_opening_cash\": 29843.019999999997,\n      \"operating_break_even_price\": 1793.939079983423,\n      \"project_break_even_price\": 2265.9195561081183\n    },\n    {\n      \"scenario\": \"central\",\n      \"accepted_revenue\": 73440.0,\n      \"operating_profit\": 40309.008,\n      \"full_project_return\": 36309.008,\n      \"minimum_opening_cash\": 6760.916,\n      \"operating_break_even_price\": 390.72688239860275,\n      \"project_break_even_price\": 441.26378646743\n    },\n    {\n      \"scenario\": \"favorable\",\n      \"accepted_revenue\": 153900.0,\n      \"operating_profit\": 118544.12999999998,\n      \"full_project_return\": 116444.12999999998,\n      \"minimum_opening_cash\": 5046.3225,\n      \"operating_break_even_price\": 185.8305500130129,\n      \"project_break_even_price\": 198.48200601486366\n    },\n    {\n      \"scenario\": \"price_pressure\",\n      \"accepted_revenue\": 48960.0,\n      \"operating_profit\": 16563.983999999997,\n      \"full_project_return\": 12563.983999999997,\n      \"minimum_opening_cash\": 6699.668000000001,\n      \"operating_break_even_price\": 390.72688239860275,\n      \"project_break_even_price\": 441.26378646743\n    },\n    {\n      \"scenario\": \"premium_price\",\n      \"accepted_revenue\": 97920.0,\n      \"operating_profit\": 64054.03199999999,\n      \"full_project_return\": 60054.03199999999,\n      \"minimum_opening_cash\": 6822.164000000001,\n      \"operating_break_even_price\": 390.72688239860275,\n      \"project_break_even_price\": 441.26378646743\n    },\n    {\n      \"scenario\": \"low_uptake\",\n      \"accepted_revenue\": 4590.0,\n      \"operating_profit\": -9855.687,\n      \"full_project_return\": -13855.687,\n      \"minimum_opening_cash\": 14238.187,\n      \"operating_break_even_price\": 2892.30363380555,\n      \"project_break_even_price\": 3700.8940989067855\n    },\n    {\n      \"scenario\": \"no_buyers\",\n      \"accepted_revenue\": 0.0,\n      \"operating_profit\": -10800.0,\n      \"full_project_return\": -14800.0,\n      \"minimum_opening_cash\": 14800.0,\n      \"operating_break_even_price\": null,\n      \"project_break_even_price\": null\n    },\n    {\n      \"scenario\": \"funded_campaign_no_sales\",\n      \"accepted_revenue\": 0.0,\n      \"operating_profit\": -22800.0,\n      \"full_project_return\": -26800.0,\n      \"minimum_opening_cash\": 26800.0,\n      \"operating_break_even_price\": null,\n      \"project_break_even_price\": null\n    },\n    {\n      \"scenario\": \"acceptance_challenge_401\",\n      \"accepted_revenue\": 34646.4,\n      \"operating_profit\": -434.28734117647036,\n      \"full_project_return\": -4434.28734117647,\n      \"minimum_opening_cash\": 7321.487341176471,\n      \"operating_break_even_price\": 911.6443110071484,\n      \"project_break_even_price\": 1018.8941421959141\n    },\n    {\n      \"scenario\": \"acceptance_challenge_449\",\n      \"accepted_revenue\": 38793.6,\n      \"operating_profit\": 3921.343341176471,\n      \"full_project_return\": -78.65665882352914,\n      \"minimum_opening_cash\": 6906.021388235295,\n      \"operating_break_even_price\": 806.1216236147993,\n      \"project_break_even_price\": 901.8830688312087\n    },\n    {\n      \"scenario\": \"acceptance_challenge_450\",\n      \"accepted_revenue\": 38880.0,\n      \"operating_profit\": 4012.0856470588224,\n      \"full_project_return\": 12.08564705882236,\n      \"minimum_opening_cash\": 6905.659529411765,\n      \"operating_break_even_price\": 804.1630920392372,\n      \"project_break_even_price\": 899.7113094916923\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "native_exact_source",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/native_evidence_demo.py",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-final-replay/native"
+      ],
+      "expected_exit": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.7957459329918493,
+      "stdout": "{\n  \"schema\": \"recovery-native-execution/v1\",\n  \"executed_at_utc\": \"2026-10-27T23:39:28.466020+00:00\",\n  \"python\": \"3.12.14\",\n  \"node\": \"v24.22.1\",\n  \"pydantic\": \"2.11.7\",\n  \"source_commit\": \"3947e4ec8fd74ad40e13e8ff825a149fa98a10e9\",\n  \"upstream_files_byte_verified\": 26,\n  \"binding_sha256\": \"4f74bdc39c7c89691216c938f3e6d207d7a82576b101e0e660dba8945fd0ca28\",\n  \"bound_delivery_cases\": 6,\n  \"bound_passing_reports\": 14,\n  \"bound_independent_reports\": 8,\n  \"native_charge\": {\n    \"status\": \"EXECUTED_LOCAL_SCHEMA_VALIDATION\",\n    \"records\": 54,\n    \"all_accruals_unknown\": true,\n    \"unknown_to_zero_rejected\": true,\n    \"complete_cost_profit\": null,\n    \"complete_cost_seal\": \"NOT_REQUESTED_UNKNOWN_COSTS\",\n    \"signed_cost_ledger\": \"NOT_EXECUTED_NO_CONFIGURED_ACCOUNTING_AUTHORITY\"\n  },\n  \"nova_seed\": {\n    \"status\": \"EXECUTED_LOCAL\",\n    \"payload_hash\": \"1ff73103657efbf8b5bd7300c8dc3704223e170e1f236f2f737947149c5e66d1\",\n    \"commitment\": \"52ed605223ae3149ffcdbd739eed0fbad2c6fd14cbd2f6b925778a0609a99191\",\n    \"opened_payload_equal\": true,\n    \"tampered_ciphertext_rejected\": true,\n    \"credential_status\": \"Public reproducibility fixture passphrase; no confidentiality or live secret claimed.\"\n  },\n  \"fusion_plan\": {\n    \"status\": \"EXECUTED_LOCAL_COMPILE_AND_VERIFY\",\n    \"jobs\": 6,\n    \"plan_root\": \"0x216cd32d1e581e139b545be2e183569934c2024f9d9d86f72d1b268aef3a4520\",\n    \"total_nominal_bounty_base_units\": \"600\",\n    \"token\": \"AGIALPHA\",\n    \"decimals\": 18,\n    \"tampered_specification_rejected\": true,\n    \"nominal_duration_seconds\": 172800,\n    \"bounty_boundary\": \"100 base units per job are a schema demonstration; no funding, token issuance, USDC revenue, market value or live assignment.\"\n  },\n  \"insight\": {\n    \"status\": \"EXECUTED_LOCAL_VALIDATE_AND_ANALYZE\",\n    \"decision\": \"evidence-needed\",\n    \"authority\": \"none\",\n    \"independent_proof\": false,\n    \"boundary\": \"Native evidence-needed result preserves unknown paid demand and actual billing. It does not override the separately reported conditional commercial simulation.\"\n  },\n  \"MARK\": {\n    \"status\": \"NOT_EXECUTED\"\n  },\n  \"live_ENS\": {\n    \"status\": \"NOT_EXECUTED\"\n  },\n  \"live_services\": {\n    \"status\": \"NOT_EXECUTED\"\n  },\n  \"payments\": {\n    \"actual_collections_usd\": 0,\n    \"new_external_spending_usd\": 0,\n    \"token_transactions\": 0,\n    \"USDC_transactions\": 0\n  },\n  \"boundary\": \"Local exact-source hashing, encryption round-trip, plan proof checks and Charge validation execute. They do not prove scientific truth, paid acceptance, completeness of actual costs, live identity, settlement or production qualification.\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "limits": "Fresh-process execution on tested installed runtime, not clean dependency installation or general OS portability; model billing and customer revenue are not measured."
+}

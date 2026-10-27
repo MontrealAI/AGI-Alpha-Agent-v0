@@ -1,0 +1,131 @@
+{
+  "schema": "commercial-source-formatting-correction/v1",
+  "created_at_utc": "2026-10-27T23:36:50.688496+00:00",
+  "reason": "PR4999 source qualification E701/E702 multiple statements; formatting only.",
+  "source_review_commit": "f018e123",
+  "formatter": "ruff 0.12.5",
+  "files": [
+    {
+      "path": "economics/run_economics.py",
+      "before_sha256": "520ab6a3937c65dfb9c1942a0414b001c7a65585ecce21bfc051523367d32974",
+      "after_sha256": "8ddf01270b94393b5066e81c03ddee61d815d8bf89f6301fcc977e727e18d1bb",
+      "canonical_ast_sha256": "265609009b4aa686a137bf1ffd902faf80c5c3a54981150d629175f18fa23263",
+      "ast_equivalent": true,
+      "ast_method": "Python ast.parse(type_comments=True), ast.dump(include_attributes=False); source positions intentionally excluded.",
+      "before_bytes": 26743,
+      "after_bytes": 34420
+    },
+    {
+      "path": "scripts/native_evidence_demo.py",
+      "before_sha256": "cd153775b81b831617bb1de7330b92ee20faafc48954efbb6693fbf582461a6f",
+      "after_sha256": "bc5b598e6b5faab39fe0f38610e7c05aa39d0fff795c9173d3606fad7f7e0002",
+      "canonical_ast_sha256": "7b590db457c31ac92fe04963b6fd712ecdcf6fafb54a43df60b0b324d833bc21",
+      "ast_equivalent": true,
+      "ast_method": "Python ast.parse(type_comments=True), ast.dump(include_attributes=False); source positions intentionally excluded.",
+      "before_bytes": 8112,
+      "after_bytes": 9866
+    }
+  ],
+  "economic_outputs_before": {
+    "coordination_comparison.csv": "d16d0aff950f30936466cf0231abbe8c730e4a0ec2267e889dcb1bc7212d6904",
+    "acceptance_challenge_449_cash_ledger.csv": "99c84a5b152ad584b2c65d45865166f9b69ab880731ba522b2722fe392d3e16c",
+    "api_token_budget_partitions.json": "df4fd68909b8f5f0847e537125d3b988bdb4bdf8a72ac6ee65008bb8e31699b0",
+    "scenario_summary.csv": "e26a101c5aea595f75aa192e2ec5cf0919a1af1c5ebe5f290d101b2ff47652fb",
+    "central_cash_ledger.csv": "de7f3c88c97a48f67923ec90fc4de934668a41fabe34fed7190ab6f8a049263f",
+    "downside_cash_ledger.csv": "4bc937902db8d523cedff63ad5b819cf7af63f07c0ae621400594ed241a0c6d4",
+    "acceptance_challenge_401_cash_ledger.csv": "51a75a1b028d2d8b3e73f99ba6e35315a560a51672ee518b7f0983eda25b787f",
+    "central_restricted_deposit_ledger.csv": "599e21b21f8683e9b9522953a09a2c3504046d8092ead5ef0c8cb92545d78c93",
+    "central_35_day_collection_delay_ledger.csv": "2a10762e3ef2d965c8af199dd4e0573d8eef0c74b5270796ff9a5bf6f6c56d30",
+    "participation_thresholds.csv": "061a8f7ad713702addf63a6a5b1545a57e36b4e7374bfefa1cd1d4032ad183f7",
+    "acceptance_challenge_450_cash_ledger.csv": "5a5cb8e9fb53ef15adbc9a268bb95e1315de3ae480e7771f5a8d4bd3ec806136",
+    "premium_price_cash_ledger.csv": "c1579fb6e0d66f8bc4ec6590703414986440dcf8be87160a4b494cb3a929722e",
+    "summary.json": "ca10ee738fe109e6ebe44b76329461fbc20209210741f88d28a5754429dc4f8c",
+    "funded_campaign_no_sales_cash_ledger.csv": "dd83a764d5f44cf1907b4f6d997f82c6b560b832e6e6eda51ae7a565f286586f",
+    "central_after_warranty_ledger.csv": "71dac3c4a0fc6beabef773db9eacb40a98f9dfb8c1da7791fe0690743755ad80",
+    "threshold_grid.csv": "ec89018b404ff9f14777716c939c7aac3eea5077fba7bae342d7ff0cc847f926",
+    "low_uptake_cash_ledger.csv": "07501a6ed37b25007a219d2775819730d0c9bb385ef5d9e21547e1de98f58429",
+    "price_pressure_cash_ledger.csv": "f1904aac46c2e5169a90f705ec58fb43f8d0afd0624d501fc0155046dc5aa51d",
+    "sensitivities.csv": "90989f58a0a55ade0d321724f361335644915c0d5da2b4b71587e9988423c4e6",
+    "central_first_cohort_all_refunded_ledger.csv": "37d32103876b6716d113abc09761a5eb07872faf2f7719017217d0579ea7fdfb",
+    "favorable_cash_ledger.csv": "f6b447843c0f87f8731a6a95bad6745fc1520caefeccae605386ab468390c53b",
+    "no_buyers_cash_ledger.csv": "2702175d3d816ba066da37daac95a9103d888c47378efa61f5b53b513f6a6ff3",
+    "central_acceptance_ledger.csv": "de7f3c88c97a48f67923ec90fc4de934668a41fabe34fed7190ab6f8a049263f"
+  },
+  "native_files_before": {
+    "native_inputs.json": "0e293715c1ef494b3470175ed5abc7fd5376fbc82f27c4151534e29fc357188f",
+    "native_execution.json": "eba26b2a927f53aa485e9dcfe9321f9e10ea37ed279e886d4b6abeaaa1704ff6",
+    "native_insight.json": "6ab80452f22841d8e56cf7daf92096b1917f21ec36e87b9929c4720d590926b4",
+    "native_nova_seed.json": "f4a94ee6990713e9185daff124bed2da8c051882b494cde95fd2f17c9fcf3638",
+    "native_fusion_plan.json": "f4529735fbf8d09564fb0c0de417d807124caee5462aad6b631065ac2f1b071a"
+  },
+  "economic_input_sha256": "5bf6e2990c950d6294d0222edfc03cc24f756a23a697a95f34bcfab4067858fb",
+  "status": "PASS",
+  "verified_at_utc": "2026-10-27T23:37:06.936397+00:00",
+  "steps": [
+    {
+      "name": "ruff_check",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "--select",
+        "E701,E702",
+        "/workspace/scratch/f3e31b12a17f/study/economics/run_economics.py",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/native_evidence_demo.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.043272959999740124
+    },
+    {
+      "name": "economics",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/economics/run_economics.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.5549445689975983
+    },
+    {
+      "name": "native_replay",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/f3e31b12a17f/study/scripts/native_evidence_demo.py",
+        "--output",
+        "/workspace/scratch/f3e31b12a17f/ci-correction-commercial-20261027/native-replay"
+      ],
+      "exit_code": 0,
+      "seconds": 1.0704006359883351
+    }
+  ],
+  "economic_outputs_identical": 23,
+  "economic_assumptions_unchanged": true,
+  "native_original_five_files_unchanged": true,
+  "native_replay_plaintext_binding_equal": true,
+  "native_binding_sha256": "4f74bdc39c7c89691216c938f3e6d207d7a82576b101e0e660dba8945fd0ca28",
+  "native_replay_case_count": 6,
+  "native_replay_independent_report_count": 8,
+  "boundary": "AST equality excludes source locations and formatting only. Existing economic output bytes are identical. Native randomized ciphertext/timestamps may differ; checked plaintext bindings, schema validations and original evidence bytes agree. No assumptions, notebook contents or acceptance criteria changed.",
+  "repository_qualification_lint": {
+    "exit_code": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": "",
+    "exact_config_sha256": "ab7b316e384a1ee68b71151f7f7dac2c702f8b1257a34bb98ad4d31acdcde7b6",
+    "original_config_path": "/workspace/scratch/f3e31b12a17f/qualification-pyproject.toml",
+    "used_config_path": "/workspace/scratch/f3e31b12a17f/ci-correction-commercial-20261027/pyproject.toml",
+    "reason_for_copy": "Ruff recognizes pyproject tables only when the file basename is pyproject.toml; bytes are unchanged from the exact repository configuration.",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "--config",
+      "/workspace/scratch/f3e31b12a17f/ci-correction-commercial-20261027/pyproject.toml",
+      "--no-cache",
+      "/workspace/scratch/f3e31b12a17f/study/economics/run_economics.py",
+      "/workspace/scratch/f3e31b12a17f/study/scripts/native_evidence_demo.py"
+    ],
+    "verified_at_utc": "2026-10-27T23:37:25.871756+00:00"
+  }
+}
