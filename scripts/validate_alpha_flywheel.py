@@ -35,6 +35,7 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/enterprise-evidence.json",
     "scripts/templates/alpha-flywheel/discovery-evidence.json",
     "scripts/templates/alpha-flywheel/opportunity-evidence.json",
+    "scripts/templates/alpha-flywheel/comparison-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -483,7 +484,8 @@ def browser_acceptance(
                 if axe_script:
                     page.evaluate(axe_script.read_text() + ";void 0")
                     audit = page.evaluate(
-                        "axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
+                        "axe.run(document,{runOnly:{type:'tag',"
+                        "values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
                     )
                     report["accessibility"].append(
                         {"width": width, "language": language, "violations": audit["violations"]}

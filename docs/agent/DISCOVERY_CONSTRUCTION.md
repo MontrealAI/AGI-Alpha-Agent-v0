@@ -74,6 +74,11 @@ resource access retain separate original roles.
 
 ## Operational Alpha and arrangements
 
+Execution-derived cohort results now extend these plans through the same
+Journal. See [Operational Alpha results](OPERATIONAL_ALPHA_RESULTS.md) for
+prospective case binding, complete denominators, separate E−U/E+−E contrasts
+and read-only reconciliation of actual executions and original mission costs.
+
 Frozen plans represent H as human-service reference, U as reasonable ordinary use,
 E as expert operation and E+ as the same expert workflow plus one explicit retained
 capability. U/E/E+ share model profile, access, tools, resources and purpose.

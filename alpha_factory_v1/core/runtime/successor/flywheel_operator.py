@@ -98,6 +98,7 @@ def add_commands(commands: Any) -> None:
             "observation",
             "decision",
             "comparison",
+            "comparison-result",
             "arrangement",
             "offering-link",
         ),
@@ -164,7 +165,9 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
                 "dependencies": "separate signed permit, approved model account, budget and sandbox or browser image",
             },
             "costs": service.costs.report(),
-            "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",
+            "live_identity_qualification": (
+                "requires deployment-specific owner-controlled signing and approved RPC evidence"
+            ),
             "capsule_export": "controlled-invocation-only",
             "discovery": {
                 "interface": "flywheel-opportunity/v1",
