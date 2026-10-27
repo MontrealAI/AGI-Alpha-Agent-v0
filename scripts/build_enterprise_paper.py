@@ -28,6 +28,12 @@ def build() -> None:
             raise ValueError("paper source differs from recorded experiment: " + name)
     doc = (ROOT / "docs/agent/ENTERPRISE_NEXT_ADVANTAGE.md").read_text()
     methods = doc.split("## What was implemented\n", 1)[1].split("## Executed study and findings\n", 1)[0]
+    methods = methods.split("The native `mission-run", 1)[0] + (
+        "`mission-run --enterprise-decision` connects the policy to the existing executor. "
+        "Other lifecycle actions need their existing signed commands. Capability-dependent "
+        "production composition remains unsupported; a requirement never invokes a capsule. "
+        "Protected invocation retains the existing ENS/wallet and mission-permission boundaries.\n"
+    )
     results = doc.split("## Executed study and findings\n", 1)[1].split("## Reproduce and inspect\n", 1)[0]
     limits = doc.split("## Failure recovery and release boundary\n", 1)[1].split("## Français\n", 1)[0]
     path = report["technical_path"]
@@ -81,14 +87,12 @@ or customer value. Fictional accounting amounts are excluded from actual profit.
 
 ## Reproducible companion
 
-The source companion contains the signed lifecycle contracts, recorder, independent
-finite checker, directed regressions, bilingual evidence inspector and operator
-guide. Run `PYTHONPATH=. python scripts/record_enterprise_flywheel.py --output NEW.json`
-from a development checkout; outputs never overwrite prior evidence. Then build
-this paper using `python scripts/build_enterprise_paper.py`. Every recorded runtime,
-recorder and fixture source hash must match before the paper builder proceeds.
-The original general-executor and specialist packets preserve their own historical
-source identities and scopes. Future model or tool changes require new qualification.
+The companion contains contracts, recorder, oracle, regressions, bilingual inspector
+and operator guide. Run `PYTHONPATH=. python scripts/record_enterprise_flywheel.py --output NEW.json`
+from a development checkout; evidence never overwrites a prior output. Build the
+paper using `python scripts/build_enterprise_paper.py`. Recorded runtime, recorder
+and fixture hashes must match first. Earlier packets retain their historical
+scope; model or tool changes require new qualification.
 
 Evidence packet SHA-256:
 
@@ -113,7 +117,7 @@ Operator contracts are in `docs/agent/ENTERPRISE_NEXT_ADVANTAGE.md`.
 """
     output = ROOT / "docs/papers"
     output.mkdir(exist_ok=True)
-    stem = "agi-alpha-enterprise-implementation-v1"
+    stem = "agi-alpha-enterprise-implementation-v2"
     with tempfile.TemporaryDirectory(prefix="enterprise-paper-") as temporary:
         work = Path(temporary)
         (work / "paper.md").write_text(body)

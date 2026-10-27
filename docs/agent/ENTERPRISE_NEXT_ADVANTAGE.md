@@ -10,8 +10,8 @@ general executor and specialist network uses the existing Journal, protected
 service, A/B/C CostLedger, checkpoints and native operator. It creates no second
 registry, executor, financial authority or publication path.
 
-[Typeset paper](../papers/agi-alpha-enterprise-implementation-v1.pdf) ·
-[LaTeX](../papers/agi-alpha-enterprise-implementation-v1.tex) ·
+[Typeset paper](../papers/agi-alpha-enterprise-implementation-v2.pdf) ·
+[LaTeX](../papers/agi-alpha-enterprise-implementation-v2.tex) ·
 [Recorded bilingual journey](../flywheel/index.html#enterprise)
 
 ## What was implemented
@@ -46,7 +46,8 @@ each decision. Unknown costs block additional funded work. The decision is advic
 until a separate signed exact permit authorizes the existing executor. Production
 and prototype missions must preserve the offering's beneficiary, purpose,
 deliverable, acceptance criteria, mode, tools and budgets. One decision permits
-one attempt. An old decision refuses after relevant source, capability, control,
+one attempt. All alternative evidence and offering need records are rechecked in the dispatch
+transaction. An old decision refuses after relevant source, capability, control,
 offering, capacity or ledger changes.
 
 The native `mission-run --enterprise-decision` path executes that connection.
@@ -99,7 +100,8 @@ is a valid policy without any retained capability.
 
 ## Reproduce and inspect
 
-From a source checkout with the development dependencies:
+From a source checkout with the development dependencies. Paper builds additionally
+require Pandoc, XeLaTeX and DejaVu fonts:
 
 ```sh
 PYTHONPATH=. python scripts/record_enterprise_flywheel.py --output /private/new-enterprise.json
@@ -140,7 +142,9 @@ Failed/interrupted executions retain uncertain liabilities and capacity. No
 automatic retry or restoration of authority occurs. To release a terminal failed
 attempt, first stop the enterprise, reconcile and seal all A liabilities with the
 existing accounting authority, then submit a signed `reconcile` command naming
-the exact launch head and current evidence. The consumed decision stays consumed.
+the exact launch head and current evidence. Terminal receipts must match the
+reserved permit, mission and profile. A lost launch finalization can be reconciled
+from that bound terminal failure; the consumed decision stays consumed.
 An attempt with no executor receipt or with an in-flight receipt requires separate
 operator investigation; this version deliberately cannot clear it automatically.
 

@@ -258,14 +258,44 @@ def test_responses_wire_transport_uses_real_protocol_without_paid_calls(
     s["journal"].config = RuntimeConfig(llm_url="https://api.example/v1", llm_model="fixture", allow_remote_llm=True)
     monkeypatch.setenv("ALPHA_AGENT_LLM_KEY", "fictional-test-credential")
     requests = []
+    envelope = {
+        **done(),
+        "object": "response",
+        "created_at": 1793100000,
+        "background": False,
+        "error": None,
+        "incomplete_details": None,
+        "instructions": None,
+        "max_output_tokens": 4096,
+        "parallel_tool_calls": False,
+        "reasoning": {"effort": "high", "summary": None},
+        "service_tier": "default",
+        "store": False,
+        "temperature": 1.0,
+        "text": {"format": {"type": "text"}},
+        "tool_choice": "auto",
+        "tools": [],
+        "top_p": 1.0,
+        "truncation": "disabled",
+        "user": None,
+        "metadata": {"fixture": "explicit"},
+    }
+    raw_envelope = json.dumps(envelope).encode()
 
     async def handler(request: httpx.Request) -> httpx.Response:
         requests.append(request)
-        return httpx.Response(200, json=done())
+        return httpx.Response(200, content=raw_envelope, headers={"content-type": "application/json"})
 
     client_type = httpx.AsyncClient
     monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
-    assert ResponsesTransport(s["journal"]).respond({"model": "fixture"}, lambda: True, 1)["status"] == "completed"
+    actual = ResponsesTransport(s["journal"]).respond({"model": "fixture"}, lambda: True, 1)
+    assert actual["status"] == "completed" and actual["output"] == envelope["output"]
+    assert actual["top_p"] == "1.0" and actual["temperature"] == "1.0"
+    assert actual["_provider_transport"]["raw_sha256"] == __import__("hashlib").sha256(raw_envelope).hexdigest()
+    assert actual["_provider_transport"]["decimal_metadata"] == [
+        {"path": ["temperature"], "literal": "1.0"},
+        {"path": ["top_p"], "literal": "1.0"},
+    ]
     assert str(requests[0].url) == "https://api.example/v1/responses"
     assert json.loads(requests[0].content) == {"model": "fixture"}
     assert requests[0].headers["authorization"] == "Bearer fictional-test-credential"
@@ -536,3 +566,46 @@ def test_computer_observation_cannot_cause_an_unapproved_remote_image_fetch(setu
     result = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env).run(task, p, permit(s, task, p, env))
     assert result["status"] == "failed-or-uncertain" and len(transport.requests) == 1
     assert len(env.calls) == 1 and result["actions"] == 1
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        b'{"output":[],"model":"a","model":"b"}',
+        b'{"output":[],"top_p":NaN}',
+        b'{"output":[{"type":"computer_call","actions":[{"type":"click","x":1.0}]}]}',
+        b'{"output":[],"_provider_transport":{}}',
+    ],
+)
+def test_provider_metadata_conversion_preserves_existing_refusal_boundaries(raw: bytes) -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_execution import _provider_envelope
+
+    with pytest.raises(ValueError):
+        _provider_envelope(raw)
+
+
+def test_provider_metadata_decimal_lexeme_is_exact() -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_execution import _provider_envelope
+
+    raw = b'{"output":[],"top_p":1e-4}'
+    value = _provider_envelope(raw)
+    assert value["top_p"] == "1e-4"
+    assert value["_provider_transport"]["decimal_metadata"] == [{"path": ["top_p"], "literal": "1e-4"}]
+
+
+def test_signed_execution_authority_is_snapshotted_before_environment_callbacks(setup: dict[str, Any]) -> None:
+    s, task, p, env = setup, mission(), profile(), LocalExperiment()
+    signed = permit(s, task, p, env)
+    original = copy.deepcopy(signed.model_dump())
+
+    def qualification_check() -> None:
+        signed.payload["permit"]["max_authorized_micro_usd"] = 1
+
+    result = MissionExecutor(
+        s["journal"], s["trust"], s["costs"], ScriptedTransport([done()]), env, qualification_check
+    ).run(task, p, signed)
+    assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+    assert result["permit"] == original
+    charge = s["costs"].snapshot()["charges"]["execution/fixture-run"]
+    assert charge["signed"] == original
+    assert signed.payload["permit"]["max_authorized_micro_usd"] == 1

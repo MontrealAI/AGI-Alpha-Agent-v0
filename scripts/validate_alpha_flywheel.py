@@ -459,6 +459,7 @@ def browser_acceptance(
                 page.locator("#enterprise-offering").select_option("resilient-placement")
                 expect(page.locator("#enterprise-stages")).to_contain_text("commercially-assessed")
                 expect(page.locator("#enterprise-states")).to_contain_text("USD 0")
+                expect(page.locator("#enterprise-alternatives")).to_contain_text("µUSD")
                 page.locator("#enterprise-offering").select_option("disruption-aware-rollout")
                 expect(page.locator("#enterprise-stages")).to_contain_text("hypothesis")
                 with page.expect_download() as enterprise_download:

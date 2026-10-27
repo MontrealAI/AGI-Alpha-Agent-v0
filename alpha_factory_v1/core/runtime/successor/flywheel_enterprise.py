@@ -274,11 +274,17 @@ class Enterprise:
         if (
             old is None
             or old["digest"] != command.expected_head
-            or old["status"] != "failed-or-uncertain"
+            or old["status"] not in {"failed-or-uncertain", "attempting-or-uncertain"}
             or self.journal.latest("@control", cx)["state"] != "paused"
         ):
             raise Conflict("reconciliation needs the exact failed launch and a paused enterprise")
         execution = self.journal.latest(operation_key(raw["execution_operation"]), cx)
+        if (
+            digest("enterprise-execution-permit", execution["permit"]) != old.get("execution_permit_digest")
+            or digest("flywheel-execution-request", execution["mission"]) != old.get("request_digest")
+            or digest("flywheel-execution-profile", execution["profile"]) != old.get("profile_digest")
+        ):
+            raise Conflict("terminal receipt differs from the exact reserved execution intent")
         if execution["status"] not in {"failed-or-uncertain", "stopped-budget"}:
             raise Conflict("in-flight or delivered execution cannot be cleared as a failed launch")
         if not self.costs.report(raw["execution_operation"], cx)["bucket_complete"]["A"]:
@@ -300,6 +306,7 @@ class Enterprise:
             raise Conflict("offering head changed")
         value = self.journal.document(old)
         spec = Offering.model_validate(value["spec"])
+        self._evidence(spec.need_evidence, cx)
         stage = raw["stage"]
         if value["stage"] == "authorized" or stage != STAGES[STAGES.index(value["stage"]) + 1]:
             raise ValueError("qualification stages cannot be skipped")
@@ -329,8 +336,11 @@ class Enterprise:
                 if assessment.price_micro_usd not in spec.price_candidates_micro_usd:
                     raise ValueError("commercial price is outside the versioned policy")
                 value["commercial"] = assessment.model_dump()
-            elif raw["commercial"] is not None or value["commercial"]["lower_net_value_micro_usd"] <= 0:
-                raise ValueError("authorization requires a positive conservative commercial assessment")
+            else:
+                assessment = CommercialAssessment.model_validate(value["commercial"])
+                self._evidence(assessment.evidence, cx)
+                if raw["commercial"] is not None or assessment.lower_net_value_micro_usd <= 0:
+                    raise ValueError("authorization requires a positive conservative commercial assessment")
         value["history"].append({"from_digest": old["digest"], "stage": stage, "terms": raw})
         value["stage"] = stage
         return key("offering", spec.offering_id), value
@@ -353,6 +363,7 @@ class Enterprise:
                     reasons.append("offering missing")
                 else:
                     spec = Offering.model_validate(offering["spec"])
+                    self._evidence(spec.need_evidence, cx)
                     if alternative.action == "produce" and (
                         offering["stage"] != "authorized" or offering["qualification_source"] != context["source"]
                     ):
@@ -455,6 +466,15 @@ class Enterprise:
             )
             if command.expires_at <= int(time.time()) or self.journal.latest("@control", cx)["state"] != "ready":
                 raise Conflict("decision authority expired or enterprise stopped")
+            for frozen_row in decision["alternatives"]:
+                alternative = Alternative.model_validate(frozen_row["alternative"])
+                self._evidence(alternative.evidence, cx)
+                if alternative.offering_id is not None:
+                    current_offering = self._read("offering", alternative.offering_id, cx)
+                    if (current_offering["digest"] if current_offering else None) != frozen_row["offering_head"]:
+                        raise Conflict("alternative offering changed since decision; reassess")
+                    if current_offering is not None:
+                        self._evidence(Offering.model_validate(current_offering["spec"]).need_evidence, cx)
             row = next(
                 x for x in decision["alternatives"] if x["alternative"]["alternative_id"] == decision["selected"]
             )
@@ -496,6 +516,9 @@ class Enterprise:
                 "decision_id": decision_id,
                 "decision_digest": decision["digest"],
                 "offering_spec_digest": digest("enterprise-offering", spec),
+                "execution_permit_digest": digest("enterprise-execution-permit", permit),
+                "request_digest": terms.request_digest,
+                "profile_digest": terms.profile_digest,
                 "source": context["source"],
                 "status": "attempting-or-uncertain",
                 "execution_digest": None,

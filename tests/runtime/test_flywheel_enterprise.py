@@ -370,7 +370,7 @@ def test_revision_resets_qualification_and_stale_decision_refuses(setup: dict[st
     updated = offering(setup).model_copy(update={"version": 2})
     new = Enterprise(setup["service"]).apply(command(setup, "offering", updated.model_dump(), "revise", old["digest"]))
     assert new["stage"] == "hypothesis"
-    with pytest.raises(Conflict, match="offering changed"):
+    with pytest.raises(Conflict, match="evidence is stale|offering changed"):
         Enterprise(setup["service"]).run("first-decision", *execution(setup))
 
 
@@ -408,3 +408,76 @@ def test_interrupted_attempt_keeps_capacity_and_unknown_liability(setup: dict[st
     assert fixed["status"] == "reconciled-failure"
     assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
     assert Enterprise(setup["service"]).inspect("decision", "first-decision")["consumed"]
+
+
+def test_changed_forecast_evidence_refuses_before_consuming_or_io(setup: dict[str, Any]) -> None:
+    s.funding(setup)
+    register(setup)
+    original = decision(setup)
+    forecast_key = "@enterprise-forecast-fixture"
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast_key, {"scope": "fictional", "lower_benefit": 2000})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    request = copy.deepcopy(original["request"])
+    request["decision_id"] = "forecast-decision"
+    for alternative in request["alternatives"]:
+        alternative["evidence"] = [evidence(setup, forecast_key).model_dump()]
+    enterprise = Enterprise(setup["service"])
+    enterprise.apply(command(setup, "decide", request, "forecast-decision"))
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast_key, {"scope": "fictional", "lower_benefit": 0})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    with pytest.raises(Conflict, match="evidence is stale"):
+        enterprise.run("forecast-decision", *execution(setup))
+    assert not enterprise.inspect("decision", "forecast-decision")["consumed"]
+    with pytest.raises(KeyError):
+        setup["journal"].latest(operation_key("placement-origin"))
+
+
+def test_terminal_executor_failure_recovers_after_lost_finalization(setup: dict[str, Any], monkeypatch: Any) -> None:
+    s.funding(setup)
+    register(setup)
+    decision(setup)
+    enterprise = Enterprise(setup["service"])
+    executor, mission, profile, permit = execution(setup)
+    executor.transport.respond = lambda *args: (_ for _ in ()).throw(TimeoutError("fixture failure"))
+    with monkeypatch.context() as context:
+
+        def crash(*args: Any) -> None:
+            raise SystemExit("process ended after terminal executor receipt")
+
+        context.setattr(enterprise, "_finish", crash)
+        with pytest.raises(SystemExit):
+            enterprise.run("first-decision", executor, mission, profile, permit)
+    old = enterprise.inspect("launch", "placement-origin")
+    assert old["status"] == "attempting-or-uncertain"
+    assert setup["journal"].latest(operation_key("placement-origin"))["status"] == "failed-or-uncertain"
+    s.seal(setup, "placement-origin", "A")
+    setup["journal"].control(True)
+    with setup["journal"].transaction() as cx:
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    raw = {"execution_operation": "placement-origin", "evidence": [evidence(setup).model_dump()]}
+    result = enterprise.apply(command(setup, "reconcile", raw, "recover-terminal", old["digest"]))
+    assert result["status"] == "reconciled-failure"
+    assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+    assert enterprise.inspect("decision", "first-decision")["consumed"]
+
+
+def test_changed_commercial_assessment_evidence_cannot_authorize(setup: dict[str, Any]) -> None:
+    record = launch(setup)
+    advance(setup, "prototype")
+    accept(setup, record)
+    advance(setup, "technically-qualified")
+    forecast = "@commercial-forecast-fixture"
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast, {"demand": "fictional-positive"})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    terms = commercial(setup, 100)
+    terms["evidence"] = [evidence(setup, forecast).model_dump()]
+    advance(setup, "commercially-assessed", terms)
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast, {"demand": "withdrawn"})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    with pytest.raises(Conflict, match="evidence is stale"):
+        advance(setup, "authorized")
+    assert Enterprise(setup["service"]).inspect("offering", "resilient-placement")["stage"] == "commercially-assessed"
