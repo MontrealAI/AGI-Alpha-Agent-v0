@@ -29,3 +29,49 @@
 #enterprise .finance-list dd{white-space:normal;text-align:right}
 #enterprise .panel{min-width:0}
 @media(max-width:600px){#enterprise .scenario-controls{grid-template-columns:minmax(0,1fr)}#enterprise .scenario-controls>*{grid-column:1/-1;min-width:0;max-width:100%;white-space:normal}#enterprise-offering{min-width:0;max-width:100%}}
+
+/* Discovery planning shares the Alpha project export and has no operating permissions. */
+.discovery-toolbar{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:1rem}
+.discovery-toolbar .button{font-size:.76rem;gap:.5rem}
+.discovery-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:1.4rem;align-items:start}
+.discovery-grid>.panel{min-width:0}
+.discovery-fields{display:grid;gap:1.1rem}
+.discovery-fields>div,.discovery-bounds>div{min-width:0}
+.discovery-fields label{display:block;font-size:.79rem;font-weight:650;color:#e6daf4;margin-bottom:.5rem;line-height:1.5}
+.discovery-fields textarea{width:100%;min-width:0;max-width:100%;resize:vertical;background:#140d24;border:1px solid #715782;border-radius:5px;color:var(--text);padding:.8rem;font:inherit;font-size:.82rem;line-height:1.6}
+.discovery-fields textarea:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.discovery-fields small{display:block;color:var(--muted);font-size:.7rem;line-height:1.6;margin-top:.4rem}
+.discovery-bounds{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem}
+.discovery-bounds input,.discovery-bounds select{width:100%;min-width:0;padding:.75rem;background:#140d24;color:var(--text);border:1px solid #715782;border-radius:5px;font-size:.8rem}
+.discovery-inspector{background:linear-gradient(140deg,#312045,#1c1932);border-color:#806093}
+.discovery-inspector h3{margin-top:1.3rem;font-size:1.6rem}
+.discovery-inspector .finance-list>div{display:block;padding:.8rem 0}
+.discovery-inspector .finance-list dd{margin:.4rem 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.78rem;line-height:1.7}
+.discovery-inspector .finance-list dt{font-size:.7rem;color:var(--purple);font-weight:650}
+#discovery .table-wrap{min-width:0}
+#discovery table{white-space:normal;table-layout:fixed}
+#discovery table th:first-child,#discovery table td:first-child{width:5rem}
+#discovery .replay-actions .button{white-space:normal}
+#discovery-status{margin-top:1rem}
+.site-header nav{flex-wrap:wrap}
+@media(max-width:850px){.discovery-grid{grid-template-columns:minmax(0,1fr)}.discovery-inspector h3{font-size:1.35rem}}
+@media(max-width:760px){.site-header nav{gap:.6rem 1rem}.discovery-toolbar{align-items:stretch}.discovery-toolbar .button{flex:1 1 12rem}.discovery-toolbar .chip{align-self:center}.discovery-bounds{grid-template-columns:minmax(0,1fr)}.discovery-fields textarea{font-size:1rem}.discovery-editor .replay-actions .button{width:100%}}
+
+#discovery-recorded table th:first-child,#discovery-recorded table td:first-child{width:auto}
+#discovery-recorded .provenance dd{white-space:pre-wrap;line-height:1.7}
+#discovery-recorded .provenance{margin-block:1.5rem}
+
+#discovery-recorded-witness>div{display:contents}
+
+.candidate-results{margin-block:2rem;background:linear-gradient(140deg,#302044,#19172c);border-color:#82649e}
+.candidate-results>h3{font-size:clamp(1.6rem,3vw,2.3rem)}
+.candidate-results .provenance>div{display:contents}
+.candidate-results .provenance{margin-block:1.5rem}
+.candidate-results .provenance dd{line-height:1.7}
+.candidate-results .scenario-controls{grid-template-columns:minmax(0,1fr)}
+.candidate-results .scenario-controls>*{min-width:0}
+.candidate-results select{width:100%;max-width:100%;min-width:0}
+.candidate-artifact{background:#140e22;border:1px solid var(--line);border-radius:5px;padding:1.2rem}
+.candidate-results code{overflow-wrap:anywhere;font-size:.68rem}
+#discovery .candidate-results table{table-layout:auto;white-space:nowrap}
+#discovery .candidate-results table th:first-child,#discovery .candidate-results table td:first-child{width:auto}

@@ -91,6 +91,100 @@ class Offering(StrictModel):
         return self
 
 
+class BuyerValueHypothesis(StrictModel):
+    """An explicit uncertain pricing basis, never accepted demand or revenue."""
+
+    beneficiary: Text
+    outside_option: Text
+    basis: Text
+    source_evidence: list[EvidenceRef] = Field(min_length=1, max_length=16)
+    value_lower_micro_usd: int | None = Field(default=None, ge=0, le=10**15)
+    value_upper_micro_usd: int | None = Field(default=None, ge=0, le=10**15)
+    willingness_to_pay_lower_micro_usd: int | None = Field(default=None, ge=0, le=10**15)
+    willingness_to_pay_upper_micro_usd: int | None = Field(default=None, ge=0, le=10**15)
+    uncertainty: Text
+    evidence_type: Literal["hypothesis-only"] = "hypothesis-only"
+
+    @model_validator(mode="after")
+    def intervals(self) -> BuyerValueHypothesis:
+        for lower, upper in (
+            (self.value_lower_micro_usd, self.value_upper_micro_usd),
+            (self.willingness_to_pay_lower_micro_usd, self.willingness_to_pay_upper_micro_usd),
+        ):
+            if (lower is None) != (upper is None) or (lower is not None and upper is not None and lower > upper):
+                raise ValueError("buyer value and willingness-to-pay intervals must be paired and ordered, or unknown")
+        return self
+
+
+class OfferingV2(StrictModel):
+    """New offerings may keep unknown buyer value without inventing human work."""
+
+    schema_name: Literal["flywheel-offering/v2"] = "flywheel-offering/v2"
+    offering_id: Identifier
+    version: int = Field(ge=1, le=1_000_000)
+    beneficiary: Text
+    useful_outcome: Text
+    deliverable: Text
+    scope: Text
+    acceptance_criteria: list[Text] = Field(min_length=1, max_length=32)
+    need_evidence: list[EvidenceRef] = Field(min_length=1, max_length=16)
+    demand_uncertainty: Text
+    human_reference: HumanReference | None = None
+    buyer_value_hypothesis: BuyerValueHypothesis | None = None
+    required_capabilities: list[Digest] = Field(default_factory=list, max_length=16)
+    permitted_tools: list[Identifier] = Field(min_length=1, max_length=24)
+    price_policy: Text
+    price_candidates_micro_usd: list[int] = Field(default_factory=list, max_length=16)
+    capacity: int = Field(ge=1, le=64)
+    turnaround_seconds: int = Field(ge=1, le=43_200)
+    complete_cost_cap_micro_usd: int = Field(ge=1, le=10**12)
+    risks: list[Text] = Field(min_length=1, max_length=16)
+    operating_limits: list[Text] = Field(min_length=1, max_length=16)
+    mode: Literal["live", "hybrid", "simulation"]
+    parent_offering: EvidenceRef | None = None
+
+    @model_validator(mode="after")
+    def bounded(self) -> OfferingV2:
+        if self.human_reference is None and self.buyer_value_hypothesis is None:
+            raise ValueError("a human-service reference or explicit buyer-value hypothesis is required")
+        if self.buyer_value_hypothesis is not None and self.buyer_value_hypothesis.beneficiary != self.beneficiary:
+            raise ValueError("buyer-value hypothesis must describe this offering's beneficiary")
+        if (
+            len(set(self.permitted_tools)) != len(self.permitted_tools)
+            or len(set(self.required_capabilities)) != len(self.required_capabilities)
+            or len(set(self.price_candidates_micro_usd)) != len(self.price_candidates_micro_usd)
+            or any(not _is_exact_type(p, int) or not 1 <= p <= 10**12 for p in self.price_candidates_micro_usd)
+        ):
+            raise ValueError("unique bounded tools, capabilities and positive candidate prices required")
+        if len(canonical(self)) > 40_000:
+            raise ValueError("offering exceeds its immutable record budget")
+        return self
+
+
+def parse_offering(value: Any) -> Offering | OfferingV2:
+    """Dispatch explicit v2 records while preserving every historical v1 default."""
+    if isinstance(value, (Offering, OfferingV2)):
+        value = value.model_dump()
+    if not isinstance(value, dict):
+        raise ValueError("offering must be a versioned object")
+    schema = value.get("schema_name", "flywheel-offering/v1")
+    if schema == "flywheel-offering/v1":
+        return Offering.model_validate(value)
+    if schema == "flywheel-offering/v2":
+        return OfferingV2.model_validate(value)
+    raise ValueError("unsupported offering schema")
+
+
+def offering_evidence(spec: Offering | OfferingV2) -> list[EvidenceRef]:
+    """Recheck buyer-basis provenance without treating a hypothesis as demand."""
+    extra = (
+        spec.buyer_value_hypothesis.source_evidence
+        if isinstance(spec, OfferingV2) and spec.buyer_value_hypothesis is not None
+        else []
+    )
+    return [*spec.need_evidence, *extra]
+
+
 class CommercialAssessment(StrictModel):
     evidence: list[EvidenceRef] = Field(min_length=1, max_length=16)
     price_micro_usd: int = Field(gt=0, le=10**12)
@@ -234,13 +328,13 @@ class Enterprise:
                 raise Conflict("enterprise operation already consumed; inspect its recorded result")
             value: dict[str, Any]
             if command.action == "offering":
-                spec = Offering.model_validate(command.record)
+                spec = parse_offering(command.record)
                 old = self._read("offering", spec.offering_id, cx)
                 if (old["digest"] if old else None) != command.expected_head:
                     raise Conflict("offering changed; refresh before revising")
                 if spec.version != (old["spec"]["version"] + 1 if old else 1):
                     raise ValueError("offering revisions must be consecutive and requalify")
-                self._evidence(spec.need_evidence + ([spec.parent_offering] if spec.parent_offering else []), cx)
+                self._evidence(offering_evidence(spec) + ([spec.parent_offering] if spec.parent_offering else []), cx)
                 value = {
                     "spec": spec.model_dump(),
                     "stage": "hypothesis",
@@ -310,8 +404,8 @@ class Enterprise:
         if old is None or old["digest"] != command.expected_head:
             raise Conflict("offering head changed")
         value = self.journal.document(old)
-        spec = Offering.model_validate(value["spec"])
-        self._evidence(spec.need_evidence, cx)
+        spec = parse_offering(value["spec"])
+        self._evidence(offering_evidence(spec), cx)
         stage = raw["stage"]
         if value["stage"] == "authorized" or stage != STAGES[STAGES.index(value["stage"]) + 1]:
             raise ValueError("qualification stages cannot be skipped")
@@ -366,8 +460,8 @@ class Enterprise:
                 if offering is None:
                     reasons.append("offering missing")
                 else:
-                    spec = Offering.model_validate(offering["spec"])
-                    self._evidence(spec.need_evidence, cx)
+                    spec = parse_offering(offering["spec"])
+                    self._evidence(offering_evidence(spec), cx)
                     if alternative.action == "produce" and (
                         offering["stage"] != "authorized" or offering["qualification_source"] != context["source"]
                     ):
@@ -488,7 +582,7 @@ class Enterprise:
                     if (current_offering["digest"] if current_offering else None) != frozen_row["offering_head"]:
                         raise Conflict("alternative offering changed since decision; reassess")
                     if current_offering is not None:
-                        self._evidence(Offering.model_validate(current_offering["spec"]).need_evidence, cx)
+                        self._evidence(offering_evidence(parse_offering(current_offering["spec"])), cx)
                         if (
                             frozen_row["eligible"]
                             and alternative.action == "produce"
@@ -504,7 +598,7 @@ class Enterprise:
             offering = self._read("offering", str(choice.offering_id), cx)
             if offering is None or offering["digest"] != row["offering_head"]:
                 raise Conflict("offering changed since decision")
-            spec = Offering.model_validate(offering["spec"])
+            spec = parse_offering(offering["spec"])
             if spec.required_capabilities:
                 raise ValueError(
                     "Capability-dependent execution needs separately authenticated invocation; adapter unsupported"

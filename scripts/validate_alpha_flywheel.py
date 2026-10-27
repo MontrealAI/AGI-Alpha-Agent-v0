@@ -33,6 +33,7 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/general-evidence.json",
     "scripts/templates/alpha-flywheel/specialist-evidence.json",
     "scripts/templates/alpha-flywheel/enterprise-evidence.json",
+    "scripts/templates/alpha-flywheel/discovery-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -265,8 +266,12 @@ def browser_acceptance(
             expect(page.locator("#results")).to_be_hidden()
             page.locator("#explore-button").focus()
             page.keyboard.press("Enter")
+            expect(page.locator("#results")).to_be_hidden()
+            expect(page.locator("#discovery-needs")).to_be_focused()
+            expect(page.locator("#discovery-needs")).to_have_value("")
+            checks.append("first-keyboard-interaction-open-discovery")
+            page.locator("#start-example").click()
             expect(page.locator("#results")).to_be_visible()
-            expect(page.locator("#explore-title")).to_be_focused()
             expect(page.locator("#mission-title")).not_to_be_empty()
             expect(page.locator("#sample-schedule")).to_be_visible()
             expect(page.locator("#sample-schedule tr")).not_to_have_count(0)
@@ -278,7 +283,7 @@ def browser_acceptance(
             page.locator("#replay").click()
             assert json.loads(page.locator("#result-receipt").text_content() or "{}") == baseline
             checks += [
-                "first-keyboard-interaction-complete-example",
+                "explicit-preserved-regression-example",
                 "finite-engineering-sample",
                 "deterministic-replay",
             ]
