@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-27T18:53:15.034246+00:00",
+  "reviewer": "frontier_sources agent, same research team/session",
+  "scope": "Visual publication QA and exact PDF metadata checks; not external peer review or verification of the scientific claims.",
+  "status": "pass",
+  "render_method": {
+    "tool": "Poppler pdftoppm",
+    "resolution_dpi": 110,
+    "format": "PNG",
+    "inspection": "Every page viewed in two-page contact sheets at original image detail.",
+    "temporary_image_directory": "/tmp/geo-pdf-final",
+    "commands": [
+      "pdftoppm -r 110 -png publication/AGI_ALPHA_FLYWHEEL.pdf /tmp/geo-pdf-final/paper-final",
+      "pdftoppm -r 110 -png publication/EXECUTIVE_BRIEF.pdf /tmp/geo-pdf-final/brief-final"
+    ]
+  },
+  "checked": [
+    "all pages rendered",
+    "no observed clipping",
+    "no observed overlapping text or graphics",
+    "table labels and values fit",
+    "all four paper figure captions attached to their figures",
+    "no observed orphan headings",
+    "single-line paragraph widow on former paper page 15 corrected",
+    "PDF titles and authors exactly match expected metadata"
+  ],
+  "correction_history": [
+    {
+      "issue": "The preceding rendered paper began page 15 with the final single line of a paragraph.",
+      "action": "After approval from the coordinating agent, set allowWidows=0 and allowOrphans=0 on the base body ParagraphStyle; inherited brief/list styles receive the same settings. No prose or scientific data changed.",
+      "verification": "Ruff check passed; both PDFs rendered once; all 17 paper and 3 brief pages visually rechecked after regeneration.",
+      "outcome": "The continuation now contains two lines; no new layout defect observed."
+    }
+  ],
+  "unresolved_layout_issues": [],
+  "documents": [
+    {
+      "file": "AGI_ALPHA_FLYWHEEL.pdf",
+      "bytes": 908438,
+      "sha256": "19cd5bd0a5381fc6b335dafd82a4fa8a0c097e4112b979ee02a61e98e060722a",
+      "pages": 17,
+      "metadata_title": "🌌♾️ AGI ALPHA FLYWHEEL — When Capability Creates Opportunity",
+      "metadata_author": "Vincent Boucher — President of MONTREAL.AI",
+      "exact_title_match": true,
+      "exact_author_match": true,
+      "all_pages_visually_inspected": true,
+      "inspected_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "page_observations": [
+        {
+          "page": 1,
+          "result": "pass",
+          "observation": "Cover: title, author, three metrics and simulation qualification fit; no overlap."
+        },
+        {
+          "page": 2,
+          "result": "pass",
+          "observation": "Front matter and abstract: headings, quotation, author and paragraphs fit."
+        },
+        {
+          "page": 3,
+          "result": "pass",
+          "observation": "Sections 1–2: heading has accompanying paragraph; no orphan heading."
+        },
+        {
+          "page": 4,
+          "result": "pass",
+          "observation": "Commercial tables: wider first columns keep labels legible; complete values and footnotes visible."
+        },
+        {
+          "page": 5,
+          "result": "pass",
+          "observation": "Figure 1 and caption share page; candidate-screen table fits within margins."
+        },
+        {
+          "page": 6,
+          "result": "pass",
+          "observation": "Transformation witness and facility-disposition table fit; no clipping."
+        },
+        {
+          "page": 7,
+          "result": "pass",
+          "observation": "Figure 2 map, axes, legend, source note and attached caption all visible."
+        },
+        {
+          "page": 8,
+          "result": "pass",
+          "observation": "Connected example and human-service section fit; section heading has accompanying text."
+        },
+        {
+          "page": 9,
+          "result": "pass",
+          "observation": "Human-reference table and formula lines fit; body clears footer."
+        },
+        {
+          "page": 10,
+          "result": "pass",
+          "observation": "A/B/C cost table and pricing section fit; no clipping or overlap."
+        },
+        {
+          "page": 11,
+          "result": "pass",
+          "observation": "Figure 3 and its actual caption remain on the same page; section 8 fits."
+        },
+        {
+          "page": 12,
+          "result": "pass",
+          "observation": "Retention table and Gym outcome fit; HOLD qualification remains visible."
+        },
+        {
+          "page": 13,
+          "result": "pass",
+          "observation": "Sensitivity table fits with legible labels and values."
+        },
+        {
+          "page": 14,
+          "result": "pass",
+          "observation": "Figure 4 and caption share page; section 11 has accompanying paragraphs."
+        },
+        {
+          "page": 15,
+          "result": "pass",
+          "observation": "Prior single-line widow corrected to a two-line continuation; assumption table fits."
+        },
+        {
+          "page": 16,
+          "result": "pass",
+          "observation": "Continued assumption table repeats header; reproduction code and paragraphs fit."
+        },
+        {
+          "page": 17,
+          "result": "pass",
+          "observation": "References and evidence navigation fit, including wrapped links."
+        }
+      ]
+    },
+    {
+      "file": "EXECUTIVE_BRIEF.pdf",
+      "bytes": 55792,
+      "sha256": "9dd7c58a503f2a8142932e3a21139ec32907fbfdd6c282350cb028c5ab1a76bf",
+      "pages": 3,
+      "metadata_title": "🌌♾️ AGI ALPHA FLYWHEEL — When Capability Creates Opportunity — Executive Brief",
+      "metadata_author": "Vincent Boucher — President of MONTREAL.AI",
+      "exact_title_match": true,
+      "exact_author_match": true,
+      "all_pages_visually_inspected": true,
+      "inspected_pages": [
+        1,
+        2,
+        3
+      ],
+      "page_observations": [
+        {
+          "page": 1,
+          "result": "pass",
+          "observation": "Cover fits; metrics and simulation qualification visible."
+        },
+        {
+          "page": 2,
+          "result": "pass",
+          "observation": "Executive narrative and numeric table fit; bottom paragraph clears footer."
+        },
+        {
+          "page": 3,
+          "result": "pass",
+          "observation": "Opportunity, inheritance, qualifications and all five evidence entries fit on one page."
+        }
+      ]
+    }
+  ],
+  "renderer_sha256": "caafdd24c027161d2ee12cf6744e2ad2bb4fcae4deef2c20e6b09ba97dcc6876"
+}

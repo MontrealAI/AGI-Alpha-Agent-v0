@@ -1,0 +1,179 @@
+{
+  "technical_result": "Executed complete public-source onboarding and assurance package; local acceptance is a frozen research contract, not actual buyer sign-off.",
+  "source_rows": {
+    "parks": 2245,
+    "facilities": 3476
+  },
+  "source_consistent_associations": 3175,
+  "source_consistent_share": 0.9134062140391255,
+  "facility_review_rows": 301,
+  "park_review_rows": 456,
+  "total_review_rows": 757,
+  "park_review_decomposition": {
+    "missing_join_index": 455,
+    "invalid_geometry": 1
+  },
+  "review_interpretation": "Missing park indices can be legitimate non-park/private green spaces. A review row is not automatically a source error, and a confirmed row does not certify real-world truth.",
+  "full_summary": {
+    "park_source_rows": 2245,
+    "logical_park_indices": 1443,
+    "facility_source_rows": 3476,
+    "park_status_counts": {
+      "source_exception": 456,
+      "valid_source_polygon": 1789
+    },
+    "facility_status_counts": {
+      "confirmed": 3175,
+      "declared_park_has_source_exception": 1,
+      "declared_without_geometric_support": 30,
+      "geometry_only_suggestion": 34,
+      "identifier_geometry_conflict": 34,
+      "unassigned": 126,
+      "unknown_declared_park": 76
+    },
+    "exception_rows": 757,
+    "source_crs": {
+      "parks": "EPSG:4326",
+      "facilities": "EPSG:4326"
+    },
+    "target_crs": "EPSG:32188",
+    "axis_order": "always_xy: longitude/easting, latitude/northing"
+  },
+  "source_hashes": [
+    {
+      "id": "parks",
+      "url": "https://donnees.montreal.ca/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/35796624-15df-4503-a569-797665f8768e/download/espace_vert.json",
+      "file": "data/parks.geojson",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 8354792,
+      "sha256": "5d5086a6cb00bd6026a6fe4c52002a0175e7d249c30eada868dc35cda44ed152",
+      "retrieved_at_utc": "2026-10-27T18:05:42.160129+00:00",
+      "publisher": "Ville de Montréal",
+      "license": "CC BY 4.0 (catalogue; attribution required)",
+      "evidence_type": "actual public-source bytes",
+      "metadata_url": "https://open.canada.ca/data/en/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d"
+    },
+    {
+      "id": "facilities",
+      "url": "https://donnees.montreal.ca/dataset/60850740-dd83-47ee-9a19-13d674e90314/resource/2dac229f-6089-4cb7-ab0b-eadc6a147d5d/download/terrain_sport_ext.json",
+      "file": "data/facilities.geojson",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 1229775,
+      "sha256": "db89ebbb149d7b6fc05bcac8fecb744e10c1095b6177b06854ea2b5ece1efd37",
+      "retrieved_at_utc": "2026-10-27T18:05:44.561539+00:00",
+      "publisher": "Ville de Montréal",
+      "license": "CC BY 4.0 (catalogue; attribution required)",
+      "evidence_type": "actual public-source bytes",
+      "metadata_url": "https://open.canada.ca/data/en/dataset/60850740-dd83-47ee-9a19-13d674e90314"
+    }
+  ],
+  "development": {
+    "borough": "Ahuntsic-Cartierville",
+    "assets": 253,
+    "source_consistent": 245
+  },
+  "fresh_public_v1": {
+    "instrument_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529",
+    "fresh_rows": 3223,
+    "facility_status_counts": {
+      "confirmed": 2930,
+      "declared_without_geometric_support": 30,
+      "geometry_only_suggestion": 34,
+      "identifier_geometry_conflict": 32,
+      "unassigned": 122,
+      "unknown_declared_park": 75
+    },
+    "borough_counts": {
+      "Anjou": 100,
+      "Côte-des-Neiges-Notre-Dame-de-Grâce": 208,
+      "L'Île-Bizard-Sainte-Geneviève": 98,
+      "LaSalle": 182,
+      "Lachine": 173,
+      "Le Plateau-Mont-Royal": 133,
+      "Le Sud-Ouest": 159,
+      "Mercier-Hochelaga-Maisonneuve": 277,
+      "Montréal-Nord": 138,
+      "Outremont": 52,
+      "Pierrefonds-Roxboro": 260,
+      "Rivière-des-Prairies-Pointe-aux-Trembles": 310,
+      "Rosemont-La Petite-Patrie": 209,
+      "Saint-Laurent": 278,
+      "Saint-Léonard": 133,
+      "Verdum": 1,
+      "Verdun": 155,
+      "Ville-Marie": 142,
+      "Villeray-Saint-Michel-Parc-Extension": 215
+    },
+    "evidence_scope": "First outcome execution on 19 other source-labelled borough values; retained instrument built on origin borough. No model, human or causal time trial.",
+    "source_label_disclosure": "Verdum and Verdun are preserved as separate original strings. This is 19 fresh labels, not a claim of 19 additional administrative boroughs."
+  },
+  "review_corrected_replay": {
+    "original_v1_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529",
+    "v1_1_sha256": "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+    "same_public_reconciliation_bytes": true,
+    "same_public_summary": true,
+    "scope": "Review-corrected replay on already observed public inputs, not new independent mission evidence."
+  },
+  "retained_recipient_v1": {
+    "recipient": "Anjou",
+    "recipient_rows": 100,
+    "confirmed": 89,
+    "review_rows": 11,
+    "instrument_version": "1.0.0",
+    "instrument_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529",
+    "actual_separate_process_execution": true,
+    "control": "Ordinary local library containing identical source bytes and source information",
+    "file_byte_parity": {
+      "acceptance.json": true,
+      "asset_map.png": true,
+      "exceptions.csv": true,
+      "montreal_asset_onboarding.gpkg": true,
+      "reader_checks.json": true,
+      "reconciliation.csv": true,
+      "summary.json": true
+    },
+    "economic_advantage_proven": false,
+    "authority": "Local source transfer only; no live ENS authorization, municipal approval or trained closed-model capability acquisition",
+    "subsequent_review": "v1 had off-contract robustness defects; production admission is not justified by this recipient result. v1.1 fixes and independent fresh tests are separately preserved."
+  },
+  "review_corrected_fresh_structural": {
+    "accepted": 48,
+    "total": 48,
+    "passed": true
+  },
+  "conventional_control": {
+    "matched": 128,
+    "sample": 128,
+    "passed": true,
+    "independent_geodetic_truth": false
+  },
+  "gym_format": {
+    "semantically_identical_missions": 29,
+    "missions": 32,
+    "rows": 256,
+    "rows_preserved": true,
+    "extra_fields_preserved": true,
+    "divergent_cases": [
+      11,
+      20,
+      26
+    ],
+    "disposition": "HOLD unrestricted cross-CRS boundary association;3 round-trip boundary cases correctly remain visible. Ordinary tools with the same adapter have the same information."
+  },
+  "local_tests": 16,
+  "model_comparison": {
+    "human_trials": 0,
+    "U_controlled_model_trials": 0,
+    "E_controlled_model_trials": 0,
+    "E_plus_controlled_model_trials": 0,
+    "operational_alpha_measured": false,
+    "retained_incremental_profit_measured": false
+  },
+  "actual_customer_collections": 0,
+  "actual_complete_research_cost": "unmetered/unknown",
+  "network_admission": "not_admitted_existing_native_scope_does_not_include_geospatial",
+  "trust_fixture_result_path": "technical/independent_audit/trust_fixture_results.json",
+  "scope": "Public-source workflow construction with explicitly modeled commercial behavior; not evidence that simulated acceptance probabilities equal the 3175/3476 association rate."
+}

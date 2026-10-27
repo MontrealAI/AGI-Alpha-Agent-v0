@@ -1,0 +1,226 @@
+{
+  "configuration_sha256": "df8325474ddaef7baa566b14b706cecc9a156d681fb5aa5546fc5cea7b06c7f1",
+  "deposit_cash_reporting": {
+    "difference": 0.0,
+    "interpretation": "Preacceptance free cash deducts expenses before earning any deposit. A positive difference means the reported field is a monthly endpoint rather than every-prefix minimum.",
+    "preacceptance_unrestricted_cash": 680.35,
+    "reported_minimum_cash": 680.35
+  },
+  "event_and_counterfactual_cases": [
+    {
+      "arrangement": "acceptance_invoice",
+      "comparisons": {
+        "accepted": {
+          "actual": 1.0,
+          "expected": 1,
+          "pass": true
+        },
+        "attempts": {
+          "actual": 2.0,
+          "expected": 2,
+          "pass": true
+        },
+        "bad_debt": {
+          "actual": 0.0,
+          "expected": 0,
+          "pass": true
+        },
+        "closing_cash_before_B_C": {
+          "actual": 1184.7,
+          "expected": 1184.7,
+          "pass": true
+        },
+        "collections": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        },
+        "delivery_cost": {
+          "actual": 200.0,
+          "expected": 200,
+          "pass": true
+        },
+        "operating_profit": {
+          "actual": 184.7,
+          "expected": 184.7,
+          "pass": true
+        },
+        "payment_cost": {
+          "actual": 15.3,
+          "expected": 15.3,
+          "pass": true
+        },
+        "revenue": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        }
+      },
+      "default": false
+    },
+    {
+      "arrangement": "conditional_deposit",
+      "comparisons": {
+        "accepted": {
+          "actual": 1.0,
+          "expected": 1,
+          "pass": true
+        },
+        "attempts": {
+          "actual": 2.0,
+          "expected": 2,
+          "pass": true
+        },
+        "bad_debt": {
+          "actual": 0.0,
+          "expected": 0,
+          "pass": true
+        },
+        "closing_cash_before_B_C": {
+          "actual": 1180.35,
+          "expected": 1180.35,
+          "pass": true
+        },
+        "collections": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        },
+        "delivery_cost": {
+          "actual": 200.0,
+          "expected": 200,
+          "pass": true
+        },
+        "deposit_receipts": {
+          "actual": 250.0,
+          "expected": 250,
+          "pass": true
+        },
+        "operating_profit": {
+          "actual": 180.35000000000002,
+          "expected": 180.35,
+          "pass": true
+        },
+        "payment_cost": {
+          "actual": 19.65,
+          "expected": 19.65,
+          "pass": true
+        },
+        "refunded_deposits": {
+          "actual": 125.0,
+          "expected": 125,
+          "pass": true
+        },
+        "revenue": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        }
+      },
+      "default": false
+    },
+    {
+      "arrangement": "acceptance_invoice",
+      "comparisons": {
+        "bad_debt": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        },
+        "closing_cash_before_B_C": {
+          "actual": 700.0,
+          "expected": 700,
+          "pass": true
+        },
+        "collections": {
+          "actual": 0.0,
+          "expected": 0,
+          "pass": true
+        },
+        "operating_profit": {
+          "actual": -300.0,
+          "expected": -300,
+          "pass": true
+        },
+        "payment_cost": {
+          "actual": 0.0,
+          "expected": 0,
+          "pass": true
+        },
+        "revenue": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        }
+      },
+      "default": true
+    },
+    {
+      "arrangement": "conditional_deposit",
+      "comparisons": {
+        "bad_debt": {
+          "actual": 375.0,
+          "expected": 375,
+          "pass": true
+        },
+        "closing_cash_before_B_C": {
+          "actual": 816.9,
+          "expected": 816.9,
+          "pass": true
+        },
+        "collections": {
+          "actual": 125.0,
+          "expected": 125,
+          "pass": true
+        },
+        "deposit_receipts": {
+          "actual": 250.0,
+          "expected": 250,
+          "pass": true
+        },
+        "operating_profit": {
+          "actual": -183.10000000000002,
+          "expected": -183.1,
+          "pass": true
+        },
+        "payment_cost": {
+          "actual": 8.1,
+          "expected": 8.1,
+          "pass": true
+        },
+        "refunded_deposits": {
+          "actual": 125.0,
+          "expected": 125,
+          "pass": true
+        },
+        "revenue": {
+          "actual": 500.0,
+          "expected": 500,
+          "pass": true
+        }
+      },
+      "default": true
+    },
+    {
+      "case": "refundable_deposits_do_not_finance_unfunded_delivery",
+      "pass": true
+    },
+    {
+      "case": "higher_price_cannot_increase_single_period_participation",
+      "pass": true,
+      "worlds": 250
+    },
+    {
+      "case": "common_failure_refunds_every_deposit_and_keeps_costs",
+      "pass": true
+    },
+    {
+      "case": "zero_demand_loses_launch_and_seven_months_overhead_then_stops",
+      "operating_profit": -4700.0,
+      "pass": true,
+      "scope": "Immediate shutdown cancels subsequent overhead by model assumption."
+    }
+  ],
+  "runner_sha256": "0a08f21e30d4fb56cc8d83c1294dcb5ebb2dfdb0682ca40aca388273e3d76c83",
+  "scope": "Independent hand-calculated event cases and counterfactual invariants, not full model validation."
+}

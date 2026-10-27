@@ -1,0 +1,38 @@
+{
+  "instrument_version": "1.1.0",
+  "instrument_sha256": "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+  "reconciliation_sha256": "bd6917a285759837cc6e4991a5fbc86e007ebe6658de89dc2ad919323160580b",
+  "acceptance": {
+    "all_parks_preserved": true,
+    "all_selected_facilities_preserved": true,
+    "source_row_identities_unique": true,
+    "all_rows_have_source_hashes": true,
+    "confirmed_require_id_and_unique_geometry": true,
+    "unconfirmed_have_no_confirmed_assignment": true,
+    "all_facility_exceptions_queued": true,
+    "all_park_exceptions_queued": true,
+    "no_duplicate_exception_entries": true,
+    "status_conservation": true
+  },
+  "readers": {
+    "sqlite": {
+      "parks": 2245,
+      "facilities": 3476,
+      "exceptions": 757,
+      "integrity_check": "ok",
+      "unaccounted_facilities": 0,
+      "conflicting_confirmations": 0
+    },
+    "gdal": {
+      "parks": 2245,
+      "facilities": 3476
+    }
+  },
+  "accepted": true,
+  "software": {
+    "shapely": "2.1.1",
+    "pyproj": "3.8.0",
+    "pyogrio": "0.13.0"
+  },
+  "measurement_scope": "Executed deterministic public-source onboarding; no model benchmark or customer acceptance"
+}

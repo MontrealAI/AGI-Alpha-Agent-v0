@@ -1,0 +1,37 @@
+{
+  "policy_id": "montreal_asset_onboarding_v1",
+  "frozen_before_source_download": true,
+  "created_at_utc": "2026-10-27T18:05:18.897117+00:00",
+  "deliverable": "Two-layer Montreal park and recreation-asset onboarding package with reproducible reconciliation, complete exception register, map, provenance and operator handoff",
+  "scope_excludes": [
+    "surveyed accuracy",
+    "legal or cadastral boundaries",
+    "facility operational status",
+    "field verification",
+    "repair of source-owner facts",
+    "customer production writes"
+  ],
+  "acceptance": [
+    "Every source row has one immutable source-row identity and one output disposition; none silently dropped",
+    "No source geometry or source attribute is silently changed; transformations retain source hash and row lineage",
+    "Coordinate operations explicitly state source and target CRS and axis order; unknown CRS is refused",
+    "Declared park identifier and representative-point geometry are reconciled separately; disagreement remains an exception",
+    "Only agreement of a valid declared park reference with a unique geometric park is an administratively-confirmed association; geometric-only associations are explicitly suggestions",
+    "Every invalid, unmatched, duplicate or ambiguous row appears in an exception queue",
+    "GeoPackage opens through independent SQLite and GDAL readers and contains provenance, reconciliation and exceptions",
+    "Published acceptance SQL reconciles row counts, IDs and status totals; map and handoff carry limitations"
+  ],
+  "development_split": "First lexicographically sorted non-empty facility borough value; choose after reading schema only and before execution on other boroughs",
+  "fresh_split": "All other facility borough values; protected from workflow result inspection until source instrument hash is frozen",
+  "retained_comparison": "Same frozen executable on fresh recipient work; same-information ordinary-library control must be byte-identical; no claimed model causal effect",
+  "gym_policy": "One bounded authored development failure can motivate a separate correction; record both versions and run fresh adversarial cases after each freeze",
+  "seeds": {
+    "gym_development": 2026102701,
+    "gym_confirmation": 2026102702,
+    "format_confirmation": 2026102703
+  },
+  "use_of_models": "Human H and frontier U/E/E+ performance are not measured by this deterministic instrument; economics uses explicit uncertain assumptions",
+  "mapping_rule": "Exact normalized identifiers; one unique geometric park containing a representative point; no nearest-neighbor automatic reassignment",
+  "geometry_rule": "Reject invalid/empty geometry into exception queue rather than silent repair",
+  "authority": "Local research only. No live ENS, customer consent, or municipal approval is implied."
+}

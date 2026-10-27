@@ -1,0 +1,167 @@
+{
+  "reproduced": true,
+  "checks": {
+    "technical_reproduced": true,
+    "all_economic_json_semantics_match": true,
+    "optional_native_trust_reproduced": true
+  },
+  "commands": [
+    {
+      "label": "technical",
+      "command": [
+        "/tmp/geo-venv/bin/python",
+        "/workspace/scratch/d6bd84c0f702/agi-alpha/studies/agi-alpha-geospatial-delivery-v1/src/reproduce_technical.py",
+        "--out",
+        "/tmp/geo-full-reproduction/technical"
+      ],
+      "returncode": 0,
+      "log": "technical.log"
+    },
+    {
+      "label": "economics",
+      "command": [
+        "/tmp/geo-venv/bin/python",
+        "/workspace/scratch/d6bd84c0f702/agi-alpha/studies/agi-alpha-geospatial-delivery-v1/economics/run.py",
+        "all",
+        "--output",
+        "/tmp/geo-full-reproduction/economics"
+      ],
+      "returncode": 0,
+      "log": "economics.log"
+    },
+    {
+      "label": "native_trust",
+      "command": [
+        "/tmp/geo-venv/bin/python",
+        "/tmp/geo-full-reproduction/technical/study/technical/independent_audit/trust_fixture.py"
+      ],
+      "returncode": 0,
+      "log": "native_trust.log"
+    }
+  ],
+  "economic_confirmation_seed": 730552,
+  "economic_worlds": 2400,
+  "economic_json_comparisons": [
+    {
+      "file": "alpha_separation.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "annual_worlds.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "confirmation.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "example_world.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "exploratory_policy_results.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "parameter_uncertainty.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "policy_freeze.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "policy_robustness.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "sensitivity.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    },
+    {
+      "file": "thresholds.json",
+      "present": true,
+      "semantic_match": true,
+      "byte_match": true
+    }
+  ],
+  "clock_fields_excluded_from_semantic_comparison": [
+    "created_at_utc",
+    "elapsed_seconds",
+    "finished_at_utc",
+    "started_at_utc",
+    "wall_clock_seconds"
+  ],
+  "technical_summary": {
+    "source_rows": {
+      "park_source_rows": 2245,
+      "logical_park_indices": 1443,
+      "facility_source_rows": 3476,
+      "park_status_counts": {
+        "source_exception": 456,
+        "valid_source_polygon": 1789
+      },
+      "facility_status_counts": {
+        "confirmed": 3175,
+        "declared_park_has_source_exception": 1,
+        "declared_without_geometric_support": 30,
+        "geometry_only_suggestion": 34,
+        "identifier_geometry_conflict": 34,
+        "unassigned": 126,
+        "unknown_declared_park": 76
+      },
+      "exception_rows": 757,
+      "source_crs": {
+        "parks": "EPSG:4326",
+        "facilities": "EPSG:4326"
+      },
+      "target_crs": "EPSG:32188",
+      "axis_order": "always_xy: longitude/easting, latitude/northing"
+    },
+    "conventional_decisions": [
+      128,
+      128
+    ],
+    "structural_cases": [
+      48,
+      48
+    ],
+    "format_parity": [
+      29,
+      32
+    ]
+  },
+  "native_trust": {
+    "requested": true,
+    "executed": true,
+    "passed": true,
+    "semantic_checks_reproduced": true,
+    "checks": 10,
+    "native_source_sha256": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+    "principal_is_live_ens": false,
+    "execution_or_admission_granted": false,
+    "comparison": "Ephemeral keys/signatures change; compare signed-manifest binding and the ten named semantic outcomes"
+  },
+  "actual_collected_service_revenue": 0,
+  "actual_complete_research_cost": null,
+  "scope": "Reproduction of executed software and explicitly modeled commercial worlds. Preserved failures remain failures; no customer receipts, live ENS or production qualification are created.",
+  "wrapper_sha256": "4379055568904fc49bec89502e94141e23f8ca9a35b60efce272b2302d44c665"
+}

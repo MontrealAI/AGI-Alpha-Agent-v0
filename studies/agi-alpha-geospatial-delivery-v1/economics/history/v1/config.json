@@ -1,0 +1,189 @@
+{
+  "schema": "agi-alpha-geospatial-commercial/v1",
+  "currency": "CAD",
+  "date": "2026-10-27",
+  "scope": "Two-layer municipal geospatial onboarding and assurance pack: schema/CRS mapping, complete reconciliation and exceptions, GeoPackage, map, provenance, executable acceptance, handoff and one bounded correction/update. No survey certification, source-owner fact resolution, field verification or procurement award.",
+  "source_status": "Evidence-anchored cost simulation. Wages and API unit rates sourced; hours, token use, demand, buyer behavior, quality, costs, collections and capacity are scenario assumptions. Actual service receipts 0; actual complete authoring cost unknown.",
+  "human": {
+    "gis_wage": [
+      26.09,
+      35.8,
+      46.69
+    ],
+    "writer_wage": [
+      29.13,
+      39.85,
+      56.33
+    ],
+    "gis_share": 0.8,
+    "hours": [
+      8,
+      16,
+      32
+    ],
+    "composite_load": [
+      1.3,
+      1.45,
+      1.7
+    ],
+    "tools": [
+      10,
+      25,
+      75
+    ],
+    "service_margin": [
+      0.15,
+      0.2,
+      0.3
+    ],
+    "hours_breakdown_central": {
+      "scope_provenance": 2,
+      "schema_crs": 4,
+      "reconciliation_exceptions": 4,
+      "package_map_handoff": 3,
+      "verification_correction_support": 3
+    },
+    "sources": [
+      "https://www.jobbank.gc.ca/marketreport/wages-occupation/3494/geo25154",
+      "https://www.jobbank.gc.ca/marketreport/wages-occupation/20923/geo25154"
+    ],
+    "wage_reference_period": "2024; Job Bank update 2025-11-19",
+    "note": "Composite load includes benefits, employer costs and nonbillable business time once. Separate service margin is a pricing assumption, not overhead. Four-hour and eight-hour incumbent challenges are mandatory."
+  },
+  "inference": {
+    "fx_cad_per_usd": 1.4,
+    "context_cap_per_request": 200000,
+    "caching_discount": 0,
+    "batch_discount": 0,
+    "components": [
+      {
+        "stage": "scope_strategy_semantics",
+        "model": "gpt-6-astra",
+        "reasoning": "high",
+        "input_tokens": 500000,
+        "output_tokens": 60000,
+        "input_usd_per_million": 10,
+        "output_usd_per_million": 50
+      },
+      {
+        "stage": "construction_execution_packaging",
+        "model": "gpt-6.1-sol",
+        "reasoning": "high",
+        "input_tokens": 1000000,
+        "output_tokens": 100000,
+        "input_usd_per_million": 2,
+        "output_usd_per_million": 10
+      },
+      {
+        "stage": "independent_source_and_adversarial_review",
+        "model": "gpt-6-astra",
+        "reasoning": "high",
+        "input_tokens": 400000,
+        "output_tokens": 80000,
+        "input_usd_per_million": 10,
+        "output_usd_per_million": 50
+      }
+    ],
+    "note": "Token totals include reasoning output; per-request context remains below long-context threshold. Independent checks are not claimed statistically independent model judgments."
+  },
+  "A": {
+    "tools_compute": 12,
+    "source_access": 4,
+    "packaging_storage": 6,
+    "automated_support": 16,
+    "operational_recovery": 8,
+    "first_retry_probability": 0.2,
+    "retry_cost": 36,
+    "latent_defect_probability": 0.04,
+    "warranty_cost": 120,
+    "monthly_business_overhead": 500,
+    "cost_per_qualified_invitation": 22,
+    "launch_configuration": 1200,
+    "payment_fraction": 0.03,
+    "payment_fixed": 0.3,
+    "note": "All costs are CAD scenario estimates. No compulsory manual review or onboarding. Unpaid unsuccessful attempts incur their delivery costs. Launch configuration is A; optional extraction/Gym are not billed again here."
+  },
+  "B": {
+    "assessment": 120,
+    "extraction_and_compatibility": 330,
+    "sharing": 30,
+    "monthly_maintenance": 30,
+    "invocation_per_use": 3,
+    "saving_per_use_candidates": [
+      0,
+      8,
+      24
+    ],
+    "note": "Originating code development already included in A. B records only incremental assessment/extraction/sharing/maintenance. Initial assessment is charged even when retention is declined."
+  },
+  "C": {
+    "optional_gym": 600,
+    "note": "Optional scenario budget, not required for baseline profitability and not actual historical expenditure."
+  },
+  "market": {
+    "months": 12,
+    "runoff_months": 1,
+    "qualified_invitations_per_month": 24,
+    "capacity_attempts_per_month": 8,
+    "quality": 0.94,
+    "perceived_quality": 0.9,
+    "human_quality": 0.98,
+    "conventional_quality": 0.94,
+    "inhouse_fraction": 0.4,
+    "nonpayment_probability": 0.03,
+    "common_outage_probability": 0.025,
+    "value_reference_multipliers": [
+      0.7,
+      2.1,
+      4.5
+    ],
+    "inhouse_cost_reference_multipliers": [
+      0.22,
+      0.55,
+      1.15
+    ],
+    "buyer_integration_cost": [
+      30,
+      70,
+      140
+    ],
+    "failure_delay_cost": 200,
+    "budget_reference_multipliers": [
+      0.35,
+      0.85,
+      1.4
+    ],
+    "opening_financing": 5000,
+    "reserve_months": 2,
+    "deposit_fraction": 0.25,
+    "deposit_friction": 25,
+    "note": "No real prospect/customer/quote is represented. Each invitation is an eligible distinct scoped job; existing scripts/in-house work and no purchase are outside options. Capacity is finite. No price change keeps demand artificially fixed."
+  },
+  "policy_family": {
+    "price_ratios": [
+      0.25,
+      0.35,
+      0.5,
+      0.65,
+      0.8,
+      1
+    ],
+    "arrangements": [
+      "acceptance_invoice",
+      "conditional_deposit"
+    ]
+  },
+  "confirmation": {
+    "selection_seed": 381120,
+    "selection_worlds": 800,
+    "fresh_seed": 730551,
+    "fresh_worlds": 2400,
+    "parameter_seed": 880172,
+    "parameter_worlds": 2400,
+    "operational_seed": 490882,
+    "sensitivity_seed": 636321,
+    "sensitivity_worlds": 600,
+    "paired": true,
+    "interval_definition": "5th-95th percentiles of simulated annual outcomes, not empirical confidence intervals or probabilities of real business success."
+  }
+}
