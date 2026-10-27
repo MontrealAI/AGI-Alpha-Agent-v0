@@ -1,0 +1,400 @@
+{
+  "schema": "agialpha.discovery-round2.arm.v1",
+  "condition": "E_structured_expert_frontier_search",
+  "created_at_utc": "2026-10-27T21:40:54.668633+00:00",
+  "inputs": [
+    "protocol/initial_brief.txt",
+    "protocol/discovery_freeze.json"
+  ],
+  "common_brief_sha256": "68520318112e8103061be86091db4fc7d8a21a3fa936fe3355bcbe17730ae4cc",
+  "shared_amendment": {
+    "received_after_query": 4,
+    "received_before_query": 5,
+    "before_final_candidate_commitment": true,
+    "effect": "Removed passive chemical event-history and executable unlearning from provisional intersections; remaining shared exclusions observed."
+  },
+  "selection": null,
+  "selection_rule": "All four dimensions defensible; no missing-evidence candidate counted positive",
+  "candidate_count": 4,
+  "domains_count": 4,
+  "candidates": [
+    {
+      "id": "E1",
+      "domain": "chemical_recovery",
+      "beneficiary": "Fluoropolymer reclaimers and reagent buyers",
+      "output": "Waste destruction plus qualified fluoride feedstock",
+      "status": "rejected_prior_construction",
+      "sources": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "probe": "F_balance_and_reaction_control_unrun; dilute_revenue_bound_executed",
+      "commercial": "Gate_fee+qualified_salt_sales exceeds full recovery cost",
+      "inheritance": "Mass balance, qualification, concentration revenue bound",
+      "missing_evidence": "Mixed-feed chemical assays and buyer economics"
+    },
+    {
+      "id": "E2",
+      "domain": "construction_materials",
+      "beneficiary": "Demolition processor and precast plant",
+      "output": "Dry-storable water-activated recovered binder",
+      "status": "no_substantive_difference_established",
+      "sources": [
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "probe": "Stored_product_strength_vs_composition_matched_lime_silica_unrun",
+      "commercial": "Binder_sales+gate_fee/yield exceeds energy+sorting/yield+remaining costs",
+      "inheritance": "Chemical-energy ledger and matched controls",
+      "missing_evidence": "Distinct reactive mechanism; real-feed storage/strength results"
+    },
+    {
+      "id": "E3",
+      "domain": "optical_sensing",
+      "beneficiary": "Warehouse robot operators",
+      "output": "Guaranteed hidden-cell clearance with useful coverage",
+      "status": "rejected_unconstrained_identifiability",
+      "sources": [
+        "S8",
+        "S9"
+      ],
+      "probe": "Exact positive-transport ambiguity executed",
+      "commercial": "Module price covers complete installed support cost and beats measured avoided losses",
+      "inheritance": "Counterexample and admissible-world specification",
+      "missing_evidence": "New physical observable and identifiability proof"
+    },
+    {
+      "id": "E4",
+      "domain": "quantum_communication",
+      "beneficiary": "Quantum-network integrators",
+      "output": "Heralded entanglement-preserving noisy-channel transmission",
+      "status": "rejected_prior_construction",
+      "sources": [
+        "S10",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "probe": "Exact cyclic-switch Kraus enumeration executed",
+      "commercial": "Accepted_qubit_cost=(4*channel+control+detection)/(0.4375*survival)",
+      "inheritance": "Kraus simulator and resource accounting",
+      "missing_evidence": "Distinct useful channel transformation beating matched coherent control"
+    }
+  ],
+  "budget": {
+    "search_queries": 12,
+    "page_open_attempts": 8,
+    "blocked_page_opens": 5,
+    "narrative_word_limit": 2400,
+    "markdown_words": 1441,
+    "json_nonlog_whitespace_tokens": 449,
+    "combined_conservative_count": 1890
+  },
+  "evidence": {
+    "quantum": {
+      "n2": {
+        "p": 0.625,
+        "F": 0.6,
+        "PT_min": 0.1
+      },
+      "n3": {
+        "p": 0.5,
+        "F": 0.6666666666666666,
+        "PT_min_numeric": -1.942890293094024e-16
+      },
+      "n4": {
+        "p": 0.4375,
+        "F": 0.7142857142857143,
+        "PT_min": -0.07142857142857142,
+        "kraus_tuples": 256
+      },
+      "fixed_order_F": 0.5,
+      "label": "synthetic_exact_prior_art_reproduction"
+    },
+    "NLOS": {
+      "A": [
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          1,
+          1
+        ]
+      ],
+      "scene1": [
+        1,
+        1,
+        0
+      ],
+      "scene2": [
+        0,
+        0,
+        3
+      ],
+      "both_y": [
+        3,
+        3
+      ],
+      "temporal_scalings": 17,
+      "max_discrepancy": 0,
+      "label": "synthetic_admitted_model_counterexample_not_room_trial"
+    },
+    "PFAS": {
+      "assumptions": {
+        "volume_L": 1000000,
+        "PFAS_ug_per_L": 1,
+        "F_fraction": 0.7,
+        "recovery": 1,
+        "KF_USD_per_kg": 100
+      },
+      "KF_kg": 0.0021405849966312953,
+      "gross_USD": 0.21405849966312954,
+      "label": "arithmetic_scenario_no_observed_prices"
+    },
+    "cement": {
+      "lab_run": false,
+      "assumed_electricity_break_even_MWh_per_product_tonne": 0.4375
+    }
+  },
+  "probe_python": "import itertools,numpy as np\nI=np.eye(2,dtype=complex)\nP=[I,np.array([[0,1],[1,0]]),np.array([[0,-1j],[1j,0]]),np.diag([1,-1])]\nphi=np.array([1,0,0,1])/np.sqrt(2)\nfor n in (2,3,4):\n L=[]\n for idx in itertools.product(range(4),repeat=n):\n  a=0*I\n  for s in range(n):\n   b=I.copy()\n   for k in list(range(n))[s:]+list(range(n))[:s]: b=P[idx[k]]@b/2\n   a+=b/n\n  L.append(a)\n out=sum(np.outer(k[:,0],k[:,0].conj()) for k in L)\n p=np.trace(out).real\n J=sum(np.outer(np.kron(k,I)@phi,(np.kron(k,I)@phi).conj()) for k in L)/p\n pt=J.reshape(2,2,2,2).transpose(0,3,2,1).reshape(4,4)\n print(n,p,out[0,0].real/p,np.linalg.eigvalsh(pt).min())\nA=np.array([[1,2,1],[2,1,1]])\nx=np.array([1,1,0]);z=np.array([0,0,3])\nprint(A@x,A@z,np.max(abs((A@x-A@z)[:,None]*np.linspace(.5,2,17))))\nprint(1e6*1e-6*.7*58.0967/18.9984/1000*100)\n",
+  "limitations": [
+    "One model session; no human-expert inference",
+    "Five opens blocked; no hidden full-text claims",
+    "No laboratory, field, buyer, or patent validation",
+    "No remote mutations, outreach, or spending",
+    "No other arm or prior local candidate file inspected"
+  ],
+  "source_query_log": {
+    "queries": [
+      {
+        "number": 1,
+        "engine": "system2",
+        "q": "passive chemical sensor record order sequence gas exposure irreversible reactions primary research"
+      },
+      {
+        "number": 2,
+        "engine": "system2",
+        "q": "passive non line of sight imaging unknown illumination moving people occluder free limitations primary research"
+      },
+      {
+        "number": 3,
+        "engine": "system2",
+        "q": "certified machine unlearning data deletion verification no retraining impossibility primary paper"
+      },
+      {
+        "number": 4,
+        "engine": "system2",
+        "q": "cell free enzymatic synthesis sequence defined polymers arbitrary monomer sequence programmable primary research"
+      },
+      {
+        "number": 5,
+        "engine": "system1",
+        "q": "PFAS fluorine recycling fluorinating reagents upcycling direct fluorination fluoride primary research"
+      },
+      {
+        "number": 6,
+        "engine": "system1",
+        "q": "hydrated cement waste electrochemical reactivation binder low temperature clinker free recycling primary research"
+      },
+      {
+        "number": 7,
+        "engine": "system1",
+        "q": "quantum switch completely depolarizing channels heralded quantum communication experimental primary research"
+      },
+      {
+        "number": 8,
+        "engine": "system1",
+        "q": "PFAS fluorine recovery upcycling fluorination site:science.org OR site:nature.com OR site:pubs.acs.org"
+      },
+      {
+        "number": 9,
+        "engine": "system1",
+        "q": "recycled cement paste electrochemical reactivation cold sintering hydrated cement primary research"
+      },
+      {
+        "number": 10,
+        "engine": "system1",
+        "q": "passive non line of sight guaranteed detection dark object illumination identifiability safety"
+      },
+      {
+        "number": 11,
+        "engine": "system2",
+        "q": "site:ox.ac.uk PFAS fluorine recycling 2025 fluorination"
+      },
+      {
+        "number": 12,
+        "engine": "system2",
+        "q": "electrochemical recycling cement paste ambient temperature calcium silicate hydrate reactivation Nature"
+      }
+    ],
+    "opens": [
+      {
+        "number": 1,
+        "url": "https://arxiv.org/abs/2005.00618",
+        "ref": "turn48view0",
+        "result": "abstract_read"
+      },
+      {
+        "number": 2,
+        "url": "https://arxiv.org/abs/2510.07127",
+        "ref": "turn48view1",
+        "result": "abstract_read"
+      },
+      {
+        "number": 3,
+        "url": "https://openaccess.thecvf.com/content_CVPR_2019/html/Yedidia_Using_Unknown_Occluders_to_Recover_Hidden_Scenes_CVPR_2019_paper.html",
+        "ref": "turn48view2",
+        "result": "403"
+      },
+      {
+        "number": 4,
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7558280/",
+        "ref": "turn48view3",
+        "result": "captcha"
+      },
+      {
+        "number": 5,
+        "url": "https://www.nature.com/articles/s41586-025-08698-5",
+        "ref": "turn49view0",
+        "result": "authentication_redirect"
+      },
+      {
+        "number": 6,
+        "url": "https://pubs.acs.org/doi/10.1021/acsenergylett.5c04150",
+        "ref": "turn49view1",
+        "result": "403"
+      },
+      {
+        "number": 7,
+        "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7498193",
+        "ref": "turn49view2",
+        "result": "inaccessible"
+      },
+      {
+        "number": 8,
+        "url": "https://arxiv.org/abs/1807.02444",
+        "ref": "turn49view3",
+        "result": "abstract_read"
+      }
+    ],
+    "sources": [
+      {
+        "id": "S1",
+        "title": "Phosphate-enabled mechanochemical PFAS destruction for fluoride reuse",
+        "url": "https://www.nature.com/articles/s41586-025-08698-5",
+        "ref": "turn49view0",
+        "access": "blocked_publisher"
+      },
+      {
+        "id": "S2",
+        "title": "Author-institution publication abstract for S1",
+        "url": "https://chem.web.ox.ac.uk/node/4390421",
+        "ref": "turn48search10",
+        "access": "primary_publication_record_search_excerpt"
+      },
+      {
+        "id": "S3",
+        "title": "Oxford institutional report of fluorinating-reagent reuse",
+        "url": "https://www.chem.ox.ac.uk/article/a-new-method-to-recycle-fluoride-from-long-lived-pfas-chemicals",
+        "ref": "turn48search1",
+        "access": "institutional_report_search_excerpt"
+      },
+      {
+        "id": "S4",
+        "title": "Scalable electrified cementitious materials production and recycling",
+        "url": "https://pubs.rsc.org/en/content/articlehtml/2024/ee/d4ee03529a",
+        "ref": "turn48search13",
+        "access": "primary_publisher_search_excerpt"
+      },
+      {
+        "id": "S5",
+        "title": "Low-emission cement clinker precursor production, enabled by electrolytic extraction of calcium from waste cement",
+        "url": "https://www.nature.com/articles/s41467-025-64339-5",
+        "ref": "turn48search7",
+        "access": "primary_publisher_search_excerpt"
+      },
+      {
+        "id": "S6",
+        "title": "Closed-loop electrochemical regeneration of calcium silicate hydrate from waste cement",
+        "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7498193",
+        "ref": "turn48search3",
+        "access": "author_preprint_search_excerpt_open_blocked"
+      },
+      {
+        "id": "S7",
+        "title": "Electrochemical Synthesis of Calcium Silicate Hydrate for Low Carbon Cement",
+        "url": "https://pubs.acs.org/doi/10.1021/acsenergylett.5c04150",
+        "ref": "turn48search0",
+        "access": "primary_publisher_search_excerpt_open_blocked"
+      },
+      {
+        "id": "S8",
+        "title": "Using Unknown Occluders to Recover Hidden Scenes",
+        "url": "https://openaccess.thecvf.com/content_CVPR_2019/html/Yedidia_Using_Unknown_Occluders_to_Recover_Hidden_Scenes_CVPR_2019_paper.html",
+        "ref": "turn42search15",
+        "access": "primary_conference_search_excerpt_open_blocked"
+      },
+      {
+        "id": "S9",
+        "title": "Multi-modal Non-line-of-sight Passive Imaging",
+        "url": "https://arxiv.org/abs/1807.02444",
+        "ref": "turn49view3",
+        "access": "author_paper_abstract_read"
+      },
+      {
+        "id": "S10",
+        "title": "Quantum and Classical Data Transmission through Completely Depolarising Channels in a Superposition of Cyclic Orders",
+        "url": "https://arxiv.org/abs/2005.00618",
+        "ref": "turn48view0",
+        "access": "author_paper_abstract_read_PRL2021"
+      },
+      {
+        "id": "S11",
+        "title": "Experimental demonstration of genuine quantum information transmission through completely depolarizing channels in a superposition of cyclic orders",
+        "url": "https://arxiv.org/abs/2510.07127",
+        "ref": "turn48view1",
+        "access": "author_preprint_abstract_read"
+      },
+      {
+        "id": "S12",
+        "title": "Communication through coherent control of quantum channels",
+        "url": "https://arxiv.org/abs/1810.09826",
+        "ref": "turn45academia40",
+        "access": "author_paper_search_excerpt"
+      },
+      {
+        "id": "S13",
+        "title": "General Communication Enhancement via the Quantum Switch",
+        "url": "https://arxiv.org/abs/2407.02726",
+        "ref": "turn45academia38",
+        "access": "author_paper_search_excerpt"
+      },
+      {
+        "id": "S14",
+        "title": "A Certified Unlearning Approach without Access to Source Data",
+        "url": "https://proceedings.mlr.press/v267/basaran25a.html",
+        "ref": "turn42search1",
+        "access": "primary_prefilter_search_excerpt"
+      },
+      {
+        "id": "S15",
+        "title": "Enzyme-free translation of DNA into sequence-defined synthetic polymers structurally unrelated to nucleic acids",
+        "url": "https://www.nature.com/articles/nchem.1577",
+        "ref": "turn42search20",
+        "access": "primary_prefilter_search_excerpt"
+      }
+    ],
+    "prefilter": [
+      "Passive chemical recorder excluded after amendment",
+      "Unlearning excluded after amendment",
+      "DNA-templated nonnatural-polymer synthesis already constructed; not advanced"
+    ],
+    "nonprimary_results": "Not used as technical evidence"
+  }
+}

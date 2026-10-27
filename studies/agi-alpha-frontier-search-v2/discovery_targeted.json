@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-27",
+  "agent": "round2_lineage",
+  "study_stage": "separately labeled post-freeze targeted exploration",
+  "controlled_arm": false,
+  "u_or_e_candidate_files_inspected": false,
+  "source_main": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "researcher_supplied": "Consequential new possibility; substantive prior-art advance; avoid occupied families; at most 8 queries and 6 opens; no U/E arm files.",
+  "agent_contributed": "Targeted measurement-instrument search, two candidate formulations, primary-source novelty comparisons, two executed finite ambiguity witnesses, and rejection decisions.",
+  "budget": {
+    "search_queries_allowed": 8,
+    "search_queries_used": 8,
+    "page_opens_allowed": 6,
+    "page_opens_used": 5,
+    "searches": [
+      "phase retrieval binary masks single measurement unique recovery limitations holography reference 2025 2026",
+      "single snapshot spectral tomography multiplexed sensors fundamental ambiguity new measurement 2025 2026",
+      "\"one-bit\" \"phase retrieval\" \"unknown\" threshold 2025",
+      "\"open problem\" \"instrument\" \"identifiability\" single measurement 2025 2026",
+      "\"Wigner distribution deconvolution\" \"arbitrary\" \"scanning\" ptychography 2026",
+      "\"ptychography\" \"nonuniform\" \"direct\" reconstruction Wigner 2025 2026",
+      "\"Wigner distribution deconvolution\" \"non-uniform\"",
+      "\"Phasebook\" \"8.5\" ptychography"
+    ],
+    "notes": "Queries 5 and 6 and the second open returned an oversized truncated tool response; no unobserved results were used. Find calls located sections in the already-open Phasebook source."
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Robust Phase Retrieval and Super-Resolution from One Bit Coded Diffraction Patterns",
+      "authors": "Youssef Mroueh",
+      "year": 2014,
+      "url": "https://arxiv.org/abs/1402.2255",
+      "version": "v2, 24 March 2014",
+      "web_ref": "turn60view0",
+      "role": "Direct prior art for pairwise ordinal diffraction and rank-preserving unknown detector transformations."
+    },
+    {
+      "id": "S2",
+      "title": "Phasebook: a survey of selected open problems in phase retrieval",
+      "year": 2025,
+      "url": "https://link.springer.com/article/10.1007/s43670-025-00117-0",
+      "web_ref": "turn61view0",
+      "role": "Question 8.5 explicitly poses arbitrary-scan WDD; not evidence that other ptychographic methods cannot reconstruct such samples."
+    },
+    {
+      "id": "S3",
+      "title": "Wigner Distribution Deconvolution Adaptation for Live Ptychography Reconstruction",
+      "authors": "Arya Bangun et al.",
+      "year": 2022,
+      "journal_year": 2023,
+      "url": "https://arxiv.org/abs/2212.01309",
+      "version": "v1",
+      "web_ref": "turn60view1",
+      "role": "Live reconstruction and dimensionality reduction are already demonstrated numerically."
+    },
+    {
+      "id": "S4",
+      "title": "Simultaneous High-Speed and Low-Dose 4-D STEM Using Compressive Sensing Techniques",
+      "authors": "Alex W. Robinson et al.",
+      "year": 2023,
+      "url": "https://arxiv.org/abs/2309.14055",
+      "version": "v3, 12 December 2023",
+      "web_ref": "turn60view2",
+      "role": "Random probe subsampling of regular grids plus reconstruction already addresses low-dose acquisition; must be a substantive comparator."
+    },
+    {
+      "id": "S5",
+      "title": "Holographic Phase Retrieval and Reference Design",
+      "year": 2019,
+      "url": "https://arxiv.org/abs/1901.06453",
+      "web_ref": "turn50academia30",
+      "role": "Known-reference phase retrieval makes a generic reference-addition proposal insufficient; search result only."
+    },
+    {
+      "id": "S6",
+      "title": "Single-shot hyperspectral wavefront imaging",
+      "year": 2026,
+      "url": "https://www.nature.com/articles/s41467-025-66847-w",
+      "web_ref": "turn50search14",
+      "role": "Search-stage rejection of a generic single-shot spectrum-plus-wavefront combination; full technical comparison not performed."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "T1",
+      "name": "Rank-only quantitative diffraction under unknown detector response",
+      "status": "reject_as_flagship",
+      "distinct_from_occupied_families": "New measurement proposal; not the existing microscopy coordinate-transfer or manufacturing-check experiments.",
+      "beneficiary": "Operators measuring fragile or transient samples where intensity-only sensing loses complex-field information.",
+      "what_changed_now": "The retrieved 2025 open-problem synthesis and 2026 snapshot instruments make narrowly scoped instrument design timely. Frontier-model assistance may accelerate mathematical exploration, but no measured AGI advantage or newly crossed hardware threshold was established.",
+      "commercial_evidence": "No buyer validation, price estimate, cost model, or profitability result established; do not import prior-study revenue.",
+      "successor_inheritance": "Source-linked problem statements, executable ambiguity witnesses, and explicit scope tests. Ordinary files/library provide the same information; no retained Alpha established.",
+      "valuable_outcome": "Recover a calibrated complex field from intensity comparisons despite an unknown detector transfer curve, enabling quantitative transient or dose-limited measurements.",
+      "initial_connection": "Replace detector-value calibration with order relations between coded diffraction channels, seeking a measurement primitive robust to response drift.",
+      "strongest_prior_art": "S1 already constructs one-bit paired coded-diffraction recovery with unknown rank-preserving distortions, and explicitly treats super-resolution and blind deconvolution.",
+      "specific_unmet_boundary": "Rank data alone discard absolute amplitude; unknown non-rank-preserving response is outside the directly claimed invariance. Neither boundary was solved here.",
+      "construction_needed": "A physically specified new observable that resolves scale or non-monotone ambiguity under the same dose, exposure, and calibration constraints; a generic known-reference channel is already holographic prior art (S5).",
+      "smallest_decisive_test": {
+        "scope": "Eight-dimensional complex objects, 64 paired coded measurements, unknown monotone response; require both phase (modulo one global phase) and absolute power.",
+        "control": "S1-style ordinal measurement with identical masks and measurement budget.",
+        "acceptance": "Prove injectivity for the added observable in the stated class, execute held-out reconstruction under noise, and demonstrate a useful outcome the equally informed control cannot achieve.",
+        "falsifier": "Two physically distinct admissible signals produce identical data, or ordinary holography provides the same capability at equal resource constraints."
+      },
+      "executed_probe": "discovery_targeted_probe_results.json#rank_scale: x and 2x yield all 64 identical ordinal bits while power differs fourfold.",
+      "failure_reason": "The generic invention is direct prior art; the quantitative extension is nonidentifiable with the proposed data. Scale-normalizing the task would weaken its original useful purpose.",
+      "commercial_mechanism_if_solved": "Instrument IP or a qualified reconstruction module priced against the value of otherwise unattainable measurements; this is a hypothesis, not demand evidence."
+    },
+    {
+      "id": "T2",
+      "name": "Direct complex-field reconstruction under irregular, damage-constrained scan access",
+      "status": "open_research_question_not_flagship",
+      "distinct_from_occupied_families": "Concerns creation of an imaging observable/inversion capability, not transfer of an existing microscopy workflow.",
+      "beneficiary": "Operators measuring fragile or transient samples where intensity-only sensing loses complex-field information.",
+      "what_changed_now": "The retrieved 2025 open-problem synthesis and 2026 snapshot instruments make narrowly scoped instrument design timely. Frontier-model assistance may accelerate mathematical exploration, but no measured AGI advantage or newly crossed hardware threshold was established.",
+      "commercial_evidence": "No buyer validation, price estimate, cost model, or profitability result established; do not import prior-study revenue.",
+      "successor_inheritance": "Source-linked problem statements, executable ambiguity witnesses, and explicit scope tests. Ordinary files/library provide the same information; no retained Alpha established.",
+      "valuable_outcome": "Recover a globally coherent quantitative image when motion or sample damage prevents a regular scan and rules out acquisition of missing positions.",
+      "initial_connection": "Treat the allowed physical scan geometry as part of the measurement instrument; seek an explicit nonuniform deconvolution identity with stated identifiability and stability conditions rather than interpolating unmeasured data.",
+      "strongest_prior_art": "S2 Q8.5 identifies an arbitrary-scan WDD formula as open; S3 already supports live WDD, and S4 already reconstructs randomly subsampled low-dose acquisitions. Therefore a new fast solver, sparse scan, or live display is insufficient.",
+      "specific_unmet_boundary": "An explicit finite nonuniform WDD identity with rigorous recovery/stability conditions is a literature-defined research gap. It is not yet evidence of a useful outcome unavailable to iterative ptychography or existing compressed-sensing reconstruction.",
+      "construction_needed": "Derive a valid nonuniform measurement factorization and reconstruction theorem; specify known versus unknown probe, object class, overlap connectivity, position errors, noise, and dose. Then show why it enables a preserved useful purpose beyond all identified controls, not just a different solver.",
+      "smallest_decisive_test": {
+        "scope": "Begin with 16-64 complex object samples and a known compact probe; enumerate irregular position sets including connected, disconnected, missing-region, and noisy cases.",
+        "controls": [
+          "Direct full/regular-grid WDD on feasible comparable acquisitions",
+          "S4-style inpainting plus reconstruction with identical data",
+          "Strong iterative phase-retrieval baseline with identical data and priors",
+          "Conventional lifted linear-algebra solution where tractable"
+        ],
+        "acceptance": "A proved identifiable regime and executed held-out accepted output that the admissible strong controls cannot produce under the same physical restrictions. Any solely runtime or ordinary numerical advantage fails the requested flagship criterion.",
+        "falsifier": "An exact ambiguous pair remains admissible, a hidden prior supplies the missing information, extra dose/measurement authority is required, or existing methods yield the same useful output."
+      },
+      "executed_probe": "discovery_targeted_probe_results.json#disconnected_scans: 96 exact intensities agree for two known-support objects with relative component phase reversed; best global-phase-aligned relative error is sqrt(2).",
+      "failure_reason": "The proposed new capability has not been constructed. Local overlap is insufficient without global information; no theorem resolves the gap, and existing live/subsampled methods already cover the generic beneficiary claim. Q8.5 is a targeted mathematical follow-on, not an achieved discovery.",
+      "commercial_mechanism_if_solved": "Module licensing or measurement services for users with independently demonstrated scan-access constraints. Compare human-led instrument R&D rather than invent an existing-service market price."
+    }
+  ],
+  "additional_rejections": [
+    {
+      "proposal": "Generic single-shot hyperspectral wavefront imaging",
+      "reason": "Direct 2026 prior art S6; no narrower substantive delta established."
+    },
+    {
+      "proposal": "Generic known-reference phase-retrieval bridge",
+      "reason": "Holographic reference design is established (S5); adding a reference alone is not a demonstrated new capability."
+    },
+    {
+      "proposal": "Faster structured-random phase solver or confidence map",
+      "reason": "Would headline optimization or diagnostics without a demonstrated new useful possibility; excluded by task scope before construction."
+    }
+  ],
+  "probe_evidence": "Executed synthetic ambiguity witnesses establish finite obstructions only. No real instrument, customer acceptance, mission-level model gain, prospective foresight, or commercial delivery is established.",
+  "selection": {
+    "flagship_selected": null,
+    "decision": "No flagship from this targeted pass.",
+    "reason": "T1 is anticipated and its proposed quantitative extension is nonidentifiable. T2 exposes an explicit mathematical question but no substantive new construction or uniquely enabled useful outcome was established.",
+    "recommended_next_step": "Only pursue T2 after a narrow original theorem/measurement construction can be stated and compared with strong iterative and compressed-sensing controls. Do not commission a full paper or pricing simulation around the generic idea."
+  },
+  "reproduce": "python flagship_round2/discovery_targeted_probe.py; standard library only; no network or external side effects.",
+  "preservation": "No prior study files, U/E submissions, repository owner work, permissions, or external services changed. Failed proposals retained."
+}

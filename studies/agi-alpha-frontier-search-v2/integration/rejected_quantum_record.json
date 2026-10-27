@@ -1,0 +1,151 @@
+{
+  "schema": "agialpha.rejected-quantum-research-record.v1",
+  "candidate_id": "cyclic-depolarizing-quantum-reproduction",
+  "hypothesis": "Superpose cyclic orders of four completely depolarizing qubit channels and herald transmission preserving entanglement; investigate a high-noise quantum link.",
+  "new_discovery": false,
+  "qualified_venture": false,
+  "decision": "reject-known-construction",
+  "prior_art": [
+    {
+      "url": "https://arxiv.org/abs/2005.00618",
+      "finding": "Chiribella/Wilson/Chau supplies the cyclic depolarizing construction; source claim supplied by the study owner."
+    },
+    {
+      "url": "https://arxiv.org/abs/2510.07127",
+      "finding": "2025 silicon-photonic experimental prior art; study owner reports fidelity 0.712 +/- 0.013."
+    }
+  ],
+  "executed_local_result_from_independent_confirmation": {
+    "channels": 4,
+    "kraus_tuples": 256,
+    "herald_probability": 0.4374999999999999,
+    "conditional_fidelity_formula": 0.7142857142857143,
+    "choi_partial_transpose_min": -0.07142857142857134,
+    "formula_partial_transpose_min": -0.07142857142857142,
+    "max_six_state_error": 2.220446049250313e-16,
+    "probability_spread": 1.1102230246251565e-16,
+    "scope": "known construction; no hardware or channel-capacity claim"
+  },
+  "continuity_followup": {
+    "schema": "agialpha.quantum-followup.v1",
+    "created_at_utc": "2026-10-27T21:44:53.302266+00:00",
+    "study_status": "Separate post-selection exploration; original U/E verdict and bytes untouched",
+    "question": "Does mere existence of heralded entanglement transmission through heterogeneous full-rank replacement/complete-thermalization channels qualify as a substantive advance beyond the cyclic depolarizing switch?",
+    "decision": "close_weak_heterogeneous_extension",
+    "new_discovery": false,
+    "reason": "Existence in a neighborhood of the depolarizing point follows directly by continuity from the known strictly entangled heralded branch. Explicit published coverage of the heterogeneous thermal construction was not established because two supplied papers were inaccessible.",
+    "continuity_argument": {
+      "channels": "C_i(X)=Tr(X)*sigma_i, with sigma_i full rank; four cyclic orders and uniform control postselection",
+      "known_point": "All sigma_i=I/2: success p=7/16 and normalized Choi partial-transpose minimum eigenvalue -1/14",
+      "dependence": "Replacement Kraus operators can be chosen continuously using the positive matrix square root. The branch Choi operator, its nonzero success probability, normalized Choi operator, and partial-transpose eigenvalues are continuous near this point.",
+      "strict_witness": "Weyl continuity preserves negativity whenever the operator-norm perturbation of the normalized partially transposed Choi operator is less than 1/14. A sufficiently small neighborhood also preserves positive herald probability.",
+      "heterogeneity": "That neighborhood contains pairwise distinct full-rank states, including diagonal Gibbs states of the same qubit Hamiltonian at distinct sufficiently high finite temperatures. Hence a heterogeneous example is an immediate robust instance of the known capability.",
+      "not_proved": [
+        "All full-rank replacement states at arbitrary temperatures work",
+        "A quantitative maximum temperature bias or low-temperature boundary",
+        "Finite-time thermalizing channels are replacement channels",
+        "Superiority over resource-matched definite-order coherent control",
+        "Field-link throughput or economic viability"
+      ]
+    },
+    "illustrative_synthetic_check": {
+      "thermal_state_Bloch_z": [
+        0.02,
+        0.04,
+        0.06,
+        0.08
+      ],
+      "kraus_tuples": 256,
+      "Bell_input_herald_probability": 0.43793749999999987,
+      "normalized_Choi_PT_min": -0.0709768873049813,
+      "input_dependent_success_range": [
+        0.4191875000000001,
+        0.4566874999999999
+      ],
+      "label": "Continuity illustration only; no discovery claim"
+    },
+    "resource_comparator": {
+      "source": "https://arxiv.org/html/2510.08507v1",
+      "retrieved_ref": "turn63view0",
+      "finding": "The paper treats arbitrary lists of replacement channels as free and allowed supermaps as signaling-non-generating. Such allowed supermaps preserve the replacement-channel class. Its no-forward-signaling condition therefore rules out attributing replacement-channel activation to a free communication transformation.",
+      "qualification": "This is a resource-model distinction, not a prohibition on physically implementing the familiar coherent-control construction, and not an explicit heterogeneous thermal-switch construction."
+    },
+    "remaining_claim_needed": "A separated useful regime with a new construction and complete control, loss, heralding and channel-use comparator; neither isolated heterogeneous examples nor conditional fidelity alone suffices.",
+    "budget": {
+      "search_queries": 2,
+      "primary_open_attempts": 3,
+      "additional_find_calls_on_opened_page": 5
+    },
+    "source_query_log": {
+      "queries": [
+        {
+          "engine": "system2",
+          "q": "\"quantum switch\" \"replacement channels\" entanglement thermal"
+        },
+        {
+          "engine": "system2",
+          "q": "\"The communication power of indefinite causal order\" heterogeneous thermalizing"
+        }
+      ],
+      "opens": [
+        {
+          "url": "https://arxiv.org/html/2510.08507v1",
+          "ref": "turn63view0",
+          "status": "full_text_retrieved"
+        },
+        {
+          "url": "https://ora.ox.ac.uk/objects/uuid%3Af2f5b473-7855-49dc-9df4-b9d1a4342409/files/r2r36v049p",
+          "ref": "turn63view1",
+          "status": "403_not_read"
+        },
+        {
+          "url": "https://doi.org/10.1103/zbgc-wdrk",
+          "ref": "turn63view2",
+          "status": "inaccessible_not_read"
+        }
+      ],
+      "known_construction": "https://arxiv.org/abs/2005.00618",
+      "secondary_search_results": "Not relied upon for technical conclusions"
+    }
+  },
+  "input_provenance": [
+    {
+      "path": "flagship_round2/quantum_followup.json",
+      "sha256": "93e8ab2699241a6fe20f48e39538733007410663712fbcce64d19fd8e6fa6ebf"
+    },
+    {
+      "path": "flagship_round2/results/independent_confirmation.json",
+      "sha256": "cb71cbb7153fb601936aa31fae1851bf5e9df1539faeb18641ca25a4c3be988a"
+    }
+  ],
+  "agent_scope": "Integration adapter reads the non-arm owner handoff and independent confirmation output; it does not infer new scientific results from native artifact compilation.",
+  "next_experiment": "Require a distinct separated useful regime and a substantive prior-art differential against a same-resource coherent-control comparator, including losses, heralding, channel uses, and full costs. This prerequisite is not met.",
+  "qualification": {
+    "schema": "agialpha.research-only-qualification.v1",
+    "candidate_id": "cyclic-depolarizing-quantum-reproduction",
+    "status": "not-qualified",
+    "research_artifact": true,
+    "new_discovery": false,
+    "novelty_truth_established": false,
+    "beyond_human_foresight_established": false,
+    "qualified_venture": false,
+    "productive_venture_established": false,
+    "commercial_delivery_established": false,
+    "authorized_transaction": false,
+    "minted": false,
+    "listed": false,
+    "live_identity_asserted": false,
+    "execution_authority": false,
+    "sales_count": 0,
+    "collected_cash_usd": 0,
+    "provider_revenue_usd": 0,
+    "authorization": "local-simulation-only",
+    "verdict": "Known cyclic-order quantum construction reproduced; heterogeneous-neighborhood variation follows by continuity and is not a substantive discovery.",
+    "limits": [
+      "No hardware or customer acceptance",
+      "No complete link economics",
+      "No resource-matched coherent-control advantage",
+      "Native provenance does not establish truth or eligibility"
+    ]
+  }
+}

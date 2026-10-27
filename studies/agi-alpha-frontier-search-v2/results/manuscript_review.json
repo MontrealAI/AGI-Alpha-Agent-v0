@@ -1,0 +1,211 @@
+{
+  "schema": "agialpha.manuscript-review.v1",
+  "created_at_utc": "2026-10-27T22:01:01.279914+00:00",
+  "manuscript": "paper/AGI_ALPHA_FLYWHEEL.md",
+  "reviewed_sha256": "124e5be89ceeed476c3141dcbffffb9129cf595873873c831243814a0ddaf958",
+  "sha256_at_report_write": "c2d0dff4ba6182b0059a35f96d6f714b739155d5340b92fdc3ea50e1cdcfc316",
+  "reviewed_snapshot_still_current": false,
+  "reviewer_provenance": "Same-team model review by the agent that authored E, quantum_followup.json and adjudication.json. Not external, blinded, human, or independent judging-accuracy evidence.",
+  "scope": "Read-only comparison of the manuscript against frozen U/E submissions, targeted and final mechanism followups, stored independent-confirmation code/results, reproduction receipts, and local native integration records. No paper edits, new web searches, code execution experiments, hardware tests or customer validation.",
+  "verdict": "No material scientific, novelty-scope, quantum-formula or native-lifecycle overclaim found. One minor factual wording correction is required before publication of the reviewed snapshot.",
+  "material_scientific_blockers": [],
+  "required_corrections": [
+    {
+      "id": "MR1",
+      "severity": "minor_factual_accuracy",
+      "location": "Section 2, paragraph beginning A shared amendment added",
+      "quoted_fragment": "unequal successful page access",
+      "finding": "Both frozen arms record eight attempted opens, three substantive opens and five failed/challenged opens. The depth and content of accessible sources differed; their successful-open counts did not.",
+      "required_action": "Replace the ambiguous inequality claim with differing access depth/content and explicitly equal substantive-open counts of three each.",
+      "evidence": [
+        "discovery_U.json:budget.opens_substantive=3",
+        "discovery_U.json:budget.failed_or_challenged_opens=5",
+        "discovery_E.json:budget.page_open_attempts=8",
+        "discovery_E.json:budget.blocked_page_opens=5"
+      ],
+      "effect_on_conclusion": "None; asymmetric amendment timing, access-depth differences and the single-session design still prevent a clean method-superiority estimate.",
+      "owner_response": "Root acknowledged and stated this wording correction will be applied. The reviewed hash predates that correction."
+    }
+  ],
+  "count_audit": {
+    "full_candidate_count": 12,
+    "candidate_breakdown": {
+      "U": 4,
+      "E": 4,
+      "targeted_followup_T": 2,
+      "final_mechanism_followup_FM": 2
+    },
+    "counting_scope": "T1/T2 and FM1/FM2 are four additional full proposals across two separately recorded follow-up search passes. Prescreen rejections and the small heterogeneous quantum refinement are not additional full candidates in the twelve-item inventory.",
+    "mechanism_probe_family_count": 8,
+    "probe_family_map": [
+      {
+        "candidate": "U1",
+        "family": "Shared-writer time-change ambiguity",
+        "script": "probes/original_U.py"
+      },
+      {
+        "candidate": "U3",
+        "family": "Unrestricted spectral-cube nullspace",
+        "script": "probes/original_U.py"
+      },
+      {
+        "candidate": "E3",
+        "family": "Regional-clearance ambiguity",
+        "script": "probes/original_E.py"
+      },
+      {
+        "candidate": "E4",
+        "family": "Known cyclic depolarizing quantum branch",
+        "script": "probes/original_E.py"
+      },
+      {
+        "candidate": "T1",
+        "family": "Ordinal intensity-scale ambiguity",
+        "script": "discovery_targeted_probe.py"
+      },
+      {
+        "candidate": "T2",
+        "family": "Disconnected-scan relative-phase ambiguity",
+        "script": "discovery_targeted_probe.py"
+      },
+      {
+        "candidate": "FM1",
+        "family": "Contact boundary term and grazing singularity",
+        "script": "probes/final_mechanisms.py"
+      },
+      {
+        "candidate": "FM2",
+        "family": "Selective-abort attack on reveal/fallback template",
+        "script": "probes/final_mechanisms.py"
+      }
+    ],
+    "confirmation_case_counts": {
+      "spectral": 8,
+      "regional": 8,
+      "quantum": 5
+    },
+    "confirmation_total": 21,
+    "other_counts": "PFAS unit arithmetic and other economic sensitivities are not additional mechanism-probe families. Quantum N values and heterogeneous refinement remain cases/refinements within the quantum family.",
+    "status": "Twelve candidates, eight mechanism-probe families and twenty-one confirmation cases reconcile; they are not interchangeable counts."
+  },
+  "quantum_audit": {
+    "construction": "N identical completely depolarizing qubit channels; uniform coherent control of N cyclic orders; uniform accepted control branch.",
+    "accepted_map_on_normalized_density_states": "Phi_N(rho)=I/(2N)+(N-1)*rho/(4N)",
+    "linear_extension_to_arbitrary_operators": "Phi_N(X)=Tr(X)*I/(2N)+(N-1)*X/(4N)",
+    "success_probability": "(N+3)/(4N)",
+    "conditional_pure_state_fidelity": "(N+1)/(N+3)",
+    "normalized_Choi_PT_minimum": "(3-N)/(2*(N+3))",
+    "formula_assessment": "Algebraically consistent; the published N=2..6 table agrees with the formulas and stored numerical results.",
+    "maximum_stored_six_state_map_error": 7.771561172376096e-16,
+    "tolerance": 1e-11,
+    "source_and_implementation_scope": "Known construction is explicitly attributed to Q1; Q2 hardware fidelity is distinguished from local simulation. The replacement-operator implementation differs from the E Pauli implementation, but this is fresh implementation verification under known expectations, not independent discovery or a protected benchmark.",
+    "heterogeneous_extension": "Strict negative eigenvalue and nonzero success probability imply a neighborhood of entanglement-preserving branches by continuity. The manuscript correctly treats mere heterogeneous existence as a rejected refinement and notes input-dependent heralding.",
+    "commercial_scope": "No physical-link rate, deterministic quantum channel, general capacity theorem or commercial superiority is inferred."
+  },
+  "negative_scope_audit": [
+    {
+      "id": "U1",
+      "status": "accurately_scoped",
+      "reason": "Paper confines time-warp failure to common unknown writing rate; independently calibrated clocks are expressly outside the counterexample."
+    },
+    {
+      "id": "U2",
+      "status": "accurately_scoped",
+      "reason": "Broad hollow multimaterial geometry is anticipated; the narrower pressure-tight selective membrane is marked unconstructed, not already supplied."
+    },
+    {
+      "id": "U3",
+      "status": "accurately_scoped",
+      "reason": "The 64-by-192 unrestricted linear model is identified. Paper calls it generic, permits extra information or a justified scene class, and does not claim all passive snapshot instruments impossible."
+    },
+    {
+      "id": "U4",
+      "status": "accurately_scoped",
+      "reason": "Broad selective recycling and narrower intact ternary preservation are kept separate. The latter remains unmeasured."
+    },
+    {
+      "id": "E1",
+      "status": "accurately_scoped",
+      "reason": "Central fluoride-reuse transformation is identified as prior art; no profitability conclusion is drawn from dilute-feed arithmetic."
+    },
+    {
+      "id": "E2",
+      "status": "accurately_scoped",
+      "reason": "Dry storage and water-only strength are an unresolved product specification; no distinct reactive mechanism is claimed."
+    },
+    {
+      "id": "E3",
+      "status": "accurately_scoped",
+      "reason": "The manuscript explicitly identifies ROI 3, both scenes as globally occupied, and abstention as valid. Whole-room zero-observation behavior is limited to the known positive linear scene model."
+    },
+    {
+      "id": "E4",
+      "status": "accurately_scoped",
+      "reason": "Known quantum mechanism is reproduced and rejected for novelty; neighborhood perturbation is not promoted."
+    },
+    {
+      "id": "T1",
+      "status": "accurately_scoped",
+      "reason": "Ordinal data lose absolute scale; recovery modulo scale/phase is not refuted."
+    },
+    {
+      "id": "T2",
+      "status": "accurately_scoped",
+      "reason": "Disconnected overlap loses relative component phase. This is an obstruction, not a solution or universal impossibility for arbitrary-scan WDD."
+    },
+    {
+      "id": "FM1",
+      "status": "accurately_scoped",
+      "reason": "Known boundary calculus is not labeled a new response instrument. Grazing disproves a universal finite-derivative guarantee, not all restricted contact sensitivity methods."
+    },
+    {
+      "id": "FM2",
+      "status": "accurately_scoped",
+      "reason": "Two-case attack is limited to the reveal/fallback template, including granted prior commitments; the separate lower bound retains security-model restrictions."
+    }
+  ],
+  "native_receipt_audit": {
+    "total_checks": 19,
+    "passed_checks": 19,
+    "source_lifecycle_checks": 11,
+    "companion_guard_checks": 8,
+    "pinned_javascript_files": 7,
+    "qualification": "not-qualified",
+    "qualified_venture": false,
+    "minted": false,
+    "listed": false,
+    "collected_cash_usd": 0,
+    "assessment": "19/19, split 11+8, and seven pinned native JavaScript files match the receipts. Local source execution, crypto roundtrip, plan proofs and hypothetical quote arithmetic are not conflated with scientific qualification, transactions or production authority.",
+    "reproduction_boundary": "Review read the existing seven-command reproduction receipt and verifier source; it did not execute another experiment."
+  },
+  "nonblocking_precision_suggestions": [
+    {
+      "id": "MP1",
+      "location": "Abstract and Section 3.3",
+      "suggestion": "For counting clarity, prefer four additional proposals across two follow-up searches and eight mechanism-probe families. Current later sections provide the correct disambiguation."
+    },
+    {
+      "id": "MP2",
+      "location": "Reference C1",
+      "suggestion": "The publisher entry says blocked_publisher. The E dossier supports the claim through the Oxford author-institution publication abstract at https://chem.web.ox.ac.uk/node/4390421. Adding that access provenance would make the reference boundary self-contained; the underlying claim is already supported in the supplied dossier."
+    },
+    {
+      "id": "MP3",
+      "location": "Reference D2",
+      "suggestion": "The title contains duplicated wording, also present in the stored source record. Verify the canonical title from existing primary metadata before final bibliographic polishing; this review did not invent a replacement title or conduct a new search."
+    },
+    {
+      "id": "MP4",
+      "location": "Section 5 whole-room zero-observation control",
+      "suggestion": "If further polishing, describe emptiness as x=0 in the noiseless positive linear proxy model. Physical occupancy additionally requires the declared relationship between occupancy and a positive observable signal; the current surrounding model qualification should be retained."
+    }
+  ],
+  "integrity": {
+    "frozen_U_sha256": "a0e181080664b53341723495e77cfd07cd4adf09abcbe1369db67ab4a67895c9",
+    "frozen_E_sha256": "cc203a3c5a125355d4cc08c73b47e4a596fc15081b5acb5e19dbc7d68736e7db",
+    "confirmation_freeze_sha256": "a5759a8bdcee174f392548ee590235a0ed60c3dc3089d65e6352f8df72c5324e",
+    "confirmation_result_binds_same_freeze": true,
+    "paper_or_evidence_modified_by_review": false
+  },
+  "publication_boundary": "Research-source draft readiness only. Artifact-rendering consistency, restoration of any build script affected by environment storage exhaustion, formal author approval and publication-owner workflow are outside this manuscript content audit."
+}

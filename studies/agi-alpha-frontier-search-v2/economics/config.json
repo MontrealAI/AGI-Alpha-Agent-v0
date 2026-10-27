@@ -1,0 +1,294 @@
+{
+  "schema": "agialpha.negative-edition.economics.config.v1",
+  "as_of_date": "2026-10-27",
+  "currency": "USD",
+  "region_scope": "North America planning comparison; U.S. wage observations are anchors, not a Canada/Mexico or continental wage survey.",
+  "edition": {
+    "serious_candidates": 12,
+    "selected_offering": null,
+    "accepted_customer_outcomes": 0,
+    "source": "Parent supplied closed-search status; no other arm outputs read for economics."
+  },
+  "observed_financial_status": {
+    "customer_collections_usd": 0,
+    "new_purchase_transaction_count": 0,
+    "new_purchase_transaction_value_usd": 0,
+    "actual_metered_inference_cost_usd": null,
+    "actual_metered_tool_cost_usd": null,
+    "actual_runtime_storage_cost_usd": null,
+    "actual_human_time_or_review_cost_usd": null,
+    "actual_total_cost_usd": null,
+    "actual_profit_usd": null,
+    "billing_status": "Unknown: no usage receipt, token meter, infrastructure allocation, or human-time ledger available.",
+    "distinction": "Zero collections and zero newly executed purchase transactions do not imply zero operating or opportunity cost.",
+    "independent_human_trial_performed": false,
+    "imported_prior_profit_usd": 0,
+    "prior_profit_import_policy": "No prior profit or customer result imported."
+  },
+  "classification": {
+    "current_work_category": "C",
+    "current_work_description": "Exploratory unpaid discovery, rejection probes, and reporting; no validated launch.",
+    "paid_job_A_count": 0,
+    "qualified_investment_B_count": 0,
+    "candidate_assessments_C_count": 12,
+    "note": "C count is candidate assessments, not jobs or customer outcomes. Optional future review is not a currently qualified B investment."
+  },
+  "commercial_status": {
+    "selected_offering": null,
+    "accepted_customer_outcomes": 0,
+    "market_sale_price_usd": null,
+    "price_status": "Not applicable: no selected offering; no observed sale price.",
+    "demand": null,
+    "demand_status": "Unknown; no customer trial or commitment.",
+    "profit_usd": null,
+    "profit_status": "Unknown; not a venture forecast.",
+    "robust_profitable_launch_region_established": false
+  },
+  "sources": [
+    {
+      "id": "S_API",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "title": "GPT-6 Astra model, official OpenAI API documentation",
+      "retrieved": "2026-10-27",
+      "observed": "Standard text input $10 and output $50 per million tokens. Long-context and service-mode adjustments also exist.",
+      "ref": "turn74view4"
+    },
+    {
+      "id": "S_RESEARCH",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/computer-and-information-research-scientists.htm",
+      "title": "BLS Computer and Information Research Scientists",
+      "retrieved": "2026-10-27",
+      "observation_period": "May 2025",
+      "median_annual_wage_usd": 140300,
+      "ref": "turn74view0"
+    },
+    {
+      "id": "S_PROBE",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+      "title": "BLS Software Developers",
+      "retrieved": "2026-10-27",
+      "observation_period": "May 2025",
+      "median_annual_wage_usd": 135980,
+      "ref": "turn74view2"
+    },
+    {
+      "id": "S_EDITOR",
+      "url": "https://www.bls.gov/ooh/media-and-communication/technical-writers.htm",
+      "title": "BLS Technical Writers",
+      "retrieved": "2026-10-27",
+      "observation_period": "May 2025",
+      "median_annual_wage_usd": 90390,
+      "ref": "turn74view1"
+    },
+    {
+      "id": "S_BENEFITS",
+      "url": "https://www.bls.gov/news.release/ecec.t01.htm",
+      "title": "BLS Employer Costs for Employee Compensation, Table 1",
+      "retrieved": "2026-10-27",
+      "observation_period": "June 2026",
+      "private_industry_wages_per_hour_usd": 32.82,
+      "private_industry_benefits_per_hour_usd": 14.07,
+      "private_industry_total_compensation_per_hour_usd": 46.89,
+      "ref": "turn74view3"
+    }
+  ],
+  "human_comparator": {
+    "evidence_label": "Assumed task-scope staffing budget; not an observed human trial, invoice, or demonstrated outcome-equivalent baseline.",
+    "scope": "A bounded broad scan of 12 serious candidates: primary prior-art search, technical falsifier analysis, small executable probes, source logs, and a negative-result handoff. Excludes wet-lab work, exhaustive patent clearance, customer research, commercialization, and a full review article.",
+    "annual_hour_divisor_assumed": 2080,
+    "wage_basis": "Salary-equivalent base wages, not consulting bill rates. No inflation extrapolation from May 2025 to October 2026. Multipliers are planning judgments for seniority, familiarity, and breadth.",
+    "roles": {
+      "prior_art": {
+        "label": "Prior-art researcher",
+        "annual_wage_anchor_usd": 140300,
+        "source_id": "S_RESEARCH",
+        "hours_per_candidate": {
+          "low": 1.5,
+          "central": 2.5,
+          "high": 4.0
+        },
+        "fixed_hours": {
+          "low": 4,
+          "central": 6,
+          "high": 10
+        },
+        "wage_multiplier": {
+          "low": 0.7,
+          "central": 1.0,
+          "high": 1.3
+        },
+        "justification": "Includes query design, retrieval, reading closest primary comparators, and checking exact capability gaps. Low assumes familiar public sources; high permits inaccessible sources, terminology changes, and cross-domain searches."
+      },
+      "technical": {
+        "label": "Domain/technical analyst",
+        "annual_wage_anchor_usd": 140300,
+        "source_id": "S_RESEARCH",
+        "hours_per_candidate": {
+          "low": 0.75,
+          "central": 1.5,
+          "high": 3.0
+        },
+        "fixed_hours": {
+          "low": 2,
+          "central": 4,
+          "high": 8
+        },
+        "wage_multiplier": {
+          "low": 1.0,
+          "central": 1.4,
+          "high": 2.0
+        },
+        "justification": "Checks the physical/computational mechanism and invariant obligations, constructs decisive falsifiers, and reconciles candidate differences. Higher wage multipliers represent senior specialists and breadth; no actual specialist engagement is asserted."
+      },
+      "probe": {
+        "label": "Executable-probe researcher/developer",
+        "annual_wage_anchor_usd": 135980,
+        "source_id": "S_PROBE",
+        "hours_per_candidate": {
+          "low": 0.5,
+          "central": 1.0,
+          "high": 2.0
+        },
+        "fixed_hours": {
+          "low": 2,
+          "central": 4,
+          "high": 8
+        },
+        "wage_multiplier": {
+          "low": 0.8,
+          "central": 1.0,
+          "high": 1.5
+        },
+        "justification": "Portfolio-average allocation for small analytical or synthetic counterexamples, baseline checks, and preserving reproducibility. Does not assert that every candidate receives an equally complex experiment or that real apparatus is built."
+      },
+      "editorial": {
+        "label": "Technical editor/evidence recorder",
+        "annual_wage_anchor_usd": 90390,
+        "source_id": "S_EDITOR",
+        "hours_per_candidate": {
+          "low": 0.25,
+          "central": 0.5,
+          "high": 1.0
+        },
+        "fixed_hours": {
+          "low": 2,
+          "central": 4,
+          "high": 8
+        },
+        "wage_multiplier": {
+          "low": 0.8,
+          "central": 1.0,
+          "high": 1.4
+        },
+        "justification": "Records limitations, exact sources, logs, and final decisions; fixed hours cover synthesis and reproducibility documentation. No full-paper drafting assumed."
+      }
+    },
+    "benefits_rate_on_wages": {
+      "low": 0.3,
+      "central": 0.4287020109689214,
+      "high": 0.55
+    },
+    "benefits_justification": "Central uses June 2026 private-industry benefits/wages, 14.07/32.82; low/high are explicit planning bounds, not published quantiles. Broad workforce ratio is not specific to these occupations.",
+    "overhead_rate_on_compensation": {
+      "low": 0.1,
+      "central": 0.2,
+      "high": 0.35
+    },
+    "overhead_justification": "Assumed facilities, administration, and shared infrastructure allocation applied to wages plus benefits; excludes separately listed tools, consultant margin, and sales profit.",
+    "tools_allocation_usd": {
+      "low": 25,
+      "central": 100,
+      "high": 300
+    },
+    "tools_justification": "Assumed allocation for compute/storage and existing research-tool access. Public sources can avoid new access fees. These are not mandatory purchases or observed expenditures.",
+    "scenario_interpretation": "Low/central/high jointly vary time, seniority, burden, and tool allocation. They are scenario corners, not statistical intervals. Person-hours are not elapsed completion time; one person can fill multiple nonoverlapping roles."
+  },
+  "automated_planning": {
+    "evidence_label": "Invented token/resource scenarios only; not reconstructed billing and not actual costs.",
+    "model": "gpt-6-astra",
+    "input_usd_per_million": 10,
+    "output_usd_per_million": 50,
+    "rate_source": "S_API",
+    "pricing_assumptions": "All modeled inputs uncached, standard service, no cache writes, no batch/flex/fast discounts or premiums, and each request at most 272K input tokens. Totals may span many requests. Actual service mode, cache use, hidden billable tokens, and long-context treatment are unknown.",
+    "mandatory_human_review_hours": 0,
+    "mandatory_human_onboarding_hours": 0,
+    "mandatory_human_review_charge_usd": 0,
+    "mandatory_human_onboarding_charge_usd": 0,
+    "configuration_note": "No mandatory human review or onboarding cost is imposed on the automated configuration. Unmetered real owner time is separately unknown, not asserted free.",
+    "scenarios": {
+      "low": {
+        "assumed_input_tokens": 250000,
+        "assumed_output_tokens": 25000,
+        "assumed_tool_allowance_usd": 0,
+        "assumed_execution_storage_allowance_usd": 1
+      },
+      "central": {
+        "assumed_input_tokens": 1000000,
+        "assumed_output_tokens": 150000,
+        "assumed_tool_allowance_usd": 10,
+        "assumed_execution_storage_allowance_usd": 5
+      },
+      "high": {
+        "assumed_input_tokens": 5000000,
+        "assumed_output_tokens": 500000,
+        "assumed_tool_allowance_usd": 50,
+        "assumed_execution_storage_allowance_usd": 20
+      }
+    },
+    "token_justification": "Small, moderate, and extensive aggregate usage allowances for an iterative multi-agent scan with repeated context and code/report synthesis. No observed token totals are available, so none is the estimated receipt.",
+    "tool_justification": "Flat planning allowances, not quoted per-call tariffs. A zero low-case allowance means no allocated incremental tool charge in that hypothetical configuration, not proof that tools were free."
+  },
+  "optional_specialist_review": {
+    "status": "Unperformed prospective optional research investment; not required for automated operation and not a qualified Category B investment.",
+    "hour_cases": {
+      "narrow": 4,
+      "targeted": 8,
+      "extended": 16
+    },
+    "rate_basis": "Use central human technical-role wage plus central benefits and overhead, with no extra tools charge.",
+    "scope_by_case": {
+      "narrow": "One mechanism/comparator audit.",
+      "targeted": "Audit one or two promising mechanisms and their falsifiers.",
+      "extended": "Broader independent specialist challenge and review of retained probes."
+    },
+    "current_charge_usd": 0,
+    "current_charge_note": "No optional specialist review was purchased or charged in this record; this does not resolve any unmetered actual owner effort."
+  },
+  "next_research_voi": {
+    "status": "Decision threshold illustration only. No actual success probability, benefit value, qualified investment, or profitable venture is inferred.",
+    "decision_rule": "p * V > C",
+    "p_definition": "Assumed probability that the bounded research changes a subsequent decision usefully. Not the probability of launching a profitable venture.",
+    "V_definition": "Assumed incremental value conditional on that useful decision change, relative to not doing the research, net of downstream implementation costs but before this research cost C. May represent avoided waste or a better research decision; not sale revenue.",
+    "C_definition": "Prospective total capped research allocation, including any optional review chosen. No cost has been authorized or spent by this illustration.",
+    "cost_cap_usd": 1500,
+    "scope": "At most one additional mechanism/falsifier investigation under a pre-agreed cap; stop if no decision-relevant differential survives. No current mechanism is selected by this model.",
+    "scenarios": [
+      {
+        "name": "no_benefit",
+        "assumed_p": 0.0,
+        "assumed_V_usd": 0
+      },
+      {
+        "name": "small_avoidable_waste",
+        "assumed_p": 0.1,
+        "assumed_V_usd": 5000
+      },
+      {
+        "name": "low_probability_material_decision",
+        "assumed_p": 0.02,
+        "assumed_V_usd": 50000
+      },
+      {
+        "name": "exact_break_even",
+        "assumed_p": 0.1,
+        "assumed_V_usd": 15000
+      },
+      {
+        "name": "decision_changing_if_assumptions_hold",
+        "assumed_p": 0.1,
+        "assumed_V_usd": 50000
+      }
+    ],
+    "qualification": "All p and V values are invented stress scenarios. Current evidence does not establish which, if any, applies. When V=0 no positive-cost research passes; equality is not enough for the strict rule. Research downside is capped only if the cap is actually enforced."
+  }
+}

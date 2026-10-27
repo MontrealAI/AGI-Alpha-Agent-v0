@@ -1,0 +1,34 @@
+# PR #4988 Insight API exercise plan
+
+**Status: inspected, not executed.** The unmerged native API is pinned to `095c11fe33522be6c0e2d7a00043d7bbb5bcb457`. This document is an exact exercise plan, not a passed runtime receipt. It is separate from the executed main-commit JavaScript bridge in this directory. No source closure for this API was assembled; no runtime import, journal transition, controller signature, or API test is claimed.
+
+## Native files and dependencies
+
+The inspected implementation is `alpha_factory_v1/core/runtime/successor/flywheel_insight.py`; transitions are dispatched through `Discovery.apply`, not by calling `apply_insight` outside the signed controller boundary. Its direct dependencies include Pydantic v2; runtime `ascension` and `store`; `flywheel_discovery` (`ExplorationBundle`, `ResourceBudget`, cost scopes and record keys); `flywheel_enterprise.EvidenceRef`; and `protocol` canonicalization/digests. Discovery in turn uses arrangement, enterprise, execution, learning, trust, ledger, checkpoint, and journal components.
+
+The existing native fixture `tests/runtime/test_flywheel_protected.py:setup.__wrapped__(Path(tempdir))` supplies a local Journal, ProtectedLibrary service, controller keys, cost ledger, and fictional RPC/ENS readers. It must be used only in an isolated directory. `scripts/record_discovery_flywheel.py:append`, `apply`, and `ref` already implement evidence insertion, checkpoint advancement, signed DiscoveryCommand submission, and evidence references. Reuse these helpers; do not create a parallel registry.
+
+The original `scripts/record_insight_frontier.py:record` is a fixture for its own access-path candidate and economics. Do not run it and relabel its candidate, costs, or outputs as this study. Its initialization and native helpers demonstrate the permitted integration seam.
+
+## Exact local sequence
+
+1. Create a fresh temporary directory and call the native protected fixture. Snapshot the eight controlled-search output records plus the separate two-candidate targeted record as opaque source bytes supplied by the study owner. Preserve the actual original freeze and source inventories. This adapter must not infer an original information cutoff from import time.
+2. Use native `append(state, key, body)` for each immutable evidence record. Bind each `SearchSource.content_digest` with `digest('insight-source-snapshot/v1', journal.document(record))`, and use an `EvidenceRef` carrying the exact journal key and record digest. This hashes the recorded body; it is not an attestation of truth.
+3. Import the controlled search as **recorded/development**, unless an independently preserved native prospective freeze actually preceded all attempts. Replaying old attempts after a newly created journal freeze cannot establish prospective discovery. Instantiate `SearchFreeze` with the original shared search-unit denominator, matched U/E `model_id`, configuration digest, tool-access digest and `ResourceBudget`, and four distinct criteria: novelty, usefulness, feasibility, commercial-plausibility. Preserve human-search and leakage limitations. Call native `apply(state, 'search-freeze', operation_id, freeze)`.
+4. Register each actual candidate hypothesis as an `Opportunity` using its own purpose, prior-art comparison, uncertainty, construction, and falsifier. Then call `SearchSubmission` with the exact frozen digest, original arm and unit, distinct cost mission, original output reference and attempt references. A candidate that was generated but rejected on novelty remains `status='candidate'`; candidate status records a hypothesis, not qualification. Set `status='failed'` or `no-candidate` only for actual failed/empty attempts. Those statuses require no opportunity ID or digest.
+5. For candidate submissions only, record four `SearchReview` objects. Use low/unqualified novelty scores or `prior_art='established-approach'`/`'unresolved'` as warranted, and `review_relationship='same-operator'` for our own reviews. Keep usefulness, feasibility, and commercial plausibility separate. Native code refuses to score a failed/empty search as a candidate. No external-human review is invented.
+6. Record `SearchAssessment` using **every** review reference, `construction_observation=None` unless an actual native bundle observation has matching witness, opportunity and cost allocation, and truthful leakage disposition. A raw JSON mathematical probe is evidence, not a native accepted construction observation. Unknown costs stay incomplete in the native ledger; do not enter zero as a measured full cost. Expect `disposition='exploratory'`, `beyond_human_foresight_established=False`, `novelty_truth_established=False`, and `commercial_delivery_established=False`.
+7. Call `search_report(Discovery(state['service']), search_id)`. Assert that the original controlled denominator, every failed/empty/missing slot, and all eight original attempt records remain visible. Never adjust search units merely to make this count attractive.
+8. Preserve the two **post-freeze targeted** candidates with native `append` under a separate research-evidence key, including their complete JSON and probe hashes. They are not a third arm and cannot be inserted into the controlled freeze. The current schema has only U/E/H arms and requires matched U/E; do not invent an ordinary comparator to make them fit. A separately declared development protocol could archive those hypotheses, but its missing U arm must remain visibly missing and its counts must never enter the original comparison.
+9. A `ResearchSeed` may preserve an exploratory hypothesis only when a registered Opportunity and exact TransformationWitness are linked. This does not qualify it. A `ResearchPlan` must bind that seed and an actual ExplorationBundle; its draft jobs must preserve every experiment question, acceptance metric, and time bound. The native result declares research-only MARK inspection, no execution authority, no listing, and no reserved/promised/minted/transferred funds.
+
+## Minimum assertions for a future executed receipt
+
+- Imported old outputs remain nonprospective/development; rejected novelty is retained.
+- Eight controlled attempts plus two separately labeled targeted attempts reconcile without denominator inflation.
+- No negative review is omitted from assessment; changed reviews require reassessment.
+- Actual cost unknowns cause incomplete-accounting qualification, not zero-cost profitability.
+- No local fixture signature becomes a live ENS assertion or permission grant.
+- All output artifacts remain research-only and no commercial delivery, novelty truth, or beyond-human foresight is established.
+
+The runtime has no obligation to create a research seed for a failed/empty search, and explicitly refuses that case. Stop at the appropriate research record instead of changing a negative result to satisfy an artifact chain.
