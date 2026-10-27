@@ -79,6 +79,9 @@ def add_commands(commands: Any) -> None:
     actions.add_parser("status", help="Report connector and operating qualification limits without invoking providers")
     receipt = actions.add_parser("receipt", help="Export an existing durable invocation request and receipt")
     receipt.add_argument("mission_id")
+    execution_receipt = actions.add_parser("execution-receipt", help="Inspect a durable general mission or observation")
+    execution_receipt.add_argument("operation_id")
+    execution_receipt.add_argument("--event", help="Exact attempt label from the private mission receipt")
     for action in (
         "configure",
         "plan",
@@ -140,7 +143,18 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         }
     if action == "receipt":
         result = service.inspect_invocation(args.mission_id)
-    if action in {"status", "receipt"}:
+    if action == "execution-receipt":
+        from .flywheel_execution import operation_key
+
+        key = operation_key(args.operation_id)
+        if args.event is not None:
+            if len(args.event) > 500 or not args.event.startswith(("model/", "tool/")):
+                raise ValueError("use the exact bounded attempt label from the private receipt")
+            key += "/event/" + args.event
+        with service.journal.transaction() as cx:
+            service._state(cx)
+            result = service.journal.document(service.journal.latest(key, cx))
+    if action in {"status", "receipt", "execution-receipt"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:

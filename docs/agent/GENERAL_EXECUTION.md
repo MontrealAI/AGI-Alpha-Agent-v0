@@ -31,6 +31,8 @@ No dynamic host import, eval or shell fallback is provided. Code execution, rese
 creation are possible through separately qualified named sandbox tools; they are not established
 merely by declaring a tool name. The Docker adapter reuses the existing immutable-image,
 networkless browser worker and exact approved public-read allowlist. No host browser fallback exists.
+The enclosing mission must fit the independently approved ComputerTask's turn, action and time limits
+before any paid reservation. The adapter also enforces the task's own action/time limits during execution.
 
 Each provider/tool attempt is checkpointed before I/O. Full returned observations have individual
 immutable Journal records. Mission checkpoints preserve history and all usage events. Expired
@@ -50,6 +52,16 @@ profit is available. Usage is not an invoice. The signed envelope is spending au
 an enforceable provider-side dollar meter: live qualification must establish the account's quota,
 tariff, output/context/tool limits and external hard limit. Unreconciled liabilities conservatively
 block further funded intake. Multi-mission live throughput has not been qualified.
+
+Live models and tools require separately qualified per-request liability caps in the signed profile.
+The loop reserves each cap before the corresponding call and refuses a call whose cumulative caps
+would exceed the whole mission allowance. These caps require real tariff/quota/hard-limit evidence;
+supplying an arbitrary number does not establish a provider guarantee. Actual charges remain unknown
+until reconciled. Scripted/local fixtures may have no provider fee while complete research cost stays unknown.
+
+General operation IDs are hashed into a separate namespace so an ID containing `/event/` cannot
+collide with another mission's observation records. The execution identity also binds the reused
+computer adapter, worker, public reader and dependency-capture implementations.
 
 ## Explicit modes and observed evidence
 
@@ -105,9 +117,17 @@ worker/image identities must match the signed environment contract. The native C
 scripted simulation as a live provider; credential-free reproduction uses the explicit recorder.
 
 The sandbox request contains schema_name `flywheel-sandbox-call/v1`, session_id, sequence,
-sandbox_revision, tool, arguments and a domain-separated request_id. The response must contain
+operation_digest, sandbox_revision, tool, arguments and a domain-separated request_id. The operation
+digest binds the exact signed permit and Journal identity. Sequence/deduplication scope is that
+operation, so a fresh mission cannot receive an older mission's cached result. A client environment
+cannot be rebound to another operation. The response must contain
 exactly request_id and result, with the same request_id and a bounded JSON object. A timeout
 cannot establish nonexecution, zero cost or permission to retry.
+
+After interruption, use the same private operator's `execution-receipt OPERATION_ID` command with
+a new output path. Add `--event model/0` or the exact recorded tool-attempt label to inspect a full
+durable observation. Inspection does not replay an action, reconcile a bill or restore a stopped
+environment. Historical records and the original uncertain obligation remain intact.
 
 ## Qualification record and remaining work
 

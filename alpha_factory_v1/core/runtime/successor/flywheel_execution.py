@@ -13,6 +13,7 @@ import base64
 import copy
 import json
 import os
+import re
 import time
 from collections.abc import Callable
 from typing import Any, Literal, Protocol
@@ -33,6 +34,13 @@ KEY = "@flywheel-execution:"
 MAX_FRAME = 1_500_000
 
 
+def operation_key(operation_id: str) -> str:
+    """Separate operation identities from the immutable observation namespace."""
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}", operation_id):
+        raise ValueError("invalid execution operation identity")
+    return KEY + digest("flywheel-execution-operation", {"operation_id": operation_id})
+
+
 class ExecutionProfile(StrictModel):
     """Operator-qualified exact model capabilities; names never imply support."""
 
@@ -43,6 +51,8 @@ class ExecutionProfile(StrictModel):
     supported_efforts: list[str] = Field(min_length=1, max_length=6)
     tools: list[dict[str, Any]] = Field(default_factory=list, max_length=24)
     qualification_digest: Digest
+    model_request_cap_micro_usd: int | None = Field(default=None, ge=1, le=10**12)
+    tool_request_caps_micro_usd: dict[str, int] = Field(default_factory=dict, max_length=24)
     max_output_tokens: int = Field(default=16_384, ge=64, le=128_000)
     max_context_bytes: int = Field(default=750_000, ge=1024, le=MAX_FRAME)
 
@@ -63,6 +73,11 @@ class ExecutionProfile(StrictModel):
                 raise ValueError("only explicitly implemented computer and strict function tools are supported")
         if len(names) != len(set(names)):
             raise ValueError("duplicate tool names")
+        if not set(self.tool_request_caps_micro_usd) <= set(names) or any(
+            not _is_exact_type(value, int) or not 1 <= value <= 10**12
+            for value in self.tool_request_caps_micro_usd.values()
+        ):
+            raise ValueError("qualified tool request caps require approved names and positive bounded amounts")
         if len(canonical(self)) > 100_000:
             raise ValueError("model/tool profile exceeds its independent byte budget")
         return self
@@ -183,6 +198,14 @@ class HTTPToolEnvironment:
         if not os.environ.get(self.endpoint.credential_env):
             raise ValueError("approved sandbox credential is unavailable")
         self.sequence = 0
+        self.operation_digest: str | None = None
+
+    def bind_operation(self, operation_digest: str) -> None:
+        if not re.fullmatch(r"[0-9a-f]{64}", operation_digest):
+            raise ValueError("sandbox operation requires its exact signed execution commitment")
+        if self.operation_digest is not None and self.operation_digest != operation_digest:
+            raise Conflict("sandbox environment is already bound to another operation")
+        self.operation_digest = operation_digest
 
     @property
     def identity(self) -> dict[str, Any]:
@@ -191,11 +214,14 @@ class HTTPToolEnvironment:
     def perform(self, name: str, arguments: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]:
         if name not in self.endpoint.permitted_tools:
             raise ValueError("tool is outside the provisioned sandbox allowlist")
+        if self.operation_digest is None:
+            raise ValueError("sandbox calls must bind the signed execution operation before I/O")
         self.sequence += 1
         request = {
             "schema_name": "flywheel-sandbox-call/v1",
             "session_id": self.endpoint.session_id,
             "sequence": self.sequence,
+            "operation_digest": self.operation_digest,
             "sandbox_revision": self.endpoint.sandbox_revision,
             "tool": name,
             "arguments": arguments,
@@ -350,6 +376,8 @@ class LazyDockerEnvironment:
             "task_digest": digest("flywheel-computer-task", self.task),
         }
         self.computer: DockerComputer | None = None
+        self.action_count = 0
+        self.started: float | None = None
 
     def perform(self, name: str, arguments: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]:
         if name != "computer":
@@ -359,8 +387,15 @@ class LazyDockerEnvironment:
         def checkpoint() -> None:
             if not active():
                 raise InterruptedError("computer mission stopped")
+            if self.started is not None and time.monotonic() - self.started >= self.task.max_seconds:
+                raise TimeoutError("the approved ComputerTask time budget is exhausted")
 
         checkpoint()
+        if self.action_count >= self.task.max_actions:
+            raise Conflict("the approved ComputerTask action budget is exhausted")
+        self.action_count += 1
+        if self.started is None:
+            self.started = time.monotonic()
         if (
             self.image != self.identity["image"]
             or digest("flywheel-computer-task", self.task) != self.identity["task_digest"]
@@ -440,7 +475,31 @@ class MissionExecutor:
             raise ValueError("tool component label differs from actual environment")
         if self.transport.component == "live" and profile.model_id != config.llm_model:
             raise ValueError("live model differs from approved runtime configuration")
-        key = KEY + permit.operation_id
+        if self.transport.component == "live" and profile.model_request_cap_micro_usd is None:
+            raise ValueError("live model requests require a qualified per-request liability cap")
+        tool_names = {t.get("name") if t["type"] == "function" else "computer" for t in profile.tools}
+        if self.environment.component == "live" and not tool_names <= set(profile.tool_request_caps_micro_usd):
+            raise ValueError("live tools require qualified per-request liability caps")
+        model_cap = profile.model_request_cap_micro_usd or 0
+        if model_cap > permit.max_authorized_micro_usd:
+            raise ValueError("the first model request exceeds the entire authorized envelope")
+        if isinstance(self.environment, LazyDockerEnvironment) and (
+            mission.max_turns > self.environment.task.max_turns
+            or mission.max_actions > self.environment.task.max_actions
+            or mission.max_seconds > self.environment.task.max_seconds
+        ):
+            raise ValueError("ExecutionMission limits exceed the independently approved ComputerTask contract")
+        if isinstance(self.environment, HTTPToolEnvironment):
+            self.environment.bind_operation(
+                digest(
+                    "flywheel-sandbox-operation",
+                    {
+                        "journal_identity": self.journal.identity,
+                        "permit": permit,
+                    },
+                )
+            )
+        key = operation_key(permit.operation_id)
         started = time.monotonic()
         state: dict[str, Any] = {
             "schema_name": SCHEMA,
@@ -455,6 +514,7 @@ class MissionExecutor:
             "usage_events": [],
             "started_at": int(time.time()),
             "actual_charges_micro_usd": None,
+            "reserved_request_caps_micro_usd": 0,
             "acceptance": "unqualified",
             "live_network_qualified": False,
             "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
@@ -529,9 +589,12 @@ class MissionExecutor:
                 expected_head = self.journal.append(cx, key, state)["digest"]
                 self.checkpoint.advance(self.journal, cx)
 
-        def attempt(label: str, call: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+        def attempt(label: str, call: Callable[[], dict[str, Any]], cap: int) -> dict[str, Any]:
             if not active():
                 raise InterruptedError("mission stopped")
+            if state["reserved_request_caps_micro_usd"] + cap > permit.max_authorized_micro_usd:
+                raise Conflict("request liability would exceed the authorized mission envelope")
+            state["reserved_request_caps_micro_usd"] += cap
             state.update(status="attempting", pending=label)
             save()
             value = call()
@@ -575,6 +638,7 @@ class MissionExecutor:
                 body = attempt(
                     "model/" + str(turn),
                     lambda: self.transport.respond(payload, active, mission.max_seconds - (time.monotonic() - started)),
+                    model_cap,
                 )
                 output = _response_items(body, profile)
                 state["last_response"] = {
@@ -636,10 +700,15 @@ class MissionExecutor:
                     raise ValueError("mission action budget exhausted before execution")
                 observation = {}
                 for arguments in actions:
-                    state["actions"] += 1
+
+                    def tool_call() -> dict[str, Any]:
+                        state["actions"] += 1
+                        return self.environment.perform(str(name), arguments, active)
+
                     observation = attempt(
-                        "tool/" + call_id + "/" + str(state["actions"]),
-                        lambda: self.environment.perform(str(name), arguments, active),
+                        "tool/" + call_id + "/" + str(state["actions"] + 1),
+                        tool_call,
+                        profile.tool_request_caps_micro_usd.get(str(name), 0),
                     )
                 if name == "computer":
                     if observation.get("type") != "computer_screenshot":

@@ -14,7 +14,7 @@ import pytest
 
 from alpha_factory_v1.core.runtime.store import Conflict, digest as runtime_digest
 from alpha_factory_v1.core.runtime.successor.flywheel_execution import (
-    KEY,
+    operation_key,
     DockerComputerEnvironment,
     ExecutionMission,
     ExecutionPermit,
@@ -182,7 +182,7 @@ def test_actual_tool_result_flows_back_to_model_and_durable_history(setup: dict[
     assert transport.requests[0]["reasoning"] == {"effort": "high"}
     assert result["acceptance"] == "unqualified" and not result["live_network_qualified"]
     assert s["costs"].report()["available_funds"] is None
-    assert s["journal"].latest(KEY + "fixture-run")["result"] == result["result"]
+    assert s["journal"].latest(operation_key("fixture-run"))["result"] == result["result"]
     with pytest.raises(Conflict, match="already attempted"):
         executor.run(task, p, signed)
     assert len(transport.requests) == 2
@@ -285,10 +285,17 @@ def test_provisioned_sandbox_adapter_binds_call_and_return(monkeypatch: Any) -> 
     client_type = httpx.AsyncClient
     monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
     tools = HTTPToolEnvironment(endpoint)
+    tools.bind_operation(ZERO)
     assert tools.perform("experiment", {}, lambda: True) == {"executed": True}
     with pytest.raises(ValueError, match="allowlist"):
         tools.perform("host_shell", {}, lambda: True)
     assert len(seen) == 1 and seen[0]["sequence"] == 1 and seen[0]["sandbox_revision"] == ZERO
+    another = HTTPToolEnvironment(endpoint)
+    another.bind_operation("b" * 64)
+    assert another.perform("experiment", {}, lambda: True) == {"executed": True}
+    assert seen[0]["request_id"] != seen[1]["request_id"] and seen[0]["operation_digest"] != seen[1]["operation_digest"]
+    with pytest.raises(Conflict, match="another operation"):
+        tools.bind_operation("c" * 64)
 
 
 def test_computer_adapter_executes_validated_action_before_observation() -> None:
@@ -348,13 +355,13 @@ def test_external_state_change_cannot_be_overwritten(setup: dict[str, Any]) -> N
     def competing(payload: Any, active: Any, remaining: float) -> dict[str, Any]:
         value = original(payload, active, remaining)
         with s["journal"].transaction() as cx:
-            s["journal"].append(cx, KEY + "fixture-run", {"status": "controller-hold"})
+            s["journal"].append(cx, operation_key("fixture-run"), {"status": "controller-hold"})
         return value
 
     transport.respond = competing
     with pytest.raises(Conflict, match="competing record"):
         MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env).run(task, p, signed)
-    assert s["journal"].latest(KEY + "fixture-run")["status"] == "controller-hold"
+    assert s["journal"].latest(operation_key("fixture-run"))["status"] == "controller-hold"
 
 
 def test_stalled_provider_is_cancelled_on_total_deadline(setup: dict[str, Any], monkeypatch: Any) -> None:
@@ -378,3 +385,97 @@ def test_stalled_provider_is_cancelled_on_total_deadline(setup: dict[str, Any], 
     with pytest.raises(TimeoutError):
         ResponsesTransport(s["journal"]).respond({}, lambda: True, 0.03)
     assert time.monotonic() - before < 0.5 and closed
+
+
+def test_operation_names_cannot_collide_with_observation_namespace() -> None:
+    first = operation_key("a")
+    second = operation_key("a/event/model/0")
+    assert first != second and not second.startswith(first + "/event/")
+
+
+def test_private_operator_can_inspect_a_durable_observation(
+    setup: dict[str, Any], monkeypatch: Any, tmp_path: Path
+) -> None:
+    from types import SimpleNamespace
+    from alpha_factory_v1.core.runtime.successor import flywheel_operator
+
+    s, task, p, env = setup, mission(), profile(), LocalExperiment()
+    signed = permit(s, task, p, env)
+    result = MissionExecutor(s["journal"], s["trust"], s["costs"], ScriptedTransport([done()]), env).run(
+        task, p, signed
+    )
+    monkeypatch.setattr(flywheel_operator, "load", lambda journal, path: s["service"])
+    output = tmp_path / "private-observation.json"
+    flywheel_operator.handle(
+        SimpleNamespace(
+            home=s["journal"].root,
+            deployment=tmp_path / "unused",
+            output=output,
+            flywheel_action="execution-receipt",
+            operation_id="fixture-run",
+            event="model/0",
+        )
+    )
+    exported = json.loads(output.read_bytes())
+    assert exported["result"]["attempt"] == "model/0" and exported["result"]["value"]["status"] == "completed"
+    assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+
+
+def test_protected_environment_binds_computer_adapter_source(setup: dict[str, Any], monkeypatch: Any) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+
+    service = setup["service"]
+    original = flywheel_capsules._checked_source_bytes
+
+    def changed(path: Path, content: bytes, **kwargs: Any) -> bytes:
+        return original(path, content, **kwargs) + (b"\n# changed source\n" if path.name == "computer.py" else b"")
+
+    monkeypatch.setattr(flywheel_capsules, "_checked_source_bytes", changed)
+    with setup["journal"].transaction() as cx, pytest.raises(Conflict, match="installed runtime changed"):
+        service._state(cx)
+
+
+def test_request_caps_stop_before_an_over_budget_tool(setup: dict[str, Any]) -> None:
+    s, task, env = setup, mission(), LocalExperiment()
+    p = profile().model_copy(
+        update={"model_request_cap_micro_usd": 750, "tool_request_caps_micro_usd": {"experiment": 400}}
+    )
+    transport = ScriptedTransport(
+        [response([{"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}]), done()]
+    )
+    signed = permit(s, task, p, env)
+    result = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env).run(task, p, signed)
+    assert result["status"] == "failed-or-uncertain" and not env.calls
+    assert result["reserved_request_caps_micro_usd"] == 750 and len(transport.requests) == 1
+    assert result["actions"] == 0
+    assert s["costs"].report()["unknown_costs"]
+
+
+@pytest.mark.parametrize("limit", ["max_turns", "max_actions", "max_seconds"])
+def test_computer_contract_cannot_be_widened_by_enclosing_mission(
+    setup: dict[str, Any], monkeypatch: Any, limit: str
+) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_execution
+    from alpha_factory_v1.core.runtime.successor.computer import ComputerTask
+
+    monkeypatch.setattr(flywheel_execution, "worker_source_digest", lambda: ZERO)
+    task = mission().model_copy(update={"max_turns": 2, "max_actions": 2, "max_seconds": 10})
+    computer_task = ComputerTask(
+        goal="Inspect synthetic UI",
+        html="<button>Example</button>",
+        input_rights="synthetic",
+        license="Apache-2.0",
+        max_turns=2,
+        max_actions=2,
+        max_seconds=10,
+    )
+    environment = flywheel_execution.LazyDockerEnvironment(computer_task, "sha256:" + ZERO)
+    task = task.model_copy(update={limit: getattr(task, limit) + 1})
+    components = {**task.components, "tools": "live"}
+    task = task.model_copy(update={"components": components})
+    p = profile().model_copy(update={"tools": [{"type": "computer"}], "tool_request_caps_micro_usd": {"computer": 1}})
+    transport = ScriptedTransport([done()])
+    signed = permit(setup, task, p, environment)
+    with pytest.raises(ValueError, match="ComputerTask contract"):
+        MissionExecutor(setup["journal"], setup["trust"], setup["costs"], transport, environment).run(task, p, signed)
+    assert not transport.requests and environment.computer is None and not setup["costs"].report()["unknown_costs"]

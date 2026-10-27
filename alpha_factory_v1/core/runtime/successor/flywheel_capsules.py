@@ -279,6 +279,10 @@ class ProtectedLibrary:
             here / "protocol.py",
             here / "signatures.py",
             here / "transformation_library.py",
+            here / "computer.py",
+            here / "computer_dependencies.py",
+            here / "computer_worker.py",
+            here / "computer_read.py",
             *[
                 here.parent / name
                 for name in ("chain.py", "engine.py", "models.py", "provider.py", "store.py", "work.py")
