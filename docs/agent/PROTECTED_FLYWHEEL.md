@@ -50,6 +50,10 @@ trust_path, checkpoint_path, readers, ens_pins, keys and active_key. The keys ma
 providers with different hostnames and independently checked Registry, Wrapper and Registrar SHA-256
 implementation pins are mandatory. Existing read-only RPC transport is reused; it cannot broadcast.
 No default endpoint, model, code pin, credential or trusted signer is invented.
+Deployment and trust files are private regular files. The running service binds their exact loaded bytes
+and the key inventory; changes, loss or insecure permissions refuse protected work and accounting until
+restart/requalification. Runtime configuration is checked against disk and the Journal control record,
+including edits made by another process. Health reports a restart/recovery requirement when these checks fail.
 
 Commands candidate, plan, evidence, validate, admit, revoke, rotate-key, reuse-acceptance and account consume
 separately signed, journal-bound decisions. model-run additionally requires a controller-signed model permit
@@ -57,6 +61,13 @@ with the exact request/configuration, requested reasoning, no-external-tools man
 finite expiry and charge allowance. This first connector uses the existing JSON-completion transport.
 Responses/tool/computer-use executors require their separately approved connector and qualification.
 An available subscription does not establish an API entitlement. Missing access refuses before a call.
+
+Reasoning mode (standard/pro) and reasoning effort are separate signed fields in permits, plans and receipts.
+This transport supports standard-mode JSON completion only; Pro refuses before consuming a permit or charging
+an attempt. The no-tool payload uses reasoning_effort and max_completion_tokens. External approved Responses
+executors may attest matched Pro runs, but none is provisioned or claimed here. Actual served mode/effort,
+account access, quota and billing remain unverified until qualified on the approved account. Official profiles
+checked 2026-10-27 identify gpt-6-astra and gpt-6.1-terra; an alias or public price is not an account entitlement.
 
 B extraction binds the exact completed native Research mission revision and includes its request, accepted
 result and review in the provider context. A development binds an open native Research mission; C remains
@@ -148,6 +159,9 @@ Computation runs outside the write lock and observes stop requests. Historical e
 ineligible as fresh reuse even after a new plan, model change or rollback.
 Pending reuse acceptance must still match its exact qualification plan, Beta, policy and execution
 environment. Requalification or rollback cannot turn an older pending execution into current qualified reuse.
+Dependency verification uses iterative cycle detection and checks each shared dependency once per traversal.
+Dependency and whole-catalog verification have a one-second budget and fail without partial authorization
+or catalog disclosure; deployment sizing must qualify these operating limits.
 
 ### Storage, keys, recovery and revocation
 
@@ -224,6 +238,10 @@ privés de 32 octets, sans contenir leurs clés. Deux fournisseurs RPC Ethereum 
 aux hôtes distincts, et les empreintes SHA-256 vérifiées du Registry, Wrapper et Registrar sont obligatoires.
 Le transport RPC existant reste en lecture seule. Aucun fournisseur, modèle, tarif, secret, signataire
 ou empreinte fictive n’est choisi par défaut.
+Déploiement et registre de confiance sont des fichiers privés ordinaires. Le service lie leurs octets
+chargés et l’inventaire de clés ; modification, perte ou permissions trop larges bloquent accès et comptabilité
+jusqu’au redémarrage et à la requalification. La configuration est comparée au disque et au contrôle du
+Journal, y compris après modification dans un autre processus. L’état signale alors une reprise requise.
 
 Les décisions candidate, plan, evidence, validate, admit, revoke, rotate-key, reuse-acceptance et account
 exigent des signatures distinctes liées au Journal. model-run exige en plus un permis du contrôleur :
@@ -232,6 +250,14 @@ expiration et allocation bornée. Ce premier connecteur utilise le transport JSO
 Les exécuteurs Responses, outils et ordinateur demandent leur connecteur approuvé et leur qualification.
 Un abonnement ne prouve aucun droit API. L’absence d’accès bloque avant l’appel ; une réponse perdue
 reste une tentative incertaine facturable et ne déclenche aucune reprise automatique.
+
+Mode de raisonnement (standard/pro) et effort sont des champs signés distincts dans permis, plans et reçus.
+Ce transport ne prend en charge que JSON en mode standard ; Pro bloque avant consommation du permis ou
+facturation d’une tentative. La requête sans outils emploie reasoning_effort et max_completion_tokens.
+Un exécuteur Responses externe approuvé peut attester des exécutions Pro appariées ; aucun n’est provisionné
+ou revendiqué ici. Mode/effort servis, accès du compte, quota et facturation restent à qualifier sur le compte
+approuvé. Les profils officiels vérifiés le 2026-10-27 identifient gpt-6-astra et gpt-6.1-terra ; ni alias ni
+prix public ne constitue un droit d’accès du compte.
 
 L’extraction B lie la révision exacte d’une mission Research native terminée et transmet requête, résultat
 accepté et revue au fournisseur. Le développement A lie une mission Research native ouverte ; C reste
@@ -323,6 +349,9 @@ de réutilisation après changement de plan, modèle ou retour à un ancien mod�
 L’acceptation en attente doit encore correspondre au plan exact de qualification, à Beta, à la politique
 et à l’environnement. Requalification ou retour arrière ne transforme pas une ancienne exécution en
 réutilisation actuellement qualifiée.
+La vérification itérative détecte les cycles et contrôle une seule fois chaque dépendance partagée par
+parcours. Parcours de dépendances et catalogue complet ont un budget d’une seconde : expiration sans
+autorisation ou divulgation partielle. Le dimensionnement du déploiement doit qualifier ces limites.
 
 La branche protégée reste dans le Journal de la TransformationLibrary. Les manifestes publics sont
 distincts des programmes chiffrés AES-GCM ; les données associées lient service, Journal et manifeste
@@ -388,4 +417,8 @@ restent fictifs ; elle ne qualifie ni mission payée, Alpha frontière ou résea
 - [ENS NameWrapper expiry](https://docs.ens.domains/wrapper/expiry/)
 - [ENS contract implementation source](https://github.com/ensdomains/ens-contracts)
 - [AESGCM established library API](https://cryptography.io/en/latest/hazmat/primitives/aead/#cryptography.hazmat.primitives.ciphers.aead.AESGCM)
+- [Official reasoning mode and effort](https://developers.openai.com/api/docs/guides/reasoning)
+- [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)
+- [GPT-6.1 Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra)
+- [Chat completion token limits](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create)
 

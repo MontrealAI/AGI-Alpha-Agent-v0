@@ -7,7 +7,7 @@ their evidence and uncertainty; they are not bank or provider attestations.
 
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 from pydantic import Field, model_validator
 
@@ -76,6 +76,7 @@ class CostLedger:
     def __init__(self, journal: Journal, trust: TrustRegistry) -> None:
         self.journal, self.trust = journal, trust
         self.checkpoint: DurableCheckpoint | None = None
+        self.custody_check: Callable[[], None] | None = None
         with journal.transaction() as cx:
             try:
                 journal.latest(KEY, cx)
@@ -96,6 +97,8 @@ class CostLedger:
                 )
 
     def snapshot(self, cx: Any = None) -> dict[str, Any]:
+        if self.custody_check is not None:
+            self.custody_check()
         if self.checkpoint is not None:
             if cx is None:
                 with self.journal.transaction() as connection:

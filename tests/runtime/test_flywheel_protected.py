@@ -357,6 +357,7 @@ def evaluate(
     round_id: str = "",
     beta_digest: str = BETA,
     policy_digest: str = POLICY,
+    candidate_effort: str = "max",
 ) -> str:
     service = s["service"]
     tag = ident + ("-" + round_id if round_id else "")
@@ -365,7 +366,8 @@ def evaluate(
         beta_digest=beta_digest,
         execution_digest=s["service"].execution_digest,
         model_id="fictional-frontier-receipt-fixture",
-        reasoning_mode="fixture",
+        reasoning_mode="standard",
+        reasoning_effort="max",
         policy_digest=policy_digest,
         matched_tools_digest=ZERO,
         resource_rules_digest=ZERO,
@@ -391,7 +393,8 @@ def evaluate(
                 "output_digest": outputs[arm],
                 "beta_digest": beta_digest,
                 "model_id": "fictional-frontier-receipt-fixture",
-                "reasoning_mode": "fixture",
+                "reasoning_mode": "standard",
+                "reasoning_effort": candidate_effort if arm == 0 else "max",
                 "tools_digest": ZERO,
                 "resource_rules_digest": ZERO,
                 "recipient_capabilities_digest": ZERO,
@@ -764,7 +767,8 @@ def test_reconciled_acceptance_required_for_successful_reuse(
         "output_digest": ZERO,
         "beta_digest": BETA,
         "model_id": "fictional-frontier-receipt-fixture",
-        "reasoning_mode": "fixture",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "max",
         "tools_digest": ZERO,
         "resource_rules_digest": ZERO,
         "recipient_capabilities_digest": ZERO,
@@ -922,7 +926,8 @@ def test_frontier_attempt_preserves_unknown_failure_cost_and_never_retries(
         mission_id="fixture-model-investment",
         bucket="C",
         model_id=s["journal"].config.llm_model,
-        requested_reasoning_mode="fixture",
+        requested_reasoning_mode="standard",
+        requested_reasoning_effort="max",
         request_digest=digest("flywheel-model-request", request),
         config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
         tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
@@ -937,13 +942,19 @@ def test_frontier_attempt_preserves_unknown_failure_cost_and_never_retries(
         {"journal_identity": s["journal"].identity, "permit": permit.model_dump()},
     )
 
-    def fail(*args: Any, **kwargs: Any) -> Any:
+    captured = []
+
+    def fail(payload: dict[str, Any], *args: Any, **kwargs: Any) -> Any:
+        captured.append(payload)
         raise TimeoutError("Synthetic lost response; no actual provider request")
 
     monkeypatch.setattr(provider, "complete_json", fail)
     connector = FrontierConnector(s["journal"], s["trust"], s["costs"])
     result = connector.run(request, authorization)
     assert result["state"] == "failed-or-uncertain" and result["usage"] is None
+    assert captured[0]["reasoning_effort"] == "max"
+    assert captured[0]["max_completion_tokens"] == s["journal"].config.max_output_tokens
+    assert "max_tokens" not in captured[0]
     assert s["costs"].snapshot()["charges"]["model/fixture-attempt"]["accrued_micro_usd"] is None
     with pytest.raises(Conflict):
         connector.run(request, authorization)
@@ -1110,7 +1121,8 @@ def test_paid_attempt_custody_prevents_replay_after_restoring_old_backup(
         mission_id="custody-model-investment",
         bucket="C",
         model_id=s["journal"].config.llm_model,
-        requested_reasoning_mode="fixture",
+        requested_reasoning_mode="standard",
+        requested_reasoning_effort="max",
         request_digest=digest("flywheel-model-request", request),
         config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
         tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
@@ -1189,7 +1201,8 @@ def test_retention_connector_carries_actual_accepted_native_work(
         origin_record_digest=origin["digest"],
         bucket="B",
         model_id=s["journal"].config.llm_model,
-        requested_reasoning_mode="fixture",
+        requested_reasoning_mode="standard",
+        requested_reasoning_effort="max",
         request_digest=digest("flywheel-model-request", request),
         config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
         tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
@@ -1336,7 +1349,7 @@ def test_execution_environment_changes_require_restart_and_fresh_admission(setup
     assert entry(s, ident)["state"] == "requires-requalification"
 
 
-@pytest.mark.parametrize("attack", ["capabilities", "before-request", "future"])
+@pytest.mark.parametrize("attack", ["capabilities", "effort", "mode", "before-request", "future"])
 def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(
     setup: dict[str, Any], attack: str
 ) -> None:
@@ -1350,7 +1363,8 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(
         "output_digest": ZERO,
         "beta_digest": BETA,
         "model_id": "fictional-frontier-receipt-fixture",
-        "reasoning_mode": "fixture",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "max",
         "tools_digest": ZERO,
         "resource_rules_digest": ZERO,
         "recipient_capabilities_digest": "f" * 64 if attack == "capabilities" else ZERO,
@@ -1366,6 +1380,10 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(
         baseline["started_at"] = receipt["authorization"]["request_committed_at"] - 1
     elif attack == "future":
         baseline["finished_at"] += 60
+    elif attack == "effort":
+        baseline["reasoning_effort"] = "low"
+    elif attack == "mode":
+        baseline["reasoning_mode"] = "pro"
     record = {
         "mission_id": request.mission_id,
         "receipt_digest": digest("flywheel-reuse-receipt", receipt),
@@ -1376,8 +1394,64 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(
         "residual_interventions_digest": ZERO,
         "limitations": "Synthetic mismatched-recipient attack",
     }
-    with pytest.raises(ValueError, match="matched scope" if attack == "capabilities" else "fresh request window"):
+    with pytest.raises(
+        ValueError, match="matched scope" if attack in {"capabilities", "effort", "mode"} else "fresh request window"
+    ):
         s["service"].accept_reuse(signed(s, "reuse-acceptance", "acceptor", record, "wrong-recipient-baseline"))
+
+
+def test_alpha_evaluation_matches_actual_reasoning_effort(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = retain(s)
+    with pytest.raises(ValueError, match="reasoning"):
+        evaluate(s, ident, candidate_effort="low")
+
+
+@pytest.mark.parametrize("mode,effort,reason", [("pro", "max", "Responses"), ("standard", "none", "Astra")])
+def test_unsupported_reasoning_profile_refuses_before_any_provider_attempt(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, mode: str, effort: str, reason: str
+) -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_frontier import FrontierConnector, FrontierPermit
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+    from alpha_factory_v1.core.runtime import provider
+
+    s = setup
+    s["journal"].control(True)
+    s["journal"].configure(RuntimeConfig(llm_url="http://127.0.0.1:9999/v1/chat/completions", llm_model="gpt-6-astra"))
+    s["journal"].control(False)
+    request = pilot_request()
+    permit = FrontierPermit.model_validate(
+        {
+            "operation_id": "unsupported-profile",
+            "mission_id": "unsupported-profile",
+            "bucket": "C",
+            "model_id": "gpt-6-astra",
+            "requested_reasoning_mode": mode,
+            "requested_reasoning_effort": effort,
+            "request_digest": digest("flywheel-model-request", request),
+            "config_digest": digest("flywheel-model-config", s["journal"].config.model_dump()),
+            "tools_digest": digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
+            "quota_evidence_digest": ZERO,
+            "max_charge_micro_usd": 10,
+            "expires_at": int(time.time()) + 300,
+        }
+    )
+    authorization = sign_record(
+        s["keys"]["controller"],
+        "controller",
+        "flywheel-model-permit",
+        {"journal_identity": s["journal"].identity, "permit": permit.model_dump()},
+    )
+    calls = []
+
+    def forbidden(*args: Any, **kwargs: Any) -> Any:
+        calls.append(True)
+        raise AssertionError("unsupported profile reached provider")
+
+    monkeypatch.setattr(provider, "complete_json", forbidden)
+    with pytest.raises(ValueError, match=reason):
+        FrontierConnector(s["journal"], s["trust"], s["costs"]).run(request, authorization)
+    assert calls == [] and s["costs"].snapshot()["charges"] == {}
 
 
 def test_later_partial_payments_preserve_expense_and_sealed_costs(setup: dict[str, Any]) -> None:
@@ -1543,7 +1617,8 @@ def test_requalification_cannot_relabel_old_evaluation_as_fresh_reuse(setup: dic
         beta_digest=BETA,
         execution_digest=s["service"].execution_digest,
         model_id="fictional-frontier-receipt-fixture",
-        reasoning_mode="fixture",
+        reasoning_mode="standard",
+        reasoning_effort="max",
         policy_digest=POLICY,
         matched_tools_digest=ZERO,
         resource_rules_digest=ZERO,
@@ -1629,3 +1704,111 @@ def test_stop_during_selector_does_not_wait_for_the_computation_lock(
         receipt = pending.result(timeout=3)
     assert receipt["status"] == "failed" and receipt["error"] == "PermissionError"
     assert s["costs"].report()["unknown_costs"]
+
+
+@pytest.mark.parametrize("shape", ["shared", "deep"])
+def test_dependency_traversal_checks_each_node_once_and_refuses_cycles(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, shape: str
+) -> None:
+    s = setup
+    count = 20 if shape == "shared" else 1500
+    ids = [f"{index:064x}" for index in range(count)]
+    entries = {
+        ident: {"manifest": {"dependency_digests": ids[max(0, index - (16 if shape == "shared" else 1)) : index]}}
+        for index, ident in enumerate(ids)
+    }
+    calls = []
+
+    def eligible(network: dict[str, Any], ident: str) -> Any:
+        calls.append(ident)
+        return network["entries"][ident]
+
+    monkeypatch.setattr(s["service"], "_eligible", eligible)
+    s["service"]._dependencies({"entries": entries}, entries[ids[-1]])
+    assert len(calls) == len(set(calls)) == count - 1
+    calls.clear()
+    entries[ids[0]]["manifest"]["dependency_digests"] = [ids[-1]]
+    with pytest.raises(ValueError, match="cyclic"):
+        s["service"]._dependencies({"entries": entries}, entries[ids[-1]])
+    assert len(calls) <= count
+    calls.clear()
+    with pytest.raises(Conflict, match="budget"):
+        s["service"]._dependencies({"entries": entries}, entries[ids[-1]], deadline_ns=time.monotonic_ns() - 1)
+    assert calls == []
+
+
+def test_other_process_runtime_configuration_invalidates_the_running_service(setup: dict[str, Any]) -> None:
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    s = setup
+    ident = admitted(s)
+    token = proof(s, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    other = Journal(s["journal"].root)
+    other.control(True)
+    other.configure(RuntimeConfig(name="changed-by-another-process"))
+    other.control(False)
+    assert s["journal"].config.name != other.config.name
+    with pytest.raises(Conflict, match="another process"):
+        s["service"].manifest(ident, token)
+
+
+@pytest.mark.parametrize("changed", ["trust", "key", "deployment"])
+def test_provisioned_loader_refuses_stale_or_unavailable_custody_files(
+    setup: dict[str, Any], tmp_path: Path, changed: str
+) -> None:
+    import json
+    from alpha_factory_v1.core.runtime.successor.flywheel_operator import load
+    from alpha_factory_v1.core.runtime.store import private_write
+    from alpha_factory_v1.core.runtime.api import create_app
+    from fastapi.testclient import TestClient
+
+    s = setup
+    trust_path, key_path, deployment_path = (
+        tmp_path / "trust.json",
+        tmp_path / "key.bin",
+        tmp_path / "deployment.json",
+    )
+    principals = {
+        name: {
+            "public_key": anchor.public_key,
+            "roles": sorted(anchor.roles),
+            "provenance": anchor.provenance,
+            "independence_attestation": anchor.independence_attestation,
+        }
+        for name, anchor in s["trust"]._anchors.items()
+    }
+    private_write(trust_path, json.dumps({"schema_version": 1, "principals": principals}).encode())
+    private_write(key_path, secrets_bytes())
+    deployment = {
+        "schema_name": "protected-flywheel-deployment/v1",
+        "service": s["access"].service.model_dump(),
+        "producer": "producer",
+        "trust_path": str(trust_path),
+        "checkpoint_path": str(s["service"].checkpoint.path),
+        "readers": [
+            {"rpc_url": url, "chain_id": 1, "token_code_sha256": ZERO}
+            for url in ("https://reader-one.example", "https://reader-two.example")
+        ],
+        "ens_pins": s["access"].authority.pins.model_dump(),
+        "keys": {"fixture-key": str(key_path)},
+        "active_key": "fixture-key",
+    }
+    private_write(deployment_path, json.dumps(deployment).encode())
+    service = load(s["journal"], deployment_path)
+    assert service.costs.report()["cash"] == 0
+    target = {"trust": trust_path, "key": key_path, "deployment": deployment_path}[changed]
+    target.write_bytes(b"changed by the operator; old running custody is no longer current")
+    with service.journal.transaction() as cx:
+        with pytest.raises(Conflict, match="custody changed"):
+            service._state(cx)
+    with pytest.raises(Conflict, match="custody changed"):
+        service.costs.report()
+    with TestClient(
+        create_app(s["journal"], protected_library=service), base_url="https://fixture-service.example"
+    ) as client:
+        status = client.get("/api/flywheel/status").json()
+        assert status["protected_service"] == "unavailable-restart-or-recovery-required"
+        assert status["qualified_live_operation"] is False
+    target.unlink()
+    with pytest.raises(Conflict, match="custody is unavailable"):
+        service.costs.report()

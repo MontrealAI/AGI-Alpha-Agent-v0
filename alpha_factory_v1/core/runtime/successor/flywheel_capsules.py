@@ -20,7 +20,7 @@ from typing import Any, Literal, cast
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from pydantic import Field, model_validator
 
-from ..store import Conflict
+from ..store import Conflict, _private_recovery_bytes, digest as runtime_digest
 from ..chain import address
 from .flywheel_access import AccessRequest, ResourceAccess, direct_name
 from .flywheel_costs import Charge, CostLedger, KEY as COST_KEY, accepted_native_delivery
@@ -71,7 +71,8 @@ class EvaluationPlan(StrictModel):
     beta_digest: Digest
     execution_digest: Digest
     model_id: str = Field(min_length=1, max_length=200)
-    reasoning_mode: str = Field(min_length=1, max_length=100)
+    reasoning_mode: Literal["standard", "pro"]
+    reasoning_effort: Literal["none", "low", "medium", "high", "xhigh", "max"]
     policy_digest: Digest
     matched_tools_digest: Digest
     resource_rules_digest: Digest
@@ -100,7 +101,8 @@ class FrontierRun(StrictModel):
     output_digest: Digest
     beta_digest: Digest
     model_id: str = Field(min_length=1, max_length=200)
-    reasoning_mode: str = Field(min_length=1, max_length=100)
+    reasoning_mode: Literal["standard", "pro"]
+    reasoning_effort: Literal["none", "low", "medium", "high", "xhigh", "max"]
     tools_digest: Digest
     resource_rules_digest: Digest
     recipient_capabilities_digest: Digest
@@ -160,6 +162,8 @@ class ProtectedLibrary:
         keys: dict[str, bytes],
         active_key: str,
         checkpoint: DurableCheckpoint,
+        *,
+        custody_files: dict[str, str] | None = None,
     ) -> None:
         if library.journal is not costs.journal or library.journal is not access.journal:
             raise ValueError("one authoritative transactional journal is required")
@@ -177,7 +181,11 @@ class ProtectedLibrary:
             access,
         )
         self.keys, self.active_key, self.checkpoint = dict(keys), active_key, checkpoint
+        self._custody_files = dict(custody_files or {})
+        if len(self._custody_files) > 18:
+            raise ValueError("bounded deployment, trust and key custody inventory required")
         self.costs.checkpoint = checkpoint
+        self.costs.custody_check = self._check_custody_files
         self._boot_execution_digest = self._execution_binding()
         with self.journal.transaction() as cx:
             state = self.library.snapshot()
@@ -193,10 +201,27 @@ class ProtectedLibrary:
                 }
                 self._commit(cx, state)
 
+    def _check_custody_files(self) -> None:
+        for name, expected in self._custody_files.items():
+            try:
+                raw = _private_recovery_bytes(Path(name), limit=131_072)
+            except (OSError, ValueError):
+                raise Conflict("configured custody is unavailable; service restart required") from None
+            if hashlib.sha256(raw).hexdigest() != expected:
+                raise Conflict("configured trust or key custody changed; service restart and requalification required")
+
     def _execution_binding(self) -> str:
         import cryptography
         import httpx
         import pydantic
+        from ..models import RuntimeConfig
+
+        self._check_custody_files()
+        actual_config = RuntimeConfig.model_validate_json(
+            _private_recovery_bytes(self.journal.root / "config.json", limit=131_072)
+        ).model_dump()
+        if actual_config != self.journal.config.model_dump():
+            raise Conflict("runtime configuration changed in another process; restart and requalify")
 
         here = Path(__file__).parent
         paths = [
@@ -235,7 +260,8 @@ class ProtectedLibrary:
                 "cryptography": cryptography.__version__,
                 "pydantic": pydantic.__version__,
                 "httpx": httpx.__version__,
-                "runtime_configuration": self.journal.config.model_dump(),
+                "runtime_configuration": actual_config,
+                "custody_configuration": self._custody_files,
                 "service": self.access.service.model_dump(),
                 "ens_pins": self.access.authority.pins.model_dump(),
                 "readers": readers,
@@ -255,6 +281,8 @@ class ProtectedLibrary:
     def _state(self, cx: Any) -> tuple[dict[str, Any], dict[str, Any]]:
         if self._execution_binding() != self._boot_execution_digest:
             raise Conflict("installed runtime changed; restart and requalify affected claims")
+        if self.journal.latest("@control", cx)["config_hash"] != runtime_digest(self.journal.config.model_dump()):
+            raise Conflict("runtime configuration changed; restart and requalify")
         self.checkpoint.verify(self.journal, cx)
         state = self.journal.document(self.journal.latest(KEY, cx))
         return state, state[BRANCH]
@@ -459,7 +487,11 @@ class ProtectedLibrary:
                         raise ValueError("execution receipt differs from the matched frozen plan")
                     if run.candidate_digest != (ident if arm == 0 else None):
                         raise ValueError("execution receipt does not bind its actual candidate or Beta arm")
-                    if run.model_id != plan.model_id or run.reasoning_mode != plan.reasoning_mode:
+                    if (
+                        run.model_id != plan.model_id
+                        or run.reasoning_mode != plan.reasoning_mode
+                        or run.reasoning_effort != plan.reasoning_effort
+                    ):
                         raise ValueError("paired arms require the same precommitted frontier model and reasoning mode")
                     if run.started_at < entry["frozen_at"] or run.finished_at > int(time.time()):
                         raise ValueError("execution preceded candidate freeze")
@@ -598,13 +630,34 @@ class ProtectedLibrary:
                     network["active"][entry["manifest"]["skill_id"]] = ident
             self._commit(cx, state)
 
-    def _dependencies(self, network: dict[str, Any], entry: dict[str, Any], seen: set[str] | None = None) -> None:
-        seen = set() if seen is None else seen
-        for ident in entry["manifest"]["dependency_digests"]:
-            if ident in seen:
+    def _dependencies(
+        self,
+        network: dict[str, Any],
+        entry: dict[str, Any],
+        *,
+        checked: set[str] | None = None,
+        deadline_ns: int | None = None,
+    ) -> None:
+        checked = set() if checked is None else checked
+        deadline_ns = time.monotonic_ns() + 1_000_000_000 if deadline_ns is None else deadline_ns
+        visiting: set[str] = set()
+        stack = [(ident, False) for ident in reversed(entry["manifest"]["dependency_digests"])]
+        while stack:
+            if time.monotonic_ns() >= deadline_ns:
+                raise Conflict("dependency verification budget exhausted; no partial authorization")
+            ident, finished = stack.pop()
+            if finished:
+                visiting.remove(ident)
+                checked.add(ident)
+                continue
+            if ident in visiting:
                 raise ValueError("cyclic capsule dependencies are unsupported")
-            self._eligible(network, ident)
-            self._dependencies(network, network["entries"][ident], seen | {ident})
+            if ident in checked:
+                continue
+            child = self._eligible(network, ident)
+            visiting.add(ident)
+            stack.append((ident, True))
+            stack.extend((dep, False) for dep in reversed(child["manifest"]["dependency_digests"]))
 
     def _eligible(self, network: dict[str, Any], ident: str) -> dict[str, Any]:
         entry = network["entries"][ident]
@@ -667,15 +720,22 @@ class ProtectedLibrary:
             _, network = self._state(cx)
             authority = self.access.consume(prepared, cx)
             manifests = []
+            checked: set[str] = set()
+            deadline = time.monotonic_ns() + 1_000_000_000
             for ident in network["active"].values():
+                if time.monotonic_ns() >= deadline:
+                    raise Conflict("catalog verification budget exhausted; no partial disclosure")
                 try:
-                    entry = self._eligible(network, ident)
-                    self._dependencies(network, entry)
+                    entry = network["entries"][ident] if ident in checked else self._eligible(network, ident)
+                    self._dependencies(network, entry, checked=checked, deadline_ns=deadline)
+                    checked.add(ident)
                 except (KeyError, ValueError, Conflict):
                     continue
                 manifests.append(
                     {"candidate_digest": ident, "manifest": copy.deepcopy(entry["manifest"]), "state": "admitted"}
                 )
+            if time.monotonic_ns() >= deadline:
+                raise Conflict("catalog verification budget exhausted; no partial disclosure")
             self.checkpoint.advance(self.journal, cx)
             return {
                 "manifests": manifests,
@@ -854,6 +914,7 @@ class ProtectedLibrary:
                 or baseline.resource_rules_digest != plan.resource_rules_digest
                 or baseline.model_id != plan.model_id
                 or baseline.reasoning_mode != plan.reasoning_mode
+                or baseline.reasoning_effort != plan.reasoning_effort
                 or baseline.recipient_capabilities_digest != receipt["recipient_capabilities_digest"]
             ):
                 raise ValueError("fresh reuse baseline differs from the current matched scope")

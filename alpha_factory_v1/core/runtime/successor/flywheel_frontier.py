@@ -28,7 +28,8 @@ class FrontierPermit(StrictModel):
     origin_record_digest: Digest | None = None
     bucket: Literal["A", "B", "C"]
     model_id: str = Field(min_length=1, max_length=200)
-    requested_reasoning_mode: str = Field(min_length=1, max_length=100)
+    requested_reasoning_mode: Literal["standard", "pro"]
+    requested_reasoning_effort: Literal["none", "low", "medium", "high", "xhigh", "max"]
     request_digest: Digest
     config_digest: Digest
     tools_digest: Digest
@@ -69,6 +70,9 @@ class FrontierConnector:
             "configured_model_id": cfg.llm_model or None,
             "actual_model_id_verified": False,
             "actual_reasoning_mode_verified": False,
+            "actual_reasoning_effort_verified": False,
+            "supported_reasoning_modes": ["standard"],
+            "pro_and_tool_executor": "unavailable: approved Responses executor required; never substituted with standard mode",
             "quota_verified": False,
             "billing_verified": False,
             "tools": "none; bounded model proposal only",
@@ -83,6 +87,12 @@ class FrontierConnector:
         if set(payload) != {"journal_identity", "permit"} or payload["journal_identity"] != self.journal.identity:
             raise ValueError("model permit must bind this exact journal")
         permit = FrontierPermit.model_validate(payload["permit"])
+        if permit.requested_reasoning_mode != "standard":
+            raise ValueError(
+                "Pro reasoning requires a separately approved Responses executor; no fallback is permitted"
+            )
+        if permit.model_id == "gpt-6-astra" and permit.requested_reasoning_effort == "none":
+            raise ValueError("GPT-6 Astra does not support none reasoning effort")
         cfg = self.journal.config.model_copy(deep=True)
         if not self.status()["ready_for_signed_permit"]:
             raise ValueError("approved frontier executor unavailable; inspect explicit connector blockers")
@@ -182,8 +192,8 @@ class FrontierConnector:
             self.checkpoint.advance(self.journal, cx)
         model_payload = {
             "model": cfg.llm_model,
-            "reasoning_effort": permit.requested_reasoning_mode,
-            "max_tokens": cfg.max_output_tokens,
+            "reasoning_effort": permit.requested_reasoning_effort,
+            "max_completion_tokens": cfg.max_output_tokens,
             "response_format": {"type": "json_object"},
             "messages": [
                 {
@@ -233,7 +243,9 @@ class FrontierConnector:
                 usage=evidence["usage"],
                 actual_reported_model=evidence["reported_model"],
                 requested_reasoning_mode=permit.requested_reasoning_mode,
+                requested_reasoning_effort=permit.requested_reasoning_effort,
                 served_reasoning_mode="not-independently-attested",
+                served_reasoning_effort="not-independently-attested",
             )
         except Exception as exc:
             state.update(state="failed-or-uncertain", error_type=type(exc).__name__)

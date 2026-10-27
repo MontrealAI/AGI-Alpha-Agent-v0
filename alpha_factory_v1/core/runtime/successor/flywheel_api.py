@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
+from ..store import Conflict
 
 from .flywheel_access import AccessRequest
 from .flywheel_capsules import Invocation, ProtectedLibrary
@@ -35,9 +36,18 @@ def install_routes(app: FastAPI, library: ProtectedLibrary | None) -> None:
 
     @app.get("/api/flywheel/status")
     def status() -> dict[str, Any]:
+        operating = "unprovisioned"
+        if library is not None:
+            try:
+                with library.journal.transaction() as cx:
+                    library._state(cx)
+            except (Conflict, OSError, ValueError):
+                operating = "unavailable-restart-or-recovery-required"
+            else:
+                operating = "configured-requires-operating-qualification"
         return {
             "public_explore": "simulation",
-            "protected_service": "configured-requires-operating-qualification" if library else "unprovisioned",
+            "protected_service": operating,
             "qualified_live_operation": False,
             "qualification_basis": "deployment-specific live identity, model, acceptance, cost and recovery evidence required",
             "export_policy": "controlled-invocation-only",

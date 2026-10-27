@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 import argparse
+import hashlib
 from pathlib import Path
 from typing import Any, cast
 from urllib.parse import urlsplit
@@ -15,7 +16,7 @@ from .flywheel_capsules import CapsuleManifest, ProtectedLibrary
 from .flywheel_checkpoint import DurableCheckpoint
 from .flywheel_costs import CostLedger
 from .flywheel_frontier import FrontierConnector
-from .protocol import StrictModel, canonical
+from .protocol import StrictModel, canonical, safe_json_loads
 from .transformation import DiscoveryRequest, SelectionProgram
 from .transformation_library import TransformationLibrary
 from .transport import read_document
@@ -36,12 +37,16 @@ class Deployment(StrictModel):
 
 def load(journal: Journal, deployment_path: Path) -> ProtectedLibrary:
     """Require preprovisioned keys/checkpoint, trusted roles and two approved readers."""
-    deployment = Deployment.model_validate(read_document(deployment_path))
+    deployment_raw = _private_recovery_bytes(deployment_path, limit=131_072)
+    deployment = Deployment.model_validate(safe_json_loads(deployment_raw))
+    custody_files = {str(deployment_path.absolute()): hashlib.sha256(deployment_raw).hexdigest()}
     if any(reader.chain_id != 1 for reader in deployment.readers):
         raise ValueError("protected ENSv1 deployment supports Ethereum mainnet only")
     if len({urlsplit(reader.rpc_url).hostname for reader in deployment.readers}) != 2:
         raise ValueError("use two separately approved RPC providers with distinct hosts")
-    trust = validate_external_trust_bytes(_private_recovery_bytes(Path(deployment.trust_path), limit=131_072))
+    trust_raw = _private_recovery_bytes(Path(deployment.trust_path), limit=131_072)
+    trust = validate_external_trust_bytes(trust_raw)
+    custody_files[str(Path(deployment.trust_path).absolute())] = hashlib.sha256(trust_raw).hexdigest()
     library = TransformationLibrary(journal, trust, producer=deployment.producer)
     costs = CostLedger(journal, trust)
     access = ResourceAccess(
@@ -55,8 +60,13 @@ def load(journal: Journal, deployment_path: Path) -> ProtectedLibrary:
     if not 1 <= len(deployment.keys) <= 16:
         raise ValueError("a bounded independently provisioned key inventory is required")
     keys = {key: _private_recovery_bytes(Path(path), limit=32) for key, path in deployment.keys.items()}
+    custody_files.update(
+        {str(Path(path).absolute()): hashlib.sha256(keys[key]).hexdigest() for key, path in deployment.keys.items()}
+    )
     checkpoint = DurableCheckpoint(Path(deployment.checkpoint_path), journal)
-    return ProtectedLibrary(library, costs, access, keys, deployment.active_key, checkpoint)
+    return ProtectedLibrary(
+        library, costs, access, keys, deployment.active_key, checkpoint, custody_files=custody_files
+    )
 
 
 def add_commands(commands: Any) -> None:
