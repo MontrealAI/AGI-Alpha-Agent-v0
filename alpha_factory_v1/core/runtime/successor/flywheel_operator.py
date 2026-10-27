@@ -105,6 +105,14 @@ def add_commands(commands: Any) -> None:
     )
     model.add_argument("request", type=Path)
     model.add_argument("signed", type=Path)
+    execution = actions.add_parser("mission-run", help="Explicit Responses reasoning/tool mission; no implicit retry")
+    execution.add_argument("request", type=Path)
+    execution.add_argument("profile", type=Path)
+    execution.add_argument("signed", type=Path)
+    environment = execution.add_mutually_exclusive_group(required=True)
+    environment.add_argument("--tool-endpoint", type=Path, help="Private approved sandbox service contract")
+    environment.add_argument("--computer-task", type=Path, help="Existing bounded ComputerTask")
+    execution.add_argument("--computer-image", help="Approved immutable locally installed Docker image digest")
 
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
@@ -119,6 +127,13 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "protected_service": "provisioned-not-live-qualified",
             "execution_digest": service.execution_digest,
             "frontier": FrontierConnector(service.journal, service.trust, service.costs).status(),
+            "general_execution": {
+                "interface": "flywheel-execution/v1",
+                "command": "mission-run",
+                "transport": "Responses reasoning, strict function calls, computer actions and resulting screenshots",
+                "live_qualified": False,
+                "dependencies": "separate signed permit, approved model account, budget and sandbox or browser image",
+            },
             "costs": service.costs.report(),
             "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",
             "capsule_export": "controlled-invocation-only",
@@ -146,6 +161,47 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         result = FrontierConnector(service.journal, service.trust, service.costs).run(
             DiscoveryRequest.model_validate(read_document(args.request)), signed
         )
+    elif action == "mission-run":
+        from .computer import ComputerTask
+        from .flywheel_execution import (
+            ExecutionEnvironment,
+            ExecutionMission,
+            ExecutionProfile,
+            HTTPToolEnvironment,
+            LazyDockerEnvironment,
+            MissionExecutor,
+            ResponsesTransport,
+            ToolEndpoint,
+        )
+
+        task = ExecutionMission.model_validate(read_document(args.request))
+        profile = ExecutionProfile.model_validate(read_document(args.profile))
+        environment: ExecutionEnvironment
+        browser = None
+        if args.tool_endpoint is not None:
+            if args.computer_image is not None:
+                raise ValueError("computer image is unrelated to this sandbox service contract")
+            raw = _private_recovery_bytes(args.tool_endpoint, limit=131_072)
+            environment = HTTPToolEnvironment(ToolEndpoint.model_validate(safe_json_loads(raw)))
+        else:
+            if args.computer_image is None:
+                raise ValueError("the existing computer sandbox requires its approved immutable image")
+            browser = LazyDockerEnvironment(
+                ComputerTask.model_validate(read_document(args.computer_task)), args.computer_image
+            )
+            environment = browser
+
+        def qualify() -> None:
+            if service._execution_binding() != service.execution_digest:
+                raise ValueError("installed runtime or custody changed; restart and requalify")
+
+        try:
+            result = MissionExecutor(
+                service.journal, service.trust, service.costs, ResponsesTransport(service.journal), environment, qualify
+            ).run(task, profile, signed)
+        finally:
+            if browser is not None:
+                browser.close()
     elif action == "account":
         result = service.costs.apply(signed)
     elif action in {"validate", "admit", "revoke"}:
