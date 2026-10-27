@@ -330,9 +330,7 @@ def browser_acceptance(
                     "buffer": json.dumps(manual_replay).encode(),
                 }
             )
-            page.wait_for_function(
-                "JSON.parse(document.getElementById('result-receipt').textContent).input.price===10000"
-            )
+            expect(page.locator("#result-receipt")).to_contain_text(re.compile(r'"price"\s*:\s*10000'))
             manual_receipt = json.loads(page.locator("#result-receipt").text_content() or "{}")
             assert manual_receipt["summary"]["offeredPrice"] == 10000
             page.locator("#replay").click()

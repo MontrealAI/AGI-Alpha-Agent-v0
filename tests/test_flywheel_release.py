@@ -19,17 +19,18 @@ WORKER_FIXTURE = "96d9e55c28af87074299d5a8b55d1e7108aeb26ad3123ed1169e5d37c48e27
 
 
 def test_release_metadata_preserves_entire_predecessor_configuration_and_guard() -> None:
-    project = (ROOT / "pyproject.toml").read_bytes()
+    preserved = json.loads((ROOT / "tests/fixtures/protected-flywheel-145-release-metadata.json").read_bytes())["files"]
+    project = preserved["pyproject.toml"].encode()
     assert project.count(b'version = "1.45.0"') == 1
     previous = project.replace(b'version = "1.45.0"', b'version = "1.44.0"', 1)
     assert hashlib.sha256(previous).hexdigest() == PREVIOUS_PROJECT
-    raw = (ROOT / "scripts/strategy_research_e721_compatibility_v2.json").read_bytes()
+    raw = preserved["scripts/strategy_research_e721_compatibility_v2.json"].encode()
     profile = json.loads(raw)
     assert profile["files"]["pyproject.toml"] == {"bytes": len(project), "sha256": hashlib.sha256(project).hexdigest()}
     profile["files"]["pyproject.toml"]["sha256"] = PREVIOUS_PROJECT
     original = (json.dumps(profile, indent=2) + "\n").encode()
     assert hashlib.sha256(original).hexdigest() == PREVIOUS_PROFILE
-    guard = (ROOT / "scripts/check_strategy_research_compatibility_v2.py").read_bytes()
+    guard = preserved["scripts/check_strategy_research_compatibility_v2.py"].encode()
     current = hashlib.sha256(raw).hexdigest().encode()
     assert guard.count(current) == 1
     assert hashlib.sha256(guard.replace(current, PREVIOUS_PROFILE.encode(), 1)).hexdigest() == PREVIOUS_GUARD
@@ -54,7 +55,7 @@ def _check_worker_mix(tmp_path: Path, mask: int) -> None:
         body = record["text"].encode()
         assert (len(body), hashlib.sha256(body).hexdigest()) == checkout.FLYWHEEL_145_EXTRA_FILES[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
-        assert body == (ROOT / name).read_bytes()
+        assert body == fixture["files"][name]["text"].encode()
         bodies[name] = body if mask & (1 << index) else previous["files"][name]["text"].encode()
     for name, body in bodies.items():
         path = tmp_path / name

@@ -6,7 +6,10 @@ from __future__ import annotations
 import asyncio
 import secrets
 from pathlib import Path
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
+
+if TYPE_CHECKING:
+    from .successor.flywheel_capsules import ProtectedLibrary
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -125,12 +128,22 @@ class Control(StrictModel):
     state: Literal["paused", "ready"]
 
 
-def create_app(journal: Journal) -> FastAPI:
+def create_app(journal: Journal, *, protected_library: ProtectedLibrary | None = None) -> FastAPI:
     """Create an app; bearer tokens are never embedded in HTML or URLs."""
     engine = Engine(journal)
     app = FastAPI(title="$AGIALPHA Agent", docs_url=None, redoc_url=None, openapi_url=None)
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]", "testserver"])
+    allowed_hosts = ["127.0.0.1", "localhost", "[::1]", "testserver"]
+    if protected_library is not None:
+        from urllib.parse import urlsplit
+
+        service_host = urlsplit(protected_library.access.service.origin).hostname
+        if service_host:
+            allowed_hosts.append(service_host)
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
     app.add_middleware(RequestBoundary)
+    from .successor.flywheel_api import install_routes
+
+    install_routes(app, protected_library)
     token = (journal.root / "api.token").read_text().strip()
     static = Path(__file__).with_name("web")
 

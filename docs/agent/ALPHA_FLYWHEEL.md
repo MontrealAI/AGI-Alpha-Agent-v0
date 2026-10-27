@@ -69,8 +69,9 @@ and unfunded. USDC operating economics and `$AGIALPHA` utility are distinct.
 | Actual work from this public route | Unqualified; no approved connected executor/resources are established by opening this page |
 | Members-only skill sharing | Unqualified; no approved protected-capsule service with current direct-label `*.agent.agi.eth` authority verification is connected |
 
-The exact sharing blocker is a missing protected resource boundary, trusted current ENS authority verification and
-qualified authenticated retrieval. A typed name or local flag cannot substitute. The existing wallet binding
+The protected native extension now implements the resource boundary, current ENSv1 authority checks and controlled invocation.
+Provisioning and deployment-specific live qualification remain absent; see [the protected guide](PROTECTED_FLYWHEEL.md).
+A typed name or local flag cannot substitute. The existing wallet binding
 proves wallet control but explicitly records `ens_ownership_verified: false`; Ascension’s existing access contract
 uses its separate `*.alpha.agent.agi.eth` namespace. No contract, `*.club.agi.eth` role, governance or settlement
 rule is changed. Access to a method would still not authorize the actions it describes.
@@ -167,8 +168,9 @@ non financées et bornées séparément. L’économie en USDC et l’utilité `
 | Exécution réelle depuis cette page | Non qualifiée ; aucun exécuteur connecté et aucune ressource approuvée établis |
 | Partage réservé aux membres | Non qualifié ; aucun service protégé avec vérification actuelle d’un nom directement sous `agent.agi.eth` raccordé |
 
-Le blocage exact du partage est l’absence de frontière de ressource protégée, de vérification ENS actuelle
-fiable et de récupération authentifiée qualifiée. Un nom saisi ou drapeau local ne suffit pas. La preuve
+L’extension native protégée implémente désormais la frontière de ressource et la vérification ENSv1 actuelle ;
+le provisionnement et la qualification réelle restent absents. Consultez le [guide protégé](PROTECTED_FLYWHEEL.md).
+L’accès reste non qualifié sans preuves fiables d’autorité ENS actuelle et de récupération authentifiée. Un nom saisi ou drapeau local ne suffit pas. La preuve
 existante de contrôle du portefeuille indique explicitement `ens_ownership_verified: false` ; le contrat
 d’accès Ascension utilise son espace distinct `*.alpha.agent.agi.eth`. Aucun contrat, rôle `*.club.agi.eth`,
 gouvernance ou règlement n’est modifié. L’accès à une méthode ne permettrait pas d’exécuter toutes ses actions.
@@ -193,3 +195,14 @@ a réellement tourné. Aucun remplacement silencieux de modèle.
 La candidate 1.45.0 exige revue des sources exactes, contrôles PR applicables, qualification du main résultant,
 puis vérification des octets publics et du parcours. Ce guide n’atteste pas leur réussite. Comparaison existante,
 flagship Alpha, laboratoire Ω personnel, parcours, Nova-Seed, articles et organigrammes sont préservés.
+
+
+## Protected operating extension / Extension opérationnelle protégée
+
+The [protected operating guide](PROTECTED_FLYWHEEL.md) documents the native connector, disjoint actual-cost records,
+ENS/resource boundary, encrypted library branch, fresh evaluation, controlled invocation, recovery and exact live blockers.
+The public route remains a simulation; fixture qualification is never live ENS or frontier-model evidence.
+
+Le [guide opérationnel protégé](PROTECTED_FLYWHEEL.md) précise connecteur natif, coûts réels distincts, frontière ENS/ressource,
+branche chiffrée, évaluation nouvelle, invocation contrôlée, reprise et blocages réels. Le parcours public reste une simulation ;
+les preuves de test ne constituent jamais une qualification ENS ou modèle frontière réelle.

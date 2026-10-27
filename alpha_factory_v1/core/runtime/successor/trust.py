@@ -256,7 +256,10 @@ def validate_external_trust_bytes(data: bytes) -> TrustRegistry:
         raise ValueError("unsupported destination trust schema")
     if not 1 <= len(value["principals"]) <= 64:
         raise ValueError("destination trust registry must contain 1 to 64 principals")
-    roles = {"controller", "admission", "authority", "acceptance", "control", "producer", "worker", "verifier"}
+    roles = {
+        "controller", "admission", "authority", "acceptance", "control", "producer", "worker", "verifier",
+        "execution", "accounting",
+    }
     anchors = {}
     for principal, entry in value["principals"].items():
         if not isinstance(principal, str) or not principal or len(principal) > 128:
