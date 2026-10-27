@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.46.0
+## Current runnable path — 1.46.1
 
 **Mode:** Research training. Explores generated grid worlds using a small learner and local API.
 

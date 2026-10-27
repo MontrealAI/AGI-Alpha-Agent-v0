@@ -1,5 +1,22 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.46.1 exact research browser readers
+
+This publication-only successor adds two exact research PDFs and accessible browser readers,
+with explicit evidence limits, preserving prior papers and the 1.46 runtime boundaries. See
+[release notes](RELEASE_NOTES_1.46.1.md). It must not merge or publish before the existing
+main80b345/v1.46 publication and public installation lease closes and this patch version is allocated.
+
+The source requires its own configured review, applicable PR checks, complete resulting-main
+security/coverage/integrity, package and clean installation, browser/site acceptance and served-byte
+verification through the existing publisher. No earlier pass qualifies changed source. The new complete
+worker edition is admitted separately; historical workers, fixtures, lint rules, held source pins and
+runtime/settlement authority remain unchanged. This is not a new commercial-success claim.
+
+## Preserved 1.46.0 preparation record
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
 # Release readiness — 1.46.0 protected Flywheel operating boundaries
 
 This sequential candidate follows the existing 1.45 publication owner. Preserve that exact-source

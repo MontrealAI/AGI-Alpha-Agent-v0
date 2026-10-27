@@ -146,7 +146,7 @@ def assert_research_edition_guides(page: Page, origin: str, output: Path) -> Non
             expect(page.locator(".skip")).to_be_focused()
             page.keyboard.press("Enter")
             assert urlsplit(page.url).fragment == "main"
-            pdf_only_pages = {"when-paid-work-teaches-the-network": 22, "the-network-that-learns-to-invent": 19}
+            pdf_only_pages = {"when-paid-work-teaches-the-network": 22, "network-learns-to-invent-v1": 19}
             if record["id"] in pdf_only_pages:
                 page_count = pdf_only_pages[record["id"]]
                 assert record["tex"] is None
