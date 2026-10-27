@@ -1,0 +1,231 @@
+{
+  "completed_utc": "2026-10-27T17:43:58.454639+00:00",
+  "configuration": "E: independent worker with supplied expert_workflow.txt rubric",
+  "tools_observed": [
+    {
+      "invocation": 1,
+      "tool": "exec_command",
+      "work": "Read TASK.md, cases.json, expert_workflow.txt and list input files."
+    },
+    {
+      "invocation": 2,
+      "tool": "exec_command",
+      "work": "Inspect every actual array and contract; compute exact file SHA-256 and label counts."
+    },
+    {
+      "invocation": 3,
+      "tool": "apply_patch",
+      "work": "Save solve.py with scope checks, calculation, analytic validation and Decimal cross-check."
+    },
+    {
+      "invocation": 4,
+      "tool": "exec_command",
+      "work": "Run solve.py; write answers.json and receipt.json; reload and inspect delivered file summaries."
+    }
+  ],
+  "underlying_tool_invocations": 4,
+  "functions_exec_orchestration_calls": 4,
+  "corrections": [],
+  "correction_note": "No failed run, code correction, input correction, or silently altered contract was needed.",
+  "validation": {
+    "known_case": "Passed analytic mixed-unit 2D example with negative label, reflection, shear, translation, axis-order change, and empty support.",
+    "actual_cases": "All accepted objects independently checked with 60-digit Decimal arithmetic against the stated tolerances.",
+    "scope_review": "All 12 actual missions inspected; four incompatible requests refused.",
+    "case_audit": [
+      {
+        "case_id": 0,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 2.3099456845480583e-16,
+          "max_absolute_centroid_error_um": 7.442090038259827e-16
+        }
+      },
+      {
+        "case_id": 1,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 2.529081810156599e-16,
+          "max_absolute_centroid_error_um": 1.8863282496011992e-15
+        }
+      },
+      {
+        "case_id": 2,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 1.4170918744012044e-16,
+          "max_absolute_centroid_error_um": 7.377174432512935e-16
+        }
+      },
+      {
+        "case_id": 3,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 1.538954934393803e-16,
+          "max_absolute_centroid_error_um": 1e-15
+        }
+      },
+      {
+        "case_id": 4,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 1.7937039513916598e-16,
+          "max_absolute_centroid_error_um": 6e-16
+        }
+      },
+      {
+        "case_id": 5,
+        "array_shape": [
+          9,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "31d3e8da91d1825a478bf8283b457a7b1a7dee8680626b89edd11995f8791907",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 1.9976451547681617e-16,
+          "max_absolute_centroid_error_um": 8.091536271365076e-16
+        }
+      },
+      {
+        "case_id": 6,
+        "array_shape": [
+          9,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "c13bde811739a9e01bf6d52eb6e78cc558425c2cef3c43c538fa27b7a5e8cc66",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 1.9757830467163027e-16,
+          "max_absolute_centroid_error_um": 1.2098705890914854e-15
+        }
+      },
+      {
+        "case_id": 7,
+        "array_shape": [
+          9,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "90134b5dcb39ac530e397e9550adf86c4dc564219f6dbea5a509101f66676ce1",
+        "source_sha256_matches": true,
+        "status": "ACCEPT",
+        "verification": {
+          "max_relative_measure_error": 0.0,
+          "max_absolute_centroid_error_um": 0.0
+        }
+      },
+      {
+        "case_id": 8,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "HOLD"
+      },
+      {
+        "case_id": 9,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "REJECT"
+      },
+      {
+        "case_id": 10,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": false,
+        "status": "REJECT"
+      },
+      {
+        "case_id": 11,
+        "array_shape": [
+          9,
+          10,
+          11
+        ],
+        "array_dtype": "int16",
+        "source_sha256_observed": "e5c25b38360f0cf90666f0013b290c71275806a6649b7f414c22e5eda10659f8",
+        "source_sha256_matches": true,
+        "status": "HOLD"
+      }
+    ]
+  },
+  "execution_elapsed_seconds": 0.07682162700803019,
+  "costs": {
+    "token_count": null,
+    "billing_cost": null,
+    "availability": "Token counts and billing unavailable; no estimates invented.",
+    "full_worker_wall_time_seconds": null,
+    "wall_time_note": "Only script execution duration was measured; full worker latency was not instrumented."
+  },
+  "read_scope": [
+    "assigned inputs",
+    "expert_workflow.txt",
+    "assigned E output",
+    "installed Python and NumPy dependencies"
+  ],
+  "network_used": false,
+  "subagents_used": false,
+  "output_files": [
+    "answers.json",
+    "solve.py",
+    "receipt.json"
+  ]
+}

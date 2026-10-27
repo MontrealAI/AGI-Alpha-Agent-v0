@@ -1,0 +1,40 @@
+{
+  "page": "browser/index.html",
+  "external_requests": [],
+  "console_errors": [],
+  "checks": [
+    "Scenario changes mapped volume by scale cubed while native volume remains constant.",
+    "Retention scenario switches from justified stop to conditional candidate at positive assumed savings.",
+    "No horizontal overflow at 390px in fr.",
+    "No horizontal overflow at 390px in en.",
+    "No horizontal overflow at 768px in en.",
+    "No script errors or external network requests."
+  ],
+  "reader": {
+    "mathml_elements": 37,
+    "embedded_figures": 4,
+    "desktop_and_mobile_rendered": true,
+    "horizontal_overflow": false
+  },
+  "status": "passed",
+  "history": [
+    {
+      "stage": "first launch",
+      "outcome": "OS sandbox prevented local Chromium launch; authorized escalation allowed local rendering."
+    },
+    {
+      "stage": "first scenario probe",
+      "outcome": "Test supplied scale 2 outside control maximum 1.5; test corrected to valid 1.5, no app behavior changed."
+    },
+    {
+      "stage": "mobile layout",
+      "outcome": "English view at 390px had 0.75px grid overflow; minimum grid/card sizes corrected before final rerun."
+    }
+  ],
+  "review_scope": "Local demo rendering and scenario controls, not accessibility certification or scientific confirmation.",
+  "demo_sha256": "66be8a188837e8fed952e34ed03f0d2c874e39cb7d1726f7a379ef3f7dc6b159",
+  "reader_sha256": "4d2789cbd8d5d4fef44dd8957ef55a2b1a5dcafee478763bd7c8fbfd90bb8cf5",
+  "rendering_review": "Root viewed final desktop and mobile reader, native mathematics count, four embedded figures, and bilingual demo renderings; all PDF main cover/fresh-result/economics pages also viewed.",
+  "executed_script": "verification/executed-browser-qa.py",
+  "executed_script_sha256": "992848f1e81b5a5a5f527c3fa8c6a0bcf733c3185261e34fc86ec3b9f7bb83ee"
+}

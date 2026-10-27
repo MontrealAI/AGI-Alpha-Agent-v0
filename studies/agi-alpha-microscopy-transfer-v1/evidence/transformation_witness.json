@@ -1,0 +1,102 @@
+{
+  "schema": "microscopy-transformation-witness/v1",
+  "version": "1.0.0",
+  "purpose": {
+    "beneficiary": "Research laboratories and imaging cores reusing a supplied segmentation in a new explicitly defined affine geometric frame.",
+    "useful_outcome": "Exact supplied label identity/count, native support area or volume and centroid, and the requested affine geometric support measure and centroid.",
+    "invariants": [
+      "Original label partition and source-byte identity",
+      "Declared native calibration, axes and coordinate-center convention",
+      "Separation of native physical measure from mapped geometric measure",
+      "Fixed numerical tolerances and semantic refusal conditions"
+    ],
+    "excluded_purposes": [
+      "Biological segmentation validation or complete-cell certification",
+      "Physical registration validation",
+      "Nonlinear deformation, topology or intensity inference",
+      "Clinical decisions"
+    ]
+  },
+  "binding_restriction": {
+    "statement": "For the tested common-grid workflow, quantitative measurements must be derived after rasterization on a target grid.",
+    "status": "A named instrumental workflow restriction, not a certified limit on competent expert methods or frontier intelligence.",
+    "removability_reason": "For explicit affine geometric maps, source zeroth/first moments and the absolute determinant determine the requested measures without target raster sampling.",
+    "prior_art": "Known affine algebra, conventional physical-space image analysis and label feature extraction; no new algorithmic novelty claimed."
+  },
+  "replacement": {
+    "representation": "Source-native label moments plus an explicit geometric-pushforward contract.",
+    "formulas": {
+      "native_measure": "voxel_count * product(source_spacing_in_um)",
+      "native_centroid": "source_origin_in_um + mean(voxel_center_indices) * source_spacing_in_um",
+      "mapped_measure": "native_measure * abs(det(affine_linear_block))",
+      "mapped_centroid": "affine_linear_block @ native_centroid + affine_translation"
+    },
+    "center_convention": "Index i is the voxel center; source support extent is i + [-0.5,0.5).",
+    "implementation_note": "The frozen CLI recomputes native moments per invocation. The competent baseline caches native summaries across maps; persistent instrument caching was not constructed."
+  },
+  "executable_realization": {
+    "entrypoint": "python src/microscopy_transfer.py --labels SOURCE.npy --contract CONTRACT.json --output RESULT.json",
+    "source_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "recovered_payload": "integration/results/frozen-v1/received-artifact.py",
+    "source_binding": "Own one bounded NPY byte snapshot, hash that exact snapshot, validate the header/payload and contract, then measure those bytes.",
+    "scope_checks": "Validate units, dimensions, axes, exact contract fields, label interpretation, map semantics, numerical conditioning and source hash.",
+    "mission_outputs": "ACCEPT with measurements, or reasoned HOLD/REJECT; no substituted scientific purpose."
+  },
+  "falsifying_observations": [
+    {
+      "hypothesis": "Supported technical correctness",
+      "falsifier": "A supported accepted result violates a requested count, measure or centroid tolerance against the independent finite reference.",
+      "observed_status": "No such failure in 48 compatible fresh missions; this finite test is not universal proof."
+    },
+    {
+      "hypothesis": "Preservation of mission meaning",
+      "falsifier": "The instrument accepts changed biological/intensity/topological/nonlinear meaning as the original geometric mission.",
+      "observed_status": "All 12 declared incompatible/malformed cases refused; hidden caller intent is not inferable from a syntactically valid contract."
+    },
+    {
+      "hypothesis": "Newly feasible work or accepted-quality advantage over competent E",
+      "falsifier": "Conventional analysis with the same formulation and permissions meets the same contract.",
+      "observed_status": "Observed: conventional analysis passes 48/48, so newly feasible work and accepted-quality superiority are not established."
+    },
+    {
+      "hypothesis": "Graph-specific performance value",
+      "falsifier": "An ordinary directory with identical bytes and permissions achieves the same outputs.",
+      "observed_status": "Observed: exact scientific-output parity on all 48 missions; no graph-specific premium established."
+    },
+    {
+      "hypothesis": "Additional retained commercial value",
+      "falsifier": "Measured reusable benefit does not cover incremental B cost, risk and obligations relative to the competent recipient.",
+      "observed_status": "Actual cash/time benefit unmeasured; primary conditional policy rejects retention, costing CAD5 to screen."
+    }
+  ],
+  "supplied_versus_constructed": {
+    "supplied": [
+      "Public image/label data and metadata",
+      "Established mathematics and conventional libraries",
+      "Research purpose, quality contract and authored affine tasks",
+      "Buyer/price/labor/demand assumptions and alternative commercial routes",
+      "Existing lifecycle, trust, signature, access and accounting interfaces"
+    ],
+    "constructed": [
+      "Bounded source-binding and mission-validation executable",
+      "Curated byte-provenance package and separate recipient invocation",
+      "Independent all-voxel reference and fair equal-content library control",
+      "Conditional event accounting and policy stress experiment",
+      "Frozen concise operating workflow tested in same-model hosted workers"
+    ],
+    "not_demonstrated": [
+      "Autonomous discovery of an unknown mathematical method",
+      "Customer acquisition or market discovery",
+      "Model-weight training or specialist ASI",
+      "Live protected-network admission or additional production authority"
+    ]
+  },
+  "evidence": [
+    "protocols/PROTOCOL.md",
+    "confirmation/RESULTS.md",
+    "development/development-summary.json",
+    "hosted_trials/scoring.json",
+    "economics/RESULTS.md",
+    "integration/foundation_audit.md"
+  ]
+}

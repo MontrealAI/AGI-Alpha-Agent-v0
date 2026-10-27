@@ -1,0 +1,209 @@
+{
+  "schema": "microscopy-offline-reproduction/v1",
+  "started_utc": "2026-10-27T17:57:42.453898+00:00",
+  "driver_sha256": "705e98f4e42c43ee02e21e65d83d40e0160ca3b2669965361ad301f8b5985125",
+  "source_root": "/tmp/agi-alpha-microscopy-gzip-package-20261027",
+  "output_root": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip",
+  "runtime": {
+    "python": "3.12.14",
+    "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "node": "v24.22.1",
+    "packages": {
+      "numpy": "2.3.2",
+      "scipy": "1.17.0",
+      "pydantic": "2.11.7",
+      "cryptography": "50.0.2",
+      "numcodecs": "0.16.3"
+    },
+    "repository_requested_node": "22.17.1",
+    "study_original_node": "24.22.1"
+  },
+  "scope": "Offline repeated execution and replay of recorded evidence; no new frontier calls, customers, live ENS, production admission, or release qualification.",
+  "freshness": "Confirmation tasks were fresh at the original source freeze. This replay reuses those now-disclosed tasks and is not another protected fresh trial.",
+  "stages": [
+    {
+      "stage": "decode-development",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "data/curate_idr.py",
+        "development",
+        "--offline"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 0.2572158420080086
+    },
+    {
+      "stage": "decode-confirmation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "data/curate_idr.py",
+        "holdout",
+        "--offline"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 0.21494048899330664
+    },
+    {
+      "stage": "integration",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "integration/run_integration.py",
+        "--artifact",
+        "src/microscopy_transfer.py",
+        "--out",
+        "integration/results/frozen-v1"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 1.7766900160058867
+    },
+    {
+      "stage": "confirmation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "run_confirmation.py",
+        "--output",
+        "confirmation/results/reproduction-v1"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 18.581725793002988
+    },
+    {
+      "stage": "accounting-tests",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "-v",
+        "test_accounting"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace/economics",
+      "returncode": 0,
+      "seconds": 0.09409932298876811
+    },
+    {
+      "stage": "economic-development",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "economics/simulate.py",
+        "develop"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 0.12644593400182202
+    },
+    {
+      "stage": "economic-confirmation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "economics/simulate.py",
+        "confirm"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 1.0442573969921796
+    },
+    {
+      "stage": "hosted-output-rescoring",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "score_hosted_trials.py"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 0.17569172900402918
+    },
+    {
+      "stage": "archived-output-audit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/tmp/agi-alpha-microscopy-gzip-package-20261027/audit_confirmation.py",
+        "--results",
+        "/tmp/agi-alpha-microscopy-gzip-package-20261027/confirmation/results/frozen-v1",
+        "--output",
+        "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/archived-output-audit.json"
+      ],
+      "cwd": "/tmp/agi-alpha-microscopy-reproduction-20261027-gzip/workspace",
+      "returncode": 0,
+      "seconds": 0.363646316996892
+    }
+  ],
+  "source_arrays_materialized_from_gzip": [
+    "data/development/idr0062/native_labels.npy",
+    "data/confirmation/idr0052/cell_t7_native.npy",
+    "data/confirmation/idr0052/chromosomes_t7_native.npy"
+  ],
+  "gzip_distribution_sha256": {
+    "data/development/idr0062/native_labels.npy.gz": "cb2fdea820a29dc3590b74ed542f33fc716f44ec3e517061db050873f1765b49",
+    "data/confirmation/idr0052/cell_t7_native.npy.gz": "e22da17f09051e2b84af1197e036765d792bcac14bbe11154b44602f010c08d0",
+    "data/confirmation/idr0052/chromosomes_t7_native.npy.gz": "edc17fceb2b1954b489e29ab376c82f88989533fc19aba895267bf0ee2c03a97"
+  },
+  "results": {
+    "native_local_interface_controls": {
+      "passed": 32,
+      "total": 32
+    },
+    "newly_recovered_artifact_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "confirmation": {
+      "n_compatible_missions": 48,
+      "n_semantic_cases": 12,
+      "recovered_passed": 48,
+      "conventional_passed": 48,
+      "ordinary_library_passed": 48,
+      "identical_content_output_parity": 48,
+      "semantic_passed": 12
+    },
+    "same_scientific_json_except_elapsed_seconds": {
+      "equal": 96,
+      "compared": 96
+    },
+    "scientific_bitwise_comparison_is_diagnostic": "Acceptance uses the declared finite numerical tolerances; clock fields and process receipts are not compared.",
+    "semantic_status_and_reason_parity": true,
+    "economic_files_byte_identical": {
+      "policy_freeze.json": true,
+      "results.json": true,
+      "confirmation.csv": true,
+      "example_ledger.json": true
+    },
+    "simulated_economic_histories": 13824,
+    "economic_cash_conservation": true,
+    "ordinary_library_economic_parity": true,
+    "accounting_tests": {
+      "passed": 8,
+      "total": 8
+    },
+    "recorded_hosted_answers_rescored": {
+      "U": {
+        "passed": 12,
+        "total": 12
+      },
+      "E": {
+        "passed": 12,
+        "total": 12
+      },
+      "Eplus": {
+        "passed": 12,
+        "total": 12
+      }
+    },
+    "hosted_live_trials_rerun": false,
+    "archived_output_audit": {
+      "counts": {
+        "recovered": 48,
+        "ordinary_library": 48,
+        "conventional": 48
+      },
+      "nan_probes_refused": true
+    }
+  },
+  "original_files_verified_before_and_after": 703,
+  "original_frozen_evidence_unchanged": true,
+  "copied_files": 191,
+  "source_arrays_rebuilt_from_preserved_chunks": true,
+  "completed_utc": "2026-10-27T17:58:05.606752+00:00",
+  "status": "PASS"
+}

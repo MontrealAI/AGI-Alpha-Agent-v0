@@ -1,0 +1,583 @@
+
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+    <head>
+        
+  
+
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IDR: Image Data Resource</title>
+
+        
+        <link rel="shortcut icon" type="image/x-icon" href="https://idr.openmicroscopy.org/about/img/logos/favicon-idr.ico">
+        
+        <link rel="stylesheet" type="text/css" media="all" href="//fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic">
+        <link rel="stylesheet" type="text/css" media="all" href="//fonts.googleapis.com/css?family=Nunito">
+        <link href="/static/idr_gallery/3rdparty/foundation/foundation.min.css?_=" rel="stylesheet">
+        <link href="/static/idr_gallery/css/openmicroscopy.css?_=" rel="stylesheet">
+        <link href="/static/idr_gallery/css/idr.css?_=" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.1.0/css/all.css" crossorigin="anonymous">
+        <!-- Babel polfill (Symbol, Promise) -->
+        <script src="/static/idr_gallery/3rdparty/babel-core/browser-polyfill_5.6.15.min.js?_="></script>
+        <script src="/static/idr_gallery/3rdparty/jquery/jquery-3.7.1.min.js?_="></script>
+        <!-- Need jquery-migrate to allow jquery-ui and foundation to work with newer jQuery versions -->
+        <script src="/static/idr_gallery/3rdparty/jquery/jquery-migrate-3.6.0.min.js?_="></script>
+        <script src="/static/idr_gallery/3rdparty/jquery/jquery-ui-1.12.1.min.js?_="></script>
+        <link href="/static/idr_gallery/3rdparty/jquery/jquery-ui-1.12.1.min.css?_=" rel="stylesheet">
+
+        <script src="/static/idr_gallery/3rdparty/foundation/foundation.min.js"></script>
+        <script src="/static/idr_gallery/version.js?_=" crossorigin="anonymous"></script>
+
+
+        <script src="/static/idr_gallery/model.js?_="></script>
+        <link href="/static/idr_gallery/studies.css?_=" rel="stylesheet">
+
+        
+    <script type="application/ld+json">
+        {
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "A quantitative map of human Condensins provides new insights into mitotic chromosome architecture.",
+  "description": "Homozygous genome editing was used to fluorescently tag subunits of Condensin I and II in HeLa cells. Absolute abundance, spacing, and dynamic localization of the tagged proteins during mitosis was recorded by fluorescence correlation spectroscopy (FSC)-calibrated live-cell imaging and superresolution microscopy.",
+  "url": "https://idr.openmicroscopy.org/study/idr0052/",
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+    </script>
+
+    <style>
+        p {
+            word-wrap: break-word;
+        }
+
+        .gridcontainer {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .a, .b, .c {
+            padding: 1rem;
+        }
+        .a {
+            padding-bottom: 0
+        }
+        .c {
+            padding-top: 0
+        }
+
+        /* small screen means the single column is wider - room for thumbnail to float right */
+        .thumb_wrapper {
+            float: right;
+        }
+
+        /* Layout for medium and larger screens */
+        @media (min-width: 768px) {
+            .gridcontainer {
+                grid-template-columns: 33.3% 66.6%;
+                grid-template-areas:
+                "a b"
+                "c b";
+                /* make sure 'a' is no bigger than it's content */
+                grid-template-rows: auto 100%;
+            }
+
+            .a {
+                grid-area: a;
+            }
+
+            .b {
+                grid-area: b;
+            }
+
+            .c {
+                grid-area: c;
+            }
+
+            .thumb_wrapper {
+                float: none;
+            }
+            .a p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .debug {
+            display: none;
+        }
+
+    </style>
+
+    </head>
+
+    <body>
+
+        <div class="main-nav-bar top-bar" id="main-menu">
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li>
+                        
+                        <a class="logo" href="/">
+                        
+                            
+                            <img src="https://idr.openmicroscopy.org/about/img/logos/logo-idr.svg" alt=""/>
+                            
+                        
+                        </a>
+                        
+                    </li>
+
+
+                    
+                    <li>
+                        <a href="/cell/"
+                           >
+                          Cell - IDR
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tissue/"
+                           >
+                          Tissue - IDR
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+
+            <div id="top-bar-right" class="top-bar-right">
+                <ul class="dropdown menu" data-dropdown-menu>
+                
+                    <li class="has-submenu">
+                        <a href="https://idr.openmicroscopy.org/about/index.html">About</a>
+                        
+                            <ul class='submenu menu vertical' data-submenu>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/index.html">Overview</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/studies.html">Published studies</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/api.html">API Access</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/download.html">Data download</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/deployment.html">Deployment</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/faq/">FAQ</a></li>
+                            
+                            </ul>
+                        
+                    </li>
+                
+                    <li class="has-submenu">
+                        <a href="">Resources</a>
+                        
+                            <ul class='submenu menu vertical' data-submenu>
+                            
+                               <li><a href="https://idr.github.io/ome-ngff-samples/">OME-NGFF examples</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/linked-resources.html">Linked resources</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/itr.html">Image Tools Resource (ITR)</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/analysis-environments.html">Analysis Environments</a></li>
+                            
+                            </ul>
+                        
+                    </li>
+                
+                    <li class="has-submenu">
+                        <a href="https://idr.openmicroscopy.org/about/submission.html">Submissions</a>
+                        
+                            <ul class='submenu menu vertical' data-submenu>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/submission.html">Overview</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/screens.html">Screens</a></li>
+                            
+                               <li><a href="https://idr.openmicroscopy.org/about/experiments.html">Experiments</a></li>
+                            
+                            </ul>
+                        
+                    </li>
+                
+                </ul>
+            </div>
+        </div>
+
+        <a name="page-top"></a>
+
+
+        
+
+<div class="row column" style="margin-top:25px">
+
+    <div class="gridcontainer">
+        <div class="a">
+            <h2>idr0052</h2>
+
+            <!-- just show first image -->
+            
+            <p class="thumb_wrapper">
+                <a title="Open image in Viewer" target="_blank" href="/webclient/img_detail/5514272/"><img src="/webgateway/render_thumbnail/5514272/" /></a>
+            </p>
+            
+
+            
+                <p>Release Date: 2019-04-15</p>
+            
+
+            
+                <p>Publication DOI: <a target="_blank" href="https://doi.org/10.1083/jcb.201801048">10.1083/jcb.201801048</a></p>
+            
+
+            
+                <p>Data DOI: <a href="https://doi.org/10.17867/10000123">10.17867/10000123</a></p>
+            
+
+            
+                <p>License: <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+            
+
+            
+                <p>PubMed ID: <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/29632028">29632028</a></p>
+            
+
+            
+                <p>PMC ID: <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6028534">PMC6028534</a></p>
+            
+
+            
+        </div>
+
+        <div class="b">
+            <h1>A quantitative map of human Condensins provides new insights into mitotic chromosome architecture.</h1>
+
+            <p>Homozygous genome editing was used to fluorescently tag subunits of Condensin I and II in HeLa cells. Absolute abundance, spacing, and dynamic localization of the tagged proteins during mitosis was recorded by fluorescence correlation spectroscopy (FSC)-calibrated live-cell imaging and superresolution microscopy.</p>
+
+            <p>Walther N, Hossain MJ, Politi AZ, Koch B, Kueblbeck M, Ødegård-Fougner Ø, Lampe M, Ellenberg J</p>
+
+            <h3>
+                <img style="width: 36px; height: 36px" src="/static/idr_gallery/images/idr-logomark.svg" />
+                Browse Data in IDR
+            </h3>
+
+            
+                <p>
+                    <a href="/webclient/?show=project-751">idr0052-walther-condensinmap</a>
+                    (<span class="image_count" id="image_count_idr0052-walther-condensinmap"></span>)
+                </p>
+            
+                <p>
+                    <a href="/webclient/?show=project-752">idr0052-walther-condensinmap/experimentA</a>
+                    (<span class="image_count" id="image_count_idr0052-walther-condensinmap/experimentA"></span>)
+                </p>
+            
+                <p>
+                    <a href="/webclient/?show=project-753">idr0052-walther-condensinmap/experimentB</a>
+                    (<span class="image_count" id="image_count_idr0052-walther-condensinmap/experimentB"></span>)
+                </p>
+            
+                <p>
+                    <a href="/webclient/?show=project-754">idr0052-walther-condensinmap/experimentC</a>
+                    (<span class="image_count" id="image_count_idr0052-walther-condensinmap/experimentC"></span>)
+                </p>
+            
+
+            <h3>
+                <img style="width: 36px; height: 36px" src="/static/idr_gallery/images/bff_logo.png" />
+                BioFile Finder
+            </h3>
+
+            <p>
+                <a href="https://bff.allencell.org/" target="_blank">BioFile Finder</a> is a tool for filtering, sorting and grouping tabular data.
+                Each table below is loaded from IDR as a Parquet file, with each row representing an image.
+                Images can be selected in BioFile Finder and the "Download" link will open them in the IDR viewer.
+            </p>
+            <!-- Shown by JS if any tables are above threshold size -->
+            <p id="slow_load_warning" style="display: none">
+                NB: large tables may take some time to load in BioFile Finder.
+            </p>
+
+            
+            <p 
+                id="bff_study_container"
+              >
+                <a target="_blank" title="Open BioFile Finder in a new Tab" href="https://bff.allencell.org/app?source=%7B%22uri%22%3A%20%22https%3A//idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/%3Fcontainer_name%3Didr0052-walther-condensinmap%26container_type%3Dproject%26file_type%3Dparquet%22%2C%20%22type%22%3A%20%22parquet%22%2C%20%22name%22%3A%20%22idr0052-walther-condensinmap.parquet%22%7D">
+                    idr0052-walther-condensinmap
+                </a>
+                    <span>(</span><span class="image_count"
+                    
+                        id="bff_total_row_count"
+                    >
+                    <!-- image counts loaded by JS -->
+                    </span>,
+                    <!-- Hidden link, just used for HEAD request to get size (shown instead) -->
+                    parquet:
+                    <a class="table-download-link parquet" style="display: none;" href="https://idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/?container_name=idr0052-walther-condensinmap&amp;container_type=project&amp;file_type=parquet">-</a><span>)</span>
+            </p>
+            
+            <p 
+                id="bff_p_idr0052-walther-condensinmap/experimentA"
+              >
+                <a target="_blank" title="Open BioFile Finder in a new Tab" href="https://bff.allencell.org/app?source=%7B%22uri%22%3A%20%22https%3A//idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/%3Fcontainer_name%3Didr0052-walther-condensinmap/experimentA%26container_type%3Dproject%26file_type%3Dparquet%22%2C%20%22type%22%3A%20%22parquet%22%2C%20%22name%22%3A%20%22idr0052-walther-condensinmap/experimentA.parquet%22%7D">
+                    experimentA
+                </a>
+                    <span>(</span><span class="image_count"
+                    
+                        id="bff_row_count_idr0052-walther-condensinmap/experimentA"
+                    >
+                    <!-- image counts loaded by JS -->
+                    </span>,
+                    <!-- Hidden link, just used for HEAD request to get size (shown instead) -->
+                    parquet:
+                    <a class="table-download-link parquet" style="display: none;" href="https://idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/?container_name=idr0052-walther-condensinmap/experimentA&amp;container_type=project&amp;file_type=parquet">-</a><span>)</span>
+            </p>
+            
+            <p 
+                id="bff_p_idr0052-walther-condensinmap/experimentB"
+              >
+                <a target="_blank" title="Open BioFile Finder in a new Tab" href="https://bff.allencell.org/app?source=%7B%22uri%22%3A%20%22https%3A//idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/%3Fcontainer_name%3Didr0052-walther-condensinmap/experimentB%26container_type%3Dproject%26file_type%3Dparquet%22%2C%20%22type%22%3A%20%22parquet%22%2C%20%22name%22%3A%20%22idr0052-walther-condensinmap/experimentB.parquet%22%7D">
+                    experimentB
+                </a>
+                    <span>(</span><span class="image_count"
+                    
+                        id="bff_row_count_idr0052-walther-condensinmap/experimentB"
+                    >
+                    <!-- image counts loaded by JS -->
+                    </span>,
+                    <!-- Hidden link, just used for HEAD request to get size (shown instead) -->
+                    parquet:
+                    <a class="table-download-link parquet" style="display: none;" href="https://idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/?container_name=idr0052-walther-condensinmap/experimentB&amp;container_type=project&amp;file_type=parquet">-</a><span>)</span>
+            </p>
+            
+            <p 
+                id="bff_p_idr0052-walther-condensinmap/experimentC"
+              >
+                <a target="_blank" title="Open BioFile Finder in a new Tab" href="https://bff.allencell.org/app?source=%7B%22uri%22%3A%20%22https%3A//idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/%3Fcontainer_name%3Didr0052-walther-condensinmap/experimentC%26container_type%3Dproject%26file_type%3Dparquet%22%2C%20%22type%22%3A%20%22parquet%22%2C%20%22name%22%3A%20%22idr0052-walther-condensinmap/experimentC.parquet%22%7D">
+                    experimentC
+                </a>
+                    <span>(</span><span class="image_count"
+                    
+                        id="bff_row_count_idr0052-walther-condensinmap/experimentC"
+                    >
+                    <!-- image counts loaded by JS -->
+                    </span>,
+                    <!-- Hidden link, just used for HEAD request to get size (shown instead) -->
+                    parquet:
+                    <a class="table-download-link parquet" style="display: none;" href="https://idr.openmicroscopy.org/searchengine/api/v1/resources/container_data/?container_name=idr0052-walther-condensinmap/experimentC&amp;container_type=project&amp;file_type=parquet">-</a><span>)</span>
+            </p>
+            
+
+            <!-- Image Path: uod/idr/metadata/idr0052-walther-condensinmap/experimentA/companions/160510_SMC4gfpz82z68_MitoSys2/raw/cell0007_R0001.companion.ome <br>
+            Data Location: Github <br>
+            Is Zarr?: False <br> -->
+
+            <h3>Download</h3>
+
+            
+            <p>
+                To download original image files in your browser, you can
+                <!-- NB: This URL is updated dynamically by JavaScript below, using download_urls.tsv -->
+                <a id="download_url" target="_blank" href="https://ftp.ebi.ac.uk/pub/databases/IDR/idr0052-walther-condensinmap">access original data</a>.
+            </p>
+            
+
+            <!-- If the data is 'mkngff' Zarr data, link to "alpha" BIA pages with Zarr viewers etc e.g. idr0010-->
+            
+
+            <!-- hidden link for robots etc -->
+            <p class="debug">Download as <a href="/study/idr0052/json/" target="_blank">JSON</a>.</p>
+
+            
+            <p>
+                For more download options, including bulk download using Globus or FTP clients, see the IDR
+                <a target="_blank" href="https://idr.openmicroscopy.org/about/download.html">Data download</a> page.
+            </p>
+            
+        </div>
+        <div class="c">
+
+            <hr>
+
+            
+                <p>Copyright: Walther et al.</p>
+            
+                <p>Data Publisher: University of Dundee</p>
+            
+
+            <hr>
+
+            
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+    const BASE_URL = "/";
+    const IDR_ID = "idr0052";
+    const MAX_IMAGES = 1000000;
+    const SLOW_WARNING_THRESHOLD = 100000;
+    let url = BASE_URL + "searchengine/api/v1/resources/container_images/?data_source=idr";
+    let fmt = new Intl.NumberFormat();
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // load image counts...
+        // https://idr.openmicroscopy.org/searchengine//api/v1/resources/container_images/?data_source=idr
+
+        // for each table-download-link (csv download link OR hidden parquet link), HEAD request to get content-length...
+        // Then add size in MB after link
+        const csvLinks = document.querySelectorAll('.table-download-link');
+        csvLinks.forEach(link => {
+            fetch(link.href, { method: 'HEAD' })
+                .then(response => {
+                    const contentLength = response.headers.get('Content-Length');
+                    if (contentLength) {
+                        let sizeInMB = (contentLength / (1024 * 1024));
+                        // E.g. 162 MB (not 1.6e+2 MB) or 2.5 MB
+                        sizeInMB = sizeInMB > 99 ? sizeInMB.toFixed(0) : sizeInMB.toPrecision(2);
+                        // add size after link
+                        const sizeSpan = document.createElement('span');
+                        sizeSpan.textContent = ` ${sizeInMB} MB`;
+                        link.parentNode.insertBefore(sizeSpan, link.nextSibling);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching CSV file size:', error);
+                });
+        });
+
+        // Load image counts for each container from searchengine and add to page
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const containers = data.results.results;
+                let total = 0;
+                containers.forEach(container => {
+                    if (container.name.startsWith("idr0052")) {
+                        // In case 'image count' gets renamed to 'image_count' in future...
+                        let imageCount = container["image count"] || container["image_count"] || 0;
+                        if (imageCount > SLOW_WARNING_THRESHOLD && imageCount < MAX_IMAGES) {
+                            // Show "may be slow to load" warning - also below for total
+                            document.getElementById("slow_load_warning").style.display = "block";
+                        }
+                        total += imageCount;
+                        const $idr_span = document.getElementById(`image_count_${container.name}`);
+                        const $bff_span = document.getElementById(`bff_row_count_${container.name}`);
+                        if ($idr_span) {
+                            if (imageCount === 1) {
+                                $idr_span.textContent = `1 image`;
+                                $bff_span.textContent = `1 row`;
+                            } else if (imageCount == 0) {
+                                $idr_span.textContent = `study info`;
+                                // $all_images = $bff_span;
+                            } else {
+                                $idr_span.textContent = `${fmt.format(imageCount)} images`;
+                                $bff_span.textContent = `${fmt.format(imageCount)} rows`;
+                            }
+                        }
+                        // replace the BFF link text if too many images
+                        if (imageCount > MAX_IMAGES) {
+                            const $bff_para = document.getElementById(`bff_p_${container.name}`);
+                            $bff_para.innerHTML = `<b>${container.name}</b> has ${fmt.format(imageCount)} rows. Too large to load in BioFile Finder.`;
+                        }
+                    }
+                });
+                // Handle "All containers" total
+                let $total_count = document.getElementById("bff_total_row_count");
+                if ($total_count) {
+                    if (total === 1) {
+                        $total_count.textContent = `1 row`;
+                    } else {
+                        $total_count.textContent = `all ${total} rows`;
+                        if (total > SLOW_WARNING_THRESHOLD && total < MAX_IMAGES) {
+                            document.getElementById("slow_load_warning").style.display = "block";
+                        }
+                    }
+                }
+                if (total > MAX_IMAGES) {
+                    const $bff_study_para = document.getElementById("bff_study_container");
+                    if ( $bff_study_para ) {
+                        $bff_study_para.innerHTML = `<b>idr0052</b> has ${fmt.format(total)} rows. Too large to load in BioFile Finder.`;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching image counts:', error);
+            });
+
+        // Load download URLs from TSV file in GitHub...
+        fetch('https://raw.githubusercontent.com/will-moore/idr.openmicroscopy.org/refs/heads/download_urls/_data/download_urls.tsv')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+
+                // Use first line as header to find column names...
+                const headers = lines[0].split('\t');
+
+                const idrIndex = headers.indexOf("idrid");
+
+                // Find the line for this IDR ID
+                const studyLine = lines.find(line => line.split('\t')[idrIndex] === IDR_ID);
+                if (studyLine) {
+                    const cells = studyLine.split('\t');
+                    const downloadUrlIndex = headers.indexOf("download_url");
+                    const downloadUrl = cells[downloadUrlIndex];
+                    if (downloadUrl) {
+                        const downloadLink = document.getElementById("download_url");
+                        if (downloadLink) {
+                            downloadLink.href = downloadUrl;
+                        }
+                    }
+                } else {
+                    console.warn(`No download URL found for ${IDR_ID} in TSV file`);
+                }
+            });
+    });
+
+</script>
+
+
+        <hr class="whitespace">
+
+        <div class="callout large secondary">
+            <div class="row">
+                <div class="row small-up-2 medium-up-5 large-up-5">
+                    <div class="column"><a href="https://www.openmicroscopy.org/" target="_blank"><img class="thumbnail their-logo" src="/about/img/logos/ome-logo-200.png" alt="OME"></a></div>
+                    <div class="column"><a href="https://www.eurobioimaging.eu/" target="_blank"><img class="thumbnail their-logo" src="/about/img/logos/eurobioimaging_logo.png" alt="Euro-Bioimaging"></a></div>
+                    <div class="column"><a href="https://www.globalbioimaging.org/" target="_blank"><img class="thumbnail their-logo" src="/about/img/logos/globalbioimaging_logo.png" alt="Global-Bioimaging"></a></div>
+                    <div class="column"><a href="https://www.bbsrc.ac.uk/" target="_blank"><img class="thumbnail their-logo" src="/about/img/logos/bbsrc.png" alt="BBSRC"></a></div>
+                    <div class="column"><a href="https://www.glencoesoftware.com/" target="_blank"><img class="thumbnail their-logo" src="/about/img/logos/logo-glencoe-software-color.png" alt="Glencoe Software"></a></div>
+                </div>
+                <hr class="whitespace">
+                <div class="large-12 columns text-center">
+                    <p>&copy; 2016-2026 University of Dundee &amp; Open Microscopy Environment. <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+                    <p>OMERO is distributed under the terms of the GNU GPL. For more information, visit <a href="https://www.openmicroscopy.org">openmicroscopy.org</a></p>
+                </div>
+                <hr class="whitespace">
+                <div>
+                    <div class="version-number float-left">
+                        <a href="/"><img id="version-number" src="/about/img/logos/logo-idr.svg" alt="IDR logo"></a>
+                        version: <span id="version-number-display"></span>.
+                    </div>
+                    <div class="float-right">
+                        <a href="https://bsky.app/profile/openmicroscopy.org" target="_blank"><i class="fa fa-brands fa-bluesky"></i> @openmicroscopy.org</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).foundation();
+        </script>
+
+    </body>
+
+</html>

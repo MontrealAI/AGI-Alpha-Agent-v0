@@ -1,0 +1,36 @@
+{
+  "scope": "Maintained offline reproduction driver only; unchanged frozen source closure not reformatted or retyped",
+  "driver_sha256": "705e98f4e42c43ee02e21e65d83d40e0160ca3b2669965361ad301f8b5985125",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "reproduce.py"
+      ],
+      "returncode": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "reproduce.py"
+      ],
+      "returncode": 0,
+      "stdout": "Success: no issues found in 1 source file\n",
+      "stderr": ""
+    }
+  ],
+  "full_repository_setup_precommit_and_hosted_ci": "not run by this subtask",
+  "dependency_lock": "offline resolution unavailable; failed attempts preserved without fabricated lock",
+  "gzip_decompressed_arrays_match_executed_distribution": true,
+  "gzip_header_difference": "only byte 9 differs; representation review retained in gzip-distribution-parity.json",
+  "declared_logical_source_identities_rechecked": 703
+}

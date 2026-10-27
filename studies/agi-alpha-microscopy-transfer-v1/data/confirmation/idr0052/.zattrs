@@ -1,0 +1,136 @@
+{
+    "_creator": {
+        "name": "omero-zarr",
+        "version": "0.4.0"
+    },
+    "multiscales": [
+        {
+            "axes": [
+                {
+                    "name": "t",
+                    "type": "time"
+                },
+                {
+                    "name": "c",
+                    "type": "channel"
+                },
+                {
+                    "name": "z",
+                    "type": "space",
+                    "unit": "micrometer"
+                },
+                {
+                    "name": "y",
+                    "type": "space",
+                    "unit": "micrometer"
+                },
+                {
+                    "name": "x",
+                    "type": "space",
+                    "unit": "micrometer"
+                }
+            ],
+            "datasets": [
+                {
+                    "coordinateTransformations": [
+                        {
+                            "scale": [
+                                1.0,
+                                1.0,
+                                0.75,
+                                0.2516,
+                                0.2516
+                            ],
+                            "type": "scale"
+                        }
+                    ],
+                    "path": "0"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "scale": [
+                                1.0,
+                                1.0,
+                                0.75,
+                                0.5032,
+                                0.5032
+                            ],
+                            "type": "scale"
+                        }
+                    ],
+                    "path": "1"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "scale": [
+                                1.0,
+                                1.0,
+                                0.75,
+                                1.0064,
+                                1.0064
+                            ],
+                            "type": "scale"
+                        }
+                    ],
+                    "path": "2"
+                }
+            ],
+            "version": "0.4"
+        }
+    ],
+    "omero": {
+        "channels": [
+            {
+                "active": true,
+                "coefficient": 1.0,
+                "color": "00FF00",
+                "family": "linear",
+                "inverted": false,
+                "label": "NCAPD2",
+                "window": {
+                    "end": 23000.0,
+                    "max": 62097.0,
+                    "min": 0.0,
+                    "start": 0.0
+                }
+            },
+            {
+                "active": true,
+                "coefficient": 1.0,
+                "color": "0000FF",
+                "family": "linear",
+                "inverted": false,
+                "label": "DNA",
+                "window": {
+                    "end": 20000.0,
+                    "max": 64132.0,
+                    "min": 1.0,
+                    "start": 0.0
+                }
+            },
+            {
+                "active": false,
+                "coefficient": 1.0,
+                "color": "FFFFFF",
+                "family": "linear",
+                "inverted": false,
+                "label": "NEG_Dextran",
+                "window": {
+                    "end": 65535.0,
+                    "max": 65535.0,
+                    "min": 4.0,
+                    "start": 4.0
+                }
+            }
+        ],
+        "id": 1,
+        "rdefs": {
+            "defaultT": 21,
+            "defaultZ": 15,
+            "model": "color"
+        },
+        "version": "0.4"
+    }
+}

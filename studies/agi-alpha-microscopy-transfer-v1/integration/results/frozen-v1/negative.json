@@ -1,0 +1,315 @@
+{
+  "schema": "capability-opportunity-lifecycle-replay/v1",
+  "candidates": [
+    {
+      "id": "microscopy-instrument",
+      "key": "microscopy-instrument@1",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "microscopy-instrument",
+        "candidateVersion": "1",
+        "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4",
+        "betaVersion": "microscopy-competent-expert-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "ddc9705a85d5d33f1a686cb591d379b78b585afd91b2396fcbe93415ada82cf8",
+        "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+        "comparisonUniverseDigest": "5b06d2663c3ae68474875e118ff856eb42bfc2113d03655f7f886b438bf243cd",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "reject",
+        "reasons": [
+          "nonpositive-lower-per-use-advantage",
+          "nonpositive-or-insufficient-complete-net-alpha"
+        ],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+        "observedPairsDigest": "fc200eb0dd7df6ac8b1090d18a8781830c0784675e03b7e32480bed6076710af",
+        "assessedLowerBoundNetCents": -1200,
+        "lifecycleCostCents": 100,
+        "evaluationCostCents": 100,
+        "completeLifecycleCostCents": 200,
+        "forecastEligibleUses": 10,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": -100,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": -100,
+        "lowerLifetimeNetCents": -1200,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "assessed": {
+        "ok": false,
+        "reasons": [
+          "NO_POSITIVE_NET_ALPHA"
+        ]
+      },
+      "admission": null,
+      "state": {
+        "key": "microscopy-instrument@1",
+        "status": "REJECTED",
+        "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4",
+        "eligibility": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REJECTED",
+            "TERMINAL_LIFECYCLE_STATE",
+            "NO_POSITIVE_NET_ALPHA",
+            "VALIDATOR_ATTESTATIONS_REQUIRED"
+          ]
+        }
+      },
+      "researchAuthority": "FIXTURE_ONLY",
+      "productionAdmission": "NOT_QUALIFIED",
+      "frontierAlpha": "UNMEASURED"
+    }
+  ],
+  "operations": [
+    {
+      "operation": {
+        "action": "retrieve",
+        "key": "microscopy-instrument@1"
+      },
+      "result": {
+        "ok": false,
+        "reasons": [
+          "NOT_ADMITTED:REJECTED",
+          "TERMINAL_LIFECYCLE_STATE",
+          "NO_POSITIVE_NET_ALPHA",
+          "VALIDATOR_ATTESTATIONS_REQUIRED"
+        ]
+      }
+    }
+  ],
+  "snapshot": {
+    "schema": "beyond-beta.lifecycle-snapshot/v1",
+    "networkId": "microscopy-affine-moments-relay/v1",
+    "betaVersion": "microscopy-competent-expert-v1",
+    "policy": {
+      "version": "beyond-beta-alpha-policy-v1",
+      "minimumPairedTrials": 6,
+      "validatorQuorum": 1,
+      "requireIndependentValidator": true,
+      "maxAssessmentAge": 104
+    },
+    "week": 1,
+    "scopeDigest": "ddc9705a85d5d33f1a686cb591d379b78b585afd91b2396fcbe93415ada82cf8",
+    "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+    "revision": 3,
+    "records": [
+      {
+        "key": "microscopy-instrument@1",
+        "manifest": {
+          "id": "microscopy-instrument",
+          "version": "1",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+          "equivalenceKey": "microscopy-instrument-v1",
+          "scopeDigest": "ddc9705a85d5d33f1a686cb591d379b78b585afd91b2396fcbe93415ada82cf8",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "rights": {
+            "shareable": true,
+            "retrieve": "network",
+            "execute": "network",
+            "compose": "network",
+            "export": false
+          },
+          "payloadDigest": "114aff8f2c12eb5596e6d48dd3fc0d2eaeffcb12be9767842bc6888f8a7f8e92"
+        },
+        "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4",
+        "status": "REJECTED",
+        "effective": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REJECTED",
+            "TERMINAL_LIFECYCLE_STATE",
+            "NO_POSITIVE_NET_ALPHA",
+            "VALIDATOR_ATTESTATIONS_REQUIRED"
+          ]
+        },
+        "evidenceDigest": "7daab9f3499d986d408533e0f36f9428ee552bce5f723153251c9e4394cdcbc4",
+        "assessmentDigest": "1225064620b676453ebcee89109d153e1660e041d9a2d73d3bc3f3cc57ff51fd",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "microscopy-instrument",
+          "candidateVersion": "1",
+          "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4",
+          "betaVersion": "microscopy-competent-expert-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "ddc9705a85d5d33f1a686cb591d379b78b585afd91b2396fcbe93415ada82cf8",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "comparisonUniverseDigest": "5b06d2663c3ae68474875e118ff856eb42bfc2113d03655f7f886b438bf243cd",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "reject",
+          "reasons": [
+            "nonpositive-lower-per-use-advantage",
+            "nonpositive-or-insufficient-complete-net-alpha"
+          ],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+          "observedPairsDigest": "fc200eb0dd7df6ac8b1090d18a8781830c0784675e03b7e32480bed6076710af",
+          "assessedLowerBoundNetCents": -1200,
+          "lifecycleCostCents": 100,
+          "evaluationCostCents": 100,
+          "completeLifecycleCostCents": 200,
+          "forecastEligibleUses": 10,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": -100,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": -100,
+          "lowerLifetimeNetCents": -1200,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "microscopy-instrument",
+              "candidateVersion": "1",
+              "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4",
+              "betaVersion": "microscopy-competent-expert-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "ddc9705a85d5d33f1a686cb591d379b78b585afd91b2396fcbe93415ada82cf8",
+              "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+              "comparisonUniverseDigest": "5b06d2663c3ae68474875e118ff856eb42bfc2113d03655f7f886b438bf243cd",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "reject",
+              "reasons": [
+                "nonpositive-lower-per-use-advantage",
+                "nonpositive-or-insufficient-complete-net-alpha"
+              ],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+              "observedPairsDigest": "fc200eb0dd7df6ac8b1090d18a8781830c0784675e03b7e32480bed6076710af",
+              "assessedLowerBoundNetCents": -1200,
+              "lifecycleCostCents": 100,
+              "evaluationCostCents": 100,
+              "completeLifecycleCostCents": 200,
+              "forecastEligibleUses": 10,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": -100,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": -100,
+              "lowerLifetimeNetCents": -1200,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "1225064620b676453ebcee89109d153e1660e041d9a2d73d3bc3f3cc57ff51fd",
+            "evidenceDigest": "7daab9f3499d986d408533e0f36f9428ee552bce5f723153251c9e4394cdcbc4"
+          }
+        ],
+        "validationHistory": [],
+        "createdAt": 0,
+        "admittedAt": null,
+        "terminalAt": 0,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "1b24ee328fdf16af24b98f53b31d3e857f704a2a881023126f92f8fa57f135ca",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 16104,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      }
+    ],
+    "events": [
+      {
+        "sequence": 0,
+        "week": 0,
+        "type": "candidate",
+        "key": "microscopy-instrument@1",
+        "candidateDigest": "80eed29b6501d1aabbe3116f2f38ef219b5865be3f771f43ec690d5ec040f6a4"
+      },
+      {
+        "sequence": 1,
+        "week": 0,
+        "type": "evidence",
+        "key": "microscopy-instrument@1",
+        "evidenceDigest": "7daab9f3499d986d408533e0f36f9428ee552bce5f723153251c9e4394cdcbc4",
+        "mode": "OBSERVED_LOCAL_TESTS"
+      },
+      {
+        "sequence": 2,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "microscopy-instrument@1",
+        "assessmentDigest": "1225064620b676453ebcee89109d153e1660e041d9a2d73d3bc3f3cc57ff51fd",
+        "verdict": "REJECTED",
+        "reasons": [
+          "NO_POSITIVE_NET_ALPHA"
+        ]
+      }
+    ],
+    "rootHistory": [],
+    "rootArtifacts": [],
+    "canonical": [],
+    "failureMemory": [],
+    "protectedEvaluationCommitments": [],
+    "authorityMode": "FIXTURE_ONLY",
+    "cryptographicAuthentication": false,
+    "liveIdentityEnforcement": "NOT_RUN",
+    "localEncryption": "AES-256-GCM",
+    "zeroKnowledgeProofs": "NOT_IMPLEMENTED",
+    "productionExecution": "NOT_CONNECTED",
+    "jobsClubRoles": "UNCHANGED",
+    "historyImportSupported": false
+  },
+  "liveCapsuleAdmission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "actualFrontierCalls": 0,
+  "actualReceiptsMicroUSD": 0,
+  "distinction": "Research fixture access replays local artifact bytes; it neither deploys a protected service nor runs the artifact."
+}
