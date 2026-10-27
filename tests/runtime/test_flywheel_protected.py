@@ -1945,6 +1945,8 @@ def test_invocation_history_is_durable_beyond_the_bounded_working_cache(
     from alpha_factory_v1.core.runtime.successor import flywheel_capsules
     from alpha_factory_v1.core.runtime.successor.protocol import canonical
 
+    fixture_now = int(time.time())
+    monkeypatch.setattr(time, "time", lambda: fixture_now)
     s = setup
     ident = admitted(s)
     monkeypatch.setattr(flywheel_capsules, "execute_selection", lambda *args: {"blob": "x" * 70_000})
