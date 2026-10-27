@@ -12,7 +12,7 @@ Scope was announced in [issue comment 6447449795](https://github.com/MontrealAI/
 
 ## Deliverable identities and review
 
-`ARTIFACT_MANIFEST.json` binds the included research files. The final paper, brief and companion use the exact title/byline in PDF metadata and are passive documents. The complete browser manuscript preserves the full narrative, seven tables, four SVG figures, MathML and22 references. The EN/FR demonstration is self-contained and preserves all24 recorded cases plus the limits.
+`ARTIFACT_MANIFEST.json` binds the included research files. The final paper, brief and companion use the exact title/byline in PDF metadata and are passive documents. The complete browser manuscript preserves the full narrative, seven tables, four SVG figures, MathML and 22 references. The EN/FR demonstration is self-contained and preserves all 24 recorded cases plus the limits.
 
 `results/verification.json` records targeted reproduction, code checks, PDF inspection and browser QA. `REVIEW.md` and `POLICY_ADDENDUM.md` preserve the five frozen-core failures and the separately frozen policy correction. None of these checks establishes full repository/release qualification, ecological readiness, customer demand, real profit or live ENS authority.
 
@@ -50,3 +50,19 @@ python -m scripts.research_papers check
 The importer does not compile TeX; the complete modular sources and figures remain in the companion. Commit the catalog, originals and generated surfaces together through the existing process. A later interactive-resource link must refer to already qualified, byte-identical hosted HTML. Research-release companion links must be verified downloads before entering catalog metadata. Do not invent a release URL, treat a declared hash as existence, or republish an existing software version.
 
 Canonical Pages deployment remains unperformed in this research handoff. The final source/PR readback record can be appended below without changing the manuscript or scientific freezes. No live deployed reader URL is implied by a GitHub source link.
+
+## Verified public review handoff
+
+[Draft PR #4979](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4979) contains the additive study. Its initial immutable research commit is [`2660ab6d1ac91792e7794fb94b644ffae03795a3`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1).
+
+At 2026-10-27 17:30:46 UTC, all seven checked public raw URLs returned HTTP 200 and bytes identical to their local originals: the paper, executive brief, evidence companion, main LaTeX source, full HTML manuscript, EN/FR demonstration and artifact manifest. `publication/readback.json` records their URLs, sizes and SHA-256 values. Every one of the initial 184 uploaded files also matched its local Git blob identity. The independently reconstructed root tree, `e070ebb0945e56ae69f7af2d5a56daaa674bee95`, matched the remote tree and preserves every pre-existing repository entry.
+
+Stable public deliverables:
+
+- [Paper PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1/paper/agi-alpha-flywheel.pdf)
+- [Executive brief PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1/paper/executive-brief.pdf)
+- [Evidence companion PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1/paper/evidence-companion.pdf)
+- [Complete manuscript HTML source](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1/web/paper.html)
+- [English/French demonstration HTML source](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2660ab6d1ac91792e7794fb94b644ffae03795a3/studies/agi-alpha-purpose-preserving-opportunity-v1/web/index.html)
+
+These are verified public source/PDF links. The HTML can be downloaded and opened locally; GitHub source availability does not imply canonical Pages deployment. This readback addendum changes publication metadata only, leaving the manuscripts, executable scientific methods and frozen evidence unchanged.
