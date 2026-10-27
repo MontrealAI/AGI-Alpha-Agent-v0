@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Any, Literal, cast
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.exceptions import InvalidTag
 from pydantic import Field, model_validator
 
 from ..store import Conflict
@@ -690,6 +689,22 @@ class ProtectedLibrary:
         invocation = Invocation.model_validate(invocation.model_dump())
         request_hash = digest("flywheel-invocation", invocation)
         prepared = self.access.prepare(proof, ident, "invoke", request_hash)
+        activity = "reuse/" + invocation.mission_id
+        attempt_digest = digest(
+            "flywheel-invocation-attempt",
+            {"candidate_digest": ident, "mission_id": invocation.mission_id, "request_digest": request_hash},
+        )
+        pending = Charge(
+            activity_id=activity,
+            mission_id=invocation.mission_id,
+            bucket="B",
+            category="compute",
+            accrued_micro_usd=None,
+            paid_micro_usd=0,
+            basis="unknown",
+            evidence_digest=attempt_digest,
+            note="Durably reserved before bounded execution, including crashes; all-resource reconciliation remains required",
+        )
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
             entry = self._eligible(network, ident)
@@ -702,10 +717,16 @@ class ProtectedLibrary:
                 raise ValueError("invocation has stale context or missing prerequisites")
             source = digest("ti-source", invocation.document)
             plan = entry["plan"]["payload"]["record"]
-            if source in {*plan["fresh_input_digests"], *plan["origin_input_digests"]}:
-                raise ValueError("reuse requires fresh work outside development/evaluation")
+            if source in {*plan["fresh_input_digests"], *plan["origin_input_digests"]} or source in network.get(
+                "evaluation_inputs", {}
+            ):
+                raise ValueError("reuse requires fresh work outside all historical development/evaluation exposure")
             if invocation.mission_id in network["invocations"]:
                 raise Conflict("mission invocation already attempted; inspect durable receipt")
+            costs = self.costs.snapshot(cx)
+            self.costs.require_open(costs, invocation.mission_id, "B")
+            if activity in costs["charges"]:
+                raise Conflict("invocation cost activity already exists")
             report = self.costs.report(cx=cx)
             if report["available_funds"] is None or report["available_funds"] < invocation.cost_cap_micro_usd:
                 raise Conflict("finite available funds cannot cover this invocation's cost cap")
@@ -716,49 +737,22 @@ class ProtectedLibrary:
                 authority["name"] != entry["manifest"]["origin_agent"]
                 and authority["wallet"] != entry["manifest"]["origin_wallet"]
             )
-            used, started = 0, time.monotonic_ns()
-            wall_started = int(time.time())
-
-            def charge(units: int) -> None:
-                nonlocal used
-                used += units
-                if used > invocation.logical_limit or time.monotonic_ns() - started > 2_000_000_000:
-                    raise TimeoutError("bounded selector exhausted its logical or time allowance")
-
-            result, error = None, None
-            try:
-                aad = canonical(
-                    {"service": self.access.service.model_dump(), "journal": self.journal.identity, "manifest": ident}
-                )
-                program = SelectionProgram.model_validate(
-                    safe_json_loads(
-                        AESGCM(self.keys[entry["key_id"]]).decrypt(
-                            base64.b64decode(entry["nonce"], validate=True),
-                            base64.b64decode(entry["ciphertext"], validate=True),
-                            aad,
-                        )
-                    )
-                )
-                if digest("flywheel-program", program) != entry["manifest"]["content_digest"]:
-                    raise ValueError("private implementation digest mismatch")
-                result = execute_selection(invocation.document, program, invocation.charter, charge)
-            except (ValueError, PermissionError, TimeoutError, KeyError, InvalidTag) as exc:
-                error = type(exc).__name__
             receipt = {
                 "candidate_digest": ident,
                 "request_digest": request_hash,
+                "attempt_digest": attempt_digest,
                 "input_digest": source,
                 "beta_digest": invocation.beta_digest,
                 "policy_digest": invocation.policy_digest,
                 "recipient_capabilities_digest": invocation.recipient_capabilities_digest,
                 "authorization": authority,
-                "logical_units": used,
-                "elapsed_ns": time.monotonic_ns() - started,
-                "started_at": wall_started,
-                "finished_at": int(time.time()),
-                "result": result,
-                "error": error,
-                "status": "executed-awaiting-acceptance-and-complete-cost" if result is not None else "failed",
+                "logical_units": 0,
+                "elapsed_ns": None,
+                "started_at": int(time.time()),
+                "finished_at": None,
+                "result": None,
+                "error": None,
+                "status": "executing-or-uncertain",
                 "successful_reuse": False,
                 "peer_identity": peer_identity,
                 "successful_peer_reuse": False,
@@ -767,27 +761,57 @@ class ProtectedLibrary:
                 "execution": "installed-closed-selector; no frontier inference in this invocation",
                 "execution_digest": self.execution_digest,
             }
-            activity = "reuse/" + invocation.mission_id
-            costs = self.costs.snapshot(cx)
-            self.costs.require_open(costs, invocation.mission_id, "B")
-            if activity in costs["charges"]:
-                raise Conflict("invocation cost activity already exists")
-            pending = Charge(
-                activity_id=activity,
-                mission_id=invocation.mission_id,
-                bucket="B",
-                category="compute",
-                accrued_micro_usd=None,
-                paid_micro_usd=0,
-                basis="unknown",
-                evidence_digest=digest("flywheel-reuse-receipt", receipt),
-                note="All attempted execution, including failures; complete compute, tools, acceptance and overhead reconciliation remains required",
-            )
             costs["charges"][activity] = {**pending.model_dump(), "signed": None}
             network["invocations"][invocation.mission_id] = receipt
             self.journal.append(cx, COST_KEY, costs)
             self._commit(cx, state)
-            return copy.deepcopy(receipt)
+            # This committed reservation survives process interruption. No paid or
+            # local computation precedes accounting eligibility and consumption.
+        used, started = 0, time.monotonic_ns()
+
+        def charge(units: int) -> None:
+            nonlocal used
+            used += units
+            if used > invocation.logical_limit or time.monotonic_ns() - started > 2_000_000_000:
+                raise TimeoutError("bounded selector exhausted its logical or time allowance")
+            if self.journal.latest("@control")["state"] != "ready":
+                raise PermissionError("agent stopped during bounded execution")
+
+        result, error = None, None
+        try:
+            aad = canonical(
+                {"service": self.access.service.model_dump(), "journal": self.journal.identity, "manifest": ident}
+            )
+            program = SelectionProgram.model_validate(
+                safe_json_loads(
+                    AESGCM(self.keys[entry["key_id"]]).decrypt(
+                        base64.b64decode(entry["nonce"], validate=True),
+                        base64.b64decode(entry["ciphertext"], validate=True),
+                        aad,
+                    )
+                )
+            )
+            if digest("flywheel-program", program) != entry["manifest"]["content_digest"]:
+                raise ValueError("private implementation digest mismatch")
+            result = execute_selection(invocation.document, program, invocation.charter, charge)
+        except Exception as exc:
+            error = type(exc).__name__
+        receipt.update(
+            logical_units=used,
+            elapsed_ns=time.monotonic_ns() - started,
+            finished_at=int(time.time()),
+            result=result,
+            error=error,
+            status="executed-awaiting-acceptance-and-complete-cost" if result is not None else "failed",
+        )
+        with self.journal.transaction() as cx:
+            state, network = self._state(cx)
+            current = network["invocations"][invocation.mission_id]
+            if current["status"] != "executing-or-uncertain" or current["attempt_digest"] != attempt_digest:
+                raise Conflict("invocation changed; preserve its durable uncertain attempt")
+            network["invocations"][invocation.mission_id] = receipt
+            self._commit(cx, state)
+        return copy.deepcopy(receipt)
 
     def accept_reuse(self, signed: SignedEnvelope) -> dict[str, Any]:
         """Useful accepted reuse and attributable benefit require their own evidence."""

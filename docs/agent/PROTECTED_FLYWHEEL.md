@@ -141,6 +141,11 @@ Every actual Beta comparison is itself a chargeable invocation, charged exactly 
 reuse. Its execution must follow the fresh request commitment. Reports show both operating savings before
 comparison overhead and additional value after all current costs. A useful accepted reuse can have negative
 net value during qualification; omitting the baseline bill cannot manufacture a positive return.
+Cost-record eligibility is checked before execution. The challenge, invocation reservation and unknown
+cost are committed with the independent high-water mark before computation. An interruption remains
+executing-or-uncertain, blocks implicit retries and requires explicit cost/recovery reconciliation.
+Computation runs outside the write lock and observes stop requests. Historical evaluation inputs remain
+ineligible as fresh reuse even after a new plan, model change or rollback.
 
 ### Storage, keys, recovery and revocation
 
@@ -308,6 +313,11 @@ fois dans B avant acceptation de la réutilisation. Elle suit l’engagement de 
 distinguent économie opérationnelle avant comparaison et valeur supplémentaire après tous les coûts.
 Une réutilisation utile acceptée peut avoir une valeur nette négative pendant qualification ; omettre
 la facture Beta ne peut créer un rendement positif.
+L’admissibilité comptable précède l’exécution. Défi consommé, réservation et coût inconnu sont validés avec
+le seuil indépendant avant calcul. Une interruption reste executing-or-uncertain, bloque les reprises
+implicites et exige rapprochement explicite des coûts et de la reprise. Le calcul reste hors du verrou
+d’écriture et observe les arrêts. Une entrée d’évaluation historique ne devient pas une nouvelle tâche
+de réutilisation après changement de plan, modèle ou retour à un ancien modèle.
 
 La branche protégée reste dans le Journal de la TransformationLibrary. Les manifestes publics sont
 distincts des programmes chiffrés AES-GCM ; les données associées lient service, Journal et manifeste

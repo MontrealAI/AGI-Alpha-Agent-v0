@@ -1447,3 +1447,146 @@ def test_incoming_funds_cannot_reuse_capital_or_collection_evidence(
     with pytest.raises(Conflict, match="funding evidence"):
         account(s, second, {**deposit, "record_id": "duplicate"}, "deposit-again")
     assert s["costs"].report() == before
+
+
+@pytest.mark.parametrize("context", ["sealed", "duplicate-activity"])
+def test_ineligible_cost_context_never_executes_or_consumes_proof(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, context: str
+) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    categories = CATEGORIES if context == "sealed" else {"compute"}
+    for category in sorted(categories):
+        charge = Charge(
+            activity_id="reuse/" + request.mission_id if context == "duplicate-activity" else "sealed/" + category,
+            mission_id=request.mission_id,
+            bucket="B",
+            category=category,
+            accrued_micro_usd=0,
+            paid_micro_usd=0,
+            basis="attested",
+            evidence_digest=ZERO,
+            note="Synthetic rejected accounting context",
+        )
+        account(s, "charge", charge.model_dump(), "preexisting/" + category)
+    if context == "sealed":
+        account(
+            s,
+            "seal-reuse",
+            {"mission_id": request.mission_id, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+            "preexisting-seal",
+        )
+    calls = []
+
+    def forbidden(*args: Any, **kwargs: Any) -> Any:
+        calls.append(True)
+        raise AssertionError("ineligible accounting context executed")
+
+    monkeypatch.setattr(flywheel_capsules, "execute_selection", forbidden)
+    token = proof(s, ident, "invoke", digest("flywheel-invocation", request))
+    for _ in range(2):
+        with pytest.raises(Conflict):
+            s["service"].invoke(ident, request, token)
+    assert calls == []
+    assert s["journal"].latest("@flywheel-challenge:" + token.challenge_id)["used"] is False
+    assert s["library"].snapshot()[BRANCH]["invocations"] == {}
+
+
+def test_requalification_cannot_relabel_old_evaluation_as_fresh_reuse(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = retain(s)
+    request = invocation()
+    historical = EvaluationPlan(
+        candidate_digest=ident,
+        beta_digest=BETA,
+        execution_digest=s["service"].execution_digest,
+        model_id="fictional-frontier-receipt-fixture",
+        reasoning_mode="fixture",
+        policy_digest=POLICY,
+        matched_tools_digest=ZERO,
+        resource_rules_digest=ZERO,
+        recipient_capabilities_digest=ZERO,
+        retention_cost_record="earlier-unassessed-plan",
+        origin_input_digests=[s["journal"].latest(ORIGIN)["request_hash"]],
+        fresh_input_digests=[digest("ti-source", request.document), "e" * 64],
+        planned_reuses=1,
+        remaining_retention_micro_usd=0,
+        prospective_basis="Synthetic previous evaluation exposure",
+    )
+    s["service"].freeze(signed(s, "plan", "evaluator", historical.model_dump(), "earlier-plan"))
+    for beta, operation in (("d" * 64, "changed-beta"), (BETA, "rollback-beta")):
+        s["service"].configure(
+            signed(s, "configure", "controller", {"beta_digest": beta, "policy_digest": POLICY}, operation)
+        )
+    assert evaluate(s, ident) == "assessed"
+    control(s, ident, "validate")
+    control(s, ident, "admit")
+    assert (
+        digest("ti-source", request.document) not in entry(s, ident)["plan"]["payload"]["record"]["fresh_input_digests"]
+    )
+    with pytest.raises(ValueError, match="historical"):
+        s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+
+
+def test_interrupted_selector_keeps_consumed_proof_and_unknown_cost(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    token = proof(s, ident, "invoke", digest("flywheel-invocation", request))
+    calls = []
+
+    def interrupted(*args: Any, **kwargs: Any) -> Any:
+        calls.append(True)
+        raise SystemExit("synthetic process interruption after durable reservation")
+
+    monkeypatch.setattr(flywheel_capsules, "execute_selection", interrupted)
+    with pytest.raises(SystemExit):
+        s["service"].invoke(ident, request, token)
+    reopened = Journal(s["journal"].root)
+    receipt = reopened.latest("@transformation-library:v1")[BRANCH]["invocations"][request.mission_id]
+    assert receipt["status"] == "executing-or-uncertain" and receipt["successful_reuse"] is False
+    assert reopened.latest("@flywheel-challenge:" + token.challenge_id)["used"] is True
+    assert s["costs"].snapshot()["charges"]["reuse/" + request.mission_id]["accrued_micro_usd"] is None
+    assert s["costs"].report()["available_funds"] is None and reopened.verify()["valid"]
+    with pytest.raises(Conflict):
+        s["service"].invoke(ident, request, token)
+    assert len(calls) == 1
+
+
+def test_stop_during_selector_does_not_wait_for_the_computation_lock(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import threading
+    from alpha_factory_v1.core.runtime.successor import flywheel_capsules
+
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    token = proof(s, ident, "invoke", digest("flywheel-invocation", request))
+    entered, release = threading.Event(), threading.Event()
+    original = flywheel_capsules.execute_selection
+
+    def delayed(*args: Any, **kwargs: Any) -> Any:
+        entered.set()
+        assert release.wait(2)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(flywheel_capsules, "execute_selection", delayed)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(s["service"].invoke, ident, request, token)
+        assert entered.wait(1)
+        started = time.monotonic()
+        s["journal"].control(True)
+        elapsed = time.monotonic() - started
+        release.set()
+        assert elapsed < 0.5
+        receipt = pending.result(timeout=3)
+    assert receipt["status"] == "failed" and receipt["error"] == "PermissionError"
+    assert s["costs"].report()["unknown_costs"]
