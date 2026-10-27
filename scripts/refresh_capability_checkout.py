@@ -258,6 +258,16 @@ PROFITABLE_WORK_20261027_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
     ),
 }
 
+# Exact additive Flywheel 1.45 edition. Reviewed as a whole; prior editions remain immutable.
+FLYWHEEL_145_EXTRA_FILES = PROFITABLE_WORK_20261027_EXTRA_FILES | {
+    "docs/service-worker.js": (23528, "3c23a31d0aaca17395035d12da5d9670cac784b6a51234e01162dfa415e20aab"),
+    "docs/assets/service-worker.js": (23966, "a6d4ad60a3c0f80155063a953fd7172d2c55cf0e6d8903d45db7159cf6c536a6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26594,
+        "70ae12f9748ca77701c42411281b71870a2c7b34b216ba4d048bfbad31f62a38",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -336,6 +346,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPERS_20261026_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, NEXT_UPGRADE_20261026_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROFITABLE_WORK_20261027_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

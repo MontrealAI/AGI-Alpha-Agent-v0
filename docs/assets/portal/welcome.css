@@ -1271,3 +1271,26 @@ html.home-large-text {
     padding: 0.45rem 0.25rem;
     line-height: 1.5;
 }
+.welcome-flywheel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+    margin-block: 2rem 4rem;
+    border-radius: 1.5rem;
+    color: #f7f1ff;
+    background: radial-gradient(ellipse at 90% 10%, #6e3a9f 0, transparent 55%), #211037;
+}
+.welcome-flywheel h2 { color: #fff; font-size: clamp(1.9rem, 4vw, 3.3rem); max-width: 23ch; line-height: 1.12; }
+.welcome-flywheel p { max-width: 68ch; line-height: 1.7; }
+.welcome-flywheel .welcome-eyebrow { color: #d9baff; }
+.welcome-flywheel .welcome-primary { background: #eee0ff; color: #2c1145; border-color: #eee0ff; }
+.welcome-flywheel .welcome-button { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; box-sizing: border-box; }
+.welcome-flywheel .welcome-primary:hover { background: #fff; color: #2c1145; }
+.welcome-flywheel-note { color: #dfd2ed; font-size: .9rem; }
+.welcome-flywheel-mark { align-self: center; position: relative; padding: 1rem; font-size: 8rem; line-height: 1; color: #e1c2ff; }
+.welcome-flywheel-mark span { display: block; font-size: 3rem; text-align: center; }
+@media (max-width: 600px) { .welcome-flywheel { grid-template-columns: 1fr; } .welcome-flywheel-mark { display: none; } }
+.welcome-flywheel > div { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+@media (max-width: 600px) { .welcome-flywheel { grid-template-columns: minmax(0, 1fr); } }
+.welcome-page #agi-alpha-foundation-title { overflow-wrap: anywhere; }

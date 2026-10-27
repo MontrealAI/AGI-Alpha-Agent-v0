@@ -12,6 +12,12 @@ on:
       - 'scripts/templates/portal.html'
       - 'scripts/validate_homepage.py'
       - 'scripts/homepage_evidence.py'
+      - 'scripts/templates/alpha-flywheel/**'
+      - 'examples/alpha-flywheel/**'
+      - 'scripts/generate_alpha_flywheel.py'
+      - 'scripts/validate_alpha_flywheel.py'
+      - 'tests/test_alpha_flywheel.py'
+      - 'docs/flywheel/**'
       - '.github/workflows/homepage-layout.yml'
   workflow_dispatch:
 permissions:
@@ -33,15 +39,27 @@ jobs:
           node-version: '22.17.1'
       - name: Install pinned browser and accessibility auditor
         run: |
-          python -m pip install playwright==1.54.0 pydantic==2.13.5
+          python -m pip install playwright==1.54.0 pydantic==2.13.5 pytest==8.3.5
           python -m playwright install --with-deps chromium
           npm ci --prefix tests/browser --ignore-scripts
       - name: Check rendered text, bilingual navigation and accessibility
         run: python -m scripts.validate_homepage --output evidence/homepage
+      - name: Verify Flywheel source, economics and complete public journey
+        run: |
+          node --test examples/alpha-flywheel/engine.test.mjs
+          python -m pytest --noconftest -o addopts= tests/test_alpha_flywheel.py -q
+          python -m scripts.validate_alpha_flywheel --site docs --output evidence/alpha-flywheel --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Retain viewport screenshots and acceptance report
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: homepage-visual-acceptance
           path: evidence/homepage/
+          if-no-files-found: error
+      - name: Retain Flywheel acceptance
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: alpha-flywheel-acceptance
+          path: evidence/alpha-flywheel/
           if-no-files-found: error

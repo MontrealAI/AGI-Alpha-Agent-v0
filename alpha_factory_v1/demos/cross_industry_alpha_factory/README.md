@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.44.0
+## Current runnable path — 1.45.0
 
 **Mode:** Supplied-input comparison. Compare your own cross-industry assessments
 using explicit priorities, review thresholds and evidence notes. This is a

@@ -26,6 +26,7 @@ EXCLUDE = {
     # embedded executable/data strings would invalidate its CSP and identities.
     "transformational-intelligence",
     "try",
+    "flywheel",
     "stylesheets",
     "assets",
     "utils",

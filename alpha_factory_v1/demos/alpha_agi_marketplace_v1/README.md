@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.44.0
+## Current runnable path — 1.45.0
 
 **Mode:** Local API client. Validates a bundled job and can submit it to a configured legacy orchestrator.
 

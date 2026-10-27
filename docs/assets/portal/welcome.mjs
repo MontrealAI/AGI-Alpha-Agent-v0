@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "nav-flywheel": "Flywheel",
+    "flywheel-start": "Explorer le Flywheel",
+    "flywheel-eyebrow": "NOUVEAU PARCOURS PHARE · SIMULATION PUBLIQUE",
+    "flywheel-title": "Du travail rentable. Des capacités à conserver avec discernement.",
+    "flywheel-intro": "Explorez une mission d’ingénierie ambitieuse : le livrable, le service humain de référence, le prix, les coûts complets et les fonds disponibles. Puis testez si conserver une capacité aide vraiment la prochaine mission.",
+    "flywheel-note": "Gratuit, sans compte ni portefeuille. Calcul déterministe dans le navigateur; aucun modèle exécuté et aucun revenu réel.",
     "nav-papers": "Publications",
     "papers-eyebrow": "LA RECHERCHE",
     "papers-title": "De meilleures stratégies. Un autre jeu. De nouvelles capacités.",
@@ -203,7 +209,7 @@ function render() {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
     }
-    for (const [attribute, path] of [["data-ti-link", "try/"], ["data-alpha-link", "successor/alpha/"], ["data-catalog-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
+    for (const [attribute, path] of [["data-flywheel-link", "flywheel/"], ["data-ti-link", "try/"], ["data-alpha-link", "successor/alpha/"], ["data-catalog-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
         for (const link of document.querySelectorAll(`[${attribute}]`)) {
             const fragment = new URL(link.href).hash;
             link.setAttribute("href", `${path}${query.size ? `?${query}` : ""}${fragment}`);

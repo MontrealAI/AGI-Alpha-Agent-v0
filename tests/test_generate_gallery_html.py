@@ -21,8 +21,9 @@ def test_gallery_return_overlay_preserves_catalogued_research_bytes(tmp_path):
     assert "Back to Gallery" in ordinary.read_text()
 
 
-def test_gallery_return_link_preserves_portable_ti_script_and_csp_bytes(tmp_path):
-    page = tmp_path / "docs" / "transformational-intelligence" / "index.html"
+@pytest.mark.parametrize("route", ["transformational-intelligence", "flywheel"])
+def test_gallery_return_link_preserves_portable_ti_script_and_csp_bytes(tmp_path, route):
+    page = tmp_path / "docs" / route / "index.html"
     page.parent.mkdir(parents=True)
     original = (
         b'<html><body><a href="../successor/alpha/">Return</a><script>\nwindow.fixture=true;\n</script></body></html>'
@@ -114,6 +115,7 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     # The flagship leads the short path; every advanced workspace remains discoverable.
     assert re.findall(r'<a\b[^>]*href="([^"]+)"', navigation[1]) == [
         "successor/alpha/",
+        "flywheel/",
         "start/",
         "#papers",
         "#how-it-works",

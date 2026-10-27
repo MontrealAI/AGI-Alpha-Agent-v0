@@ -720,6 +720,8 @@ jobs:
         run: npm ci --prefix tests/browser --ignore-scripts
       - name: Verify independent browser algorithm contracts
         run: |
+          node --test examples/alpha-flywheel/engine.test.mjs
+          python -m pytest --noconftest -o addopts= tests/test_alpha_flywheel.py -q
           node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs tests/browser/successor_engine.test.mjs
       - name: Require accessible first-use onboarding on a project subpath
         run: python -m scripts.validate_onboarding --output evidence/onboarding
@@ -743,6 +745,8 @@ jobs:
           python -m scripts.validate_computer_use_study_browser --site site --output evidence/computer-use-study.json
       - name: Require a welcoming accessible homepage on the exact rebuilt site
         run: python -m scripts.validate_homepage --site site --output evidence/homepage
+      - name: Verify the source-bound bilingual Flywheel simulation and preparation
+        run: python -m scripts.validate_alpha_flywheel --site site --output evidence/alpha-flywheel --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify the useful Alpha mission, strategy construction and native continuity
         run: python -m scripts.validate_successor_alpha --site site --output evidence/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify the exact TI workspace, native result and saved offline recovery
@@ -1350,6 +1354,7 @@ jobs:
           python -m scripts.validate_successor_workbench --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/ --output evidence/public-pages/successor-workbench --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_onboarding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/onboarding
           python -m scripts.validate_homepage --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/homepage
+          python -m scripts.validate_alpha_flywheel --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/flywheel/ --output evidence/public-pages/alpha-flywheel --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_computer_use_study_browser --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/computer-use-study.json
           python -m scripts.validate_successor_alpha --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/ --output evidence/public-pages/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_transformational_intelligence --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/transformational-intelligence

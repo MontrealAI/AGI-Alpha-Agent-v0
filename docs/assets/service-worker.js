@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-de1066a749ab5973";
-const RELEASE = "1.44.0";
+const CACHE = "agialpha-gallery-a2855c2316585e9f";
+const RELEASE = "1.45.0";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -344,6 +344,7 @@ const ASSETS = [
   "../finance_alpha/assets/script.js",
   "../finance_alpha/assets/style.css",
   "../finance_alpha/index.html",
+  "../flywheel/index.html",
   "../gallery.html",
   "../gpt2_small_cli/assets/preview.svg",
   "../index.html",
