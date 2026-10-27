@@ -19,6 +19,7 @@ from .protocol import Digest, Identifier, StrictModel, digest
 from .transformation import DiscoveryRequest, assert_public_content
 from .transformation_model import ModelProposal
 from .trust import SignedEnvelope, TrustRegistry
+from .transformation_library import _is_exact_type
 
 
 class FrontierPermit(StrictModel):
@@ -233,7 +234,7 @@ class FrontierConnector:
                 evidence.get("reported_model") != permit.model_id
                 or not isinstance(evidence.get("usage"), dict)
                 or not evidence["usage"]
-                or any(type(v) is not int or v < 0 for v in evidence["usage"].values())
+                or any(not _is_exact_type(v, int) or v < 0 for v in evidence["usage"].values())
             ):
                 raise ValueError("provider did not report the exact approved model and bounded usage")
             state.update(

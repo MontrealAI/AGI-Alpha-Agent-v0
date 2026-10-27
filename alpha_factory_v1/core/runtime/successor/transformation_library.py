@@ -123,10 +123,14 @@ class TransformationLibrary:
         protected = state.get(PROTECTED_BRANCH)
         if isinstance(protected, dict) and "reserved_capacity_bytes" in protected:
             reserve = protected["reserved_capacity_bytes"]
-            if type(reserve) is not int or reserve < 0 or len(canonical(state)) + reserve > MAX_SHARED_LIBRARY_BYTES:
+            if (
+                not _is_exact_type(reserve, int)
+                or reserve < 0
+                or len(canonical(state)) + reserve > MAX_SHARED_LIBRARY_BYTES
+            ):
                 raise Conflict("shared library capacity preserves protected completion and revocation reserves")
             node_reserve = protected.get("reserved_capacity_nodes", 0)
-            if type(node_reserve) is not int or node_reserve < 0:
+            if not _is_exact_type(node_reserve, int) or node_reserve < 0:
                 raise Conflict("invalid protected structural capacity reservation")
             pending: list[Any] = [state]
             nodes = 0
