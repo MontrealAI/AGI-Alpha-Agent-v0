@@ -1,0 +1,2177 @@
+{
+  "edition": "microscopy-transfer/confirmation-1.0",
+  "completed_utc": "2026-10-27T17:42:57.336628+00:00",
+  "source_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+  "task_sha256": "a340f72f6efe4ec41f0d0b51de14f9131989318f6fe89818c680fcf46509fbd5",
+  "source_freeze": "2026-10-27T17:40:14.874015+00:00",
+  "n_compatible_missions": 48,
+  "n_semantic_cases": 12,
+  "recovered_passed": 48,
+  "conventional_passed": 48,
+  "ordinary_library_passed": 48,
+  "identical_content_output_parity": 48,
+  "semantic_passed": 12,
+  "source_array_summaries": {
+    "Cell": {
+      "source_sha256": "7dbc35a24f7e5369c02fa49e6bb4374500fae13e2530ee64912d3837ea42bebd",
+      "shape": [
+        31,
+        256,
+        256
+      ],
+      "supplied_label_ids": [
+        8
+      ],
+      "source_nonzero_voxels": 115632,
+      "conventional_summary_preparation_seconds": 0.15835708499071188
+    },
+    "Chromosomes": {
+      "source_sha256": "6324c7df09283089c82ea21332bb73584b7984872359c0d0dd1ea79d2e28f18f",
+      "shape": [
+        31,
+        256,
+        256
+      ],
+      "supplied_label_ids": [
+        8
+      ],
+      "source_nonzero_voxels": 18238,
+      "conventional_summary_preparation_seconds": 0.16977845900692046
+    }
+  },
+  "maximum_recovered_relative_measure_error": 4.396369261710247e-16,
+  "maximum_recovered_absolute_centroid_error_um": 1.0736300737335114e-11,
+  "recovered_process_seconds_total": 11.541564354964066,
+  "recovered_numerical_seconds_total": 2.2004074080323335,
+  "conventional_preparation_seconds_total": 0.32813554399763234,
+  "conventional_mapping_seconds_total": 0.0053182930569164455,
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "scipy": "1.17.0"
+  },
+  "scope": [
+    "Two supplied label groups from one fixed public image/timepoint; 48 authored affine missions, not 48 biological samples.",
+    "Artifact bytes recovered through existing lifecycle fixture, then executed in genuinely separate Python processes.",
+    "Same-content ordinary-library control has exactly the same source and rights; timings may differ, numerical/contract output must match.",
+    "Conventional analytical baseline prepares each source summary once and reuses it, with equal permission to cache.",
+    "Numerical elapsed time excludes Python startup, file hashing and serialization; external process clocks are recorded separately.",
+    "No observed frontier-model U/E/E+ advantage, customer acceptance, actual revenue, biological validation or live ENS authentication."
+  ],
+  "compatible_results": [
+    {
+      "task_id": "cell-00",
+      "group": "Cell",
+      "kind": "identity",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.4180104359984398,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "799f7528553d8e2a1d15b49dfff8a411cee940107b2a0ed78da3e84acc3250f8",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-00\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-00/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.31227893198956735,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4c4bacd6043b46415e7c3030fcb58817af36b3f0096a1e99ab74c618b879fd06",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-00\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-00/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.07808053700136952,
+      "conventional_map_seconds": 0.0003585350059438497,
+      "ordinary_library_numerical_seconds": 0.03364271900500171
+    },
+    {
+      "task_id": "cell-01",
+      "group": "Cell",
+      "kind": "translation",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.5295321393059567e-12
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.5295321393059567e-12
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.5295321393059567e-12
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.26641948698670603,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "5229b1d354d4a251c280c19d2048c55386abdddf09e7320488d66a93615580bc",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-01\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-01/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.3520712919998914,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "25dfdee6e653ab8af39d7156e5cca21ec1ae40607fcbc93b007b853daf8eafd4",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-01\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-01/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04559878500003833,
+      "conventional_map_seconds": 0.00022680799884255975,
+      "ordinary_library_numerical_seconds": 0.051830994998454116
+    },
+    {
+      "task_id": "cell-02",
+      "group": "Cell",
+      "kind": "reflection",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22080964999622665,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4480bdf33d645a4322f98854b08590ff80c4bd719b72a802827bde6cc415ddee",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-02\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-02/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.28649443900212646,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "786de9b266a4e2fe0e3c0f5bcd26f1f4fffe4e31b578d6a878db157cde97f7d9",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-02\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-02/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04285939800320193,
+      "conventional_map_seconds": 7.551300222985446e-05,
+      "ordinary_library_numerical_seconds": 0.05314531800104305
+    },
+    {
+      "task_id": "cell-03",
+      "group": "Cell",
+      "kind": "anisotropic_scale",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.0736300737335114e-11
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.0736300737335114e-11
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.0736300737335114e-11
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.25863777499762364,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "b765973f90c412c9bceaa11538319a9c95354f1cd5af42a2b7d8222dcf6c0eeb",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-03\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-03/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.27055262999783736,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "fae02d9c0fe9cbf21f67b9ecd0b2ef3be04ec4655f1ce15cc638b4c3d5d5dd1f",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-03\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-03/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.06363039898860734,
+      "conventional_map_seconds": 6.848199700471014e-05,
+      "ordinary_library_numerical_seconds": 0.06322263600304723
+    },
+    {
+      "task_id": "cell-04",
+      "group": "Cell",
+      "kind": "shear",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.907807245515869e-12
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.34181152199744247,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "2588dd6470bc7379ee012b78dc343640843f10b03d592b7cfb574d47417edc33",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-04\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-04/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2612392419978278,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d1e080397794fb9b6d1ee34378f2f939aa712b6039ea1d590ac4267c489e8d30",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-04\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-04/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.07982704500318505,
+      "conventional_map_seconds": 0.00012090100790373981,
+      "ordinary_library_numerical_seconds": 0.03327074799744878
+    },
+    {
+      "task_id": "cell-05",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2267889369977638,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "c0c1d0f569402a4b7b3f7d118705fd864a85402ee49613ad74179e3694d7b5f4",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-05\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-05/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.28613325700280257,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "19a3842a60bbe54d963eff0759e380a01eacd6a3e78e82a64da8ef3a1ed7d458",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-05\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-05/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.05542240999056958,
+      "conventional_map_seconds": 0.0002447849983582273,
+      "ordinary_library_numerical_seconds": 0.049286399997072294
+    },
+    {
+      "task_id": "cell-06",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.2523448060906981e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.2523448060906981e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.2523448060906981e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.35676640301244333,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "09e1021d816521e005d5a1c0370b9862aa649f4304d8c1faf2b7fc9de7e97842",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-06\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-06/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.3029377679922618,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "f37831f6f3ff57fc2e98c8138e206ab353d2f97b4460e698c8e413c63d33208b",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-06\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-06/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.038432211993495,
+      "conventional_map_seconds": 9.638399933464825e-05,
+      "ordinary_library_numerical_seconds": 0.0533691419987008
+    },
+    {
+      "task_id": "cell-07",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.38290794999920763,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "7a370c9539fa91c9da5f2573b78eb212a431797f0496da9d1b6c08cd3c0e6218",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-07\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-07/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2418872529960936,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "93ea4ee9e3edcb70ed3807faffc08c042d23a527ac999cf32e6fa29b94548a3b",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-07\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-07/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.08414881299540866,
+      "conventional_map_seconds": 0.0001846959930844605,
+      "ordinary_library_numerical_seconds": 0.04166245200030971
+    },
+    {
+      "task_id": "cell-08",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5292042610131286e-16,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5292042610131286e-16,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5292042610131286e-16,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2598309449967928,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "94c8ab0eeda34c9c49f3df6d12e5eafa18173765a9da3a0ebe909d13a6231b1e",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-08\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-08/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24597291499958374,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4168cf283d8b1d2273eb689b8321d2eca4c3e20b11d63457ff18259d182cde5e",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-08\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-08/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.051004733992158435,
+      "conventional_map_seconds": 7.435100269503891e-05,
+      "ordinary_library_numerical_seconds": 0.03470707198721357
+    },
+    {
+      "task_id": "cell-09",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.962786765489782e-16,
+        "maximum_absolute_centroid_error_um": 5.3290705182007514e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.962786765489782e-16,
+        "maximum_absolute_centroid_error_um": 5.3290705182007514e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.962786765489782e-16,
+        "maximum_absolute_centroid_error_um": 5.3290705182007514e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.3025995630014222,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "bd6243febdb29fc3602155eed56b5ac1e6c5f6a08798dac1b1cf667d1cc3f48b",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-09\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-09/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24712956600706093,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "fc69df7f0aacbef80472ab6a3c9d3204725499bd42a633a3244c710da660b2c7",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-09\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-09/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.054211849012062885,
+      "conventional_map_seconds": 8.098100079223514e-05,
+      "ordinary_library_numerical_seconds": 0.0567956800077809
+    },
+    {
+      "task_id": "cell-10",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24479699500079732,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "64120076432f1db3c093dc1c54b03fafdf9a0b5e8f04714bdec964659ddc6569",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-10\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-10/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.301829578995239,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "564beb412120ab9ea32d63804ba1f3c75cb0c39c745c6d6ff8bc055753a9f33a",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-10\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-10/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.047154507992672734,
+      "conventional_map_seconds": 8.033000631257892e-05,
+      "ordinary_library_numerical_seconds": 0.04625489399768412
+    },
+    {
+      "task_id": "cell-11",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.857216461823839e-16,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-15
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.857216461823839e-16,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-15
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.857216461823839e-16,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-15
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2417219369963277,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "a01c73e432ac2d4c53a087ed3fd8b450a05c5335bdad123a5665e0b5e0400242",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-11\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-11/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.1783699980005622,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "8c8900b41d0a17c3ee32bec56320cfa785c72c03d4edf46e467f84251b9e242c",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-11\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-11/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.07012514599773567,
+      "conventional_map_seconds": 9.597399912308902e-05,
+      "ordinary_library_numerical_seconds": 0.04024822199426126
+    },
+    {
+      "task_id": "cell-12",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.712483853617114e-16,
+        "maximum_absolute_centroid_error_um": 2.842170943040401e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.712483853617114e-16,
+        "maximum_absolute_centroid_error_um": 2.842170943040401e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.712483853617114e-16,
+        "maximum_absolute_centroid_error_um": 2.842170943040401e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.18662464599765372,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "9fcaeac06596ceb06d8fdc15df76714dc9e6a72f9588b8bd06f59a5a1170c0a4",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-12\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-12/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.17737305398622993,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "3ca3102ffd78f14eaa3765dd735d5690a09cf432440ce233cf7ae82edf0920bd",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-12\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-12/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.027963710002950393,
+      "conventional_map_seconds": 6.770101026631892e-05,
+      "ordinary_library_numerical_seconds": 0.06659000799118076
+    },
+    {
+      "task_id": "cell-13",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5713185694798572e-16,
+        "maximum_absolute_centroid_error_um": 1.0658141036401503e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5713185694798572e-16,
+        "maximum_absolute_centroid_error_um": 1.0658141036401503e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.5713185694798572e-16,
+        "maximum_absolute_centroid_error_um": 1.0658141036401503e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.30470968899317086,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "8015fa5b0add91386dcc0471eda74d14da1159f2cee96ef52f7f05066788858e",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-13\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-13/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.27142654699855484,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "2a4443f261cf597f1a09fa49f8af0d32ec1916c62d643b5dc2b5aeeb95c07b99",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-13\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-13/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04610751601285301,
+      "conventional_map_seconds": 6.319500971585512e-05,
+      "ordinary_library_numerical_seconds": 0.0619055059942184
+    },
+    {
+      "task_id": "cell-14",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.236382756121111e-16,
+        "maximum_absolute_centroid_error_um": 6.039613253960852e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.236382756121111e-16,
+        "maximum_absolute_centroid_error_um": 6.039613253960852e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.236382756121111e-16,
+        "maximum_absolute_centroid_error_um": 6.039613253960852e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22472772099717986,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "7a7563143fc02b20a50a3badf169344aeeaec3e6e663ce6e08915ee18ed5a04c",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-14\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-14/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22520678100408986,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "659ea1938170b107a10965bec149c599ba280dcdd519241eb5dd592600e67170",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-14\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-14/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03670805900765117,
+      "conventional_map_seconds": 9.410099301021546e-05,
+      "ordinary_library_numerical_seconds": 0.04746055000578053
+    },
+    {
+      "task_id": "cell-15",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1456154804002634e-16,
+        "maximum_absolute_centroid_error_um": 1.9539925233402755e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1456154804002634e-16,
+        "maximum_absolute_centroid_error_um": 1.9539925233402755e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1456154804002634e-16,
+        "maximum_absolute_centroid_error_um": 1.9539925233402755e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.23540939400845673,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "5b9f9024ef0a36c68d6a6e0f6280900de169a3abd7464b4dc74212f61c4df0c6",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-15\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-15/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2399290920002386,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "a5df8b098cc9fa991da00514cd3a1a02a519d0f4485eeea5b0ed032364b6aa14",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-15\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-15/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.046901353998691775,
+      "conventional_map_seconds": 7.574399933218956e-05,
+      "ordinary_library_numerical_seconds": 0.05266323500836734
+    },
+    {
+      "task_id": "cell-16",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6330954226954192e-16,
+        "maximum_absolute_centroid_error_um": 6.323830348264892e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6330954226954192e-16,
+        "maximum_absolute_centroid_error_um": 6.323830348264892e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6330954226954192e-16,
+        "maximum_absolute_centroid_error_um": 6.323830348264892e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.26497873599873856,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "da7c88f8247f8343b15aab10bd44afc58bfc66dfae0755fb99e78ed624445400",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-16\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-16/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.25259484199341387,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "f7656b0658c33a0370331520984069750a47223d49453eafd23edca55331001c",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-16\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-16/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04600124599528499,
+      "conventional_map_seconds": 0.00010024099901784211,
+      "ordinary_library_numerical_seconds": 0.05981567200797144
+    },
+    {
+      "task_id": "cell-17",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2627411010034848,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "6114b491fa3c0257eee200b25d1907730aacc4fe0fa6d450e3f59aeef8a0c609",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-17\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-17/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2342304299963871,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "e3b94202600c7f9f51dbd87dbdfb624322996479d12add8c2025545ceef7094d",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-17\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-17/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.058353473999886774,
+      "conventional_map_seconds": 9.603500075172633e-05,
+      "ordinary_library_numerical_seconds": 0.054120057000545785
+    },
+    {
+      "task_id": "cell-18",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.9769632719617974e-16,
+        "maximum_absolute_centroid_error_um": 9.237055564881302e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.9769632719617974e-16,
+        "maximum_absolute_centroid_error_um": 9.237055564881302e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.9769632719617974e-16,
+        "maximum_absolute_centroid_error_um": 9.237055564881302e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.25224277199595235,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "ac9045d98aeb2f0cf638cf1ed7052efbd96f03585961c25de955422587ba8a7c",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-18\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-18/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2087128230050439,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "b53a7d6844c040b67df3ad3ef539d4c521ae4df546cf66a337e25ef4c04dd5a9",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-18\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-18/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.05702219100203365,
+      "conventional_map_seconds": 8.722199709154665e-05,
+      "ordinary_library_numerical_seconds": 0.03252543800044805
+    },
+    {
+      "task_id": "cell-19",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.396369261710247e-16,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.396369261710247e-16,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.396369261710247e-16,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24813957000151277,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "cd494646f55c760a3e78526283e45deb8d7dfdeb13dac2ed901c96dd444ff694",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-19\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-19/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2593676980031887,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "caabb84733658f6c10597ca2704bc9c261311120cbf73e348e93e8b3cfcb015f",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-19\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-19/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04498674999922514,
+      "conventional_map_seconds": 0.00013900900376029313,
+      "ordinary_library_numerical_seconds": 0.052388180993148126
+    },
+    {
+      "task_id": "cell-20",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.8459838476164686e-16,
+        "maximum_absolute_centroid_error_um": 5.1514348342607263e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.8459838476164686e-16,
+        "maximum_absolute_centroid_error_um": 5.1514348342607263e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.8459838476164686e-16,
+        "maximum_absolute_centroid_error_um": 5.1514348342607263e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.256345200992655,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "6dd517b6ea13de1c40000412d27844cd1e37512823aa511e20d807a70d4ae880",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-20\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-20/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21530280400475021,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "3f1c71761bf76efa1aa5aa525654bbd3fb1a1e754ff5abb047c6ae055019cbbe",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-20\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-20/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.037469654009328224,
+      "conventional_map_seconds": 7.254899537656456e-05,
+      "ordinary_library_numerical_seconds": 0.04485996400762815
+    },
+    {
+      "task_id": "cell-21",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7053025658242404e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7053025658242404e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.7053025658242404e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2100746399955824,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "080321bc165e5d6ff71f4ce50edda2d2a50ba3b00ee7ea19dba918a420cef2da",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-21\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-21/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2440495640039444,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4b4ef66c09c94b4d5935477ae400e5ea1190a53debebc29b026416f6539f8a52",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-21\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-21/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04206736899504904,
+      "conventional_map_seconds": 8.874300692696124e-05,
+      "ordinary_library_numerical_seconds": 0.04794649600808043
+    },
+    {
+      "task_id": "cell-22",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.881784197001252e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.25760545299272053,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "42ce55f6a7b0081a818c8c26cffe9c8b16c37a4a6be60b81f8e38229077d108d",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-22\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-22/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.226342181005748,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "c18b352c1f5a4477dcd109578070b9aa9a4cbb7e14ba131898f8b036282ba7b9",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-22\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-22/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04842679300054442,
+      "conventional_map_seconds": 0.0008719509933143854,
+      "ordinary_library_numerical_seconds": 0.04124203699757345
+    },
+    {
+      "task_id": "cell-23",
+      "group": "Cell",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6412152056473844e-16,
+        "maximum_absolute_centroid_error_um": 6.767919558114954e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6412152056473844e-16,
+        "maximum_absolute_centroid_error_um": 6.767919558114954e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.6412152056473844e-16,
+        "maximum_absolute_centroid_error_um": 6.767919558114954e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20304707100149244,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4e307f374205d173a6f33dd1d4ab5a3ac7e0c2f5e0fd3c1015b3b3e822115a48",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-23\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-23/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.23886214599770028,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "2cc21392ce72063d31447727c84a2e13cc7336a7723293c12afddadf55469204",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"cell-23\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/cell-23/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04219404001196381,
+      "conventional_map_seconds": 6.703099643345922e-05,
+      "ordinary_library_numerical_seconds": 0.04389464699488599
+    },
+    {
+      "task_id": "chromosomes-00",
+      "group": "Chromosomes",
+      "kind": "identity",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22694085800321773,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "b8fe2056ae7945e4af88cd29f4ac5773cc728e2bcb4e0ac07aef574451e6598c",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-00\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-00/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.31696274000569247,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "a7f1f9894c6205f856b8b1252c21a7aa612078464bf43c3e3ead18eb9c75318b",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-00\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-00/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.029914251004811376,
+      "conventional_map_seconds": 6.928399670869112e-05,
+      "ordinary_library_numerical_seconds": 0.05663108199951239
+    },
+    {
+      "task_id": "chromosomes-01",
+      "group": "Chromosomes",
+      "kind": "translation",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.7000623958883807e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.7000623958883807e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.7000623958883807e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20658082100271713,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "7e36883e60589301cfc985ca81c4ff33f6cdf18b003117abe7960fc675347188",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-01\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-01/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24064502900000662,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "640eba36cd8db7d5d8ad5146cb43b7fbdb76eeb945e69ad071e21a10225be70f",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-01\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-01/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.02816084399819374,
+      "conventional_map_seconds": 4.880300548393279e-05,
+      "ordinary_library_numerical_seconds": 0.04965662400354631
+    },
+    {
+      "task_id": "chromosomes-02",
+      "group": "Chromosomes",
+      "kind": "reflection",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.0605739337042905e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.27488068999082316,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "1454dd5718242db84216af916eb6c26e8f95acfd92e35e5ca2d673bd5fddc0cf",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-02\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-02/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2916047970065847,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "2900c15aa7668ecb13a2b69acd42fbf203192288ad514016059a60adf4161e90",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-02\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-02/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.05792349200055469,
+      "conventional_map_seconds": 6.865299656055868e-05,
+      "ordinary_library_numerical_seconds": 0.05838391900761053
+    },
+    {
+      "task_id": "chromosomes-03",
+      "group": "Chromosomes",
+      "kind": "anisotropic_scale",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1453542549507174e-16,
+        "maximum_absolute_centroid_error_um": 4.781952611665474e-12
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1453542549507174e-16,
+        "maximum_absolute_centroid_error_um": 4.781952611665474e-12
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1453542549507174e-16,
+        "maximum_absolute_centroid_error_um": 4.781952611665474e-12
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2547211290075211,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "94f911bec530388ef18f0f60099edfef029a1774795fdf4443b2689e233d4c63",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-03\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-03/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.23449491900100838,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "193894f56e2254585da5a7b39dfa02c1366736990aaf59db13b8cb400a11e1b6",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-03\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-03/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04349903200636618,
+      "conventional_map_seconds": 7.770700904075056e-05,
+      "ordinary_library_numerical_seconds": 0.04532261499844026
+    },
+    {
+      "task_id": "chromosomes-04",
+      "group": "Chromosomes",
+      "kind": "shear",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.9895196601282805e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.19959385800757445,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "93c16acb359760473734fabc802dcf1fd71709142cabc778031bcbc4f4f18c73",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-04\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-04/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2258399720012676,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4427fdab039fe4324c789646ba352c681b14ba40536f13508c056583143da2dc",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-04\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-04/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03674783899623435,
+      "conventional_map_seconds": 0.00012598901230376214,
+      "ordinary_library_numerical_seconds": 0.0523989279899979
+    },
+    {
+      "task_id": "chromosomes-05",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1558936784100126e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1558936784100126e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1558936784100126e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.213730488991132,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "be08acee5caa769c2bfe4311c98bb7bb3bc507a68f78ab77753e0ecf9f6a80cc",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-05\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-05/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21333928999956697,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "1b312f2d09209af8881b6a225f4b1219f640b800bdbee65a2c143defa9560c2a",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-05\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-05/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.029312074999324977,
+      "conventional_map_seconds": 8.522799180354923e-05,
+      "ordinary_library_numerical_seconds": 0.03400271300051827
+    },
+    {
+      "task_id": "chromosomes-06",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.2815640249639175e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.2815640249639175e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.2815640249639175e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.15359801599697676,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "e40c5b94f23fd95dc22d2bd9ea6a1a14c6af6ffd710b36e4cc68f8122d59958e",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-06\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-06/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.25145578700175975,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "bc9fcab6b8f18ca652ba37ec572da2bbfb90500676264d2f2a17939bc87df235",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-06\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-06/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03721102800045628,
+      "conventional_map_seconds": 6.0866004787385464e-05,
+      "ordinary_library_numerical_seconds": 0.05232239900215063
+    },
+    {
+      "task_id": "chromosomes-07",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 8.526512829121202e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.26171471700945403,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "1f760b6b70b3718e2c40c04777c944d32cd4e3d0df0eff293e149899b9a46048",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-07\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-07/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24059161799959838,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "5950ad7d3c27a70ab857dd485ea652755cc61c2aa37fca12c123c310dcc39620",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-07\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-07/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04203952099487651,
+      "conventional_map_seconds": 6.0484991990961134e-05,
+      "ordinary_library_numerical_seconds": 0.044872872007545084
+    },
+    {
+      "task_id": "chromosomes-08",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.343202989706425e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.343202989706425e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.343202989706425e-16,
+        "maximum_absolute_centroid_error_um": 5.684341886080802e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20418709400109947,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "943f678e46c56fdab680099a1e9e50fc00fd498dd89b13d6ca678176c5e7471e",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-08\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-08/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.19773783700657077,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "8cde942ba7ff388a3b2dd3d438368011c831dc3959d2fb24e898c5a5e0345583",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-08\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-08/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.028326527011813596,
+      "conventional_map_seconds": 6.68660068186e-05,
+      "ordinary_library_numerical_seconds": 0.0370907239994267
+    },
+    {
+      "task_id": "chromosomes-09",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.239801163007957e-16,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.239801163007957e-16,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.239801163007957e-16,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2279872959916247,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d68e11499f58526eb0b0aa8aaa06aeec41fde50917f33eafd47a9732750a767b",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-09\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-09/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20730566899874248,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "baa590bf39bcd80861d3a562a33378715fc16666efd4357a51041afa5dc1f102",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-09\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-09/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04311939899343997,
+      "conventional_map_seconds": 6.424200546462089e-05,
+      "ordinary_library_numerical_seconds": 0.046958067003288306
+    },
+    {
+      "task_id": "chromosomes-10",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.4210854715202004e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.19423421600367874,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "863ffab59a70af5c1aab5f4fb15a44e6dde3333d2526bcec3bd287eb8f750b01",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-10\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-10/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20514491100038867,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "0d35acff19c06655558d42c35d37f503aced19b7fe190f893c20aea16a088b23",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-10\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-10/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03277019600500353,
+      "conventional_map_seconds": 6.183799996506423e-05,
+      "ordinary_library_numerical_seconds": 0.04321890500432346
+    },
+    {
+      "task_id": "chromosomes-11",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.0104605755652282e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.0104605755652282e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.0104605755652282e-16,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2162041039991891,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4d5b32c97892641d9af865d99768f3b7d8958fbba72b53ed8bd03c6d4dcd3218",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-11\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-11/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21054705600545276,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "253668a139c971f310eb5a4787134a6196910e7c0165afd8ad5b9e05863fd2d4",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-11\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-11/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03705594100756571,
+      "conventional_map_seconds": 0.0002174070104956627,
+      "ordinary_library_numerical_seconds": 0.0299062169942772
+    },
+    {
+      "task_id": "chromosomes-12",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.8474111129762605e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.8474111129762605e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 1.8474111129762605e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.14074728300329298,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "dfca367c6c57c6e41b37147dc68c826e819b51d2c0f214548869ae41f4c8338d",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-12\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-12/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2030466400028672,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "c0e63a2c8741eac68da26e5584b8871028bf54039039079d003e235880ccb3b3",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-12\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-12/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03823460399871692,
+      "conventional_map_seconds": 4.9955007852986455e-05,
+      "ordinary_library_numerical_seconds": 0.029671840005903505
+    },
+    {
+      "task_id": "chromosomes-13",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1976223821733687e-16,
+        "maximum_absolute_centroid_error_um": 7.815970093361102e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1976223821733687e-16,
+        "maximum_absolute_centroid_error_um": 7.815970093361102e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.1976223821733687e-16,
+        "maximum_absolute_centroid_error_um": 7.815970093361102e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.1777774850052083,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d3182ecf7fc0acf64023733c8ac8f2ef93a7006a33c5952e27deb588fdfca774",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-13\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-13/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.19068132300162688,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "43d3477e8d4866b64e0b691e2a906f52f84abc0e2e9185f3660cb8fd7f87a730",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-13\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-13/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03747763601131737,
+      "conventional_map_seconds": 5.1897994126193225e-05,
+      "ordinary_library_numerical_seconds": 0.03374228399479762
+    },
+    {
+      "task_id": "chromosomes-14",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.16429111199977342,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "b5a93ff0695d01b210da74a5321f50ec98cd08fa16712301b29879bbcbf54a0f",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-14\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-14/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.23434208300022874,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "52bd9bfc23a434dedf1cad7e50836cd6b9ef8a4bb4837a1d98d27f3bb7e4a0b3",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-14\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-14/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.03735568199772388,
+      "conventional_map_seconds": 0.00010250500054098666,
+      "ordinary_library_numerical_seconds": 0.033339668007101864
+    },
+    {
+      "task_id": "chromosomes-15",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.686143781031043e-16,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.686143781031043e-16,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 3.686143781031043e-16,
+        "maximum_absolute_centroid_error_um": 7.105427357601002e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.216238801003783,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "060e0df2d5efc38f6ed30df466eb4540edb170c87d7f0ed07b10471f8ef5c3a0",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-15\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-15/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22965420701075345,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d5ae89dd24d22cc79ba2f38c62e8b3ba48938c44b7d233431e2fc4823e3f5018",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-15\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-15/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04980658899876289,
+      "conventional_map_seconds": 5.4421994718723e-05,
+      "ordinary_library_numerical_seconds": 0.036503575000097044
+    },
+    {
+      "task_id": "chromosomes-16",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1623877149104346e-16,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1623877149104346e-16,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 2.1623877149104346e-16,
+        "maximum_absolute_centroid_error_um": 2.4868995751603507e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2640752129955217,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "589ff67bd1363585c1fb59eb0100e7a95cbd4baba05d609ab9ab5af361dab3ff",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-16\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-16/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21496963300160132,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "9f5020e61966f30c185c0da6a400dc270e2fa6621fa46a3e47ee466bd7b10e0d",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-16\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-16/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.0429994909936795,
+      "conventional_map_seconds": 6.133200076874346e-05,
+      "ordinary_library_numerical_seconds": 0.029506054997909814
+    },
+    {
+      "task_id": "chromosomes-17",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.3398687242723917e-16,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.3398687242723917e-16,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.3398687242723917e-16,
+        "maximum_absolute_centroid_error_um": 1.7763568394002505e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22388309700181708,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "76b55c7955379b13830fca28e02eb0cfae9353293d3e94f4367e534fce72b586",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-17\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-17/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2447766849945765,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "02658b532cf546df1e84cabb874f86c84555f09d79cc3c1bd2e03826a3c48e13",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-17\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-17/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.0462044239975512,
+      "conventional_map_seconds": 6.8734007072635e-05,
+      "ordinary_library_numerical_seconds": 0.048207629006356
+    },
+    {
+      "task_id": "chromosomes-18",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21093656799348537,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "f37fd2aa563b7c4f5de8bf9c131c4ec65b0d1fb5671de01f73d0479661413efa",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-18\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-18/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2011423840012867,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "8f129c69316651c804e1d97bb1d05ba2e251221e8f7fa439bb2a61899582e5ab",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-18\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-18/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04208364199439529,
+      "conventional_map_seconds": 6.294400373008102e-05,
+      "ordinary_library_numerical_seconds": 0.042913761993986554
+    },
+    {
+      "task_id": "chromosomes-19",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.7840445283897544e-16,
+        "maximum_absolute_centroid_error_um": 1.5631940186722204e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.7840445283897544e-16,
+        "maximum_absolute_centroid_error_um": 1.5631940186722204e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.7840445283897544e-16,
+        "maximum_absolute_centroid_error_um": 1.5631940186722204e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21087343800172675,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d589ffef624a1808d9b754f88295e175b3e7d277f0fa37b5d962f967f8e20d95",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-19\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-19/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.24676555300538894,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "df93a03656ec6cb8f2c4083494cd76650efbf6e5698d10a1cba9cdf429835159",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-19\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-19/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.038398556993342936,
+      "conventional_map_seconds": 6.078100705053657e-05,
+      "ordinary_library_numerical_seconds": 0.03906065400224179
+    },
+    {
+      "task_id": "chromosomes-20",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 3.765876499528531e-13
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 3.765876499528531e-13
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 3.765876499528531e-13
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2206780330016045,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "0648d79d1e0af7daa3be5cc69cf26b6cbf2fe6a740620eecb5616420dc2c27b8",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-20\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-20/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21088573700399138,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4593072dabd58c7dcfcd8a934538cd2203e2db914275d32b901439b10dbf31f9",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-20\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-20/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04452514700824395,
+      "conventional_map_seconds": 5.981000140309334e-05,
+      "ordinary_library_numerical_seconds": 0.031811534994631074
+    },
+    {
+      "task_id": "chromosomes-21",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.9954719392129744e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.9954719392129744e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 1.9954719392129744e-16,
+        "maximum_absolute_centroid_error_um": 2.1316282072803006e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2141610709950328,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d30cbf10ee60771b53a016831c39c4593b20ebb71b957efda779c5b4b1da4bbd",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-21\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-21/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20964068299508654,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "d23a0599188ee590d60fc51b23f9fbe4f4528f26931400cec7341b3656cad153",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-21\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-21/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04609107400756329,
+      "conventional_map_seconds": 5.140800203662366e-05,
+      "ordinary_library_numerical_seconds": 0.03590482400613837
+    },
+    {
+      "task_id": "chromosomes-22",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.0761513035206896e-16,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.0761513035206896e-16,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 4.0761513035206896e-16,
+        "maximum_absolute_centroid_error_um": 9.947598300641403e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.21276794400182553,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "9c9b1f5f9d23c3ce51af8388a452449a50d61548dd0cef34af52f9cec61675e0",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-22\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-22/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.18074116100615356,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "9e6c6d30a9b14b6da9a50e4f5d1b0e2c188fcc0695a44dcd93613efbbc1c29a2",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-22\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-22/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04633196600480005,
+      "conventional_map_seconds": 8.804199751466513e-05,
+      "ordinary_library_numerical_seconds": 0.035746195004321635
+    },
+    {
+      "task_id": "chromosomes-23",
+      "group": "Chromosomes",
+      "kind": "seeded_affine",
+      "recovered": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "conventional": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "ordinary_library": {
+        "passed": true,
+        "maximum_relative_measure_error": 0.0,
+        "maximum_absolute_centroid_error_um": 4.263256414560601e-14
+      },
+      "identical_content_output_parity": true,
+      "recovered_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.22301342799619306,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "af4534852265763ee9ef405a93bd76c2357e98cdb5c5e3786e37ee7cd72b3ebd",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-23\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-23/received-result.json\"}\n",
+        "stderr": ""
+      },
+      "ordinary_library_process": {
+        "returncode": 0,
+        "external_process_seconds": 0.2381857619911898,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "82ad5ec8b0370bb962a211895d76f94e4f4426e4f4ae0119fb93c36e822e878d",
+        "stdout": "{\"status\": \"ACCEPT\", \"mission_id\": \"chromosomes-23\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/compatible/chromosomes-23/ordinary-library-result.json\"}\n",
+        "stderr": ""
+      },
+      "recovered_numerical_seconds": 0.04012045900162775,
+      "conventional_map_seconds": 6.783199205528945e-05,
+      "ordinary_library_numerical_seconds": 0.041462187000433914
+    }
+  ],
+  "semantic_results": [
+    {
+      "case_id": "negative_spacing",
+      "expected": "REJECT/HOLD",
+      "reason": "Outside positive-spacing measurement contract",
+      "observed_status": "REJECT",
+      "observed_reason": "converted spacing/origin invalid",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.1926920900004916,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "1d4ac80e4d8fdd8cc30bde6e7766b8e54f229d69dc87a72043ebe5241e2b65e9",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-negative_spacing\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/negative_spacing/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "zero_spacing",
+      "expected": "REJECT/HOLD",
+      "reason": "Degenerate voxel metric",
+      "observed_status": "REJECT",
+      "observed_reason": "converted spacing/origin invalid",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.12870867300080135,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "742fa64c8f9142d97219971a47a7395b100a141973c4e1d13ee95ac5271f199d",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-zero_spacing\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/zero_spacing/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "nonfinite_spacing",
+      "expected": "REJECT/HOLD",
+      "reason": "Nonfinite metric",
+      "observed_status": "REJECT",
+      "observed_reason": "spacing: finite entries required",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.16715535400726367,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "86b1b2c29ec55b50f88e44384c2ee5116be21cc40fbbe0081cde2b58eb8487f7",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-nonfinite_spacing\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/nonfinite_spacing/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "singular_affine",
+      "expected": "REJECT/HOLD",
+      "reason": "Non-invertible map outside affine geometric-volume contract",
+      "observed_status": "HOLD",
+      "observed_reason": "singular or numerically unstable map",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.17787549199420027,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "4bb8762969b4deb27bdb4602c0852dc3172ac6a98fd2966da1ea92d663fae860",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-singular_affine\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/singular_affine/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "nonfinite_affine",
+      "expected": "REJECT/HOLD",
+      "reason": "Nonfinite geometric mapping",
+      "observed_status": "REJECT",
+      "observed_reason": "affine: finite entries required",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.1889316000015242,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "03a96aa7505f139e37e1335016a699faf4e861df1352aed3b16872e0a71aa674",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-nonfinite_affine\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/nonfinite_affine/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "source_hash_mismatch",
+      "expected": "REJECT/HOLD",
+      "reason": "Mission/source byte binding is false",
+      "observed_status": "REJECT",
+      "observed_reason": "source bytes do not match mission",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.19898143300088122,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "c1ee70db1c8ee9905a2268f9c8ff18d1e8202ed90134328265c9016bcd1bd98b",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-source_hash_mismatch\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/source_hash_mismatch/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "nonlinear_request",
+      "expected": "REJECT/HOLD",
+      "reason": "Affine summary insufficient for general nonlinear Jacobian",
+      "observed_status": "HOLD",
+      "observed_reason": "contract fields missing or unsupported: ['nonlinear_deformation_field']",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.18486252799630165,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "0bc69bd4c8215fa49ef27d192be7a550523f967b5986f6e60a96dd51a33d618a",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-nonlinear_request\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/nonlinear_request/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "intensity_request",
+      "expected": "REJECT/HOLD",
+      "reason": "Source segmentation moments do not encode image intensity",
+      "observed_status": "HOLD",
+      "observed_reason": "requested metric is unsupported",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.13104210500023328,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "1448233ea8d9d9339ed33dd6c1b651ab8184c9471d57af584da12068413dfd80",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-intensity_request\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/intensity_request/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "topology_request",
+      "expected": "REJECT/HOLD",
+      "reason": "Label identity count is not connected component count",
+      "observed_status": "HOLD",
+      "observed_reason": "only supplied label identity is supported; connected components are a new mission",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.16823789100453723,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "8b50c445ee716c285b04f02c5f20341c17f569a7f16acea6d07a0754ee4d6850",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-topology_request\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/topology_request/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "physical_native_claim_for_deformation",
+      "expected": "REJECT/HOLD",
+      "reason": "Native and mapped geometric measures are different quantities",
+      "observed_status": "HOLD",
+      "observed_reason": "mapping meaning must explicitly be geometric_pushforward",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.20254002000729088,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "0c2b44e14759e81196928253765ddee849efc3712daaf695bd9ff7541d7c39d0",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-physical_native_claim_for_deformation\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/physical_native_claim_for_deformation/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "wrong_transform_direction",
+      "expected": "REJECT/HOLD",
+      "reason": "Transform direction must be bound explicitly",
+      "observed_status": "HOLD",
+      "observed_reason": "contract fields missing or unsupported: ['transform_direction']",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.17255738300445955,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "12faf6021b69e248b3d19cda694ee80d6d7f9bd0e86fa6cfbe6fc0fbb76767d7",
+        "stdout": "{\"status\": \"HOLD\", \"mission_id\": \"semantic-wrong_transform_direction\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/wrong_transform_direction/received-result.json\"}\n",
+        "stderr": ""
+      }
+    },
+    {
+      "case_id": "non_3d_labels",
+      "expected": "REJECT/HOLD",
+      "reason": "Task selection must explicitly resolve nonspatial dimensions",
+      "observed_status": "REJECT",
+      "observed_reason": "NPY header must describe a nonempty 2D/3D integer array",
+      "passed": true,
+      "process": {
+        "returncode": 0,
+        "external_process_seconds": 0.18440264598757494,
+        "module_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+        "output_sha256": "18eab2a9276507ce53eee53bcd0772c7db77cf11b0068185a8a12a9a91795046",
+        "stdout": "{\"status\": \"REJECT\", \"mission_id\": \"semantic-non_3d_labels\", \"output\": \"/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/confirmation/results/frozen-v1/semantic/non_3d_labels/received-result.json\"}\n",
+        "stderr": ""
+      }
+    }
+  ]
+}

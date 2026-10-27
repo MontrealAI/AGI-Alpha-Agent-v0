@@ -1,0 +1,57 @@
+  ERROR: Could not find a version that satisfies the requirement numpy==2.3.2 (from versions: none)
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.12/site-packages/pip/_vendor/resolvelib/resolvers/resolution.py", line 434, in resolve
+    self._add_to_criteria(self.state.criteria, r, parent=None)
+  File "/root/.local/lib/python3.12/site-packages/pip/_vendor/resolvelib/resolvers/resolution.py", line 151, in _add_to_criteria
+    raise RequirementsConflicted(criterion)
+pip._vendor.resolvelib.resolvers.exceptions.RequirementsConflicted: Requirements conflict: SpecifierRequirement('numpy==2.3.2')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 99, in resolve
+    result = self._result = resolver.resolve(
+                            ^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pip/_vendor/resolvelib/resolvers/resolution.py", line 601, in resolve
+    state = resolution.resolve(requirements, max_rounds=max_rounds)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pip/_vendor/resolvelib/resolvers/resolution.py", line 436, in resolve
+    raise ResolutionImpossible(e.criterion.information) from e
+pip._vendor.resolvelib.resolvers.exceptions.ResolutionImpossible: [RequirementInformation(requirement=SpecifierRequirement('numpy==2.3.2'), parent=None)]
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/root/.local/lib/python3.12/site-packages/piptools/__main__.py", line 19, in <module>
+    cli()
+  File "/root/.local/lib/python3.12/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/click/core.py", line 1830, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/piptools/scripts/compile.py", line 509, in cli
+    results = resolver.resolve(max_rounds=max_rounds)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/piptools/resolver.py", line 642, in resolve
+    is_resolved = self._do_resolve(
+                  ^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/piptools/resolver.py", line 677, in _do_resolve
+    resolver.resolve(
+  File "/root/.local/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 108, in resolve
+    raise error from e
+pip._internal.exceptions.DistributionNotFound: No matching distribution found for numpy==2.3.2

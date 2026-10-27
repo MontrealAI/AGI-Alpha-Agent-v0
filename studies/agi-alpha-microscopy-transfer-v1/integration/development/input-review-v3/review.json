@@ -1,0 +1,238 @@
+{
+  "schema": "microscopy-independent-input-boundary-review/v1",
+  "source_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+  "input_basis": "Two tiny synthetic arrays; no confirmation specimen accessed.",
+  "probes": {
+    "hash_then_mutable_load": {
+      "injection": "Replace the local path immediately before np.load reads its argument.",
+      "injection_observed": {
+        "called": true,
+        "input_type": "BytesIO"
+      },
+      "original_sha256": "948c894300478b677ac40b81d0557e2e8324d5f8d0f764f079f6a6d8aea09dfc",
+      "final_path_sha256": "e2cd23b17787af7db992f62e4aec71f1dd0d063673b41c7a25f8dfe593a226dc",
+      "expected_original_measure": 1,
+      "outcome": {
+        "status": "ACCEPT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "source_sha256": "948c894300478b677ac40b81d0557e2e8324d5f8d0f764f079f6a6d8aea09dfc",
+        "contract_sha256": "1a10bcb6a494c75a07f53478a9c11fbe5c83fb0804b25a592c742776cce2e3f9",
+        "shape": [
+          3,
+          3
+        ],
+        "dtype": "uint16",
+        "source_axes": [
+          "y",
+          "x"
+        ],
+        "target_axes": [
+          "y",
+          "x"
+        ],
+        "coordinate_unit": "micrometer",
+        "measure_unit": "micrometer^2",
+        "label_count": 1,
+        "objects": [
+          {
+            "label_id": 1,
+            "voxel_count": 1,
+            "native_measure": 1.0,
+            "mapped_measure": 1.0,
+            "native_centroid_um": [
+              1.0,
+              1.0
+            ],
+            "mapped_centroid_um": [
+              1.0,
+              1.0
+            ],
+            "touches_source_boundary": false
+          }
+        ],
+        "jacobian_absolute_determinant": 1.0,
+        "scope": "geometric measurements of supplied label support; no biological or registration validity",
+        "elapsed_seconds": 0.0006412340007955208
+      },
+      "passed": true
+    },
+    "numpy_archive_input": {
+      "uncaught_exception": false,
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "input cannot be interpreted: ValueError: the magic string is not correct; expected b'\\x93NUMPY', got b'PK\\x03\\x04-\\x00'"
+      },
+      "passed": true
+    },
+    "empty_input": {
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "input cannot be interpreted: ValueError: EOF: reading magic string, expected 8 bytes got 0"
+      },
+      "passed": true
+    },
+    "negative_spacing": {
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "converted spacing/origin invalid"
+      },
+      "passed": true
+    },
+    "zero_spacing": {
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "converted spacing/origin invalid"
+      },
+      "passed": true
+    },
+    "unknown_units": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "each source axis needs a supported length unit"
+      },
+      "passed": true
+    },
+    "nan_spacing": {
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "spacing: finite entries required"
+      },
+      "passed": true
+    },
+    "biological_volume_meaning": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "mapping meaning must explicitly be geometric_pushforward"
+      },
+      "passed": true
+    },
+    "complete_cell_claim": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "complete biological objects cannot be certified from supplied label support"
+      },
+      "passed": true
+    },
+    "nonlinear_map": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "projective/non-affine mappings need a different instrument"
+      },
+      "passed": true
+    },
+    "singular_affine": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "singular or numerically unstable map"
+      },
+      "passed": true
+    },
+    "changed_axis_set": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "source and target spatial axes differ"
+      },
+      "passed": true
+    },
+    "unsupported_topology_metric": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "requested metric is unsupported"
+      },
+      "passed": true
+    },
+    "signed_nonzero_label": {
+      "outcome": {
+        "status": "ACCEPT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "source_sha256": "cf84756a391a4cc4c9e563327ab288793538214ed8d8a9e8663887ef58250443",
+        "contract_sha256": "0ee77c956dc70e8501e155f909fe30ea8a03a9f56d68ab80af18664fb036ebbf",
+        "shape": [
+          3,
+          3
+        ],
+        "dtype": "int16",
+        "source_axes": [
+          "y",
+          "x"
+        ],
+        "target_axes": [
+          "y",
+          "x"
+        ],
+        "coordinate_unit": "micrometer",
+        "measure_unit": "micrometer^2",
+        "label_count": 1,
+        "objects": [
+          {
+            "label_id": -7,
+            "voxel_count": 1,
+            "native_measure": 1.0,
+            "mapped_measure": 1.0,
+            "native_centroid_um": [
+              1.0,
+              1.0
+            ],
+            "mapped_centroid_um": [
+              1.0,
+              1.0
+            ],
+            "touches_source_boundary": false
+          }
+        ],
+        "jacobian_absolute_determinant": 1.0,
+        "scope": "geometric measurements of supplied label support; no biological or registration validity",
+        "elapsed_seconds": 0.00029418700432870537
+      },
+      "passed": true
+    },
+    "json_unsafe_label_id": {
+      "outcome": {
+        "status": "HOLD",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "label IDs exceed exact JSON integer interoperability scope"
+      },
+      "passed": true
+    },
+    "oversized_header_before_allocation": {
+      "outcome": {
+        "status": "REJECT",
+        "version": "microscopy-moments/v1",
+        "mission_id": "independent-input-boundary-probe",
+        "reason": "NPY payload length or memory budget mismatch"
+      },
+      "header_bytes": 128,
+      "allocation_attempted": false,
+      "passed": true
+    }
+  },
+  "passed": 16,
+  "total": 16
+}

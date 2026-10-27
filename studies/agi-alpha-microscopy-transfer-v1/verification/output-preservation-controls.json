@@ -1,0 +1,21 @@
+{
+  "driver_sha256": "705e98f4e42c43ee02e21e65d83d40e0160ca3b2669965361ad301f8b5985125",
+  "purpose": "Prevent overwriting original or occupied evidence paths",
+  "controls": [
+    {
+      "control": "original-study-tree",
+      "returncode": 2,
+      "passed": true,
+      "stderr": "usage: reproduce.py [-h] --output OUTPUT [--rebuild-source-arrays]\nreproduce.py: error: Output must be outside and cannot contain the original study tree\n"
+    },
+    {
+      "control": "occupied-output",
+      "returncode": 2,
+      "passed": true,
+      "stderr": "usage: reproduce.py [-h] --output OUTPUT [--rebuild-source-arrays]\nreproduce.py: error: Output must be a new or empty ordinary directory; prior results are never overwritten\n"
+    }
+  ],
+  "passed": 2,
+  "total": 2,
+  "occupied_file_unchanged": true
+}

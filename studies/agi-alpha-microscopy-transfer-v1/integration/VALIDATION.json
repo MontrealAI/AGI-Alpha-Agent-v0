@@ -1,0 +1,37 @@
+{
+  "schema": "microscopy-integration-validation/v1",
+  "source_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+  "native_lifecycle_controls": {
+    "passed": 32,
+    "total": 32,
+    "receipt": "results/frozen-v1/summary.json"
+  },
+  "independent_input_review": {
+    "passed": 16,
+    "total": 16,
+    "source_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "receipt": "development/input-review-v3/review.json"
+  },
+  "reviewed_artifact_and_recovered_bytes_identical": true,
+  "lint": "Ruff passed for the three maintained Python callers",
+  "typing": "strict mypy with follow-imports=skip passed for three maintained Python callers; unchanged upstream closure not retyped",
+  "full_repository_ci": "not run by integration subtask",
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.22.1",
+    "pydantic": "2.11.7",
+    "cryptography": "50.0.2",
+    "numpy": "2.3.2"
+  },
+  "scope": "Local interface conformance and synthetic input boundary probes. No fresh specimen, customer, live ENS, model API, deployment, biological validation or production admission.",
+  "actual_collections_usd": 0,
+  "actual_total_research_cost": null,
+  "actual_complete_profit": null,
+  "maintained_callers": {
+    "bridge.py": "56376c33c2687683e1a2101164e37c93f5740d254e82b723d835f48bd76cd3ec",
+    "replay.mjs": "d3720a8932164d0777ca6e35c23060b1620f3f03e60aaf32a88332408feb02af",
+    "run_integration.py": "7458fa1750a3b539dcbc0187bde39a2248f7090edc423825b5f0e955215d486c",
+    "review_input_boundaries.py": "26b567ffdc8ce996c2f2a86f63ebf07e8a60a186b5910754f5a0d6f36cf1b982",
+    "crypto_controls.mjs": "7767b56c6938ca4353ce5f99e7ad5fdff8212e7029958283498b9d956924db68"
+  }
+}

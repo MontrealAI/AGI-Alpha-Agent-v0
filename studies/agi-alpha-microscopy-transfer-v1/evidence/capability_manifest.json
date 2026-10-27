@@ -1,0 +1,168 @@
+{
+  "schema": "microscopy-research-capability-manifest/v1",
+  "name": "Source-bound affine microscopy moments",
+  "artifact_version": "microscopy-moments/v1",
+  "edition": "1.0.0",
+  "status": "Reusable research executable; not admitted commercial Alpha or a production protected capsule.",
+  "frozen_utc": "2026-10-27T17:40:14.874015+00:00",
+  "payload": {
+    "path": "src/microscopy_transfer.py",
+    "sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "bytes": 11851,
+    "format": "Python source",
+    "weights_modified": false
+  },
+  "entrypoint": "python src/microscopy_transfer.py --labels SOURCE.npy --contract CONTRACT.json --output RESULT.json",
+  "prerequisites": {
+    "core_runtime": "Python 3.11-3.13 per repository; observed Python 3.12.14 and NumPy 2.3.2.",
+    "core_dependencies": [
+      "NumPy; Python standard library"
+    ],
+    "evaluation_dependencies": "Observed SciPy 1.17.0; Numcodecs 0.16.3 for offline source-chunk decoding.",
+    "integration_dependencies": "Pinned existing Python/JavaScript source closure, Pydantic 2.11.7, cryptography 50.0.2; observed Node 24.22.1 differs from repository-requested 22.17.1.",
+    "inputs": [
+      "A permitted NPY 1.0/2.0 integer label array with nonempty spatial dimensions",
+      "Exact SHA-256-bound JSON measurement contract",
+      "Source rights, trustworthy calibration and an explicitly authorized useful mission supplied by the caller"
+    ],
+    "network_required_for_core": false,
+    "paid_model_required_for_core": false
+  },
+  "scope": {
+    "dimensions": [
+      2,
+      3
+    ],
+    "labels": "Zero is background; each nonzero signed or unsigned integer identity denotes its supplied support, including disconnected support.",
+    "label_id_absolute_max": 9007199254740991,
+    "maximum_distinct_nonzero_labels": 10000,
+    "maximum_source_file_bytes": 1073741824,
+    "maximum_npy_payload_bytes": 1073741824,
+    "memory_caveat": "These bound source-file/payload size, not total peak process memory or runtime.",
+    "accepted_axes": "Distinct x/y/z names matching dimensionality; source and target axis sets equal.",
+    "source_metric": "Axis-aligned positive finite spacing and finite origin; units converted to micrometers.",
+    "supported_units": [
+      "micrometer",
+      "um",
+      "nanometer",
+      "nm",
+      "millimeter",
+      "mm",
+      "meter",
+      "m"
+    ],
+    "map": "Explicit finite homogeneous affine geometric pushforward; rows follow target_axes, columns follow source_axes; physical micrometers.",
+    "maximum_linear_condition_number": 1000000000000.0,
+    "measure_semantics": "Native source physical support and mapped geometric support are returned separately. A pure coordinate re-expression does not alter physical specimen volume.",
+    "requested_metrics": [
+      "label_count",
+      "native_measure",
+      "mapped_measure",
+      "native_centroid",
+      "mapped_centroid"
+    ],
+    "does_not_read_ngff_directly": true
+  },
+  "provenance": {
+    "upstream_main": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+    "existing_research_lifecycle_source": "231834269599d85e49cfe1ca9917a1a874522d44",
+    "construction": "AI-assisted engineering under the user-directed study; implements established geometric formulas.",
+    "author_attribution": "Vincent Boucher — President of MONTREAL.AI",
+    "source_manifest": "integration/source_manifest.json",
+    "development_history": "development/history.json",
+    "original_source_preserved": true
+  },
+  "rights": {
+    "new_code": "Apache-2.0; retain study LICENSE and applicable notices.",
+    "upstream_code": "Retain the licenses/notices supplied in integration/vendor/.",
+    "public_data": "Blin et al. IDR0062 and Walther et al. IDR0052: CC BY 4.0 with creator credit, DOI/source URLs and extraction changes; see evidence/DATA_PROVENANCE.md.",
+    "capability_payload_excludes": [
+      "Secrets",
+      "Credentials",
+      "Restricted third-party intellectual property",
+      "Protected evaluation answers or training material"
+    ],
+    "distribution_note": "Research evidence is distributed for inspection; it is not part of the retained executable payload or proof of permission for a new mission."
+  },
+  "evidence": {
+    "fresh_compatible_missions": {
+      "passed": 48,
+      "total": 48
+    },
+    "fresh_refusals": {
+      "passed": 12,
+      "total": 12
+    },
+    "competent_conventional_passed": 48,
+    "equal_content_library_exact_parity": 48,
+    "held_data_scope": "Two partitions in one public image/timepoint; 48 authored maps.",
+    "hosted_U_E_Eplus_passed": {
+      "U": 12,
+      "E": 12,
+      "E+": 12
+    },
+    "hosted_quality_advantage_established": false,
+    "complete_cost_advantage_established": false,
+    "graph_specific_advantage_established": false,
+    "independence": "Separately executed workers and recipient processes within the same AI-assisted team; no external independent validation.",
+    "references": [
+      "confirmation/RESULTS.md",
+      "hosted_trials/scoring.json",
+      "integration/results/frozen-v1/summary.json"
+    ]
+  },
+  "costs": {
+    "actual_collections": 0,
+    "complete_actual_construction_research_cost": null,
+    "actual_paid_api_calls": 0,
+    "hosted_tokens_and_attributable_billing": null,
+    "actual_additional_retention_cost": null,
+    "conditional_B_cost_cad": {
+      "assessment": 5,
+      "retention": 55,
+      "upkeep": 15,
+      "total": 75
+    },
+    "conditional_cash_labor_rate_cad_per_hour": 65,
+    "conditional_break_even_minutes_per_use_at_four_realized_reuses": 17.307692307692307,
+    "cost_boundary": "A covers complete paid outcome and required learning; B only additional screening/retention/sharing/upkeep; C optional extra R&D. Scenario costs do not price actual research."
+  },
+  "admission_and_authority": {
+    "technical_research_use": "Finite scoped validation supports research reuse with fresh mission checks.",
+    "empirical_retained_alpha_admitted": false,
+    "primary_simulated_admission": "Reject after CAD5 screening under zero retained benefit.",
+    "production_admission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+    "live_ens_authentications": 0,
+    "local_fixture_identities": [
+      "atlas.agent.agi.eth",
+      "lyra.agent.agi.eth",
+      "orion.agent.agi.eth",
+      "validator.agent.agi.eth"
+    ],
+    "scope_of_fixture_access": "Existing research lifecycle conformance only; artificial positive admission records are separate from actual commercial evidence.",
+    "new_mission_authority": "Must be granted separately; reusable bytes do not grant execution or settlement authority.",
+    "revocation_limit": "Blocks new mediated access; cannot erase bytes already retrieved.",
+    "network_sharing": "No live network grant was made. Future rights-cleared admitted sharing must use existing protected-network identity, revocation and Jobs-validator/settlement boundaries."
+  },
+  "limitations": [
+    "No segmentation biology, complete-cell coverage or registration validity",
+    "No nonlinear, topology, intensity or clinical mission",
+    "Cannot infer unstated intent or verify hidden physical calibration",
+    "No persistent moment cache in this frozen CLI",
+    "No sustained specialist superiority, model-weight training or compounding claim",
+    "No live customer acceptance, revenue or production-scope qualification"
+  ],
+  "maintenance": {
+    "admission_rule": "Retain only when credible realized eligible reuse has expected benefits above additional cost/risk relative to the competent recipient.",
+    "revalidation_triggers": [
+      "Changed source or dependencies",
+      "Changed mission meaning, axes, calibration or map semantics",
+      "New schema/format version",
+      "New rights or identity state",
+      "Changed recipient outside option",
+      "Higher failures, support burden or maintenance cost"
+    ],
+    "version_rule": "Preserve this source and all old outcomes; freeze a new version before prospective fresh confirmation.",
+    "gym": "No model-weight training or optional Gym refinement was executed; such development would need a distinct artifact, feedback record, budget and fresh evaluation."
+  }
+}

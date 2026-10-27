@@ -1,0 +1,25 @@
+{
+  "time_utc": "2026-10-27T17:40:14.874015+00:00",
+  "edition": "1.0.0",
+  "phase": "source/method frozen before fresh specimen and transform outcome inspection",
+  "files": {
+    "src/microscopy_transfer.py": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "src/conventional_reference.py": "6f68bba7fd0fdb7df2d75e4bfd5d7524b21cae7fe23d538584e4dfc62bbd0d4d",
+    "protocols/PROTOCOL.md": "57a4ad4ec911aa02572a1763e110fccc35807b4e05edbfc094c22e5511af85d8"
+  },
+  "confirmation_task_commitment": "a340f72f6efe4ec41f0d0b51de14f9131989318f6fe89818c680fcf46509fbd5",
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "scipy": "1.17.0"
+  },
+  "scope_clarifications": [
+    "Nonzero signed integer label IDs with magnitude <=2^53-1; zero background",
+    "Native index center i and voxel extent i+[-.5,.5); no silent +.5 translation",
+    "Affine rows follow target_axes, columns follow source_axes; map expressed in physical micrometers",
+    "Native calibration is axis-aligned; native specimen measure and mapped geometric measure are distinct",
+    "Provided label support is measured; four boundary labels in development are not asserted to be complete cells",
+    "CLI owns and hashes one bounded NPY byte snapshot; internal measure() accepts trusted arrays",
+    "Module timing covers numerical measurement only; external process clocks cover end-to-end invocation"
+  ]
+}

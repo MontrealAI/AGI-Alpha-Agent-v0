@@ -1,0 +1,81 @@
+{
+  "configuration": "Eplus",
+  "completed": true,
+  "tool_invocations": 4,
+  "nested_exec_command_invocations": 4,
+  "inclusive_tool_api_calls": 8,
+  "tool_count_basis": "Four functions.exec invocations, each containing one exec_command invocation; eight if both layers are counted.",
+  "observed_work": [
+    {
+      "call": 1,
+      "action": "Read only supplied TASK.md, cases.json, expert rubric and authorized retained executable; list input files; verify retained SHA256 before use."
+    },
+    {
+      "call": 2,
+      "action": "Read all twelve actual arrays and contracts; inspect dimensions, dtype, signed label counts, coordinate sums, calibration, affine semantics and source hashes."
+    },
+    {
+      "call": 3,
+      "action": "Save solve.py; verify retained SHA256 again; invoke retained run(Path,Path) on a hand-calculated fixture and all twelve missions; inspect every returned status; independently validate accepted geometry; save answers and audit files."
+    },
+    {
+      "call": 4,
+      "action": "Read back answer and validation files, check requested schema and preserved edge cases, compile saved source without writing bytecode, and save this receipt."
+    }
+  ],
+  "retained_executable": {
+    "path": "/workspace/scratch/a54a233bfad9/alpha/studies/agi-alpha-microscopy-transfer-v1/integration/results/frozen-v1/received-artifact.py",
+    "expected_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "observed_sha256": "a04326ce0504bfe3ac290b6cb65ee6f089cc66a607f70b7cc7869099250c77db",
+    "verified_before_execution": true,
+    "interface_used": "run(Path, Path)",
+    "calls": 13,
+    "returned_statuses_inspected": true,
+    "modifications": null
+  },
+  "rubric_applied": [
+    "Exact source-file SHA256 identity",
+    "Nonempty 2D/3D integer array, zero background, every nonzero signed label one region",
+    "Explicit source and target axes; matrix columns follow source, rows follow target",
+    "Finite positive calibrated spacing; spacing and origin converted per axis to micrometers",
+    "Supplied label support, label identity, geometric pushforward, supported metrics only",
+    "Explicit nonsingular homogeneous affine in physical micrometers",
+    "Native measure is voxel count times calibrated voxel measure",
+    "Mapped measure uses absolute determinant; centroids use voxel-center coordinates",
+    "No biological completeness, intensity, topology, resampling, or new segmentation inferred"
+  ],
+  "validation": {
+    "known_case": "PASS",
+    "accepted_case_count": 8,
+    "held_case_count": 3,
+    "rejected_case_count": 1,
+    "independent_method": "Enumerate actual physical voxel centers; average native and mapped points; compute determinant by signed permutation expansion.",
+    "max_measure_relative_error": 1.8742225431791712e-16,
+    "max_centroid_absolute_error_um": 1.7763568394002505e-15,
+    "relative_measure_tolerance": 1e-09,
+    "absolute_centroid_tolerance_um": 1e-08,
+    "measured_solver_wall_seconds": 0.047838383994530886
+  },
+  "corrections_performed": [],
+  "costs": {
+    "token_count": null,
+    "billing_amount": null,
+    "currency": null,
+    "whole_trial_elapsed_seconds": null,
+    "note": "Token counts, billing, and whole-trial wall time were not instrumented. The reported solver runtime measures only the saved solver execution. No cost estimate is invented."
+  },
+  "public_documentation_lookups": 0,
+  "subagents_spawned": 0,
+  "output_files": [
+    "answers.json",
+    "solve.py",
+    "finalize.py",
+    "receipt.json",
+    "retained_results.json",
+    "validation.json",
+    "validation/known.npy",
+    "validation/known.json",
+    "validation/known_result.json"
+  ],
+  "answers_sha256": "b93eef8b86b5070c66d3f0516a2e01d935366a44dbc3b2c2801427ed242c50ae"
+}
