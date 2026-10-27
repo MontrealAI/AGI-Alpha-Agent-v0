@@ -1,0 +1,207 @@
+{
+  "id": "archival-claim-rescue-economics-v2.1",
+  "as_of": "2026-10-27",
+  "currency": "USD",
+  "protocol_path": "study/config/construction_protocol.json",
+  "model_manifest_path": "study/provenance/model_manifest.json",
+  "horizon_days": 90,
+  "exploration_seed": 271028401,
+  "confirmation_seed": 271029987,
+  "robustness_seed": 271030553,
+  "exploration_campaigns": 200,
+  "confirmation_campaigns": 600,
+  "robustness_campaigns": 80,
+  "prices": [
+    150,
+    250,
+    350,
+    450,
+    600,
+    800,
+    1000
+  ],
+  "price_selection": "Maximize baseline exploratory mean operating profit; tie chooses lower price. Freeze quote regardless; recommend launch only if exploratory mean is positive. Confirmation cannot change the price.",
+  "primary_attribution": "E = U = identical-content ordinary library in offer, costs, participation, capacity and outcomes. No measured operational alpha is assumed.",
+  "actual_revenue": 0,
+  "actual_costs": null,
+  "wages_gross_per_hour": {
+    "developer": 65.38,
+    "scientist": 67.45,
+    "domain": 58.93
+  },
+  "employer_compensation_factor": 1.46,
+  "shared_overhead_fraction": 0.2,
+  "wage_source": "https://www.bls.gov/news.release/ocwage.t01.htm",
+  "compensation_source": "https://www.bls.gov/news.release/ecec.htm",
+  "compensation_note": "May 2025 national median employee wages; provisional physical-scientist domain proxy. June 2026 professional/scientific/technical total-compensation-to-wage ratio supports rounded 1.46 proxy. Overhead is an explicit assumption, not included in wage statistics.",
+  "fixed_campaign_hours": {
+    "developer": 6,
+    "scientist": 4,
+    "domain": 4
+  },
+  "capacity_hours": {
+    "developer": 110,
+    "scientist": 70,
+    "domain": 120
+  },
+  "intake_hours_per_origin": {
+    "developer": 0.03
+  },
+  "ingest_hours_per_contract": {
+    "developer": 0.12,
+    "domain": 0.08
+  },
+  "execution_hours_if_admissible": {
+    "developer": 0.08,
+    "scientist": 0.06
+  },
+  "delivery_hours_per_decision": {
+    "developer": 0.12,
+    "scientist": 0.03
+  },
+  "support_hours_per_accepted_delivery": {
+    "scientist": 0.1
+  },
+  "compute_workload_per_contract": {
+    "gpt-6.1-sol": {
+      "input_tokens": 40000,
+      "output_tokens": 8000
+    },
+    "gpt-6-astra": {
+      "input_tokens": 6000,
+      "output_tokens": 2000
+    },
+    "web_search_calls": 2,
+    "container_20min_sessions": 1
+  },
+  "compute_note": "Hypothetical capped text/source assistance workload. Exact rational solver runs locally. Reasoning output is included in output-token allowance; retries must fit allowance or be added. No API calls were made by this model.",
+  "cash_source_cost_per_contract": 8,
+  "source_cost_note": "Assumed digital-source access/export cost; not an established archival tariff. Rights, unavailable originals, and expert admissibility construction remain explicit unresolved inputs.",
+  "customer_loaded_hour_value": 120,
+  "customer_value_note": "Assumed opportunity cost, not a consultant quote, willingness-to-pay observation or human development cost. Decisive-outcome value is independently drawn.",
+  "outside_option_buyer_hours": 0.4,
+  "offer_buyer_hours": 0.2,
+  "buyer_capital_apr": 0.12,
+  "deposit_fraction": 0.4,
+  "payment_fee_fraction": 0.03,
+  "payment_fixed_fee": 0.3,
+  "refund_transfer_fee": 0.3,
+  "payment_note": "Scenario assumptions: 3% of collected value plus $0.30 collection attempt, including a $0.30 failed balance attempt; $0.30 refund transfer. Pending expected balance fees and definite refusal-refund fees accrue at the decision; original collection fees are not returned. No provider tariff is claimed.",
+  "balance_settlement_days": 3,
+  "guarantee_days": 14,
+  "support_days": 14,
+  "max_parallel_contracts": 6,
+  "maximum_start_wait_days": 21,
+  "base_turnaround_days": 10,
+  "owner_initial_cash": 5000,
+  "credit_limit": 20000,
+  "borrowing_apr": 0.12,
+  "reserve_policy": "All unaccepted deposits remain restricted; full collected fees remain reserved through refund window; accrued unpaid costs and remaining completion budget are reserved. Debt is deducted again only when calculating free funds, not when determining payment liquidity.",
+  "scenarios": {
+    "low": {
+      "origins": 60,
+      "source_fit_probability": 0.55,
+      "source_admissible_probability": 0.7,
+      "original_query_decisive_probability": 0.35,
+      "client_acceptance_probability": 0.9,
+      "source_construction_hours": 2.0,
+      "independent_source_validation_hours": 0.8,
+      "outside_additional_analyst_minutes_median": 30,
+      "outcome_value_median": 350,
+      "refund_probability": 0.08,
+      "default_probability": 0.08
+    },
+    "baseline": {
+      "origins": 150,
+      "source_fit_probability": 0.75,
+      "source_admissible_probability": 0.85,
+      "original_query_decisive_probability": 0.6,
+      "client_acceptance_probability": 0.95,
+      "source_construction_hours": 0.65,
+      "independent_source_validation_hours": 0.4,
+      "outside_additional_analyst_minutes_median": 120,
+      "outcome_value_median": 800,
+      "refund_probability": 0.03,
+      "default_probability": 0.03
+    },
+    "high": {
+      "origins": 300,
+      "source_fit_probability": 0.85,
+      "source_admissible_probability": 0.92,
+      "original_query_decisive_probability": 0.75,
+      "client_acceptance_probability": 0.97,
+      "source_construction_hours": 0.35,
+      "independent_source_validation_hours": 0.2,
+      "outside_additional_analyst_minutes_median": 180,
+      "outcome_value_median": 1500,
+      "refund_probability": 0.02,
+      "default_probability": 0.02
+    }
+  },
+  "assumptions_note": "All demand, probability, duration, labor-effort, overhead, capacity, payment and value parameters are scenario assumptions. No mission probability is calibrated from finite possible-world test counts.",
+  "retention": {
+    "fresh_uses": [
+      10,
+      50,
+      200
+    ],
+    "avoidable_minutes": [
+      0,
+      5,
+      15
+    ],
+    "one_time_retention_cost": 200,
+    "maintenance_per_fresh_use": 0.5,
+    "identical_content_library_incremental_minutes": 0
+  },
+  "development_sunk_cost_sensitivity": [
+    0,
+    5000,
+    15000,
+    50000,
+    100000
+  ],
+  "human_development_hours": {
+    "finite_demonstrator_low": {
+      "developer": 20,
+      "scientist": 8,
+      "domain": 2
+    },
+    "finite_demonstrator_central": {
+      "developer": 50,
+      "scientist": 24,
+      "domain": 6
+    },
+    "finite_demonstrator_high": {
+      "developer": 110,
+      "scientist": 50,
+      "domain": 20
+    },
+    "source_verified_deployment_low": {
+      "developer": 100,
+      "scientist": 60,
+      "domain": 90
+    },
+    "source_verified_deployment_central": {
+      "developer": 300,
+      "scientist": 180,
+      "domain": 220
+    },
+    "source_verified_deployment_high": {
+      "developer": 700,
+      "scientist": 350,
+      "domain": 550
+    }
+  },
+  "cash_acquisition_per_origin": 5,
+  "acquisition_cost_note": "Explicit assumed cash-channel cost per originating opportunity, separate from intake labor; $0/$15/$50 sensitivity cases. No acquisition cost was measured.",
+  "rework_probability": 0.2,
+  "budget_exhaustion_probability": 0.05,
+  "rework_hours": {
+    "developer": 0.08,
+    "domain": 0.12
+  },
+  "max_rework_rounds": 1,
+  "attempt_budget_note": "Hard cap: listed role labor plus at most one listed rework round and one extra capped compute workload. Budget exhaustion causes refusal/refund and no fee; all incurred work remains A. Completion/admissibility probabilities are assumptions conditional on these caps, not synthetic technical pass rates.",
+  "outside_success_rule": "q_H = source admissibility \u00d7 original-query decisiveness \u00d7 acceptance; q_offer = q_H \u00d7 (1\u2212provider budget-exhaustion probability). Provider-specific budget failure never reduces human outside-option reliability."
+}

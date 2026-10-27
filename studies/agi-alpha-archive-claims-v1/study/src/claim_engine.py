@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Exact linear contrasts over a research-authored finite uncertainty model.
+
+Standard separable support functions plus a top-k sparse-error radius;
+no new algorithm claim. Unit conversion and coupled glyph constraints are
+unsupported. Certificates concern the supplied finite model, not physical
+source completeness. CLI hashes input bytes; solve() otherwise hashes canonical
+JSON. world_count counts latent assignments, not distinct observation vectors.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+import re
+import sys
+from fractions import Fraction
+from pathlib import Path
+from typing import Any, NoReturn, TypedDict
+
+SCHEMA = "agialpha.archive-claim.v1"
+MAX_ROWS = 64
+MAX_ALTERNATIVES = 8
+MAX_NUMERIC_TEXT = 40
+MAX_INPUT_BYTES = 1_000_000
+NUMBER = re.compile(r"[+-]?(?:[0-9]+/[0-9]+|[0-9]+(?:\.[0-9]+)?|\.[0-9]+)\Z")
+
+
+class InputError(ValueError):
+    """The input is malformed or outside the declared model."""
+
+
+class Row(TypedDict):
+    id: str
+    group_id: str
+    alternatives: tuple[Fraction, ...]
+    weight: Fraction
+    error_bound: Fraction
+
+
+def _keys(value: Any, expected: set[str], path: str) -> None:
+    if not isinstance(value, dict):
+        raise InputError(f"{path}: expected an object")
+    missing, extra = expected - value.keys(), value.keys() - expected
+    if missing or extra:
+        raise InputError(f"{path}: missing keys {sorted(missing)}; unsupported keys {sorted(extra)}")
+
+
+def _text(value: Any, path: str) -> str:
+    if not isinstance(value, str) or not value.strip() or len(value) > 256:
+        raise InputError(f"{path}: expected nonempty text of at most 256 characters")
+    if any(ord(c) < 32 for c in value):
+        raise InputError(f"{path}: control characters are unsupported")
+    return value
+
+
+def _number(value: Any, path: str) -> Fraction:
+    if not isinstance(value, str) or len(value) > MAX_NUMERIC_TEXT or not NUMBER.fullmatch(value):
+        raise InputError(f"{path}: expected an exact decimal or p/q string of at most {MAX_NUMERIC_TEXT} characters")
+    try:
+        return Fraction(value)
+    except (ValueError, ZeroDivisionError) as exc:
+        raise InputError(f"{path}: invalid rational number") from exc
+
+
+def _alternatives(value: Any, path: str) -> tuple[Fraction, ...]:
+    if not isinstance(value, list) or not 1 <= len(value) <= MAX_ALTERNATIVES:
+        raise InputError(f"{path}: expected 1..{MAX_ALTERNATIVES} alternatives")
+    result = tuple(_number(item, f"{path}[{i}]") for i, item in enumerate(value))
+    if len(set(result)) != len(result):
+        raise InputError(f"{path}: duplicate numeric alternatives are unsupported")
+    return result
+
+
+def _integer_text(value: int) -> str:
+    # Exact arithmetic can produce a long denominator even from short inputs.
+    # Avoid changing Python's process-global integer-string security setting.
+    try:
+        return str(value)
+    except ValueError:
+        sign = "-" if value < 0 else ""
+        value = abs(value)
+        chunks: list[int] = []
+        while value:
+            value, chunk = divmod(value, 1_000_000_000)
+            chunks.append(chunk)
+        return sign + str(chunks[-1]) + "".join(f"{c:09d}" for c in reversed(chunks[:-1]))
+
+
+def _fraction_text(value: Fraction) -> str:
+    numerator = _integer_text(value.numerator)
+    return numerator if value.denominator == 1 else numerator + "/" + _integer_text(value.denominator)
+
+
+def _validate(payload: Any) -> tuple[list[Row], dict[str, tuple[Fraction, ...]], int, Fraction]:
+    _keys(payload, {"schema", "id", "unit", "source_model", "rows", "calibrations", "error_budget", "threshold"}, "input")
+    if payload["schema"] != SCHEMA:
+        raise InputError(f"schema: expected {SCHEMA}")
+    if payload["source_model"] != "research-authored":
+        raise InputError("source_model: only research-authored finite models are supported")
+    _text(payload["id"], "id")
+    _text(payload["unit"], "unit")
+    threshold = _number(payload["threshold"], "threshold")
+    if not isinstance(payload["calibrations"], list) or not 1 <= len(payload["calibrations"]) <= MAX_ROWS:
+        raise InputError(f"calibrations: expected 1..{MAX_ROWS} groups; use ['0'] for a fixed zero offset")
+    groups: dict[str, tuple[Fraction, ...]] = {}
+    for i, group in enumerate(payload["calibrations"]):
+        path = f"calibrations[{i}]"
+        _keys(group, {"id", "alternatives"}, path)
+        gid = _text(group["id"], path + ".id")
+        if gid in groups:
+            raise InputError(f"{path}: duplicate calibration id {gid!r}")
+        groups[gid] = _alternatives(group["alternatives"], path + ".alternatives")
+    if not isinstance(payload["rows"], list) or not 1 <= len(payload["rows"]) <= MAX_ROWS:
+        raise InputError(f"rows: expected 1..{MAX_ROWS} rows")
+    rows: list[Row] = []
+    seen: set[str] = set()
+    for i, row in enumerate(payload["rows"]):
+        path = f"rows[{i}]"
+        _keys(row, {"id", "source_id", "alternatives", "weight", "group_id", "error_bound"}, path)
+        rid = _text(row["id"], path + ".id")
+        if rid in seen:
+            raise InputError(f"{path}: duplicate row id {rid!r}")
+        seen.add(rid)
+        _text(row["source_id"], path + ".source_id")
+        gid = _text(row["group_id"], path + ".group_id")
+        if gid not in groups:
+            raise InputError(f"{path}: unknown calibration group {gid!r}")
+        bound = _number(row["error_bound"], path + ".error_bound")
+        if bound < 0:
+            raise InputError(f"{path}: error_bound must be nonnegative")
+        rows.append({"id": rid, "group_id": gid, "alternatives": _alternatives(row["alternatives"], path + ".alternatives"),
+                     "weight": _number(row["weight"], path + ".weight"), "error_bound": bound})
+    budget = payload["error_budget"]
+    if type(budget) is not int or not 0 <= budget <= len(rows):
+        raise InputError("error_budget: expected an integer between zero and the row count")
+    return rows, groups, budget, threshold
+
+
+def solve(payload: Any, source_input_sha256: str | None = None) -> dict[str, Any]:
+    """Return exact extrema, decisions, and admissible extremal witnesses.
+
+    Required input schema is described by _validate; unsupported fields are
+    refused. A common global unit is explicitly declared and never converted.
+    Source IDs are required labels, not independently verified source evidence.
+    """
+    rows, groups, budget, threshold = _validate(payload)
+    if source_input_sha256 is None:
+        raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        source_input_sha256 = hashlib.sha256(raw).hexdigest()
+    elif not isinstance(source_input_sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", source_input_sha256):
+        raise InputError("source_input_sha256: expected a lowercase SHA-256 hex digest")
+    coefficients = {gid: sum((r["weight"] for r in rows if r["group_id"] == gid), Fraction()) for gid in groups}
+    ranked = sorted(range(len(rows)), key=lambda i: (-abs(rows[i]["weight"]) * rows[i]["error_bound"], i))
+    selected = [i for i in ranked if rows[i]["weight"] and rows[i]["error_bound"]][:budget]
+    radius = sum((abs(rows[i]["weight"]) * rows[i]["error_bound"] for i in selected), Fraction())
+
+    def extremum(lower: bool) -> tuple[Fraction, dict[str, Any]]:
+        choose = min if lower else max
+        glyphs = {r["id"]: choose(r["alternatives"], key=lambda x: r["weight"] * x) for r in rows}
+        calibrations = {gid: choose(values, key=lambda x: coefficients[gid] * x) for gid, values in groups.items()}
+        direction = -1 if lower else 1
+        errors = {rows[i]["id"]: direction * (1 if rows[i]["weight"] > 0 else -1) * rows[i]["error_bound"] for i in selected}
+        values = {r["id"]: glyphs[r["id"]] + calibrations[r["group_id"]] + errors.get(r["id"], Fraction()) for r in rows}
+        value = sum((r["weight"] * values[r["id"]] for r in rows), Fraction())
+        support = (sum((r["weight"] * glyphs[r["id"]] for r in rows), Fraction())
+                   + sum((coefficients[g] * calibrations[g] for g in groups), Fraction()) + direction * radius)
+        if value != support:
+            raise RuntimeError("Internal witness inconsistency")
+        def encode(mapping: dict[str, Fraction]) -> dict[str, str]:
+            return {k: _fraction_text(v) for k, v in mapping.items()}
+
+        witness = {"glyph_choices": encode(glyphs), "calibration_choices": encode(calibrations),
+                   "errors": encode(errors), "row_values": encode(values), "query_value": _fraction_text(value)}
+        return value, witness
+
+    lower, lower_witness = extremum(True)
+    upper, upper_witness = extremum(False)
+    decision = "TRUE" if lower > threshold else "FALSE" if upper <= threshold else "UNRESOLVED"
+    m = sum(r["error_bound"] > 0 for r in rows)
+    error_worlds = sum(math.comb(m, j) * 2 ** j for j in range(min(budget, m) + 1))
+    world_count = math.prod(len(r["alternatives"]) for r in rows) * math.prod(len(a) for a in groups.values()) * error_worlds
+    return {"schema": "agialpha.archive-claim.result.v1", "status": "OK", "id": payload["id"],
+            "unit": payload["unit"], "source_model": payload["source_model"],
+            "scope": "Supplied research-authored finite model; physical source completeness is not established.",
+            "source_input_sha256": source_input_sha256, "lower": _fraction_text(lower), "upper": _fraction_text(upper),
+            "threshold": _fraction_text(threshold), "decision": decision, "world_count": world_count,
+            "lower_witness": lower_witness, "upper_witness": upper_witness}
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise InputError(f"Duplicate JSON key {key!r}")
+        result[key] = value
+    return result
+
+
+def _bad_constant(value: str) -> NoReturn:
+    raise InputError(f"Non-finite JSON numeric constant {value!r}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args(argv)
+    digest: str | None = None
+    exit_code = 0
+    try:
+        same_path = args.input.resolve() == args.output.resolve()
+        if args.input.exists() and args.output.exists():
+            same_path = same_path or args.input.samefile(args.output)
+        if same_path:
+            print(json.dumps({"status": "REFUSED", "error": "Input and output paths must differ"}), file=sys.stderr)
+            return 2
+        with args.input.open("rb") as stream:
+            raw = stream.read(MAX_INPUT_BYTES + 1)
+        if len(raw) > MAX_INPUT_BYTES:
+            raise InputError(f"Input exceeds {MAX_INPUT_BYTES} bytes")
+        digest = hashlib.sha256(raw).hexdigest()
+        payload = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_object, parse_constant=_bad_constant)
+        result = solve(payload, digest)
+    except (ValueError, UnicodeDecodeError, OSError, RecursionError) as exc:
+        result = {"schema": "agialpha.archive-claim.result.v1", "status": "REFUSED", "error": str(exc), "source_input_sha256": digest}
+        exit_code = 2
+    try:
+        args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    except OSError as exc:
+        print(f"Could not write result: {exc}", file=sys.stderr)
+        return 2
+    return exit_code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

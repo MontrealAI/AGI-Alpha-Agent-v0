@@ -1,0 +1,152 @@
+{
+  "kind": "synthetic exact finite construction",
+  "not_demonstrated": [
+    "accurate admissible-world extraction from real scans",
+    "novelty",
+    "paid demand",
+    "labor savings"
+  ],
+  "obligations": [
+    "Each glyph alternative is 0 or +0.6 units from the printed base.",
+    "Calibration is one of -0.4, 0, +0.4 units.",
+    "At most one source entry has an extra -0.1 or +0.1 unit error.",
+    "The shared-calibration result assumes both epochs used the same calibration; the negative control removes that assumption.",
+    "All glyph alternatives remain unresolved."
+  ],
+  "shared_calibration": {
+    "worlds_checked": 13056,
+    "lower": "3/8",
+    "upper": "13/8",
+    "claim": "late mean minus early mean > 0.35 units",
+    "claim_certified": true,
+    "counterexample_exists": false,
+    "lower_witness": {
+      "glyph_offsets_tenths": [
+        6,
+        6,
+        6,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "calibration_tenths": [
+        -4,
+        -4
+      ],
+      "source_error": [
+        0,
+        1
+      ],
+      "true_values_tenths": [
+        203,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209
+      ]
+    },
+    "upper_witness": {
+      "glyph_offsets_tenths": [
+        0,
+        0,
+        0,
+        0,
+        6,
+        6,
+        6,
+        6
+      ],
+      "calibration_tenths": [
+        -4,
+        -4
+      ],
+      "source_error": [
+        0,
+        -1
+      ],
+      "true_values_tenths": [
+        195,
+        197,
+        198,
+        199,
+        212,
+        213,
+        214,
+        215
+      ]
+    }
+  },
+  "independent_calibration_negative_control": {
+    "worlds_checked": 39168,
+    "lower": "-17/40",
+    "upper": "97/40",
+    "claim": "late mean minus early mean > 0.35 units",
+    "claim_certified": false,
+    "counterexample_exists": true,
+    "lower_witness": {
+      "glyph_offsets_tenths": [
+        6,
+        6,
+        6,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "calibration_tenths": [
+        4,
+        -4
+      ],
+      "source_error": [
+        0,
+        1
+      ],
+      "true_values_tenths": [
+        211,
+        211,
+        212,
+        213,
+        206,
+        207,
+        208,
+        209
+      ]
+    },
+    "upper_witness": {
+      "glyph_offsets_tenths": [
+        0,
+        0,
+        0,
+        0,
+        6,
+        6,
+        6,
+        6
+      ],
+      "calibration_tenths": [
+        -4,
+        4
+      ],
+      "source_error": [
+        0,
+        -1
+      ],
+      "true_values_tenths": [
+        195,
+        197,
+        198,
+        199,
+        220,
+        221,
+        222,
+        223
+      ]
+    }
+  }
+}

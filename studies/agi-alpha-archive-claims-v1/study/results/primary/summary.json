@@ -1,0 +1,225 @@
+{
+  "actual_customer_collections_usd": 0,
+  "capability_archive_sha256": "2df1daf7f243bcfb6389f2260b0b4f2511d2517d5fcd159c947db1d9e211a137",
+  "complete_actual_cost_usd": null,
+  "evidence": "executed exact authored-world construction",
+  "flagship_admitted": false,
+  "groups": {
+    "confirmation": {
+      "all_reference_equal": true,
+      "all_witnesses_valid": true,
+      "cases": 36,
+      "decisions": {
+        "FALSE": 9,
+        "TRUE": 3,
+        "UNRESOLVED": 24
+      },
+      "decorrelation_lost_decisions": 6,
+      "point_nonuniversal_claims": 24,
+      "worlds_enumerated": 231648
+    },
+    "negative_control": {
+      "all_reference_equal": true,
+      "all_witnesses_valid": true,
+      "cases": 1,
+      "decisions": {
+        "UNRESOLVED": 1
+      },
+      "decorrelation_lost_decisions": 0,
+      "point_nonuniversal_claims": 1,
+      "worlds_enumerated": 39168
+    },
+    "origin": {
+      "all_reference_equal": true,
+      "all_witnesses_valid": true,
+      "cases": 1,
+      "decisions": {
+        "TRUE": 1
+      },
+      "decorrelation_lost_decisions": 1,
+      "point_nonuniversal_claims": 0,
+      "worlds_enumerated": 13056
+    },
+    "successor": {
+      "all_reference_equal": true,
+      "all_witnesses_valid": true,
+      "cases": 12,
+      "decisions": {
+        "UNRESOLVED": 12
+      },
+      "decorrelation_lost_decisions": 0,
+      "point_nonuniversal_claims": 12,
+      "worlds_enumerated": 593856
+    }
+  },
+  "novelty": "No substantive advance over identified strongest prior art established.",
+  "operational_alpha": "Unmeasured; exact conventional method ties",
+  "refusals": [
+    {
+      "error": "input: missing keys ['unit']; unsupported keys []",
+      "name": "missing_unit",
+      "refused": true
+    },
+    {
+      "error": "input: missing keys []; unsupported keys ['constraints']",
+      "name": "unsupported_coupling",
+      "refused": true
+    },
+    {
+      "error": "source_model: only research-authored finite models are supported",
+      "name": "real_source_claim",
+      "refused": true
+    },
+    {
+      "error": "error_budget: expected an integer between zero and the row count",
+      "name": "negative_budget",
+      "refused": true
+    },
+    {
+      "error": "error_budget: expected an integer between zero and the row count",
+      "name": "boolean_budget",
+      "refused": true
+    },
+    {
+      "error": "rows: expected 1..64 rows",
+      "name": "empty_rows",
+      "refused": true
+    },
+    {
+      "error": "rows[8]: duplicate row id 'r0'",
+      "name": "duplicate_row",
+      "refused": true
+    },
+    {
+      "error": "rows[0]: missing keys ['source_id']; unsupported keys []",
+      "name": "missing_source",
+      "refused": true
+    },
+    {
+      "error": "rows[0].weight: expected an exact decimal or p/q string of at most 40 characters",
+      "name": "float_weight",
+      "refused": true
+    },
+    {
+      "error": "rows[0]: error_bound must be nonnegative",
+      "name": "negative_error",
+      "refused": true
+    },
+    {
+      "error": "rows[0]: unknown calibration group 'absent'",
+      "name": "unknown_group",
+      "refused": true
+    },
+    {
+      "error": "rows[0].weight: invalid rational number",
+      "name": "zero_denominator",
+      "refused": true
+    }
+  ],
+  "retained_alpha": "Technical execution observed; no measured incremental economic gain",
+  "schema": "agialpha.archive-claim.study.v1",
+  "source_freeze": {
+    "development": "Original exploratory witness and hand-authored checks only; primary case files and answers unseen.",
+    "frozen_utc": "2026-10-27T19:52:22.369129+00:00",
+    "harness_checked": "integration/harness_checks.json",
+    "harness_path": "run_study.py",
+    "harness_sha256": "92cbae25a6e159d1137195f1a3bfba0eef81c82a0e0a09c2fb2f2170be09de78",
+    "oracle_path": "src/exhaustive_reference.py",
+    "oracle_sha256": "5305088bfe1fb68b6a58366fca9ebeb46db3022c60b5836c467c3766beaf4c77",
+    "path": "src/claim_engine.py",
+    "preconfirmation_history": [
+      {
+        "path": "../src/claim_engine.py",
+        "sha256": "0cea250d7ad8299edcfea7c37432e7b7dbc7f2c8f597b50b926d5ecfe0326c69",
+        "status": "original exploratory engine preserved"
+      },
+      {
+        "sha256": "ae357866f167cf61eacb86681f48dcf99f783641699ff3a46cf6fa3912da2336",
+        "status": "study path plus license header; AST-equivalent to original"
+      },
+      {
+        "sha256": "dce5ac65b3c1cdaf625a2f9a0ee554df88d5d2853454ebad5d2cfc00265794db",
+        "status": "final typed cleanup; exploratory outputs/refusals unchanged; Ruff and strict mypy pass"
+      }
+    ],
+    "primary_cases_generated": false,
+    "protocol_sha256": "e1415683e58ffba09c06a60f8fe2a5e7967c6c008001f5df09ea0ad82737f4d8",
+    "scope": "Same-session independently authored algorithms; shared input specification and environment, not external peer review.",
+    "sha256": "dce5ac65b3c1cdaf625a2f9a0ee554df88d5d2853454ebad5d2cfc00265794db",
+    "stage": "Before primary confirmation and successor case generation"
+  },
+  "transfer": [
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-000",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-001",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-002",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-003",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-004",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-005",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-006",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-007",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-008",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-009",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-010",
+      "matches_primary_certificate": true
+    },
+    {
+      "byte_identical": true,
+      "fresh_processes": 2,
+      "id": "successor-011",
+      "matches_primary_certificate": true
+    }
+  ]
+}
