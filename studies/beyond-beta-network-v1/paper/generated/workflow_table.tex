@@ -1,0 +1,19 @@
+\begin{table}[!htbp]\centering\small
+\caption{Per-unit role usage assumptions. Input/output are thousands of tokens; output includes reasoning. Repetition, complexity, correction and assets change units. These are not measured production traces.}
+\begin{tabularx}{\linewidth}{Yrrr}\toprule
+Automated role & Model & Input k & Output k\\\midrule
+intake & 6-astra & 100 & 16\\
+producer & 6-astra & 100 & 20\\
+candidateCritic & 6-astra & 40 & 5\\
+semanticCritic & 6-astra & 80 & 20\\
+improvementEvaluator & 6-astra & 80 & 16\\
+correction & 6-astra & 120 & 24\\
+revalidation & 6-astra & 60 & 12\\
+recovery & 6-astra & 90 & 18\\
+executor & 6.1-terra & 20 & 3\\
+packaging & 6.1-terra & 60 & 12\\
+capabilityEvaluator & 6-astra & 160 & 32\\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize\color{muted}All producer, validator, correction, capability evaluator and packaging roles are automated. Shared semantic errors can survive retries. Capacity booking uses blind maximum reservations; modeled completion latency is not a measured API SLA.}\par
+\end{table}
