@@ -1,0 +1,22 @@
+{
+  "study_date": "2026-10-27",
+  "verification": "Official documentation searched and opened on study date; no paid API calls, mission performance tests, credential inspection, or account eligibility tests performed.",
+  "prices_currency": "USD",
+  "price_unit": "per million tokens, standard uncached input / output",
+  "models": [
+    {"provider":"OpenAI","id":"gpt-6-astra","role":"demanding discovery and judgment","input":10,"output":50,"context":1050000,"max_output":128000,"reasoning":["low","medium","high","xhigh","max"],"proposed_configuration":{"reasoning":{"effort":"max"},"max_output_tokens":64000},"tools":["functions","web search","file search","computer use"],"access":"Responses API and client SDKs; account eligibility not tested","sources":["https://developers.openai.com/api/docs/models","https://developers.openai.com/api/docs/guides/latest-model","https://developers.openai.com/api/docs/pricing"]},
+    {"provider":"OpenAI","id":"gpt-6.1-sol","role":"capable execution and cost sensitivity comparator","input":2,"output":10,"context":1050000,"max_output":128000,"reasoning":["low","medium","high","xhigh","max"],"proposed_configuration":{"reasoning":{"effort":"high"},"max_output_tokens":32000},"tools":["functions","web search","file search","computer use"],"sources":["https://developers.openai.com/api/docs/models"]},
+    {"provider":"OpenAI","id":"gpt-6.1-terra","role":"visual and computer-use execution candidate","input":1,"output":5,"context":1050000,"max_output":128000,"reasoning":["none","low","medium","high","xhigh","max"],"proposed_configuration":{"reasoning":{"effort":"high"},"max_output_tokens":32000},"tools":["functions","web search","file search","computer use"],"sources":["https://developers.openai.com/api/docs/models"]},
+    {"provider":"Anthropic","id":"claude-fable-5-1","role":"independent demanding validation candidate","input":10,"output":50,"context":1000000,"max_output":128000,"reasoning":["low","medium","high","xhigh","max"],"proposed_configuration":{"output_config":{"effort":"max"},"max_tokens":64000},"thinking":"adaptive always on; default high; thinking tokens count toward output cap","access":"Claude API and listed cloud platforms; account eligibility not tested; restricted Mythos variant not assumed accessible","sources":["https://platform.claude.com/docs/en/models/fable-5-1/overview","https://platform.claude.com/docs/en/build-with-claude/effort"]},
+    {"provider":"Anthropic","id":"claude-opus-5-5","role":"independent implementation and cost comparison candidate","input":4,"output":20,"context":1000000,"max_output":128000,"thinking":"adaptive always on; default medium","proposed_configuration":{"output_config":{"effort":"high"},"max_tokens":64000},"access":"Claude API and listed cloud platforms; account eligibility not tested","sources":["https://platform.claude.com/docs/en/models/overview","https://platform.claude.com/docs/en/models/opus-5-5/overview"]},
+    {"provider":"Google","id":"gemini-4-argon","role":"independent long-context scientific reasoning candidate","input":2,"output":10,"price_expiry":"2026-11-30","input_from_2026_12_01":4,"output_from_2026_12_01":20,"unified_context":1048576,"default_sync_max_output":65536,"reasoning":["low","medium","high"],"proposed_configuration":{"thinking_level":"high","max_output_tokens":65536},"tools":["code execution","computer use (preview)","file search","function calling","search grounding","URL context","structured outputs"],"access":"Gemini API / AI Studio paid tier; no free-tier Argon; account eligibility not tested","sources":["https://ai.google.dev/gemini-api/docs/models/gemini-4-argon","https://ai.google.dev/gemini-api/docs/latest-model","https://ai.google.dev/gemini-api/docs/pricing"]}
+  ],
+  "controls": [
+    "U and E must use the identical model identifier, reasoning cap, tools, initial information, and total monetary/token budget when attributing Operational Alpha.",
+    "Proposed configurations are experiment configuration suggestions, not evidence these APIs were executed.",
+    "OpenAI reasoning with tools requires Responses API; omit temperature/top_p when reasoning effort is not none.",
+    "Closed model weights, unlimited automated inference, account authorization and unlimited consumer subscription use are not assumed.",
+    "Provider benchmark or marketing claims do not establish selected-offering success rates.",
+    "Prices are date-sensitive. Include tool calls, hidden/reasoning output, retries, verifier usage and longer-running context overhead in actual cost logs."
+  ]
+}

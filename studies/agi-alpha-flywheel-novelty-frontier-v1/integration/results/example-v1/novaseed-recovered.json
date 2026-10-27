@@ -1,0 +1,104 @@
+{
+  "admission": "Research-only; no current protected production scope or live ENS authority established.",
+  "data_mode": "public_research_opportunity",
+  "experiment_milestones": [
+    {
+      "acceptance": "The public record identifies supplied inputs, discovery, obligations and falsifiers",
+      "budget_usd": null,
+      "dependencies": [],
+      "duration_seconds": 86400,
+      "fixture_bounty_base_units": "100",
+      "goal": "Record opportunity, prior art and original purpose",
+      "id": "discovery",
+      "permissions": [
+        "Public source reading"
+      ],
+      "price_weight": 6000
+    },
+    {
+      "acceptance": "Execute the frozen scope and preserve all comparison outcomes and costs",
+      "budget_usd": null,
+      "dependencies": [
+        "discovery"
+      ],
+      "duration_seconds": 86400,
+      "fixture_bounty_base_units": "100",
+      "goal": "Construct and evaluate the selected research instrument",
+      "id": "construction",
+      "permissions": [
+        "Local execution only"
+      ],
+      "price_weight": 6000
+    }
+  ],
+  "fusion_plan": {
+    "decimals": 18,
+    "jobs": [
+      {
+        "index": 0,
+        "leaf": "0x76f3b8f0f5a0677eebe3b45a7860d05daf97801db701f3e4ef4c8e214848844a",
+        "proof": [
+          "0xfa32c9028277b30fa3cd7a5aaa4500b712856b658946074822306497675ec5c8"
+        ],
+        "spec": {
+          "bounty": "100",
+          "duration": 86400,
+          "goal": "Record opportunity, prior art and original purpose",
+          "priceWeight": 6000,
+          "successMetric": "The public record identifies supplied inputs, discovery, obligations and falsifiers"
+        }
+      },
+      {
+        "index": 1,
+        "leaf": "0xfa32c9028277b30fa3cd7a5aaa4500b712856b658946074822306497675ec5c8",
+        "proof": [
+          "0x76f3b8f0f5a0677eebe3b45a7860d05daf97801db701f3e4ef4c8e214848844a"
+        ],
+        "spec": {
+          "bounty": "100",
+          "duration": 86400,
+          "goal": "Construct and evaluate the selected research instrument",
+          "priceWeight": 6000,
+          "successMetric": "Execute the frozen scope and preserve all comparison outcomes and costs"
+        }
+      }
+    ],
+    "planRoot": "0x18a3ed03d9f39a9eb11a09bf706c1268d79f6c2980fdbd3968fd661049d2e260",
+    "schema": "agialpha.ascension.fusion-plan.v1",
+    "token": "AGIALPHA",
+    "totalBounty": "200"
+  },
+  "opportunity": {
+    "beneficiary": "A future study-specific beneficiary, not an observed customer",
+    "next_experiment": "Replace this public fixture with the selected opportunity and its frozen experimental design.",
+    "sources": [],
+    "title": "Unselected research opportunity — integration fixture",
+    "transformation_witness": {
+      "acceptance": "This fixture only tests integrity and admission boundaries",
+      "binding_restriction": "Candidate-dependent and unresolved",
+      "falsifier": "Any permission or success asserted from the hash alone",
+      "original_purpose": "Inspect a complete public research opportunity record",
+      "preserved_obligations": [
+        "Do not replace the original purpose",
+        "Do not expand production authority"
+      ],
+      "proposed_change": "Candidate-dependent and unresolved"
+    },
+    "uncertainty": [
+      "No flagship has been selected in this integration fixture",
+      "No commercial demand or novelty is established"
+    ],
+    "valuable_outcome": "To be populated only after selection and actual construction"
+  },
+  "rights": {
+    "contains_customer_secrets": false,
+    "live_ENS_authority": "NOT_ESTABLISHED",
+    "production_network_clearance": "NOT_ESTABLISHED",
+    "public_research_only": true,
+    "sources_cleared_for_research": true
+  },
+  "schema": "agialpha.novaseed.genome.v1",
+  "source_commit": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "study_id": "offline-study-integration-v1",
+  "title": "Unselected research opportunity — integration fixture"
+}

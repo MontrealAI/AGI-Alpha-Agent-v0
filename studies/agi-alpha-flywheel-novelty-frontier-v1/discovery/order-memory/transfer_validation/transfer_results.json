@@ -1,0 +1,216 @@
+{
+  "label": "fresh-size exhaustive mathematical validation; not blind discovery, physical performance, human comparison or earned revenue",
+  "configuration_sha256": "2f6e9368caeef616c3a443848e66a98cf59a04224eb5b03537f424f77cce9e79",
+  "source_sha256": "d964d42b80b1d5253daabc2e823c2d8c90fac43fc7c89fffa317ba00d11afe00",
+  "case_stream_sha256": "7aab69ed0bb22afd6ebb5ad54393d7b633156b7c2e8df64b5fea04f9b7b60e17",
+  "wall_seconds_measured": 4.70780086517334,
+  "results": [
+    {
+      "n": 5,
+      "histories": 120,
+      "pairwise_bits": 10,
+      "xor_bits": 11,
+      "pairwise_duplication_lower_bound_bits": 20,
+      "schemes": {
+        "pairwise": {
+          "erasures": {
+            "1": {
+              "cases": 1200,
+              "unique": 720,
+              "ambiguous": 480,
+              "histories_with_adversarial_ambiguity": 120,
+              "example": {
+                "history": "ABCDE",
+                "erased": [
+                  0
+                ],
+                "recovery_set": [
+                  "ABCDE",
+                  "BACDE"
+                ]
+              }
+            },
+            "2": {
+              "cases": 5400,
+              "unique": 1800,
+              "ambiguous": 3600,
+              "histories_with_adversarial_ambiguity": 120,
+              "example": {
+                "history": "ABCDE",
+                "erased": [
+                  0,
+                  1
+                ],
+                "recovery_set": [
+                  "ABCDE",
+                  "BACDE",
+                  "BCADE"
+                ]
+              }
+            }
+          }
+        },
+        "pairwise_plus_xor": {
+          "erasures": {
+            "1": {
+              "cases": 1320,
+              "unique": 1320,
+              "ambiguous": 0,
+              "histories_with_adversarial_ambiguity": 0,
+              "example": null
+            },
+            "2": {
+              "cases": 6600,
+              "unique": 5040,
+              "ambiguous": 1560,
+              "histories_with_adversarial_ambiguity": 120,
+              "example": {
+                "history": "ABCDE",
+                "erased": [
+                  0,
+                  1
+                ],
+                "recovery_set": [
+                  "ABCDE",
+                  "BCADE"
+                ]
+              }
+            }
+          },
+          "ordinary_identical_information_library_ties": 1320,
+          "single_bit_substitutions_tested": 1320,
+          "single_bit_substitutions_detected": 1320,
+          "single_substitution_not_correctable_witness": {
+            "history_1": "ABCDE",
+            "history_2": "BACDE",
+            "received": [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+            ],
+            "distance_to_history_1": 1,
+            "distance_to_history_2": 1
+          },
+          "physical_implementation": false
+        }
+      }
+    },
+    {
+      "n": 6,
+      "histories": 720,
+      "pairwise_bits": 15,
+      "xor_bits": 16,
+      "pairwise_duplication_lower_bound_bits": 30,
+      "schemes": {
+        "pairwise": {
+          "erasures": {
+            "1": {
+              "cases": 10800,
+              "unique": 7200,
+              "ambiguous": 3600,
+              "histories_with_adversarial_ambiguity": 720,
+              "example": {
+                "history": "ABCDEF",
+                "erased": [
+                  0
+                ],
+                "recovery_set": [
+                  "ABCDEF",
+                  "BACDEF"
+                ]
+              }
+            },
+            "2": {
+              "cases": 75600,
+              "unique": 32400,
+              "ambiguous": 43200,
+              "histories_with_adversarial_ambiguity": 720,
+              "example": {
+                "history": "ABCDEF",
+                "erased": [
+                  0,
+                  1
+                ],
+                "recovery_set": [
+                  "ABCDEF",
+                  "BACDEF",
+                  "BCADEF"
+                ]
+              }
+            }
+          }
+        },
+        "pairwise_plus_xor": {
+          "erasures": {
+            "1": {
+              "cases": 11520,
+              "unique": 11520,
+              "ambiguous": 0,
+              "histories_with_adversarial_ambiguity": 0,
+              "example": null
+            },
+            "2": {
+              "cases": 86400,
+              "unique": 72720,
+              "ambiguous": 13680,
+              "histories_with_adversarial_ambiguity": 720,
+              "example": {
+                "history": "ABCDEF",
+                "erased": [
+                  0,
+                  1
+                ],
+                "recovery_set": [
+                  "ABCDEF",
+                  "BCADEF"
+                ]
+              }
+            }
+          },
+          "ordinary_identical_information_library_ties": 11520,
+          "single_bit_substitutions_tested": 11520,
+          "single_bit_substitutions_detected": 11520,
+          "single_substitution_not_correctable_witness": {
+            "history_1": "ABCDEF",
+            "history_2": "BACDEF",
+            "received": [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "distance_to_history_1": 1,
+            "distance_to_history_2": 1
+          },
+          "physical_implementation": false
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "operational_alpha": "unmeasured; no ordinary-user versus expert frontier-model trial was run",
+    "retained_alpha": "technical reuse succeeds on new event counts but an ordinary library with identical information ties on every one-erasure recovery; no superiority or financial net Alpha established",
+    "novelty": "standard parity construction; no discovery beyond coding prior art",
+    "physical_transfer": "unmeasured; bits, couplings and fabrication are different resources"
+  }
+}

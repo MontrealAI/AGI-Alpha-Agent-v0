@@ -1,0 +1,163 @@
+{
+  "review_source_sha256": "3345c6471527c2a4964da97aee0ea344ab3449c866931ceabbfc6414f134d44a",
+  "cases_verified": 198840,
+  "independent_bitset_oracle_mismatches": 0,
+  "stream_hash_matches": true,
+  "source_and_config_hashes_match": true,
+  "duplicate_reference_single_erasure_cases_verified": 24000,
+  "counterexamples": [
+    {
+      "n": 5,
+      "erasure_plus_substitution": {
+        "original": "ABCDE",
+        "erased_index": 10,
+        "flipped_index": 0,
+        "decoded_unique_wrong": [
+          "BACDE"
+        ]
+      },
+      "two_substitutions": {
+        "original": "ABCDE",
+        "flipped_indices": [
+          0,
+          1
+        ],
+        "decoded_unique_wrong": [
+          "BCADE"
+        ],
+        "parity_detects": false
+      }
+    },
+    {
+      "n": 6,
+      "erasure_plus_substitution": {
+        "original": "ABCDEF",
+        "erased_index": 15,
+        "flipped_index": 0,
+        "decoded_unique_wrong": [
+          "BACDEF"
+        ]
+      },
+      "two_substitutions": {
+        "original": "ABCDEF",
+        "flipped_indices": [
+          0,
+          1
+        ],
+        "decoded_unique_wrong": [
+          "BCADEF"
+        ],
+        "parity_detects": false
+      }
+    }
+  ],
+  "scope_verdict": "Correct within distinct-events-once, known single erasure and noiseless remaining bits; no novelty, hardware count or AI advantage established.",
+  "elapsed_seconds": 15.87837499100715,
+  "counts": [
+    {
+      "n": 5,
+      "scheme": "pairwise",
+      "erasures": 1,
+      "unique": false,
+      "cases": 480
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise",
+      "erasures": 1,
+      "unique": true,
+      "cases": 720
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise",
+      "erasures": 2,
+      "unique": false,
+      "cases": 3600
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise",
+      "erasures": 2,
+      "unique": true,
+      "cases": 1800
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 1,
+      "unique": true,
+      "cases": 1320
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 2,
+      "unique": false,
+      "cases": 1560
+    },
+    {
+      "n": 5,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 2,
+      "unique": true,
+      "cases": 5040
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise",
+      "erasures": 1,
+      "unique": false,
+      "cases": 3600
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise",
+      "erasures": 1,
+      "unique": true,
+      "cases": 7200
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise",
+      "erasures": 2,
+      "unique": false,
+      "cases": 43200
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise",
+      "erasures": 2,
+      "unique": true,
+      "cases": 32400
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 1,
+      "unique": true,
+      "cases": 11520
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 2,
+      "unique": false,
+      "cases": 13680
+    },
+    {
+      "n": 6,
+      "scheme": "pairwise_plus_xor",
+      "erasures": 2,
+      "unique": true,
+      "cases": 72720
+    }
+  ],
+  "execution_kind": "portable_replay_of_preserved_independent_review",
+  "original_review_source_sha256": "e91ce5c41f7e6448955bea8c293752df76aec93eca81c0451fbe398fed045a65",
+  "original_review_report_sha256": "5645ff045f49063d8f0e2c1bc789b049ebece50b1713a3dac15001a9adf758d5",
+  "original_review_source_preserved_exactly": true,
+  "original_review_report_unchanged": true,
+  "data_directory": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1/discovery/order-memory",
+  "output_policy": "stdout by default; explicit output uses exclusive creation and never overwrites an existing file"
+}

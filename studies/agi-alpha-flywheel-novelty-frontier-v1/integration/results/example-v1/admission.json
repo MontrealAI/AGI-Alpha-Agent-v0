@@ -1,0 +1,46 @@
+{
+  "production_admission": "DENIED",
+  "protected_scope": "unsupported new research instrument",
+  "rights_clearance": "unreviewed rights rejected in separate control",
+  "live_ENS_authority": "DENIED",
+  "live_RPC_calls": 0,
+  "local_denier_attempts": [
+    {
+      "reader": "local-denier-1",
+      "method": "eth_getBlockByNumber"
+    }
+  ],
+  "fixture_pins": true,
+  "test_signature_is_not_live_ENS_ownership": true,
+  "new_authority_granted": false,
+  "native_journal_verification": {
+    "valid": true,
+    "events": 10,
+    "head": "12bf4fe02f330b96d9e4d97e8687f9e10a0e2934b96e170348a7f1e3c45a0743",
+    "identity": "urn:agialpha:ed25519:77d178cbfe5bba30fd346403435c68c2ca8c57ada695907ec566dbd83067e841"
+  },
+  "checks": [
+    {
+      "name": "new_instrument_scope_not_production_admitted",
+      "passed": true,
+      "observed": "refused",
+      "reason": "1 validation error for CapsuleManifest\nsupported_scope\n  Input should be 'bounded-public-source-selection/v1' [type=literal_error, input_value='new-research-instrument/v1', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/literal_error"
+    },
+    {
+      "name": "unreviewed_rights_not_production_admitted",
+      "passed": true,
+      "observed": "refused",
+      "reason": "1 validation error for CapsuleManifest\nrights\n  Input should be 'cleared-for-authenticated-network' [type=literal_error, input_value='unreviewed', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/literal_error"
+    },
+    {
+      "name": "valid_local_signature_without_live_ENS_authority_denied",
+      "passed": true,
+      "observed": "refused",
+      "reason": "Offline research: live ENS reads are unavailable; authority denied."
+    },
+    {
+      "name": "denied_authority_does_not_consume_challenge",
+      "passed": true
+    }
+  ]
+}

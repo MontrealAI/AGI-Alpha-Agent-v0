@@ -1,0 +1,144 @@
+{
+  "generator": "src/build_figures.py",
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "png_dpi": 300,
+  "palette": [
+    "#301356",
+    "#8051C9",
+    "#B79AE1",
+    "#2F8B78",
+    "#B67A26"
+  ],
+  "source_files": {
+    "order_exploration": {
+      "path": "discovery/order-memory/mechanical_memory_probe.json",
+      "sha256": "2d30540aa806f6a114791537cca40ed0072dc5bf312469320317eafabe177abe"
+    },
+    "order_transfer": {
+      "path": "discovery/order-memory/transfer_validation/transfer_results.json",
+      "sha256": "be98cf03e2f048c45058fe96cf3119853ff196a5e7fbafde6e9fae2c7d95bdbe"
+    },
+    "confluence": {
+      "path": "experiments/confluence/results.json",
+      "sha256": "16c536026cc0307e90a37803d4bee3381d8492de1a4514ca87ba0cd1e223555c"
+    }
+  },
+  "figures": [
+    {
+      "id": 1,
+      "stem": "figure-1-erasure-recovery",
+      "width_inches": 6.7,
+      "height_inches": 4.35,
+      "caption": "Exact recovery in abstract event-order records. For every permutation and single erased position, complete pairwise records uniquely recover 72/144, 720/1,200 and 7,200/10,800 cases at four, five and six events. Appending a standard XOR parity bit recovers 168/168, 1,320/1,320 and 11,520/11,520 cases. Each coded denominator includes the added parity position. Diamond markers at five and six events show the exact tie with an ordinary library carrying identical information. Sizes five and six were executed after the local configuration freeze, as implementation checks of a known formula. No physical device or superiority over classical coding is established.",
+      "alt": "Horizontal bars show pairwise recovery of 50%, 60% and 66.7% at four, five and six events. Conventional parity recovery is 100% at each size, and the identical-information library ties at five and six events.",
+      "data": [
+        {
+          "n": 4,
+          "pair_unique": 72,
+          "pair_cases": 144,
+          "parity_unique": 168,
+          "parity_cases": 168
+        },
+        {
+          "n": 5,
+          "pair_unique": 720,
+          "pair_cases": 1200,
+          "parity_unique": 1320,
+          "parity_cases": 1320
+        },
+        {
+          "n": 6,
+          "pair_unique": 7200,
+          "pair_cases": 10800,
+          "parity_unique": 11520,
+          "parity_cases": 11520
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "stem": "figure-2-adjacent-swap",
+      "width_inches": 6.7,
+      "height_inches": 4.15,
+      "caption": "The adjacent-swap ambiguity and its conventional repair. Histories ABCD and BACD differ only in their AB pairwise relation. Erasing that relation makes the six pairwise readouts identical, so both histories remain admissible. Their separately stored XOR bits differ and recover the missing relation. For n events, m=n(n-1)/2 pairwise bits plus one parity bit suffice for one known erasure; the restricted pairwise-copy class requires 2m bits. This is an abstract information comparison, not an equal-resource physical-device claim: gates, couplings, ancillas and fabrication costs are unmeasured. One parity bit detects a single unmarked substitution but cannot generally correct it.",
+      "alt": "Two event histories have identical five unaffected pairwise bits. Their AB bit differs, then becomes unknown after erasure. The additional XOR bit remains zero versus one and distinguishes the histories.",
+      "data": {
+        "edges": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "D"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "D"
+          ],
+          [
+            "C",
+            "D"
+          ]
+        ],
+        "histories": [
+          "ABCD",
+          "BACD"
+        ],
+        "codewords_with_parity": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "erased_comparator": "AB"
+      }
+    },
+    {
+      "id": 3,
+      "stem": "figure-3-confluence-collisions",
+      "width_inches": 6.7,
+      "height_inches": 4.8,
+      "caption": "What the four-bit confluence model does and does not record. AB and BA settle at 1110 and 1101, while C, ABA and BAB all settle at 1111. C denotes simultaneous held input fields until settling; it is not a general overlap class. The collision prevents a complete-history or unique-simultaneity claim. The conventional monotone-closure control matches the proposed endpoints in all 140 nominal and 71,680 perturbed all-state/held-field cases. These are executed finite-model checks rather than independent physical trials. Internal update-order convergence and external event-order sensitivity coexist through established positive-feedback latching; the result does not establish a substantive advance beyond identified prior art.",
+      "alt": "A bit-state table shows AB mapping to 1110 and BA to 1101. An amber collision band shows C, ABA and BAB all mapping to 1111. A footer states exact agreement with conventional monotone closure.",
+      "data": {
+        "states": {
+          "AB": "1110",
+          "BA": "1101",
+          "C": "1111",
+          "ABA": "1111",
+          "BAB": "1111"
+        },
+        "nominal_cases": 140,
+        "perturbed_cases": 71680,
+        "conventional_control_disagreements": 0
+      }
+    }
+  ]
+}

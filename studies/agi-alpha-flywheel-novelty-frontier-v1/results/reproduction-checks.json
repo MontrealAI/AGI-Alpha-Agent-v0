@@ -1,0 +1,575 @@
+{
+  "schema": "agi-alpha.readme-reproduction-checks.v1",
+  "started_utc": "2026-10-27T19:49:03.133038+00:00",
+  "finished_utc": "2026-10-27T19:49:34.642927+00:00",
+  "temporary_directory": "/tmp/agi-alpha-readme-reproduction-n70d14on",
+  "execution_scope": "Exact requested README computation commands with reproduction/ replaced by an independent temporary directory outside the study; copying/setup commands recorded. Publication builds and full repository suite not run.",
+  "readme_sha256_at_start": "49796123ddf900ca8951997bcf690c3e7149cc9b042b6710cd199fcd9abab953",
+  "readme_sha256_at_finish": "49796123ddf900ca8951997bcf690c3e7149cc9b042b6710cd199fcd9abab953",
+  "environment_adjustment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "purpose": "Prevent incidental bytecode writes into source evidence; computation inputs unchanged"
+  },
+  "command_records": [
+    {
+      "name": "order-transfer",
+      "argv": [
+        "python3",
+        "discovery/order-memory/order_transfer_study.py",
+        "--config",
+        "discovery/order-memory/transfer_frozen_config.json",
+        "--output-dir",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/order-transfer"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:03.156239+00:00",
+      "duration_seconds": 4.81438418700418,
+      "exit_code": 0,
+      "stdout": "{\n  \"label\": \"fresh-size exhaustive mathematical validation; not blind discovery, physical performance, human comparison or earned revenue\",\n  \"configuration_sha256\": \"2f6e9368caeef616c3a443848e66a98cf59a04224eb5b03537f424f77cce9e79\",\n  \"source_sha256\": \"d964d42b80b1d5253daabc2e823c2d8c90fac43fc7c89fffa317ba00d11afe00\",\n  \"case_stream_sha256\": \"7aab69ed0bb22afd6ebb5ad54393d7b633156b7c2e8df64b5fea04f9b7b60e17\",\n  \"wall_seconds_measured\": 4.763147592544556,\n  \"results\": [\n    {\n      \"n\": 5,\n      \"histories\": 120,\n      \"pairwise_bits\": 10,\n      \"xor_bits\": 11,\n      \"pairwise_duplication_lower_bound_bits\": 20,\n      \"schemes\": {\n        \"pairwise\": {\n          \"erasures\": {\n            \"1\": {\n              \"cases\": 1200,\n              \"unique\": 720,\n              \"ambiguous\": 480,\n              \"histories_with_adversarial_ambiguity\": 120,\n              \"example\": {\n                \"history\": \"ABCDE\",\n                \"erased\": [\n                  0\n                ],\n                \"recovery_set\": [\n                  \"ABCDE\",\n                  \"BACDE\"\n                ]\n              }\n            },\n            \"2\": {\n              \"cases\": 5400,\n              \"unique\": 1800,\n              \"ambiguous\": 3600,\n              \"histories_with_adversarial_ambiguity\": 120,\n              \"example\": {\n                \"history\": \"ABCDE\",\n                \"erased\": [\n                  0,\n                  1\n                ],\n                \"recovery_set\": [\n                  \"ABCDE\",\n                  \"BACDE\",\n                  \"BCADE\"\n                ]\n              }\n            }\n          }\n        },\n        \"pairwise_plus_xor\": {\n          \"erasures\": {\n            \"1\": {\n              \"cases\": 1320,\n              \"unique\": 1320,\n              \"ambiguous\": 0,\n              \"histories_with_adversarial_ambiguity\": 0,\n              \"example\": null\n            },\n            \"2\": {\n              \"cases\": 6600,\n              \"unique\": 5040,\n              \"ambiguous\": 1560,\n              \"histories_with_adversarial_ambiguity\": 120,\n              \"example\": {\n                \"history\": \"ABCDE\",\n                \"erased\": [\n                  0,\n                  1\n                ],\n                \"recovery_set\": [\n                  \"ABCDE\",\n                  \"BCADE\"\n                ]\n              }\n            }\n          },\n          \"ordinary_identical_information_library_ties\": 1320,\n          \"single_bit_substitutions_tested\": 1320,\n          \"single_bit_substitutions_detected\": 1320,\n          \"single_substitution_not_correctable_witness\": {\n            \"history_1\": \"ABCDE\",\n            \"history_2\": \"BACDE\",\n            \"received\": [\n              0,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              0\n            ],\n            \"distance_to_history_1\": 1,\n            \"distance_to_history_2\": 1\n          },\n          \"physical_implementation\": false\n        }\n      }\n    },\n    {\n      \"n\": 6,\n      \"histories\": 720,\n      \"pairwise_bits\": 15,\n      \"xor_bits\": 16,\n      \"pairwise_duplication_lower_bound_bits\": 30,\n      \"schemes\": {\n        \"pairwise\": {\n          \"erasures\": {\n            \"1\": {\n              \"cases\": 10800,\n              \"unique\": 7200,\n              \"ambiguous\": 3600,\n              \"histories_with_adversarial_ambiguity\": 720,\n              \"example\": {\n                \"history\": \"ABCDEF\",\n                \"erased\": [\n                  0\n                ],\n                \"recovery_set\": [\n                  \"ABCDEF\",\n                  \"BACDEF\"\n                ]\n              }\n            },\n            \"2\": {\n              \"cases\": 75600,\n              \"unique\": 32400,\n              \"ambiguous\": 43200,\n              \"histories_with_adversarial_ambiguity\": 720,\n              \"example\": {\n                \"history\": \"ABCDEF\",\n                \"erased\": [\n                  0,\n                  1\n                ],\n                \"recovery_set\": [\n                  \"ABCDEF\",\n                  \"BACDEF\",\n                  \"BCADEF\"\n                ]\n              }\n            }\n          }\n        },\n        \"pairwise_plus_xor\": {\n          \"erasures\": {\n            \"1\": {\n              \"cases\": 11520,\n              \"unique\": 11520,\n              \"ambiguous\": 0,\n              \"histories_with_adversarial_ambiguity\": 0,\n              \"example\": null\n            },\n            \"2\": {\n              \"cases\": 86400,\n              \"unique\": 72720,\n              \"ambiguous\": 13680,\n              \"histories_with_adversarial_ambiguity\": 720,\n              \"example\": {\n                \"history\": \"ABCDEF\",\n                \"erased\": [\n                  0,\n                  1\n                ],\n                \"recovery_set\": [\n                  \"ABCDEF\",\n                  \"BCADEF\"\n                ]\n              }\n            }\n          },\n          \"ordinary_identical_information_library_ties\": 11520,\n          \"single_bit_substitutions_tested\": 11520,\n          \"single_bit_substitutions_detected\": 11520,\n          \"single_substitution_not_correctable_witness\": {\n            \"history_1\": \"ABCDEF\",\n            \"history_2\": \"BACDEF\",\n            \"received\": [\n              0,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1,\n              1\n            ],\n            \"distance_to_history_1\": 1,\n            \"distance_to_history_2\": 1\n          },\n          \"physical_implementation\": false\n        }\n      }\n    }\n  ],\n  \"interpretation\": {\n    \"operational_alpha\": \"unmeasured; no ordinary-user versus expert frontier-model trial was run\",\n    \"retained_alpha\": \"technical reuse succeeds on new event counts but an ordinary library with identical information ties on every one-erasure recovery; no superiority or financial net Alpha established\",\n    \"novelty\": \"standard parity construction; no discovery beyond coding prior art\",\n    \"physical_transfer\": \"unmeasured; bits, couplings and fabrication are different resources\"\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "order-review",
+      "argv": [
+        "python3",
+        "discovery/order-memory/order_transfer_review.py",
+        "--output",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/order-review.json"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:07.971434+00:00",
+      "duration_seconds": 16.368504899000982,
+      "exit_code": 0,
+      "stdout": "{\n  \"review_source_sha256\": \"3345c6471527c2a4964da97aee0ea344ab3449c866931ceabbfc6414f134d44a\",\n  \"cases_verified\": 198840,\n  \"independent_bitset_oracle_mismatches\": 0,\n  \"stream_hash_matches\": true,\n  \"source_and_config_hashes_match\": true,\n  \"duplicate_reference_single_erasure_cases_verified\": 24000,\n  \"counterexamples\": [\n    {\n      \"n\": 5,\n      \"erasure_plus_substitution\": {\n        \"original\": \"ABCDE\",\n        \"erased_index\": 10,\n        \"flipped_index\": 0,\n        \"decoded_unique_wrong\": [\n          \"BACDE\"\n        ]\n      },\n      \"two_substitutions\": {\n        \"original\": \"ABCDE\",\n        \"flipped_indices\": [\n          0,\n          1\n        ],\n        \"decoded_unique_wrong\": [\n          \"BCADE\"\n        ],\n        \"parity_detects\": false\n      }\n    },\n    {\n      \"n\": 6,\n      \"erasure_plus_substitution\": {\n        \"original\": \"ABCDEF\",\n        \"erased_index\": 15,\n        \"flipped_index\": 0,\n        \"decoded_unique_wrong\": [\n          \"BACDEF\"\n        ]\n      },\n      \"two_substitutions\": {\n        \"original\": \"ABCDEF\",\n        \"flipped_indices\": [\n          0,\n          1\n        ],\n        \"decoded_unique_wrong\": [\n          \"BCADEF\"\n        ],\n        \"parity_detects\": false\n      }\n    }\n  ],\n  \"scope_verdict\": \"Correct within distinct-events-once, known single erasure and noiseless remaining bits; no novelty, hardware count or AI advantage established.\",\n  \"elapsed_seconds\": 16.301644256003783,\n  \"counts\": [\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 1,\n      \"unique\": false,\n      \"cases\": 480\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 1,\n      \"unique\": true,\n      \"cases\": 720\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 2,\n      \"unique\": false,\n      \"cases\": 3600\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 2,\n      \"unique\": true,\n      \"cases\": 1800\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 1,\n      \"unique\": true,\n      \"cases\": 1320\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 2,\n      \"unique\": false,\n      \"cases\": 1560\n    },\n    {\n      \"n\": 5,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 2,\n      \"unique\": true,\n      \"cases\": 5040\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 1,\n      \"unique\": false,\n      \"cases\": 3600\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 1,\n      \"unique\": true,\n      \"cases\": 7200\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 2,\n      \"unique\": false,\n      \"cases\": 43200\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise\",\n      \"erasures\": 2,\n      \"unique\": true,\n      \"cases\": 32400\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 1,\n      \"unique\": true,\n      \"cases\": 11520\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 2,\n      \"unique\": false,\n      \"cases\": 13680\n    },\n    {\n      \"n\": 6,\n      \"scheme\": \"pairwise_plus_xor\",\n      \"erasures\": 2,\n      \"unique\": true,\n      \"cases\": 72720\n    }\n  ],\n  \"execution_kind\": \"portable_replay_of_preserved_independent_review\",\n  \"original_review_source_sha256\": \"e91ce5c41f7e6448955bea8c293752df76aec93eca81c0451fbe398fed045a65\",\n  \"original_review_report_sha256\": \"5645ff045f49063d8f0e2c1bc789b049ebece50b1713a3dac15001a9adf758d5\",\n  \"original_review_source_preserved_exactly\": true,\n  \"original_review_report_unchanged\": true,\n  \"data_directory\": \"/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1/discovery/order-memory\",\n  \"output_policy\": \"stdout by default; explicit output uses exclusive creation and never overwrites an existing file\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "economics-audit",
+      "argv": [
+        "python3",
+        "src/audit_economics.py",
+        "--output",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/economics-audit.json"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:24.340311+00:00",
+      "duration_seconds": 0.17999413200595882,
+      "exit_code": 0,
+      "stdout": "{\n  \"output\": \"/tmp/agi-alpha-readme-reproduction-n70d14on/economics-audit.json\",\n  \"passed\": true,\n  \"core_checks\": 16968,\n  \"additional_checks\": 12543,\n  \"comparison_with_original_report\": {\n    \"passed_matches\": true,\n    \"core_numeric_check_count_matches\": true,\n    \"world_count_matches\": true,\n    \"full_worlds_hash_matches\": true,\n    \"partial_hash_matches\": true,\n    \"same_physical_work_result\": true,\n    \"max_abs_error_usd_matches_exactly\": false,\n    \"both_max_errors_below_original_tolerance\": true,\n    \"max_abs_error_usd_difference\": -5.09e-11\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "copy-confluence",
+      "argv": [
+        "cp",
+        "-R",
+        "experiments/confluence",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:24.520579+00:00",
+      "duration_seconds": 0.0042164589976891875,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "confluence-run",
+      "argv": [
+        "python3",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence/study.py"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:24.525165+00:00",
+      "duration_seconds": 4.906876060005743,
+      "exit_code": 0,
+      "stdout": "{\n  \"models\": [\n    {\n      \"n\": 2,\n      \"audit\": {\n        \"state_field_cases\": 20,\n        \"nonconfluent\": 0,\n        \"race_cases\": 1,\n        \"max_update_paths\": 2,\n        \"min_energy_drop\": 120,\n        \"oracle_mismatch\": 0,\n        \"monotone_control_mismatch\": 0\n      },\n      \"exhaustive_words\": {\n        \"words\": 5461,\n        \"oracle_mismatch\": 0,\n        \"nonconfluent\": 0\n      },\n      \"fresh_random_words\": 1024,\n      \"fresh_failures\": 0,\n      \"independent_control\": {\n        \"AB\": [\n          [\n            1,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      },\n      \"weak_coupling_falsifier\": {\n        \"coupling\": 35,\n        \"AB\": [\n          [\n            1,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      }\n    },\n    {\n      \"n\": 3,\n      \"audit\": {\n        \"state_field_cases\": 40,\n        \"nonconfluent\": 0,\n        \"race_cases\": 8,\n        \"max_update_paths\": 6,\n        \"min_energy_drop\": 120,\n        \"oracle_mismatch\": 0,\n        \"monotone_control_mismatch\": 0\n      },\n      \"exhaustive_words\": {\n        \"words\": 5461,\n        \"oracle_mismatch\": 0,\n        \"nonconfluent\": 0\n      },\n      \"fresh_random_words\": 1024,\n      \"fresh_failures\": 0,\n      \"independent_control\": {\n        \"AB\": [\n          [\n            1,\n            1,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            1,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      },\n      \"weak_coupling_falsifier\": {\n        \"coupling\": 35,\n        \"AB\": [\n          [\n            1,\n            1,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            1,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      }\n    },\n    {\n      \"n\": 4,\n      \"audit\": {\n        \"state_field_cases\": 80,\n        \"nonconfluent\": 0,\n        \"race_cases\": 24,\n        \"max_update_paths\": 24,\n        \"min_energy_drop\": 120,\n        \"oracle_mismatch\": 0,\n        \"monotone_control_mismatch\": 0\n      },\n      \"exhaustive_words\": {\n        \"words\": 5461,\n        \"oracle_mismatch\": 0,\n        \"nonconfluent\": 0\n      },\n      \"fresh_random_words\": 1024,\n      \"fresh_failures\": 0,\n      \"independent_control\": {\n        \"AB\": [\n          [\n            1,\n            1,\n            0,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            1,\n            0,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      },\n      \"weak_coupling_falsifier\": {\n        \"coupling\": 35,\n        \"AB\": [\n          [\n            1,\n            1,\n            0,\n            0\n          ]\n        ],\n        \"BA\": [\n          [\n            1,\n            1,\n            0,\n            0\n          ]\n        ],\n        \"distinguishes_order\": false\n      }\n    }\n  ],\n  \"tolerance\": {\n    \"draws\": 512,\n    \"state_field_cases\": 71680,\n    \"nonconfluent\": 0,\n    \"oracle_mismatch\": 0,\n    \"monotone_control_mismatch\": 0,\n    \"min_energy_drop\": 112\n  },\n  \"analytic_box_margins\": {\n    \"high_switch\": 12,\n    \"gated_switch\": 8,\n    \"single_input_stays_off\": 32,\n    \"retention\": 76,\n    \"reset\": 48\n  },\n  \"negative_controls\": {\n    \"antiferromagnetic_race\": {\n      \"terminals\": [\n        [\n          0,\n          1\n        ],\n        [\n          1,\n          0\n        ]\n      ],\n      \"cycle\": false,\n      \"states\": 3,\n      \"edges\": 2,\n      \"race_states\": 1,\n      \"paths\": 2,\n      \"min_energy_drop\": 110\n    },\n    \"asymmetric_cycle\": {\n      \"terminals\": [],\n      \"cycle\": true,\n      \"states\": 4,\n      \"edges\": 4,\n      \"race_states\": 0,\n      \"paths\": null,\n      \"min_energy_drop\": -210\n    }\n  },\n  \"novelty_verdict\": \"REJECT AS FLAGSHIP: known ferromagnetic monotone closure exactly matches; sequential/vectorial memory and event recorders pre-exist; no demonstrated substantive advance\",\n  \"elapsed_seconds\": 4.864684347005095\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "confluence-eight-tests",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence",
+        "-p",
+        "test_study.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:29.432404+00:00",
+      "duration_seconds": 0.07823255300172605,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_actual_internal_race_converges (test_study.AcceptanceTests.test_actual_internal_race_converges) ... ok\ntest_checker_does_not_hide_multiple_terminal_states (test_study.AcceptanceTests.test_checker_does_not_hide_multiple_terminal_states) ... ok\ntest_checker_does_not_hide_nontermination (test_study.AcceptanceTests.test_checker_does_not_hide_nontermination) ... ok\ntest_complete_nominal_state_space_matches_independent_semantics (test_study.AcceptanceTests.test_complete_nominal_state_space_matches_independent_semantics) ... ok\ntest_coupling_is_necessary_and_mutation_fails (test_study.AcceptanceTests.test_coupling_is_necessary_and_mutation_fails) ... ok\ntest_frozen_config (test_study.AcceptanceTests.test_frozen_config) ... ok\ntest_order_survives_reset_to_reference (test_study.AcceptanceTests.test_order_survives_reset_to_reference) ... ok\ntest_recurrence_and_coincidence_cannot_be_claimed_distinguishable (test_study.AcceptanceTests.test_recurrence_and_coincidence_cannot_be_claimed_distinguishable) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.019s\n\nOK\n"
+    },
+    {
+      "name": "mkdir-economics",
+      "argv": [
+        "mkdir",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/economics"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:29.510985+00:00",
+      "duration_seconds": 0.0031378099956782535,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "copy-economic-freeze",
+      "argv": [
+        "cp",
+        "results/economics-policy-freeze.json",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/economics"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:29.514481+00:00",
+      "duration_seconds": 0.0018110759992850944,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "economics-confirm",
+      "argv": [
+        "python3",
+        "src/economics.py",
+        "--phase",
+        "confirm",
+        "--output-dir",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/economics"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:29.516526+00:00",
+      "duration_seconds": 2.3284515410050517,
+      "exit_code": 0,
+      "stdout": "{\n  \"conservative\": {\n    \"price\": 4,\n    \"policy\": \"net30\",\n    \"annual_operating_mean\": -73910.2484599721,\n    \"predevelopment_E0_central\": -160269.8575695385,\n    \"robust_cells\": 0\n  },\n  \"central\": {\n    \"price\": 5,\n    \"policy\": \"deposit20_discount5\",\n    \"annual_operating_mean\": 20978.99760388748,\n    \"predevelopment_E0_central\": -131302.79665260174,\n    \"robust_cells\": 0\n  },\n  \"favorable\": {\n    \"price\": 8,\n    \"policy\": \"deposit20_discount5\",\n    \"annual_operating_mean\": 417868.10248272255,\n    \"predevelopment_E0_central\": 171608.78140749643,\n    \"robust_cells\": 24\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "native-adapter",
+      "argv": [
+        "python3",
+        "integration/run_adapter.py",
+        "--input",
+        "config/integration-opportunity.json",
+        "--output",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/native"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:31.845252+00:00",
+      "duration_seconds": 2.399882836994948,
+      "exit_code": 0,
+      "stdout": "{\"passed\": 13, \"failed\": 0, \"production_admission\": \"DENIED\", \"output\": \"/tmp/agi-alpha-readme-reproduction-n70d14on/native\"}\n",
+      "stderr": ""
+    },
+    {
+      "name": "copy-integration",
+      "argv": [
+        "cp",
+        "-R",
+        "integration",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/integration"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:34.245455+00:00",
+      "duration_seconds": 0.007498338993173093,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "mkdir-discovery",
+      "argv": [
+        "mkdir",
+        "-p",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/discovery/order-memory"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:34.253176+00:00",
+      "duration_seconds": 0.003089840989559889,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "copy-discovery-record",
+      "argv": [
+        "cp",
+        "discovery/order-memory/discovery_record.json",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/discovery/order-memory"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:34.256441+00:00",
+      "duration_seconds": 0.0030512279918184504,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "native-scenario",
+      "argv": [
+        "node",
+        "/tmp/agi-alpha-readme-reproduction-n70d14on/integration/run_scenario.mjs"
+      ],
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "started_utc": "2026-10-27T19:49:34.259646+00:00",
+      "duration_seconds": 0.08515719599381555,
+      "exit_code": 0,
+      "stdout": "{\n  \"selected\": [],\n  \"examined_subsets\": 128,\n  \"supplied_evidence_passages\": 8,\n  \"genome_refusal\": \"Increase the budget or risk allowance to select a feasible project.\",\n  \"existing_source_lock_unchanged\": true,\n  \"output_directory\": \"/tmp/agi-alpha-readme-reproduction-n70d14on/integration/results/scenario-v1\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "semantic_comparisons": [
+    {
+      "name": "order-transfer-summary",
+      "original": "discovery/order-memory/transfer_validation/transfer_results.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/order-transfer/transfer_results.json",
+      "excluded_nondeterministic_fields": [
+        "wall_seconds_measured"
+      ],
+      "original_sha256": "be98cf03e2f048c45058fe96cf3119853ff196a5e7fbafde6e9fae2c7d95bdbe",
+      "replay_sha256": "5b0a253ea2bf23171d86b151892e285e1a65ddc7be9d55d41a25fbffc8a00031",
+      "original_semantic_sha256": "a9ff9a550e65cbfdba446397a01d26580c574a42a513920bdcaeb5e35a28676b",
+      "replay_semantic_sha256": "a9ff9a550e65cbfdba446397a01d26580c574a42a513920bdcaeb5e35a28676b",
+      "passed": true
+    },
+    {
+      "name": "order-transfer-complete-case-stream",
+      "original_sha256": "1cbb95c01b2e00bbb97b60caedacd26ff7f8a04eda68ff829ef9b8ce595831f9",
+      "replay_sha256": "1cbb95c01b2e00bbb97b60caedacd26ff7f8a04eda68ff829ef9b8ce595831f9",
+      "original_uncompressed_sha256": "7aab69ed0bb22afd6ebb5ad54393d7b633156b7c2e8df64b5fea04f9b7b60e17",
+      "replay_uncompressed_sha256": "7aab69ed0bb22afd6ebb5ad54393d7b633156b7c2e8df64b5fea04f9b7b60e17",
+      "original_rows": 198840,
+      "replay_rows": 198840,
+      "passed": true,
+      "excluded_nondeterministic_fields": [
+        "gzip-container-metadata-only; uncompressed bytes compared completely"
+      ]
+    },
+    {
+      "name": "portable-review",
+      "original": "discovery/order-memory/adversarial_review_portable_replay.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/order-review.json",
+      "excluded_nondeterministic_fields": [
+        "elapsed_seconds",
+        "data_directory"
+      ],
+      "original_sha256": "94d9483fd144deecfeab322544d4eb994a947a751856b58ed599ce0f5638de9a",
+      "replay_sha256": "d124a4e733775b435205412eeb771cc4f73f02ffc611bae1b0727f867005e95b",
+      "original_semantic_sha256": "aa43fd01c3f383e2ed21eabc9df721b32892d5fbaf5bedff5946525c399278c4",
+      "replay_semantic_sha256": "aa43fd01c3f383e2ed21eabc9df721b32892d5fbaf5bedff5946525c399278c4",
+      "passed": true
+    },
+    {
+      "name": "independent-economic-audit",
+      "original": "results/economics-independent-audit-replay-v2.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/economics-audit.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "040058395e1158158e62401c42efc8044a34fd319614b1571be24ce5e928eae4",
+      "replay_sha256": "040058395e1158158e62401c42efc8044a34fd319614b1571be24ce5e928eae4",
+      "original_semantic_sha256": "c5f72c221bfa89083e85555e66e8e5b78af2955a5a5fb796519fd213e1a32aa6",
+      "replay_semantic_sha256": "c5f72c221bfa89083e85555e66e8e5b78af2955a5a5fb796519fd213e1a32aa6",
+      "passed": true
+    },
+    {
+      "name": "economics-policy-freeze.json",
+      "original": "results/economics-policy-freeze.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/economics/economics-policy-freeze.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "558a2459c84bb3ffa947c125b3e1db6cc5f2bdba6f25b3626fe4a153e4f020d9",
+      "replay_sha256": "558a2459c84bb3ffa947c125b3e1db6cc5f2bdba6f25b3626fe4a153e4f020d9",
+      "original_semantic_sha256": "0db660965ba72f6fdbac1d3f121deb30a3a8b31382eb1078d9a18bd150715b59",
+      "replay_semantic_sha256": "0db660965ba72f6fdbac1d3f121deb30a3a8b31382eb1078d9a18bd150715b59",
+      "passed": true
+    },
+    {
+      "name": "economics-worlds.json",
+      "original": "results/economics-worlds.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/economics/economics-worlds.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "5d36b2ebcbd7dfb5724c341e18ec36d0ebf8f9a78351d2c38c68d9be632eb0a1",
+      "replay_sha256": "5d36b2ebcbd7dfb5724c341e18ec36d0ebf8f9a78351d2c38c68d9be632eb0a1",
+      "original_semantic_sha256": "c85a6dd55ca8cfbb4ce2cafb309eb6a92e939a2f715c5ccf83905fe17806264d",
+      "replay_semantic_sha256": "c85a6dd55ca8cfbb4ce2cafb309eb6a92e939a2f715c5ccf83905fe17806264d",
+      "passed": true
+    },
+    {
+      "name": "economics-sensitivity.json",
+      "original": "results/economics-sensitivity.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/economics/economics-sensitivity.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "e7746007aaaa71ab36e6a9ed40d93f0bf23777f5aed4534863384ccbdb379b51",
+      "replay_sha256": "e7746007aaaa71ab36e6a9ed40d93f0bf23777f5aed4534863384ccbdb379b51",
+      "original_semantic_sha256": "54767f9e13a41cf7ea0efae881c42b8a64211340450def9f62ff4716c2b71e90",
+      "replay_semantic_sha256": "54767f9e13a41cf7ea0efae881c42b8a64211340450def9f62ff4716c2b71e90",
+      "passed": true
+    },
+    {
+      "name": "economics-results.json",
+      "original": "results/economics-results.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/economics/economics-results.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "d12afdfb4862d2bcdb78fa59f242572965d76777d4499ee8ea1ae8fd97551f9b",
+      "replay_sha256": "d12afdfb4862d2bcdb78fa59f242572965d76777d4499ee8ea1ae8fd97551f9b",
+      "original_semantic_sha256": "70f12ad52e0912bc652bd9d2eec0f64352d8b2308564ba49c562db9f4c43bfd9",
+      "replay_semantic_sha256": "70f12ad52e0912bc652bd9d2eec0f64352d8b2308564ba49c562db9f4c43bfd9",
+      "passed": true
+    },
+    {
+      "name": "confluence-models.json",
+      "original": "experiments/confluence/models.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence/models.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "c522701769767ff4f6602a5121ffafb02c019e06cc6b43ef04640111384d3b07",
+      "replay_sha256": "c522701769767ff4f6602a5121ffafb02c019e06cc6b43ef04640111384d3b07",
+      "original_semantic_sha256": "2633f1fbc7161a1e04eea94385474163353c665dc13e5a6eb91c8f336fb79017",
+      "replay_semantic_sha256": "2633f1fbc7161a1e04eea94385474163353c665dc13e5a6eb91c8f336fb79017",
+      "passed": true
+    },
+    {
+      "name": "confluence-confirmation_words.json",
+      "original": "experiments/confluence/confirmation_words.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence/confirmation_words.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "04dac8c3964c939ef3a572180431cb0c928933db427c9448c835e5687268d8db",
+      "replay_sha256": "04dac8c3964c939ef3a572180431cb0c928933db427c9448c835e5687268d8db",
+      "original_semantic_sha256": "83e004e207b1298c173dfd7857e382c6aba09b086e73c18d201e9bdb140dfd5f",
+      "replay_semantic_sha256": "83e004e207b1298c173dfd7857e382c6aba09b086e73c18d201e9bdb140dfd5f",
+      "passed": true
+    },
+    {
+      "name": "confluence-results.json",
+      "original": "experiments/confluence/results.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/confluence/results.json",
+      "excluded_nondeterministic_fields": [
+        "elapsed_seconds"
+      ],
+      "original_sha256": "16c536026cc0307e90a37803d4bee3381d8492de1a4514ca87ba0cd1e223555c",
+      "replay_sha256": "a711ab1a59d78bc89eb78c5bc036e9fb3e5b1b291bf4e3460812de3bbfcbb3df",
+      "original_semantic_sha256": "72164f55b797fc3ad6a21d52b4817489d860029d13a13c57e13cd42107932551",
+      "replay_semantic_sha256": "72164f55b797fc3ad6a21d52b4817489d860029d13a13c57e13cd42107932551",
+      "passed": true
+    },
+    {
+      "name": "native-input.json",
+      "original": "integration/results/chronology-v1/input.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/input.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "7eea84183a5f5f6bd83310810e242bfa6f132a6987c462a63455bbd3aaa1312c",
+      "replay_sha256": "7eea84183a5f5f6bd83310810e242bfa6f132a6987c462a63455bbd3aaa1312c",
+      "original_semantic_sha256": "fe15e567966c597ec0b8aaa3ec822d968f19c786f56a474c0c761757d5c30541",
+      "replay_semantic_sha256": "fe15e567966c597ec0b8aaa3ec822d968f19c786f56a474c0c761757d5c30541",
+      "passed": true
+    },
+    {
+      "name": "native-source-lock.json",
+      "original": "integration/results/chronology-v1/source-lock.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/source-lock.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "aa67470a1ba0febcdaa6ef6b2c1a64437129961585442f3f8e62bbd9465987b6",
+      "replay_sha256": "aa67470a1ba0febcdaa6ef6b2c1a64437129961585442f3f8e62bbd9465987b6",
+      "original_semantic_sha256": "c183c0a140c2faa4b53cb4aef4bd9db549331932f56679133ad798b031719928",
+      "replay_semantic_sha256": "c183c0a140c2faa4b53cb4aef4bd9db549331932f56679133ad798b031719928",
+      "passed": true
+    },
+    {
+      "name": "native-fusion-plan.json",
+      "original": "integration/results/chronology-v1/fusion-plan.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/fusion-plan.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "6451256250cdb23c8c0765209c85f7f918e7a094124336d811a52f4d9d7b874c",
+      "replay_sha256": "6451256250cdb23c8c0765209c85f7f918e7a094124336d811a52f4d9d7b874c",
+      "original_semantic_sha256": "563b4631d9316de74e561d29924990737400689a7f4a14b3d7b8c971110c036c",
+      "replay_semantic_sha256": "563b4631d9316de74e561d29924990737400689a7f4a14b3d7b8c971110c036c",
+      "passed": true
+    },
+    {
+      "name": "native-fusion-plan-verification.json",
+      "original": "integration/results/chronology-v1/fusion-plan-verification.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/fusion-plan-verification.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "add34f6c54d5eebd74477d25bbdbcb707f3d1d3d631a2b7bf46e0af53ecfa83a",
+      "replay_sha256": "add34f6c54d5eebd74477d25bbdbcb707f3d1d3d631a2b7bf46e0af53ecfa83a",
+      "original_semantic_sha256": "757b39e746a0a7b8c17c0a4ad18a273f6c7980e7ab766b40d77016c400db4a01",
+      "replay_semantic_sha256": "757b39e746a0a7b8c17c0a4ad18a273f6c7980e7ab766b40d77016c400db4a01",
+      "passed": true
+    },
+    {
+      "name": "native-novaseed-payload.json",
+      "original": "integration/results/chronology-v1/novaseed-payload.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/novaseed-payload.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "009bf1b07ef9ca54f95f05b6ee077457716a9b11d4ca39d6819665d1cd6814ba",
+      "replay_sha256": "009bf1b07ef9ca54f95f05b6ee077457716a9b11d4ca39d6819665d1cd6814ba",
+      "original_semantic_sha256": "d7e1e499df482ba705d9906c6cffb498c8c144cc32c32cb02073e0970382c6a7",
+      "replay_semantic_sha256": "d7e1e499df482ba705d9906c6cffb498c8c144cc32c32cb02073e0970382c6a7",
+      "passed": true
+    },
+    {
+      "name": "native-novaseed-recovered.json",
+      "original": "integration/results/chronology-v1/novaseed-recovered.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/novaseed-recovered.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "b2b8e1a0ab626b3f53c59f95894e8e1924828e7308b93a85e756b9b6c3322626",
+      "replay_sha256": "b2b8e1a0ab626b3f53c59f95894e8e1924828e7308b93a85e756b9b6c3322626",
+      "original_semantic_sha256": "d7e1e499df482ba705d9906c6cffb498c8c144cc32c32cb02073e0970382c6a7",
+      "replay_semantic_sha256": "d7e1e499df482ba705d9906c6cffb498c8c144cc32c32cb02073e0970382c6a7",
+      "passed": true
+    },
+    {
+      "name": "native-novaseed-report.json",
+      "original": "integration/results/chronology-v1/novaseed-report.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/novaseed-report.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "308f87a1eaa904cc750f9bb3e4e60a6aa3b37360a95d2a12029d9779c674b028",
+      "replay_sha256": "308f87a1eaa904cc750f9bb3e4e60a6aa3b37360a95d2a12029d9779c674b028",
+      "original_semantic_sha256": "154688d38b143ab680d7a77bc93fb3bce54ff66bbe72d684df1ad7064b4c5614",
+      "replay_semantic_sha256": "154688d38b143ab680d7a77bc93fb3bce54ff66bbe72d684df1ad7064b4c5614",
+      "passed": true
+    },
+    {
+      "name": "native-mark-review-packet.json",
+      "original": "integration/results/chronology-v1/mark-review-packet.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/mark-review-packet.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "e5ab36c95e2b257de5568debc5d346eed8d9e56a03965c1dbb3588648c645017",
+      "replay_sha256": "e5ab36c95e2b257de5568debc5d346eed8d9e56a03965c1dbb3588648c645017",
+      "original_semantic_sha256": "6daf539e6ee16add7f8d03248fb0b437290ef8beaf64d90155129e723c3eb3fe",
+      "replay_semantic_sha256": "6daf539e6ee16add7f8d03248fb0b437290ef8beaf64d90155129e723c3eb3fe",
+      "passed": true
+    },
+    {
+      "name": "native-run-report.json",
+      "original": "integration/results/chronology-v1/run-report.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/run-report.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "cf3763d7ca029282ac2ab2ab9b43a506580ae176e252af3e0412861e77e06e22",
+      "replay_sha256": "cf3763d7ca029282ac2ab2ab9b43a506580ae176e252af3e0412861e77e06e22",
+      "original_semantic_sha256": "e626a6b9695116796e53e08b169613b2d4a4b6f2a53f61dedfc9fde6ebc196cb",
+      "replay_semantic_sha256": "e626a6b9695116796e53e08b169613b2d4a4b6f2a53f61dedfc9fde6ebc196cb",
+      "passed": true
+    },
+    {
+      "name": "native-admission",
+      "original": "integration/results/chronology-v1/admission.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/admission.json",
+      "excluded_nondeterministic_fields": [
+        "native_journal_verification.head",
+        "native_journal_verification.identity"
+      ],
+      "original_sha256": "593f5afac3ecdd576d501efcf35791fcfc1d8c53a911748adceafb5cf81ed51a",
+      "replay_sha256": "6336f34b9c668ee52867f96e9fac24ac4e56b29709bd8f55313ec3b2de42aec6",
+      "original_semantic_sha256": "d310d502baafbc0906b5dd7aa3c02d38590c399860a264feff29de05c1d7d6d6",
+      "replay_semantic_sha256": "d310d502baafbc0906b5dd7aa3c02d38590c399860a264feff29de05c1d7d6d6",
+      "passed": true
+    },
+    {
+      "name": "native-cost-ledger",
+      "original": "integration/results/chronology-v1/cost-ledger.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/native/cost-ledger.json",
+      "excluded_nondeterministic_fields": [
+        "temporary_fixture_identity",
+        "native_signed_snapshot.operations values only; operation keys compared",
+        "native_signed_snapshot.charges.*.signed.signature",
+        "native_signed_snapshot.charges.*.signed.payload.journal_identity"
+      ],
+      "original_sha256": "f5a3c44bf738c3e0f1d489c164994184271c09316406cf85cf7000f1f1b5d74c",
+      "replay_sha256": "c85bdd0ae7a1032ab1fc37db2ea24a77d7aea6930a2332bb37e3358936d64c56",
+      "original_semantic_sha256": "7bd13e3b9148e12afaf028f046a8a3c70064f821e74f3994d91c10acc6fee222",
+      "replay_semantic_sha256": "7bd13e3b9148e12afaf028f046a8a3c70064f821e74f3994d91c10acc6fee222",
+      "passed": true
+    },
+    {
+      "name": "native-output-manifest-integrity",
+      "passed": true,
+      "verified_artifacts": 13,
+      "artifact_names": [
+        "admission.json",
+        "cost-ledger.json",
+        "fusion-plan-verification.json",
+        "fusion-plan.json",
+        "input.json",
+        "mark-review-packet.json",
+        "node-execution.txt",
+        "novaseed-payload.json",
+        "novaseed-recovered.json",
+        "novaseed-report.json",
+        "novaseed-sealed.json",
+        "run-report.json",
+        "source-lock.json"
+      ],
+      "ciphertext_comparison": "Fresh ciphertext, salt, IV, blinding, temporary journal identity and signatures intentionally differ. Native roundtrip and refusal checks executed; plaintext/protocol/source reports compared separately."
+    },
+    {
+      "name": "scenario-analysis.json",
+      "original": "integration/results/scenario-v1/analysis.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/integration/results/scenario-v1/analysis.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "3f74d843c653a92d4b1fc27b3bc28dc911384ce34f926ecac88beefb28c077f7",
+      "replay_sha256": "3f74d843c653a92d4b1fc27b3bc28dc911384ce34f926ecac88beefb28c077f7",
+      "original_semantic_sha256": "e317974752b109081f60098850ecb3b0b7d859e48b590e78b7b2ae37f5ced97d",
+      "replay_semantic_sha256": "e317974752b109081f60098850ecb3b0b7d859e48b590e78b7b2ae37f5ced97d",
+      "passed": true
+    },
+    {
+      "name": "scenario-genome_refusal.json",
+      "original": "integration/results/scenario-v1/genome_refusal.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/integration/results/scenario-v1/genome_refusal.json",
+      "excluded_nondeterministic_fields": [],
+      "original_sha256": "a7082005a0472c98f50e0189b811dd64572a24a40e97ba1e877381e3bbabec34",
+      "replay_sha256": "a7082005a0472c98f50e0189b811dd64572a24a40e97ba1e877381e3bbabec34",
+      "original_semantic_sha256": "e236cfcddc75a421402fd2a06ba2df10c7e97402ff05a52b5a17dc60d7856f66",
+      "replay_semantic_sha256": "e236cfcddc75a421402fd2a06ba2df10c7e97402ff05a52b5a17dc60d7856f66",
+      "passed": true
+    },
+    {
+      "name": "scenario-run_manifest.json",
+      "original": "integration/results/scenario-v1/run_manifest.json",
+      "replay": "/tmp/agi-alpha-readme-reproduction-n70d14on/integration/results/scenario-v1/run_manifest.json",
+      "excluded_nondeterministic_fields": [
+        "started_utc",
+        "elapsed_seconds"
+      ],
+      "original_sha256": "8df3272e0538154f031cce216f8902954859f9e8ced5e6e33ad7f6a8c5afd1c4",
+      "replay_sha256": "a739637fc78ce7a0194bb621d129b88b740a10fdaeef9169ac47fb5f5c9c8362",
+      "original_semantic_sha256": "d4631a74dbc0368d90f85a920127839bd535b104639d13d5ad62f71b9fa4a005",
+      "replay_semantic_sha256": "d4631a74dbc0368d90f85a920127839bd535b104639d13d5ad62f71b9fa4a005",
+      "passed": true
+    }
+  ],
+  "dependency_preflight": {
+    "receipt": "provenance/dependency-preflight.json",
+    "sha256": "711c6e0f21fb219a5a8678270555aa8625fd53bf1dc93d7a7df9b4ff94b50971",
+    "recorded_execution": {
+      "recorded_utc": "2026-10-27T19:47:31.427628+00:00",
+      "performed_by": "root",
+      "command": "python3 /workspace/scratch/25957196487d/repo_audit/repository/scripts/check_python_deps.py",
+      "cwd": "/workspace/scratch/25957196487d/research_repo/studies/agi-alpha-flywheel-novelty-frontier-v1",
+      "exit_code": 0,
+      "stdout": "All required packages available.\n",
+      "evidence": "Actual tool execution recorded in this session; persisted after execution",
+      "scope": "Parent repository numpy/yaml/pandas dependency check, not full environment or release qualification"
+    },
+    "reexecuted_in_this_reproduction": false
+  },
+  "frozen_evidence_preservation": {
+    "files_checked": 126,
+    "before_manifest_semantic_sha256": "95fe195762018741d55cbb1b5030c7e0de907cd0ca3e915ea7b27bd411b7569b",
+    "after_manifest_semantic_sha256": "95fe195762018741d55cbb1b5030c7e0de907cd0ca3e915ea7b27bd411b7569b",
+    "changed_files": [],
+    "passed": true
+  },
+  "commands_passed": true,
+  "semantic_comparisons_passed": true,
+  "full_repository_suite_run": false,
+  "release_qualification_claimed": false,
+  "external_accounts_or_chain_actions": false,
+  "passed": true,
+  "broken_commands": [],
+  "mismatched_comparisons": []
+}

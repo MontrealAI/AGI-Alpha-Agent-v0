@@ -1,0 +1,154 @@
+{
+  "evidence_class": "executed_native_ledger_over_assumed_sample",
+  "amounts_are_not_actual_invoices": true,
+  "actual_customer_collections_usd": 0,
+  "actual_complete_cost_usd": null,
+  "sample_report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 1200000,
+      "B": 400000,
+      "C": 0
+    },
+    "collected_revenue": 0,
+    "delivery_profit": null,
+    "complete_cost_profit": null,
+    "cash": 0,
+    "obligations": null,
+    "known_obligations": 1600000,
+    "reserve": 0,
+    "available_funds": null,
+    "complete": false,
+    "bucket_complete": {
+      "A": false,
+      "B": false,
+      "C": false
+    },
+    "unknown_costs": true,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "native_signed_snapshot": {
+    "capital": {},
+    "charges": {
+      "a-origin-inference": {
+        "accrued_micro_usd": 1200000,
+        "activity_id": "a-origin-inference",
+        "basis": "attested",
+        "bucket": "A",
+        "category": "model",
+        "evidence_digest": "27e73e902efee3a5a48377dfb166e9aa0d5dd899ebc9f164f9bcbd4fcadb245b",
+        "mission_id": "offline-study-integration-v1",
+        "note": "Research accounting sample; amounts are assumed, not billed or paid. Illustrative originating-delivery model cost; not a measured provider invoice.",
+        "paid_micro_usd": 0,
+        "schema_version": 1,
+        "signed": {
+          "domain": "flywheel-cost-command",
+          "payload": {
+            "action": "charge",
+            "journal_identity": "urn:agialpha:ed25519:77d178cbfe5bba30fd346403435c68c2ca8c57ada695907ec566dbd83067e841",
+            "operation_id": "sample-charge-0",
+            "record": {
+              "accrued_micro_usd": 1200000,
+              "activity_id": "a-origin-inference",
+              "basis": "attested",
+              "bucket": "A",
+              "category": "model",
+              "evidence_digest": "27e73e902efee3a5a48377dfb166e9aa0d5dd899ebc9f164f9bcbd4fcadb245b",
+              "mission_id": "offline-study-integration-v1",
+              "note": "Research accounting sample; amounts are assumed, not billed or paid. Illustrative originating-delivery model cost; not a measured provider invoice.",
+              "paid_micro_usd": 0,
+              "schema_version": 1
+            }
+          },
+          "principal": "study-accountant-fixture",
+          "signature": "OaglZM6XJBmvC0qCJ7FMsQKUhwSfwcTGZIyw0IzLWlYqkIG75kuHalSS82lW2Egn0kBsk7ZQOgzdvru78jioCQ=="
+        }
+      },
+      "b-extra-validation": {
+        "accrued_micro_usd": 400000,
+        "activity_id": "b-extra-validation",
+        "basis": "attested",
+        "bucket": "B",
+        "category": "acceptance",
+        "evidence_digest": "a02217093decda51df97dadc09edf82fe705452d1420d8d282ef471398155828",
+        "mission_id": "offline-study-integration-v1",
+        "note": "Research accounting sample; amounts are assumed, not billed or paid. Illustrative additional retention validation, outside A.",
+        "paid_micro_usd": 0,
+        "schema_version": 1,
+        "signed": {
+          "domain": "flywheel-cost-command",
+          "payload": {
+            "action": "charge",
+            "journal_identity": "urn:agialpha:ed25519:77d178cbfe5bba30fd346403435c68c2ca8c57ada695907ec566dbd83067e841",
+            "operation_id": "sample-charge-1",
+            "record": {
+              "accrued_micro_usd": 400000,
+              "activity_id": "b-extra-validation",
+              "basis": "attested",
+              "bucket": "B",
+              "category": "acceptance",
+              "evidence_digest": "a02217093decda51df97dadc09edf82fe705452d1420d8d282ef471398155828",
+              "mission_id": "offline-study-integration-v1",
+              "note": "Research accounting sample; amounts are assumed, not billed or paid. Illustrative additional retention validation, outside A.",
+              "paid_micro_usd": 0,
+              "schema_version": 1
+            }
+          },
+          "principal": "study-accountant-fixture",
+          "signature": "i5y+S8y3BizObXSyTtrx2tPRqhakG2Lc/F3u/QkZQYzihg95bjwHevV0aolDE2UChU0A3TXKYhmeJVG3NDKeAg=="
+        }
+      },
+      "c-unpriced-research": {
+        "accrued_micro_usd": null,
+        "activity_id": "c-unpriced-research",
+        "basis": "unknown",
+        "bucket": "C",
+        "category": "human",
+        "evidence_digest": "9d4a3773262763b0de9ab360939a57345da9fc3489c375339a6a8ba487ac2620",
+        "mission_id": "offline-study-integration-v1",
+        "note": "Research accounting sample; amounts are assumed, not billed or paid. Unpriced optional research remains unknown; no complete-profit claim.",
+        "paid_micro_usd": 0,
+        "schema_version": 1,
+        "signed": {
+          "domain": "flywheel-cost-command",
+          "payload": {
+            "action": "charge",
+            "journal_identity": "urn:agialpha:ed25519:77d178cbfe5bba30fd346403435c68c2ca8c57ada695907ec566dbd83067e841",
+            "operation_id": "sample-charge-2",
+            "record": {
+              "accrued_micro_usd": null,
+              "activity_id": "c-unpriced-research",
+              "basis": "unknown",
+              "bucket": "C",
+              "category": "human",
+              "evidence_digest": "9d4a3773262763b0de9ab360939a57345da9fc3489c375339a6a8ba487ac2620",
+              "mission_id": "offline-study-integration-v1",
+              "note": "Research accounting sample; amounts are assumed, not billed or paid. Unpriced optional research remains unknown; no complete-profit claim.",
+              "paid_micro_usd": 0,
+              "schema_version": 1
+            }
+          },
+          "principal": "study-accountant-fixture",
+          "signature": "66lBYXek4ZFpxPUDHZQVvmNiybsX4UuuBB8PgzwImYmWsapeUg4nvuAk30EdDJmB0HlJU3w7k8RKZ5gUC37ZCg=="
+        }
+      }
+    },
+    "offers": {},
+    "operations": {
+      "sample-charge-0": "d152450f60ae352ce441d62620fbd26e3929ffb1df2c9a72c741a4d613075a68",
+      "sample-charge-1": "71414e3936ec1f483a137507d082c7d6d899e23e3c2020944612fd01d8c2a419",
+      "sample-charge-2": "e537cb8d7b7ecbfb42d6dd36c1201e3f4b5f9faad036f2fea6d115231e4edcf9"
+    },
+    "receipts": {},
+    "reserve_micro_usd": 0,
+    "reserved_capacity_bytes": 1347650,
+    "reserved_capacity_nodes": 6274,
+    "reuse_seals": {},
+    "seals": {}
+  },
+  "temporary_fixture_identity": "urn:agialpha:ed25519:77d178cbfe5bba30fd346403435c68c2ca8c57ada695907ec566dbd83067e841",
+  "fixture_private_keys_persisted": false,
+  "sample_activity_count": 3
+}
