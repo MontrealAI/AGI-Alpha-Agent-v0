@@ -278,6 +278,16 @@ PROTECTED_FLYWHEEL_146_EXTRA_FILES = FLYWHEEL_145_EXTRA_FILES | {
     ),
 }
 
+# Exact paper-reader patch edition; preserve every prior complete worker profile.
+PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "45d5d9b5930a9665aa7b0728b129ececfef861d786d52bfe19aa8025c0310aa4"),
+    "docs/assets/service-worker.js": (24089, "8855c44e10a18d15e44fa2418d912bd75c226abfec6daff35f249fff2c350e02"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "326f182573c0bc370b5efbd8a7d9bced6e0ddedd8033d7f9b5596abe5c9d2e89",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -358,6 +368,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROFITABLE_WORK_20261027_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

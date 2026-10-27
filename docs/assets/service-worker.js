@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-6f787e701a18e3fe";
-const RELEASE = "1.46.0";
+const CACHE = "agialpha-gallery-87634cf861660fda";
+const RELEASE = "1.46.1";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -404,6 +404,8 @@ const ASSETS = [
   "../reports/research-capability-inheritance-v1/index.html",
   "../reports/research-discoverability-v1/index.html",
   "../reports/research-foundry-v2/index.html",
+  "../reports/the-network-that-learns-to-invent/index.html",
+  "../reports/when-paid-work-teaches-the-network/index.html",
   "../research/discoverability/index.html",
   "../self_healing_repo/assets/logs.json",
   "../self_healing_repo/assets/preview.svg",

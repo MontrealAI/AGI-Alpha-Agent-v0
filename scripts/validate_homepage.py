@@ -146,6 +146,38 @@ def assert_research_edition_guides(page: Page, origin: str, output: Path) -> Non
             expect(page.locator(".skip")).to_be_focused()
             page.keyboard.press("Enter")
             assert urlsplit(page.url).fragment == "main"
+            pdf_only_pages = {"when-paid-work-teaches-the-network": 22, "network-learns-to-invent-v1": 19}
+            if record["id"] in pdf_only_pages:
+                page_count = pdf_only_pages[record["id"]]
+                assert record["tex"] is None
+                expect(page.locator("html")).to_have_attribute("data-reader-format", "pdf-extracted-text-v1")
+                # PDF-only originals have no fabricated TeX or translated paper.
+                # Check their accessible, no-script original/text reading path.
+                page.keyboard.press("Tab")
+                pdf = page.locator('a[type="application/pdf"]')
+                expect(pdf).to_be_focused()
+                assert inspect(page, "parseFloat(getComputedStyle(document.activeElement).outlineWidth)") > 0
+                target = origin + record["pdf"]["path"].removeprefix("docs/")
+                assert pdf.evaluate("(link) => link.href") == target
+                expect(page.locator("iframe")).to_have_attribute("title", re.compile(re.escape(record["title"])))
+                assert page.locator("iframe").evaluate("(frame) => frame.src.split('#')[0]") == target
+                response = page.request.get(target)
+                assert response.ok
+                assert hashlib.sha256(response.body()).hexdigest() == record["pdf"]["sha256"]
+                expect(page.locator("details")).to_have_count(page_count)
+                first = page.locator("details").first
+                first.locator("summary").focus()
+                page.keyboard.press("Enter")
+                expect(first).to_have_attribute("open", "")
+                expect(first.locator("pre")).to_contain_text(re.compile(re.escape(record["title"].split()[0]), re.I))
+                page.keyboard.press("Enter")
+                assert first.get_attribute("open") is None
+                assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1")
+                page.reload(wait_until="networkidle")
+                expect(page.locator("html")).to_have_attribute("lang", "en")
+                expect(page.locator("details")).to_have_count(page_count)
+                page.screenshot(path=str(output / f"homepage-research-guide-{record['id']}-en-{width}.png"))
+                continue
             page.keyboard.press("Tab")
             pdf = page.locator('.actions a[type="application/pdf"]')
             expect(pdf).to_be_focused()
