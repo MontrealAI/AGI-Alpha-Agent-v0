@@ -31,6 +31,7 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/index.html",
     "scripts/templates/alpha-flywheel/app.js",
     "scripts/templates/alpha-flywheel/general-evidence.json",
+    "scripts/templates/alpha-flywheel/specialist-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -434,6 +435,23 @@ def browser_acceptance(
                 assert general["summary"]["candidate_decision"] == "do not admit"
                 assert all(not item["live_network_qualified"] for item in general["cases"])
             checks.append("recorded-general-execution-evidence-en-fr-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#specialist-case option")).to_have_count(12)
+                page.locator("#specialist-case").select_option("fresh-contention-2505")
+                expect(page.locator("#specialist-artifacts")).to_contain_text("largest-demand")
+                expect(page.locator("#specialist-states")).to_contain_text(
+                    "DO NOT ADMIT" if language == "en" else "NE PAS ADMETTRE"
+                )
+                with page.expect_download() as relay_download:
+                    page.locator("#specialist-export").click()
+                relay_file = output / ("specialist-relay-" + language + ".json")
+                relay_download.value.save_as(str(relay_file))
+                relay = json.loads(relay_file.read_bytes())
+                assert relay["summary"]["independently_accepted_v2"] == 12
+                assert relay["summary"]["actual_admission"] == "do not admit"
+                assert not relay["summary"]["live_qualified"] and not relay["summary"]["net_alpha_positive"]
+            checks.append("specialist-artifact-change-transfer-and-distinct-states-en-fr-no-authority")
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)

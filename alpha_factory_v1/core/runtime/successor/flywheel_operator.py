@@ -16,6 +16,7 @@ from .flywheel_capsules import CapsuleManifest, ProtectedLibrary
 from .flywheel_checkpoint import DurableCheckpoint
 from .flywheel_costs import CostLedger
 from .flywheel_frontier import FrontierConnector
+from .flywheel_specialists import PlacementWorkflow
 from .protocol import StrictModel, canonical, safe_json_loads
 from .transformation import DiscoveryRequest, SelectionProgram
 from .transformation_library import TransformationLibrary
@@ -94,6 +95,8 @@ def add_commands(commands: Any) -> None:
         "account",
         "archive",
         "migrate",
+        "gym-run",
+        "general-acceptance",
     ):
         sub = actions.add_parser(action, help="Apply a separately signed bounded " + action + " decision")
         sub.add_argument("signed", type=Path)
@@ -160,9 +163,15 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
     if signed is None:
         raise ValueError("a separately signed command is required")
     if action == "candidate":
+        manifest = CapsuleManifest.model_validate(read_document(args.manifest))
+        raw_program = read_document(args.program)
         candidate_digest = service.retain(
-            CapsuleManifest.model_validate(read_document(args.manifest)),
-            SelectionProgram.model_validate(read_document(args.program)),
+            manifest,
+            (
+                PlacementWorkflow.model_validate(raw_program)
+                if manifest.supported_scope == "resilient-placement/v1"
+                else SelectionProgram.model_validate(raw_program)
+            ),
             signed,
         )
         result = {
@@ -218,6 +227,14 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
                 browser.close()
     elif action == "account":
         result = service.costs.apply(signed)
+    elif action == "gym-run":
+        from .flywheel_gym import GymCampaign
+
+        result = GymCampaign(
+            service.costs, service.checkpoint, service.execution_digest, current_environment=service._execution_binding
+        ).run(signed)
+    elif action == "general-acceptance":
+        result = service.accept_general_origin(signed)
     elif action in {"validate", "admit", "revoke"}:
         service.control(signed, cast(Any, action))
     elif action == "configure":
