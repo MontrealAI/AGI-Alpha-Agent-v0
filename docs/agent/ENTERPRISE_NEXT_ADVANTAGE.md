@@ -152,8 +152,24 @@ existing accounting authority, then submit a signed `reconcile` command naming
 the exact launch head and current evidence. Terminal receipts must match the
 reserved permit, mission and profile. A lost launch finalization can be reconciled
 from that bound terminal failure; the consumed decision stays consumed.
-An attempt with no executor receipt or with an in-flight receipt requires separate
-operator investigation; this version deliberately cannot clear it automatically.
+A missing receipt from a merely attempting launch, or an in-flight receipt,
+still requires separate operator investigation.
+
+The caught-preflight correction described in `DISCOVERY_CONSTRUCTION.md` permits
+signed, paused reconciliation with complete original-mission A accounting. That
+path now also writes a `flywheel-execution-closure/v1` record in the unused
+execution operation before releasing the reservation. The distinct closure says
+`cancelled-before-execution`; it is neither an execution nor an acceptance receipt.
+Its digest is retained separately from the launch's null execution digest. An
+execution reservation without its receipt still refuses and requires investigation.
+
+The existing executor replay guard refuses the occupied operation after resume,
+even if a temporary qualification or component failure has cleared. The consumed
+decision and its old permit never regain use; new work needs a new decision and
+operation. Closure, reservation release and launch/checkpoint finalization share
+one transaction. Missing merely-attempting launches and actual terminal receipts
+keep the preceding restrictions. Preserve closure records during an owner-reviewed
+rollback while paused: the preceding executor also refuses their occupied IDs.
 
 Directed regression tests exercise
 delivery, negative/positive fictional assessment, no-learning production,
