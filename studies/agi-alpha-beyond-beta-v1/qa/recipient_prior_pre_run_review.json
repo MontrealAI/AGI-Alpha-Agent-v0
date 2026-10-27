@@ -1,0 +1,41 @@
+{
+  "status": "CLEAR_FOR_ONE_SEPARATELY_FROZEN_EXPLORATORY_RUN",
+  "reviewed_at_utc": "2026-10-27T00:35:09.002961+00:00",
+  "basis": "Independent exact source diff, protocol and runner review; four directed tests executed",
+  "hashes": {
+    "sim/economy_v3.py": "921912699da45b9ae95ba7d6973d46bbb6a4d62183438f3d1400b5d916680bfd",
+    "sim/economy_v3_posterior.py": "e2d3dc2183e1f5ed6357f0ffb63a3a6e837421fea02fdb4d04c7179f4870e1ce",
+    "sim/PRIOR_DIAGNOSTIC_PROTOCOL.md": "f9aa5f7ccd699cef4a52a2d21b90ae12d54358f842161ddf46c9b3e775ccce40",
+    "sim/run_recipient_prior_diagnostic.py": "aa99e14d52ad2f576d95bf562bedbaa7880f6aaf0e4c341d2198e2079c85d92a",
+    "sim/test_recipient_prior_diagnostic.py": "b7238b1bb3b63f84e853742fb872ee13fae68c34c6f2a3d59b5c12096fec9208",
+    "baseline/reconcile_posterior.mjs": "faf07ef0e31b266789a74607e5e88f066932fe951d078b0802f0122922bec5c6"
+  },
+  "original_frozen_closure_files": 19,
+  "original_frozen_closure_unchanged": true,
+  "tests": {
+    "command": "cd sim && python -m unittest test_recipient_prior_diagnostic",
+    "run": 4,
+    "passed": 4
+  },
+  "actual_compound_quality_effect_fraction": 1.0,
+  "source_latent_truth_used_in_prior": false,
+  "fixed_design": {
+    "worlds": 100,
+    "seed": 951557,
+    "arms": [
+      "frozen_beta",
+      "frozen_network",
+      "posterior_coherent_network"
+    ],
+    "condition": "compound_static_beta_large_pool_recurrence",
+    "no_further_tuning": true
+  },
+  "configuration_sha256": "3c631480b9f065e75c3155a5018bd8e4b0e083a22dc0dedd0d788ef3a1e5714a",
+  "workflow_costs_sha256": "ff874a31a2c4947c5ce9201f8bcda04f41c89ba4fe6c0a50736ab5daf55ea89b",
+  "limitations": [
+    "The selected diagnostic is explicitly post-confirmation and exploratory.",
+    "Prior means are uncertain decision assumptions, not measured capability.",
+    "All actual outcomes and costs retain their frozen mechanisms; only deployment/coverage beliefs can change policy trajectories.",
+    "Full histories require a separate three-arm reconciliation after completion."
+  ]
+}

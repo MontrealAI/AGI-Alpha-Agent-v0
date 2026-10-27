@@ -1,0 +1,108 @@
+{
+  "schema": "recipient-posterior-diagnosis/v1",
+  "status": "CONFIRMED_POLICY_BOTTLENECK",
+  "basis": "READ_ONLY_POSTHOC_FROZEN_SOURCE_AND_SAVED_TRAJECTORY_ANALYSIS",
+  "created_at_utc": "2026-10-27T00:30:09.234877+00:00",
+  "kernel_sha256": "921912699da45b9ae95ba7d6973d46bbb6a4d62183438f3d1400b5d916680bfd",
+  "frozen_primary_unchanged": true,
+  "candidate_prior": {
+    "family": "Beta(2,2)",
+    "effective_cases": 4,
+    "prior_mean": 0.5,
+    "perfect_24_case_posterior": 0.9285714285714286,
+    "perfect_16_case_reassessment_posterior": 0.9
+  },
+  "recipient_beta_quality_lower_bound": 0.97,
+  "favorable_adoption_bounds": [
+    {
+      "component": "R",
+      "rich": false,
+      "maximum_candidate_posterior": 0.9285714285714286,
+      "minimum_gross_price": 7435.0,
+      "maximum_reconstruction_saving": 44.48,
+      "quality_penalty": -51.596053457142794,
+      "access_cost": 1.1600000000000001,
+      "upper_bound_before_acquisition": -8.276053457142797
+    },
+    {
+      "component": "R",
+      "rich": true,
+      "maximum_candidate_posterior": 0.9285714285714286,
+      "minimum_gross_price": 11896.0,
+      "maximum_reconstruction_saving": 80.06400000000001,
+      "quality_penalty": -82.55368553142847,
+      "access_cost": 1.1600000000000001,
+      "upper_bound_before_acquisition": -3.6496855314284637
+    },
+    {
+      "component": "V",
+      "rich": false,
+      "maximum_candidate_posterior": 0.9285714285714286,
+      "minimum_gross_price": 7435.0,
+      "maximum_reconstruction_saving": 29.6,
+      "quality_penalty": -51.596053457142794,
+      "access_cost": 1.1600000000000001,
+      "upper_bound_before_acquisition": -23.156053457142793
+    },
+    {
+      "component": "V",
+      "rich": true,
+      "maximum_candidate_posterior": 0.9285714285714286,
+      "minimum_gross_price": 11896.0,
+      "maximum_reconstruction_saving": 53.28000000000001,
+      "quality_penalty": -82.55368553142847,
+      "access_cost": 1.1600000000000001,
+      "upper_bound_before_acquisition": -30.433685531428463
+    }
+  ],
+  "all_upper_bounds_negative": true,
+  "zero_quality_mapping_inconsistency": "The frozen recipient expected_quality_gain omits alpha_quality_effect_fraction even though actual deployment and admission mapping apply it. Therefore the cost-only ablation still charges a quality gap.",
+  "interpretation": "The absolute candidate posterior ceiling makes favorable deployment structurally uneconomic to this bounded recipient policy. Admission and capital forecasts do not account for that rejection. This is not a proof of intrinsic capability infeasibility. A deliberately skeptical candidate prior is permissible, but its asymmetric treatment and deployment implications require explicit disclosure.",
+  "replay": {
+    "path": "results/paid_work_sensitivity/diagnostic_admitted_unused/optimized_network.json",
+    "sha256": "22deb18cf04545335e6f9e1e772897297751194d1817aa369221438ce1cce4e0",
+    "retention_attempts": 1.0,
+    "alpha_admissions": 1.0,
+    "recipient_adoptions": 0.0,
+    "component_uses": 0.0,
+    "admissions": [
+      {
+        "id": "jobcapsule:0:1:32:R",
+        "month": 2,
+        "passes": {
+          "R": 23
+        },
+        "case_count": 24,
+        "expected_prospective_net_alpha": 169.53403905763014,
+        "forecast_uses": 8.891099469889202
+      }
+    ]
+  },
+  "exploratory_recommendation": {
+    "status": "PROPOSED_TO_PARENT_NOT_EXECUTED_HERE",
+    "worlds": 100,
+    "proposed_fresh_seed": 951557,
+    "condition": "existing compound stress, unchanged quality/cost/demand/capacity assumptions",
+    "arms": [
+      "frozen optimized_beta",
+      "frozen optimized_network",
+      "declared-prior optimized_network"
+    ],
+    "candidate_posterior": "(4*q0+component_passes)/(4+N)",
+    "q0": "p_good*retained_component_correctness+(1-p_good)*0.65",
+    "p_good_C": "asset_build_success",
+    "p_good_B": "reconstruction_correctness*retention_generalization_success; explicit uncertain source-prior proxy, not latent truth",
+    "favorable_paid_job_prior_mean": 0.9344525,
+    "favorable_perfect_24_case_posterior": 0.9906360714285715,
+    "quality_mapping": "Multiply the recipient quality valuation by alpha_quality_effect_fraction; that factor is already 1 in the compound test, so this consistency repair cannot generate its treatment effect.",
+    "unchanged": [
+      "actual latent quality and failure draws",
+      "paid evidence counts and costs",
+      "competent Beta and ordinary local learning",
+      "cash and reserve rules",
+      "capacity and per-activity costs",
+      "admission and pre-spend rules"
+    ],
+    "claims": "A sensitivity to decision beliefs only; not empirically calibrated performance or a capability bonus. Preserve all primary and stress results and stop after one prespecified run regardless of outcome."
+  }
+}
