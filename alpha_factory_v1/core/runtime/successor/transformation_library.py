@@ -13,7 +13,7 @@ from typing import Any, Literal, cast
 from pydantic import Field, model_validator
 
 from ..store import Conflict, Journal
-from .protocol import Digest, Identifier, StrictModel, Text, canonical, digest
+from .protocol import MAX_JSON_BYTES, MAX_JSON_NODES, Digest, Identifier, StrictModel, Text, canonical, digest
 from .transformation import validate_envelope
 from .trust import SignedEnvelope, TrustRegistry
 
@@ -24,6 +24,8 @@ def _is_exact_type(value: object, expected: type[object]) -> bool:
 
 
 KEY = "@transformation-library:v1"
+PROTECTED_BRANCH = "protected_network_v1"
+MAX_SHARED_LIBRARY_BYTES = MAX_JSON_BYTES
 SCOPE: Literal["local-structural-only"] = "local-structural-only"
 MAX_ENTRIES = 128
 
@@ -116,6 +118,29 @@ class TransformationLibrary:
         """Return a detached record; changing the caller's copy cannot alter history."""
         return self.journal.document(self.journal.latest(KEY))
 
+    def _persist(self, cx: Any, state: dict[str, Any]) -> None:
+        """Preserve opted-in protected completion/revocation space for every writer."""
+        protected = state.get(PROTECTED_BRANCH)
+        if isinstance(protected, dict) and "reserved_capacity_bytes" in protected:
+            reserve = protected["reserved_capacity_bytes"]
+            if type(reserve) is not int or reserve < 0 or len(canonical(state)) + reserve > MAX_SHARED_LIBRARY_BYTES:
+                raise Conflict("shared library capacity preserves protected completion and revocation reserves")
+            node_reserve = protected.get("reserved_capacity_nodes", 0)
+            if type(node_reserve) is not int or node_reserve < 0:
+                raise Conflict("invalid protected structural capacity reservation")
+            pending: list[Any] = [state]
+            nodes = 0
+            while pending:
+                item = pending.pop()
+                nodes += 1
+                if nodes + node_reserve > MAX_JSON_NODES:
+                    raise Conflict("shared library structure preserves protected completion and revocation reserves")
+                if isinstance(item, dict):
+                    pending.extend(item.values())
+                elif isinstance(item, list):
+                    pending.extend(item)
+        self.journal.append(cx, KEY, state)
+
     @staticmethod
     def _entry(state: dict[str, Any], archive_digest: str) -> dict[str, Any]:
         for entry in state["entries"]:
@@ -182,7 +207,7 @@ class TransformationLibrary:
             if replay:
                 return copy.deepcopy(self._entry(state, archive_digest))
             if any(e["archive_digest"] == archive_digest for e in state["entries"]):
-                self.journal.append(cx, KEY, state)
+                self._persist(cx, state)
                 return copy.deepcopy(self._entry(state, archive_digest))
             if len(state["entries"]) >= MAX_ENTRIES:
                 raise Conflict("library capacity reached; existing evidence cannot be pruned automatically")
@@ -206,7 +231,7 @@ class TransformationLibrary:
             state["history"].append(
                 {"action": "archive", "archive_digest": archive_digest, "operation_id": operation_id}
             )
-            self.journal.append(cx, KEY, state)
+            self._persist(cx, state)
             return copy.deepcopy(entry)
 
     def review(self, archive_digest: str, envelope: SignedEnvelope, *, operation_id: str) -> dict[str, Any]:
@@ -256,7 +281,7 @@ class TransformationLibrary:
             state["history"].append(
                 {"action": "review", "archive_digest": archive_digest, "operation_id": operation_id}
             )
-            self.journal.append(cx, KEY, state)
+            self._persist(cx, state)
             return copy.deepcopy(entry)
 
     def control(
@@ -335,7 +360,7 @@ class TransformationLibrary:
                     "operation_id": operation_id,
                 }
             )
-            self.journal.append(cx, KEY, state)
+            self._persist(cx, state)
             return copy.deepcopy(entry)
 
     def route(self, context: RouterContext) -> dict[str, Any]:

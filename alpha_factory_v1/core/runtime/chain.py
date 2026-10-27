@@ -9,6 +9,7 @@ governance stakes in the original demos. No funds are sent by this module.
 from __future__ import annotations
 
 import hashlib
+import asyncio
 import re
 import secrets
 import time
@@ -44,10 +45,32 @@ def units(value: str) -> int:
 class RPC:
     """Bounded JSON-RPC reads against the configured chain."""
 
-    def __init__(self, config: ChainConfig) -> None:
+    def __init__(self, config: ChainConfig, *, timeout_seconds: float = 15.0) -> None:
         self.config = config
+        if not 0.1 <= timeout_seconds <= 15.0:
+            raise ValueError("RPC timeout must be bounded between 0.1 and 15 seconds")
+        self.timeout_seconds = timeout_seconds
 
-    def call(self, method: str, params: list[Any]) -> Any:
+    async def _read_until(self, method: str, params: list[Any], local: bool, deadline: float) -> bytes:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("RPC total deadline expired")
+        async with asyncio.timeout(remaining):
+            async with httpx.AsyncClient(
+                timeout=min(self.timeout_seconds, remaining), follow_redirects=False, trust_env=not local
+            ) as client:
+                async with client.stream(
+                    "POST", self.config.rpc_url, json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+                ) as response:
+                    response.raise_for_status()
+                    raw = bytearray()
+                    async for chunk in response.aiter_bytes():
+                        raw.extend(chunk)
+                        if len(raw) > 2 * 1024**2:
+                            raise ValueError("RPC response exceeds 2 MiB")
+                    return bytes(raw)
+
+    def call(self, method: str, params: list[Any], *, deadline: float | None = None) -> Any:
         """Execute only explicitly supported read operations, never broadcasts."""
         allowed = {
             "eth_chainId",
@@ -60,16 +83,19 @@ class RPC:
         if method not in allowed:
             raise ValueError("RPC method is not a supported read")
         local = httpx.URL(self.config.rpc_url).host in {"127.0.0.1", "localhost", "::1"}
-        with httpx.Client(timeout=15, follow_redirects=False, trust_env=not local) as client:
-            with client.stream(
-                "POST", self.config.rpc_url, json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
-            ) as response:
-                response.raise_for_status()
-                raw = bytearray()
-                for chunk in response.iter_bytes():
-                    raw.extend(chunk)
-                    if len(raw) > 2 * 1024**2:
-                        raise ValueError("RPC response exceeds 2 MiB")
+        if deadline is not None:
+            raw: bytes | bytearray = asyncio.run(self._read_until(method, params, local, deadline))
+        else:
+            with httpx.Client(timeout=self.timeout_seconds, follow_redirects=False, trust_env=not local) as client:
+                with client.stream(
+                    "POST", self.config.rpc_url, json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+                ) as response:
+                    response.raise_for_status()
+                    raw = bytearray()
+                    for chunk in response.iter_bytes():
+                        raw.extend(chunk)
+                        if len(raw) > 2 * 1024**2:
+                            raise ValueError("RPC response exceeds 2 MiB")
         import json
 
         body = json.loads(raw)

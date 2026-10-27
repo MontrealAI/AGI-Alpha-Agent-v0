@@ -1,0 +1,805 @@
+{
+  "actual_customer_collections": 0,
+  "actual_frontier_model_execution": false,
+  "catalog": {
+    "authorization": {
+      "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "block_number": 100,
+      "chain_id": 1,
+      "challenge_id": "ad0a9a6ab91b8348c9eea4079a815acbcc528a4c88d532f2648ad49ea1b74c59",
+      "checked_at": 1793084520,
+      "name": "two.agent.agi.eth",
+      "owners": [
+        {
+          "name": "agi.eth",
+          "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+          "wrapped_expiry": null
+        },
+        {
+          "name": "agent.agi.eth",
+          "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+          "wrapped_expiry": null
+        },
+        {
+          "name": "two.agent.agi.eth",
+          "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+          "wrapped_expiry": null
+        }
+      ],
+      "pins": {
+        "max_block_age_seconds": 60,
+        "registrar_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+        "registry_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+        "schema_version": 1,
+        "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
+      },
+      "registrar_expiry": 1793170920,
+      "request_committed_at": 1793084520,
+      "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
+      "wallet": "0x6a1909d9bffca645a875b2118fac7485e82dad40"
+    },
+    "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "export": "controlled-invocation-only",
+    "manifests": [
+      {
+        "candidate_digest": "f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359",
+        "manifest": {
+          "content_digest": "ccb3d1e85c15d7a23b0c340962bd0b40afdc358189009012f50fa9acf9a3ffab",
+          "dependency_digests": [],
+          "export_policy": "controlled-invocation-only",
+          "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
+          "origin_agent": "one.agent.agi.eth",
+          "origin_mission": "00000000-0000-4000-8000-000000000001",
+          "origin_record_digest": "09831d6516a99cf20eb6955cf0612cf3e53df5a0e79db65bd1586c82149c857b",
+          "origin_wallet": "0xfd588b473a8fb01315c89d6771422755b659fe14",
+          "prerequisites": [],
+          "rights": "cleared-for-authenticated-network",
+          "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
+          "schema_version": 1,
+          "skill_id": "bounded-selector",
+          "supported_scope": "bounded-public-source-selection/v1",
+          "version": 1
+        },
+        "state": "admitted"
+      }
+    ],
+    "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "current_state": "revoked",
+  "duplicate_funding_refused": true,
+  "example": {
+    "assessment": {
+      "basis": "configured executor, acceptance and evaluator attestations; prospective reuse count is an assumption",
+      "justified": true,
+      "net_lower_micro_usd": 119,
+      "originating_delivery_A_charged_again": false,
+      "retention_cost_micro_usd": 80
+    },
+    "costs": {
+      "available_funds": 9852,
+      "bucket_complete": {
+        "A": true,
+        "B": true,
+        "C": false
+      },
+      "cash": 9999,
+      "collected_revenue": 0,
+      "complete": true,
+      "complete_cost_profit": -148,
+      "costs": {
+        "A": 9,
+        "B": 139,
+        "C": 0
+      },
+      "currency": "USD",
+      "delivery_profit": -9,
+      "evidence_basis": "configured accounting signer attestations",
+      "known_obligations": 147,
+      "obligations": 147,
+      "reserve": 0,
+      "token_movements_included": false,
+      "unit": "micro_usd",
+      "unknown_costs": false
+    },
+    "fictional_payment_reconciliation": {
+      "after": {
+        "available_funds": 9852,
+        "bucket_complete": {
+          "A": true,
+          "B": true,
+          "C": false
+        },
+        "cash": 9999,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": -148,
+        "costs": {
+          "A": 9,
+          "B": 139,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": -9,
+        "evidence_basis": "configured accounting signer attestations",
+        "known_obligations": 147,
+        "obligations": 147,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "attestations": {
+        "fictional-later-payment": {
+          "activity_id": "origin/compute",
+          "amount_micro_usd": 1,
+          "evidence_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "payment_id": "fictional-later-payment",
+          "schema_version": 1,
+          "signed": {
+            "domain": "flywheel-cost-command",
+            "payload": {
+              "action": "payment",
+              "journal_identity": "urn:agialpha:ed25519:4e29f55c4e6d8c985e153bebadf945562a50e17bb699c376606d78c9ffd641a4",
+              "operation_id": "fictional-later-payment",
+              "record": {
+                "activity_id": "origin/compute",
+                "amount_micro_usd": 1,
+                "evidence_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "payment_id": "fictional-later-payment"
+              }
+            },
+            "principal": "accountant",
+            "signature": "YKGBPwqILUu2BajWox7BZU4eeSeg0fJUJCCCIZXgeGvm04XMos+w1/KF81cGo7L7Yscfx7ZiyUdAFamavf4ACA=="
+          }
+        }
+      },
+      "before": {
+        "available_funds": 9852,
+        "bucket_complete": {
+          "A": true,
+          "B": true,
+          "C": false
+        },
+        "cash": 10000,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": -148,
+        "costs": {
+          "A": 9,
+          "B": 139,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": -9,
+        "evidence_basis": "configured accounting signer attestations",
+        "known_obligations": 148,
+        "obligations": 148,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "funds_transferred": false
+    },
+    "invocation": {
+      "acceptance": {
+        "domain": "flywheel-reuse-acceptance",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:4e29f55c4e6d8c985e153bebadf945562a50e17bb699c376606d78c9ffd641a4",
+          "operation_id": "accept-reuse",
+          "record": {
+            "beta_correct": true,
+            "beta_run": {
+              "domain": "flywheel-frontier-run",
+              "payload": {
+                "actual_cost_micro_usd": 50,
+                "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "billing_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "candidate_digest": null,
+                "evidence_basis": "configured-executor-attestation",
+                "finished_at": 1793084520,
+                "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
+                "model_id": "fictional-frontier-receipt-fixture",
+                "output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "provider_response_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "reasoning_effort": "max",
+                "reasoning_mode": "standard",
+                "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "started_at": 1793084520,
+                "tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+                "usage": {
+                  "fixture_tokens": 1
+                }
+              },
+              "principal": "executor",
+              "signature": "Jb9Z5pPjQ+cXwf67+UEb3IMLMAckDfu3R8Y37d3b5xwJQU3feXzeXAzwRZmlG5FIwpUD+DkwNpdFA35gCXhyBQ=="
+            },
+            "candidate_correct": true,
+            "independent_tests_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+            "limitations": "Synthetic qualification fixture; no real frontier trial",
+            "mission_id": "fresh-peer",
+            "receipt_digest": "1572e9fbbb68dbc628da71d59d028fee2b510cb1cef53f2e87f8a8c5374bce9c",
+            "residual_interventions_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        },
+        "principal": "acceptor",
+        "signature": "IWLthGGFDTLfAfsxUdlKdwZKn+rnB2ERz0i21RD8RRoWwQRrsfzJrh7nEGOsO6HvDYyJ1H8acGrHbwYsV56NDg=="
+      },
+      "additional_value": -9,
+      "attempt_digest": "970984c8ce431106ec17b8e3a9ac655c17773edf9dea4f1a01c0cf1ac6d771fb",
+      "authorization": {
+        "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "block_number": 100,
+        "chain_id": 1,
+        "challenge_id": "fcd52b9cb8c556bccc12d86e689521f618697a2735bfea0d8d60a96d6e26f0ca",
+        "checked_at": 1793084520,
+        "name": "two.agent.agi.eth",
+        "owners": [
+          {
+            "name": "agi.eth",
+            "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+            "wrapped_expiry": null
+          },
+          {
+            "name": "agent.agi.eth",
+            "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+            "wrapped_expiry": null
+          },
+          {
+            "name": "two.agent.agi.eth",
+            "owner": "0x6a1909d9bffca645a875b2118fac7485e82dad40",
+            "wrapped_expiry": null
+          }
+        ],
+        "pins": {
+          "max_block_age_seconds": 60,
+          "registrar_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+          "registry_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+          "schema_version": 1,
+          "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
+        },
+        "registrar_expiry": 1793170920,
+        "request_committed_at": 1793084520,
+        "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
+        "wallet": "0x6a1909d9bffca645a875b2118fac7485e82dad40"
+      },
+      "baseline_output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "candidate_digest": "f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359",
+      "comparison_cost_micro_usd": 50,
+      "cost_cap_micro_usd": 100,
+      "cost_report": {
+        "available_funds": 9852,
+        "bucket_complete": {
+          "A": false,
+          "B": true,
+          "C": false
+        },
+        "cash": 10000,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": -59,
+        "costs": {
+          "A": 0,
+          "B": 59,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": null,
+        "evidence_basis": "configured accounting signer attestations",
+        "known_obligations": 148,
+        "obligations": 148,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "elapsed_ns": 8290590,
+      "error": null,
+      "execution": "installed-closed-selector; no frontier inference in this invocation",
+      "execution_digest": "a31b12d29d38647ea6dd43a23bc2493abeb7cbd2fb45e3923e2edd037ea15277",
+      "finished_at": 1793084520,
+      "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
+      "logical_units": 31,
+      "operating_saving_before_comparison_micro_usd": 41,
+      "peer_identity": true,
+      "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "qualification_digest": "e41e43dc7d009bac2782b705fba059fb2ad0608f125772de9be2c05b36d80b9b",
+      "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "request_digest": "d3b6e3b44d3f4d397aca722b84d8238ec9dc2570da53ef7d08c2e17810ff4072",
+      "result": {
+        "covered_weight": 21,
+        "program_digest": "bf89094f2247fda8dec0c2059c6fe543e507060ae30934e078f6c3290f290a8d",
+        "references": [
+          {
+            "id": "conditions",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments"
+          },
+          {
+            "id": "cost",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments"
+          },
+          {
+            "id": "test",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments"
+          }
+        ],
+        "score_millionths": 677419,
+        "selected": [
+          "conditions",
+          "cost",
+          "test"
+        ],
+        "source_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
+        "supported_claims": [
+          "conditions",
+          "cost",
+          "test"
+        ],
+        "text": "It should retain the restriction encountered, the transformation attempted, the evidence supporting its mechanism, its prerequisites, its construction costs, its failure conditions, and the scope of its outcome claim.\nThe same idea can succeed at a long reuse horizon and fail at a short one.\nA router that chooses among archived transformations is itself a policy",
+        "total_weight": 31,
+        "unsupported_claims": []
+      },
+      "started_at": 1793084520,
+      "status": "reused-accepted",
+      "successful_peer_reuse": true,
+      "successful_reuse": true
+    },
+    "invocation_request": {
+      "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "charter": {
+        "artifact": "fixed-summary",
+        "budgets": {
+          "AGIALPHABaseUnits": "0",
+          "USDCBaseUnits": "0",
+          "execution_units": 100000,
+          "money_minor": 0,
+          "schema_version": 1,
+          "search_units": 100000
+        },
+        "constraints": [
+          "public non-personal input only",
+          "no paid provider or external execution",
+          "preserve the fixed summary artifact"
+        ],
+        "max_clauses": 3,
+        "outcomes": [
+          "three or fewer exact supplied source clauses",
+          "make prerequisite qualifications inspectable"
+        ],
+        "payment_route": "none",
+        "permitted_actions": [
+          "read-public-source",
+          "construct-bounded",
+          "evaluate-local",
+          "write-artifact"
+        ],
+        "population": "public-source argument clauses; no claim about reader comprehension",
+        "publicOnly": true,
+        "purpose": "Produce a concise source-grounded fixed summary of the paper's authorized-method requirements.",
+        "schema": "intent-charter/v1",
+        "schema_version": 1
+      },
+      "cost_cap_micro_usd": 100,
+      "document": {
+        "claims": [
+          {
+            "depends_on": [],
+            "id": "first",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+            "schema_version": 1,
+            "text": "The durable memory should not say only \"this worked.\" independently fresh text",
+            "weight": 2
+          },
+          {
+            "depends_on": [
+              "cost"
+            ],
+            "id": "conditions",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+            "schema_version": 1,
+            "text": "It should retain the restriction encountered, the transformation attempted, the evidence supporting its mechanism, its prerequisites, its construction costs, its failure conditions, and the scope of its outcome claim.",
+            "weight": 9
+          },
+          {
+            "depends_on": [],
+            "id": "cost",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+            "schema_version": 1,
+            "text": "The same idea can succeed at a long reuse horizon and fail at a short one.",
+            "weight": 7
+          },
+          {
+            "depends_on": [
+              "test"
+            ],
+            "id": "router",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+            "schema_version": 1,
+            "text": "independently successful components do not guarantee that the router selects or composes them correctly.",
+            "weight": 8
+          },
+          {
+            "depends_on": [],
+            "id": "test",
+            "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+            "schema_version": 1,
+            "text": "A router that chooses among archived transformations is itself a policy",
+            "weight": 5
+          }
+        ],
+        "public_non_personal": true,
+        "schema": "source-document/v1",
+        "schema_version": 1,
+        "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Transformational_Intelligence.tex",
+        "title": "Paper confirmation: reusable methods fresh peer case"
+      },
+      "logical_limit": 10000,
+      "mission_id": "fresh-peer",
+      "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "prerequisite_digests": [],
+      "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "schema_version": 1
+    },
+    "manifest": {
+      "content_digest": "ccb3d1e85c15d7a23b0c340962bd0b40afdc358189009012f50fa9acf9a3ffab",
+      "dependency_digests": [],
+      "export_policy": "controlled-invocation-only",
+      "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
+      "origin_agent": "one.agent.agi.eth",
+      "origin_mission": "00000000-0000-4000-8000-000000000001",
+      "origin_record_digest": "09831d6516a99cf20eb6955cf0612cf3e53df5a0e79db65bd1586c82149c857b",
+      "origin_wallet": "0xfd588b473a8fb01315c89d6771422755b659fe14",
+      "prerequisites": [],
+      "rights": "cleared-for-authenticated-network",
+      "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
+      "schema_version": 1,
+      "skill_id": "bounded-selector",
+      "supported_scope": "bounded-public-source-selection/v1",
+      "version": 1
+    },
+    "origin_delivery": {
+      "digest": "09831d6516a99cf20eb6955cf0612cf3e53df5a0e79db65bd1586c82149c857b",
+      "elapsed_seconds": 0.009249,
+      "error": null,
+      "execution_config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "inference": null,
+      "lease_expires_ns": 1793085180581188653,
+      "request": {
+        "generations": 12,
+        "goal": "List the supported read operations in the supplied RPC source audit",
+        "population": 20,
+        "seed": 42,
+        "work": {
+          "kind": "research",
+          "sources": [
+            {
+              "id": "rpc-allowlist",
+              "text": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt. No RPC request was executed.",
+              "title": "Current public RPC allowlist",
+              "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/95051ed4a58b2f3ded9e392ead5539a90bd8df13/alpha_factory_v1/core/runtime/chain.py"
+            }
+          ]
+        }
+      },
+      "request_hash": "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225",
+      "result": {
+        "findings": [
+          {
+            "claim": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt.",
+            "quote": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt.",
+            "source_id": "rpc-allowlist"
+          },
+          {
+            "claim": "No RPC request was executed.",
+            "quote": "No RPC request was executed.",
+            "source_id": "rpc-allowlist"
+          }
+        ],
+        "limits": "Supplied-source analysis; source authenticity and claim interpretation require operator review.",
+        "method": "extractive evidence ranking",
+        "sources": [
+          {
+            "id": "rpc-allowlist",
+            "sha256": "84fbe6caafc4b5434c7bb3119d40e7c150216033cc92b2c8ffbf0996ef836fa2",
+            "title": "Current public RPC allowlist",
+            "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/95051ed4a58b2f3ded9e392ead5539a90bd8df13/alpha_factory_v1/core/runtime/chain.py"
+          }
+        ]
+      },
+      "review": {
+        "actor": "operator",
+        "approved": true,
+        "note": "Local automated quotation and static allowlist checks; no independent organizational acceptance claimed",
+        "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+        "verification": {
+          "checks": [
+            "every quotation occurs in its cited input",
+            "source identifiers are valid"
+          ],
+          "passed": true,
+          "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+          "semantic_review_required": true
+        }
+      },
+      "revision": 18,
+      "stages": [
+        {
+          "detail": {
+            "config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "evaluation_limit": 10000,
+            "goal": "List the supported read operations in the supplied RPC source audit",
+            "input_hash": "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225",
+            "kind": "research",
+            "wall_seconds_limit": 600
+          },
+          "role": "planning"
+        },
+        {
+          "detail": {
+            "input_provenance": "operator-supplied",
+            "parent": null,
+            "parent_digest": null
+          },
+          "role": "research"
+        },
+        {
+          "detail": {
+            "inference": null,
+            "method": "extractive evidence ranking"
+          },
+          "role": "strategy"
+        },
+        {
+          "detail": {
+            "objective_improvement": null,
+            "realized_revenue": null,
+            "token_settlement": "not_recorded",
+            "unit": null
+          },
+          "role": "market"
+        },
+        {
+          "detail": {
+            "artifact_type": "application/json",
+            "execution": "built-in analytical tools; no model-generated code executed",
+            "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60"
+          },
+          "role": "codegen"
+        },
+        {
+          "detail": {
+            "checks": [
+              "every quotation occurs in its cited input",
+              "source identifiers are valid"
+            ],
+            "passed": true,
+            "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+            "semantic_review_required": true
+          },
+          "role": "safety"
+        },
+        {
+          "detail": {
+            "archive": "signed mission journal",
+            "learning_eligible_after_approval": true
+          },
+          "role": "memory"
+        }
+      ],
+      "state": "completed",
+      "verification": {
+        "checks": [
+          "every quotation occurs in its cited input",
+          "source identifiers are valid"
+        ],
+        "passed": true,
+        "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+        "semantic_review_required": true
+      }
+    },
+    "plan": {
+      "domain": "flywheel-plan",
+      "payload": {
+        "journal_identity": "urn:agialpha:ed25519:4e29f55c4e6d8c985e153bebadf945562a50e17bb699c376606d78c9ffd641a4",
+        "operation_id": "plan/f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359",
+        "record": {
+          "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "candidate_digest": "f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359",
+          "execution_digest": "a31b12d29d38647ea6dd43a23bc2493abeb7cbd2fb45e3923e2edd037ea15277",
+          "fresh_input_digests": [
+            "1eb8460c5d004e2bef15d589c5db2afe5724e152c6e610be703a3830bdcd038a",
+            "524b115d77fc359acd40a2e9ef7791cea78a637dd1bd3c250a992b39f89a4e93"
+          ],
+          "fresh_inputs": [
+            {
+              "claims": [
+                {
+                  "depends_on": [],
+                  "id": "first",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "The durable memory should not say only \"this worked.\" Synthetic case f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/0.",
+                  "weight": 2
+                },
+                {
+                  "depends_on": [
+                    "cost"
+                  ],
+                  "id": "conditions",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "It should retain the restriction encountered, the transformation attempted, the evidence supporting its mechanism, its prerequisites, its construction costs, its failure conditions, and the scope of its outcome claim.",
+                  "weight": 9
+                },
+                {
+                  "depends_on": [],
+                  "id": "cost",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "The same idea can succeed at a long reuse horizon and fail at a short one.",
+                  "weight": 7
+                },
+                {
+                  "depends_on": [
+                    "test"
+                  ],
+                  "id": "router",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "independently successful components do not guarantee that the router selects or composes them correctly.",
+                  "weight": 8
+                },
+                {
+                  "depends_on": [],
+                  "id": "test",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "A router that chooses among archived transformations is itself a policy",
+                  "weight": 5
+                }
+              ],
+              "public_non_personal": true,
+              "schema": "source-document/v1",
+              "schema_version": 1,
+              "source_url": "https://fixture-sources.example/evaluation/f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/0",
+              "title": "Paper confirmation: reusable methods / synthetic fresh case f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/0"
+            },
+            {
+              "claims": [
+                {
+                  "depends_on": [],
+                  "id": "first",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "The durable memory should not say only \"this worked.\" Synthetic case f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/1.",
+                  "weight": 2
+                },
+                {
+                  "depends_on": [
+                    "cost"
+                  ],
+                  "id": "conditions",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "It should retain the restriction encountered, the transformation attempted, the evidence supporting its mechanism, its prerequisites, its construction costs, its failure conditions, and the scope of its outcome claim.",
+                  "weight": 9
+                },
+                {
+                  "depends_on": [],
+                  "id": "cost",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "The same idea can succeed at a long reuse horizon and fail at a short one.",
+                  "weight": 7
+                },
+                {
+                  "depends_on": [
+                    "test"
+                  ],
+                  "id": "router",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "independently successful components do not guarantee that the router selects or composes them correctly.",
+                  "weight": 8
+                },
+                {
+                  "depends_on": [],
+                  "id": "test",
+                  "provenance": "Continuous discovery; verbatim prose after TeX emphasis/quote normalization; source SHA256 9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f; lines 480-482; weights/dependencies are local judgments",
+                  "schema_version": 1,
+                  "text": "A router that chooses among archived transformations is itself a policy",
+                  "weight": 5
+                }
+              ],
+              "public_non_personal": true,
+              "schema": "source-document/v1",
+              "schema_version": 1,
+              "source_url": "https://fixture-sources.example/evaluation/f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/1",
+              "title": "Paper confirmation: reusable methods / synthetic fresh case f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359/1"
+            }
+          ],
+          "matched_tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "model_id": "fictional-frontier-receipt-fixture",
+          "origin_input_digests": [
+            "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225",
+            "d4ee39237843704c8bc59e6be9610f2a076e173f8acad99713e02e902c7a8bfc"
+          ],
+          "planned_reuses": 10,
+          "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "prospective_basis": "Synthetic conservative horizon assumption",
+          "reasoning_effort": "max",
+          "reasoning_mode": "standard",
+          "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "remaining_retention_micro_usd": 1,
+          "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "retention_cost_record": "retention/f99b5b0370332b2e01a64776d56823ff7d8ce8f5efc51e289861cc1cb30f3359",
+          "schema_version": 1
+        }
+      },
+      "principal": "evaluator",
+      "signature": "di3Hrk1My8hC9xWlbn3RJ6GMPgkYxLO9M1YAWIP14EIwMr1HV3iQjvL0R4LnKkcP1l0p8JgKqLe9qQHyjOslCg=="
+    }
+  },
+  "execution_digest": "a31b12d29d38647ea6dd43a23bc2493abeb7cbd2fb45e3923e2edd037ea15277",
+  "historical_records": [
+    {
+      "file": "protected-flywheel-conformance-historical.json",
+      "scope": "original synthetic fixture with constructed origin acceptance; never qualifies native delivery or this source",
+      "sha256": "9d2202568c78b147d38c3a0bbf55611696aa3fd111000bb35a7742ed15ae365a"
+    },
+    {
+      "commit": "93e8422f6417d751ff9de53553b31faf97f60c27",
+      "file": "docs/agent/release-evidence/protected-flywheel-conformance.json",
+      "scope": "superseded synthetic fixture with constructed origin; original bytes remain in Git history",
+      "sha256": "690a0d6c36b548c670ec58c23c360070d116a3c1105795be28cadeb4fdbe1a90"
+    }
+  ],
+  "journal_integrity": {
+    "events": 122,
+    "head": "c5bbe8bce6562b42da1cb6a4d454cfd7b83214a4b4e885444db2c2426f2f3298",
+    "identity": "urn:agialpha:ed25519:4e29f55c4e6d8c985e153bebadf945562a50e17bb699c376606d78c9ffd641a4",
+    "valid": true
+  },
+  "live_ens_qualification": false,
+  "origin_execution": "actual native Research submit, execute, quote verification and automated review; no frontier model or independent organizational acceptance",
+  "prices_costs_and_funding": "fictional fixture attestations; not observed real amounts",
+  "production_service_provisioned": false,
+  "real_peer_reuse_qualified": false,
+  "required_live_resources": [
+    "approved frontier model/executor, exact configuration, quota, billing and finite allowance",
+    "approved service host, durable encrypted storage and separately retained key/checkpoint custody",
+    "two approved RPC readers and real code pins",
+    "two owner-controlled eligible agent wallets signing fresh challenges"
+  ],
+  "revoked_stale_access_refused": true,
+  "schema": "protected-flywheel-conformance/v2",
+  "scope": "LOCAL NATIVE WORK AND SYNTHETIC PROTOCOL CONFORMANCE ONLY",
+  "signers_and_chain": "ephemeral fictional role keys and RPC responses; no network requests or actual ENS identities",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/api.py": "e979bedd41902d6204c70af5c2506bf373c223ac8f7da19d02dba56cb185108f",
+    "alpha_factory_v1/core/runtime/chain.py": "adde986423301e7ed53df57bf39a7814a3ea6e2ccb0f5f1edc9b9c446c11aa5c",
+    "alpha_factory_v1/core/runtime/cli.py": "929eab708e63033609eb20ea5900041ea59d66321d28296921a59dcfa9c7f19f",
+    "alpha_factory_v1/core/runtime/engine.py": "f353c7b545721b25b6fd523837ca7b69bd7edec383e2d43b1421b53714fb4c1f",
+    "alpha_factory_v1/core/runtime/models.py": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+    "alpha_factory_v1/core/runtime/provider.py": "21152a3e0e021ca5a5f5ed5a1b8f1507efb4ff102fa6974a37b55aca4cca58de",
+    "alpha_factory_v1/core/runtime/store.py": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+    "alpha_factory_v1/core/runtime/successor/flywheel_access.py": "c464333c819f0e89e32dda8223ed544c1ce1784754c1f996483cea7ae4a7b055",
+    "alpha_factory_v1/core/runtime/successor/flywheel_api.py": "e179c01fc96009276425849a0985960fbad412eb5cb95620faccba282479a962",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "090902670b621dfd26e16b194e6c77532ea55934e7de698e9123f42ce3aeddad",
+    "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "a8fa9c23286ac1aac9dc753f8e271a1a2e176d7a496914d362a88ffb91a33a9d",
+    "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "578b65aad46b96ceb7e15b23b13a88f0fa22f895544f251f8fa0270ae202b0d9",
+    "alpha_factory_v1/core/runtime/successor/flywheel_operator.py": "101155bf9f2c2d6d5ab276e4a22b3c93138e3336bb08e1f8ec4e79fbebc99be9",
+    "alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+    "alpha_factory_v1/core/runtime/successor/signatures.py": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+    "alpha_factory_v1/core/runtime/successor/transformation.py": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+    "alpha_factory_v1/core/runtime/successor/transformation_library.py": "170e66c93fa77a7ea19a8b3a975e0e5d5826a9eebd7c1a29eb399f06447d020c",
+    "alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+    "alpha_factory_v1/core/runtime/work.py": "0dae1e55376f991a364cbe748fb7eccc3c91be29cfb8ed8a9a43e8366fe4c2c9",
+    "scripts/record_protected_flywheel_conformance.py": "4aa3c4fef5962d8db7c4700bffa0742533379668a8ef735e599e7d59e9062f7a",
+    "tests/runtime/test_flywheel_protected.py": "4b1f5b0f575cea037387fa1a5b4989684affdf9cc50ffe05c2970477fa73412b"
+  }
+}

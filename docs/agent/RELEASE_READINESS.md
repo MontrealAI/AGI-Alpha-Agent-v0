@@ -1,5 +1,20 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.46.0 protected Flywheel operating boundaries
+
+This sequential candidate follows the existing 1.45 publication owner. Preserve that exact-source
+publication lease; no parallel publisher. The [protected operating guide](PROTECTED_FLYWHEEL.md) and
+[release notes](RELEASE_NOTES_1.46.0.md) distinguish implemented native/API boundaries, synthetic
+conformance fixtures and unprovisioned live identity/model/storage/peer qualification.
+
+Exact-source review, required PR checks, full resulting-main security/coverage/integrity, immutable
+package and installation, site acceptance and actual served-byte checks remain blocking. All historical
+worker editions, paper identities, five held source pins, contracts and Jobs roles remain preserved.
+
+## Preserved 1.45.0 preparation record
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
 # Release readiness — 1.45.0 additive Flywheel flagship
 
 The new public `/flywheel/` experience explores modeled profitable engineering delivery before optional

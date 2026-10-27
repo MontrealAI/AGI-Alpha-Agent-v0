@@ -16,7 +16,7 @@ route to **1.0 later**. All outcomes are simulator rewards, not money.
 <a id="start-in-three-steps-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Start in three steps — 1.45.0
+## Start in three steps — 1.46.0
 
 From a source checkout on **Linux x86_64**, with **Python 3.11–3.13**:
 

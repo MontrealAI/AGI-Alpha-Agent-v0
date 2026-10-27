@@ -268,6 +268,16 @@ FLYWHEEL_145_EXTRA_FILES = PROFITABLE_WORK_20261027_EXTRA_FILES | {
     ),
 }
 
+# Exact sequential protected Flywheel 1.46 edition; retain every prior whole edition.
+PROTECTED_FLYWHEEL_146_EXTRA_FILES = FLYWHEEL_145_EXTRA_FILES | {
+    "docs/service-worker.js": (23528, "f5aef029f75b2f8b7da784acae899566065885f48a5a05499d3cf9ad031041c0"),
+    "docs/assets/service-worker.js": (23966, "71c5f34a108fe9d069c0e611963a1582142bf1796d73213c6fd00655024ad509"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26594,
+        "4c49c657e4271266dc0b26b646c39da6ca12b120571a02fb120a72f54e45cdc4",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -347,6 +357,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, NEXT_UPGRADE_20261026_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROFITABLE_WORK_20261027_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))
