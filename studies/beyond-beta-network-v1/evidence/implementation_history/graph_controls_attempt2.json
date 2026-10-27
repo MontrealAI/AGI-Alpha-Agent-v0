@@ -1,0 +1,189 @@
+{
+  "schema": "beyond-beta-graph-controls/v1",
+  "evidence": "OBSERVED_LOCAL_SOFTWARE_CONTROLS",
+  "createdAt": "2026-10-26T23:23:54.468Z",
+  "controls": 40,
+  "passed": 40,
+  "failed": 0,
+  "results": [
+    {
+      "name": "direct-agent-label-boundary",
+      "passed": true
+    },
+    {
+      "name": "candidate-and-evidence-alone-cannot-influence",
+      "passed": true
+    },
+    {
+      "name": "positive-alpha-still-requires-validation",
+      "passed": true
+    },
+    {
+      "name": "nonpositive-complete-alpha-rejected",
+      "passed": true
+    },
+    {
+      "name": "beta-equivalence-rejected-even-with-positive-score",
+      "passed": true
+    },
+    {
+      "name": "existing-capability-redundancy-rejected",
+      "passed": true
+    },
+    {
+      "name": "all-members-discover-shareable-admission-without-use",
+      "passed": true
+    },
+    {
+      "name": "shareable-rights-cannot-be-restricted-to-selected-recipients",
+      "passed": true
+    },
+    {
+      "name": "creator-cannot-self-validate",
+      "passed": true
+    },
+    {
+      "name": "club-validator-cannot-enter-additional-agent-layer",
+      "passed": true
+    },
+    {
+      "name": "nested-validator-cannot-inherit-direct-authority",
+      "passed": true
+    },
+    {
+      "name": "wrong-validator-controller-denied",
+      "passed": true
+    },
+    {
+      "name": "validation-signature-tamper-denied",
+      "passed": true
+    },
+    {
+      "name": "root-publication-needs-creator-control",
+      "passed": true
+    },
+    {
+      "name": "attester-and-root-operation-domains-are-separate",
+      "passed": true
+    },
+    {
+      "name": "stale-proposal-cannot-overwrite-current-graph",
+      "passed": true
+    },
+    {
+      "name": "root-replay-cannot-duplicate-admission",
+      "passed": true
+    },
+    {
+      "name": "typed-inclusion-and-per-creator-root-chain-replay",
+      "passed": true
+    },
+    {
+      "name": "canonical-promotion-cannot-bypass-admission",
+      "passed": true
+    },
+    {
+      "name": "revocation-blocks-ordinary-and-canonical-history-reuse",
+      "passed": true
+    },
+    {
+      "name": "retired-record-cannot-be-overwritten-or-revalidated",
+      "passed": true
+    },
+    {
+      "name": "replacement-must-first-earn-its-own-admission",
+      "passed": true
+    },
+    {
+      "name": "moving-beta-blocks-old-alpha-until-fresh-revalidation",
+      "passed": true
+    },
+    {
+      "name": "old-tests-cannot-be-relabeled-as-fresh-revalidation",
+      "passed": true
+    },
+    {
+      "name": "policy-version-change-blocks-prior-validation",
+      "passed": true
+    },
+    {
+      "name": "expired-evidence-blocks-reuse-despite-longer-asset-life",
+      "passed": true
+    },
+    {
+      "name": "scope-environment-and-execution-authority-remain-separate",
+      "passed": true
+    },
+    {
+      "name": "composition-rechecks-current-dependency-state",
+      "passed": true
+    },
+    {
+      "name": "dependency-version-cannot-be-substituted",
+      "passed": true
+    },
+    {
+      "name": "complementary-bundle-does-not-admit-standalone-components",
+      "passed": true
+    },
+    {
+      "name": "evidence-loss-fails-closed-and-cannot-be-toggled-back",
+      "passed": true
+    },
+    {
+      "name": "local-capsule-authentication-context-and-key-controls",
+      "passed": true
+    },
+    {
+      "name": "capsule-private-content-and-keys-absent-from-public-snapshot",
+      "passed": true
+    },
+    {
+      "name": "export-right-distinct-and-copying-limit-explicit",
+      "passed": true
+    },
+    {
+      "name": "failure-memory-is-separate-from-positive-alpha",
+      "passed": true
+    },
+    {
+      "name": "protected-evaluation-material-never-enters-shared-capsule",
+      "passed": true
+    },
+    {
+      "name": "identity-rotation-invalidates-prior-creator-authority",
+      "passed": true
+    },
+    {
+      "name": "adapter-pure-future-binding-does-not-advance-current-time",
+      "passed": true
+    },
+    {
+      "name": "adapter-completion-rechecks-recipient-beta-universe",
+      "passed": true
+    },
+    {
+      "name": "adapter-evidence-expiry-separate-from-asset-lifetime",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "graph/lifecycle.mjs": "56853a7940a26daaeaf22a79c107060a8219f0260cc060f4e20937e509a95826",
+    "graph/simulation_adapter.mjs": "f9287707ae9b54ac4c111205606ac52fa2fc2eac3b8f3f7fe51cb014ff53d3b6",
+    "graph/encoding.mjs": "6eb2e82e6240acc1bfe37c8ac54cd8b5aa3867c6773762721b79ec19e3e6cfbf",
+    "graph/crypto_capsule.mjs": "bfc232c95ed71652b1ab22de2cc61cf355d2ab8c70f198cb1eacb152b4d02b11",
+    "graph/lifecycle.test.mjs": "34e97dca0e0330fe0f0365538bac84d860aa58b65f42e147751753f60b48005f",
+    "model/alpha_gate.mjs": "76df01fa9729b7e64b54b441727940bd2238af80a6226816321d0a96c9309760",
+    "upstream/graph/authority.mjs": "5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1",
+    "upstream/graph/commitments.mjs": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+  },
+  "identityAuthentication": "FIXTURE_ONLY_NOT_CRYPTOGRAPHIC",
+  "localEncryption": "REAL_AES_256_GCM_EPHEMERAL_KEYS",
+  "zeroKnowledgeProofs": "NOT_IMPLEMENTED",
+  "liveENS": "NOT_RUN",
+  "onchain": "NOT_DEPLOYED",
+  "empiricalFrontierAlpha": "NOT_ESTABLISHED",
+  "jobsClubRoles": "UNCHANGED",
+  "actualCustomerJobs": 0,
+  "actualCollectionsUSD": 0
+}

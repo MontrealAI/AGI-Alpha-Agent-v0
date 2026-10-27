@@ -1,0 +1,2920 @@
+{
+  "schema": "paid-work-alpha-calibration/v1",
+  "evidenceDate": "2026-10-26",
+  "sources": {
+    "OAI_PRICE": {
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Official vendor tariff; not performance evidence"
+    },
+    "OAI_MODELS": {
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Official model/access/workflow guidance; not task acceptance calibration"
+    },
+    "OAI_TERRA": {
+      "url": "https://openai.com/index/introducing-gpt-6-1-terra/",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Vendor capability evaluation; not independent foundry performance"
+    },
+    "AWS": {
+      "url": "https://aws.amazon.com/fargate/pricing/",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "US East N Virginia Linux x86 requested CPU and memory tariff"
+    },
+    "SIMS": {
+      "url": "https://www.gsaadvantage.gov/ref_text/GS07F0011V/GS07F0011V_GSAMass_Supply_Schedule_TC_05062026.pdf",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Published US service-rate schedule; effective2026-10-01 through2027-09-30; not an accepted-outcome quote"
+    },
+    "ALPHAEVOLVE": {
+      "url": "https://arxiv.org/abs/2506.13131",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Vendor-authored algorithm-discovery report; different models/workloads"
+    },
+    "FUNSEARCH": {
+      "url": "https://www.nature.com/articles/s41586-023-06924-6",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Primary research; executable evaluators and held-out generalization, not this autonomous service"
+    },
+    "ORTOOLS": {
+      "url": "https://developers.google.com/optimization",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Strong ordinary-tool baseline is available to every arm"
+    },
+    "EOH": {
+      "url": "https://proceedings.mlr.press/v235/liu24bs.html",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Independent primary method research; external-validity limitation retained"
+    },
+    "TRANSFORMATION": {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/098117379f2920ebe37ab23dad77b7314a32518c/docs/Transformational_Intelligence.pdf",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Conceptual research foundation; not an empirical capability calibration"
+    },
+    "GYM_OMEGA": {
+      "url": "https://github.com/MontrealAI/MontrealAI.github.io/blob/a9cc143bc05495405ac63b0e2645c425d66410b8/GoalOS_Gym_Specialist_ASI_Successor_Omega_v2_1_0_US_LETTER.pdf",
+      "date": "2026-10-26",
+      "type": "Reported by external sources",
+      "kind": "Conceptual mission/proof/authority/lifecycle foundation; synthetic examples excluded from numerical calibration"
+    },
+    "USER_CHARTER": {
+      "url": "../USER_CHARTER.md",
+      "date": "2026-10-26",
+      "type": "Assumed or explored",
+      "kind": "Authorized study design and scope, including A/B/C and automated target"
+    },
+    "LOCAL_TESTS": {
+      "url": "../results/graph_qualification.json",
+      "date": "2026-10-26",
+      "type": "Observed in our own work",
+      "kind": "Executed local research-code controls; no operational model/customer observations"
+    }
+  },
+  "parameters": [
+    {
+      "namespace": "enterprise",
+      "name": "id",
+      "value": "central",
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "weeks",
+      "value": 104,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "runoffWeeks",
+      "value": 24,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "currency",
+      "value": "USD",
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "seedCapital",
+      "value": 50000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        20000,
+        50000,
+        100000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "historicalResearchAllowance",
+      "value": 5000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "setupCost",
+      "value": 12000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        12000,
+        40000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "overheadMonthly",
+      "value": 950,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "operatorSubscriptionMonthly",
+      "value": 200,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "runoffOverheadMonthly",
+      "value": 200,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "humanReference",
+      "value": 28668.4,
+      "evidenceCategory": "Calibrated from sources",
+      "sourceIds": [
+        "SIMS"
+      ],
+      "sensitivityValues": [
+        7167.1,
+        14334.2,
+        28668.4,
+        57336.8
+      ],
+      "note": "Rates reported; team hours and failed-search allocation assumed. The product is a matched-scope reference estimate, not a quote."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "humanQuality",
+      "value": 0.97,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "humanDeliveryWeeks",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "prospectsMonthly",
+      "value": 12,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        2,
+        4,
+        8,
+        12,
+        24,
+        48
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "marketSpread",
+      "value": 0.45,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "buyerValueMedian",
+      "value": 50000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        15000,
+        30000,
+        50000,
+        90000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "buyerValueSpread",
+      "value": 0.7,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "trustMax",
+      "value": 8000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        2000,
+        8000,
+        20000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "switchingCost",
+      "value": 1500,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "buyerDelayCostWeekly",
+      "value": 350,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "initialPerceivedQuality",
+      "value": 0.86,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "initialCompletionBelief",
+      "value": 0.6,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.35,
+        0.6,
+        0.85
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "humanCompletionBelief",
+      "value": 0.7,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.4,
+        0.7,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "priorReputationWeight",
+      "value": 20,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "reputationFeedback",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "businessLossBeyondValue",
+      "value": 8000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "repeatProbability",
+      "value": 0.35,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "repeatSwitchFactor",
+      "value": 0.35,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "commodityShare",
+      "value": 0.15,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "scopeSupport",
+      "value": 0.85,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "acquisitionCostPerProspect",
+      "value": 150,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        150,
+        1000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "collectionDelayWeeks",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "badDebt",
+      "value": 0.03,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "paymentFee",
+      "value": 0.025,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "refundDelayWeeks",
+      "value": 6,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "customerErrorDetection",
+      "value": 0.75,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "lateErrorDetection",
+      "value": 0.9,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "taxReserve",
+      "value": 0.23,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "refundReserve",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "minimumCashReserve",
+      "value": 8000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "concurrency",
+      "value": 3,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        3,
+        8
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "hoursWeekly",
+      "value": 168,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "inputQuotaWeekly",
+      "value": 12000000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        3000000,
+        12000000,
+        48000000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "outputQuotaWeekly",
+      "value": 3000000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        750000,
+        3000000,
+        12000000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "cpuHoursWeekly",
+      "value": 3000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        750,
+        3000,
+        12000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "validatorHoursWeekly",
+      "value": 1200,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        300,
+        1200,
+        4800
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "queueLimit",
+      "value": 18,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "queueWaitLimit",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "tokenMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        10,
+        50
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "computeMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        10,
+        50
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "workflowLatencyMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "cpuPricePerHour",
+      "value": 0.0493704,
+      "evidenceCategory": "Calibrated from sources",
+      "sourceIds": [
+        "AWS"
+      ],
+      "sensitivityValues": null,
+      "note": "1 vCPU plus2GB x86 memory:3600*(0.000011244+2*0.000001235). Not a claim of runtime/latency."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "commonError",
+      "value": 0.07,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.02,
+        0.07,
+        0.2
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "initialError",
+      "value": 0.25,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.15,
+        0.25,
+        0.45
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "semanticDetection",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.3,
+        0.65,
+        0.9
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "mechanicalDetection",
+      "value": 0.97,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "correctionSuccess",
+      "value": 0.75,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "maxRetries",
+      "value": 2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "improvementProbability",
+      "value": 0.14,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.02,
+        0.07,
+        0.14,
+        0.3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "improvableFraction",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "bundleEffect",
+      "value": 0.45,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.45,
+        0.75,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "singleCapabilityOverhead",
+      "value": 0,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetConstructionMultiplier",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        4,
+        12,
+        40
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetProductiveProbability",
+      "value": 0.6,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.3,
+        0.6,
+        0.9
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetFalseAdmission",
+      "value": 0.08,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetFalseRejection",
+      "value": 0.06,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetLifetimeWeeks",
+      "value": 65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        13,
+        39,
+        65,
+        104
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetMaintenanceWeekly",
+      "value": 24,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        24,
+        120
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetRevalidationWeeks",
+      "value": 13,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetRevocationDetection",
+      "value": 0.8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetTransferCost",
+      "value": 220,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        220,
+        1500
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetTransferSuccess",
+      "value": 0.8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.3,
+        0.8,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "copyHazardWeekly",
+      "value": 0.003,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.003,
+        0.03
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "discoveryEveryWeeks",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "minimumObservedProspects",
+      "value": 8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "campaignInputPerWorkUnit",
+      "value": 5000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "campaignOutputPerWorkUnit",
+      "value": 900,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "campaignCPUPerWorkUnit",
+      "value": 1.2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "campaignServiceHoursPerWorkUnit",
+      "value": 0.012,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "campaignValidationFraction",
+      "value": 0.3,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetMaxAttempts",
+      "value": 2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "assetRetryWait",
+      "value": 20,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "forecastHaircut",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "forecastWindow",
+      "value": 20,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "discountRateAnnual",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "earlyAbandonWeeks",
+      "value": 24,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "meanAssetBelief",
+      "value": 0.6,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "winddownCost",
+      "value": 1000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "baselineScreenSensitivity",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "familyScreenIncrement",
+      "value": 0.15,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.15,
+        0.3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "cheapScreenCpuFraction",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "materialErrorDamage",
+      "value": 0,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaVersion",
+      "value": "beta-2026-10-26",
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaUpgradeWeek",
+      "value": 52,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        26,
+        52,
+        104
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaUpgradeResourceFactor",
+      "value": 0.8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.5,
+        0.8,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaBundleAbsorption",
+      "value": 0.5,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.5,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaExperimentAbsorption",
+      "value": 0.5,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "betaUpgradeQualityGain",
+      "value": 0,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaProbeCount",
+      "value": 12,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        6,
+        12,
+        24
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaRevalidationProbeCount",
+      "value": 6,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaConfidenceZ",
+      "value": 1.645,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaEvidenceWeeks",
+      "value": 13,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaPublicationCost",
+      "value": 35,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaAccessCostPerUse",
+      "value": 2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaDistributionCostPerMember",
+      "value": 8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaMinimumNetCents",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "alphaSystematicRiskReserveCentsPerUse",
+      "value": 0,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        10000,
+        100000
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "paidLearningProbability",
+      "value": 0.3,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.1,
+        0.3,
+        0.6,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "rightsClearedProbability",
+      "value": 0.85,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.25,
+        0.85,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "retentionCostMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.25,
+        1,
+        5,
+        25
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "forecastBetaErosionWeekly",
+      "value": 0.005,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.005,
+        0.02
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "enterprise",
+      "name": "capacityControlMonthlyPerAdditionalSlot",
+      "value": 35,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "betaVersion",
+      "value": "gpt-6-astra+gpt-6.1-terra/2026-10-26",
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "betaResourceFactor",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "betaBundleAbsorption",
+      "value": 0,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.5,
+        1
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "tokenMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        10,
+        50
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "computeMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        10,
+        50
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "commonError",
+      "value": 0.03,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.02,
+        0.07,
+        0.2
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "initialError",
+      "value": 0.18,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.15,
+        0.25,
+        0.45
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "semanticErrorFraction",
+      "value": 0.25,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "semanticDetection",
+      "value": 0.9,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0.3,
+        0.65,
+        0.9
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "mechanicalDetection",
+      "value": 0.995,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "correctionSuccess",
+      "value": 0.7,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "maxRetries",
+      "value": 2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "improvementProbability",
+      "value": 0.12,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.02,
+        0.07,
+        0.14,
+        0.3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "workflowLatencyMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "cpuPricePerHour",
+      "value": 0.12,
+      "evidenceCategory": "Calibrated from sources",
+      "sourceIds": [
+        "AWS"
+      ],
+      "sensitivityValues": null,
+      "note": "1 vCPU plus2GB x86 memory:3600*(0.000011244+2*0.000001235). Not a claim of runtime/latency."
+    },
+    {
+      "namespace": "workflow",
+      "name": "candidatesPerJob",
+      "value": 12,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "candidateSearchCpuHours",
+      "value": 20,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "candidateValidatorCpuHours",
+      "value": 0.2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "finalValidatorCpuHours",
+      "value": 0.5,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "cacheReadFraction",
+      "value": 0.2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "cacheWriteFraction",
+      "value": 0.05,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "inputTokensPerModelHour",
+      "value": 2000000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "outputTokensPerModelHour",
+      "value": 80000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "evaluationParallelism",
+      "value": 8,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "maxInputTokensPerCall",
+      "value": 200000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "webSearchPrice",
+      "value": 0.01,
+      "evidenceCategory": "Reported by external sources",
+      "sourceIds": [
+        "OAI_PRICE"
+      ],
+      "sensitivityValues": null,
+      "note": "Current nominal tariff; quantity, applicability and future persistence remain assumptions."
+    },
+    {
+      "namespace": "workflow",
+      "name": "fileSearchPrice",
+      "value": 0.0025,
+      "evidenceCategory": "Reported by external sources",
+      "sourceIds": [
+        "OAI_PRICE"
+      ],
+      "sensitivityValues": null,
+      "note": "Current nominal tariff; quantity, applicability and future persistence remain assumptions."
+    },
+    {
+      "namespace": "workflow",
+      "name": "containerBlockPrice",
+      "value": 0.12,
+      "evidenceCategory": "Reported by external sources",
+      "sourceIds": [
+        "OAI_PRICE"
+      ],
+      "sensitivityValues": null,
+      "note": "Current nominal tariff; quantity, applicability and future persistence remain assumptions."
+    },
+    {
+      "namespace": "workflow",
+      "name": "containerBlockMinutes",
+      "value": 20,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "storagePricePerGbDay",
+      "value": 0.1,
+      "evidenceCategory": "Reported by external sources",
+      "sourceIds": [
+        "OAI_PRICE"
+      ],
+      "sensitivityValues": null,
+      "note": "Current nominal tariff; quantity, applicability and future persistence remain assumptions."
+    },
+    {
+      "namespace": "workflow",
+      "name": "storageGbDaysPerJob",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "bundleResourceEffect",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "bundleComplexResourceFactor",
+      "value": 0.4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "bundleStandardResourceFactor",
+      "value": 0.75,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "singleAssetOverhead",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "baselineScreenSensitivity",
+      "value": 0.65,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "betaAbsorbableScreenIncrement",
+      "value": 0.15,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "familyScreenIncrement",
+      "value": 0.15,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        0,
+        0.15,
+        0.3
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "cheapScreenFalsePositive",
+      "value": 0.01,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "cheapScreenCpuFraction",
+      "value": 0.1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "certificateMechanicalDetection",
+      "value": 0.995,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewTrials",
+      "value": 96,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewTrialCpuHours",
+      "value": 0.25,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewInvalidProbability",
+      "value": 0.05,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewCaseCoverage",
+      "value": 0.25,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewDetection",
+      "value": 0.98,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "reviewEarlyAbort",
+      "value": true,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "campaignInputPerWorkUnit",
+      "value": 5000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "campaignOutputPerWorkUnit",
+      "value": 900,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "campaignCPUPerWorkUnit",
+      "value": 1.2,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "campaignServiceHoursPerWorkUnit",
+      "value": 0.012,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "campaignValidationFraction",
+      "value": 0.3,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "assetConstructionMultiplier",
+      "value": 1,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": [
+        1,
+        4,
+        12,
+        40
+      ],
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "constructionSearchCallsPerWorkUnit",
+      "value": 0.01,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "constructionFileCallsPerWorkUnit",
+      "value": 0.05,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "constructionInputPerTrial",
+      "value": 100000,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "constructionTrialsPerContainerBlock",
+      "value": 4,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    },
+    {
+      "namespace": "workflow",
+      "name": "constructionStorageGbDaysPerWorkUnit",
+      "value": 0.01,
+      "evidenceCategory": "Assumed or explored",
+      "sourceIds": [
+        "USER_CHARTER"
+      ],
+      "sensitivityValues": null,
+      "note": "Not empirically calibrated for this venture. Declared policy, resource count, probability, demand, value, capacity or lifecycle assumption; vary rather than infer from a benchmark score."
+    }
+  ],
+  "categories": [
+    "Observed in our own work",
+    "Reported by external sources",
+    "Calibrated from sources",
+    "Assumed or explored"
+  ],
+  "observedBoundary": {
+    "observed": [
+      "Source retrieval and arithmetic",
+      "Executable local simulator/test runs when separately receipted",
+      "Graph lifecycle/crypto software controls"
+    ],
+    "notObserved": [
+      "Live frontier delivery",
+      "Actual customer demand or purchases",
+      "Human-team elapsed effort",
+      "Operational Alpha admission",
+      "Production network scale",
+      "Real financial transactions"
+    ]
+  },
+  "modelTariffs": {
+    "checked_date": "2026-10-26",
+    "evidence_category": "Reported by external sources",
+    "verification": "Reopened official model, pricing, latest-model, reasoning, billing, and Terra announcement pages. No model API call, access purchase, or subscription entitlement inference.",
+    "sources": [
+      {
+        "id": "OAI-ASTRA",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "ref": "turn31view0"
+      },
+      {
+        "id": "OAI-TERRA",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+        "ref": "turn31view2"
+      },
+      {
+        "id": "OAI-PRICE",
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "ref": "turn34view4"
+      },
+      {
+        "id": "OAI-MODE",
+        "url": "https://developers.openai.com/api/docs/guides/reasoning",
+        "ref": "turn36view0"
+      },
+      {
+        "id": "OAI-GUIDE",
+        "url": "https://developers.openai.com/api/docs/guides/latest-model",
+        "ref": "turn34view3"
+      },
+      {
+        "id": "OAI-BILLING",
+        "url": "https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform",
+        "ref": "turn42view0"
+      },
+      {
+        "id": "OAI-TERRA-ANNOUNCE",
+        "url": "https://openai.com/index/introducing-gpt-6-1-terra/",
+        "ref": "turn42view1"
+      }
+    ],
+    "models": [
+      {
+        "id": "gpt-6-astra",
+        "date_pinned_snapshot": null,
+        "selected_mode": "pro",
+        "selected_effort": "max",
+        "access_route": "Responses API; API usage billed separately from ChatGPT subscription",
+        "supported_efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "context_tokens": 1050000,
+        "max_output_tokens_per_call": 128000,
+        "knowledge_cutoff": "2026-04-30",
+        "standard_usd_per_million": {
+          "ordinary_input": 10,
+          "cache_read": 1,
+          "cache_write_30m": 12.5,
+          "cache_write_12h": 25,
+          "output_including_reasoning": 50
+        },
+        "role_suitability": "Officially described for demanding reasoning, coding, computer use, research and document creation; this does not calibrate algorithm invention or customer acceptance."
+      },
+      {
+        "id": "gpt-6.1-terra",
+        "date_pinned_snapshot": null,
+        "selected_mode": "standard",
+        "selected_effort": "max",
+        "access_route": "Responses API for tools; API usage billed separately from ChatGPT subscription",
+        "supported_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "context_tokens": 1050000,
+        "max_output_tokens_per_call": 128000,
+        "knowledge_cutoff": "2026-06-01",
+        "standard_usd_per_million": {
+          "ordinary_input": 1,
+          "cache_read": 0.05,
+          "cache_write_30m": 1.25,
+          "cache_write_12h": 2.5,
+          "output_including_reasoning": 5
+        },
+        "role_suitability": "Officially described for visual reasoning, computer use and writing; visual/execution role selected where supported, with no assumed generic expertise gain."
+      }
+    ],
+    "billing_rules": {
+      "pro": "Aggregates internal model work at selected model standard token rates; no fixed Pro multiplier.",
+      "reasoning": "Included in billed output; do not add twice.",
+      "input_partition": "Ordinary input equals total minus cache reads and writes; write tariff replaces ordinary input tariff.",
+      "long_context": "More than 272000 input tokens in one request: 2x input/cache and 1.5x output for the whole request.",
+      "short_request_assumption": "New workflow explicitly splits aggregate role work into requests of at most 200000 input and 128000 output tokens. This is a modeled orchestration choice, not an observed trace.",
+      "subscription": "ChatGPT subscription and API billing are separate. No subscription-funded unlimited production is assumed."
+    },
+    "tools": {
+      "web_search_usd_per_call": 0.01,
+      "file_search_usd_per_call": 0.0025,
+      "file_storage_usd_per_gb_day_after_free_allowance": 0.1,
+      "container_reference_usd_per_20minutes": {
+        "1GB": 0.03,
+        "4GB": 0.12,
+        "16GB": 0.48,
+        "64GB": 1.92
+      },
+      "container_note": "The current page also states eligible sessions can bill per minute with a five-minute minimum. Conservative 20-minute blocks may be assumed explicitly; do not silently assert all sessions qualify.",
+      "cpu_solver_price": "Separate external compute calibration required; CPU-hours are not inferred from API container memory-session prices."
+    },
+    "changes_from_same_day_prior_check": "The model and tool price numbers are unchanged. The new record explicitly notes the eligible per-minute container billing clause.",
+    "capacity": "Concurrency, token throughput, deadlines and quotas remain model assumptions; official model support is not evidence of account-specific allowance.",
+    "performance_transfer": "No vendor evaluation score is converted to customer acceptance, correctness, buyer demand, or invention probability."
+  },
+  "roleBudgets": {
+    "evidenceCategory": "Assumed or explored",
+    "values": {
+      "intake": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 100000,
+        "output": 16000
+      },
+      "producer": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 100000,
+        "output": 20000
+      },
+      "candidateCritic": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 40000,
+        "output": 5000
+      },
+      "semanticCritic": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 80000,
+        "output": 20000
+      },
+      "improvementEvaluator": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 80000,
+        "output": 16000
+      },
+      "correction": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 120000,
+        "output": 24000
+      },
+      "revalidation": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 60000,
+        "output": 12000
+      },
+      "recovery": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 90000,
+        "output": 18000
+      },
+      "executor": {
+        "model": "gpt-6.1-terra",
+        "mode": "standard",
+        "effort": "max",
+        "input": 20000,
+        "output": 3000
+      },
+      "packaging": {
+        "model": "gpt-6.1-terra",
+        "mode": "standard",
+        "effort": "max",
+        "input": 60000,
+        "output": 12000
+      },
+      "capabilityEvaluator": {
+        "model": "gpt-6-astra",
+        "mode": "pro",
+        "effort": "max",
+        "input": 160000,
+        "output": 32000
+      }
+    },
+    "interpretation": "Full billed internal Pro work and reasoning output are included, not multiplied by an arbitrary expertise factor."
+  },
+  "auxiliaryBudgets": {
+    "evidenceCategory": "Assumed or explored",
+    "values": {
+      "quote_intake": {
+        "roles": {
+          "intake": 0.25
+        },
+        "searchCpuHours": 0,
+        "validatorCpuHours": 0.02,
+        "webSearch": 0,
+        "fileSearch": 4,
+        "containerBlocks": 1
+      },
+      "investment_evaluation": {
+        "roles": {
+          "capabilityEvaluator": 4,
+          "candidateCritic": 4,
+          "semanticCritic": 1,
+          "executor": 1
+        },
+        "searchCpuHours": 8,
+        "validatorCpuHours": 2,
+        "webSearch": 12,
+        "fileSearch": 12,
+        "containerBlocks": 2
+      },
+      "transfer_adaptation": {
+        "roles": {
+          "producer": 4,
+          "candidateCritic": 4,
+          "semanticCritic": 1,
+          "revalidation": 2,
+          "executor": 4,
+          "packaging": 1
+        },
+        "searchCpuHours": 16,
+        "validatorCpuHours": 4,
+        "webSearch": 4,
+        "fileSearch": 12,
+        "containerBlocks": 2
+      },
+      "revalidation": {
+        "roles": {
+          "revalidation": 2,
+          "semanticCritic": 1,
+          "improvementEvaluator": 1,
+          "executor": 2
+        },
+        "searchCpuHours": 0,
+        "validatorCpuHours": 4,
+        "webSearch": 2,
+        "fileSearch": 8,
+        "containerBlocks": 1
+      },
+      "maintenance": {
+        "roles": {
+          "candidateCritic": 0.5,
+          "revalidation": 0.25,
+          "executor": 0.5
+        },
+        "searchCpuHours": 0.5,
+        "validatorCpuHours": 0.5,
+        "webSearch": 0,
+        "fileSearch": 4,
+        "containerBlocks": 1
+      },
+      "recovery": {
+        "roles": {
+          "recovery": 1,
+          "candidateCritic": 1,
+          "executor": 2,
+          "packaging": 0.5
+        },
+        "searchCpuHours": 4,
+        "validatorCpuHours": 2,
+        "webSearch": 2,
+        "fileSearch": 8,
+        "containerBlocks": 2
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "conservative",
+      "weeks": 104,
+      "runoffWeeks": 24,
+      "currency": "USD",
+      "seedCapital": 50000,
+      "historicalResearchAllowance": 5000,
+      "setupCost": 12000,
+      "overheadMonthly": 950,
+      "operatorSubscriptionMonthly": 200,
+      "runoffOverheadMonthly": 200,
+      "humanReference": 14334.2,
+      "humanQuality": 0.97,
+      "humanDeliveryWeeks": 4,
+      "prospectsMonthly": 4,
+      "marketSpread": 0.45,
+      "buyerValueMedian": 22000,
+      "buyerValueSpread": 0.7,
+      "trustMax": 12000,
+      "switchingCost": 1500,
+      "buyerDelayCostWeekly": 350,
+      "initialPerceivedQuality": 0.76,
+      "initialCompletionBelief": 0.6,
+      "humanCompletionBelief": 0.7,
+      "priorReputationWeight": 20,
+      "reputationFeedback": 0.65,
+      "businessLossBeyondValue": 8000,
+      "repeatProbability": 0.35,
+      "repeatSwitchFactor": 0.35,
+      "commodityShare": 0.15,
+      "scopeSupport": 0.85,
+      "acquisitionCostPerProspect": 150,
+      "collectionDelayWeeks": 8,
+      "badDebt": 0.06,
+      "paymentFee": 0.025,
+      "refundDelayWeeks": 6,
+      "customerErrorDetection": 0.75,
+      "lateErrorDetection": 0.9,
+      "taxReserve": 0.23,
+      "refundReserve": 0.1,
+      "minimumCashReserve": 8000,
+      "concurrency": 3,
+      "hoursWeekly": 168,
+      "inputQuotaWeekly": 12000000,
+      "outputQuotaWeekly": 3000000,
+      "cpuHoursWeekly": 3000,
+      "validatorHoursWeekly": 1200,
+      "queueLimit": 18,
+      "queueWaitLimit": 4,
+      "tokenMultiplier": 2,
+      "computeMultiplier": 2,
+      "workflowLatencyMultiplier": 1,
+      "cpuPricePerHour": 0.0493704,
+      "commonError": 0.14,
+      "initialError": 0.38,
+      "semanticDetection": 0.65,
+      "mechanicalDetection": 0.97,
+      "correctionSuccess": 0.6,
+      "maxRetries": 2,
+      "improvementProbability": 0.07,
+      "improvableFraction": 0.65,
+      "bundleEffect": 0.45,
+      "singleCapabilityOverhead": 0,
+      "assetConstructionMultiplier": 12,
+      "assetProductiveProbability": 0.35,
+      "assetFalseAdmission": 0.08,
+      "assetFalseRejection": 0.06,
+      "assetLifetimeWeeks": 39,
+      "assetMaintenanceWeekly": 24,
+      "assetRevalidationWeeks": 13,
+      "assetRevocationDetection": 0.8,
+      "assetTransferCost": 220,
+      "assetTransferSuccess": 0.55,
+      "copyHazardWeekly": 0.003,
+      "discoveryEveryWeeks": 4,
+      "minimumObservedProspects": 8,
+      "campaignInputPerWorkUnit": 5000,
+      "campaignOutputPerWorkUnit": 900,
+      "campaignCPUPerWorkUnit": 1.2,
+      "campaignServiceHoursPerWorkUnit": 0.012,
+      "campaignValidationFraction": 0.3,
+      "assetMaxAttempts": 2,
+      "assetRetryWait": 20,
+      "forecastHaircut": 0.65,
+      "forecastWindow": 20,
+      "discountRateAnnual": 0.1,
+      "earlyAbandonWeeks": 24,
+      "meanAssetBelief": 0.6,
+      "winddownCost": 1000,
+      "baselineScreenSensitivity": 0.65,
+      "familyScreenIncrement": 0.15,
+      "cheapScreenCpuFraction": 0.1,
+      "materialErrorDamage": 0,
+      "betaVersion": "beta-2026-10-26",
+      "betaUpgradeWeek": 26,
+      "betaUpgradeResourceFactor": 0.65,
+      "betaBundleAbsorption": 1,
+      "betaExperimentAbsorption": 1,
+      "betaUpgradeQualityGain": 0,
+      "alphaProbeCount": 12,
+      "alphaRevalidationProbeCount": 6,
+      "alphaConfidenceZ": 1.645,
+      "alphaEvidenceWeeks": 13,
+      "alphaPublicationCost": 35,
+      "alphaAccessCostPerUse": 2,
+      "alphaDistributionCostPerMember": 8,
+      "alphaMinimumNetCents": 1,
+      "alphaSystematicRiskReserveCentsPerUse": 0,
+      "paidLearningProbability": 0.12,
+      "rightsClearedProbability": 0.6,
+      "retentionCostMultiplier": 3,
+      "forecastBetaErosionWeekly": 0.005,
+      "capacityControlMonthlyPerAdditionalSlot": 35
+    },
+    {
+      "id": "central",
+      "weeks": 104,
+      "runoffWeeks": 24,
+      "currency": "USD",
+      "seedCapital": 50000,
+      "historicalResearchAllowance": 5000,
+      "setupCost": 12000,
+      "overheadMonthly": 950,
+      "operatorSubscriptionMonthly": 200,
+      "runoffOverheadMonthly": 200,
+      "humanReference": 28668.4,
+      "humanQuality": 0.97,
+      "humanDeliveryWeeks": 4,
+      "prospectsMonthly": 12,
+      "marketSpread": 0.45,
+      "buyerValueMedian": 50000,
+      "buyerValueSpread": 0.7,
+      "trustMax": 8000,
+      "switchingCost": 1500,
+      "buyerDelayCostWeekly": 350,
+      "initialPerceivedQuality": 0.86,
+      "initialCompletionBelief": 0.6,
+      "humanCompletionBelief": 0.7,
+      "priorReputationWeight": 20,
+      "reputationFeedback": 0.65,
+      "businessLossBeyondValue": 8000,
+      "repeatProbability": 0.35,
+      "repeatSwitchFactor": 0.35,
+      "commodityShare": 0.15,
+      "scopeSupport": 0.85,
+      "acquisitionCostPerProspect": 150,
+      "collectionDelayWeeks": 4,
+      "badDebt": 0.03,
+      "paymentFee": 0.025,
+      "refundDelayWeeks": 6,
+      "customerErrorDetection": 0.75,
+      "lateErrorDetection": 0.9,
+      "taxReserve": 0.23,
+      "refundReserve": 0.1,
+      "minimumCashReserve": 8000,
+      "concurrency": 3,
+      "hoursWeekly": 168,
+      "inputQuotaWeekly": 12000000,
+      "outputQuotaWeekly": 3000000,
+      "cpuHoursWeekly": 3000,
+      "validatorHoursWeekly": 1200,
+      "queueLimit": 18,
+      "queueWaitLimit": 4,
+      "tokenMultiplier": 1,
+      "computeMultiplier": 1,
+      "workflowLatencyMultiplier": 1,
+      "cpuPricePerHour": 0.0493704,
+      "commonError": 0.07,
+      "initialError": 0.25,
+      "semanticDetection": 0.65,
+      "mechanicalDetection": 0.97,
+      "correctionSuccess": 0.75,
+      "maxRetries": 2,
+      "improvementProbability": 0.14,
+      "improvableFraction": 0.65,
+      "bundleEffect": 0.45,
+      "singleCapabilityOverhead": 0,
+      "assetConstructionMultiplier": 4,
+      "assetProductiveProbability": 0.6,
+      "assetFalseAdmission": 0.08,
+      "assetFalseRejection": 0.06,
+      "assetLifetimeWeeks": 65,
+      "assetMaintenanceWeekly": 24,
+      "assetRevalidationWeeks": 13,
+      "assetRevocationDetection": 0.8,
+      "assetTransferCost": 220,
+      "assetTransferSuccess": 0.8,
+      "copyHazardWeekly": 0.003,
+      "discoveryEveryWeeks": 4,
+      "minimumObservedProspects": 8,
+      "campaignInputPerWorkUnit": 5000,
+      "campaignOutputPerWorkUnit": 900,
+      "campaignCPUPerWorkUnit": 1.2,
+      "campaignServiceHoursPerWorkUnit": 0.012,
+      "campaignValidationFraction": 0.3,
+      "assetMaxAttempts": 2,
+      "assetRetryWait": 20,
+      "forecastHaircut": 0.65,
+      "forecastWindow": 20,
+      "discountRateAnnual": 0.1,
+      "earlyAbandonWeeks": 24,
+      "meanAssetBelief": 0.6,
+      "winddownCost": 1000,
+      "baselineScreenSensitivity": 0.65,
+      "familyScreenIncrement": 0.15,
+      "cheapScreenCpuFraction": 0.1,
+      "materialErrorDamage": 0,
+      "betaVersion": "beta-2026-10-26",
+      "betaUpgradeWeek": 52,
+      "betaUpgradeResourceFactor": 0.8,
+      "betaBundleAbsorption": 0.5,
+      "betaExperimentAbsorption": 0.5,
+      "betaUpgradeQualityGain": 0,
+      "alphaProbeCount": 12,
+      "alphaRevalidationProbeCount": 6,
+      "alphaConfidenceZ": 1.645,
+      "alphaEvidenceWeeks": 13,
+      "alphaPublicationCost": 35,
+      "alphaAccessCostPerUse": 2,
+      "alphaDistributionCostPerMember": 8,
+      "alphaMinimumNetCents": 1,
+      "alphaSystematicRiskReserveCentsPerUse": 0,
+      "paidLearningProbability": 0.3,
+      "rightsClearedProbability": 0.85,
+      "retentionCostMultiplier": 1,
+      "forecastBetaErosionWeekly": 0.005,
+      "capacityControlMonthlyPerAdditionalSlot": 35
+    },
+    {
+      "id": "favorable",
+      "weeks": 104,
+      "runoffWeeks": 24,
+      "currency": "USD",
+      "seedCapital": 50000,
+      "historicalResearchAllowance": 5000,
+      "setupCost": 12000,
+      "overheadMonthly": 950,
+      "operatorSubscriptionMonthly": 200,
+      "runoffOverheadMonthly": 200,
+      "humanReference": 57336.8,
+      "humanQuality": 0.97,
+      "humanDeliveryWeeks": 4,
+      "prospectsMonthly": 24,
+      "marketSpread": 0.45,
+      "buyerValueMedian": 90000,
+      "buyerValueSpread": 0.7,
+      "trustMax": 5000,
+      "switchingCost": 1500,
+      "buyerDelayCostWeekly": 350,
+      "initialPerceivedQuality": 0.92,
+      "initialCompletionBelief": 0.6,
+      "humanCompletionBelief": 0.7,
+      "priorReputationWeight": 20,
+      "reputationFeedback": 0.65,
+      "businessLossBeyondValue": 8000,
+      "repeatProbability": 0.35,
+      "repeatSwitchFactor": 0.35,
+      "commodityShare": 0.15,
+      "scopeSupport": 0.85,
+      "acquisitionCostPerProspect": 150,
+      "collectionDelayWeeks": 2,
+      "badDebt": 0.01,
+      "paymentFee": 0.025,
+      "refundDelayWeeks": 6,
+      "customerErrorDetection": 0.75,
+      "lateErrorDetection": 0.9,
+      "taxReserve": 0.23,
+      "refundReserve": 0.1,
+      "minimumCashReserve": 8000,
+      "concurrency": 3,
+      "hoursWeekly": 168,
+      "inputQuotaWeekly": 12000000,
+      "outputQuotaWeekly": 3000000,
+      "cpuHoursWeekly": 3000,
+      "validatorHoursWeekly": 1200,
+      "queueLimit": 18,
+      "queueWaitLimit": 4,
+      "tokenMultiplier": 1,
+      "computeMultiplier": 1,
+      "workflowLatencyMultiplier": 1,
+      "cpuPricePerHour": 0.0493704,
+      "commonError": 0.035,
+      "initialError": 0.16,
+      "semanticDetection": 0.65,
+      "mechanicalDetection": 0.97,
+      "correctionSuccess": 0.75,
+      "maxRetries": 2,
+      "improvementProbability": 0.24,
+      "improvableFraction": 0.65,
+      "bundleEffect": 0.45,
+      "singleCapabilityOverhead": 0,
+      "assetConstructionMultiplier": 2,
+      "assetProductiveProbability": 0.8,
+      "assetFalseAdmission": 0.08,
+      "assetFalseRejection": 0.06,
+      "assetLifetimeWeeks": 78,
+      "assetMaintenanceWeekly": 24,
+      "assetRevalidationWeeks": 13,
+      "assetRevocationDetection": 0.8,
+      "assetTransferCost": 220,
+      "assetTransferSuccess": 0.9,
+      "copyHazardWeekly": 0.003,
+      "discoveryEveryWeeks": 4,
+      "minimumObservedProspects": 8,
+      "campaignInputPerWorkUnit": 5000,
+      "campaignOutputPerWorkUnit": 900,
+      "campaignCPUPerWorkUnit": 1.2,
+      "campaignServiceHoursPerWorkUnit": 0.012,
+      "campaignValidationFraction": 0.3,
+      "assetMaxAttempts": 2,
+      "assetRetryWait": 20,
+      "forecastHaircut": 0.65,
+      "forecastWindow": 20,
+      "discountRateAnnual": 0.1,
+      "earlyAbandonWeeks": 24,
+      "meanAssetBelief": 0.6,
+      "winddownCost": 1000,
+      "baselineScreenSensitivity": 0.65,
+      "familyScreenIncrement": 0.15,
+      "cheapScreenCpuFraction": 0.1,
+      "materialErrorDamage": 0,
+      "betaVersion": "beta-2026-10-26",
+      "betaUpgradeWeek": 78,
+      "betaUpgradeResourceFactor": 0.9,
+      "betaBundleAbsorption": 0.25,
+      "betaExperimentAbsorption": 0.25,
+      "betaUpgradeQualityGain": 0,
+      "alphaProbeCount": 12,
+      "alphaRevalidationProbeCount": 6,
+      "alphaConfidenceZ": 1.645,
+      "alphaEvidenceWeeks": 13,
+      "alphaPublicationCost": 35,
+      "alphaAccessCostPerUse": 2,
+      "alphaDistributionCostPerMember": 8,
+      "alphaMinimumNetCents": 1,
+      "alphaSystematicRiskReserveCentsPerUse": 0,
+      "paidLearningProbability": 0.5,
+      "rightsClearedProbability": 0.95,
+      "retentionCostMultiplier": 0.6,
+      "forecastBetaErosionWeekly": 0.005,
+      "capacityControlMonthlyPerAdditionalSlot": 35
+    }
+  ],
+  "jobClasses": [
+    {
+      "id": "kernel",
+      "name": "Executable scheduling or batching policy with held-out evaluation",
+      "complexity": 1,
+      "humanFactor": 1,
+      "valueFactor": 1,
+      "share": 0.4,
+      "deadline": 3
+    },
+    {
+      "id": "coupled",
+      "name": "Coupled planning policy with linked constraint families",
+      "complexity": 2.4,
+      "humanFactor": 1.8,
+      "valueFactor": 1.5,
+      "share": 0.4,
+      "deadline": 3
+    },
+    {
+      "id": "rolling",
+      "name": "Rolling-horizon policy under scenario uncertainty",
+      "complexity": 4,
+      "humanFactor": 2.8,
+      "valueFactor": 2,
+      "share": 0.2,
+      "deadline": 4
+    }
+  ],
+  "agents": [
+    {
+      "id": "atlas.agent.agi.eth",
+      "weight": 0.4,
+      "baseline": {
+        "representation": false,
+        "certificate": false,
+        "experiment": false
+      }
+    },
+    {
+      "id": "lyra.agent.agi.eth",
+      "weight": 0.3,
+      "baseline": {
+        "representation": true,
+        "certificate": true,
+        "experiment": false
+      }
+    },
+    {
+      "id": "orion.agent.agi.eth",
+      "weight": 0.3,
+      "baseline": {
+        "representation": false,
+        "certificate": false,
+        "experiment": true
+      }
+    }
+  ],
+  "assets": {
+    "representation": {
+      "name": "Typed constraint-lifting representation",
+      "workUnits": 3600,
+      "researchWorkUnits": 3600,
+      "retentionWorkUnits": 80,
+      "buildWeeks": 4,
+      "kind": "representation",
+      "prerequisites": []
+    },
+    "certificate": {
+      "name": "Original-domain certificate carrier",
+      "workUnits": 4900,
+      "researchWorkUnits": 4900,
+      "retentionWorkUnits": 120,
+      "buildWeeks": 5,
+      "kind": "certificate",
+      "prerequisites": []
+    },
+    "experiment": {
+      "name": "Family-specific counterexample experiment protocol",
+      "workUnits": 2600,
+      "researchWorkUnits": 2600,
+      "retentionWorkUnits": 60,
+      "buildWeeks": 3,
+      "kind": "experiment",
+      "prerequisites": []
+    }
+  },
+  "A_B_C": {
+    "A": "All resource work producing the accepted customer artifact, including learning/search/correction. A stays in job and consolidated expense.",
+    "B": "Only additional retention, rights/sanitization, generalization, fresh paired assessment, distribution, integration, revalidation and upkeep. No source-job A is recharged.",
+    "C": "Optional separate research beyond the paid scope. Its complete additional cost is retained in the investment and Alpha hurdle when chosen.",
+    "valuationsAreNotExpenses": "Probe counterfactual utility and source-job references do not create duplicate cash bills. Reserves are unavailable cash, not expenses. Customer savings are not revenue."
+  },
+  "strategicLimits": [
+    "Buyer private value, trust, recurrence, human completion and contingent billing are unmeasured.",
+    "Skill emergence and transfer effects are hypotheses, not field-estimated frequencies.",
+    "Alpha intervals reflect conditional simulation noise and do not bound shared semantic bias.",
+    "Physical deployment, professional signoff and unsupported semantics are outside the automated contract.",
+    "Access restriction is not proof of scarcity or a durable economic moat."
+  ]
+}
