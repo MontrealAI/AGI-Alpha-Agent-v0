@@ -386,7 +386,12 @@ class Enterprise:
                         reasons.append("offering resource limits")
                     if alternative.cash_cost_cap_micro_usd > spec.complete_cost_cap_micro_usd:
                         reasons.append("offering cost limit")
-                    if alternative.slots + reserved_slots > spec.capacity:
+                    offering_slots = sum(
+                        reservation["slots"]
+                        for reservation in reservations.values()
+                        if reservation.get("offering_id") in {None, spec.offering_id}
+                    )
+                    if alternative.slots + offering_slots > spec.capacity:
                         reasons.append("offering occupied capacity")
                     if spec.required_capabilities:
                         reasons.append("capability-dependent execution adapter unqualified")
@@ -543,7 +548,11 @@ class Enterprise:
             reservations = active["reservations"] if active else {}
             if len(reservations) >= 64:
                 raise Conflict("capacity reservation bound reached; reconcile outstanding work")
-            reservations[terms.operation_id] = {"slots": choice.slots, "cash": choice.cash_cost_cap_micro_usd}
+            reservations[terms.operation_id] = {
+                "slots": choice.slots,
+                "cash": choice.cash_cost_cap_micro_usd,
+                "offering_id": spec.offering_id,
+            }
             self.journal.append(cx, key("active", "capacity"), {"reservations": reservations})
             updated = self.journal.document(decision)
             updated["consumed"] = True

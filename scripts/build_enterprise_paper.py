@@ -117,7 +117,7 @@ Operator contracts are in `docs/agent/ENTERPRISE_NEXT_ADVANTAGE.md`.
 """
     output = ROOT / "docs/papers"
     output.mkdir(exist_ok=True)
-    stem = "agi-alpha-enterprise-implementation-v3"
+    stem = "agi-alpha-enterprise-implementation-v4"
     with tempfile.TemporaryDirectory(prefix="enterprise-paper-") as temporary:
         work = Path(temporary)
         (work / "paper.md").write_text(body)

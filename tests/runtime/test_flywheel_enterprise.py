@@ -518,3 +518,33 @@ def test_withdrawn_authorized_commercial_evidence_blocks_decision_and_dispatch(s
     assert selected["selected"] == "internal-prototype"
     result = enterprise.run("research-without-sales", *execution(setup, "internal-after-withdrawal"))
     assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+
+
+def test_two_offerings_share_global_capacity_without_occupying_each_others_slots(setup: dict[str, Any]) -> None:
+    s.funding(setup)
+    register(setup)
+    first = decision(setup)
+    executor, mission, profile, permit = execution(setup)
+    executor.transport.respond = lambda *args: (_ for _ in ()).throw(TimeoutError("fixture failure"))
+    enterprise = Enterprise(setup["service"])
+    enterprise.run("first-decision", executor, mission, profile, permit)
+    s.seal(setup, "placement-origin", "A")
+    other = register(setup, offering(setup, "second-offering"))
+    request = copy.deepcopy(first["request"])
+    request["decision_id"] = "global-full"
+    for alternative in request["alternatives"]:
+        alternative["evidence"] = [evidence(setup, other["id"]).model_dump()]
+        if alternative["offering_id"] is not None:
+            alternative["offering_id"] = "second-offering"
+    full = enterprise.apply(command(setup, "decide", request, "global-full"))
+    assert full["selected"] == "hold"
+    assert "capacity or time budget" in full["alternatives"][0]["reasons"]
+    assert "offering occupied capacity" not in full["alternatives"][0]["reasons"]
+    request.update(decision_id="second-slot", available_slots=2)
+    available = enterprise.apply(command(setup, "decide", request, "second-slot"))
+    assert available["selected"] == "deliver"
+    result = enterprise.run("second-slot", *execution(setup, "second-offering-mission"))
+    assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+    reservations = setup["journal"].latest(key("active", "capacity"))["reservations"]
+    assert set(reservations) == {"placement-origin"}
+    assert reservations["placement-origin"]["offering_id"] == "resilient-placement"

@@ -10,8 +10,8 @@ general executor and specialist network uses the existing Journal, protected
 service, A/B/C CostLedger, checkpoints and native operator. It creates no second
 registry, executor, financial authority or publication path.
 
-[Typeset paper](../papers/agi-alpha-enterprise-implementation-v3.pdf) ·
-[LaTeX](../papers/agi-alpha-enterprise-implementation-v3.tex) ·
+[Typeset paper](../papers/agi-alpha-enterprise-implementation-v4.pdf) ·
+[LaTeX](../papers/agi-alpha-enterprise-implementation-v4.tex) ·
 [Recorded bilingual journey](../flywheel/index.html#enterprise)
 
 ## What was implemented
@@ -43,7 +43,9 @@ compete in the same menu; no discount or reinvestment fraction is fixed.
 
 Current journal evidence, source/configuration, current capability eligibility,
 reserves, unknown liabilities, occupied capacity, time and monetary bounds feed
-each decision. Unknown costs block additional funded work. The decision is advice
+each decision. Offering reservations are scoped to their own offering while the
+global slot ceiling remains separate. Legacy unscoped reservations stay
+conservative until reconciliation. Unknown costs block additional funded work. The decision is advice
 until a separate signed exact permit authorizes the existing executor. Production
 and prototype missions must preserve the offering's beneficiary, purpose,
 deliverable, acceptance criteria, mode, tools and budgets. One decision permits
