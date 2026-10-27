@@ -1,0 +1,1395 @@
+{
+  "schema": "actual-byte-transfer-conditional-economics/v1",
+  "artifact_sha256": "32a9c193200f43c94b922c9b7f5460a60a57f44031f1b2c88c8a50b15766a930",
+  "artifact_bytes": 6674,
+  "transferred_identical_bytes": true,
+  "recipient_execution_performed_by_this_script": false,
+  "conditional_assessments": [
+    {
+      "case": "conditional-positive",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "evidence-compiler-conditional-positive",
+        "candidateVersion": "1",
+        "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708",
+        "betaVersion": "same-expert-without-new-artifact-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+        "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+        "comparisonUniverseDigest": "78ee666f7e648cd086fa7aa8559f2cbb306e0dad269b544c23938456eac4f0bd",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "admit",
+        "reasons": [],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "378644b8b38664aaa64e3e3324c2389cb85120a6ff858fb1fc2682b456f72e87",
+        "observedPairsDigest": "dde0be855b9bd13b8bcc0213aefcf05b65000e6be43901a77c4074632dba82b7",
+        "assessedLowerBoundNetCents": 1489,
+        "lifecycleCostCents": 3000,
+        "evaluationCostCents": 3000,
+        "completeLifecycleCostCents": 6000,
+        "forecastEligibleUses": 4,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": 2083.25,
+        "standardErrorCents": 111.31434736174592,
+        "lowerDeltaCents": 1872.356219058898,
+        "lowerLifetimeNetCents": 1489,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "admitted": {
+        "id": "evidence-compiler-conditional-positive",
+        "key": "evidence-compiler-conditional-positive@1",
+        "keys": [
+          "evidence-compiler"
+        ],
+        "status": "ADMITTED",
+        "mode": "MODELED_GRAPH_ADMISSION",
+        "empiricalOperationalValidation": false,
+        "graphRoot": "e2f553584d1f63269427308fda111f26db5233a3d6c5acd64cd7be7d57e736fc",
+        "assessedLowerBoundNetCents": 1489
+      },
+      "evidence_type": "SIMULATED_ECONOMIC_ADMISSION"
+    },
+    {
+      "case": "no-gain",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "evidence-compiler-no-gain",
+        "candidateVersion": "1",
+        "candidateDigest": "b4a9218b8640ac1ae6db0a45de6baaafa92b0c9d4e3e54f953a7bfed484e3f33",
+        "betaVersion": "same-expert-without-new-artifact-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+        "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+        "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "reject",
+        "reasons": [
+          "nonpositive-lower-per-use-advantage",
+          "nonpositive-or-insufficient-complete-net-alpha"
+        ],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "a20e0874f8c52c60a339581129e5c3c1d3880df591c39cfdf136a31c2a997400",
+        "observedPairsDigest": "9f3e9070721a3abef15920b44098c5beb3b453ccc62cf92e5d963fa6b262e0f6",
+        "assessedLowerBoundNetCents": -6000,
+        "lifecycleCostCents": 3000,
+        "evaluationCostCents": 3000,
+        "completeLifecycleCostCents": 6000,
+        "forecastEligibleUses": 4,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": 0,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": 0,
+        "lowerLifetimeNetCents": -6000,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "admitted": false,
+      "evidence_type": "SIMULATED_ECONOMIC_ADMISSION"
+    },
+    {
+      "case": "negative-transfer",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "evidence-compiler-negative-transfer",
+        "candidateVersion": "1",
+        "candidateDigest": "0eb724944682f87320b613e3988d1ccaf6d3809e75cef1d80b9b0631eb24008a",
+        "betaVersion": "same-expert-without-new-artifact-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+        "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+        "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "reject",
+        "reasons": [
+          "nonpositive-lower-per-use-advantage",
+          "nonpositive-or-insufficient-complete-net-alpha"
+        ],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "35d67a9f8c77249893ec818362e34069c9c056c2982a2b50e5442039dfd50e01",
+        "observedPairsDigest": "7f60536e6a7c2ea0f79c8c8147a30efbcb45785cfc69a16afeef33cc82988927",
+        "assessedLowerBoundNetCents": -6400,
+        "lifecycleCostCents": 3000,
+        "evaluationCostCents": 3000,
+        "completeLifecycleCostCents": 6000,
+        "forecastEligibleUses": 4,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": -100,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": -100,
+        "lowerLifetimeNetCents": -6400,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "admitted": false,
+      "evidence_type": "SIMULATED_ECONOMIC_ADMISSION"
+    },
+    {
+      "case": "already-available",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "evidence-compiler-already-available",
+        "candidateVersion": "1",
+        "candidateDigest": "ff3fb22d1d5264d1ebfb6abce4c0501dd6882dd024a27c378b9c3091e2fb766d",
+        "betaVersion": "same-expert-without-new-artifact-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+        "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+        "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "reject",
+        "reasons": [
+          "equivalent-capability-already-available"
+        ],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": true,
+        "probeIdsDigest": "cdaa8c2c3daa82f57c4616af28053b6003b51a2303ea58cebfb0a4879fd77856",
+        "observedPairsDigest": "af38f2c5a04a342b7ec97b2f569ed037cc7315441405c10404f93f84a5394a69",
+        "assessedLowerBoundNetCents": 2332,
+        "lifecycleCostCents": 3000,
+        "evaluationCostCents": 3000,
+        "completeLifecycleCostCents": 6000,
+        "forecastEligibleUses": 4,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": 2083,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": 2083,
+        "lowerLifetimeNetCents": 2332,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "admitted": false,
+      "evidence_type": "SIMULATED_ECONOMIC_ADMISSION"
+    }
+  ],
+  "unknown_member_refused": true,
+  "changed_beta_refused": true,
+  "production_admission": false,
+  "actual_economic_admission": false,
+  "live_ENS": false,
+  "actual_customer_revenue_cents": 0,
+  "actual_complete_cost_cents": null,
+  "identity_mode": "EXISTING_DECLARED_FIXTURE_AUTHORITY",
+  "money_mode": "MODELED",
+  "network": {
+    "schema": "beyond-beta.lifecycle-snapshot/v1",
+    "networkId": "evidence-construction-conditional-transfer-v1",
+    "betaVersion": "stronger-ordinary-default-v2",
+    "policy": {
+      "version": "beyond-beta-alpha-policy-v1",
+      "minimumPairedTrials": 6,
+      "validatorQuorum": 1,
+      "requireIndependentValidator": true,
+      "maxAssessmentAge": 104
+    },
+    "week": 3,
+    "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+    "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+    "revision": 19,
+    "records": [
+      {
+        "key": "evidence-compiler-conditional-positive@1",
+        "manifest": {
+          "id": "evidence-compiler-conditional-positive",
+          "version": "1",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "7d547da98e6c1c98b7aef2d9d3b261e14738306c412d018eff5d3f416ac5535c",
+          "equivalenceKey": "evidence-compiler-conditional-positive",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "payloadDigest": "c906f6877a07ef086018ce213c8fbddb14d76f3de24f37ca7d507e1b24736198",
+          "rights": {
+            "shareable": true,
+            "retrieve": "network",
+            "execute": "network",
+            "compose": "network",
+            "export": false
+          }
+        },
+        "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708",
+        "status": "ADMITTED",
+        "effective": {
+          "ok": false,
+          "reasons": [
+            "ASSESSMENT_BETAVERSION_MISMATCH"
+          ]
+        },
+        "evidenceDigest": "5e683d9cf71d1f2b99296b1d1264192ba53e84f5db512772408318e76017d66f",
+        "assessmentDigest": "bd04a0942f3a265a7172a2be6037e9371a128c7e3655d69ab503a76082ef50d1",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "evidence-compiler-conditional-positive",
+          "candidateVersion": "1",
+          "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708",
+          "betaVersion": "same-expert-without-new-artifact-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "comparisonUniverseDigest": "78ee666f7e648cd086fa7aa8559f2cbb306e0dad269b544c23938456eac4f0bd",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "admit",
+          "reasons": [],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "378644b8b38664aaa64e3e3324c2389cb85120a6ff858fb1fc2682b456f72e87",
+          "observedPairsDigest": "dde0be855b9bd13b8bcc0213aefcf05b65000e6be43901a77c4074632dba82b7",
+          "assessedLowerBoundNetCents": 1489,
+          "lifecycleCostCents": 3000,
+          "evaluationCostCents": 3000,
+          "completeLifecycleCostCents": 6000,
+          "forecastEligibleUses": 4,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": 2083.25,
+          "standardErrorCents": 111.31434736174592,
+          "lowerDeltaCents": 1872.356219058898,
+          "lowerLifetimeNetCents": 1489,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "evidence-compiler-conditional-positive",
+              "candidateVersion": "1",
+              "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708",
+              "betaVersion": "same-expert-without-new-artifact-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+              "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+              "comparisonUniverseDigest": "78ee666f7e648cd086fa7aa8559f2cbb306e0dad269b544c23938456eac4f0bd",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "admit",
+              "reasons": [],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "378644b8b38664aaa64e3e3324c2389cb85120a6ff858fb1fc2682b456f72e87",
+              "observedPairsDigest": "dde0be855b9bd13b8bcc0213aefcf05b65000e6be43901a77c4074632dba82b7",
+              "assessedLowerBoundNetCents": 1489,
+              "lifecycleCostCents": 3000,
+              "evaluationCostCents": 3000,
+              "completeLifecycleCostCents": 6000,
+              "forecastEligibleUses": 4,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": 2083.25,
+              "standardErrorCents": 111.31434736174592,
+              "lowerDeltaCents": 1872.356219058898,
+              "lowerLifetimeNetCents": 1489,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "bd04a0942f3a265a7172a2be6037e9371a128c7e3655d69ab503a76082ef50d1",
+            "evidenceDigest": "5e683d9cf71d1f2b99296b1d1264192ba53e84f5db512772408318e76017d66f"
+          }
+        ],
+        "validationHistory": [
+          {
+            "week": 0,
+            "attestations": [
+              {
+                "action": "ISSUE_SKILL_ATTESTATION",
+                "schema": "agi-alpha.skill-attestation.v1",
+                "skill": {
+                  "dependencyDigests": [],
+                  "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+                  "evidenceDigest": "adf7f043168bb640fcbb055168b119ba514f440c4ae886ccdfc449b1c0076d16",
+                  "expiresAt": 100,
+                  "id": "evidence-compiler-conditional-positive",
+                  "implementationDigest": "7d547da98e6c1c98b7aef2d9d3b261e14738306c412d018eff5d3f416ac5535c",
+                  "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                  "rightsDigest": "38f73aaedd2bc47f756ca496302e770e714fea314391e5477baf73f9c0e3a02c",
+                  "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+                  "version": "1"
+                },
+                "verdict": "PASS_WITH_SCOPE",
+                "mode": "FIXTURE_ONLY",
+                "agent": "lyra.agent.agi.eth",
+                "signer": "fixture:lyra.agent.agi.eth",
+                "authoritySnapshotId": "network-fixture-state-0",
+                "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                "blockNumber": 0,
+                "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                "registrySchema": "ENS_V1_FIXTURE",
+                "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                "issuedAt": 0,
+                "expiresAt": 100,
+                "nonce": "validation:0",
+                "chainId": 31337,
+                "registry": "fixture:ens-v1",
+                "graphId": "evidence-construction-conditional-transfer-v1:atlas.agent.agi.eth",
+                "signature": {
+                  "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                  "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                  "signer": "fixture:lyra.agent.agi.eth",
+                  "payloadDigest": "f9568d7a4f55cc78d29ae243494e6b54bab0261409aab4400e41ec802af9753f"
+                }
+              }
+            ],
+            "assessmentDigest": "bd04a0942f3a265a7172a2be6037e9371a128c7e3655d69ab503a76082ef50d1"
+          }
+        ],
+        "createdAt": 0,
+        "admittedAt": 0,
+        "terminalAt": null,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "6b14e7b7e469c575119dc4fc1931bf02c62bda2a4bd8059668713e29801f5e1f",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 9204,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      },
+      {
+        "key": "evidence-compiler-no-gain@1",
+        "manifest": {
+          "id": "evidence-compiler-no-gain",
+          "version": "1",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "9c46a2de3795f220ca8960554d844af844929878dd39e6541a6db7a92a08d97f",
+          "equivalenceKey": "evidence-compiler-no-gain",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "payloadDigest": "c906f6877a07ef086018ce213c8fbddb14d76f3de24f37ca7d507e1b24736198",
+          "rights": {
+            "shareable": true,
+            "retrieve": "network",
+            "execute": "network",
+            "compose": "network",
+            "export": false
+          }
+        },
+        "candidateDigest": "b4a9218b8640ac1ae6db0a45de6baaafa92b0c9d4e3e54f953a7bfed484e3f33",
+        "status": "REJECTED",
+        "effective": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REJECTED",
+            "TERMINAL_LIFECYCLE_STATE",
+            "ASSESSMENT_BETAVERSION_MISMATCH",
+            "NO_POSITIVE_NET_ALPHA",
+            "VALIDATOR_ATTESTATIONS_REQUIRED"
+          ]
+        },
+        "evidenceDigest": "69978038ab968abdbeabaf991367637b63f9fb80783ddaa77c1278eb88812796",
+        "assessmentDigest": "9b9df913224588db04a38228cd3c23d02784ebe6a3bdd670aaaf24df95d01abe",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "evidence-compiler-no-gain",
+          "candidateVersion": "1",
+          "candidateDigest": "b4a9218b8640ac1ae6db0a45de6baaafa92b0c9d4e3e54f953a7bfed484e3f33",
+          "betaVersion": "same-expert-without-new-artifact-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "reject",
+          "reasons": [
+            "nonpositive-lower-per-use-advantage",
+            "nonpositive-or-insufficient-complete-net-alpha"
+          ],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "a20e0874f8c52c60a339581129e5c3c1d3880df591c39cfdf136a31c2a997400",
+          "observedPairsDigest": "9f3e9070721a3abef15920b44098c5beb3b453ccc62cf92e5d963fa6b262e0f6",
+          "assessedLowerBoundNetCents": -6000,
+          "lifecycleCostCents": 3000,
+          "evaluationCostCents": 3000,
+          "completeLifecycleCostCents": 6000,
+          "forecastEligibleUses": 4,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": 0,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": 0,
+          "lowerLifetimeNetCents": -6000,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "evidence-compiler-no-gain",
+              "candidateVersion": "1",
+              "candidateDigest": "b4a9218b8640ac1ae6db0a45de6baaafa92b0c9d4e3e54f953a7bfed484e3f33",
+              "betaVersion": "same-expert-without-new-artifact-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+              "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+              "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "reject",
+              "reasons": [
+                "nonpositive-lower-per-use-advantage",
+                "nonpositive-or-insufficient-complete-net-alpha"
+              ],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "a20e0874f8c52c60a339581129e5c3c1d3880df591c39cfdf136a31c2a997400",
+              "observedPairsDigest": "9f3e9070721a3abef15920b44098c5beb3b453ccc62cf92e5d963fa6b262e0f6",
+              "assessedLowerBoundNetCents": -6000,
+              "lifecycleCostCents": 3000,
+              "evaluationCostCents": 3000,
+              "completeLifecycleCostCents": 6000,
+              "forecastEligibleUses": 4,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": 0,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": 0,
+              "lowerLifetimeNetCents": -6000,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "9b9df913224588db04a38228cd3c23d02784ebe6a3bdd670aaaf24df95d01abe",
+            "evidenceDigest": "69978038ab968abdbeabaf991367637b63f9fb80783ddaa77c1278eb88812796"
+          }
+        ],
+        "validationHistory": [],
+        "createdAt": 0,
+        "admittedAt": null,
+        "terminalAt": 0,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "874f0377e01f4d2aeabc182a949ae016a5c8a863571797463f32fb8741a69e39",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 9204,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      },
+      {
+        "key": "evidence-compiler-negative-transfer@1",
+        "manifest": {
+          "id": "evidence-compiler-negative-transfer",
+          "version": "1",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "6f48f2c7313f6dfa8b70c904bb319c6882d02f08b37095e461bad9c8e21b2e8f",
+          "equivalenceKey": "evidence-compiler-negative-transfer",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "payloadDigest": "c906f6877a07ef086018ce213c8fbddb14d76f3de24f37ca7d507e1b24736198",
+          "rights": {
+            "shareable": true,
+            "retrieve": "network",
+            "execute": "network",
+            "compose": "network",
+            "export": false
+          }
+        },
+        "candidateDigest": "0eb724944682f87320b613e3988d1ccaf6d3809e75cef1d80b9b0631eb24008a",
+        "status": "REJECTED",
+        "effective": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REJECTED",
+            "TERMINAL_LIFECYCLE_STATE",
+            "ASSESSMENT_BETAVERSION_MISMATCH",
+            "NO_POSITIVE_NET_ALPHA",
+            "VALIDATOR_ATTESTATIONS_REQUIRED"
+          ]
+        },
+        "evidenceDigest": "71de9ca9556451858eadd52421cd18491a6468eba2128c8d903e836b5a066fec",
+        "assessmentDigest": "e17ffa829bd56bf4af7ada3bca1d9b7866815302df2bdf5655a3649667d9239d",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "evidence-compiler-negative-transfer",
+          "candidateVersion": "1",
+          "candidateDigest": "0eb724944682f87320b613e3988d1ccaf6d3809e75cef1d80b9b0631eb24008a",
+          "betaVersion": "same-expert-without-new-artifact-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "reject",
+          "reasons": [
+            "nonpositive-lower-per-use-advantage",
+            "nonpositive-or-insufficient-complete-net-alpha"
+          ],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "35d67a9f8c77249893ec818362e34069c9c056c2982a2b50e5442039dfd50e01",
+          "observedPairsDigest": "7f60536e6a7c2ea0f79c8c8147a30efbcb45785cfc69a16afeef33cc82988927",
+          "assessedLowerBoundNetCents": -6400,
+          "lifecycleCostCents": 3000,
+          "evaluationCostCents": 3000,
+          "completeLifecycleCostCents": 6000,
+          "forecastEligibleUses": 4,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": -100,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": -100,
+          "lowerLifetimeNetCents": -6400,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "evidence-compiler-negative-transfer",
+              "candidateVersion": "1",
+              "candidateDigest": "0eb724944682f87320b613e3988d1ccaf6d3809e75cef1d80b9b0631eb24008a",
+              "betaVersion": "same-expert-without-new-artifact-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+              "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+              "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "reject",
+              "reasons": [
+                "nonpositive-lower-per-use-advantage",
+                "nonpositive-or-insufficient-complete-net-alpha"
+              ],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "35d67a9f8c77249893ec818362e34069c9c056c2982a2b50e5442039dfd50e01",
+              "observedPairsDigest": "7f60536e6a7c2ea0f79c8c8147a30efbcb45785cfc69a16afeef33cc82988927",
+              "assessedLowerBoundNetCents": -6400,
+              "lifecycleCostCents": 3000,
+              "evaluationCostCents": 3000,
+              "completeLifecycleCostCents": 6000,
+              "forecastEligibleUses": 4,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": -100,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": -100,
+              "lowerLifetimeNetCents": -6400,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "e17ffa829bd56bf4af7ada3bca1d9b7866815302df2bdf5655a3649667d9239d",
+            "evidenceDigest": "71de9ca9556451858eadd52421cd18491a6468eba2128c8d903e836b5a066fec"
+          }
+        ],
+        "validationHistory": [],
+        "createdAt": 0,
+        "admittedAt": null,
+        "terminalAt": 0,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "9131247c245fe139892ef438857480866e41ef326dca6e1d2a05a7146ded1e45",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 9204,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      },
+      {
+        "key": "evidence-compiler-already-available@1",
+        "manifest": {
+          "id": "evidence-compiler-already-available",
+          "version": "1",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "ceff694c3ba1541f18f8d958c210583cd02f73014a21e756725c7e7e0d004f3e",
+          "equivalenceKey": "evidence-compiler-already-available",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "payloadDigest": "c906f6877a07ef086018ce213c8fbddb14d76f3de24f37ca7d507e1b24736198",
+          "rights": {
+            "shareable": true,
+            "retrieve": "network",
+            "execute": "network",
+            "compose": "network",
+            "export": false
+          }
+        },
+        "candidateDigest": "ff3fb22d1d5264d1ebfb6abce4c0501dd6882dd024a27c378b9c3091e2fb766d",
+        "status": "REJECTED",
+        "effective": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REJECTED",
+            "TERMINAL_LIFECYCLE_STATE",
+            "ASSESSMENT_BETAVERSION_MISMATCH",
+            "NO_POSITIVE_NET_ALPHA",
+            "REDUNDANT_WITH_BETA",
+            "VALIDATOR_ATTESTATIONS_REQUIRED"
+          ]
+        },
+        "evidenceDigest": "8c8f44347040e80edc5ee49cda989fa46b93fa1a2acd3bacbb0da9dc9aedf630",
+        "assessmentDigest": "4e484b67762b41c7baaefd0a6cd26b690cb0df113af670835d1ea80ff3a1fd0d",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "evidence-compiler-already-available",
+          "candidateVersion": "1",
+          "candidateDigest": "ff3fb22d1d5264d1ebfb6abce4c0501dd6882dd024a27c378b9c3091e2fb766d",
+          "betaVersion": "same-expert-without-new-artifact-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+          "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+          "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "reject",
+          "reasons": [
+            "equivalent-capability-already-available"
+          ],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": true,
+          "probeIdsDigest": "cdaa8c2c3daa82f57c4616af28053b6003b51a2303ea58cebfb0a4879fd77856",
+          "observedPairsDigest": "af38f2c5a04a342b7ec97b2f569ed037cc7315441405c10404f93f84a5394a69",
+          "assessedLowerBoundNetCents": 2332,
+          "lifecycleCostCents": 3000,
+          "evaluationCostCents": 3000,
+          "completeLifecycleCostCents": 6000,
+          "forecastEligibleUses": 4,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": 2083,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": 2083,
+          "lowerLifetimeNetCents": 2332,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "evidence-compiler-already-available",
+              "candidateVersion": "1",
+              "candidateDigest": "ff3fb22d1d5264d1ebfb6abce4c0501dd6882dd024a27c378b9c3091e2fb766d",
+              "betaVersion": "same-expert-without-new-artifact-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+              "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+              "comparisonUniverseDigest": "f08378f83f733e10450614572f8b487caa188ab494846d4e148a415015d370b2",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "reject",
+              "reasons": [
+                "equivalent-capability-already-available"
+              ],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": true,
+              "probeIdsDigest": "cdaa8c2c3daa82f57c4616af28053b6003b51a2303ea58cebfb0a4879fd77856",
+              "observedPairsDigest": "af38f2c5a04a342b7ec97b2f569ed037cc7315441405c10404f93f84a5394a69",
+              "assessedLowerBoundNetCents": 2332,
+              "lifecycleCostCents": 3000,
+              "evaluationCostCents": 3000,
+              "completeLifecycleCostCents": 6000,
+              "forecastEligibleUses": 4,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": 2083,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": 2083,
+              "lowerLifetimeNetCents": 2332,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "4e484b67762b41c7baaefd0a6cd26b690cb0df113af670835d1ea80ff3a1fd0d",
+            "evidenceDigest": "8c8f44347040e80edc5ee49cda989fa46b93fa1a2acd3bacbb0da9dc9aedf630"
+          }
+        ],
+        "validationHistory": [],
+        "createdAt": 0,
+        "admittedAt": null,
+        "terminalAt": 0,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "ca993e2a2f2eca73c9a8790218d56078b6ea134f95fb8b0eef7fd02e821b2a5b",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 9204,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      }
+    ],
+    "events": [
+      {
+        "sequence": 0,
+        "week": 0,
+        "type": "candidate",
+        "key": "evidence-compiler-conditional-positive@1",
+        "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708"
+      },
+      {
+        "sequence": 1,
+        "week": 0,
+        "type": "evidence",
+        "key": "evidence-compiler-conditional-positive@1",
+        "evidenceDigest": "5e683d9cf71d1f2b99296b1d1264192ba53e84f5db512772408318e76017d66f",
+        "mode": "MODELED"
+      },
+      {
+        "sequence": 2,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "evidence-compiler-conditional-positive@1",
+        "assessmentDigest": "bd04a0942f3a265a7172a2be6037e9371a128c7e3655d69ab503a76082ef50d1",
+        "verdict": "ASSESSED",
+        "reasons": []
+      },
+      {
+        "sequence": 3,
+        "week": 0,
+        "type": "validation",
+        "key": "evidence-compiler-conditional-positive@1",
+        "validators": [
+          "lyra.agent.agi.eth"
+        ],
+        "cryptographicAuthentication": false
+      },
+      {
+        "sequence": 4,
+        "week": 0,
+        "type": "admit",
+        "key": "evidence-compiler-conditional-positive@1",
+        "graphRoot": "e2f553584d1f63269427308fda111f26db5233a3d6c5acd64cd7be7d57e736fc",
+        "reason": null
+      },
+      {
+        "sequence": 5,
+        "week": 0,
+        "type": "candidate",
+        "key": "evidence-compiler-no-gain@1",
+        "candidateDigest": "b4a9218b8640ac1ae6db0a45de6baaafa92b0c9d4e3e54f953a7bfed484e3f33"
+      },
+      {
+        "sequence": 6,
+        "week": 0,
+        "type": "evidence",
+        "key": "evidence-compiler-no-gain@1",
+        "evidenceDigest": "69978038ab968abdbeabaf991367637b63f9fb80783ddaa77c1278eb88812796",
+        "mode": "MODELED"
+      },
+      {
+        "sequence": 7,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "evidence-compiler-no-gain@1",
+        "assessmentDigest": "9b9df913224588db04a38228cd3c23d02784ebe6a3bdd670aaaf24df95d01abe",
+        "verdict": "REJECTED",
+        "reasons": [
+          "NO_POSITIVE_NET_ALPHA"
+        ]
+      },
+      {
+        "sequence": 8,
+        "week": 0,
+        "type": "failure-memory",
+        "key": null,
+        "id": "failure:evidence-compiler-no-gain:2"
+      },
+      {
+        "sequence": 9,
+        "week": 0,
+        "type": "candidate",
+        "key": "evidence-compiler-negative-transfer@1",
+        "candidateDigest": "0eb724944682f87320b613e3988d1ccaf6d3809e75cef1d80b9b0631eb24008a"
+      },
+      {
+        "sequence": 10,
+        "week": 0,
+        "type": "evidence",
+        "key": "evidence-compiler-negative-transfer@1",
+        "evidenceDigest": "71de9ca9556451858eadd52421cd18491a6468eba2128c8d903e836b5a066fec",
+        "mode": "MODELED"
+      },
+      {
+        "sequence": 11,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "evidence-compiler-negative-transfer@1",
+        "assessmentDigest": "e17ffa829bd56bf4af7ada3bca1d9b7866815302df2bdf5655a3649667d9239d",
+        "verdict": "REJECTED",
+        "reasons": [
+          "NO_POSITIVE_NET_ALPHA"
+        ]
+      },
+      {
+        "sequence": 12,
+        "week": 0,
+        "type": "failure-memory",
+        "key": null,
+        "id": "failure:evidence-compiler-negative-transfer:3"
+      },
+      {
+        "sequence": 13,
+        "week": 0,
+        "type": "candidate",
+        "key": "evidence-compiler-already-available@1",
+        "candidateDigest": "ff3fb22d1d5264d1ebfb6abce4c0501dd6882dd024a27c378b9c3091e2fb766d"
+      },
+      {
+        "sequence": 14,
+        "week": 0,
+        "type": "evidence",
+        "key": "evidence-compiler-already-available@1",
+        "evidenceDigest": "8c8f44347040e80edc5ee49cda989fa46b93fa1a2acd3bacbb0da9dc9aedf630",
+        "mode": "MODELED"
+      },
+      {
+        "sequence": 15,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "evidence-compiler-already-available@1",
+        "assessmentDigest": "4e484b67762b41c7baaefd0a6cd26b690cb0df113af670835d1ea80ff3a1fd0d",
+        "verdict": "REJECTED",
+        "reasons": [
+          "NO_POSITIVE_NET_ALPHA",
+          "REDUNDANT_WITH_BETA"
+        ]
+      },
+      {
+        "sequence": 16,
+        "week": 0,
+        "type": "failure-memory",
+        "key": null,
+        "id": "failure:evidence-compiler-already-available:4"
+      },
+      {
+        "sequence": 17,
+        "week": 1,
+        "type": "authorized-reuse",
+        "key": "evidence-compiler-conditional-positive@1",
+        "member": "lyra.agent.agi.eth",
+        "right": "retrieve",
+        "optional": true
+      },
+      {
+        "sequence": 18,
+        "week": 2,
+        "type": "beta-version",
+        "key": null,
+        "version": "stronger-ordinary-default-v2"
+      }
+    ],
+    "rootHistory": [
+      {
+        "action": "COMMIT_GRAPH_ROOT",
+        "agent": "atlas.agent.agi.eth",
+        "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+        "chainId": 31337,
+        "counts": {
+          "attestation": 1,
+          "edge": 0,
+          "evidence": 1,
+          "metadata": 1,
+          "policy": 1,
+          "proofbundle": 0,
+          "revocation": 0,
+          "skill": 1,
+          "supersession": 0
+        },
+        "epoch": 1,
+        "graphId": "evidence-construction-conditional-transfer-v1:atlas.agent.agi.eth",
+        "graphRoot": "e2f553584d1f63269427308fda111f26db5233a3d6c5acd64cd7be7d57e736fc",
+        "hashSuite": "SHA256_RESEARCH_V1",
+        "mode": "FIXTURE_ONLY",
+        "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+        "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+        "proofLevel": "MODELED_ALPHA_RESEARCH_ADMISSION",
+        "registry": "fixture:ens-v1",
+        "roots": {
+          "attestation": "91f6a8f155b019540435a020132a1fafa9caf8233c1abb0ce761b256c58c6f18",
+          "edge": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "evidence": "a7478f83df1e6995f07d2b910f689a79db2abb98f97ddb22f39737eb18e0f2de",
+          "metadata": "61e9fd152851a4e5e72ab93e297a906aace3b7d50d5796939ab4fcc7ffec3eaa",
+          "policy": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+          "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "skill": "0f065831a9063f8f3fdc0292f79a19eeef2ab897c1fa0650256f2b973f878af3",
+          "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+        },
+        "schema": "agi-alpha.graph-epoch.v1",
+        "snapshotDigest": "41cf3ab139f4535e08a06821ec9558514a2b3974eebc7159db2ecd40020acb50",
+        "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+        "signer": "fixture:atlas.agent.agi.eth",
+        "authoritySnapshotId": "network-fixture-state-0",
+        "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+        "blockNumber": 0,
+        "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+        "registrySchema": "ENS_V1_FIXTURE",
+        "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+        "issuedAt": 0,
+        "expiresAt": 1000,
+        "nonce": "root:1",
+        "signature": {
+          "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+          "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+          "signer": "fixture:atlas.agent.agi.eth",
+          "payloadDigest": "4bb1fa67236728c5dbf6cd94dbdf498e271d3aa008c40d169e28872a2b391c1d"
+        }
+      }
+    ],
+    "rootArtifacts": [
+      {
+        "graphRoot": "e2f553584d1f63269427308fda111f26db5233a3d6c5acd64cd7be7d57e736fc",
+        "forest": {
+          "schema": "agi-alpha.merkle-forest.v1",
+          "hashSuite": "SHA256_RESEARCH_V1",
+          "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+          "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+          "classes": {
+            "skill": {
+              "root": "0f065831a9063f8f3fdc0292f79a19eeef2ab897c1fa0650256f2b973f878af3",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "dependencyDigests": [],
+                    "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+                    "evidenceDigest": "adf7f043168bb640fcbb055168b119ba514f440c4ae886ccdfc449b1c0076d16",
+                    "expiresAt": 100,
+                    "id": "evidence-compiler-conditional-positive",
+                    "implementationDigest": "7d547da98e6c1c98b7aef2d9d3b261e14738306c412d018eff5d3f416ac5535c",
+                    "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "rightsDigest": "38f73aaedd2bc47f756ca496302e770e714fea314391e5477baf73f9c0e3a02c",
+                    "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+                    "version": "1"
+                  },
+                  "leafHash": "0f065831a9063f8f3fdc0292f79a19eeef2ab897c1fa0650256f2b973f878af3",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "edge": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "evidence": {
+              "root": "a7478f83df1e6995f07d2b910f689a79db2abb98f97ddb22f39737eb18e0f2de",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "5e683d9cf71d1f2b99296b1d1264192ba53e84f5db512772408318e76017d66f",
+                    "key": "evidence-compiler-conditional-positive@1"
+                  },
+                  "leafHash": "a7478f83df1e6995f07d2b910f689a79db2abb98f97ddb22f39737eb18e0f2de",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "proofbundle": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "policy": {
+              "root": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "version": "beyond-beta-alpha-policy-v1"
+                  },
+                  "leafHash": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "attestation": {
+              "root": "91f6a8f155b019540435a020132a1fafa9caf8233c1abb0ce761b256c58c6f18",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "action": "ISSUE_SKILL_ATTESTATION",
+                    "agent": "lyra.agent.agi.eth",
+                    "authoritySnapshotId": "network-fixture-state-0",
+                    "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                    "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                    "blockNumber": 0,
+                    "chainId": 31337,
+                    "expiresAt": 100,
+                    "graphId": "evidence-construction-conditional-transfer-v1:atlas.agent.agi.eth",
+                    "issuedAt": 0,
+                    "mode": "FIXTURE_ONLY",
+                    "nonce": "validation:0",
+                    "registry": "fixture:ens-v1",
+                    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                    "registrySchema": "ENS_V1_FIXTURE",
+                    "schema": "agi-alpha.skill-attestation.v1",
+                    "signature": {
+                      "payloadDigest": "f9568d7a4f55cc78d29ae243494e6b54bab0261409aab4400e41ec802af9753f",
+                      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                      "signer": "fixture:lyra.agent.agi.eth"
+                    },
+                    "signer": "fixture:lyra.agent.agi.eth",
+                    "skill": {
+                      "dependencyDigests": [],
+                      "environmentDigest": "b96f3c60fed1cae657d766af403369a9e3db26ff1b55d63e4fcee179ab45db99",
+                      "evidenceDigest": "adf7f043168bb640fcbb055168b119ba514f440c4ae886ccdfc449b1c0076d16",
+                      "expiresAt": 100,
+                      "id": "evidence-compiler-conditional-positive",
+                      "implementationDigest": "7d547da98e6c1c98b7aef2d9d3b261e14738306c412d018eff5d3f416ac5535c",
+                      "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                      "rightsDigest": "38f73aaedd2bc47f756ca496302e770e714fea314391e5477baf73f9c0e3a02c",
+                      "scopeDigest": "e8a59364a6c2ad4d4718ada1b5030ec163b59729a64aac3c8d2e8c34efcc3fec",
+                      "version": "1"
+                    },
+                    "verdict": "PASS_WITH_SCOPE"
+                  },
+                  "leafHash": "91f6a8f155b019540435a020132a1fafa9caf8233c1abb0ce761b256c58c6f18",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "revocation": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "supersession": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "metadata": {
+              "root": "61e9fd152851a4e5e72ab93e297a906aace3b7d50d5796939ab4fcc7ffec3eaa",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "betaVersion": "same-expert-without-new-artifact-v1",
+                    "command": {
+                      "action": "admit",
+                      "actor": "atlas.agent.agi.eth",
+                      "key": "evidence-compiler-conditional-positive@1"
+                    },
+                    "networkId": "evidence-construction-conditional-transfer-v1",
+                    "preparedAt": 0,
+                    "revision": 4,
+                    "states": [
+                      {
+                        "assessmentDigest": "bd04a0942f3a265a7172a2be6037e9371a128c7e3655d69ab503a76082ef50d1",
+                        "candidateDigest": "c42744bdabe7727a1163b449afb07ccc7db50c6cb6fe5fec22c228f12f527708",
+                        "evidenceDigest": "5e683d9cf71d1f2b99296b1d1264192ba53e84f5db512772408318e76017d66f",
+                        "key": "evidence-compiler-conditional-positive@1",
+                        "status": "ADMITTED"
+                      }
+                    ]
+                  },
+                  "leafHash": "61e9fd152851a4e5e72ab93e297a906aace3b7d50d5796939ab4fcc7ffec3eaa",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "canonical": [],
+    "failureMemory": [
+      {
+        "id": "failure:evidence-compiler-no-gain:2",
+        "reason": "NO_POSITIVE_NET_ALPHA",
+        "evidenceDigest": "dbdc91a8f44e580646d75b96a86615046f2c345e55a2c458b7b7791f3096244d",
+        "week": 0,
+        "classification": "FAILURE_MEMORY_NOT_ALPHA",
+        "admissionAuthority": false,
+        "executionAuthority": false,
+        "positiveCapability": false
+      },
+      {
+        "id": "failure:evidence-compiler-negative-transfer:3",
+        "reason": "NO_POSITIVE_NET_ALPHA",
+        "evidenceDigest": "f9ecbb8ffa4f6c63718b65e572e7918d3aa78b62e969449d71676e9c91843fb8",
+        "week": 0,
+        "classification": "FAILURE_MEMORY_NOT_ALPHA",
+        "admissionAuthority": false,
+        "executionAuthority": false,
+        "positiveCapability": false
+      },
+      {
+        "id": "failure:evidence-compiler-already-available:4",
+        "reason": "NO_POSITIVE_NET_ALPHA|REDUNDANT_WITH_BETA",
+        "evidenceDigest": "c872b6440a81afb5b17335e2a837bce1fad037fe815edbb4d07a06096aa94fbd",
+        "week": 0,
+        "classification": "FAILURE_MEMORY_NOT_ALPHA",
+        "admissionAuthority": false,
+        "executionAuthority": false,
+        "positiveCapability": false
+      }
+    ],
+    "protectedEvaluationCommitments": [],
+    "authorityMode": "FIXTURE_ONLY",
+    "cryptographicAuthentication": false,
+    "liveIdentityEnforcement": "NOT_RUN",
+    "localEncryption": "AES-256-GCM",
+    "zeroKnowledgeProofs": "NOT_IMPLEMENTED",
+    "productionExecution": "NOT_CONNECTED",
+    "jobsClubRoles": "UNCHANGED",
+    "historyImportSupported": false,
+    "adapterLog": [
+      {
+        "id": "evidence-compiler-conditional-positive",
+        "week": 0,
+        "event": "modeled-alpha-admitted",
+        "key": "evidence-compiler-conditional-positive@1",
+        "assessedLowerBoundNetCents": 1489,
+        "allMembersCanDiscover": true,
+        "adoption": "OPTIONAL"
+      },
+      {
+        "id": "evidence-compiler-no-gain",
+        "week": 0,
+        "event": "adapter-rejection",
+        "reason": "NO_POSITIVE_NET_ALPHA"
+      },
+      {
+        "id": "evidence-compiler-negative-transfer",
+        "week": 0,
+        "event": "adapter-rejection",
+        "reason": "NO_POSITIVE_NET_ALPHA"
+      },
+      {
+        "id": "evidence-compiler-already-available",
+        "week": 0,
+        "event": "adapter-rejection",
+        "reason": "NO_POSITIVE_NET_ALPHA|REDUNDANT_WITH_BETA"
+      }
+    ],
+    "modeledMembers": [
+      "atlas.agent.agi.eth",
+      "lyra.agent.agi.eth",
+      "orion.agent.agi.eth"
+    ],
+    "secretKeysExported": false
+  }
+}

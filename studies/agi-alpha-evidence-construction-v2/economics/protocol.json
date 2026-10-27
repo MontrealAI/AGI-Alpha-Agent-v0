@@ -1,0 +1,195 @@
+{
+  "schema": "evidence-construction-economic-protocol/v1",
+  "frozen_utc": "2026-10-27T17:25:53.304867+00:00",
+  "evidence_type": "EXPLICIT_ASSUMPTIONS_CONDITIONAL_SIMULATION",
+  "actual_customer_revenue_cents": 0,
+  "actual_total_cost_cents": null,
+  "actual_profit_cents": null,
+  "scope": "One source-qualified extraction/descriptive-analysis packet from a supplied accessible primary paper; not full systematic review",
+  "acceptance": {
+    "all_critical_facts_checked": true,
+    "deadline_days": 2,
+    "maximum_customer_minutes": 15,
+    "maximum_buyer_budget_cents": 45000,
+    "physical_or_clinical_claim": false
+  },
+  "reference": {
+    "labor_rate_cents_per_hour": 12500,
+    "human_minutes": 150,
+    "ordinary_minutes": 110,
+    "expert_minutes": 90,
+    "retained_minutes": 70,
+    "initial_core_minutes": 60,
+    "support_minutes": 6,
+    "capital_cents": 100000,
+    "reserve_cents": 10000,
+    "capacity_minutes": 900,
+    "initial_buyers": 3,
+    "fresh_orders": 2,
+    "assumed_acceptance_probability": "19/20",
+    "assumed_collection_probability": "49/50",
+    "customer_minutes": 8,
+    "deposit_cents": 5000,
+    "C_discovery_cents": 2500,
+    "optional_C_gym_cents": 10000,
+    "B_assessment_cents": 3000,
+    "B_packaging_cents": 1500,
+    "B_upkeep_cents": 1500,
+    "forecast_eligible_uses": 4,
+    "assessment_lower_saving_minutes": 10,
+    "prescreen_upper_saving_minutes": 40
+  },
+  "labor_stages_minutes": {
+    "H": {
+      "intake": 15,
+      "extraction": 90,
+      "verification": 30,
+      "correction": 10,
+      "packaging": 5
+    },
+    "U": {
+      "intake": 10,
+      "extraction": 60,
+      "verification": 25,
+      "correction": 10,
+      "packaging": 5
+    },
+    "E": {
+      "intake": 10,
+      "extraction": 40,
+      "verification": 25,
+      "correction": 10,
+      "packaging": 5
+    },
+    "E+": {
+      "intake": 10,
+      "extraction": 20,
+      "verification": 25,
+      "correction": 10,
+      "packaging": 5
+    }
+  },
+  "nonlabor_cents": {
+    "model": 400,
+    "tools": 200,
+    "compute": 25,
+    "storage": 25,
+    "network": 50,
+    "overhead": 400
+  },
+  "human_reference": {
+    "minutes_range": [
+      90,
+      240
+    ],
+    "rate_cents_per_hour_range": [
+      7500,
+      15000
+    ],
+    "price_status": "Estimated same-scope analyst time and professional rates, not sourced market quote",
+    "H_has_no_model_charge": true
+  },
+  "price_grid_cents": [
+    12500,
+    17500,
+    22500,
+    27500,
+    30000,
+    32500,
+    37500,
+    45000
+  ],
+  "buyer_wtp_cents": [
+    17500,
+    27500,
+    35000,
+    42500,
+    47500
+  ],
+  "price_rule": "Maximize expected E contribution using frozen acceptance/payment assumptions and buyer cap=min(WTP,H-equivalent estimated outside-option,450USD); ties choose lower price; zero orders is allowed. No future outcome or transfer gain used.",
+  "retention_rule": "Check attainable upper benefit before assessment; charge assessment; admit only if ASSUMED lower compatible-use benefit exceeds additional B. Actual empirical admission remains false.",
+  "coordination_cents": 2000,
+  "fresh_seed": 7281943,
+  "fresh_worlds": 72,
+  "fresh_ranges": {
+    "labor_rate_cents_per_hour": [
+      7500,
+      12500,
+      15000
+    ],
+    "human_minutes": [
+      90,
+      150,
+      240
+    ],
+    "ordinary_to_expert_gain_minutes": [
+      0,
+      20,
+      40
+    ],
+    "transfer_gain_minutes": [
+      -10,
+      0,
+      10,
+      20,
+      40
+    ],
+    "collection_probability": [
+      "4/5",
+      "49/50",
+      "1"
+    ],
+    "C_discovery_cents": [
+      0,
+      2500,
+      10000,
+      50000
+    ],
+    "compatible_reuse": [
+      false,
+      true
+    ],
+    "customer_minutes": [
+      8,
+      15,
+      20
+    ]
+  },
+  "path_names": [
+    "success",
+    "one-default",
+    "withdrawal",
+    "common-failure",
+    "partial-delivery",
+    "payment-delay",
+    "support-overrun",
+    "capacity-shortage",
+    "no-transfer-gain",
+    "negative-transfer",
+    "model-obsolescence",
+    "buyer-decline",
+    "underfunded"
+  ],
+  "source_bindings": {
+    "initial": [
+      "DEVELOPMENT_PRIMARY_REPORT_PENDING_FINAL_ARTIFACT_BINDING"
+    ],
+    "fresh": [
+      "FRESH_REPORT_1_PENDING_FINAL_ARTIFACT_BINDING",
+      "FRESH_REPORT_2_PENDING_FINAL_ARTIFACT_BINDING"
+    ],
+    "binding_required_before_delivery_claim": true
+  },
+  "inheritance_library": "Identical bytes/permissions/assumptions/costs must give identical simulated result; no graph premium",
+  "external_calibration": "Published41-minute median AI-versus-human extraction saving is contextual only; no figure here is measured from that paper or imposed as E+ gain. Root owns exact source attribution.",
+  "ledger_source": {
+    "path": "alpha-research/studies/agi-alpha-opportunity-discovery-v1/economics/economics.py",
+    "sha256": "d22b1bec26a7b7c853e9da607c516d10ed7359768cead48e43bd9f3ac6a8dcc7"
+  },
+  "limitations": [
+    "All buyers/prices/rates/labor quantities/quality probabilities are assumed",
+    "Observed report acceptance does not become buyer acceptance",
+    "Fresh random worlds test implementation/policy under assumptions, not empirical calibration",
+    "Actual total research costs and provider billing remain unknown"
+  ]
+}

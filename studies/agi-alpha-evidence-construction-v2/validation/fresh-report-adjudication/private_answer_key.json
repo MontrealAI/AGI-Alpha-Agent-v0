@@ -1,0 +1,520 @@
+{
+  "schema": "fresh-independent-report-key-v1",
+  "created_utc": "2026-10-27T17:29:07.732430+00:00",
+  "blind_status": "No recipient outputs or constructor artifacts inspected. Do not release key values before all recipient runs complete.",
+  "scoring": {
+    "primary": "Sum 20 binary criteria: each criterion scores 1 only if all materially required elements are correct; otherwise 0. Also report optional half-credit sensitivity, never replacing primary.",
+    "partial_sensitivity": "0.5 for substantially correct but incomplete content without contradictory claims; 0 for incorrect central identification, value, units, or dependence.",
+    "critical_errors": "Flag invented covariance, unsupported independence CI for B, arm/timepoint/outcome substitution, sample-unit inflation, and false scientific/customer/clinical validation separately. No post hoc weight changes.",
+    "provenance_equivalence": "Exact table row/column and PDF page plus method section is equivalent to XML XPath. Do not require exact wording or a particular library.",
+    "numerics": "Accept mathematically equivalent units and rounding. Derived A CI from clearly labeled normal or pooled-t approximation earns credit if assumption stated and interval within tolerance. Rounded-input reconstruction is target, not exact raw-data replication."
+  },
+  "reports": {
+    "A": {
+      "doi": "10.1371/journal.pone.0272427",
+      "main_contrast": "Experiment 1, retrieval+feedback minus restudy+feedback, final-test correct-response proportion",
+      "derived": {
+        "mean_retrieval": 0.83,
+        "sd_retrieval": 0.1,
+        "mean_restudy": 0.61,
+        "sd_restudy": 0.21,
+        "n_per_focal_cell": 30,
+        "total_experiment": 120,
+        "difference_proportion": 0.21999999999999997,
+        "difference_percentage_points": 21.999999999999996,
+        "welch_standard_error": 0.04246567241117622,
+        "welch_df": 41.508741643477876,
+        "welch_95_ci": [
+          0.1342707447184212,
+          0.30572925528157874
+        ]
+      },
+      "criteria": [
+        {
+          "id": "A01",
+          "label": "Report and experiment",
+          "max_points": 1,
+          "expected": "Correct DOI/report and Experiment 1, not Experiment 2.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "id": "A02",
+          "label": "Contrast and direction",
+          "max_points": 1,
+          "expected": "Retrieval with feedback minus restudy with feedback; both cells use feedback; do not use no-feedback or marginal totals.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "id": "A03",
+          "label": "Outcome and timepoint",
+          "max_points": 1,
+          "expected": "Correct-response proportion at final cued-recall test after intermediate manipulation (following one-minute distractor); not intermediate performance, pragmatic-inference errors, or conditional error-correction index. Exact minute is useful but not required for credit.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "id": "A04",
+          "label": "Population and sample-size roles",
+          "max_points": 1,
+          "expected": "University of Lisbon university students; total Experiment 1 N=120, each selected cell n=30; no substitution of item count or total N as each arm n.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "id": "A05",
+          "label": "Values and uncertainty label",
+          "max_points": 1,
+          "expected": {
+            "retrieval": [
+              0.83,
+              0.1
+            ],
+            "restudy": [
+              0.61,
+              0.21
+            ],
+            "uncertainty": "The +/- values are participant-level SDs, not SEs."
+          },
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ],
+          "numeric_tolerance": 0.005
+        },
+        {
+          "id": "A06",
+          "label": "Design and analysis unit",
+          "max_points": 1,
+          "expected": "Randomized 2x2 between-participants factorial; focal arms are independent participant groups. Do not import the Experiment 2 yoking or treat repeated sentences as independent participants.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "id": "A07",
+          "label": "Derived mean difference",
+          "max_points": 1,
+          "expected": {
+            "value": 0.21999999999999997,
+            "units": "proportion correct",
+            "equivalent": "22 percentage points; not a relative percent improvement"
+          },
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ],
+          "numeric_tolerance": 0.005
+        },
+        {
+          "id": "A08",
+          "label": "Derived uncertainty",
+          "max_points": 1,
+          "expected": {
+            "SE": 0.04246567241117622,
+            "CI95": [
+              0.1342707447184212,
+              0.30572925528157874
+            ],
+            "formula": "sqrt(s1^2/n1+s0^2/n0); Welch t multiplier preferred; clearly labeled justified approximation accepted",
+            "qualification": "Based on rounded reported means and SDs, not exact replication of author ANOVA."
+          },
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ],
+          "numeric_tolerance": {
+            "se": 0.001,
+            "ci_endpoint": 0.004
+          }
+        },
+        {
+          "id": "A09",
+          "label": "Auditable provenance",
+          "max_points": 1,
+          "expected": "Precise Table 3 correct-response/Experiment 1/Feedback row and Retrieval/Restudy columns, plus participants and design/timing source locations; derived quantities distinguished from reported inputs.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "id": "A10",
+          "label": "Supported scope",
+          "max_points": 1,
+          "expected": "State positive descriptive advantage for this final-test correct-response contrast without equating it to correction conditional on initial errors or universal educational/clinical/customer efficacy; identify a material population/task/followup/generalization limitation.",
+          "sources": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[4]/p[8]",
+              "pdf_page": 17,
+              "description": "General discussion classroom-generalization caution"
+            }
+          ]
+        }
+      ]
+    },
+    "B": {
+      "doi": "10.1371/journal.pone.0143177",
+      "main_contrast": "Published long-term standardized peer-assessment effect minus short-term effect",
+      "derived": {
+        "short_effect": 0.115,
+        "short_SE": 0.04,
+        "long_effect": 0.122,
+        "long_SE": 0.04,
+        "difference": 0.007,
+        "identified_SE_or_CI_for_difference": null,
+        "formula": "Var(L-S)=SE_L^2+SE_S^2-2 Cov(L,S)",
+        "missing": "cross-outcome covariance (or appropriately matched individual-level effect data) for overlapping analysis populations"
+      },
+      "criteria": [
+        {
+          "id": "B01",
+          "label": "Report and population",
+          "max_points": 1,
+          "expected": "Correct DOI/report; introductory statistics college course at Stanford, replicated in autumn and winter, pooled outcome analyses.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Section 1.1 Stats 60 Stanford"
+            }
+          ]
+        },
+        {
+          "id": "B02",
+          "label": "Crossover and matching",
+          "max_points": 1,
+          "expected": "Matched-pairs randomized crossover, four main units, each student receives treatment for two and control for two; no invented independent parallel arms.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 5,
+              "description": "Section 2.1 experimental design"
+            }
+          ]
+        },
+        {
+          "id": "B03",
+          "label": "Treatment and control",
+          "max_points": 1,
+          "expected": "Treatment includes giving scores/comments to peers and receiving peer feedback; control receives instructor feedback with matching timing and solution keys; control is not absence of feedback.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[3]",
+              "pdf_page": 3,
+              "description": "Treatment and feedback control"
+            }
+          ]
+        },
+        {
+          "id": "B04",
+          "label": "Timing and effect definition",
+          "max_points": 1,
+          "expected": "Short term = unit quizzes; long term = comprehensive final exam (within course, Week 11 in supplement). Standardized effects reflect within-student treatment-minus-control contrasts after scores standardized using control exam mean/SD, averaged across students. Do not treat these as raw exam percentage points.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Final exam in Week 11"
+            }
+          ]
+        },
+        {
+          "id": "B05",
+          "label": "Published values and uncertainty",
+          "max_points": 1,
+          "expected": {
+            "short_effect": 0.115,
+            "long_effect": 0.122,
+            "SE_each": 0.04,
+            "label": "Parentheses contain SE, not SD."
+          },
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/caption/p",
+              "pdf_page": 4,
+              "description": "SE caption"
+            }
+          ],
+          "numeric_tolerance": 0.0005
+        },
+        {
+          "id": "B06",
+          "label": "Sample-size roles",
+          "max_points": 1,
+          "expected": "Total participants 387 (148 autumn, 239 winter); short-term analysis 299; final-exam analysis 320; exclusions for noncompliance/incomplete assessment; no summing outcomes as independent participants. Term breakdown is useful but not required if total and outcome-specific Ns are right.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "id": "B07",
+          "label": "Descriptive reconstruction",
+          "max_points": 1,
+          "expected": {
+            "difference": 0.007,
+            "direction": "long minus short",
+            "scale": "standardized exam-score effect units, not raw percentage points; descriptive from rounded published estimates"
+          },
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            }
+          ],
+          "numeric_tolerance": 0.0005
+        },
+        {
+          "id": "B08",
+          "label": "Dependence and scoped uncertainty hold",
+          "max_points": 1,
+          "expected": "The same underlying students contribute both outcomes with differing analysis subsets; covariance of estimated effects is not supplied. State Var(L-S)=Var(L)+Var(S)-2Cov(L,S) or equivalent reasoning. Hold unconditional CI/test; do not assume independence. A conditional sensitivity result is permitted only if labeled hypothetical and not identified.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "id": "B09",
+          "label": "Auditable provenance",
+          "max_points": 1,
+          "expected": "Precise Table 1 short-/long-term rows, caption, sample-size methods paragraph and supplement effect-definition location; reported versus derived distinguished.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            }
+          ]
+        },
+        {
+          "id": "B10",
+          "label": "Interpretation and scope",
+          "max_points": 1,
+          "expected": "Small descriptive long-minus-short contrast cannot itself establish growth/persistence difference, equality, or significant change. Separate significance of each marginal effect is not a test of their difference. Limit to studied course/outcomes and analyzed compliant/complete populations; no customer/clinical validation.",
+          "sources": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_hashes": {
+    "pone.0272427.xml": "f014df30f2f5c6190dbd10160b037621c886dc574d7b6f4534678b804b4275de",
+    "pone.0272427.pdf": "fa4d075ec3c38a92256c1e0e882531df7ea85d3c105dc7ff0609dc23b4e1a46b",
+    "pone.0143177.xml": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b",
+    "pone.0143177.pdf": "26554e4b328dbc754d803a8c8a2418239f0b032a2c2a1731eaaa6629d5681e0e",
+    "pone.0143177.s001.pdf": "5332eacd14f0ddd9f47a3dd2b12423a3a1f878a9969fd834ba00106e6b857113"
+  }
+}

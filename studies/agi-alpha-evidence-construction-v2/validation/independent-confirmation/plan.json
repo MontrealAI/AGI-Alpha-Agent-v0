@@ -1,0 +1,77 @@
+{
+  "schema": "independent-confirmation-plan/v1",
+  "frozen_at_utc": "2026-10-27T17:27:12.997594+00:00",
+  "seed": 791430271,
+  "engine_sha256": "c8e40133ab0269e67afb1eb40aecd3952864b13370de0e548b638dc6726c60cb",
+  "capsule_sha256": "32a9c193200f43c94b922c9b7f5460a60a57f44031f1b2c88c8a50b15766a930",
+  "budget": {
+    "cases": 32,
+    "wall_time_target_minutes": 10,
+    "external_purchases": 0
+  },
+  "cases": [
+    {
+      "ids": "01-12",
+      "kind": "fresh unrelated four-cell means/counts with rounded aggregate constraints",
+      "variants": {
+        "ordinary": 4,
+        "permuted_cells": 4,
+        "translated_means": 2,
+        "scaled_numeric_units": 2
+      },
+      "oracle": "independent exact Fraction vertex enumeration with closed rounding intervals; compare feasibility/count candidates and endpoints within 1e-6 scaled to data units; not engine LP"
+    },
+    {
+      "ids": "13-16",
+      "kind": "fresh joint-source contradictions",
+      "oracle": "an aggregate outside the convex hull plus rounding must be INCONSISTENT_HOLD"
+    },
+    {
+      "ids": "17-20",
+      "kind": "descriptive pooled moments",
+      "variants": [
+        "ordinary",
+        "translation",
+        "SE conversion",
+        "permutation"
+      ],
+      "oracle": "direct sample reconstruction with matching sample moments and independent sum-of-squares calculation"
+    },
+    {
+      "ids": "21-24",
+      "kind": "top-level schema and numeric adversarial inputs",
+      "variants": [
+        "NaN",
+        "infinity",
+        "Boolean",
+        "unknown top-level field"
+      ],
+      "expected": "reject"
+    },
+    {
+      "ids": "25-28",
+      "kind": "scope and nested input checks",
+      "variants": [
+        "paired covariance absent: no SE",
+        "unknown dispersion: reject",
+        "overlapping contrast: reject",
+        "unknown aggregate field: reject"
+      ]
+    },
+    {
+      "ids": "29-32",
+      "kind": "source and semantic boundaries",
+      "variants": [
+        "JATS row/column spans and digest",
+        "source digest mismatch reject",
+        "XML entity declaration reject",
+        "unequal-unit semantics not machine established: output must keep semantic_acceptance/source_truth/production false"
+      ]
+    }
+  ],
+  "acceptance": "All observed outputs and exceptions retained. Failures are findings, not repaired in frozen artifact. Scope-warning result is not semantic validation or customer acceptance. All cases synthetic.",
+  "prospective": true,
+  "generation_not_started": true,
+  "engine_not_executed_by_reviewer_yet": true,
+  "source_review_completed_before_plan": "Read frozen engine only; development arithmetic reviewed earlier. No fresh primary-source answers inspected."
+}

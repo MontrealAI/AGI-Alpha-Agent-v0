@@ -1,0 +1,267 @@
+{
+  "schema": "pdf-visual-qa-v1",
+  "checked_utc": "2026-10-27T18:05:38.427777+00:00",
+  "status": "PASS",
+  "reviewer": "Independent curator/QA agent; visual layout inspection, not an additional scientific or commercial validation.",
+  "files": [
+    {
+      "path": "paper/paper.pdf",
+      "sha256": "02038591284a12ac8f42aae785e8dac3d8b74715a4ecb9b4eeaf33f7b1420d30",
+      "bytes": 215267,
+      "page_count": 17,
+      "visual_pages_reviewed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "visual_review_complete": true,
+      "renderer": "Poppler pdftoppm, PNG, 110 dpi",
+      "visual_scope": [
+        "cover/header/footer hierarchy",
+        "complete equations and mathematical glyphs",
+        "table cell wrapping and borders",
+        "figures, axes, legends and captions",
+        "clipping, overlaps and missing glyphs",
+        "paragraph and section page flow",
+        "orphan short pages"
+      ],
+      "out_of_page_text_spans": [],
+      "replacement_glyph_spans": [],
+      "overfull_log_warnings": [],
+      "remaining_visual_defects": [],
+      "original_pdf_sha256": "79e796d1490ce485db75af0a0261fe85255ee4a204540b44f36be12e63f5bfaf",
+      "original_page_count": 18,
+      "final_page_identity_check": {
+        "sha256": "02038591284a12ac8f42aae785e8dac3d8b74715a4ecb9b4eeaf33f7b1420d30",
+        "page_count": 17,
+        "comparison_pdf_sha256": "22af869c5d5cf3c631ce2fab0cf4365bbd14054ec7be249d6cdde478e4d818d8",
+        "pixel_identical_to_already_viewed_pages": [
+          1,
+          2,
+          3
+        ],
+        "changed_pages_visually_reinspected": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "final_render_hash_checked_before_and_after": true,
+        "witness_heading_and_table_pdf_page": 5,
+        "section_3_follows_witness_table_on_same_page": true
+      }
+    },
+    {
+      "path": "paper/executive-brief.pdf",
+      "sha256": "e788ce1e6fe23514901512fcc90d7a10a0e4401af757eebce677d11feaf7ee8b",
+      "bytes": 64054,
+      "page_count": 2,
+      "visual_pages_reviewed": [
+        1,
+        2
+      ],
+      "visual_review_complete": true,
+      "renderer": "Poppler pdftoppm, PNG, 110 dpi",
+      "visual_scope": [
+        "cover/header/footer hierarchy",
+        "complete equations and mathematical glyphs",
+        "table cell wrapping and borders",
+        "figures, axes, legends and captions",
+        "clipping, overlaps and missing glyphs",
+        "paragraph and section page flow",
+        "orphan short pages"
+      ],
+      "out_of_page_text_spans": [],
+      "replacement_glyph_spans": [],
+      "overfull_log_warnings": [],
+      "remaining_visual_defects": [],
+      "original_pdf_sha256": "e788ce1e6fe23514901512fcc90d7a10a0e4401af757eebce677d11feaf7ee8b",
+      "original_page_count": 2
+    },
+    {
+      "path": "paper/evidence-companion.pdf",
+      "sha256": "c9536937bc62e9247c7308506a7a5570f98e2d87eab08fc233d9f68c4d917e82",
+      "bytes": 107288,
+      "page_count": 6,
+      "visual_pages_reviewed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "visual_review_complete": true,
+      "renderer": "Poppler pdftoppm, PNG, 110 dpi",
+      "visual_scope": [
+        "cover/header/footer hierarchy",
+        "complete equations and mathematical glyphs",
+        "table cell wrapping and borders",
+        "figures, axes, legends and captions",
+        "clipping, overlaps and missing glyphs",
+        "paragraph and section page flow",
+        "orphan short pages"
+      ],
+      "out_of_page_text_spans": [],
+      "replacement_glyph_spans": [],
+      "overfull_log_warnings": [],
+      "remaining_visual_defects": [],
+      "original_pdf_sha256": "d6433ed0a1aeb1504cfa055a5615f6007a96a73b4e3e6ecb9d1707e0defc7f06",
+      "original_page_count": 8,
+      "final_page_identity_check": {
+        "sha256": "c9536937bc62e9247c7308506a7a5570f98e2d87eab08fc233d9f68c4d917e82",
+        "page_count": 6,
+        "pixel_identical_to_already_viewed_pages": [
+          2,
+          3,
+          4,
+          6
+        ],
+        "changed_pages_to_view": [
+          1,
+          5
+        ]
+      }
+    }
+  ],
+  "all_final_pages_visually_inspected": true,
+  "total_final_pages": 25,
+  "inspection_method": "All 25 final pages were covered by Poppler PNG renders at 110 dpi and visual inspection at original detail. The scientific-text-freeze main build was fully checked, then the final layout-only main revision was rerendered: pages 1-3 were pixel-identical to already inspected pages and pages 4-17 were visually reinspected in seven two-page spreads. Final cover and abstract therefore inherit the exact inspected pixels; all final equations, tables, charts, section flow and references were covered. Brief and companion hashes remain unchanged from their completed two-page and six-page visual reviews.",
+  "fixes": [
+    {
+      "file": "paper/evidence-companion.tex",
+      "owner": "QA agent",
+      "defect": "Eight-page companion had two mostly empty spill pages: section 1 tail and section 6 tail.",
+      "change": "Top margin 22 to 20 mm; bottom margin 20 to 18 mm; paragraph gap 4 to 3 pt; table leading multiplier 1.08 to 1.04. Original 10 pt body font retained.",
+      "result": "Exactly six pages with one substantive section per page."
+    },
+    {
+      "file": "paper/evidence-companion.tex",
+      "owner": "QA agent",
+      "defect": "Narrow table label columns had conspicuous justified gaps; archive identity hash split with a two-character tail.",
+      "change": "Ragged-right first two label columns in the opening table; explicit paragraph breaks after the three retained-hash labels.",
+      "result": "Readable label spacing; full exact hashes on separate intact lines."
+    },
+    {
+      "file": "paper/paper.tex",
+      "owner": "Root agent after QA report",
+      "defect": "Cover kicker flowed into the large title and a stray date day appeared beside the shaded callout.",
+      "change": "Root added paragraph breaks after kicker and shaded callout.",
+      "result": "Final cover title, branding, callout and complete date are separated cleanly."
+    },
+    {
+      "file": "paper/paper.tex",
+      "owner": "Root agent after QA report",
+      "defect": "A five-line concluding paragraph occupied an otherwise empty page before a forced bibliography break.",
+      "change": "Root removed the forced clearpage before bibliography.",
+      "result": "Final main PDF is 17 pages; conclusion leads into references on page 16."
+    },
+    {
+      "files": [
+        "paper/paper.tex",
+        "paper/body.tex"
+      ],
+      "owner": "QA agent with explicit root authorization after scientific text freeze",
+      "defect": "The final abstract revision caused section 2.2 heading to appear on page 4 immediately before section 3 while its witness table floated to page 5.",
+      "change": "Load float and needspace in paper.tex line 3; add Needspace{21 baselineskip} in body.tex line 47 before subsection 2.2; change only its table placement to H at body.tex line 50.",
+      "result": "Heading 2.2, the complete witness table and its caption stay together on PDF page 5 before section 3. Main remains 17 pages, with no added orphan body page.",
+      "exact_edited_lines": [
+        {
+          "path": "paper/paper.tex",
+          "line": 3,
+          "text": "\\usepackage{float,needspace}"
+        },
+        {
+          "path": "paper/body.tex",
+          "line": 47,
+          "text": "\\Needspace{21\\baselineskip}"
+        },
+        {
+          "path": "paper/body.tex",
+          "line": 50,
+          "text": "\\begin{table}[H]\\centering\\small"
+        }
+      ]
+    }
+  ],
+  "companion_integrity": {
+    "only_declared_layout_substitutions": true,
+    "substantive_source_text_unchanged": true,
+    "all_source_hash_strings_unchanged": true,
+    "all_hash_strings_present_in_final_pdf_text": true,
+    "source_sha256": "27cbdc7534fe3e678424d93a5bd2957f208181c6bad128f8ad981f3ea5b59f25",
+    "source_before_sha256": "5e5bf5e47cd1f0ec762f917dd1dc4bd9e57f6e50a0b39d9c4aeab37bafa199a6"
+  },
+  "render_artifacts": {
+    "path": "/workspace/scratch/9738c9c6b885/connected-fresh-curation/pdf-qa",
+    "outside_repository_core": true,
+    "included_in_core_package": false
+  },
+  "accepted_nondefects": [
+    "Main PDF page 4 has bottom whitespace so that the complete section 2.2 witness block can start on page 5; page 4 still contains a substantive full section, not an orphan fragment.",
+    "The final reference page is partially filled; it is ordinary bibliography continuation, not an orphan body paragraph.",
+    "Remaining underfull TeX messages do not correspond to clipping or overlapping content in the inspected pages."
+  ],
+  "limits": [
+    "Hashes bind this QA decision to these exact PDFs; rebuilding PDFs requires a fresh hash and any affected-page check.",
+    "No primary-data reanalysis, broad repository test campaign, claim rewrite, or translation certification was undertaken in this layout review."
+  ],
+  "main_final_layout_integrity": {
+    "scientific_and_economics_wording_unchanged": true,
+    "only_declared_layout_substitutions": true,
+    "verification": "Removing the added float/needspace package line and Needspace line and reversing the single witness-table H placement reproduces the saved pre-layout paper.tex and body.tex byte-for-byte.",
+    "source_files": [
+      {
+        "path": "paper/paper.tex",
+        "sha256": "f7add29950413cc485db08372fe925a0bb90af2279c7385ee0d3d9dfe4700efb",
+        "scientific_text_freeze_source_sha256": "e993d76732705ccdff0bb3af09e89b2eeb5ed9836aefea04ab8c518acb2cee41"
+      },
+      {
+        "path": "paper/body.tex",
+        "sha256": "3aaad812bfbd6215af5cf65f723affc56f08d7602d2e7b172a05a432e80d3a26",
+        "scientific_text_freeze_source_sha256": "e885426e44e152b7c533d84539ab4a17a52d4325259475b79ac62d9abe20d7a1"
+      }
+    ]
+  },
+  "main_review_revision_history": [
+    {
+      "pdf_sha256": "031947822d2a8eae3dff0fa0b4204cabb1e3ed2efc2d0ea16d78413454f86148",
+      "pages": 17,
+      "scope": "Prior complete layout review after cover and bibliography fixes."
+    },
+    {
+      "pdf_sha256": "22af869c5d5cf3c631ce2fab0cf4365bbd14054ec7be249d6cdde478e4d818d8",
+      "pages": 17,
+      "scope": "Root scientific text freeze, changed-page visual review and unchanged-page pixel comparison; detected witness heading/table separation."
+    },
+    {
+      "pdf_sha256": "02038591284a12ac8f42aae785e8dac3d8b74715a4ecb9b4eeaf33f7b1420d30",
+      "pages": 17,
+      "scope": "Authorized final layout-only repair; pages 4-17 visually reinspected and pages 1-3 pixel-identical to already inspected renders; PASS."
+    }
+  ]
+}

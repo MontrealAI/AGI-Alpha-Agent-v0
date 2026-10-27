@@ -1,0 +1,231 @@
+{
+  "schema": "source-conditional-delivery/v1",
+  "evidence": "OBSERVED_LOCAL_COMPUTATION",
+  "source_facts": {
+    "r1c5": {
+      "value": 99.0,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 1,
+      "column": 5,
+      "part": "number",
+      "raw": "99",
+      "dispersion_kind": null
+    },
+    "r3c5": {
+      "value": 87.0,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 3,
+      "column": 5,
+      "part": "number",
+      "raw": "87",
+      "dispersion_kind": null
+    },
+    "r7c2": {
+      "value": 100.0,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 7,
+      "column": 2,
+      "part": "number",
+      "raw": "100",
+      "dispersion_kind": null
+    },
+    "r7c3": {
+      "value": 86.0,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 7,
+      "column": 3,
+      "part": "number",
+      "raw": "86",
+      "dispersion_kind": null
+    },
+    "r2c2": {
+      "value": 52.82,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 2,
+      "column": 2,
+      "part": "mean",
+      "raw": "52.82 (25.37)",
+      "dispersion_kind": null
+    },
+    "r2c3": {
+      "value": 53.3,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 2,
+      "column": 3,
+      "part": "mean",
+      "raw": "53.30 (28.08)",
+      "dispersion_kind": null
+    },
+    "r4c2": {
+      "value": 42.22,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 4,
+      "column": 2,
+      "part": "mean",
+      "raw": "42.22 (22.69)",
+      "dispersion_kind": null
+    },
+    "r4c3": {
+      "value": 49.29,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 4,
+      "column": 3,
+      "part": "mean",
+      "raw": "49.29 (22.04)",
+      "dispersion_kind": null
+    },
+    "r4c4": {
+      "value": 45.39,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 4,
+      "column": 4,
+      "part": "mean",
+      "raw": "45.39 (22.55)",
+      "dispersion_kind": null
+    },
+    "r6c2": {
+      "value": 47.73,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 6,
+      "column": 2,
+      "part": "mean",
+      "raw": "47.73 (24.58)",
+      "dispersion_kind": null
+    },
+    "r6c3": {
+      "value": 51.48,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 6,
+      "column": 3,
+      "part": "mean",
+      "raw": "51.48 (25.45)",
+      "dispersion_kind": null
+    },
+    "r6c4": {
+      "value": 49.47,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 6,
+      "column": 4,
+      "part": "mean",
+      "raw": "49.47 (24.99)",
+      "dispersion_kind": null
+    },
+    "r2c4": {
+      "value": 54.07,
+      "source_sha256": "18acae39e5cfbb8832a6ab616f49de795af8130ef9b1be52e03028febb202cb2",
+      "table": "pone-0078976-t002",
+      "row": 2,
+      "column": 4,
+      "part": "mean",
+      "raw": "54.07 (26.55)",
+      "dispersion_kind": null
+    }
+  },
+  "branches": [
+    {
+      "schema": "rounded-mean-reconstruction/v1",
+      "version": "1.0.0",
+      "scenario": "all-five-week-main-table-means",
+      "status": "INCONSISTENT_HOLD",
+      "feasible": [],
+      "lower": null,
+      "upper": null,
+      "assumptions": [
+        "Four mutually exclusive groups, common complete-case population",
+        "Main-table row and column totals are correct",
+        "All listed cell and nonsuspect marginal means round to 0.01 percentage points",
+        "Descriptive mean contrast only; no adjusted, causal or clustered precision claim"
+      ],
+      "excluded_claims": [
+        "S4 counts not part of this main-table-only consistency check"
+      ],
+      "source_truth_established": false,
+      "semantic_acceptance": false,
+      "production_authority": false
+    },
+    {
+      "schema": "rounded-mean-reconstruction/v1",
+      "version": "1.0.0",
+      "scenario": "main-table-mean-branch",
+      "status": "CONDITIONAL_BOUNDS",
+      "feasible": [
+        {
+          "counts": [
+            52,
+            47,
+            48,
+            39
+          ],
+          "lower": 7.648568443051204,
+          "upper": 7.667878787878795
+        }
+      ],
+      "lower": 7.648568443051204,
+      "upper": 7.667878787878795,
+      "assumptions": [
+        "Four mutually exclusive groups, common complete-case population",
+        "Main-table row and column totals are correct",
+        "All listed cell and nonsuspect marginal means round to 0.01 percentage points",
+        "Descriptive mean contrast only; no adjusted, causal or clustered precision claim"
+      ],
+      "excluded_claims": [
+        "Reported retrieval five-week marginal54.07",
+        "S4 cell counts conflict with main-table column totals",
+        "SDs and other timepoints are not LP constraints"
+      ],
+      "source_truth_established": false,
+      "semantic_acceptance": false,
+      "production_authority": false
+    },
+    {
+      "schema": "rounded-mean-reconstruction/v1",
+      "version": "1.0.0",
+      "scenario": "supplement-counts-cell-means-branch",
+      "status": "CONDITIONAL_BOUNDS",
+      "feasible": [
+        {
+          "counts": [
+            49,
+            50,
+            46,
+            41
+          ],
+          "lower": 7.500585161964466,
+          "upper": 7.52058516196448
+        }
+      ],
+      "lower": 7.500585161964466,
+      "upper": 7.52058516196448,
+      "assumptions": [
+        "S4 cell counts are correct",
+        "Table2 cell means are correct",
+        "Four mutually exclusive groups, common complete-case population",
+        "Descriptive contrast from rounded numbers only"
+      ],
+      "excluded_claims": [
+        "Main-table marginal means and column totals conflict with S4",
+        "No claim that this branch repairs the source"
+      ],
+      "source_truth_established": false,
+      "semantic_acceptance": false,
+      "production_authority": false
+    }
+  ],
+  "unconditional_corrected_mean": null,
+  "exact_repaired_source_claim": "HOLD",
+  "research_use": "Inspect source inconsistency and preserve explicitly conditional descriptive bounds",
+  "commercial_acceptance": false,
+  "source_author_validation": false
+}
