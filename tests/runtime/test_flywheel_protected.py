@@ -34,11 +34,17 @@ from alpha_factory_v1.core.runtime.successor.flywheel_capsules import (
     EvaluationPlan,
     Invocation,
     ProtectedLibrary,
+    origin_source_documents,
 )
 from alpha_factory_v1.core.runtime.successor.flywheel_checkpoint import DurableCheckpoint
 from alpha_factory_v1.core.runtime.successor.flywheel_costs import CATEGORIES, Charge, CostLedger
 from alpha_factory_v1.core.runtime.successor.protocol import digest
-from alpha_factory_v1.core.runtime.successor.transformation import SelectionProgram, pilot_document, pilot_request
+from alpha_factory_v1.core.runtime.successor.transformation import (
+    SelectionProgram,
+    SourceDocument,
+    pilot_document,
+    pilot_request,
+)
 from alpha_factory_v1.core.runtime.successor.transformation_library import TransformationLibrary
 from alpha_factory_v1.core.runtime.successor.trust import SignedEnvelope, TrustAnchor, TrustRegistry, sign_record
 
@@ -348,6 +354,17 @@ def entry(s: dict[str, Any], ident: str) -> dict[str, Any]:
     return s["library"].snapshot()[BRANCH]["entries"][ident]
 
 
+def fresh_documents(tag: str) -> list[SourceDocument]:
+    documents = []
+    for index in range(2):
+        value = pilot_document(confirmation=True).model_dump()
+        value["source_url"] = f"https://fixture-sources.example/evaluation/{tag}/{index}"
+        value["title"] += f" / synthetic fresh case {tag}/{index}"
+        value["claims"][0]["text"] += f" Synthetic case {tag}/{index}."
+        documents.append(SourceDocument.model_validate(value))
+    return documents
+
+
 def evaluate(
     s: dict[str, Any],
     ident: str,
@@ -361,6 +378,7 @@ def evaluate(
 ) -> str:
     service = s["service"]
     tag = ident + ("-" + round_id if round_id else "")
+    documents = fresh_documents(tag)
     plan = EvaluationPlan(
         candidate_digest=ident,
         beta_digest=beta_digest,
@@ -373,10 +391,9 @@ def evaluate(
         resource_rules_digest=ZERO,
         recipient_capabilities_digest=ZERO,
         retention_cost_record="retention/" + tag,
-        origin_input_digests=[s["journal"].latest(ORIGIN)["request_hash"]],
-        fresh_input_digests=[
-            digest("conformance-fresh-input", {"candidate": tag, "case": index}) for index in range(2)
-        ],
+        origin_input_digests=entry(s, ident)["origin_input_digests"],
+        fresh_input_digests=[digest("ti-source", document) for document in documents],
+        fresh_inputs=documents,
         planned_reuses=10,
         remaining_retention_micro_usd=1,
         prospective_basis="Synthetic conservative horizon assumption",
@@ -1624,8 +1641,12 @@ def test_requalification_cannot_relabel_old_evaluation_as_fresh_reuse(setup: dic
         resource_rules_digest=ZERO,
         recipient_capabilities_digest=ZERO,
         retention_cost_record="earlier-unassessed-plan",
-        origin_input_digests=[s["journal"].latest(ORIGIN)["request_hash"]],
-        fresh_input_digests=[digest("ti-source", request.document), "e" * 64],
+        origin_input_digests=entry(s, ident)["origin_input_digests"],
+        fresh_input_digests=[
+            digest("ti-source", request.document),
+            digest("ti-source", fresh_documents("historical")[1]),
+        ],
+        fresh_inputs=[request.document, fresh_documents("historical")[1]],
         planned_reuses=1,
         remaining_retention_micro_usd=0,
         prospective_basis="Synthetic previous evaluation exposure",
@@ -1812,3 +1833,83 @@ def test_provisioned_loader_refuses_stale_or_unavailable_custody_files(
     target.unlink()
     with pytest.raises(Conflict, match="custody is unavailable"):
         service.costs.report()
+
+
+@pytest.mark.parametrize("attack", ["mission-only", "rewrapped-source", "same-source-new-text"])
+def test_origin_source_exclusions_share_the_evaluation_and_invocation_domain(
+    setup: dict[str, Any], attack: str
+) -> None:
+    s = setup
+    ident = admitted(s)
+    prior = entry(s, ident)["plan"]["payload"]["record"]
+    source = origin_source_documents(s["journal"].latest(ORIGIN))[0].model_dump()
+    source["title"] = "Different wrapper around the originating material"
+    source["claims"][0]["id"] = "rewrapped"
+    source["claims"][0]["weight"] = 7
+    if attack == "same-source-new-text":
+        source["claims"][0]["text"] = "New words at the already exposed source identity."
+    document = SourceDocument.model_validate(source)
+    assert digest("ti-source", document) not in prior["origin_input_digests"]
+    request = invocation().model_copy(update={"document": document})
+    with pytest.raises(ValueError, match="source material"):
+        s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+    s["service"].configure(
+        signed(s, "configure", "controller", {"beta_digest": "d" * 64, "policy_digest": POLICY}, "changed-origin-test")
+    )
+    renewed = {**prior, "beta_digest": "d" * 64, "retention_cost_record": "origin-exclusion-test"}
+    if attack == "mission-only":
+        renewed["origin_input_digests"] = [s["journal"].latest(ORIGIN)["request_hash"]]
+        expected = "originating source"
+    else:
+        renewed["fresh_inputs"] = [document.model_dump(), fresh_documents("new-source-case")[1].model_dump()]
+        renewed["fresh_input_digests"] = [
+            digest("ti-source", SourceDocument.model_validate(v)) for v in renewed["fresh_inputs"]
+        ]
+        expected = "originating source material"
+    with pytest.raises(ValueError, match=expected):
+        s["service"].freeze(signed(s, "plan", "evaluator", renewed, "origin-exclusion-plan"))
+
+
+@pytest.mark.parametrize("stall", ["headers", "body"])
+def test_total_rpc_deadline_cancels_stalling_headers_and_trickling_body(
+    monkeypatch: pytest.MonkeyPatch, stall: str
+) -> None:
+    import asyncio
+    import httpx
+    from alpha_factory_v1.core.runtime.chain import RPC
+    from alpha_factory_v1.core.runtime.models import ChainConfig
+
+    closed = []
+
+    class Trickle(httpx.AsyncByteStream):
+        async def __aiter__(self) -> Any:
+            try:
+                for byte in b'{"jsonrpc":"2.0","id":1,"result":"0x1"}':
+                    await asyncio.sleep(0.02)
+                    yield bytes([byte])
+            finally:
+                closed.append(True)
+
+        async def aclose(self) -> None:
+            closed.append(True)
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        if stall == "headers":
+            try:
+                await asyncio.sleep(10)
+            finally:
+                closed.append(True)
+        return httpx.Response(200, stream=Trickle())
+
+    client_type = httpx.AsyncClient
+
+    def client(**kwargs: Any) -> httpx.AsyncClient:
+        return client_type(transport=httpx.MockTransport(handler), **kwargs)
+
+    monkeypatch.setattr(httpx, "AsyncClient", client)
+    rpc = RPC(ChainConfig(rpc_url="https://fixture-reader.example", token_code_sha256=ZERO), timeout_seconds=2)
+    started = time.monotonic()
+    with pytest.raises(TimeoutError):
+        rpc.call("eth_chainId", [], deadline=started + 0.08)
+    assert time.monotonic() - started < 0.5
+    assert closed

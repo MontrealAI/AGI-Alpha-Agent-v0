@@ -19,7 +19,7 @@ from urllib.parse import urlsplit
 
 from pydantic import Field, model_validator
 
-from ..chain import address
+from ..chain import RPC, address
 from ..store import Conflict, Journal
 from .protocol import Digest, StrictModel, canonical, digest, safe_json_loads
 
@@ -41,7 +41,11 @@ class _DeadlineReader:
     def call(self, method: str, params: list[Any]) -> Any:
         if time.monotonic() >= self.deadline:
             raise TimeoutError("ENS verification exceeded its total read budget")
-        value = self.reader.call(method, params)
+        value = (
+            self.reader.call(method, params, deadline=self.deadline)
+            if isinstance(self.reader, RPC)
+            else self.reader.call(method, params)
+        )
         if time.monotonic() >= self.deadline:
             raise TimeoutError("ENS verification exceeded its total read budget")
         return value

@@ -14,8 +14,10 @@ import secrets
 import time
 import hashlib
 import platform
+import unicodedata
 from pathlib import Path
 from typing import Any, Literal, cast
+from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from pydantic import Field, model_validator
@@ -30,6 +32,7 @@ from .transformation import (
     IntentCharter,
     SelectionProgram,
     SourceDocument,
+    SourceClaim,
     execute_selection,
     assert_public_content,
     _checked_source_bytes,
@@ -38,6 +41,43 @@ from .transformation_library import KEY, TransformationLibrary
 from .trust import SignedEnvelope
 
 BRANCH = "protected_network_v1"
+
+
+def source_fingerprints(document: SourceDocument) -> set[str]:
+    """Exclude reused source identity or text despite superficial document rewrapping."""
+    uri = urlsplit(document.source_url)
+    source_uri = uri._replace(scheme=uri.scheme.lower(), netloc=uri.netloc.lower(), query="", fragment="").geturl()
+    text = " ".join(unicodedata.normalize("NFKC", " ".join(c.text for c in document.claims)).casefold().split())
+    return {digest("flywheel-source-uri", source_uri), digest("flywheel-source-text", text)}
+
+
+def origin_source_documents(origin: dict[str, Any]) -> list[SourceDocument]:
+    """Canonical source-document projection of each accepted native Research input.
+
+    This is a provenance projection, not an inferred summary or evaluation case.
+    Whole-mission identity remains separate from these ti-source commitments.
+    """
+    documents = []
+    for source_index, source in enumerate(origin["request"]["work"]["sources"]):
+        chunks = [source["text"][index : index + 1500] for index in range(0, len(source["text"]), 1500)]
+        for offset in range(0, len(chunks), 12):
+            documents.append(
+                SourceDocument(
+                    title=source["title"] + f" / native source part {offset // 12 + 1}",
+                    source_url=source["url"],
+                    claims=[
+                        SourceClaim(
+                            id=f"origin-{source_index}-{offset + index}",
+                            text=text,
+                            weight=1,
+                            depends_on=[],
+                            provenance=f"Native mission {origin['id']}; source {source['id']}; record {origin['digest']}",
+                        )
+                        for index, text in enumerate(chunks[offset : offset + 12])
+                    ],
+                )
+            )
+    return documents
 
 
 class CapsuleManifest(StrictModel):
@@ -80,12 +120,15 @@ class EvaluationPlan(StrictModel):
     retention_cost_record: Identifier
     origin_input_digests: list[Digest] = Field(min_length=1, max_length=128)
     fresh_input_digests: list[Digest] = Field(min_length=2, max_length=128)
+    fresh_inputs: list[SourceDocument] = Field(min_length=2, max_length=128)
     planned_reuses: int = Field(ge=1, le=100_000)
     remaining_retention_micro_usd: int = Field(ge=0, le=10**15)
     prospective_basis: Text
 
     @model_validator(mode="after")
     def disjoint_inputs(self) -> EvaluationPlan:
+        if self.fresh_input_digests != [digest("ti-source", document) for document in self.fresh_inputs]:
+            raise ValueError("fresh source documents must match their exact ti-source commitments")
         if set(self.origin_input_digests) & set(self.fresh_input_digests) or len(set(self.fresh_input_digests)) != len(
             self.fresh_input_digests
         ):
@@ -374,9 +417,17 @@ class ProtectedLibrary:
                 raise ValueError("origin wallet must be proved through the existing runtime wallet binding")
             if time.monotonic_ns() >= origin_deadline:
                 raise Conflict("origin authority evidence became stale before retention")
+            origin_documents = origin_source_documents(origin)
             network["entries"][ident] = {
                 "manifest": manifest.model_dump(),
                 "origin_authorization": origin_authority,
+                "origin_input_digests": [
+                    origin["request_hash"],
+                    *[digest("ti-source", document) for document in origin_documents],
+                ],
+                "origin_source_fingerprints": sorted(
+                    {stamp for document in origin_documents for stamp in source_fingerprints(document)}
+                ),
                 "state": "candidate",
                 "producer": signed.principal,
                 "key_id": self.active_key,
@@ -407,8 +458,12 @@ class ProtectedLibrary:
                 raise Conflict("candidate cannot receive a new plan in this lifecycle state")
             self.library._distinct(signed.principal, "verifier", entry["producer"], "producer")
             origin = self.journal.latest(entry["manifest"]["origin_mission"], cx)
-            if origin.get("request_hash") not in plan.origin_input_digests:
-                raise ValueError("evaluation must exclude the originating delivery's actual input commitment")
+            if origin["digest"] != entry["manifest"]["origin_record_digest"]:
+                raise ValueError("originating delivery changed since candidate retention")
+            if not set(entry["origin_input_digests"]) <= set(plan.origin_input_digests):
+                raise ValueError(
+                    "evaluation must exclude the actual originating source ti-source commitments and mission identity"
+                )
             if plan.beta_digest != network["beta_digest"] or plan.policy_digest != network["policy_digest"]:
                 raise ValueError("evaluation plan uses stale Beta or policy")
             if (
@@ -417,8 +472,17 @@ class ProtectedLibrary:
             ):
                 raise ValueError("evaluation plan uses an unqualified execution environment")
             exposures = network.setdefault("evaluation_inputs", {})
+            source_exposures = network.setdefault("evaluation_sources", {})
             if set(plan.fresh_input_digests) & set(exposures):
                 raise ValueError("fresh evaluation cannot reuse a previously exposed input commitment")
+            for document in plan.fresh_inputs:
+                stamps = source_fingerprints(document)
+                if stamps & set(entry["origin_source_fingerprints"]):
+                    raise ValueError("fresh evaluation cannot reuse originating source material or identity")
+                if stamps & set(source_exposures):
+                    raise ValueError("fresh evaluation cannot reuse a previously exposed source identity or text")
+                for stamp in stamps:
+                    source_exposures[stamp] = plan.candidate_digest
             for input_digest in plan.fresh_input_digests:
                 exposures[input_digest] = plan.candidate_digest
             entry.update(
@@ -781,6 +845,11 @@ class ProtectedLibrary:
                 "evaluation_inputs", {}
             ):
                 raise ValueError("reuse requires fresh work outside all historical development/evaluation exposure")
+            stamps = source_fingerprints(invocation.document)
+            if stamps & (set(entry["origin_source_fingerprints"]) | set(network.get("evaluation_sources", {}))):
+                raise ValueError(
+                    "reuse requires fresh source material outside origin and historical evaluation exposure"
+                )
             if invocation.mission_id in network["invocations"]:
                 raise Conflict("mission invocation already attempted; inspect durable receipt")
             costs = self.costs.snapshot(cx)

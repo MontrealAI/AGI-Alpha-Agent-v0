@@ -125,12 +125,16 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
     if signed is None:
         raise ValueError("a separately signed command is required")
     if action == "candidate":
+        candidate_digest = service.retain(
+            CapsuleManifest.model_validate(read_document(args.manifest)),
+            SelectionProgram.model_validate(read_document(args.program)),
+            signed,
+        )
         result = {
-            "candidate_digest": service.retain(
-                CapsuleManifest.model_validate(read_document(args.manifest)),
-                SelectionProgram.model_validate(read_document(args.program)),
-                signed,
-            )
+            "candidate_digest": candidate_digest,
+            "required_origin_input_digests": service.library.snapshot()["protected_network_v1"]["entries"][
+                candidate_digest
+            ]["origin_input_digests"],
         }
     elif action == "model-run":
         result = FrontierConnector(service.journal, service.trust, service.costs).run(

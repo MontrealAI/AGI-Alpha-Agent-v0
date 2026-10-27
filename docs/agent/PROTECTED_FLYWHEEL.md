@@ -90,6 +90,8 @@ Identity reads occur outside the Journal write lock, with four concurrent checks
 two-second RPC timeouts and a short-lived server-only authorization checked again during commit.
 Both readers must report the same current tip before and after verification. Failure or disagreement refuses
 access; an operator stop is not held behind network reads.
+The concrete RPC transport propagates the remaining total deadline through connection, headers and
+asynchronous streamed body reads; cancellation closes a trickling response rather than waiting for its end.
 No existing Jobs club.agi.eth validator role, contract, currency route or settlement rule changes.
 
 ### Evidence, economics and admission
@@ -126,6 +128,13 @@ count, uncertainty basis and the complete B cost record. Executions must follow 
 execution custodians attest response/output/usage/billing identities; acceptance uses distinct configured
 keys and separately informative tests. Signatures bind attestations; they do not establish their truth
 or organizational independence.
+Whole-mission identity is separate from source identity. Retention derives canonical SourceDocument
+projections and ti-source commitments from the actual accepted Research sources. The candidate command
+returns the required origin exclusions. Plans bind the exact fresh source documents and their ti-source
+digests, and must include all originating source commitments. Normalized source URI (without query) and
+text fingerprints prevent simple title, weight or claim-ID changes from disguising previously exposed
+origin/evaluation material. This conservative policy requires distinct source identities; it does not
+prove semantic novelty or independently authenticate a supplied public URL.
 
 The plan also binds an execution-environment digest over installed source bytes, dependency versions,
 runtime configuration, service and identity-reader policy. A material change requires restart and explicit
@@ -280,6 +289,8 @@ Les lectures d’identité restent hors du verrou d’écriture du Journal : qua
 délai total, délai RPC de deux secondes et autorisation interne brève revérifiée à la validation.
 Les lecteurs doivent annoncer le même sommet courant avant et après les contrôles. Échec ou désaccord
 bloquent l’accès ; les lectures réseau ne bloquent pas un arrêt de l’opérateur.
+Le transport RPC propage le délai total restant à la connexion, aux en-têtes et à la lecture asynchrone
+du corps. L’annulation ferme une réponse qui distille ses octets, sans attendre sa fin.
 Les rôles Jobs club.agi.eth, contrats, devises et règlements restent inchangés.
 
 A couvre la livraison acceptée, apprentissage pendant ce travail compris. B ne couvre que les coûts
@@ -314,6 +325,12 @@ identiques, capacités du destinataire, entrées d’origine exclues, entrées n
 incertitude et registre B complet. Les exécutions suivent le gel. Des dépositaires configurés attestent
 réponses, résultats, usage et facturation. L’acceptation utilise des clés distinctes et des tests
 indépendamment informatifs. Une signature lie une attestation sans établir sa vérité ou son indépendance organisationnelle.
+Identité de mission et de source restent distinctes. La conservation dérive des SourceDocument canoniques
+et engagements ti-source depuis les sources Research réellement acceptées. La commande candidate retourne
+les exclusions requises. Le plan lie les documents nouveaux exacts et leurs empreintes ; toutes les sources
+d’origine doivent être exclues. URI normalisée sans requête et empreinte du texte empêchent de masquer
+un ancien matériau par changement de titre, poids ou identifiant. Cette politique prudente exige des sources
+distinctes ; elle ne prouve ni nouveauté sémantique ni authenticité indépendante d’une URL fournie.
 
 Le plan lie aussi l’empreinte de l’environnement : sources installées, versions des dépendances,
 configuration, service et politique des lecteurs d’identité. Un changement impose redémarrage et
