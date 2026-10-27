@@ -760,6 +760,7 @@ class ProtectedLibrary:
                 "cost_cap_micro_usd": invocation.cost_cap_micro_usd,
                 "execution": "installed-closed-selector; no frontier inference in this invocation",
                 "execution_digest": self.execution_digest,
+                "qualification_digest": digest("flywheel-plan", entry["plan"]),
             }
             costs["charges"][activity] = {**pending.model_dump(), "signed": None}
             network["invocations"][invocation.mission_id] = receipt
@@ -824,6 +825,14 @@ class ProtectedLibrary:
             receipt = network["invocations"][record.mission_id]
             entry = self._eligible(network, receipt["candidate_digest"])
             self._dependencies(network, entry)
+            current_plan = entry["plan"]["payload"]["record"]
+            if (
+                receipt["beta_digest"] != current_plan["beta_digest"]
+                or receipt["policy_digest"] != current_plan["policy_digest"]
+                or receipt["execution_digest"] != self.execution_digest
+                or receipt["qualification_digest"] != digest("flywheel-plan", entry["plan"])
+            ):
+                raise ValueError("reuse receipt uses a superseded qualification context")
             if (
                 receipt["status"] != "executed-awaiting-acceptance-and-complete-cost"
                 or digest("flywheel-reuse-receipt", receipt) != record.receipt_digest

@@ -146,6 +146,8 @@ cost are committed with the independent high-water mark before computation. An i
 executing-or-uncertain, blocks implicit retries and requires explicit cost/recovery reconciliation.
 Computation runs outside the write lock and observes stop requests. Historical evaluation inputs remain
 ineligible as fresh reuse even after a new plan, model change or rollback.
+Pending reuse acceptance must still match its exact qualification plan, Beta, policy and execution
+environment. Requalification or rollback cannot turn an older pending execution into current qualified reuse.
 
 ### Storage, keys, recovery and revocation
 
@@ -318,6 +320,9 @@ le seuil indépendant avant calcul. Une interruption reste executing-or-uncertai
 implicites et exige rapprochement explicite des coûts et de la reprise. Le calcul reste hors du verrou
 d’écriture et observe les arrêts. Une entrée d’évaluation historique ne devient pas une nouvelle tâche
 de réutilisation après changement de plan, modèle ou retour à un ancien modèle.
+L’acceptation en attente doit encore correspondre au plan exact de qualification, à Beta, à la politique
+et à l’environnement. Requalification ou retour arrière ne transforme pas une ancienne exécution en
+réutilisation actuellement qualifiée.
 
 La branche protégée reste dans le Journal de la TransformationLibrary. Les manifestes publics sont
 distincts des programmes chiffrés AES-GCM ; les données associées lient service, Journal et manifeste

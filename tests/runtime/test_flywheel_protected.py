@@ -348,28 +348,38 @@ def entry(s: dict[str, Any], ident: str) -> dict[str, Any]:
     return s["library"].snapshot()[BRANCH]["entries"][ident]
 
 
-def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = True) -> str:
+def evaluate(
+    s: dict[str, Any],
+    ident: str,
+    saving: int = 20,
+    correct: bool = True,
+    *,
+    round_id: str = "",
+    beta_digest: str = BETA,
+    policy_digest: str = POLICY,
+) -> str:
     service = s["service"]
+    tag = ident + ("-" + round_id if round_id else "")
     plan = EvaluationPlan(
         candidate_digest=ident,
-        beta_digest=BETA,
+        beta_digest=beta_digest,
         execution_digest=s["service"].execution_digest,
         model_id="fictional-frontier-receipt-fixture",
         reasoning_mode="fixture",
-        policy_digest=POLICY,
+        policy_digest=policy_digest,
         matched_tools_digest=ZERO,
         resource_rules_digest=ZERO,
         recipient_capabilities_digest=ZERO,
-        retention_cost_record="retention/" + ident,
+        retention_cost_record="retention/" + tag,
         origin_input_digests=[s["journal"].latest(ORIGIN)["request_hash"]],
         fresh_input_digests=[
-            digest("conformance-fresh-input", {"candidate": ident, "case": index}) for index in range(2)
+            digest("conformance-fresh-input", {"candidate": tag, "case": index}) for index in range(2)
         ],
         planned_reuses=10,
         remaining_retention_micro_usd=1,
         prospective_basis="Synthetic conservative horizon assumption",
     )
-    plan_signed = signed(s, "plan", "evaluator", plan.model_dump(), "plan/" + ident)
+    plan_signed = signed(s, "plan", "evaluator", plan.model_dump(), "plan/" + tag)
     service.freeze(plan_signed)
     pairs: list[list[SignedEnvelope]] = [[], [], []]
     for input_digest in plan.fresh_input_digests:
@@ -379,7 +389,7 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
                 "candidate_digest": ident if arm == 0 else None,
                 "input_digest": input_digest,
                 "output_digest": outputs[arm],
-                "beta_digest": BETA,
+                "beta_digest": beta_digest,
                 "model_id": "fictional-frontier-receipt-fixture",
                 "reasoning_mode": "fixture",
                 "tools_digest": ZERO,
@@ -420,8 +430,8 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
     for arm, receipts in enumerate(pairs[:2]):
         for index, receipt in enumerate(receipts):
             charge = Charge(
-                activity_id=f"evaluation/{ident}/{arm}/{index}",
-                mission_id="retention/" + ident,
+                activity_id=f"evaluation/{tag}/{arm}/{index}",
+                mission_id="retention/" + tag,
                 bucket="B",
                 category="model",
                 accrued_micro_usd=receipt.payload["actual_cost_micro_usd"],
@@ -430,11 +440,11 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
                 evidence_digest=digest("flywheel-frontier-run-record", receipt.model_dump()),
                 note="Synthetic paired invocation accounting",
             )
-            account(s, "charge", charge.model_dump(), f"eval-cost-{ident}-{arm}-{index}")
+            account(s, "charge", charge.model_dump(), f"eval-cost-{tag}-{arm}-{index}")
     for category in sorted(CATEGORIES - {"model"}):
         charge = Charge(
-            activity_id="retention/" + ident + "/" + category,
-            mission_id="retention/" + ident,
+            activity_id="retention/" + tag + "/" + category,
+            mission_id="retention/" + tag,
             bucket="B",
             category=category,
             accrued_micro_usd=0,
@@ -443,14 +453,14 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
             evidence_digest=ZERO,
             note="Synthetic explicit zero-cost category attestation",
         )
-        account(s, "charge", charge.model_dump(), "retention-cost-" + ident + "/" + category)
+        account(s, "charge", charge.model_dump(), "retention-cost-" + tag + "/" + category)
     account(
         s,
         "seal-retention",
-        {"mission_id": "retention/" + ident, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
-        "retention-seal/" + ident,
+        {"mission_id": "retention/" + tag, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+        "retention-seal/" + tag,
     )
-    return service.evaluate(signed(s, "evidence", "evaluator", evidence.model_dump(), "evidence/" + ident))
+    return service.evaluate(signed(s, "evidence", "evaluator", evidence.model_dump(), "evidence/" + tag))
 
 
 def control(s: dict[str, Any], ident: str, action: str, operation: str | None = None) -> None:
@@ -725,9 +735,19 @@ def test_revoked_executor_cannot_support_future_access(setup: dict[str, Any]) ->
         s["service"].manifest(ident, token)
 
 
-@pytest.mark.parametrize("self_invocation,omit_comparison_cost", [(False, False), (True, False), (False, True)])
+@pytest.mark.parametrize(
+    "self_invocation,omit_comparison_cost,context_change",
+    [
+        (False, False, None),
+        (True, False, None),
+        (False, True, None),
+        (False, False, "beta"),
+        (False, False, "policy"),
+        (False, False, "plan"),
+    ],
+)
 def test_reconciled_acceptance_required_for_successful_reuse(
-    setup: dict[str, Any], self_invocation: bool, omit_comparison_cost: bool
+    setup: dict[str, Any], self_invocation: bool, omit_comparison_cost: bool, context_change: str | None
 ) -> None:
     s = setup
     ident = admitted(s)
@@ -803,6 +823,25 @@ def test_reconciled_acceptance_required_for_successful_reuse(
     )
     if omit_comparison_cost:
         with pytest.raises(ValueError, match="comparison must be charged"):
+            s["service"].accept_reuse(approval)
+        return
+    if context_change is not None:
+        beta, policy = (
+            ("d" * 64 if context_change != "policy" else BETA),
+            ("e" * 64 if context_change == "policy" else POLICY),
+        )
+        s["service"].configure(
+            signed(s, "configure", "controller", {"beta_digest": beta, "policy_digest": policy}, "renew-context")
+        )
+        if context_change == "plan":
+            beta = BETA
+            s["service"].configure(
+                signed(s, "configure", "controller", {"beta_digest": beta, "policy_digest": policy}, "rollback-context")
+            )
+        assert evaluate(s, ident, round_id="renewed", beta_digest=beta, policy_digest=policy) == "assessed"
+        control(s, ident, "validate", "renewed-validation")
+        control(s, ident, "admit", "renewed-admission")
+        with pytest.raises(ValueError, match="superseded qualification"):
             s["service"].accept_reuse(approval)
         return
     result = s["service"].accept_reuse(approval)
