@@ -174,6 +174,9 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[When Paid Work Teaches the Network](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/when-paid-work-teaches-the-network.pdf)** · Competent Beta is profitable under the modeled primary markets, with incomplete service\-quality qualification\. Selected retention policies keep nothing; a cheaper\-retention diagnostic supports useful peer reuse but remains uneconomic as a complete program\. This is not demonstrated profitable autonomy or a positive network flywheel\.
   Prepared for Vincent Boucher / MONTREAL\.AI; research execution and manuscript prepared with ChatGPT · 2026-10-27 · English PDF.
   [Read the edition and resources](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/when-paid-work-teaches-the-network/index.html)
+- **[The Network That Learns to Invent](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/the-network-that-learns-to-invent.pdf)** · Experience changes a reusable numerical representation and improves its fresh approximation\. Complete\-cost admission rejects the reference retention program; complementary sensor design also helps the equally equipped competent generalist\. Conditional modeled Beta profit is not customer revenue or proof of profitable network sharing, specialist superintelligence or self\-acceleration\.
+  Vincent Boucher, President of MONTREAL\.AI · 2026-10-27 · English PDF.
+  [Read the edition and resources](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/the-network-that-learns-to-invent/index.html) · [View source and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-network-learns-to-invent-v1-2026-10-27)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
