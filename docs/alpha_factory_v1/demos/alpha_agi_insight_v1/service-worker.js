@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-6f787e701a18e3fe";
+const CACHE = "agialpha-gallery-9194566c60c2ae95";
 const RELEASE = "1.46.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
@@ -404,6 +404,7 @@ const ASSETS = [
   "../../../reports/research-capability-inheritance-v1/index.html",
   "../../../reports/research-discoverability-v1/index.html",
   "../../../reports/research-foundry-v2/index.html",
+  "../../../reports/when-paid-work-teaches-the-network/index.html",
   "../../../research/discoverability/index.html",
   "../../../self_healing_repo/assets/logs.json",
   "../../../self_healing_repo/assets/preview.svg",
