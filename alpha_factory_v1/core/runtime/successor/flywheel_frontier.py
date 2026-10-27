@@ -14,7 +14,7 @@ from urllib.parse import urlsplit
 from pydantic import Field
 from .. import provider
 from ..store import Conflict, Journal, digest as runtime_digest
-from .flywheel_costs import KEY as COST_KEY, Charge, CostLedger, accepted_native_delivery
+from .flywheel_costs import Charge, CostLedger, accepted_native_delivery
 from .protocol import Digest, Identifier, StrictModel, digest
 from .transformation import DiscoveryRequest, assert_public_content
 from .transformation_model import ModelProposal
@@ -188,7 +188,7 @@ class FrontierConnector:
                 note="Provider attempt may incur charges even on failure; billing and full-cost reconciliation required",
             )
             costs["charges"][activity] = {**pending.model_dump(), "signed": signed.model_dump()}
-            self.journal.append(cx, COST_KEY, costs)
+            self.costs._persist(cx, costs)
             self.checkpoint.advance(self.journal, cx)
         model_payload = {
             "model": cfg.llm_model,

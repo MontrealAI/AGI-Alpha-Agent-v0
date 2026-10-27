@@ -115,6 +115,13 @@ payment_id, activity_id, positive amount_micro_usd and allocated evidence_digest
 and outstanding obligations equally, preserving accrual, A/B/C ownership and completeness seals. Overpayment,
 duplicate allocation evidence and unknown liabilities refuse; repeated identical commands are idempotent.
 This records an attributed payment attestation and never transfers funds.
+Accounting replay protection and full payment attestations also use durable individual Journal records.
+The cost working record keeps at most 128 operation fingerprints and 32 payment attestations; eviction
+cannot permit a repeated command or allocated payment evidence. Reserved byte/node capacity covers each
+unknown charge's bounded reconciliation, each missing resource category, completeness seals and partial
+payment summaries. Both provider and selector attempts must persist those reserves before execution.
+The two-megabyte/100,000-node cost record remains finite: new intake refuses when reconciliation headroom
+is exhausted. This slice does not provide unlimited accounting storage or automatic archival of charges.
 Incoming funding evidence can credit cash only once across capital and collected revenue. With unknown
 costs, total obligations and available funds remain unknown; known_obligations reports only reconciled
 liabilities. Prepayments reduce cash without creating a negative fictitious liability.
@@ -335,6 +342,14 @@ activity_id, amount_micro_usd positif et evidence_digest d’allocation. Un paie
 et obligations du même montant sans modifier charge, catégorie A/B/C ou clôture. Surpaiement, preuve
 d’allocation répétée et dette inconnue bloquent ; une commande identique répétée reste idempotente.
 Cette attestation de paiement n’effectue aucun transfert de fonds.
+La protection contre les répétitions comptables et les attestations de paiement complètes occupent aussi
+des objets durables individuels du Journal. Le registre de travail garde au plus 128 empreintes d’opération
+et 32 attestations de paiement ; une éviction n’autorise aucune répétition de commande ou preuve allouée.
+Les réserves d’octets/nœuds couvrent le rapprochement borné de chaque coût inconnu, les catégories de
+ressources manquantes, les clôtures et les résumés de paiements partiels. Fournisseur et sélecteur doivent
+enregistrer ces réserves avant toute exécution. Le registre comptable reste limité à deux mégaoctets et
+100 000 nœuds : une réserve de rapprochement insuffisante bloque le nouveau travail. Cette tranche n’offre
+ni stockage comptable illimité, ni archivage automatique des charges.
 Une preuve de fonds entrants ne peut créditer la trésorerie qu’une fois entre capital et revenu encaissé.
 Avec des coûts inconnus, obligations totales et fonds disponibles restent inconnus ; known_obligations
 ne rapporte que les dettes rapprochées. Une avance réduit la trésorerie sans créer une dette négative fictive.

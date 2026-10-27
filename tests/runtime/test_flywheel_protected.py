@@ -2097,3 +2097,187 @@ def test_unqualified_pre_release_migration_is_signed_stopped_and_preserves_origi
     assert stored["receipt"] == receipt and stored["legacy_unqualified"] is True and stored["request"] is None
     with pytest.raises(Conflict):
         s["service"].migrate(authorization)
+
+
+def pad_cost_working_state(s: dict[str, Any], capacity: str = "bytes") -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_costs import KEY as COST_KEY
+    from alpha_factory_v1.core.runtime.successor.protocol import MAX_JSON_BYTES, MAX_JSON_NODES, canonical
+
+    with s["journal"].transaction() as cx:
+        costs = s["costs"].snapshot(cx)
+        if capacity == "bytes":
+            costs["capacity_padding"] = ""
+            size = MAX_JSON_BYTES - len(canonical(costs)) - costs["reserved_capacity_bytes"] - 2048
+            costs["capacity_padding"] = "x" * size
+        else:
+            size = MAX_JSON_NODES - s["costs"]._nodes(costs) - costs["reserved_capacity_nodes"] - 64
+            costs["capacity_padding"] = [None] * size
+        s["costs"]._persist(cx, costs)
+        s["service"].checkpoint.advance(s["journal"], cx)
+        assert s["journal"].latest(COST_KEY, cx)["capacity_padding"]
+
+
+def test_accounting_replays_remain_durable_beyond_4096_legacy_operations(setup: dict[str, Any]) -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_costs import KEY as COST_KEY
+
+    s = setup
+    charge = Charge(
+        activity_id="legacy-outstanding",
+        mission_id="legacy-costs",
+        bucket="C",
+        category="compute",
+        accrued_micro_usd=None,
+        paid_micro_usd=0,
+        basis="unknown",
+        evidence_digest=ZERO,
+        note="Fictional legacy liability",
+    )
+    account(s, "charge", charge.model_dump(), "initial-unknown")
+    first_payload = {
+        "journal_identity": s["journal"].identity,
+        "operation_id": "legacy-0000",
+        "action": "reserve",
+        "record": 0,
+    }
+    with s["journal"].transaction() as cx:
+        state = s["costs"].snapshot(cx)
+        state["operations"] = {f"legacy-{i:04d}": ZERO for i in range(4096)}
+        state["operations"]["legacy-0000"] = digest("flywheel-cost-command", first_payload)
+        s["journal"].append(cx, COST_KEY, state)
+        s["service"].checkpoint.advance(s["journal"], cx)
+    account(s, "resolve", {**charge.model_dump(), "accrued_micro_usd": 7, "basis": "attested"}, "settle-existing")
+    assert len(s["costs"].snapshot()["operations"]) == 128
+    before = s["costs"].snapshot()
+    account(s, "reserve", 0, "legacy-0000")
+    assert s["costs"].snapshot() == before
+    with pytest.raises(Conflict, match="different terms"):
+        account(s, "reserve", 1, "legacy-0000")
+    assert s["journal"].latest("@flywheel-accounting-operation:legacy-0000")["binding"] == digest(
+        "flywheel-cost-command", first_payload
+    )
+
+
+@pytest.mark.parametrize("capacity", ["bytes", "nodes"])
+def test_accounting_reserves_cover_unicode_resolution_missing_categories_seal_and_payments(
+    setup: dict[str, Any], capacity: str
+) -> None:
+    s = setup
+    unknown = Charge(
+        activity_id="settlement/compute",
+        mission_id="settlement",
+        bucket="C",
+        category="compute",
+        accrued_micro_usd=None,
+        paid_micro_usd=0,
+        basis="unknown",
+        evidence_digest=ZERO,
+        note="Fictional unknown liability",
+    )
+    account(s, "charge", unknown.model_dump(), "settlement-unknown")
+    pad_cost_working_state(s, capacity)
+    account(
+        s,
+        "resolve",
+        {**unknown.model_dump(), "accrued_micro_usd": 40, "basis": "attested", "note": "🛰" * 4000},
+        "settlement-resolve",
+    )
+    for category in sorted(CATEGORIES - {"compute"}):
+        charge = unknown.model_copy(
+            update={
+                "activity_id": "settlement/" + category,
+                "category": category,
+                "accrued_micro_usd": 0,
+                "basis": "attested",
+                "note": "🛰" * 4000,
+            }
+        )
+        account(s, "charge", charge.model_dump(), "settlement-charge-" + category)
+    account(
+        s,
+        "seal-investment",
+        {"mission_id": "settlement", "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+        "settlement-seal",
+    )
+    for i in range(40):
+        record = {
+            "payment_id": "payment-" + str(i).zfill(120),
+            "activity_id": "settlement/compute",
+            "amount_micro_usd": 1,
+            "evidence_digest": digest("fictional-payment", i),
+        }
+        account(s, "payment", record, "p" + str(i).zfill(127))
+    state = s["costs"].snapshot()
+    row = state["charges"]["settlement/compute"]
+    assert row["paid_micro_usd"] == row["accrued_micro_usd"] == row["payment_count"] == 40
+    assert len(state["payments"]) == 32 and s["costs"].report("settlement")["bucket_complete"]["C"] is True
+    first = s["journal"].document(s["journal"].latest("@flywheel-payment:payment-" + "0" * 120))
+    with pytest.raises(Conflict, match="already reconciled"):
+        account(
+            s,
+            "payment",
+            {
+                **{k: first[k] for k in ("payment_id", "activity_id", "amount_micro_usd", "evidence_digest")},
+                "payment_id": "new-id-same-evidence",
+            },
+            "replay-evicted-payment",
+        )
+
+
+@pytest.mark.parametrize("executor", ["provider", "selector"])
+def test_exhausted_accounting_reserve_refuses_before_any_execution(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, executor: str
+) -> None:
+    from alpha_factory_v1.core.runtime import provider
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+    from alpha_factory_v1.core.runtime.successor.flywheel_frontier import FrontierConnector, FrontierPermit
+    import alpha_factory_v1.core.runtime.successor.flywheel_capsules as capsules
+
+    s = setup
+    ident = admitted(s) if executor == "selector" else None
+    if executor == "provider":
+        paid_origin(s)
+        s["journal"].control(True)
+        s["journal"].configure(RuntimeConfig(llm_url="http://127.0.0.1:9999/v1", llm_model="fictional-test-provider"))
+        s["journal"].control(False)
+    pad_cost_working_state(s)
+    before = s["costs"].snapshot()
+    calls: list[bool] = []
+
+    def forbidden(*args: Any, **kwargs: Any) -> Any:
+        calls.append(True)
+        raise AssertionError("capacity exhaustion reached an executor")
+
+    monkeypatch.setattr(provider, "complete_json", forbidden)
+    monkeypatch.setattr(capsules, "execute_selection", forbidden)
+    if executor == "selector":
+        request = invocation()
+        authorization = proof(s, ident, "invoke", digest("flywheel-invocation", request))
+        with pytest.raises(Conflict, match="accounting capacity"):
+            s["service"].invoke(ident, request, authorization)
+    else:
+        request = pilot_request()
+        permit = FrontierPermit(
+            operation_id="no-capacity",
+            mission_id="new-cost-record",
+            bucket="C",
+            model_id=s["journal"].config.llm_model,
+            requested_reasoning_mode="standard",
+            requested_reasoning_effort="max",
+            request_digest=digest("flywheel-model-request", request),
+            config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
+            tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
+            quota_evidence_digest=ZERO,
+            max_charge_micro_usd=10,
+            expires_at=int(time.time()) + 300,
+        )
+        authorization = sign_record(
+            s["keys"]["controller"],
+            "controller",
+            "flywheel-model-permit",
+            {"journal_identity": s["journal"].identity, "permit": permit.model_dump()},
+        )
+        with pytest.raises(Conflict, match="accounting capacity"):
+            FrontierConnector(s["journal"], s["trust"], s["costs"]).run(request, authorization)
+        with pytest.raises(KeyError):
+            s["journal"].latest("@flywheel-model:no-capacity")
+    assert calls == [] and s["costs"].snapshot() == before

@@ -25,7 +25,7 @@ from pydantic import Field, model_validator
 from ..store import Conflict, _private_recovery_bytes, digest as runtime_digest
 from ..chain import address
 from .flywheel_access import AccessRequest, ResourceAccess, direct_name
-from .flywheel_costs import Charge, CostLedger, KEY as COST_KEY, accepted_native_delivery
+from .flywheel_costs import Charge, CostLedger, accepted_native_delivery
 from .flywheel_checkpoint import DurableCheckpoint
 from .protocol import Digest, Identifier, StrictModel, Text, canonical, digest, safe_json_loads
 from .transformation import (
@@ -960,7 +960,7 @@ class ProtectedLibrary:
                 {"request": invocation.model_dump(), "receipt": receipt},
             )
             self._cache_invocation(network, invocation.mission_id, receipt)
-            self.journal.append(cx, COST_KEY, costs)
+            self.costs._persist(cx, costs)
             self._commit(cx, state)
             # This committed reservation survives process interruption. No paid or
             # local computation precedes accounting eligibility and consumption.

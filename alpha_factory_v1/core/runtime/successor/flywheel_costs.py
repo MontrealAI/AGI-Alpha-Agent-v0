@@ -12,12 +12,15 @@ from typing import Any, Callable, Literal
 from pydantic import Field, model_validator
 
 from ..store import Conflict, Journal, digest as runtime_digest
-from .protocol import Digest, Identifier, StrictModel, Text, digest
+from .protocol import MAX_JSON_BYTES, MAX_JSON_NODES, Digest, Identifier, StrictModel, Text, canonical, digest
 from .trust import SignedEnvelope, TrustRegistry
 from .flywheel_checkpoint import DurableCheckpoint
 
 KEY = "@flywheel-costs:v1"
 CATEGORIES = {"model", "tools", "compute", "storage", "network", "human", "acceptance", "correction", "overhead"}
+MAX_OPERATION_CACHE = 128
+MAX_PAYMENT_CACHE = 32
+CHARGE_COMPLETION_BYTES = 40_960
 
 
 def accepted_native_delivery(journal: Journal, mission_id: str, cx: Any = None) -> dict[str, Any]:
@@ -70,6 +73,18 @@ class Payment(StrictModel):
     evidence_digest: Digest
 
 
+class CompletenessSeal(StrictModel):
+    mission_id: Identifier
+    evidence_digest: Digest
+    categories: list[str] = Field(min_length=9, max_length=9)
+
+    @model_validator(mode="after")
+    def exact_categories(self) -> CompletenessSeal:
+        if set(self.categories) != CATEGORIES:
+            raise ValueError("completeness requires exactly every resource category")
+        return self
+
+
 class CostLedger:
     """Use the existing atomic journal and configured accounting authority."""
 
@@ -118,6 +133,85 @@ class CostLedger:
         if mission_id in seals:
             raise Conflict("sealed cost records cannot acquire another invocation or activity")
 
+    @staticmethod
+    def _nodes(value: Any) -> int:
+        pending = [value]
+        count = 0
+        while pending:
+            item = pending.pop()
+            count += 1
+            if isinstance(item, dict):
+                pending.extend(item.values())
+            elif isinstance(item, list):
+                pending.extend(item)
+        return count
+
+    def _persist(self, cx: Any, state: dict[str, Any]) -> None:
+        """Reserve worst-case bounded reconciliation before any new paid work."""
+        rows = list(state["charges"].values())
+        seals = {"A": state["seals"], "B": state.get("reuse_seals", {}), "C": state.get("investment_seals", {})}
+        groups: dict[tuple[str, str], set[str]] = {}
+        for row in rows:
+            if row["mission_id"] not in seals[row["bucket"]]:
+                groups.setdefault((row["mission_id"], row["bucket"]), set()).add(row["category"])
+        unknown = sum(row["accrued_micro_usd"] is None for row in rows)
+        missing = sum(len(CATEGORIES - categories) for categories in groups.values())
+        operations, payments = state["operations"], state.get("payments", {})
+        # Working caches always have this finite budget, regardless of current fill.
+        reserve_bytes = (
+            16_384
+            + CHARGE_COMPLETION_BYTES * (unknown + missing)
+            + 4096 * len(groups)
+            + 32_768
+            - len(canonical(operations))
+            + 262_144
+            - len(canonical(payments))
+        )
+        reserve_nodes = (
+            512 + 128 * (unknown + missing + len(groups)) + 129 - self._nodes(operations) + 2048 - self._nodes(payments)
+        )
+        for row in rows:
+            if row["accrued_micro_usd"] is None or row["paid_micro_usd"] < row["accrued_micro_usd"]:
+                summary = {"paid_micro_usd": row["paid_micro_usd"]}
+                if "payment_count" in row:
+                    summary["payment_count"] = row["payment_count"]
+                reserve_bytes += 128 - len(canonical(summary))
+                reserve_nodes += 2 - int("payment_count" in row)
+        if (
+            len(operations) > MAX_OPERATION_CACHE
+            or len(payments) > MAX_PAYMENT_CACHE
+            or reserve_bytes < 0
+            or reserve_nodes < 0
+        ):
+            raise Conflict("accounting working caches require durable compaction")
+        state["reserved_capacity_bytes"], state["reserved_capacity_nodes"] = reserve_bytes, reserve_nodes
+        if (
+            len(canonical(state)) + reserve_bytes > MAX_JSON_BYTES
+            or self._nodes(state) + reserve_nodes > MAX_JSON_NODES
+        ):
+            raise Conflict("accounting capacity preserves outstanding reconciliation and completeness reserves")
+        self.journal.append(cx, KEY, state)
+
+    def _remember_operation(
+        self, cx: Any, state: dict[str, Any], operation: str, binding: str, signed: SignedEnvelope
+    ) -> None:
+        self.journal.append(
+            cx, "@flywheel-accounting-operation:" + operation, {"binding": binding, "signed": signed.model_dump()}
+        )
+        operations = state["operations"]
+        operations[operation] = binding
+        while len(operations) > MAX_OPERATION_CACHE:
+            old = next(iter(operations))
+            old_binding = operations.pop(old)
+            try:
+                self.journal.latest("@flywheel-accounting-operation:" + old, cx)
+            except KeyError:
+                self.journal.append(cx, "@flywheel-accounting-operation:" + old, {"binding": old_binding})
+
+    def _remember_payment(self, cx: Any, payment_id: str, payment: dict[str, Any]) -> None:
+        self.journal.append(cx, "@flywheel-payment:" + payment_id, payment)
+        self.journal.append(cx, "@flywheel-payment-evidence:" + payment["evidence_digest"], {"payment_id": payment_id})
+
     def apply(self, signed: SignedEnvelope) -> dict[str, Any]:
         signed = SignedEnvelope.model_validate(signed.model_dump())
         payload = self.trust.verify(signed, "flywheel-cost-command", "accounting")
@@ -135,12 +229,15 @@ class CostLedger:
         with self.journal.transaction() as cx:
             state = self.snapshot(cx)
             old = state["operations"].get(operation_id)
+            if old is None:
+                try:
+                    old = self.journal.latest("@flywheel-accounting-operation:" + operation_id, cx)["binding"]
+                except KeyError:
+                    pass
             if old:
                 if old != binding:
                     raise Conflict("accounting operation identity already has different terms")
                 return state
-            if len(state["operations"]) >= 4096:
-                raise Conflict("accounting capacity reached; preserve history")
             action, record = payload["action"], payload["record"]
             if action == "charge":
                 charge = Charge.model_validate(record)
@@ -173,14 +270,29 @@ class CostLedger:
                     row["evidence_digest"] == payment.evidence_digest for row in payments.values()
                 ):
                     raise Conflict("payment identity or allocated evidence already reconciled")
+                for key in (
+                    "@flywheel-payment:" + payment.payment_id,
+                    "@flywheel-payment-evidence:" + payment.evidence_digest,
+                ):
+                    try:
+                        self.journal.latest(key, cx)
+                    except KeyError:
+                        pass
+                    else:
+                        raise Conflict("payment identity or allocated evidence already reconciled")
                 charge_record = state["charges"].get(payment.activity_id)
                 if charge_record is None or charge_record["accrued_micro_usd"] is None:
                     raise Conflict("payment reconciliation requires an existing known accrual")
                 if payment.amount_micro_usd > charge_record["accrued_micro_usd"] - charge_record["paid_micro_usd"]:
                     raise ValueError("payment exceeds the remaining accrued liability")
                 charge_record["paid_micro_usd"] += payment.amount_micro_usd
-                charge_record.setdefault("payment_ids", []).append(payment.payment_id)
+                old_ids = charge_record.pop("payment_ids", [])
+                charge_record["payment_count"] = charge_record.get("payment_count", len(old_ids)) + 1
                 payments[payment.payment_id] = {**payment.model_dump(), "signed": signed.model_dump()}
+                self._remember_payment(cx, payment.payment_id, payments[payment.payment_id])
+                while len(payments) > MAX_PAYMENT_CACHE:
+                    old_payment = next(iter(payments))
+                    self._remember_payment(cx, old_payment, payments.pop(old_payment))
             elif action in {"capital", "collection", "offer", "invoice", "pending"}:
                 if not isinstance(record, dict) or set(record) != {
                     "record_id",
@@ -205,12 +317,7 @@ class CostLedger:
                     raise ValueError("reserve requires nonnegative integer USD micro-units")
                 state["reserve_micro_usd"] = record
             elif action in {"seal", "seal-reuse", "seal-retention", "seal-investment"}:
-                if (
-                    not isinstance(record, dict)
-                    or set(record) != {"mission_id", "evidence_digest", "categories"}
-                    or set(record["categories"]) != CATEGORIES
-                ):
-                    raise ValueError("complete delivery seal must cover every resource category")
+                record = CompletenessSeal.model_validate(record).model_dump()
                 mission = record["mission_id"]
                 seals = (
                     state["seals"]
@@ -230,8 +337,8 @@ class CostLedger:
                 seals[mission] = {**record, "signed": signed.model_dump()}
             else:
                 raise ValueError("unsupported accounting action")
-            state["operations"][operation_id] = binding
-            self.journal.append(cx, KEY, state)
+            self._remember_operation(cx, state, operation_id, binding, signed)
+            self._persist(cx, state)
             if self.checkpoint is not None:
                 self.checkpoint.advance(self.journal, cx)
             return state
