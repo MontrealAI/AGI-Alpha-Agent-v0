@@ -1,30 +1,46 @@
 {
-  "schema": "released-native-canary-preconfirmation-addendum/v1",
-  "frozen_at": "2026-10-27T23:09:52.976763+00:00",
+  "schema": "released-native-canary-preconfirmation-addendum/v2",
+  "frozen_at": "2026-10-27T23:17:04.294799+00:00",
   "original_freeze_sha256": "f3a398ca79219221c77e3adb35cd1a77e1b3f2883072e31ffb79bd84d067fa2e",
-  "status": "Before release confirmation; neither frozen mission has been executed",
+  "superseded_plan": {
+    "commit": "4609172f4db06fa557d5727ea2b2fa3a920b8385",
+    "sha256": "7ab61a83f34819f821a9c2041952690cefe6c1fe00c3305df07aff7a7ddbc6e3",
+    "executed": false,
+    "source_inspection_error": "Engine.execute first calls Journal.transition(require_ready=True) outside its execution try block. A pre-execution pause refuses with the mission still queued, so the previous planned recovery sequence was invalid."
+  },
+  "status": "Before released confirmation; neither original frozen mission has been executed",
   "unchanged": [
     "Both original mission files and input hashes",
     "All original acceptance criteria, falsifiers and limits",
     "At most20 child processes,30seconds each,120aggregate seconds,USD0 paid API and0modelcalls",
-    "Local owned test identity only; no ENS, customer or production authority"
+    "Existing native CLI only; local owned test identity; no ENS, customer or production authority"
   ],
-  "clarification": "The existing public native Journal.submit API stages the second frozen mission in queued state. The CLI then pauses, attempts execution (which must fail and persist that failure), resumes, explicitly recovers the same mission and executes it. This permits a deterministic interruption/recovery check without editing the database, monkeypatching execution, racing a fast process or introducing a new runtime. All other actions use the existing CLI.",
+  "clarification": "Initialize the existing local runtime with max_evaluations20 and all other offline defaults. The unchanged first mission has population20 and generations12, so the existing evaluator refuses further work when its declared budget is exhausted, retaining a failed attempt. Pause and confirm execute refuses without changing that failed state. While paused configure the existing normal max_evaluations10000, resume, explicitly recover the same request and execute its unchanged inputs. Accept and export only after independent original-constraint checks. Then deliver the distinct second frozen mission. No database edits, monkeypatching, process race, new runtime or weakened acceptance. Both failure and corrected execution remain in original signed history.",
+  "configurations": {
+    "initial": {
+      "max_evaluations": 20
+    },
+    "recovery": {
+      "max_evaluations": 10000
+    },
+    "llm_url": null,
+    "allow_code_execution": false
+  },
   "planned_child_processes": [
-    "init",
-    "run allocation",
-    "review allocation",
-    "export allocation",
-    "verify allocation export",
-    "duplicate original allocation request",
-    "existing Journal.submit for schedule",
+    "init with bounded initial config",
+    "run original allocation request (expected budget failure)",
     "pause",
-    "execute schedule while paused (expected refusal)",
-    "show failed schedule",
+    "execute same failed allocation while paused (expected refusal)",
+    "configure normal existing evaluation budget while paused",
     "resume",
-    "recover same schedule",
-    "execute recovered schedule",
-    "review schedule",
+    "recover same allocation request",
+    "execute unchanged allocation",
+    "review allocation after independent checks",
+    "export allocation",
+    "verify allocation export against init public identity",
+    "duplicate original allocation request",
+    "run original schedule",
+    "review schedule after independent checks",
     "export schedule",
     "verify schedule export",
     "verify altered export (expected refusal)",
@@ -32,5 +48,5 @@
     "verify journal",
     "pause final"
   ],
-  "claims": "Software canaries only. They do not establish frontier reasoning, a new offering, customer acceptance, complete monetary profit or retained Alpha. The same-offering access-packet economics remain HOLD."
+  "claims": "Software canaries only. A configured budget interruption is not a process-kill or network-failure test. No frontier reasoning, new offering, customer acceptance, complete monetary profit or retained Alpha follows. Same-offering access-packet economics remain HOLD."
 }
