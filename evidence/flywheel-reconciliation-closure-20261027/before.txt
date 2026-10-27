@@ -1,0 +1,436 @@
+FFFFFF.....F.                                                            [100%]
+=================================== FAILURES ===================================
+_ test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[False-qualification] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb88f3bec00>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88fa4a5d0>, ...}, ...}
+cause = 'qualification', legacy = False
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+        with pytest.raises(Conflict, match="already attempted"):
+>           executor.run(mission, profile, permit)
+
+tests/runtime/test_flywheel_reconciliation_closure.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:617: in run
+    self.costs.require_open(costs, mission.mission_id, permit.bucket)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+state = {'capital': {'specialist-fictional-funding': {'amount_micro_usd': 10000000, 'evidence_digest': '0000000000000000000000...421', 'charge/placement-origin/A/human': '93c824df87ca40a7d6cbe12167556590e85ca72cd91e852c477df9b8e0316864', ...}, ...}
+mission_id = 'placement-origin', bucket = 'A'
+
+    @staticmethod
+    def require_open(state: dict[str, Any], mission_id: str, bucket: str) -> None:
+        seals = (
+            state["seals"]
+            if bucket == "A"
+            else state.get("reuse_seals", {})
+            if bucket == "B"
+            else state.get("investment_seals", {})
+        )
+        if mission_id in seals:
+>           raise Conflict("sealed cost records cannot acquire another invocation or activity")
+E           alpha_factory_v1.core.runtime.store.Conflict: sealed cost records cannot acquire another invocation or activity
+
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:135: Conflict
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb88f3bec00>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88fa4a5d0>, ...}, ...}
+cause = 'qualification', legacy = False
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+>       with pytest.raises(Conflict, match="already attempted"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'already attempted'
+E        Input: 'sealed cost records cannot acquire another invocation or activity'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:85: AssertionError
+_ test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[False-component] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb88f3be3c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb89151c450>, ...}, ...}
+cause = 'component', legacy = False
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+        with pytest.raises(Conflict, match="already attempted"):
+>           executor.run(mission, profile, permit)
+
+tests/runtime/test_flywheel_reconciliation_closure.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:617: in run
+    self.costs.require_open(costs, mission.mission_id, permit.bucket)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+state = {'capital': {'specialist-fictional-funding': {'amount_micro_usd': 10000000, 'evidence_digest': '0000000000000000000000...94c', 'charge/placement-origin/A/human': '78f6766e97a4e1dcdf010d4781c473690c47729e691efe984eb53958d02a815e', ...}, ...}
+mission_id = 'placement-origin', bucket = 'A'
+
+    @staticmethod
+    def require_open(state: dict[str, Any], mission_id: str, bucket: str) -> None:
+        seals = (
+            state["seals"]
+            if bucket == "A"
+            else state.get("reuse_seals", {})
+            if bucket == "B"
+            else state.get("investment_seals", {})
+        )
+        if mission_id in seals:
+>           raise Conflict("sealed cost records cannot acquire another invocation or activity")
+E           alpha_factory_v1.core.runtime.store.Conflict: sealed cost records cannot acquire another invocation or activity
+
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:135: Conflict
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb88f3be3c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb89151c450>, ...}, ...}
+cause = 'component', legacy = False
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+>       with pytest.raises(Conflict, match="already attempted"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'already attempted'
+E        Input: 'sealed cost records cannot acquire another invocation or activity'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:85: AssertionError
+_ test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[True-qualification] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb8914b1ac0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88fa41950>, ...}, ...}
+cause = 'qualification', legacy = True
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+        with pytest.raises(Conflict, match="already attempted"):
+>           executor.run(mission, profile, permit)
+
+tests/runtime/test_flywheel_reconciliation_closure.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:617: in run
+    self.costs.require_open(costs, mission.mission_id, permit.bucket)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+state = {'capital': {'specialist-fictional-funding': {'amount_micro_usd': 10000000, 'evidence_digest': '0000000000000000000000...679', 'charge/placement-origin/A/human': '74d03456ce0dbbed2d211ad8af408ad81844d3252dace33069b71bdb60a96e98', ...}, ...}
+mission_id = 'placement-origin', bucket = 'A'
+
+    @staticmethod
+    def require_open(state: dict[str, Any], mission_id: str, bucket: str) -> None:
+        seals = (
+            state["seals"]
+            if bucket == "A"
+            else state.get("reuse_seals", {})
+            if bucket == "B"
+            else state.get("investment_seals", {})
+        )
+        if mission_id in seals:
+>           raise Conflict("sealed cost records cannot acquire another invocation or activity")
+E           alpha_factory_v1.core.runtime.store.Conflict: sealed cost records cannot acquire another invocation or activity
+
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:135: Conflict
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb8914b1ac0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88fa41950>, ...}, ...}
+cause = 'qualification', legacy = True
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+>       with pytest.raises(Conflict, match="already attempted"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'already attempted'
+E        Input: 'sealed cost records cannot acquire another invocation or activity'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:85: AssertionError
+_ test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[True-component] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb891619c40>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88f37bf50>, ...}, ...}
+cause = 'component', legacy = True
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+        with pytest.raises(Conflict, match="already attempted"):
+>           executor.run(mission, profile, permit)
+
+tests/runtime/test_flywheel_reconciliation_closure.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:617: in run
+    self.costs.require_open(costs, mission.mission_id, permit.bucket)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+state = {'capital': {'specialist-fictional-funding': {'amount_micro_usd': 10000000, 'evidence_digest': '0000000000000000000000...38b', 'charge/placement-origin/A/human': '38fdba3b5befdbf1b944dac7e6518664967d16207c9e19d78c607e59979ac72e', ...}, ...}
+mission_id = 'placement-origin', bucket = 'A'
+
+    @staticmethod
+    def require_open(state: dict[str, Any], mission_id: str, bucket: str) -> None:
+        seals = (
+            state["seals"]
+            if bucket == "A"
+            else state.get("reuse_seals", {})
+            if bucket == "B"
+            else state.get("investment_seals", {})
+        )
+        if mission_id in seals:
+>           raise Conflict("sealed cost records cannot acquire another invocation or activity")
+E           alpha_factory_v1.core.runtime.store.Conflict: sealed cost records cannot acquire another invocation or activity
+
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:135: Conflict
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb891619c40>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88f37bf50>, ...}, ...}
+cause = 'component', legacy = True
+
+    @pytest.mark.parametrize("cause", ["qualification", "component"])
+    @pytest.mark.parametrize("legacy", [False, True])
+    def test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover(
+        setup: dict[str, Any], cause: str, legacy: bool
+    ) -> None:
+        executor, mission, profile, permit = caught(setup, cause, legacy)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        before = setup["costs"].snapshot()
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.apply(reconciliation(setup, mission if legacy else None))
+        assert result["status"] == "reconciled-failure" and result["authority_restored"] is False
+        assert result["execution_digest"] is None
+        assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+        pause(setup, False)
+>       with pytest.raises(Conflict, match="already attempted"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'already attempted'
+E        Input: 'sealed cost records cannot acquire another invocation or activity'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:85: AssertionError
+______ test_closure_and_capacity_release_roll_back_together[launch-write] ______
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb8914b8ce0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88fe459d0>, ...}, ...}
+fault = 'launch-write'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fb8914ba660>
+
+    @pytest.mark.parametrize("fault", ["launch-write", "checkpoint"])
+    def test_closure_and_capacity_release_roll_back_together(
+        setup: dict[str, Any], fault: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        _, mission, _, _ = caught(setup)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        signed = reconciliation(setup)
+        original = setup["journal"].verify()
+        append = setup["journal"].append
+    
+        def fail(*args: Any) -> None:
+            raise RuntimeError("injected durable-finalization failure")
+    
+        def fail_launch(cx: Any, identity: str, value: dict[str, Any]) -> dict[str, Any]:
+            if identity == key("launch", "placement-origin"):
+                fail()
+            return append(cx, identity, value)
+    
+        with monkeypatch.context() as context:
+            if fault == "launch-write":
+                context.setattr(setup["journal"], "append", fail_launch)
+            else:
+                context.setattr(setup["service"].checkpoint, "advance", fail)
+            with pytest.raises(RuntimeError, match="durable-finalization"):
+                Enterprise(setup["service"]).apply(signed)
+        assert setup["journal"].verify() == original
+        assert setup["journal"].latest(key("active", "capacity"))["reservations"]
+        with pytest.raises(KeyError):
+            setup["journal"].latest(operation_key("placement-origin"))
+        result = Enterprise(setup["service"]).apply(signed)
+>       assert result["closure_digest"] == setup["journal"].latest(operation_key("placement-origin"))["digest"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'closure_digest'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:138: KeyError
+_______ test_closure_and_capacity_release_roll_back_together[checkpoint] _______
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb891618aa0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88f37bab0>, ...}, ...}
+fault = 'checkpoint'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fb8918503b0>
+
+    @pytest.mark.parametrize("fault", ["launch-write", "checkpoint"])
+    def test_closure_and_capacity_release_roll_back_together(
+        setup: dict[str, Any], fault: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        _, mission, _, _ = caught(setup)
+        s.seal(setup, mission.mission_id, "A")
+        pause(setup)
+        signed = reconciliation(setup)
+        original = setup["journal"].verify()
+        append = setup["journal"].append
+    
+        def fail(*args: Any) -> None:
+            raise RuntimeError("injected durable-finalization failure")
+    
+        def fail_launch(cx: Any, identity: str, value: dict[str, Any]) -> dict[str, Any]:
+            if identity == key("launch", "placement-origin"):
+                fail()
+            return append(cx, identity, value)
+    
+        with monkeypatch.context() as context:
+            if fault == "launch-write":
+                context.setattr(setup["journal"], "append", fail_launch)
+            else:
+                context.setattr(setup["service"].checkpoint, "advance", fail)
+            with pytest.raises(RuntimeError, match="durable-finalization"):
+                Enterprise(setup["service"]).apply(signed)
+        assert setup["journal"].verify() == original
+        assert setup["journal"].latest(key("active", "capacity"))["reservations"]
+        with pytest.raises(KeyError):
+            setup["journal"].latest(operation_key("placement-origin"))
+        result = Enterprise(setup["service"]).apply(signed)
+>       assert result["closure_digest"] == setup["journal"].latest(operation_key("placement-origin"))["digest"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'closure_digest'
+
+tests/runtime/test_flywheel_reconciliation_closure.py:138: KeyError
+_ test_unstarted_closure_preserves_reconciliation_boundaries[execution-charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb88f3bd940>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb88f37bbd0>, ...}, ...}
+boundary = 'execution-charge'
+
+    @pytest.mark.parametrize("boundary", ["unknown", "unpaused", "stale", "wrong-role", "attempting", "execution-charge"])
+    def test_unstarted_closure_preserves_reconciliation_boundaries(setup: dict[str, Any], boundary: str) -> None:
+        _, mission, _, _ = caught(setup)
+        if boundary == "attempting":
+            with setup["journal"].transaction() as cx:
+                value = setup["journal"].document(setup["journal"].latest(key("launch", "placement-origin"), cx))
+                value["status"] = "attempting-or-uncertain"
+                setup["journal"].append(cx, key("launch", "placement-origin"), value)
+                setup["service"].checkpoint.advance(setup["journal"], cx)
+        if boundary == "execution-charge":
+            f.account(
+                setup,
+                "charge",
+                {
+                    "activity_id": "execution/placement-origin",
+                    "mission_id": mission.mission_id,
+                    "bucket": "A",
+                    "category": "model",
+                    "accrued_micro_usd": 1,
+                    "paid_micro_usd": 0,
+                    "basis": "attested",
+                    "evidence_digest": f.ZERO,
+                    "note": "FICTIONAL inconsistent reservation/receipt; requires investigation",
+                },
+                "inconsistent-reservation",
+            )
+        if boundary != "unknown":
+            s.seal(setup, mission.mission_id, "A")
+        if boundary != "unpaused":
+            pause(setup)
+        signed = reconciliation(
+            setup, principal="producer" if boundary == "wrong-role" else "controller", stale=boundary == "stale"
+        )
+        before = setup["journal"].verify()
+>       with pytest.raises((Conflict, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'alpha_factory_v1.core.runtime.store.Conflict'>, <class 'ValueError'>)
+
+tests/runtime/test_flywheel_reconciliation_closure.py:175: Failed
+- generated xml file: /workspace/scratch/c3a15d45aee2/flywheel-closure-checks/before.xml -
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[False-qualification]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[False-component]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[True-qualification]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_cancelled_preflight_permit_never_becomes_usable_after_conditions_recover[True-component]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_closure_and_capacity_release_roll_back_together[launch-write]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_closure_and_capacity_release_roll_back_together[checkpoint]
+FAILED tests/runtime/test_flywheel_reconciliation_closure.py::test_unstarted_closure_preserves_reconciliation_boundaries[execution-charge]
+7 failed, 6 passed in 7.64s

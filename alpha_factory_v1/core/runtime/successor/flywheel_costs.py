@@ -15,6 +15,7 @@ from ..store import Conflict, Journal, digest as runtime_digest
 from .protocol import MAX_JSON_BYTES, MAX_JSON_NODES, Digest, Identifier, StrictModel, Text, canonical, digest
 from .trust import SignedEnvelope, TrustRegistry
 from .flywheel_checkpoint import DurableCheckpoint
+from .flywheel_customer import MODES, CustomerDeposit, CustomerEarning, CustomerRefund, balances, summarize
 from .transformation_library import _is_exact_type
 
 KEY = "@flywheel-costs:v1"
@@ -93,6 +94,7 @@ class CostLedger:
         self.journal, self.trust = journal, trust
         self.checkpoint: DurableCheckpoint | None = None
         self.custody_check: Callable[[], None] | None = None
+        self.general_delivery_check: Callable[[str, Any], dict[str, Any]] | None = None
         with journal.transaction() as cx:
             try:
                 journal.latest(KEY, cx)
@@ -161,6 +163,7 @@ class CostLedger:
         # Working caches always have this finite budget, regardless of current fill.
         reserve_bytes = (
             16_384
+            + 256 * len(state.get("customer_deposits", {}))
             + CHARGE_COMPLETION_BYTES * (unknown + missing)
             + 4096 * len(groups)
             + 32_768
@@ -213,6 +216,142 @@ class CostLedger:
         self.journal.append(cx, "@flywheel-payment:" + payment_id, payment)
         self.journal.append(cx, "@flywheel-payment-evidence:" + payment["evidence_digest"], {"payment_id": payment_id})
 
+    def _customer_evidence_unused(self, state: dict[str, Any], evidence: str, cx: Any) -> None:
+        if any(row["evidence_digest"] == evidence for kind in ("capital", "receipts") for row in state[kind].values()):
+            raise Conflict("incoming funding evidence already allocated")
+        for current in state["charges"].values():
+            for version in (current, current.get("original", {})):
+                if version.get("paid_micro_usd", 0) > 0 and version["evidence_digest"] == evidence:
+                    raise Conflict("paid cost evidence already allocated")
+        for key in ("@flywheel-customer-evidence:" + evidence, "@flywheel-payment-evidence:" + evidence):
+            try:
+                self.journal.latest(key, cx)
+            except KeyError:
+                continue
+            raise Conflict("customer or cost payment evidence already allocated")
+
+    def _reserve_paid_cost_evidence(self, record: dict[str, Any], cx: Any) -> None:
+        """Check customer allocation before preserving a paid cost version in this ledger."""
+        if record["paid_micro_usd"] == 0:
+            return
+        try:
+            self.journal.latest("@flywheel-customer-evidence:" + record["evidence_digest"], cx)
+        except KeyError:
+            return
+        raise Conflict("customer payment evidence already allocated")
+
+    def _customer(self, state: dict[str, Any], action: str, record: Any, signed: SignedEnvelope, cx: Any) -> None:
+        deposits = state.setdefault("customer_deposits", {})
+        if action == "customer-deposit":
+            terms = CustomerDeposit.model_validate(record)
+            identity = terms.receipt_id
+            try:
+                self.journal.latest("@flywheel-customer-event:" + identity, cx)
+            except KeyError:
+                pass
+            else:
+                raise Conflict("customer event identity already allocated")
+            if identity in deposits or any(identity in state[kind] for kind in ("capital", "receipts", "offers")):
+                raise Conflict("customer receipt identity already allocated")
+            if len(deposits) >= 256:
+                raise Conflict("bounded customer receipt capacity reached")
+            self._customer_evidence_unused(state, terms.evidence_digest, cx)
+            same_mission = [row["terms"] for row in deposits.values() if row["terms"]["mission_id"] == terms.mission_id]
+            if any(row["mode"] != terms.mode for row in same_mission):
+                raise ValueError("customer evidence mode cannot change within a mission")
+            services = [row for row in same_mission if row["purpose"] == "service"]
+            if terms.purpose == "service" and (
+                any(row["service_price_micro_usd"] != terms.service_price_micro_usd for row in services)
+                or sum(row["amount_micro_usd"] for row in services) + terms.amount_micro_usd
+                > terms.service_price_micro_usd
+            ):
+                raise ValueError("mission deposits exceed or change the frozen total service price")
+            deposits[identity] = {
+                "terms": terms.model_dump(),
+                "earned_micro_usd": 0,
+                "refunded_micro_usd": 0,
+                "earned_refund_micro_usd": 0,
+                "pending_unearned_refund_micro_usd": 0,
+                "pending_earned_refund_micro_usd": 0,
+                "pending_pass-through_refund_micro_usd": 0,
+                "signed": signed.model_dump(),
+            }
+            evidence = terms.evidence_digest
+        else:
+            event = (
+                CustomerEarning.model_validate(record)
+                if action == "customer-earn"
+                else CustomerRefund.model_validate(record)
+            )
+            identity = event.event_id
+            try:
+                self.journal.latest("@flywheel-customer-event:" + identity, cx)
+            except KeyError:
+                pass
+            else:
+                raise Conflict("customer event identity already allocated")
+            if event.receipt_id not in deposits:
+                raise ValueError("customer event requires its exact recorded receipt")
+            row = deposits[event.receipt_id]
+            amounts = balances(row)
+            evidence = None
+            if isinstance(event, CustomerEarning):
+                if row["terms"]["purpose"] != "service" or event.amount_micro_usd > (
+                    amounts["unearned_service"] - row.get("pending_unearned_refund_micro_usd", 0)
+                ):
+                    raise ValueError("earning requires sufficient unearned service funds; custody is never revenue")
+                mission_id = row["terms"]["mission_id"]
+                if event.delivery_kind == "native":
+                    delivery = accepted_native_delivery(self.journal, mission_id, cx)
+                    accepted_digest = digest("native-delivery-review", delivery["review"])
+                    if row["terms"]["mode"] == "live":
+                        raise ValueError("native live commercial evidence mode is not qualified by this adapter")
+                else:
+                    if self.general_delivery_check is None or event.operation_id is None:
+                        raise ValueError("general earning requires the existing protected acceptance service")
+                    delivery = self.general_delivery_check(event.operation_id, cx)
+                    if delivery["mission"]["mission_id"] != mission_id:
+                        raise ValueError("customer funds and accepted execution identify different missions")
+                    from .flywheel_learning import ACCEPTANCE_KEY
+
+                    accepted_digest = self.journal.latest(ACCEPTANCE_KEY + event.operation_id, cx)["digest"]
+                    if row["terms"]["mode"] == "live" and delivery["mission"]["mode"] != "live":
+                        raise ValueError("simulation or hybrid acceptance cannot earn live service revenue")
+                if (
+                    delivery["digest"] != event.execution_record_digest
+                    or accepted_digest != event.acceptance_record_digest
+                ):
+                    raise Conflict("earning requires the exact current delivery and acceptance identities")
+                row["earned_micro_usd"] += event.amount_micro_usd
+            else:
+                pending_key = "pending_" + event.allocation + "_refund_micro_usd"
+                pending = row.get(pending_key, 0)
+                capacity = {
+                    "unearned": amounts["unearned_service"],
+                    "earned": amounts["earned_revenue"],
+                    "pass-through": amounts["pass_through_custody"],
+                }[event.allocation]
+                if action == "customer-refund-due" and event.allocation != "earned":
+                    capacity -= pending
+                elif action == "customer-refund" and event.allocation == "earned":
+                    capacity += pending
+                if event.amount_micro_usd > capacity:
+                    raise ValueError("refund exceeds its remaining allocation")
+                self._customer_evidence_unused(state, event.evidence_digest, cx)
+                if action == "customer-refund-due":
+                    row[pending_key] = pending + event.amount_micro_usd
+                else:
+                    row[pending_key] = max(0, pending - event.amount_micro_usd)
+                    row["refunded_micro_usd"] += event.amount_micro_usd
+                    if event.allocation == "earned":
+                        row["earned_refund_micro_usd"] += event.amount_micro_usd
+                evidence = event.evidence_digest
+        self.journal.append(
+            cx, "@flywheel-customer-event:" + identity, {"action": action, "signed": signed.model_dump()}
+        )
+        if evidence is not None:
+            self.journal.append(cx, "@flywheel-customer-evidence:" + evidence, {"event_id": identity})
+
     def apply(self, signed: SignedEnvelope) -> dict[str, Any]:
         signed = SignedEnvelope.model_validate(signed.model_dump())
         payload = self.trust.verify(signed, "flywheel-cost-command", "accounting")
@@ -249,6 +388,7 @@ class CostLedger:
                     raise Conflict("sealed delivery cannot acquire an unreviewed additional charge")
                 if charge.bucket == "B" and charge.mission_id in state.get("reuse_seals", {}):
                     raise Conflict("sealed incremental-cost record cannot acquire additional charges")
+                self._reserve_paid_cost_evidence(charge.model_dump(), cx)
                 state["charges"][charge.activity_id] = {**charge.model_dump(), "signed": signed.model_dump()}
             elif action == "resolve":
                 charge = Charge.model_validate(record)
@@ -259,13 +399,23 @@ class CostLedger:
                     raise ValueError("reconciliation cannot move an activity between records or buckets")
                 if charge.paid_micro_usd < previous["paid_micro_usd"]:
                     raise ValueError("reconciliation cannot reverse an already recorded payment")
+                self._reserve_paid_cost_evidence(previous, cx)
+                self._reserve_paid_cost_evidence(charge.model_dump(), cx)
                 state["charges"][charge.activity_id] = {
                     **charge.model_dump(),
                     "signed": signed.model_dump(),
                     "original": previous,
                 }
+            elif action in {"customer-deposit", "customer-earn", "customer-refund-due", "customer-refund"}:
+                self._customer(state, action, record, signed, cx)
             elif action == "payment":
                 payment = Payment.model_validate(record)
+                try:
+                    self.journal.latest("@flywheel-customer-evidence:" + payment.evidence_digest, cx)
+                except KeyError:
+                    pass
+                else:
+                    raise Conflict("customer payment evidence already allocated")
                 payments = state.setdefault("payments", {})
                 if payment.payment_id in payments or any(
                     row["evidence_digest"] == payment.evidence_digest for row in payments.values()
@@ -303,6 +453,15 @@ class CostLedger:
                 }:
                     raise ValueError("money records require exact identity, mission, amount and evidence")
                 IdentifierModel.model_validate(record)
+                if record["record_id"] in state.get("customer_deposits", {}):
+                    raise Conflict("customer receipt identity already allocated")
+                if action in {"capital", "collection"}:
+                    try:
+                        self.journal.latest("@flywheel-customer-evidence:" + record["evidence_digest"], cx)
+                    except KeyError:
+                        pass
+                    else:
+                        raise Conflict("customer payment evidence already allocated")
                 target = "capital" if action == "capital" else "receipts" if action == "collection" else "offers"
                 if any(record["record_id"] in state[key] for key in ("capital", "receipts", "offers")):
                     raise Conflict("money record identity already used")
@@ -376,6 +535,23 @@ class CostLedger:
                 and all(row["accrued_micro_usd"] is not None for row in selected)
             )
         complete = bool(present) and all(bucket_complete[bucket] for bucket in present)
+        customer_rows = list(state.get("customer_deposits", {}).values())
+        customer_modes = {
+            mode: summarize(
+                [
+                    r
+                    for r in customer_rows
+                    if r["terms"]["mode"] == mode and (mission_id is None or r["terms"]["mission_id"] == mission_id)
+                ]
+            )
+            for mode in MODES
+        }
+        live_customer = summarize([r for r in customer_rows if r["terms"]["mode"] == "live"])
+        legacy_collected = collected
+        collected += customer_modes["live"]["earned_revenue"]
+        customer_cash = live_customer["net_cash"]
+        customer_obligations = live_customer["customer_obligations"]
+        obligations += customer_obligations
         return {
             "currency": "USD",
             "unit": "micro_usd",
@@ -383,13 +559,18 @@ class CostLedger:
             "collected_revenue": collected,
             "delivery_profit": collected - totals["A"] if bucket_complete["A"] else None,
             "complete_cost_profit": collected - sum(totals.values()) if complete else None,
-            "cash": capital + all_collected - paid,
+            "cash": capital + all_collected + customer_cash - paid,
             "obligations": None if unknown else obligations,
             "known_obligations": obligations,
             "reserve": state["reserve_micro_usd"],
             "available_funds": None
             if unknown
-            else capital + all_collected - paid - obligations - state["reserve_micro_usd"],
+            else capital + all_collected + customer_cash - paid - obligations - state["reserve_micro_usd"],
+            "legacy_attested_collections": legacy_collected,
+            "accepted_service_revenue": customer_modes["live"]["earned_revenue"],
+            "customer_funds_by_mode": customer_modes,
+            "customer_obligations": customer_obligations,
+            "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
             "complete": complete,
             "bucket_complete": bucket_complete,
             "unknown_costs": unknown,

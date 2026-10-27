@@ -1,0 +1,50 @@
+F
+=================================== FAILURES ===================================
+____ test_actual_forms_exact_units_keyboard_localization_and_accessibility _____
+
+native = (<alpha_factory_v1.core.runtime.store.Journal object at 0x7f22e7bb1cd0>, 'http://127.0.0.1:44163', '6PisrMZ6cmpAepy_bafLbmK14ZWGQFWrMqdbQQOMaf8')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-204/test_actual_forms_exact_units_0')
+
+    def test_actual_forms_exact_units_keyboard_localization_and_accessibility(
+        native: tuple[Journal, str, str], tmp_path: Path
+    ) -> None:
+>       axe = (ROOT / "tests/browser/node_modules/axe-core/axe.min.js").read_text(encoding="utf-8")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_budget_browser.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/workspace/scratch/8fb3cbfc1a70/AGI-Alpha-Agent-v0/tests/browser/node_modules/axe-core/axe.min.js')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/8fb3cbfc1a70/AGI-Alpha-Agent-v0/tests/browser/node_modules/axe-core/axe.min.js'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=============================== warnings summary ===============================
+tests/runtime/test_budget_browser.py::test_actual_forms_exact_units_keyboard_localization_and_accessibility
+  /root/.local/lib/python3.12/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/runtime/test_budget_browser.py::test_actual_forms_exact_units_keyboard_localization_and_accessibility
+  /root/.local/lib/python3.12/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+    from websockets.server import WebSocketServerProtocol
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/runtime/test_budget_browser.py::test_actual_forms_exact_units_keyboard_localization_and_accessibility
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 warnings in 2.02s

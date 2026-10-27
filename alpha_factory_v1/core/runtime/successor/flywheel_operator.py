@@ -16,6 +16,7 @@ from .flywheel_capsules import CapsuleManifest, ProtectedLibrary
 from .flywheel_checkpoint import DurableCheckpoint
 from .flywheel_costs import CostLedger
 from .flywheel_frontier import FrontierConnector
+from .flywheel_specialists import PlacementWorkflow
 from .protocol import StrictModel, canonical, safe_json_loads
 from .transformation import DiscoveryRequest, SelectionProgram
 from .transformation_library import TransformationLibrary
@@ -79,6 +80,38 @@ def add_commands(commands: Any) -> None:
     actions.add_parser("status", help="Report connector and operating qualification limits without invoking providers")
     receipt = actions.add_parser("receipt", help="Export an existing durable invocation request and receipt")
     receipt.add_argument("mission_id")
+    execution_receipt = actions.add_parser("execution-receipt", help="Inspect a durable general mission or observation")
+    execution_receipt.add_argument("operation_id")
+    execution_receipt.add_argument("--event", help="Exact attempt label from the private mission receipt")
+    enterprise_receipt = actions.add_parser("enterprise-receipt", help="Inspect an offering, decision or launch")
+    enterprise_receipt.add_argument("kind", choices=("offering", "decision", "launch"))
+    enterprise_receipt.add_argument("identity")
+    discovery_receipt = actions.add_parser(
+        "discovery-receipt", help="Inspect bounded discovery records without execution"
+    )
+    discovery_receipt.add_argument(
+        "kind",
+        choices=(
+            "opportunity",
+            "witness",
+            "bundle",
+            "observation",
+            "decision",
+            "comparison",
+            "comparison-result",
+            "arrangement",
+            "offering-link",
+            "search",
+            "search-submission",
+            "search-review",
+            "search-assessment",
+            "research-seed",
+            "research-plan",
+        ),
+    )
+    discovery_receipt.add_argument("identity")
+    search_receipt = actions.add_parser("search-report", help="Inspect the complete frozen discovery denominator")
+    search_receipt.add_argument("identity")
     for action in (
         "configure",
         "plan",
@@ -91,6 +124,10 @@ def add_commands(commands: Any) -> None:
         "account",
         "archive",
         "migrate",
+        "gym-run",
+        "general-acceptance",
+        "enterprise-command",
+        "discovery-command",
     ):
         sub = actions.add_parser(action, help="Apply a separately signed bounded " + action + " decision")
         sub.add_argument("signed", type=Path)
@@ -105,6 +142,15 @@ def add_commands(commands: Any) -> None:
     )
     model.add_argument("request", type=Path)
     model.add_argument("signed", type=Path)
+    execution = actions.add_parser("mission-run", help="Explicit Responses reasoning/tool mission; no implicit retry")
+    execution.add_argument("request", type=Path)
+    execution.add_argument("profile", type=Path)
+    execution.add_argument("signed", type=Path)
+    execution.add_argument("--enterprise-decision", help="Consume the exact offering/controller decision before I/O")
+    environment = execution.add_mutually_exclusive_group(required=True)
+    environment.add_argument("--tool-endpoint", type=Path, help="Private approved sandbox service contract")
+    environment.add_argument("--computer-task", type=Path, help="Existing bounded ComputerTask")
+    execution.add_argument("--computer-image", help="Approved immutable locally installed Docker image digest")
 
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
@@ -119,21 +165,67 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "protected_service": "provisioned-not-live-qualified",
             "execution_digest": service.execution_digest,
             "frontier": FrontierConnector(service.journal, service.trust, service.costs).status(),
+            "general_execution": {
+                "interface": "flywheel-execution/v1",
+                "command": "mission-run",
+                "transport": ("Responses reasoning, strict function calls, computer actions and resulting screenshots"),
+                "live_qualified": False,
+                "dependencies": "separate signed permit, approved model account, budget and sandbox or browser image",
+            },
             "costs": service.costs.report(),
-            "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",
+            "live_identity_qualification": (
+                "requires deployment-specific owner-controlled signing and approved RPC evidence"
+            ),
             "capsule_export": "controlled-invocation-only",
+            "discovery": {
+                "interface": "flywheel-opportunity/v1",
+                "commands": ["discovery-command", "discovery-receipt", "search-report"],
+                "scope": "signed hypotheses, purpose-preserving witnesses and bounded experiment records",
+                "execution_authority": False,
+                "commercial_projection_is_receipt": False,
+            },
         }
     if action == "receipt":
         result = service.inspect_invocation(args.mission_id)
-    if action in {"status", "receipt"}:
+    if action == "execution-receipt":
+        from .flywheel_execution import operation_key
+
+        key = operation_key(args.operation_id)
+        if args.event is not None:
+            if len(args.event) > 500 or not args.event.startswith(("model/", "tool/")):
+                raise ValueError("use the exact bounded attempt label from the private receipt")
+            key += "/event/" + args.event
+        with service.journal.transaction() as cx:
+            service._state(cx)
+            result = service.journal.document(service.journal.latest(key, cx))
+    if action == "enterprise-receipt":
+        from .flywheel_enterprise import Enterprise
+
+        result = Enterprise(service).inspect(args.kind, args.identity)
+    if action == "discovery-receipt":
+        from .flywheel_discovery import Discovery
+
+        result = Discovery(service).inspect(args.kind, args.identity)
+    if action == "search-report":
+        from .flywheel_discovery import Discovery
+        from .flywheel_insight import search_report
+
+        result = search_report(Discovery(service), args.identity)
+    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt", "discovery-receipt", "search-report"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:
         raise ValueError("a separately signed command is required")
     if action == "candidate":
+        manifest = CapsuleManifest.model_validate(read_document(args.manifest))
+        raw_program = read_document(args.program)
         candidate_digest = service.retain(
-            CapsuleManifest.model_validate(read_document(args.manifest)),
-            SelectionProgram.model_validate(read_document(args.program)),
+            manifest,
+            (
+                PlacementWorkflow.model_validate(raw_program)
+                if manifest.supported_scope == "resilient-placement/v1"
+                else SelectionProgram.model_validate(raw_program)
+            ),
             signed,
         )
         result = {
@@ -146,8 +238,71 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         result = FrontierConnector(service.journal, service.trust, service.costs).run(
             DiscoveryRequest.model_validate(read_document(args.request)), signed
         )
+    elif action == "mission-run":
+        from .computer import ComputerTask
+        from .flywheel_execution import (
+            ExecutionEnvironment,
+            ExecutionMission,
+            ExecutionProfile,
+            HTTPToolEnvironment,
+            LazyDockerEnvironment,
+            MissionExecutor,
+            ResponsesTransport,
+            ToolEndpoint,
+        )
+
+        task = ExecutionMission.model_validate(read_document(args.request))
+        profile = ExecutionProfile.model_validate(read_document(args.profile))
+        environment: ExecutionEnvironment
+        browser = None
+        if args.tool_endpoint is not None:
+            if args.computer_image is not None:
+                raise ValueError("computer image is unrelated to this sandbox service contract")
+            raw = _private_recovery_bytes(args.tool_endpoint, limit=131_072)
+            environment = HTTPToolEnvironment(ToolEndpoint.model_validate(safe_json_loads(raw)))
+        else:
+            if args.computer_image is None:
+                raise ValueError("the existing computer sandbox requires its approved immutable image")
+            browser = LazyDockerEnvironment(
+                ComputerTask.model_validate(read_document(args.computer_task)), args.computer_image
+            )
+            environment = browser
+
+        def qualify() -> None:
+            if service._execution_binding() != service.execution_digest:
+                raise ValueError("installed runtime or custody changed; restart and requalify")
+
+        try:
+            executor = MissionExecutor(
+                service.journal, service.trust, service.costs, ResponsesTransport(service.journal), environment, qualify
+            )
+            if args.enterprise_decision is not None:
+                from .flywheel_enterprise import Enterprise
+
+                result = Enterprise(service).run(args.enterprise_decision, executor, task, profile, signed)
+            else:
+                result = executor.run(task, profile, signed)
+        finally:
+            if browser is not None:
+                browser.close()
     elif action == "account":
         result = service.costs.apply(signed)
+    elif action == "enterprise-command":
+        from .flywheel_enterprise import Enterprise
+
+        result = Enterprise(service).apply(signed)
+    elif action == "discovery-command":
+        from .flywheel_discovery import Discovery
+
+        result = Discovery(service).apply(signed)
+    elif action == "gym-run":
+        from .flywheel_gym import GymCampaign
+
+        result = GymCampaign(
+            service.costs, service.checkpoint, service.execution_digest, current_environment=service._execution_binding
+        ).run(signed)
+    elif action == "general-acceptance":
+        result = service.accept_general_origin(signed)
     elif action in {"validate", "admit", "revoke"}:
         service.control(signed, cast(Any, action))
     elif action == "configure":

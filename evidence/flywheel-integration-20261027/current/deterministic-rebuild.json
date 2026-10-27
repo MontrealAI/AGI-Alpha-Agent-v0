@@ -1,0 +1,46 @@
+{
+  "scope": "Canonical documentation/gallery/worker regeneration from unchanged final source",
+  "files": 1335,
+  "changed": [],
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "scripts.sync_demo_catalog_docs"
+      ],
+      "exitcode": 0,
+      "stdout": "Demo inventories match the executable catalog\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "scripts.generate_demo_docs"
+      ],
+      "exitcode": 0,
+      "stdout": "Generated docs/demos/aiga_meta_evolution.md\nGenerated docs/demos/alpha_agi_business_2_v1.md\nGenerated docs/demos/alpha_agi_business_3_v1.md\nGenerated docs/demos/alpha_agi_business_v1.md\nGenerated docs/demos/alpha_agi_insight_v0.md\nGenerated docs/demos/alpha_agi_insight_v1.md\nGenerated docs/demos/alpha_agi_marketplace_v1.md\nGenerated docs/demos/alpha_asi_world_model.md\nGenerated docs/demos/alpha_super_planner_v1.md\nGenerated docs/demos/cross_industry_alpha_factory.md\nGenerated docs/demos/era_of_experience.md\nGenerated docs/demos/finance_alpha.md\nGenerated docs/demos/gpt2_small_cli.md\nGenerated docs/demos/macro_sentinel.md\nGenerated docs/demos/meta_agentic_agi.md\nGenerated docs/demos/meta_agentic_agi_v2.md\nGenerated docs/demos/meta_agentic_agi_v3.md\nGenerated docs/demos/meta_agentic_tree_search_v0.md\nGenerated docs/demos/muzero_planning.md\nGenerated docs/demos/muzeromctsllmagent_v0.md\nGenerated docs/demos/omni_factory_demo.md\nGenerated docs/demos/presentation.md\nGenerated docs/demos/self_healing_repo.md\nGenerated docs/demos/solving_agi_governance.md\nGenerated docs/demos/sovereign_agentic_agialpha_agent_v0.md\nGenerated docs/demos/utils.md\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "scripts.generate_gallery_html"
+      ],
+      "exitcode": 0,
+      "stdout": "Wrote  docs/index.html,  docs/gallery.html,  docs/demos/index.html and  docs/alpha_factory_v1/demos/index.html\n",
+      "stderr": "This repository is a conceptual research prototype. References to \"AGI\" and \"superintelligence\" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/build_service_worker.py"
+      ],
+      "exitcode": 0,
+      "stdout": "Wrote gallery workers with cache agialpha-gallery-010510515312e0a0\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "schema": "customer-funds-qualification/v1",
+  "base": "13e89bc1c2752a865f0306776de25c22fa79b624",
+  "scope": "Focused dependent increment; not full release or live commercial qualification",
+  "runtime_and_economics": {
+    "passed": 315,
+    "report": "parent-final-runtime.log",
+    "coverage": 94.00479616306954,
+    "coverage_scope": [
+      "flywheel_costs.py",
+      "flywheel_customer.py"
+    ],
+    "floor": 80
+  },
+  "strict_runtime_types": {
+    "files": 72,
+    "status": "passed",
+    "environment": "requirements-agent.lock plus mypy 1.17.0",
+    "report": "parent-final-types.log"
+  },
+  "publication_source_tests": {
+    "passed": 20,
+    "report": "parent-final-publication.log"
+  },
+  "node_engine": {
+    "passed": 20,
+    "report": "node-engine.log"
+  },
+  "functional_dom": {
+    "passed": 16,
+    "report": "dom-qa-browser-apis.log",
+    "scope": "jsdom 26.1.0; no rendered browser, accessibility, download or CSP enforcement claim"
+  },
+  "rendered_browser": {
+    "status": "blocked-unqualified",
+    "report": "customer-browser.log",
+    "reason": "Browser process singleton socket returned Operation not permitted; no restrictions changed"
+  },
+  "docs_build": {
+    "status": "passed",
+    "report": "parent-final-docs.log"
+  },
+  "current_packets": {
+    "canonical": {
+      "pageSha256": "6a723f99292c70023b1d0af63da1c665400f852e62bf9a11d5bccac57266829b",
+      "manifestSha256": "2e2adebc20423ed988cf0228ccde41a6458940afbd30f9cb842fde07b7e6cafe",
+      "sourceHash": "2604d7d4119474a0b1f27218c9ae6410130682014c62452ce6aa278742584099",
+      "sourcesChecked": 16
+    },
+    "packets": {
+      "general": {
+        "sources": 73,
+        "mismatches": []
+      },
+      "specialist": {
+        "sources": 76,
+        "mismatches": []
+      },
+      "enterprise": {
+        "sources": 78,
+        "mismatches": []
+      },
+      "discovery": {
+        "sources": 91,
+        "mismatches": []
+      },
+      "opportunity": {
+        "sources": 2,
+        "mismatches": []
+      },
+      "customer": {
+        "sources": 78,
+        "mismatches": []
+      }
+    }
+  },
+  "hooks": {
+    "selected_security_integrity": "passed",
+    "scope": "changed-file campaign; Semgrep, Ruff lint, privacy, binary guard, syntax, environment, protobuf and disclaimer checks",
+    "formatter": "Black and Ruff format passed",
+    "advisory_flake8": "failed with disclosed E203/E501 findings",
+    "report": "hooks.log"
+  },
+  "installed_development_wheel": {
+    "sha256": "b4a321a924abd49df4a02efe6f373c3145b2fb616dad38963b5c6f225aeb23f2",
+    "report": "installed-replay-verified.json",
+    "qualification": "development-only; not published install"
+  },
+  "commercial": {
+    "actual_collections_micro_usd": 0,
+    "complete_actual_cost": "unknown",
+    "best_tested_price_micro_usd": 2000000000,
+    "expected_90_day_contribution_micro_usd": {
+      "numerator": "2900205000",
+      "denominator": 1
+    },
+    "inputs": "Explicit uncalibrated assumptions; every arrangement HOLD absent commitments/rights",
+    "operational_alpha": "unmeasured",
+    "retained_alpha": "unmeasured",
+    "retention": "reject pending incremental evidence"
+  },
+  "release": {
+    "merged": false,
+    "published": false,
+    "live": false,
+    "dependencies": [
+      "#4975 repaired parent, #4963 enterprise, #4961 specialists and #4960 executor integration",
+      "Configured exact-source review and required hosted checks",
+      "Full main/release coverage, browser/accessibility/platform and published-install qualification",
+      "Existing publication owner; preserve #4973 and v1.46.1 sequence; verify served bytes after qualified deployment"
+    ]
+  },
+  "attempts": [
+    {
+      "report": "recorder-initial.log",
+      "failure": "Recorder used absent Journal.head; corrected to exact ledger snapshot digest"
+    },
+    {
+      "report": "run-corrected.json",
+      "scope": "Earlier hypothetical scenario without explicit processing charges, superseded prospectively; original retained"
+    },
+    {
+      "report": "customer-final.log",
+      "failure": "Three development assertions: lexical operation-cache eviction assumption, duplicate-operation guard reached before event guard, and incorrect hand-calculated fee expectation; corrected tests retain original failures"
+    },
+    {
+      "report": "ui-source.log",
+      "failure": "Inherited embedded source hashes stale after actual runtime edits; all six current packets re-executed, not merely rehashed"
+    },
+    {
+      "report": "mypy-initial.log",
+      "failure": "Initial inherited environment full mypy was killed with exit137; skipped-import diagnostic also failed and is not type qualification"
+    },
+    {
+      "report": "mypy-native.log",
+      "failure": "Minimal typing environment lacked API dependencies; complete hash-locked operator environment then passes native strict check"
+    },
+    {
+      "report": "dom-qa.log",
+      "failure": "jsdom lacks browser TextEncoder; use Node standard TextEncoder/TextDecoder in the harness; actual renderer is unchanged"
+    },
+    {
+      "report": "installed-replay.failed.txt",
+      "failure": "Initial isolated replay lacked pytest for existing conformance drivers; explicit pytest8.4.1 added and separate successful replay retained"
+    }
+  ]
+}

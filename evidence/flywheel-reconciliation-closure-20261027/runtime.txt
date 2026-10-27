@@ -1,0 +1,147 @@
+........................................................................ [ 26%]
+........................................................F............... [ 52%]
+........................................................................ [ 79%]
+.........................................................                [100%]
+=================================== FAILURES ===================================
+______ test_retained_training_fresh_evaluation_and_no_automatic_admission ______
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f0c44837950>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f0c28a72e90>, ...}, ...}
+
+    def test_retained_training_fresh_evaluation_and_no_automatic_admission(setup: dict[str, Any]) -> None:
+        s = setup
+        record = origin(s)
+        frozen = campaign(s)
+        assert frozen["status"] == "frozen-awaiting-protected-evaluation"
+        candidate = PlacementWorkflow.model_validate(frozen["candidate"])
+        assert candidate != PlacementWorkflow(version=1) and frozen["trials"]
+        task = GymTask(
+            task_id="fresh",
+            partition="protected-evaluation",
+            family="new-five-host-topology",
+            problem=problem(2199, hosts=5),
+        )
+        result = evaluate_frozen(frozen, [task])
+        assert result["technical_transfer_passed"] and result["admission"] == "do not admit"
+        assert not result["live_qualified"] and not result["net_alpha_positive"]
+        with pytest.raises(ValueError, match="exclude"):
+            old = GymPlan.model_validate(frozen["plan"]["payload"]["plan"]).tasks[0]
+            evaluate_frozen(frozen, [old.model_copy(update={"partition": "protected-evaluation"})])
+        changed = copy.deepcopy(frozen)
+        changed["candidate"]["bound"] = "static"
+        with pytest.raises(ValueError, match="freeze"):
+            evaluate_frozen(changed, [task])
+        with pytest.raises(ValueError, match="Gym candidate"):
+            retain(s, record, candidate, "placement-gym")
+        seal(s, "placement-extra-rd", "C")
+>       ident = retain(s, record, candidate, "placement-gym")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_flywheel_specialists.py:445: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_specialists.py:252: in retain
+    return s["service"].retain(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_capsules.ProtectedLibrary object at 0x7f0c44e34e90>
+manifest = CapsuleManifest(schema_version=1, skill_id='resilient-placement', version=1, origin_mission='placement-origin', origin...00000000000000000000000000000000000000000000000000', dependency_digests=[], export_policy='controlled-invocation-only')
+program = PlacementWorkflow(schema_version=1, schema_name='placement-workflow/v1', version=2, order='largest-demand', bound='residual', capacity_pruning=True)
+signed = SignedEnvelope(domain='flywheel-candidate', principal='producer', payload={'journal_identity': 'urn:agialpha:ed25519:4...eff7b72d037ec'}}, signature='qcSsFrp3xrfgBwxuWkpqHQdg/sXq54+WnksDwo9xdb8czEkY7ePEopfJ90eGFcyQfAoOKk47lMU5BUyeOpBfDQ==')
+
+    def retain(
+        self, manifest: CapsuleManifest, program: SelectionProgram | PlacementWorkflow, signed: SignedEnvelope
+    ) -> str:
+        manifest = CapsuleManifest.model_validate(manifest.model_dump())
+        program = (
+            PlacementWorkflow.model_validate(program.model_dump())
+            if manifest.supported_scope == "resilient-placement/v1"
+            else SelectionProgram.model_validate(program.model_dump())
+        )
+        ident = digest("flywheel-manifest", manifest)
+        signed = SignedEnvelope.model_validate(copy.deepcopy(signed.model_dump()))
+        payload = self._signed(signed, "candidate", "producer")
+        if payload["record"] != {"manifest_digest": ident} or signed.principal != self.library.producer:
+            raise ValueError("producer signature must bind the exact frozen manifest")
+        if digest("flywheel-program", program) != manifest.content_digest:
+            raise ValueError("candidate implementation digest mismatch")
+        origin_authority = self.access.authority.verify(manifest.origin_agent, manifest.origin_wallet)
+        origin_deadline = time.monotonic_ns() + 2_000_000_000
+        nonce = secrets.token_bytes(12)
+        aad = canonical(
+            {"service": self.access.service.model_dump(), "journal": self.journal.identity, "manifest": ident}
+        )
+        ciphertext = AESGCM(self.keys[self.active_key]).encrypt(nonce, canonical(program), aad)
+        with self.journal.transaction() as cx:
+            state, network = self._state(cx)
+            self._begin(network, signed, cx)
+            if ident in network["entries"] or len(network["entries"]) >= 128:
+                raise Conflict("duplicate candidate or capsule capacity reached")
+            versions = [
+                e["manifest"]["version"]
+                for e in network["entries"].values()
+                if e["manifest"]["skill_id"] == manifest.skill_id
+            ]
+            if manifest.version != max(versions, default=0) + 1:
+                raise Conflict("capsule versions must advance without replacing history")
+            development_cost = 0
+            if manifest.supported_scope == "resilient-placement/v1":
+                origin, origin_problem = accepted_general_origin(self, manifest.origin_mission, cx)
+                origin_documents: list[SourceDocument | PlacementProblem] = [origin_problem]
+                origin_request = digest("general-origin-inputs", origin["mission"]["inputs"])
+                if manifest.capability is None or manifest.capability.provenance_digest != origin["digest"]:
+                    raise ValueError("capability provenance must bind the exact accepted useful delivery")
+                from .flywheel_learning import ACCEPTANCE_KEY
+    
+                accepted = self.journal.latest(ACCEPTANCE_KEY + manifest.origin_mission, cx)
+                if accepted["acceptance"]["payload"]["record"]["rights_evidence"] != manifest.rights_evidence:
+                    raise ValueError("sharing rights differ from the independently accepted delivery")
+                observed_workflow = origin["result"]["deliverable"].get("workflow_digest")
+                if manifest.gym_campaign_id is not None:
+                    from .flywheel_gym import KEY as GYM_KEY, GymPlan
+    
+                    campaign = self.journal.latest(GYM_KEY + manifest.gym_campaign_id, cx)
+                    campaign_plan = GymPlan.model_validate(campaign["plan"]["payload"]["plan"])
+                    self.trust.verify(
+                        SignedEnvelope.model_validate(campaign["plan"]), "flywheel-gym-plan", "controller"
+                    )
+                    if (
+                        campaign.get("status") != "frozen-awaiting-protected-evaluation"
+                        or campaign.get("candidate_digest") != manifest.content_digest
+                        or digest("flywheel-program", campaign_plan.original) != observed_workflow
+                        or campaign_plan.mission_id == manifest.origin_mission
+                        or not self.costs.report(campaign_plan.mission_id, cx)["bucket_complete"]["C"]
+                    ):
+                        raise ValueError("Gym candidate must link paid v1, frozen v2 and complete separate C costs")
+                    origin_documents.extend(task.problem for task in campaign_plan.tasks)
+                    development_cost = self.costs.report(campaign_plan.mission_id, cx)["costs"]["C"]
+                elif observed_workflow != manifest.content_digest:
+                    raise ValueError("untrained candidate must be the actual accepted delivery workflow")
+            else:
+                origin = accepted_native_delivery(self.journal, manifest.origin_mission, cx)
+                origin_documents = list(origin_source_documents(origin))
+                origin_request = origin["request_hash"]
+            if origin["digest"] != manifest.origin_record_digest:
+                raise ValueError("candidate must originate in this journal's exact accepted delivery")
+            if not self.costs.report(manifest.origin_mission, cx)["bucket_complete"]["A"]:
+                raise ValueError("originating delivery costs remain incomplete")
+            wallet = self.journal.latest("@wallet", cx)
+            if wallet["address"] != manifest.origin_wallet:
+                raise ValueError("origin wallet must be proved through the existing runtime wallet binding")
+            if time.monotonic_ns() >= origin_deadline:
+>               raise Conflict("origin authority evidence became stale before retention")
+E               alpha_factory_v1.core.runtime.store.Conflict: origin authority evidence became stale before retention
+
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:550: Conflict
+- generated xml file: /workspace/scratch/c3a15d45aee2/flywheel-closure-checks/runtime.xml -
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.14-final-0 _______________
+
+Name                                                             Stmts   Miss  Cover   Missing
+----------------------------------------------------------------------------------------------
+alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py     410     50    88%   52, 88, 90, 106, 128, 142, 144, 146, 148, 165, 167, 215, 232, 240, 242, 260, 277, 279, 308, 310, 315, 358, 361, 377, 380, 387, 392, 417, 424, 434, 436, 438, 445, 447, 449-454, 521, 532, 539, 553, 556, 559, 582, 584, 601, 630
+----------------------------------------------------------------------------------------------
+TOTAL                                                              410     50    88%
+Coverage XML written to file /workspace/scratch/c3a15d45aee2/flywheel-closure-checks/coverage.xml
+Required test coverage of 80% reached. Total coverage: 87.80%
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_specialists.py::test_retained_training_fresh_evaluation_and_no_automatic_admission
+1 failed, 272 passed in 314.16s (0:05:14)

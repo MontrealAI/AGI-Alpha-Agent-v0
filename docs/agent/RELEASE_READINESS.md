@@ -1,5 +1,23 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — proposed 1.47.0 connected discovery and delivery
+
+The proposed additive successor integrates the existing #4960/#4961/#4963/#4975/#4988 lineage,
+cancellation and customer-funds corrections, the narrow frozen-execution receipt guard, and corrected
+execution-derived comparisons. See [scope and evidence boundaries](RELEASE_NOTES_1.47.0.md).
+
+The existing 1.46.1 publisher retains its lease. No branch result qualifies the combined source.
+Exact-source configured review, applicable PR checks, security/integrity, the complete selected
+regression with the existing 80% floor, representative platform/install/browser checks, immutable
+release artifacts and actual served-byte verification remain required. Historical metadata, worker
+editions, five held source pins and original excluded unqualified outcomes remain preserved.
+
+Provider access, live identity/custody, signed resource permits, actual buyer acceptance and complete
+monetary costs are separate missing resources. No live canary, profitable market or compounding claim
+follows from the local synthetic conformance evidence.
+
+## Preserved 1.46.1 preparation record
+
 # Release readiness — 1.46.1 exact research browser readers
 
 This publication-only successor adds two exact research PDFs and accessible browser readers,

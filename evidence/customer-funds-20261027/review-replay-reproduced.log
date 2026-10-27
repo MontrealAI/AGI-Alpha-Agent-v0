@@ -1,0 +1,470 @@
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+=================================== FAILURES ===================================
+____ test_paid_charge_evidence_cannot_become_customer_money[deposit-charge] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884af63b00>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b4ec550>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884af61910>
+path = 'charge', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+___ test_paid_charge_evidence_cannot_become_customer_money[deposit-resolve] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884b08b170>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d1747b0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b08a900>
+path = 'resolve', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[deposit-resolve-equal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884e75dac0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d281110>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884e75eea0>
+path = 'resolve-equal', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[deposit-legacy-charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884b530fb0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d2ed190>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884af63830>
+path = 'legacy-charge', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[deposit-legacy-resolve] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884b08be90>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b515590>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b08b920>
+path = 'legacy-resolve', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+____ test_paid_charge_evidence_cannot_become_customer_money[refund-charge] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884af63770>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b54d670>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b530fb0>
+path = 'charge', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+____ test_paid_charge_evidence_cannot_become_customer_money[refund-resolve] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884b08bbc0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b379ef0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b30ce00>
+path = 'resolve', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[refund-resolve-equal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884b0cc410>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d1747b0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b0cc1a0>
+path = 'resolve-equal', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[refund-legacy-charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a8860>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b3a5890>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884b08b6e0>
+path = 'legacy-charge', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+_ test_paid_charge_evidence_cannot_become_customer_money[refund-legacy-resolve] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a95b0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b3d57f0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884af61790>
+path = 'legacy-resolve', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_paid_charge_evidence_cannot_become_customer_money(
+        setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            if path.startswith("legacy"):
+                context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, path, evidence)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:443: Failed
+____ test_customer_evidence_cannot_become_inline_paid_cost[deposit-charge] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2abad0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d2eeef0>, ...}, ...}
+path = 'charge', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:462: Failed
+____ test_customer_evidence_cannot_become_inline_paid_cost[deposit-resolve] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2aaba0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d281d30>, ...}, ...}
+path = 'resolve', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+            with pytest.raises(Conflict, match="evidence"):
+                paid_charge(setup, path, evidence)
+        else:
+            raw = Charge(activity_id="unknown-paid-expense", mission_id="separate-cost-mission", bucket="A",
+                         category="compute", accrued_micro_usd=None, paid_micro_usd=7 if path == "resolve-equal" else 0,
+                         basis="unknown", evidence_digest="7" * 64, note="Fictional unknown final bill").model_dump()
+            f.account(setup, "charge", raw, "unknown-expense")
+            before = setup["costs"].snapshot()
+            raw.update(accrued_micro_usd=20, paid_micro_usd=7 if path == "resolve-equal" else 17,
+                       basis="attested", evidence_digest=evidence)
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:472: Failed
+_ test_customer_evidence_cannot_become_inline_paid_cost[deposit-resolve-equal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2ab320>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d175210>, ...}, ...}
+path = 'resolve-equal', customer = 'deposit'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+            with pytest.raises(Conflict, match="evidence"):
+                paid_charge(setup, path, evidence)
+        else:
+            raw = Charge(activity_id="unknown-paid-expense", mission_id="separate-cost-mission", bucket="A",
+                         category="compute", accrued_micro_usd=None, paid_micro_usd=7 if path == "resolve-equal" else 0,
+                         basis="unknown", evidence_digest="7" * 64, note="Fictional unknown final bill").model_dump()
+            f.account(setup, "charge", raw, "unknown-expense")
+            before = setup["costs"].snapshot()
+            raw.update(accrued_micro_usd=20, paid_micro_usd=7 if path == "resolve-equal" else 17,
+                       basis="attested", evidence_digest=evidence)
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:472: Failed
+_____ test_customer_evidence_cannot_become_inline_paid_cost[refund-charge] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a85f0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d1745d0>, ...}, ...}
+path = 'charge', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:462: Failed
+____ test_customer_evidence_cannot_become_inline_paid_cost[refund-resolve] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a9c10>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d174750>, ...}, ...}
+path = 'resolve', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+            with pytest.raises(Conflict, match="evidence"):
+                paid_charge(setup, path, evidence)
+        else:
+            raw = Charge(activity_id="unknown-paid-expense", mission_id="separate-cost-mission", bucket="A",
+                         category="compute", accrued_micro_usd=None, paid_micro_usd=7 if path == "resolve-equal" else 0,
+                         basis="unknown", evidence_digest="7" * 64, note="Fictional unknown final bill").model_dump()
+            f.account(setup, "charge", raw, "unknown-expense")
+            before = setup["costs"].snapshot()
+            raw.update(accrued_micro_usd=20, paid_micro_usd=7 if path == "resolve-equal" else 17,
+                       basis="attested", evidence_digest=evidence)
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:472: Failed
+_ test_customer_evidence_cannot_become_inline_paid_cost[refund-resolve-equal] __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2abf20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884b37b2f0>, ...}, ...}
+path = 'resolve-equal', customer = 'refund'
+
+    @pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_customer_evidence_cannot_become_inline_paid_cost(
+        setup: dict[str, Any], path: str, customer: str
+    ) -> None:
+        evidence = "8" * 64
+        apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64))
+        if customer == "refund":
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+        if path == "charge":
+            before = setup["costs"].snapshot()
+            with pytest.raises(Conflict, match="evidence"):
+                paid_charge(setup, path, evidence)
+        else:
+            raw = Charge(activity_id="unknown-paid-expense", mission_id="separate-cost-mission", bucket="A",
+                         category="compute", accrued_micro_usd=None, paid_micro_usd=7 if path == "resolve-equal" else 0,
+                         basis="unknown", evidence_digest="7" * 64, note="Fictional unknown final bill").model_dump()
+            f.account(setup, "charge", raw, "unknown-expense")
+            before = setup["costs"].snapshot()
+            raw.update(accrued_micro_usd=20, paid_micro_usd=7 if path == "resolve-equal" else 17,
+                       basis="attested", evidence_digest=evidence)
+>           with pytest.raises(Conflict, match="evidence"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:472: Failed
+____ test_legacy_resolution_keeps_original_paid_evidence_reserved[deposit] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a8ce0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d2eec90>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884d2a99a0>
+customer = 'deposit'
+
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_legacy_resolution_keeps_original_paid_evidence_reserved(
+        setup: dict[str, Any], monkeypatch: Any, customer: str
+    ) -> None:
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, "legacy-resolve", "8" * 64)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:487: Failed
+_____ test_legacy_resolution_keeps_original_paid_evidence_reserved[refund] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f884d2a9640>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f884d283e10>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f884d2ab7d0>
+customer = 'refund'
+
+    @pytest.mark.parametrize("customer", ["deposit", "refund"])
+    def test_legacy_resolution_keeps_original_paid_evidence_reserved(
+        setup: dict[str, Any], monkeypatch: Any, customer: str
+    ) -> None:
+        if customer == "refund":
+            apply(setup, "customer-deposit", deposit(mode="live"))
+        with monkeypatch.context() as context:
+            context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+            paid_charge(setup, "legacy-resolve", "8" * 64)
+        before = setup["costs"].snapshot()
+>       with pytest.raises(Conflict, match="evidence"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_flywheel_customer.py:487: Failed
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[deposit-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[deposit-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[deposit-resolve-equal]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[deposit-legacy-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[deposit-legacy-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[refund-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[refund-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[refund-resolve-equal]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[refund-legacy-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_paid_charge_evidence_cannot_become_customer_money[refund-legacy-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[deposit-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[deposit-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[deposit-resolve-equal]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[refund-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[refund-resolve]
+FAILED tests/runtime/test_flywheel_customer.py::test_customer_evidence_cannot_become_inline_paid_cost[refund-resolve-equal]
+FAILED tests/runtime/test_flywheel_customer.py::test_legacy_resolution_keeps_original_paid_evidence_reserved[deposit]
+FAILED tests/runtime/test_flywheel_customer.py::test_legacy_resolution_keeps_original_paid_evidence_reserved[refund]
+18 failed, 35 deselected in 3.69s
