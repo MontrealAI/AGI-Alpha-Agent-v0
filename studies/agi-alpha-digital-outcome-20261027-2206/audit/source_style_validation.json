@@ -1,0 +1,222 @@
+{
+  "at_utc": "2026-10-27T23:09:44.663389+00:00",
+  "checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--line-length",
+        "120",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+        "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+      ],
+      "returncode": 0,
+      "stdout": "8 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+        "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+      ],
+      "returncode": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "--ignore-missing-imports",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+        "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+        "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+        "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+      ],
+      "returncode": 0,
+      "stdout": "Success: no issues found in 8 source files\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Eight new authoring, economics, delivery and packaging scripts; imported implementation bodies skipped by typecheck. Frozen numerical sources unchanged; whole-repository hosted checks remain separate.",
+  "preliminary_public_review_commit": "dd2d8e60727a83fbe7b8520bf87e038b026d3674",
+  "correction": "Source formatting, imports, precise economic report types and docstrings before draft submission. All monetary outputs byte-identical at four M coordinates; paper, brief, HTML, figures and scientific evidence unchanged.",
+  "economics_equivalence": {
+    "completed_utc": "2026-10-27T23:08:11.228844+00:00",
+    "scope": "Publication-only type annotations, docstrings and formatting for economics.py; no scenario or calculation changes and no scientific source edits.",
+    "baseline": "publication/style_checks/economics_economics.py.before",
+    "baseline_sha256": "9dd167a0c175078b19089aab4f24eed0538000932d7ea93a3a515d571cfee7db",
+    "final_source_sha256": "061e3110ba45b5135b2616ac2b78d0d68fa996a8d060add12f65e350433af91d",
+    "strict_types": "TypedDict schemas for scenario assumptions, cash events, cash plans and scenario summaries; annotated numeric functions; heterogeneous JSON envelope typed as object; no Any or ignore directives.",
+    "checks": [
+      {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py"
+        ],
+        "returncode": 0,
+        "stdout": "1 file already formatted\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "ruff",
+          "check",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py"
+        ],
+        "returncode": 0,
+        "stdout": "All checks passed!\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "--ignore-missing-imports",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py"
+        ],
+        "returncode": 0,
+        "stdout": "Success: no issues found in 1 source file\n",
+        "stderr": ""
+      }
+    ],
+    "output_comparisons": [
+      {
+        "M": "0",
+        "byte_identical_result_json": true,
+        "complete_json_equality": true,
+        "runs": [
+          {
+            "version": "before",
+            "returncode": 0,
+            "output_sha256": "dae29b2c50be502d1167d0933a60cc11f3fb05af7d766ea0dfd10ff28c80f166"
+          },
+          {
+            "version": "after",
+            "returncode": 0,
+            "output_sha256": "dae29b2c50be502d1167d0933a60cc11f3fb05af7d766ea0dfd10ff28c80f166"
+          }
+        ]
+      },
+      {
+        "M": "100",
+        "byte_identical_result_json": true,
+        "complete_json_equality": true,
+        "runs": [
+          {
+            "version": "before",
+            "returncode": 0,
+            "output_sha256": "7bbeced170bc1f69c4a242805feef6d4ce271f8248757cabaf7409eeec04f066"
+          },
+          {
+            "version": "after",
+            "returncode": 0,
+            "output_sha256": "7bbeced170bc1f69c4a242805feef6d4ce271f8248757cabaf7409eeec04f066"
+          }
+        ]
+      },
+      {
+        "M": "679.075",
+        "byte_identical_result_json": true,
+        "complete_json_equality": true,
+        "runs": [
+          {
+            "version": "before",
+            "returncode": 0,
+            "output_sha256": "ab9f441381258f5d2e729e6509d8dfac2bbe0c6110b8580cde6acff186862d03"
+          },
+          {
+            "version": "after",
+            "returncode": 0,
+            "output_sha256": "ab9f441381258f5d2e729e6509d8dfac2bbe0c6110b8580cde6acff186862d03"
+          }
+        ]
+      },
+      {
+        "M": "2000",
+        "byte_identical_result_json": true,
+        "complete_json_equality": true,
+        "runs": [
+          {
+            "version": "before",
+            "returncode": 0,
+            "output_sha256": "d21f03f9b400c4bfe582dd46ef2ee70e979f611289749b9c2b50207aeb3251ed"
+          },
+          {
+            "version": "after",
+            "returncode": 0,
+            "output_sha256": "d21f03f9b400c4bfe582dd46ef2ee70e979f611289749b9c2b50207aeb3251ed"
+          }
+        ]
+      }
+    ],
+    "all_four_complete_outputs_byte_identical": true,
+    "central_M100_headlines_unchanged": true,
+    "published_economics_results_unchanged_sha256": "7bbeced170bc1f69c4a242805feef6d4ce271f8248757cabaf7409eeec04f066",
+    "original_style_failures_preserved_sha256": "2349ba84e0464646903ec7e2522f8ec8abb4a878aa73462b524d9aed38bce734"
+  },
+  "initial_invocation_failure": "ruff and mypy command names absent from PATH; same installed modules invoked through python -m, without installation.",
+  "formatting_gate_correction": "Economics agent final format used default line length; root applied repository120-line setting and reran all8 checks. Earlier combined shell continued to make an unissued intermediate archive after first check failed; final package rebuilt only after all checks here passed.",
+  "final_120_column_equivalence": {
+    "at_utc": "2026-10-27T23:10:49.096652+00:00",
+    "source_sha256": "1a514a00af25b4897f34e859b72def3aa15e77ca2eb443042b189e92a7088004",
+    "comparisons": [
+      {
+        "model_cost": "0",
+        "complete_json_byte_identical": true,
+        "sha256": "dae29b2c50be502d1167d0933a60cc11f3fb05af7d766ea0dfd10ff28c80f166"
+      },
+      {
+        "model_cost": "100",
+        "complete_json_byte_identical": true,
+        "sha256": "7bbeced170bc1f69c4a242805feef6d4ce271f8248757cabaf7409eeec04f066"
+      },
+      {
+        "model_cost": "679.075",
+        "complete_json_byte_identical": true,
+        "sha256": "ab9f441381258f5d2e729e6509d8dfac2bbe0c6110b8580cde6acff186862d03"
+      },
+      {
+        "model_cost": "2000",
+        "complete_json_byte_identical": true,
+        "sha256": "d21f03f9b400c4bfe582dd46ef2ee70e979f611289749b9c2b50207aeb3251ed"
+      }
+    ],
+    "scope": "Current120-columnformattedtypedsourcevsoriginal; no economic values changed"
+  }
+}
