@@ -1,0 +1,703 @@
+{
+  "corrections": [
+    {
+      "correction": "Both companion texts now explicitly state equality after removing only elapsed_seconds. The paper already qualified removal of elapsed-time fields.",
+      "files": [
+        "publication/EXECUTIVE_BRIEF.md",
+        "publication/CONNECTED_EXAMPLE.md"
+      ],
+      "finding": "Identical complete documents omitted the only normalization exclusion. None of the six raw JSON pairs is equal because measured elapsed_seconds differs.",
+      "id": "FINAL-01",
+      "status": "CORRECTED_BY_ROOT_AND_RECHECKED"
+    },
+    {
+      "correction": "It now says origin low provider cost assumption fixed.",
+      "files": [
+        "publication/PAPER.md"
+      ],
+      "finding": "The broad-prior paragraph called the low provider cost a quote although no supplier quote was obtained.",
+      "id": "FINAL-02",
+      "status": "CORRECTED_BY_ROOT_AND_RECHECKED"
+    }
+  ],
+  "documents": {
+    "CONNECTED_EXAMPLE.md": {
+      "bare_external_urls": 0,
+      "differs_from_prior_review": null,
+      "external_markdown_links": 0,
+      "local_evidence_links": 8,
+      "local_image_links": 0,
+      "prior_claim_review_sha256": null,
+      "sha256": "0b070dab76d12ea9e195f96787da5b1f45890edbde53756fdd3e96d9a39a08ce"
+    },
+    "EXECUTIVE_BRIEF.md": {
+      "bare_external_urls": 0,
+      "differs_from_prior_review": true,
+      "external_markdown_links": 0,
+      "local_evidence_links": 5,
+      "local_image_links": 0,
+      "prior_claim_review_sha256": "de75bd53745b498cb6ef58d415008b13f965fca9f86cdbab731feaa1f5210968",
+      "sha256": "1aa274a7f7ef80b1aafd3701b482834fb05481616e1e8ee3b68aa15d66ea4743"
+    },
+    "LINKEDIN_DRAFT.md": {
+      "bare_external_urls": 1,
+      "differs_from_prior_review": null,
+      "external_markdown_links": 0,
+      "local_evidence_links": 0,
+      "local_image_links": 0,
+      "prior_claim_review_sha256": null,
+      "sha256": "55e1b832d7687a9300ddd91e3e00ab97a4e6a45c0c4ccd9651ec164a36fff300"
+    },
+    "PAPER.md": {
+      "bare_external_urls": 0,
+      "differs_from_prior_review": true,
+      "external_markdown_links": 15,
+      "local_evidence_links": 43,
+      "local_image_links": 5,
+      "prior_claim_review_sha256": "a49f52c5aa7bbf485a27b190ebe8b2dfbf5f834b697569f79ef881d09e4e9c46",
+      "sha256": "ba56321fdb5fd256446e9b07d5bcb5fb4ecf6b9f31022bec61a6722d1983f781"
+    }
+  },
+  "evidence_sha256": {
+    "economics/PROVIDER_COST_CALIBRATION.json": "dff61c4c14d8ea7d9c22781b46efeb0954a6c5e733805ef8f33943cf1f2f9d08",
+    "economics_v2/BROAD_UNCERTAINTY.json": "cfce23e41a696ec0d4f51a7494f86923c296843bac3c23f27fd2842bf0f73b9e",
+    "economics_v2/COMMERCIAL_RESULT.json": "58165184d70d276bac8b0d20a97a4d04f0022a5b98916297c3aa055fab53efd6",
+    "integration/selected-run-v2/verification.json": "48d70f3e93dcaa06caea6001b49c3a57770705da36128177f1440b58dbf39622",
+    "src/recipient_replay.py": "75858b5fcf0d7c2ef7678e2ec5ab1c2782541aaf04d90d42cb4613f8d7773bc1",
+    "technical/recipient_transfer/INPUT_MANIFEST.json": "a69182ec643cfd48d4797693f0375a182a83f792bf0bf336f43c6b295cd7aa1c",
+    "technical/recipient_transfer/POLICY_FREEZE.json": "34d65d7e751528b86fdecab8ea0d615bb1fd30343e4319167cbccf834332d7c4",
+    "technical/recipient_transfer/PROCESS_LOG.json": "b23fe3fec16e52c4fa511519c2c35728f8f9eca04041f2c2b11083773408bf50",
+    "technical/recipient_transfer/SOURCE_HANDOFF.json": "84ebc8351ba055d4f5dc511925c03d241ecec89a322c831de69dbc84d453ec81",
+    "technical/recipient_transfer/SUMMARY.json": "9e4a7e2b7c3399fa6e7ff26c5df9b825058c3c07c45b764e232df3a3d0c43f9b"
+  },
+  "hash_comparison_note": "At the first read in this addendum, PAPER and EXECUTIVE_BRIEF exactly matched the hashes stored in CLAIM_REVIEW.json. T6 received explicit focused review here regardless. Root then made the recorded wording/spacing corrections; final hashes above bind those corrected current documents.",
+  "limitations": [
+    "The result binds current hashes, not subsequent edits.",
+    "PDF/HTML visual quality, archive contents and remote publication are outside this addendum and handled by root.",
+    "This audit reads existing local process records and artifacts; it does not independently observe or rerun their historical executions."
+  ],
+  "link_review": {
+    "documents": [
+      {
+        "all_local_targets_resolve": true,
+        "bare_external_targets": [],
+        "document": "PAPER.md",
+        "external_markdown_targets": [
+          {
+            "label": "Inside a child-care void: parents working nontraditional hours",
+            "line": 350,
+            "target": "https://www.bostonfed.org/publications/six-hundred-atlantic/season/two/bonus-episode-inside-a-child-care-void-what-about-parents-working-nontraditional-hours.aspx"
+          },
+          {
+            "label": "Child Care During Nontraditional Hours",
+            "line": 352,
+            "target": "https://www.actforchildren.org/nontraditional-hour-child-care-research-project/"
+          },
+          {
+            "label": "Frequently Asked Questions",
+            "line": 354,
+            "target": "https://www.workfamilysolutions.nl/en/faq"
+          },
+          {
+            "label": "Child Care Cooperatives",
+            "line": 356,
+            "target": "https://www.ndarec.com/child-care-cooperatives"
+          },
+          {
+            "label": "Childcare Operations Optimisation",
+            "line": 358,
+            "target": "https://biarri.com/biarri_case_studies/childcare-operations-optimisation/"
+          },
+          {
+            "label": "Childcare Connect contract management and reporting",
+            "line": 360,
+            "target": "https://www.onehsn.com/onehsn-enhances-childcare-connect-with-a-new-contract-management-and-reporting-module-copy/"
+          },
+          {
+            "label": "Industrial engineer wages, Montr\u00e9al",
+            "line": 362,
+            "target": "https://www.jobbank.gc.ca/marketreport/wages-occupation/22441/geo25154"
+          },
+          {
+            "label": "Human resources officer wages, Montr\u00e9al",
+            "line": 364,
+            "target": "https://www.jobbank.gc.ca/marketreport/wages-occupation/12522/geo25154"
+          },
+          {
+            "label": "GPT-6 Astra model documentation",
+            "line": 366,
+            "target": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+          },
+          {
+            "label": "GPT-6.1 Sol model documentation",
+            "line": 368,
+            "target": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+          },
+          {
+            "label": "GPT-6.1 Terra model documentation",
+            "line": 370,
+            "target": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+          },
+          {
+            "label": "Early childhood educator wages, Montr\u00e9al",
+            "line": 372,
+            "target": "https://www.jobbank.gc.ca/marketreport/wages-occupation/5189/geo25154"
+          },
+          {
+            "label": "Transformational Intelligence",
+            "line": 374,
+            "target": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4/docs/Transformational_Intelligence.tex"
+          },
+          {
+            "label": "Invent the Economy",
+            "line": 376,
+            "target": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4/docs/Invent_the_Economy.tex"
+          },
+          {
+            "label": "Transformational Autonomous Enterprises",
+            "line": 378,
+            "target": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4/docs/papers/transformational-autonomous-enterprises-v1.tex"
+          }
+        ],
+        "local_links": [
+          {
+            "exists": true,
+            "image": true,
+            "label": "A connected diagram joining employer and worker roster options, qualified care offers, joint construction, funded commitments and a reviewable outcome.",
+            "line": 37,
+            "target": "figures/01_connected_arrangement.png"
+          },
+          {
+            "exists": true,
+            "image": true,
+            "label": "Stacked bars show the fixed-roster daily funding requirement of CAD705 and the joint-roster requirement of CAD405, separated into primary care, standby, reserve, worker compensation and fee.",
+            "line": 107,
+            "target": "figures/02_origin_funding.png"
+          },
+          {
+            "exists": true,
+            "image": true,
+            "label": "Three feasibility matrices compare locked rosters, one employer permitting changes and both employers permitting changes across opening-cost and payment-ceiling combinations.",
+            "line": 155,
+            "target": "figures/03_feasible_region.png"
+          },
+          {
+            "exists": true,
+            "image": true,
+            "label": "A price chart shows mean annual operating profit and accepted package volume under two payment arrangements, including percentile ranges for half-deferred payment.",
+            "line": 262,
+            "target": "figures/04_price_and_participation.png"
+          },
+          {
+            "exists": true,
+            "image": true,
+            "label": "Horizontal bars compare mean profit under the central scenario, broad uncertainty and adverse changes to leads, acquisition, value, eligibility, quality, costs and provider absence.",
+            "line": 272,
+            "target": "figures/05_commercial_sensitivity.png"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Discovery freeze",
+            "line": 382,
+            "target": "../discovery/PROTOCOL_FREEZE.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "initial information",
+            "line": 382,
+            "target": "../discovery/INITIAL_INFORMATION.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "U",
+            "line": 382,
+            "target": "../discovery/arms/U.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "E",
+            "line": 382,
+            "target": "../discovery/arms/E.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "H-proxy",
+            "line": 382,
+            "target": "../discovery/arms/H_proxy.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "selection record",
+            "line": 382,
+            "target": "../discovery/SELECTION_RECORD.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Adverse prior-art review",
+            "line": 384,
+            "target": "../sources/CHILDCARE_PRIOR_ART_REVIEW.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "post-selection novelty probe",
+            "line": 384,
+            "target": "../sources/POST_SELECTION_NOVELTY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Origin input",
+            "line": 386,
+            "target": "../technical/origin_case.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "original complete comparison",
+            "line": 386,
+            "target": "../technical/origin_result.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "corrected origin comparison",
+            "line": 386,
+            "target": "../technical/origin_result_v2.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Independent audit and corrections",
+            "line": 388,
+            "target": "../results/INDEPENDENT_AUDIT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "original accepted corruptions",
+            "line": 388,
+            "target": "../technical/independent_audit/v1_unexpected_acceptances.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Monthly commitment package",
+            "line": 390,
+            "target": "../technical/monthly_package/CONTRACT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "all twenty day witnesses",
+            "line": 390,
+            "target": "../technical/monthly_package/DAY_WITNESSES.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "finite settlement checks",
+            "line": 390,
+            "target": "../economics/FINITE_SETTLEMENT_CHECK.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Original forty-two-case confirmation",
+            "line": 392,
+            "target": "../technical/fresh_suite_summary.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "original policy freeze",
+            "line": 392,
+            "target": "../technical/FROZEN_TECHNICAL_POLICY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Follow-up boundary and successor results",
+            "line": 394,
+            "target": "../technical/boundary_summary.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "prospective follow-up freeze",
+            "line": 394,
+            "target": "../technical/FROZEN_BOUNDARY_POLICY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Fresh local-recipient portability",
+            "line": 396,
+            "target": "../technical/recipient_transfer/SUMMARY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "policy freeze",
+            "line": 396,
+            "target": "../technical/recipient_transfer/POLICY_FREEZE.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "recorded process commands",
+            "line": 396,
+            "target": "../technical/recipient_transfer/PROCESS_LOG.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Current commercial result",
+            "line": 398,
+            "target": "../economics_v2/COMMERCIAL_RESULT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "complete fresh worlds",
+            "line": 398,
+            "target": "../economics_v2/FRESH_WORLDS.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Human-led development reference",
+            "line": 400,
+            "target": "../sources/HUMAN_DEVELOPMENT_REFERENCE.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Complete current cost configuration",
+            "line": 402,
+            "target": "../config/economic_config_v2.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "model register",
+            "line": 402,
+            "target": "../sources/model_register.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "assumption register",
+            "line": 402,
+            "target": "../sources/ASSUMPTION_REGISTER.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Commercial policy freeze",
+            "line": 404,
+            "target": "../economics_v2/POLICY_FREEZE.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "v1 accounting review",
+            "line": 404,
+            "target": "../economics/INDEPENDENT_REVIEW.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "v2 review addendum",
+            "line": 404,
+            "target": "../economics_v2/INDEPENDENT_REVIEW_ADDENDUM.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "corrections",
+            "line": 404,
+            "target": "../economics_v2/CORRECTION_RECORD.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "reporting notes",
+            "line": 404,
+            "target": "../economics/REPORTING_CORRECTIONS.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Paired sensitivities",
+            "line": 406,
+            "target": "../economics_v2/SENSITIVITY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "broad uncertainty",
+            "line": 406,
+            "target": "../economics_v2/BROAD_UNCERTAINTY.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Operational/retained Alpha",
+            "line": 406,
+            "target": "../economics_v2/ALPHA_RESULTS.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Provider wage calibration",
+            "line": 408,
+            "target": "../economics/PROVIDER_COST_CALIBRATION.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Selected native linkage",
+            "line": 410,
+            "target": "../integration/selected-run-v2/verification.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "source/component map",
+            "line": 410,
+            "target": "../sources/COMPONENT_MAP.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "research annex",
+            "line": 410,
+            "target": "../integration/selected-run-v2/research-annex.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "adapter robustness checks",
+            "line": 410,
+            "target": "../integration/native-linkage-format-fixture/robustness.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Research-access and retention record",
+            "line": 412,
+            "target": "../technical/research_access_fixture_v2/RESULTS.json"
+          }
+        ]
+      },
+      {
+        "all_local_targets_resolve": true,
+        "bare_external_targets": [],
+        "document": "EXECUTIVE_BRIEF.md",
+        "external_markdown_targets": [],
+        "local_links": [
+          {
+            "exists": true,
+            "image": false,
+            "label": "Full paper",
+            "line": 59,
+            "target": "PAPER.md"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "independent audit",
+            "line": 59,
+            "target": "../results/INDEPENDENT_AUDIT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "commercial results",
+            "line": 59,
+            "target": "../economics_v2/COMMERCIAL_RESULT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "supplier-cost sensitivity",
+            "line": 59,
+            "target": "../economics/PROVIDER_COST_CALIBRATION.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "complete reproduction instructions",
+            "line": 59,
+            "target": "../README.md"
+          }
+        ]
+      },
+      {
+        "all_local_targets_resolve": true,
+        "bare_external_targets": [],
+        "document": "CONNECTED_EXAMPLE.md",
+        "external_markdown_targets": [],
+        "local_links": [
+          {
+            "exists": true,
+            "image": false,
+            "label": "Origin and four controls",
+            "line": 70,
+            "target": "../technical/origin_result_v2.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Final technical report",
+            "line": 71,
+            "target": "../technical/TECHNICAL_REPORT.md"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Independent audit, including original failures",
+            "line": 72,
+            "target": "../results/INDEPENDENT_AUDIT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Monthly package",
+            "line": 73,
+            "target": "../technical/monthly_package/CONTRACT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Current commercial result",
+            "line": 74,
+            "target": "../economics_v2/COMMERCIAL_RESULT.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Provider-cost calibration",
+            "line": 75,
+            "target": "../economics/PROVIDER_COST_CALIBRATION.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Native research linkage",
+            "line": 76,
+            "target": "../integration/selected-run-v2/verification.json"
+          },
+          {
+            "exists": true,
+            "image": false,
+            "label": "Fresh recipient portability",
+            "line": 77,
+            "target": "../technical/recipient_transfer/SUMMARY.json"
+          }
+        ]
+      },
+      {
+        "all_local_targets_resolve": true,
+        "bare_external_targets": [
+          "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/research/opportunity-construction-20261027/studies/agi-alpha-opportunity-construction-v1/publication/Browser_Edition.md"
+        ],
+        "document": "LINKEDIN_DRAFT.md",
+        "external_markdown_targets": [],
+        "local_links": []
+      }
+    ],
+    "external_url_boundary": "Existing source correspondence was reviewed previously. No public HTTP availability or immutable publication link was newly fetched; root handles final publication/download QA.",
+    "missing_local_targets": [],
+    "total_local_evidence_links": 56,
+    "total_local_images": 5
+  },
+  "linkedin_review": {
+    "checked_claims": {
+      "actual_collections_cad": 0,
+      "independent_original_cases": 48,
+      "monthly_service_fee_cad": 750,
+      "newly_feasible_original_cases": 16,
+      "origin_fixed_daily_cad": 705,
+      "origin_joint_daily_cad": 405,
+      "rounded_conditional_mean_operating_profit_cad": 4736,
+      "same_payer_ceiling_cad": 450
+    },
+    "corresponding_local_target_exists": true,
+    "external_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/research/opportunity-construction-20261027/studies/agi-alpha-opportunity-construction-v1/publication/Browser_Edition.md",
+    "external_url_fetched": false,
+    "numbers_match_saved_records": true,
+    "posting_performed": false,
+    "scope": "Draft distinguishes synthetic construction, conventional parity, strong prior art, conditional low-provider-cost profit, broad losses, supplier-cost failure and HOLD retention. No unsupported historical novelty or beyond-human claim found."
+  },
+  "precision_checks": {
+    "all_requested_local_links_resolve": true,
+    "brief_normalized_document_equality_explicit": true,
+    "example_normalized_document_equality_explicit": true,
+    "linkedin_explicit_synthetic_conditional_zero_receipts_and_hold": true,
+    "linkedin_is_draft_not_posted": true,
+    "paper_elapsed_time_exclusion_explicit": true,
+    "paper_provider_price_is_cost_assumption": true
+  },
+  "previous_review": "publication/CLAIM_REVIEW.json",
+  "previous_review_file_sha256": "83b0a6109103ba578e4f5ac9790276efc6b01c2ff9c481f8b8bb98763c062a32",
+  "previously_reviewed_scientific_file_hash_changes": [],
+  "recipient_T6_review": {
+    "case_count": 6,
+    "complete_normalized_equal_case_pairs": 6,
+    "cost_and_claim_limits": "Execution/model/tool monetary costs are unmetered; timing is not converted to money. The six cases do not establish independent frontier-model competence, customer acceptance, real care, economic advantage or new admission. Economic retention remains HOLD.",
+    "distinct_recorded_process_ids": 12,
+    "normalization_removed_only": [
+      "elapsed_seconds"
+    ],
+    "process_log_rows": 12,
+    "purpose_and_authority": "The policy covers the declared two-employer/four-worker/two-child family with one declared positive anchor, new seeds and changed identities/times/constraints. The two routes copy public constructor/checker code, not evaluation answers. Local execution has separate research authorization; the verifier-role access signature remains assessment-only and conveys no live ENS or execution authority.",
+    "raw_equal_case_pairs": 0,
+    "recorded_order": {
+      "first_input_created_utc": "2026-10-27T19:41:23.821605+00:00",
+      "first_process_started_utc": "2026-10-27T19:41:23.825355+00:00",
+      "handoff_completed_utc": "2026-10-27T19:41:23.819655+00:00",
+      "handoff_started_utc": "2026-10-27T19:41:23.818059+00:00",
+      "independent_timestamp_attestation": false,
+      "last_input_created_utc": "2026-10-27T19:41:23.824764+00:00",
+      "last_process_finished_utc": "2026-10-27T19:41:24.797339+00:00",
+      "order_consistent": true,
+      "policy_freeze_utc": "2026-10-27T19:41:21.424621+00:00"
+    },
+    "reexecution_by_this_review": false,
+    "route_statuses": {
+      "authenticated_access_copy": {
+        "offered": 4,
+        "refused": 2
+      },
+      "ordinary_library_copy": {
+        "offered": 4,
+        "refused": 2
+      }
+    },
+    "saved_artifact_checks": {
+      "all12_output_files_match_logged_sha256": true,
+      "both_recipient_directories_contain_only_the_two_public_pinned_modules": true,
+      "input_before_after_hashes_match": true,
+      "policy_hash_matches_summary": true,
+      "six_saved_normalized_pairs_match_raw_results_after_only_elapsed_removal": true,
+      "twelve_case_route_pairs_are_distinct": true
+    },
+    "substantive_outcome": "Supported finite local portability claim with exact ordinary-library parity after the single declared timing-field exclusion.",
+    "successful_recorded_processes": 12
+  },
+  "reviewed_at_utc": "2026-10-27T19:51:36.052006+00:00",
+  "reviewer_scope": "Same-session agent fact review with a separate read-only agent review of LinkedIn/connected-example claims, not a human or externally independent scientific audit.",
+  "schema": "agi-alpha.final-publication-claim-addendum.v1",
+  "scope": "Existing-evidence fact and link check of current paper, executive brief, connected example and LinkedIn draft, with focused review of T6 recipient portability. No study, generator, solver, economic simulation, API or native job was rerun; no deliverable was edited by this reviewer.",
+  "unresolved_material_issues": [],
+  "verdict": "PASS_AFTER_FINAL_PRECISION_EDITS"
+}

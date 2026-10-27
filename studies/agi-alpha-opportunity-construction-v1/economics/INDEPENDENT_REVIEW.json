@@ -1,0 +1,1155 @@
+{
+  "schema": "agi-alpha.independent-economic-review.v1",
+  "reviewed_at_utc": "2026-10-27T19:19:46.546036+00:00",
+  "reviewer_scope": "Separate agent review of economics authored elsewhere in the same research session; not an external human audit or prospective customer acceptance. Reviewer authored the native adapter and human resource reference, so native checks are a reinspection rather than an independent authorship claim.",
+  "verdict": "Frozen company-accounting arithmetic and selected policy recompute. Commercial claims remain conditional. Explicit symmetric category allocation is feasible; reporting corrections and external-settlement boundaries must remain visible.",
+  "frozen_artifacts_unchanged": {
+    "economics_script": true,
+    "configuration": true,
+    "policy_selection": true,
+    "policy_freeze": true,
+    "technical_origin": true,
+    "technical_origin_result": true
+  },
+  "input_sha256": {
+    "economics_script": "6fb648061e840fd6c55a71d3ce1d4b3944f484884fc9c9d35c7977de022c6391",
+    "configuration": "4712c4326d2bece5995c357eca375517411c721678f68d51e6c7bda05d9f2d62",
+    "policy_selection": "26a35f7df0c0c2a0c469d6438a35450f7494ccd73904a4308935cdcfb99b6eeb",
+    "policy_freeze": "99a9ef5af24936baa4c007041da6a5b490790a0c91d0c33fae26ecb2b4df09c2",
+    "technical_origin": "5f58b1af44050ad5f03294378c35af0f9a13dd7c9f05fcf913a744e59b67b106",
+    "technical_origin_result": "9deb0c37829253ff0b5ecfa02151c16ee59e0e6eb01459db5dd39623b79a4995"
+  },
+  "freeze_validation": {
+    "valid": true,
+    "selected_policy": {
+      "deferred_fraction": 0.5,
+      "name": "750-half-30days",
+      "price_cad": 750
+    },
+    "confirmation_executed_at_freeze": false,
+    "confirmation_or_broad_seed_used_by_reviewer": false,
+    "new_confirmation_run_performed": false
+  },
+  "audit_execution": {
+    "selection_worlds_recomputed": 600,
+    "selection_seed_reused": 481120,
+    "hand_constructed_fixtures": "One-month acceptance, weak-employer, parent-refusal and above-cap cases; none use held-out seeds.",
+    "modified_frozen_file_or_result": false,
+    "held_out_random_worlds_generated": false
+  },
+  "arithmetic": {
+    "unit_cost_cad": {
+      "inference": [
+        {
+          "model": "gpt-6-astra",
+          "purpose": "Context, formulation, semantic review and recovery reasoning",
+          "input_mtokens": 0.8,
+          "output_mtokens": 0.15,
+          "input_usd_per_mtoken": 10,
+          "output_usd_per_mtoken": 50,
+          "usd": 15.5,
+          "cad": 21.7
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "purpose": "Construction, alternative schedules, executable checks and packaging",
+          "input_mtokens": 2.4,
+          "output_mtokens": 0.32,
+          "input_usd_per_mtoken": 2,
+          "output_usd_per_mtoken": 10,
+          "usd": 8.0,
+          "cad": 11.2
+        },
+        {
+          "model": "gpt-6.1-terra",
+          "purpose": "Routine bounded screen and document checks",
+          "input_mtokens": 0.2,
+          "output_mtokens": 0.03,
+          "input_usd_per_mtoken": 1,
+          "output_usd_per_mtoken": 5,
+          "usd": 0.35,
+          "cad": 0.48999999999999994
+        }
+      ],
+      "inference_cad": 33.39,
+      "non_inference_cad": 25.5,
+      "expected_recovery_cad": 8.0,
+      "per_attempt_cad": 66.89,
+      "preflight_refusal_cad": 15,
+      "measured_api_expenditure": null,
+      "status": "Assumed usage at documented unit prices; not metered expenditure"
+    },
+    "selection_mean_max_abs_recompute_error": 0.0,
+    "independently_rederived_company_identities_checked_worlds": 600,
+    "identity_failures": [],
+    "identities": [
+      "A = launch + attempts*unit cost + refusals*preflight + acquired leads*acquisition + active months*overhead",
+      "Service revenue = accepted packages*service fee",
+      "Collected service cash = service revenue - deferred bad debt",
+      "Operating profit = collected service cash - complete modeled A",
+      "Closing company cash = opening finance + operating profit",
+      "Maximum customer pass funding = accepted packages*20*CAD380; excluded from company cash"
+    ]
+  },
+  "selected_policy_development_results": {
+    "status": "Already observed policy-selection results only; not fresh confirmation",
+    "policy": {
+      "deferred_fraction": 0.5,
+      "name": "750-half-30days",
+      "price_cad": 750
+    },
+    "worlds": 600,
+    "mean_operating_profit_cad": 4825.3553,
+    "profit_p05_cad": -2000.0,
+    "profit_p50_cad": 5534.305,
+    "profit_p95_cad": 11777.114499999998,
+    "wind_down_fraction": 0.22166666666666668,
+    "positive_operating_profit_fraction": 0.775,
+    "mean_accepted_packages": 18.071666666666665,
+    "mean_complete_A_cad": 8592.7697,
+    "mean_service_revenue_cad": 13553.75,
+    "mean_bad_debt_cad": 135.625,
+    "mean_closing_company_cash_including_opening_finance_cad": 7325.3553,
+    "mean_spendable_cash_above_reserve_including_seed_cad": 6825.3553,
+    "mean_profit_less_B_assessment_and_historical_C_planning_estimate_cad": 3605.3553,
+    "actual_receipts_cad": 0,
+    "adverse_note": "About22.17% of selection worlds wind down; p05 is a CAD2000 operating loss. Preserve these beside the positive mean."
+  },
+  "symmetric_allocation_proof": {
+    "case_transformation": "Origin copied in memory with daily coordinator_fee_cents=3750; all original payer ceilings and technical constraints retained. No frozen artifact overwritten.",
+    "case_sha256": "cd5588d1aba209102656cbca921230ced378cace844e2ed6ee2409729f997556",
+    "separate_checker": {
+      "valid": true,
+      "checks_performed": 370,
+      "errors": [],
+      "scope": "Separately coded finite-input checker; no actual delivery or external acceptance."
+    },
+    "payer_totals_cents": {
+      "parent_E_A_W1": 4000,
+      "parent_E_A_W2": 4000,
+      "payer_E_A": 12875,
+      "parent_E_B_W1": 4000,
+      "parent_E_B_W2": 4000,
+      "payer_E_B": 12875
+    },
+    "allocation_entries": [
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "parent_E_A_W1",
+        "amount_cents": 4000
+      },
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "parent_E_A_W2",
+        "amount_cents": 4000
+      },
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "parent_E_B_W1",
+        "amount_cents": 4000
+      },
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "parent_E_B_W2",
+        "amount_cents": 4000
+      },
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "payer_E_A",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "primary:A_early",
+        "payer_id": "payer_E_B",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "standby:B_early",
+        "payer_id": "payer_E_A",
+        "amount_cents": 1000
+      },
+      {
+        "item_id": "standby:B_early",
+        "payer_id": "payer_E_B",
+        "amount_cents": 1000
+      },
+      {
+        "item_id": "backup_activation_reserve",
+        "payer_id": "payer_E_A",
+        "amount_cents": 8500
+      },
+      {
+        "item_id": "backup_activation_reserve",
+        "payer_id": "payer_E_B",
+        "amount_cents": 8500
+      },
+      {
+        "item_id": "worker:E_A_W2",
+        "payer_id": "payer_E_A",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "worker:E_A_W3",
+        "payer_id": "payer_E_A",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "worker:E_B_W2",
+        "payer_id": "payer_E_B",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "worker:E_B_W3",
+        "payer_id": "payer_E_B",
+        "amount_cents": 500
+      },
+      {
+        "item_id": "coordination_fee",
+        "payer_id": "payer_E_A",
+        "amount_cents": 1875
+      },
+      {
+        "item_id": "coordination_fee",
+        "payer_id": "payer_E_B",
+        "amount_cents": 1875
+      }
+    ],
+    "daily_cost_totals_cents": {
+      "primary_care": 17000,
+      "backup_standby": 2000,
+      "backup_activation_reserve": 17000,
+      "worker_compensation": 2000,
+      "coordination_fee": 3750
+    },
+    "employer_ceiling_cents_each": 14500,
+    "daily_maximum_coordination_fee_cents": 7000,
+    "monthly_selected_fee_cad": 750,
+    "monthly_maximum_pass_funding_cad": 7600,
+    "monthly_total_maximum_funding_with_fee_cad": 8350,
+    "monthly_parent_primary_care_contribution_cad": 3200,
+    "monthly_employer_maximum_funding_cad_each": 2575,
+    "expected_employer_private_cost_parts_cad": {
+      "base_consumed_pass_after_parents": 500.0,
+      "expected_backup_activation": 85.0,
+      "capital_charge": 21.25,
+      "buyer_HR_time": 90.625
+    },
+    "expected_employer_private_cost_before_service_fee_cad": 696.875,
+    "selected_service_fee_cad_each": 375,
+    "central_minimum_individual_employer_value_for_interest_cad": 1353.0092592592594,
+    "scope": "Technical funding-allocation feasibility, not executed funds or consent."
+  },
+  "buyer_refusal_fixtures": {
+    "one_high_one_zero_employer_accepted": 0,
+    "collective_parent_refusal_accepted": 0,
+    "price1500_above_cap_accepted": 0,
+    "all_expected_zero": true
+  },
+  "intramonth_cash_counterexample": {
+    "selling_months": 1,
+    "qualified_leads": 1,
+    "accepted_packages": 1,
+    "reported_minimum_company_cash_cad": 1588.11,
+    "independently_computed_pre_collection_cash_trough_cad": 1213.11,
+    "closing_cash_after_deferred_collection_cad": 1963.11,
+    "interpretation": "The existing minimum field is a month-end measure. The same scenario still conserves cash and respects the reserve."
+  },
+  "ABC_treatment": {
+    "A": "Operating launch, per-attempt/recovery, preflight, acquisition and active-month business overhead counted once. Pass-through care and refundable reserve excluded from company revenue/cost because company never owns or borrows them.",
+    "B": "Assessment120 is outside A and appears once in an after-B/C planning figure. Extraction180, invocation3 and maintenance are conditional future retention costs; HOLD means no current admission expenditure is assumed.",
+    "C": "Historical planning estimate1100 is outside A/B and appears once after operating profit. Actual complete research cost is unmetered, not verified at1100.",
+    "cash_boundary": "B/C are not debited inside simulated company cash. Opening finance must be interpreted as separately available working capital; paying B/C from it would require a new cash scenario.",
+    "central_retention_forward_net_excluding_sunk_assessment_cad": -72,
+    "central_retention_net_including_assessment_cad": -192
+  },
+  "native_selected_run_reinspection": {
+    "command": "python src/native_linkage.py --verify integration/selected-run (paths relative to study)",
+    "exit_code": 0,
+    "valid": true,
+    "insight_dossier_sha256": "17f87a904c432318edc93c85cecc6a2fe27760fefe842267ed550b054b5696fd",
+    "annex_sha256": "5f36fa006b9bdce1438d1bea9997e4d3f82e8d7c9502ee0465e6e419fb062d32",
+    "plan_root": "0x24ae59f9211a2264b2b448bf031cb2282b828e493d67b61cf6cf448259bf3bc0",
+    "native_drafts": 1,
+    "milestones": 4,
+    "total_native_bounty_base_units_fixture": "400",
+    "boundary": {
+      "funded": false,
+      "listed": false,
+      "milestone_commands_executed": false,
+      "minted": false,
+      "new_registry_or_authority": false,
+      "plaintext": true,
+      "research_only": true,
+      "rpc_used": false,
+      "source_urls_fetched_by_adapter": false,
+      "submitted_jobs": false,
+      "token_fields": "Unsubmitted native-format fixtures only; no value, price, funding, or CAD conversion.",
+      "wallet_connected": false
+    },
+    "scope": "Actual native recomputation and pure MARK checks pass; commands remain unsubmitted specifications and no live qualification follows."
+  },
+  "findings": [
+    {
+      "id": "IR-01",
+      "severity": "material linkage issue resolved by explicit proposed construction",
+      "status": "Explicit allocation independently checked in memory and in all20 saved monthly day witnesses; original origin preserved.",
+      "observation": "The original deterministic allocation assigns employer A CAD145/day and B CAD100/day at the original CAD25 daily fee, and assigns parent B contributions to refundable reserve. Merely equalizing total employer caps does not make expected consumed costs equal.",
+      "disposition": "Keep the origin result unchanged. Use an explicit category-specific allocation with all four parents paying CAD40/day to primary care, remaining shared costs split equally, and each employer paying its own CAD10/day worker compensation. At CAD37.50/day fee both employers fund CAD128.75/day.",
+      "impact": "The revised allocation matches the economics private-cost formula. Original greedy allocation alone does not support it."
+    },
+    {
+      "id": "IR-02",
+      "severity": "reporting defect",
+      "status": "Requires label correction; frozen primary profit arithmetic unaffected",
+      "observation": "minimum_company_cash_cad is updated initially and at month ends, not after every payment. A controlled one-month case reports CAD1588.11 although its intramonth pre-collection trough is CAD1213.11.",
+      "disposition": "Label it minimum observed month-end company cash. Do not describe it as a true intramonth minimum or independently established liquidity cushion.",
+      "impact": "Cash-outflow guards still preserve the modeled CAD500 reserve; this metric defect does not change modeled profit or policy selection."
+    },
+    {
+      "id": "IR-03",
+      "severity": "scope/reporting defect",
+      "status": "Frozen simulator still assumes closure; separate saved day witnesses support independently derived finite spend/refund identities, not actual external account settlement.",
+      "observation": "unsettled_customer_obligations_at_runoff_cad is set to zero as a literal. Customer_pass_funding_separate_cad accumulates maximum proposed pass funding; the simulator does not enumerate external care spending and refunds.",
+      "disposition": "Call external zero obligations a scenario closure assumption. A separate monthly ledger can verify spend plus refund equals funded exposure for each declared care scenario.",
+      "impact": "Company cash excludes these funds correctly, but that is not an all-participant settlement proof."
+    },
+    {
+      "id": "IR-04",
+      "severity": "required interpretation",
+      "status": "Arithmetic correct; label must state opening finance is included",
+      "observation": "available_growth_cash_cad=max(0,closing cash-500) includes remaining opening finance. At the selected policy its mean is CAD6825.3553 versus operating profit CAD4825.3553, a CAD2000 difference.",
+      "disposition": "Describe as spendable modeled company cash above reserve, including seed finance, not earned surplus or operating profit.",
+      "impact": "No hidden finance is included in profit; the risk is a misleading growth-cash headline."
+    },
+    {
+      "id": "IR-05",
+      "severity": "accounting boundary",
+      "status": "A/B/C coded separately once, subject to stated funding boundary",
+      "observation": "A includes launch, attempted work, refusals, acquired leads and active-month overhead once. B assessment CAD120 and historical C planning estimate CAD1100 are subtracted only in a separate after-B-and-C profit field, not in company cash paths. B extraction/invocation/maintenance appear only in prospective retention scenarios because retention is on HOLD.",
+      "disposition": "State that opening working finance is available after separately financed or sunk B/C work. If B/C must instead be paid from the same CAD2500, the existing liquidity/wind-down results do not apply unchanged. Actual C is unmetered; CAD1100 is not a complete measured research invoice.",
+      "impact": "Coding does not duplicate B/C in A. All-in profitability and cash readiness remain conditional on these scope/funding assumptions."
+    },
+    {
+      "id": "IR-06",
+      "severity": "conditional-demand limitation",
+      "status": "Preserve prominently",
+      "observation": "Price selection uses assumed qualified leads, prevented-shift values, contribution margins, confidence, competition haircut, liquidity discount, collective parent participation, eligibility and semantic acceptance. No actual quote, buyer approval, payment or delivered childcare is observed.",
+      "disposition": "Call CAD750 a selected simulated policy conditional on these parameters, not a market-validated service price. Report poor outcomes and wind-down alongside the mean.",
+      "impact": "Prospective software confirmation can test implementation under fresh random draws; it cannot validate demand or the assumed value distribution."
+    },
+    {
+      "id": "IR-07",
+      "severity": "buyer-participation scope",
+      "status": "Employer individual expected-value check passes; broader participation remains assumed",
+      "observation": "Code checks price/2 against the minimum of two employer willingness values, so a high-value employer cannot compensate for a low-value employer automatically. At central parameters each employer needs modeled undiscouted value of about CAD1353.0093. Parent willingness is a collective probability plus fixed caps; workers/providers rely on declared technical consent.",
+      "disposition": "Keep employer-specific participation separate from assumed parent/worker/provider acceptance. Require equal per-category funding/refund allocation and actual participant agreement for a real offering.",
+      "impact": "Equal full-funding caps are feasible, but caps and solver feasibility are not observed consent or realized benefits."
+    },
+    {
+      "id": "IR-08",
+      "severity": "unit and horizon boundary",
+      "status": "Arithmetic mapping verified; real monthly generalization unproven",
+      "observation": "Origin is one synthetic day with a CAD25 coordinator fee. Economics sells twenty repetitions at a CAD750 monthly fee, requiring CAD37.50 per daily equivalent. Daily consumed pass CAD210 plus reserve CAD170 equals CAD380; parent caps imply CAD3200/month and the original CAD70/day fee ceiling implies CAD1400/month.",
+      "disposition": "Preserve the origin and label the monthly wrapper as a new explicit transformation. Every repeated day must retain the same constraints or be rechecked; the pre-start single-world outage model does not promise mid-session transfers or simultaneous provider failures.",
+      "impact": "The scaled arithmetic is consistent once the new fee and allocation are explicit. It is not evidence of 20 days of actual service."
+    },
+    {
+      "id": "IR-09",
+      "severity": "cost-model limitation",
+      "status": "No additional corrective charge introduced",
+      "observation": "Per-attempt A is CAD66.89: inference33.39 + other delivery25.50 + expected recovery8.00. The postaccept correction allowance is charged on every attempt, including rejected ones, which is conservative relative to an acceptance-only event. Actual usage, request sizes, tools, real claims and staffing costs are not metered.",
+      "disposition": "Present the unit cost as an assumption at configured prices and keep the complete acquisition/overhead/launch ledger visible. Do not equate CAD66.89 with complete cost per accepted commercial package.",
+      "impact": "No actual expenditure or universal cost advantage is established."
+    },
+    {
+      "id": "IR-10",
+      "severity": "secondary sensitivity interpretation",
+      "status": "Informational; main paired policy selection is unaffected",
+      "observation": "All pricing policies share the same stored selection worlds. Some later sensitivity make_world calls regenerate job attributes when a changed beta draw consumes a different number of random numbers; in a 50-index selection-seed audit, changing semantic_acceptance to0.75 changed the job list for1 index.",
+      "disposition": "Do not describe those quality sensitivities as exact identical-lead causal experiments. They remain conditional simulations and no operational Alpha is measured. Preserve the zero-gain default.",
+      "impact": "This does not alter the already frozen price-family comparison, whose policies use identical world objects."
+    }
+  ],
+  "subsequent_finance_note_files_seen_at_write": {},
+  "required_reporting": [
+    "Label spendable cash as including opening finance.",
+    "Label minimum cash as minimum observed month-end cash.",
+    "Treat zero external runoff obligations as a scenario closure assumption unless a separate ledger verifies them.",
+    "Preserve original asymmetric technical result and separately disclose the new symmetric monthly construction.",
+    "Show adverse profit tails, wind-down, all modeled costs and unobserved demand.",
+    "Keep actual receipts and actual funded/publicly qualified status at zero/false."
+  ],
+  "limitations": [
+    "No fresh confirmation or broad uncertainty runs were executed by this reviewer.",
+    "This audit checks frozen program arithmetic and a separately reconstructed allocation, not future market success.",
+    "Complete real-world A, actual B and actual C costs are not measured by the stated planning assumptions.",
+    "The monthly package state inspected in the addendum passes finite checks. Any subsequently revised script/artifact must be rechecked by its recorded hashes; no real external settlement is observed."
+  ],
+  "monthly_package_reinspection": {
+    "observed_at_utc": "2026-10-27T19:21:03.833312+00:00",
+    "script_sha256": "787196e487e508e78491ba13a501d98c94510e95a204c61b656fda3228c65983",
+    "contract_sha256": "8f397162aaeb85a7f1c8f5d3834e8dfe6b92147c869adf74042bca55af208858",
+    "day_witnesses_sha256": "fbfbcffe8c34f79c73d8328a249e5505b8625844176cd25e041aa31424d4b50d",
+    "days_checked": 20,
+    "daily_checks": [
+      {
+        "day": 1,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 2,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 3,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 4,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 5,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 6,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 7,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 8,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 9,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 10,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 11,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 12,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 13,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 14,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 15,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 16,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 17,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 18,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 19,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      },
+      {
+        "day": 20,
+        "valid": true,
+        "checks": 370,
+        "case_hash_matches": true,
+        "offer_hash_matches": true
+      }
+    ],
+    "all_daily_verifications_pass": true,
+    "only_origin_changes_case_id_and_daily_fee": true,
+    "policy_hash_matches": true,
+    "service_payment_split_cad": [
+      375.0,
+      375.0
+    ],
+    "maximum_nominal_customer_liability_cad": 8350.0,
+    "pass_prefunding_outside_company_cad": 7600,
+    "independently_derived_day_scenario_settlements": [
+      {
+        "day": 1,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 1,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 1,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 2,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 2,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 2,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 3,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 3,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 3,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 4,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 4,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 4,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 5,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 5,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 5,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 6,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 6,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 6,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 7,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 7,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 7,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 8,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 8,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 8,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 9,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 9,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 9,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 10,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 10,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 10,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 11,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 11,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 11,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 12,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 12,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 12,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 13,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 13,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 13,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 14,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 14,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 14,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 15,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 15,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 15,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 16,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 16,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 16,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 17,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 17,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 17,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 18,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 18,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 18,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 19,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 19,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 19,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 20,
+        "scenario": "backup_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 20,
+        "scenario": "normal",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 21000,
+        "refunded_cents": 17000,
+        "identity_holds": true,
+        "employer_refund_cents_each": 8500,
+        "parent_refund_cents_each": 0
+      },
+      {
+        "day": 20,
+        "scenario": "primary_provider_absent",
+        "pass_funded_cents": 38000,
+        "pass_consumed_cents": 38000,
+        "refunded_cents": 0,
+        "identity_holds": true,
+        "employer_refund_cents_each": 0,
+        "parent_refund_cents_each": 0
+      }
+    ],
+    "all_60_day_scenario_pass_identities_hold": true,
+    "monthly_closure_reason": "Each day has segregated pass funds and the same spent-plus-refunded identity in every declared world. Summing these identities establishes closure for every sequence of the 20 declared daily worlds without enumerating all 3^20 sequences.",
+    "normal_month_pass_spend_cad": 4200,
+    "normal_month_pass_refund_cad": 3400,
+    "all_primary_absent_month_pass_spend_cad": 7600,
+    "all_primary_absent_month_pass_refund_cad": 0,
+    "scope": "Exact finite scenario-accounting identities only; no observed deposit, provider payment, refund, live consent or care delivery."
+  }
+}

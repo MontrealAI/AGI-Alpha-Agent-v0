@@ -1,0 +1,341 @@
+{
+  "schema": "agi-alpha.independent-audit.v1",
+  "phase": "post-selection",
+  "status": "Complete: V1 defects preserved; separately frozen V2 corrections and genuinely new finite-family confirmation passed",
+  "original_discovery_preserved": true,
+  "auditor": {
+    "identity": "Separate discovery_u agent acting on a new post-selection task",
+    "declared_model_label": "GPT-6 Astra Pro",
+    "independence": "A separate agent prepared the fresh generator and exhaustive oracle before seeing the engineer solver. This is not independent human, institutional, customer or regulatory acceptance.",
+    "did_not_edit_engineer_sources": true,
+    "prerun_oracle": {
+      "sha256": "bc48d1e67175a1c9c0a0ed1605f2da19e3bdf5bfc320cbd6bcf5a1a70f1fcf7a",
+      "timestamp": "2026-10-27 19:14:16 UTC",
+      "path": "/tmp/alpha_e1_audit_core.py",
+      "fresh_case_count": 48,
+      "precomputed_expected_feasible": 39,
+      "precomputed_expected_infeasible": 9
+    }
+  },
+  "scope": {
+    "horizon": "One synthetic operating day; at most one realized mutually exclusive scenario, with outages announced before care starts.",
+    "protection": "Exact declared employer quotas; individual permitted shifts and care locations; full commute-inclusive care; stated qualification, staffing, capacity and availability constraints; all cost obligations and eligible payer ceilings; finite prefunded backup.",
+    "excluded": "Actual consent, licensed care, legal ratios, production skill requirements absent from the input, operational childcare delivery, enforceable contracts, real demand, customer acceptance, net profit and unenumerated or zero-notice mid-session disruptions.",
+    "funding_interpretation": "The implementation permits payment for a pooled item when the payer's declared beneficiary set intersects the item's set. This is an eligibility rule, not proportional cost sharing or a fairness guarantee."
+  },
+  "v1": {
+    "frozen_at_utc": "2026-10-27T19:15:00.540472+00:00",
+    "constructor_sha256": "0dab53421864b6cae9576144397bb70acecb471ffaea43e37962a62defae5d02",
+    "checker_sha256": "22ee4cdae748f5426f8482f63141b450f7eaa83be476382fa4ba78b1ce9dd16e",
+    "audit_runner_sha256": "6f4f94ef080fa3937e7c6713fd3a01bcab3314cb828437ab938f3b8d9015f2f1",
+    "oracle_sha256": "bc48d1e67175a1c9c0a0ed1605f2da19e3bdf5bfc320cbd6bcf5a1a70f1fcf7a",
+    "evidence": {
+      "source_snapshot": "technical/independent_audit/v1_snapshot/",
+      "fresh_inputs": "technical/independent_audit/fresh_cases.json",
+      "detailed_results": "results/independent_audit_v1_raw.json",
+      "exact_unexpected_acceptances": "technical/independent_audit/v1_unexpected_acceptances.json",
+      "audit_runner": "src/independent_audit.py",
+      "case_generator_and_exhaustive_oracle": "src/independent_audit_cases.py"
+    },
+    "fresh_case_results": {
+      "total": 48,
+      "expected_feasible": 39,
+      "expected_refused": 9,
+      "matched_independent_feasibility_and_optimum": 48,
+      "matched_independent_fee_boundary": 48,
+      "same_formulation_conventional_parity": 48,
+      "independently_accepted_offered_witnesses": 39,
+      "status_quo_comparison": [
+        {
+          "joint_feasible": true,
+          "fixed_roster_pooled_feasible": true,
+          "cases": 23
+        },
+        {
+          "joint_feasible": true,
+          "fixed_roster_pooled_feasible": false,
+          "cases": 16
+        },
+        {
+          "joint_feasible": false,
+          "fixed_roster_pooled_feasible": false,
+          "cases": 9
+        }
+      ],
+      "interpretation": "These are deliberately bounded generated cases varying consented choices, commute margins, prices, compensation and budgets, not a representative sample of employers or childcare markets. The conventional coordinator receives the same full formulation and ties."
+    },
+    "semantic_cases": {
+      "total": 13,
+      "matched_reference": 13,
+      "feasible_reference": 1,
+      "required_refusals": 12
+    },
+    "tamper_cases": {
+      "total": 26,
+      "rejected": 18,
+      "incorrectly_accepted": 8,
+      "breakdown": [
+        {
+          "class": "Underlying constraint changes, with input hash rebound so hash mismatch cannot be the only rejection",
+          "tests": 8,
+          "rejected": 8
+        },
+        {
+          "class": "Witness changes including missing care/scenarios, failed provider, payment/fee corruption and delivery mislabel",
+          "tests": 10,
+          "rejected": 10
+        },
+        {
+          "class": "Derived contract summaries",
+          "tests": 4,
+          "rejected": 0
+        },
+        {
+          "class": "Unsupported input domain accepted by standalone checker",
+          "tests": 4,
+          "rejected": 0
+        }
+      ],
+      "incorrect_acceptances": [
+        "backup_offer_summary_erased",
+        "reserved_staff_summary_erased",
+        "serialized_worker_permission_changed",
+        "serialized_worker_employer_changed",
+        "unsupported_two_realized_worlds",
+        "unsupported_two_day_horizon",
+        "synthetic_flag_removed",
+        "unsupported_currency"
+      ]
+    },
+    "malformed_constructor_inputs": {
+      "tests": 5,
+      "rejected": 5
+    },
+    "search_limit_test": {
+      "passed": true,
+      "behavior": "Returns search_limit_not_a_refusal_proof, no offer and non-exhaustive status; does not confuse search exhaustion with infeasibility."
+    },
+    "large_integer_metamorphic_test": {
+      "uniform_money_scale": 1000000000,
+      "independent_expected_feasible": true,
+      "independent_optimum_cents": 29840000000000,
+      "constructor_candidate_cost_cents": 29840000000000,
+      "observed_status": "checker_rejected",
+      "failure": "The separately coded funding check uses fixed 10**12 capacities as if infinite; allowed integer amounts can exceed that bound.",
+      "effect": "False rejection of a valid declared input. No false funding acceptance was observed."
+    },
+    "origin_reproduction": {
+      "package_cents": 40500,
+      "fixed_roster_pooled_care": "refused",
+      "flexible_without_opening_commitment": "refused",
+      "combined": "offered",
+      "ordinary_exact_same_formulation": "offered",
+      "independent_purpose_acceptance": true
+    },
+    "verdict": "Constructor outcomes and offered physical/financial plans passed this fresh restricted-family audit. V1's standalone acceptance checker is incomplete for supported-domain guards and several machine-consumed witness summaries, and has a large-integer false-rejection defect. V1 must not be described as passing all acceptance/tamper checks."
+  },
+  "defect_register": [
+    {
+      "id": "AUDIT-01",
+      "component": "V1 standalone verifier",
+      "defect": "No independent supported-domain guard for one day, one realized world, synthetic=true and CAD currency.",
+      "evidence": "Four rebound-input tamper cases were incorrectly accepted.",
+      "impact": "The normal constructor rejects those inputs, so this is a standalone-checker domain defect rather than an observed unsafe constructor output.",
+      "requested_correction": "Independently validate the supported input domain before accepting a certificate.",
+      "v2_status": "Corrected on disclosed regressions; original V1 defect retained in evidence",
+      "v2_correction_evidence": "All four prior unsupported-domain tamper pairs rejected by V2 standalone domain checks."
+    },
+    {
+      "id": "AUDIT-02",
+      "component": "V1 witness binding",
+      "defect": "Serialized worker employer/permitted shifts and backup offer/staff-reservation summaries were not checked.",
+      "evidence": "Four altered or erased contract summaries were incorrectly accepted.",
+      "impact": "The underlying physical plans still satisfy original inputs, but the accepted exported artifact can misstate its commitments or consent information.",
+      "requested_correction": "Bind all machine-consumed commitment and worker fields to reconstructed values.",
+      "v2_status": "Corrected on disclosed regressions; original V1 defect retained in evidence",
+      "v2_correction_evidence": "All four prior corrupted summary pairs rejected; twelve new certificate corruptions also rejected."
+    },
+    {
+      "id": "AUDIT-03",
+      "component": "V1 verifier funding flow",
+      "defect": "A fixed numeric capacity stands in for infinity although monetary input bounds are not capped at that amount.",
+      "evidence": "Uniform money scaling preserves feasibility and produces the correct candidate optimum, then the verifier rejects its fee-boundary claim.",
+      "impact": "False rejection within the stated unbounded integer-cent input domain.",
+      "requested_correction": "Use exact item demand or a derived finite bound rather than a magic constant.",
+      "v2_status": "Corrected on disclosed regressions; original V1 defect retained in evidence",
+      "v2_correction_evidence": "The previously rejected 1e9-scaled feasible case is offered at the independent optimum of 29,840,000,000,000 cents and passes V2 acceptance."
+    }
+  ],
+  "correction_protocol": {
+    "preserve_v1": "All V1 code snapshots, cases, raw outcomes and accepted corruptions are retained unchanged.",
+    "disclosed_cases": "After disclosure to the engineer, V1 cases and corruptions become regression/development evidence, not fresh transfer evidence.",
+    "v2_policy": "Wait for a separately frozen corrected source set; then generate new undisclosed seeds with renamed identities and changed parameters and test new corruptions. Report regression separately from fresh confirmation.",
+    "outstanding": "None for this bounded audit. Future uses require their own input-meaning and operational checks.",
+    "completed_v2": "Exact frozen V2 source bytes checked; twelve new undisclosed cases and twenty new corruptions run after freeze; disclosed V1 regressions reported separately.",
+    "v1_checkpoint": "technical/independent_audit/v1_snapshot/INDEPENDENT_AUDIT_CHECKPOINT.json"
+  },
+  "contribution_interpretation": {
+    "earned_now": "A finite synthetic integration can produce purpose-preserving funded arrangements under the tested inputs, with independent reference agreement. This is a constructive artifact result.",
+    "parity": "Conventional same-formulation parity is expected and observed. It prevents an execution-superiority or uniquely AGI-capable claim.",
+    "novelty": "Prior-art work already contains most component capabilities. The remaining contribution is a narrow tested integration in this study, not established historical firstness or an exclusive new market mechanism.",
+    "reservations": "V1 acceptance omissions remain main evidence. Novelty of the entire combination remains unresolved; many components are prior art. These tests establish neither real childcare, real consent, customer adoption, actual economics, uniquely model-enabled construction nor beyond-human foresight.",
+    "earned_after_v2": "A narrow constructive integration is earned within the tested finite synthetic domain: explicit worker choices, employer coverage, complete care, staffing, eligible funding and finite prefunded contingencies are assembled into a checked arrangement. V2 passes twelve fresh cases and twenty corruptions after correcting failures exposed in V1. Conventional execution parity remains exact."
+  },
+  "post_selection_novelty_report": "sources/POST_SELECTION_NOVELTY.json",
+  "timing": {
+    "v1_audit_summary_recorded_at_utc": "2026-10-27 19:20:42 UTC",
+    "v2_frozen_at_utc": "2026-10-27T19:35:00.112763+00:00",
+    "v2_confirmation_started_at_utc": "2026-10-27T19:35:31.787238+00:00",
+    "v2_confirmation_finished_at_utc": "2026-10-27T19:35:32.549375+00:00",
+    "v2_summary_recorded_at_utc": "2026-10-27T19:36:43.093692+00:00"
+  },
+  "report_revision": 2,
+  "v2": {
+    "frozen_at_utc": "2026-10-27T19:35:00.112763+00:00",
+    "constructor_sha256": "4a57ec8f74c72c85c6209b4123692af5c95ac63ca15e856a3626bfdf5c3d1406",
+    "checker_sha256": "aa673747ebca69ea44d5ce70c251216705d103f39c4ae85c7e120d1be226cd51",
+    "source_pins_unchanged_after_run": true,
+    "audit_runner_sha256": "9005c64639321850c38bd031dac96f49ff67c8b1cc49ba8628e569d38179769b",
+    "evidence": {
+      "source_snapshot": "technical/independent_audit/v2_snapshot/",
+      "freeze_manifest": "technical/FROZEN_TECHNICAL_V2.json",
+      "correction_record": "technical/V2_CORRECTION_RECORD.json",
+      "fresh_policy": "technical/independent_audit/FRESH_V2_POLICY.json",
+      "fresh_inputs": "technical/independent_audit/v2_fresh_cases.json",
+      "exact_fresh_tamper_pairs": "technical/independent_audit/v2_fresh_tamper_pairs.json",
+      "detailed_results": "results/independent_audit_v2_raw.json",
+      "audit_runner": "src/independent_audit_v2.py"
+    },
+    "evidence_sha256": {
+      "freeze_manifest": "5a09dd91fff2108c21b43e5615fd8cb616b7a4d3427faedcc902bdeb2802da57",
+      "correction_record": "8693217f076eb0f4122888afed036fe47e16a43b9d49563cb1668d1026e8bad3",
+      "fresh_policy": "fba7aec8773dec0f3a2fd0650ad2470331ee97178ed5766bd1b6d238b95c376c",
+      "fresh_inputs": "6d8f01a061a2c3e19e4008c0b1f2e975d228fc0d615f6f7e33f8b6be9fe65c0f",
+      "exact_fresh_tamper_pairs": "1aa1d28a5c6b04a9c70493abfb9a66341c630db25cf9c231930024b382463cf9",
+      "detailed_results": "2fbb96185e84ea6078561fe0ed36bf3db0c8de3f20624ae11fe0aa1d63bdb771",
+      "audit_runner": "9005c64639321850c38bd031dac96f49ff67c8b1cc49ba8628e569d38179769b"
+    },
+    "freshness": {
+      "case_generation_and_policy_time_utc": "2026-10-27T19:35:31.787238+00:00",
+      "execution_finished_at_utc": "2026-10-27T19:35:32.549375+00:00",
+      "source_freeze_preceded_case_generation": true,
+      "master_seed": 1189015800197254748,
+      "seeds_disclosed_to_engineer_only_after_completion": true,
+      "fresh_case_selection": "Twelve seeds drawn once after final V2 source pins; no replacement based on solver outcome. Eight varied cases including one positive anchor; four prespecified refusal mechanisms. All identities except protocol normal key renamed, schedules retimed, commute changed.",
+      "source_changes_after_new_cases_seen": false,
+      "no_post_outcome_seed_replacement": true,
+      "scope": "New cases within the previously declared small synthetic family, not a new application distribution or real-world deployment."
+    },
+    "fresh_case_results": {
+      "total": 12,
+      "expected_feasible": 6,
+      "expected_refused": 6,
+      "matched_independent_feasibility_and_optimum": 12,
+      "matched_independent_fee_boundary": 12,
+      "same_formulation_conventional_parity": 12,
+      "independently_accepted_offered_witnesses": 6,
+      "status_quo_comparison": [
+        {
+          "joint_feasible": false,
+          "fixed_feasible": false,
+          "cases": 6
+        },
+        {
+          "joint_feasible": true,
+          "fixed_feasible": false,
+          "cases": 3
+        },
+        {
+          "joint_feasible": true,
+          "fixed_feasible": true,
+          "cases": 3
+        }
+      ],
+      "reference": "Unchanged independent exhaustive oracle originally authored before V1 source inspection; independent minute-occupancy and financial-obligation reconstruction checks each offered witness.",
+      "interpretation": "Three cases are feasible only after the declared joint roster and commitment changes; three are feasible under either joint or fixed-roster pooled care; six are infeasible under both. The competent same-formulation conventional control ties in all twelve."
+    },
+    "fresh_tamper_cases": {
+      "total": 20,
+      "rejected": 20,
+      "incorrectly_accepted": 0,
+      "certificate_corruptions": 12,
+      "purpose_constraint_changes_with_rebound_input_hash": 8,
+      "purpose_constraint_changes_independently_rejected": 8,
+      "tested_certificate_fields": [
+        "repeatable workload and future revalidation",
+        "new commitments and changed-worker lists",
+        "child parent and care role",
+        "primary invoice unit price",
+        "backup reserve refund term",
+        "opening staff plan",
+        "full provided care interval",
+        "payer total bijection",
+        "employer output row bijection"
+      ],
+      "tested_purpose_constraints": [
+        "individual shift consent",
+        "individual backup-location consent",
+        "full commute-inclusive interval",
+        "qualified backup staffing",
+        "physical location capacity",
+        "funding ceiling",
+        "finite staff standby obligation",
+        "notice before care begins"
+      ],
+      "interpretation": "All deliberately corrupt fresh certificates were rejected. This finite test set does not prove universal verifier completeness."
+    },
+    "disclosed_v1_regression": {
+      "classification": "Previously disclosed development/regression evidence; none of these counts is added to fresh V2 confirmation.",
+      "prior_incorrect_acceptances_total": 8,
+      "prior_incorrect_acceptances_now_rejected": 8,
+      "prior_fresh_cases_replayed": 48,
+      "reference_and_control_matches": 48,
+      "prior_valid_offered_witnesses": 39,
+      "prior_valid_witnesses_still_accepted": 39,
+      "prior_semantic_cases_replayed": 13,
+      "prior_semantic_cases_matched": 13,
+      "large_integer_scaling": {
+        "expected_cost_cents": 29840000000000,
+        "observed_cost_cents": 29840000000000,
+        "observed_status": "offered",
+        "passed": true,
+        "acceptance_check": {
+          "valid": true,
+          "checks_performed": 254,
+          "errors": [],
+          "scope": "Separately coded finite-input checker v2; no actual delivery or external acceptance.",
+          "checker_version": "v2"
+        }
+      }
+    },
+    "origin_reproduction": {
+      "statuses": {
+        "fixed_roster_pooled_care": "refused",
+        "flexible_without_opening_commitment": "refused",
+        "combined": "offered",
+        "ordinary_exact_same_formulation": "offered"
+      },
+      "package_cents": 40500,
+      "independent": {
+        "accepted": true,
+        "errors": [],
+        "method": "direct minute occupancy and independently reconstructed obligations"
+      },
+      "control_parity": true
+    },
+    "verdict": "V2 corrects the three identified V1 defect classes on their disclosed regressions and passes the independently selected new finite-family cases and corruptions. Its integrated construction is supported within the stated synthetic domain; no universal correctness, operational delivery or execution superiority is established."
+  },
+  "preservation_confirmation": {
+    "v1_section_canonical_sha256": "79fa0eaacc33e64fd1b431d3ed6c22b9bb340c18ee0fb3c8e78139c3552a09db",
+    "v1_section_unchanged": true,
+    "files_unchanged_from_engineer_v2_freeze": {
+      "results/independent_audit_v1_raw.json": true,
+      "technical/independent_audit/v1_unexpected_acceptances.json": true,
+      "src/e1_instrument.py": true,
+      "src/e1_verify.py": true,
+      "technical/origin_result.json": true,
+      "technical/input_schema.json": true
+    },
+    "v1_checkpoint_sha256": "f84fada14d423a124a01e79cf87c71b747d5267154d0d483f28a42b6361689e9"
+  }
+}

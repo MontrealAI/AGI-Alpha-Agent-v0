@@ -1,0 +1,786 @@
+{
+  "schema": "agi-alpha.human-development-reference.v1",
+  "created_utc": "2026-10-27 19:12:34 UTC",
+  "candidate_id": "E1",
+  "title": "Competent human-led resource reference for a joint employer roster and proposed funded childcare cohort",
+  "status": "Modeled development and operating resource reference; no observed human service or price",
+  "offering": {
+    "unit": "One verified monthly coordination/commitment package",
+    "employers": 2,
+    "children": 4,
+    "care_status": "Care is delivered only by an appropriate external provider; no care delivery is assumed here.",
+    "funding_status": "No actual funds, executed commitment or funded capacity are established by this reference.",
+    "not_included": [
+      "Actual childcare",
+      "Legal advice",
+      "Licensing or authority granted by a research artifact",
+      "New premises or provider staffing",
+      "Guarantee of employer, parent or provider acceptance"
+    ]
+  },
+  "reference_design": {
+    "participant_observed": false,
+    "human_time_study_performed": false,
+    "supplier_or_consultant_quotes_observed": false,
+    "human_service_market_price_cad": null,
+    "comparison_type": "Wage-anchored task/resource model with explicit analyst assumptions",
+    "competence": "A practitioner/team competent in small constraint models, operations verification and employer/participant coordination, reusing ordinary tools and the same available native components.",
+    "staffing": "One technical lead plus fractional HR/coordination expertise; one competent individual may cover both skill sets. These are effort categories, not a requirement to hire two full-time staff.",
+    "independence": "This reference is post-discovery work. It does not revise H_proxy.json or infer that these later facts were available during discovery."
+  },
+  "wage_inputs_cad_per_hour": {
+    "industrial_engineer": {
+      "low": 30.55,
+      "central": 44.94,
+      "high": 65.19
+    },
+    "hr_coordinator": {
+      "low": 25.0,
+      "central": 31.25,
+      "high": 46.63
+    },
+    "ece_context_only": {
+      "low": 16.6,
+      "central": 24.0,
+      "high": 30.03
+    },
+    "hr_professional_sensitivity": {
+      "low": 26.0,
+      "central": 42.31,
+      "high": 57.69
+    }
+  },
+  "wage_role_sources": {
+    "industrial_engineer": "JB-IE",
+    "hr_coordinator": "JB-HR",
+    "ece_context_only": "JB-ECE",
+    "hr_professional_sensitivity": "JB-HRP"
+  },
+  "composite_overhead": {
+    "multipliers": {
+      "low": 1.2,
+      "central": 1.35,
+      "high": 1.5
+    },
+    "interpretation": "One general employer/office/shared-support allowance on direct wage labor only. It is an assumption, not a statutory rate or consultancy markup.",
+    "included": "Employer burden and non-task-specific general support/tool availability.",
+    "not_reapplied": "No separate payroll burden, utilization factor, task-specific project-management charge or profit markup.",
+    "task_hours_included_first": true,
+    "source": "A07-A09; analyst assumptions"
+  },
+  "one_time_development": {
+    "tasks": [
+      {
+        "id": "dev-intake",
+        "task": "Constraint intake and authorized-input specification",
+        "hours": {
+          "industrial_engineer": {
+            "low": 1,
+            "central": 2,
+            "high": 4
+          },
+          "hr_coordinator": {
+            "low": 3,
+            "central": 6,
+            "high": 10
+          }
+        },
+        "deliverable": "Two employer coverage/roster constraints, four family availability/eligibility records, provider assumptions, consent and data-use boundary, unresolved-input list.",
+        "boundary": "Preparation and clarification work; obtaining final employer/parent assent and provider authority is an external prerequisite."
+      },
+      {
+        "id": "dev-offer",
+        "task": "Offer, commitments, rights and contingency design",
+        "hours": {
+          "industrial_engineer": {
+            "low": 1,
+            "central": 2,
+            "high": 4
+          },
+          "hr_coordinator": {
+            "low": 3,
+            "central": 6,
+            "high": 10
+          }
+        },
+        "deliverable": "Scope of monthly coordination package, proposed cost/commitment allocation, withdrawal/change rules, nonperformance contingencies and explicit care-provider responsibilities.",
+        "boundary": "Operational term design and issue spotting, not legal advice, licensing approval, binding commitments or funds received."
+      },
+      {
+        "id": "dev-construct",
+        "task": "Construct joint roster/cohort model and reproducible package",
+        "hours": {
+          "industrial_engineer": {
+            "low": 4,
+            "central": 8,
+            "high": 16
+          },
+          "hr_coordinator": {
+            "low": 0.5,
+            "central": 1,
+            "high": 2
+          }
+        },
+        "deliverable": "Small executable constraint model, funding-obligation ledger and reusable monthly outputs using existing solver/spreadsheet and repository components.",
+        "boundary": "No new solver or commercial platform is presumed necessary; physical childcare is not constructed by the model."
+      },
+      {
+        "id": "dev-verify",
+        "task": "Verify constraints, counterfactuals and contingency cases",
+        "hours": {
+          "industrial_engineer": {
+            "low": 3,
+            "central": 6,
+            "high": 12
+          },
+          "hr_coordinator": {
+            "low": 0.5,
+            "central": 1,
+            "high": 2
+          }
+        },
+        "deliverable": "Independent checks of hard constraints, costs and obligations; ordinary-outside-option comparison; infeasible/withdrawal cases; traceable test results.",
+        "boundary": "Internal technical/operational review, not observation of parent acceptance, qualified care delivery or executed funding."
+      },
+      {
+        "id": "dev-package",
+        "task": "Package evidence, operating instructions and native artifacts",
+        "hours": {
+          "industrial_engineer": {
+            "low": 2,
+            "central": 4,
+            "high": 8
+          },
+          "hr_coordinator": {
+            "low": 1,
+            "central": 2,
+            "high": 4
+          }
+        },
+        "deliverable": "Versioned inputs/outputs, evidence links, rights/uncertainty register, readable offer and operating checklist; existing native adapters may be reused.",
+        "boundary": "No bespoke on-chain implementation, marketing campaign, legal opinion or customer acquisition campaign included."
+      },
+      {
+        "id": "dev-review",
+        "task": "Walkthrough, corrections and release of a reviewable package",
+        "hours": {
+          "industrial_engineer": {
+            "low": 1,
+            "central": 2,
+            "high": 3
+          },
+          "hr_coordinator": {
+            "low": 1,
+            "central": 2,
+            "high": 4
+          }
+        },
+        "deliverable": "One internal walkthrough and bounded corrections, with an explicit accept/reject/conditional release record.",
+        "boundary": "Project-specific review time is already counted here; no extra project-management surcharge or mandatory agent manual-review hours are added."
+      }
+    ],
+    "cost_scenarios": {
+      "low": {
+        "person_hours_by_role": {
+          "industrial_engineer": 12.0,
+          "hr_coordinator": 9.0
+        },
+        "total_person_hours": 21.0,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 366.6,
+          "hr_coordinator": 225.0
+        },
+        "direct_wage_cost_cad": 591.6,
+        "single_composite_overhead_multiplier": 1.2,
+        "overhead_increment_cad": 118.32,
+        "total_modeled_resource_cost_cad": 709.92,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      },
+      "central": {
+        "person_hours_by_role": {
+          "industrial_engineer": 24.0,
+          "hr_coordinator": 18.0
+        },
+        "total_person_hours": 42.0,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 1078.56,
+          "hr_coordinator": 562.5
+        },
+        "direct_wage_cost_cad": 1641.06,
+        "single_composite_overhead_multiplier": 1.35,
+        "overhead_increment_cad": 574.37,
+        "total_modeled_resource_cost_cad": 2215.43,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      },
+      "high": {
+        "person_hours_by_role": {
+          "industrial_engineer": 47.0,
+          "hr_coordinator": 32.0
+        },
+        "total_person_hours": 79.0,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 3063.93,
+          "hr_coordinator": 1492.16
+        },
+        "direct_wage_cost_cad": 4556.09,
+        "single_composite_overhead_multiplier": 1.5,
+        "overhead_increment_cad": 2278.05,
+        "total_modeled_resource_cost_cad": 6834.14,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      }
+    },
+    "active_working_days_assumption": {
+      "low": 3,
+      "central": 6,
+      "high": 12
+    },
+    "elapsed_calendar_weeks_assumption": {
+      "low": 1,
+      "central": 2,
+      "high": 4
+    },
+    "duration_condition": "Sufficiently complete authorized inputs and access to existing tools; external prerequisite delays are unknown and excluded from this development-only duration.",
+    "external_waiting_time": null,
+    "cost_formula": "sum_over_roles(sum_task_hours(role, scenario) * published_wage(role, scenario)) * one_composite_overhead_factor(scenario)"
+  },
+  "recurring_operation": {
+    "period": "One month / one release / same two employers and four children",
+    "tasks": [
+      {
+        "id": "ops-intake",
+        "task": "Refresh availability, constraints and permission changes",
+        "hours": {
+          "industrial_engineer": {
+            "low": 0,
+            "central": 0.25,
+            "high": 0.5
+          },
+          "hr_coordinator": {
+            "low": 0.5,
+            "central": 1,
+            "high": 2
+          }
+        },
+        "deliverable": "Monthly change set for the same two employers/four children."
+      },
+      {
+        "id": "ops-rerun",
+        "task": "Rerun roster, contribution ledger and contingency checks",
+        "hours": {
+          "industrial_engineer": {
+            "low": 0.5,
+            "central": 1,
+            "high": 2
+          },
+          "hr_coordinator": {
+            "low": 0,
+            "central": 0.25,
+            "high": 0.5
+          }
+        },
+        "deliverable": "Updated feasible or explicitly infeasible plan with funding obligations reconciled."
+      },
+      {
+        "id": "ops-coordinate",
+        "task": "Coordinate the proposed commitments and bounded exceptions",
+        "hours": {
+          "industrial_engineer": {
+            "low": 0,
+            "central": 0,
+            "high": 0.5
+          },
+          "hr_coordinator": {
+            "low": 1,
+            "central": 2,
+            "high": 4
+          }
+        },
+        "deliverable": "Status of requested employer/parent/provider commitments; unresolved items are not represented as signed or funded."
+      },
+      {
+        "id": "ops-check",
+        "task": "Check changed outputs and preserve the evidence record",
+        "hours": {
+          "industrial_engineer": {
+            "low": 0.25,
+            "central": 0.75,
+            "high": 1.5
+          },
+          "hr_coordinator": {
+            "low": 0.25,
+            "central": 0.5,
+            "high": 1
+          }
+        },
+        "deliverable": "Recorded hard-constraint, obligation and version-integrity checks."
+      },
+      {
+        "id": "ops-deliver",
+        "task": "Prepare monthly delivery and routine account administration",
+        "hours": {
+          "industrial_engineer": {
+            "low": 0,
+            "central": 0,
+            "high": 0.25
+          },
+          "hr_coordinator": {
+            "low": 0.25,
+            "central": 0.5,
+            "high": 1
+          }
+        },
+        "deliverable": "Reviewable monthly coordination package and routine delivery/account records; no automatic third-party sending implied."
+      }
+    ],
+    "cost_scenarios": {
+      "low": {
+        "person_hours_by_role": {
+          "industrial_engineer": 0.75,
+          "hr_coordinator": 2.0
+        },
+        "total_person_hours": 2.75,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 22.91,
+          "hr_coordinator": 50.0
+        },
+        "direct_wage_cost_cad": 72.91,
+        "single_composite_overhead_multiplier": 1.2,
+        "overhead_increment_cad": 14.58,
+        "total_modeled_resource_cost_cad": 87.5,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      },
+      "central": {
+        "person_hours_by_role": {
+          "industrial_engineer": 2.0,
+          "hr_coordinator": 4.25
+        },
+        "total_person_hours": 6.25,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 89.88,
+          "hr_coordinator": 132.81
+        },
+        "direct_wage_cost_cad": 222.69,
+        "single_composite_overhead_multiplier": 1.35,
+        "overhead_increment_cad": 77.94,
+        "total_modeled_resource_cost_cad": 300.63,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      },
+      "high": {
+        "person_hours_by_role": {
+          "industrial_engineer": 4.75,
+          "hr_coordinator": 8.5
+        },
+        "total_person_hours": 13.25,
+        "wage_cost_by_role_cad": {
+          "industrial_engineer": 309.65,
+          "hr_coordinator": 396.36
+        },
+        "direct_wage_cost_cad": 706.01,
+        "single_composite_overhead_multiplier": 1.5,
+        "overhead_increment_cad": 353.0,
+        "total_modeled_resource_cost_cad": 1059.01,
+        "incremental_external_cash_expense_included_cad": 0,
+        "rounding": "Compute from unrounded hours and wages; round final reported money to nearest cent."
+      }
+    },
+    "service_boundary": "Bounded coordination and rerun work; no physical care, on-call care cover, unlimited revisions, new-cohort sales or licensing service.",
+    "typical_release_window_working_days_assumption": {
+      "low": 1,
+      "central": 2,
+      "high": 4
+    },
+    "customer_response_waiting_time": null,
+    "cost_formula": "Same direct-wage-plus-single-overhead formula applied only to the recurring task hours"
+  },
+  "conditional_feasibility_and_verification": {
+    "probability_judgment": {
+      "low": 0.65,
+      "central": 0.85,
+      "high": 0.95,
+      "empirically_calibrated": false,
+      "probability_event": "A competent human-led team produces a technically consistent, reproducible coordination/commitment package that passes the stated offline acceptance checks within its allowed development effort, conditional on complete authorized inputs and an admissible external provider option.",
+      "range_type": "Subjective planning range, not observed success frequency or a confidence interval; independent of the cost-scenario labels.",
+      "rationale": "Small finite roster/cohort scope and existing modeling tools support plausibility; conflicting commitments, incomplete inputs and unmodeled contingencies can still make the proposed arrangement infeasible."
+    },
+    "probability_of_external_prerequisites": null,
+    "probability_of_customer_acceptance_or_first_sale": null,
+    "probability_of_live_care_delivery": null,
+    "verification_contract": [
+      "Reproduce the selected-month roster and cohort/contribution ledger from the recorded authorized inputs.",
+      "Check every stated employer coverage, individual availability, care-capacity and exclusivity constraint; report infeasibility instead of dropping obligations.",
+      "Show that modeled contribution obligations reconcile with the supplied provider cost/capacity assumptions; do not treat unsigned obligations or simulated cash as received funds.",
+      "Compare the same employment and childcare outcomes against the strongest ordinary feasible outside option available to the participants.",
+      "Test participant withdrawal, changed availability and provider nonavailability; preserve explicit failure/contingency outcomes and unfulfilled commitments.",
+      "Trace rights, source versions, assumptions and unresolved issues; do not infer regulatory permission, legal validity or beneficiary acceptance from solver feasibility.",
+      "A claim of a live funded service additionally requires appropriate provider authorization, executed commitments, relevant signoff and actual funding evidence; those are common external prerequisites."
+    ],
+    "manual_review_comparison_rule": "Technical review effort is included explicitly in the human reference. Agent delivery must meet the same acceptance contract, but no arbitrary fixed human-hours surcharge is imposed. Required external participant/regulatory approvals are treated symmetrically and counted once.",
+    "observed_passes_in_this_reference": 0
+  },
+  "external_prerequisites": [
+    {
+      "item": "Appropriate physical childcare capacity, staffing and premises",
+      "completion_observed": false,
+      "incremental_cost_cad": null,
+      "duration": null,
+      "responsible_party": "Actual care provider and responsible authorities",
+      "treatment": "Outside the coordination-package labor estimate; not assumed free or available."
+    },
+    {
+      "item": "Employer, parent and provider authorization and signoff",
+      "completion_observed": false,
+      "incremental_cost_cad": null,
+      "duration": null,
+      "responsible_party": "Authorized participants",
+      "treatment": "Actual assent is a prerequisite. Coordination preparation is counted in task hours; counterparties' unmeasured effort is not fabricated or counted twice."
+    },
+    {
+      "item": "Applicable licensing/legal/privacy review",
+      "completion_observed": false,
+      "incremental_cost_cad": null,
+      "duration": null,
+      "responsible_party": "Appropriate qualified professional/authority",
+      "treatment": "No legal conclusion or compulsory agent-only review fee is asserted. Add an actual required scope and price symmetrically if obtained."
+    },
+    {
+      "item": "Actual commitments and funding for the new cohort",
+      "completion_observed": false,
+      "incremental_cost_cad": null,
+      "duration": null,
+      "responsible_party": "Authorized employers/parents/provider/funder as agreed",
+      "treatment": "A reconciliation model is insufficient evidence of executed commitments or received money."
+    }
+  ],
+  "illustrative_allocation_only": {
+    "customer_cohorts": 1,
+    "months": 12,
+    "basis": "Allocate the full first-cohort development cost over 12 monthly packages; recurring cost is added once.",
+    "scenarios": {
+      "low": {
+        "development_allocation_cad_per_month": 59.16,
+        "recurring_resource_cost_cad_per_month": 87.5,
+        "combined_resource_cost_cad_per_month": 146.66,
+        "selling_price_cad": null
+      },
+      "central": {
+        "development_allocation_cad_per_month": 184.62,
+        "recurring_resource_cost_cad_per_month": 300.63,
+        "combined_resource_cost_cad_per_month": 485.25,
+        "selling_price_cad": null
+      },
+      "high": {
+        "development_allocation_cad_per_month": 569.51,
+        "recurring_resource_cost_cad_per_month": 1059.01,
+        "combined_resource_cost_cad_per_month": 1628.52,
+        "selling_price_cad": null
+      }
+    },
+    "not_a_price": "These are allocated resource costs, not human-service prices, offers, willingness-to-pay observations or commercial break-even claims.",
+    "reuse_sensitivity_formula": "For K equivalent retained cohorts and M retained months, allocated development per cohort-month is D/(K*M), only if the development is actually reusable; cohort-specific onboarding remains additional if not already included."
+  },
+  "assumption_register": [
+    {
+      "id": "A01",
+      "topic": "offering_scope",
+      "assumption": "Two employers, four children, one monthly coordination/commitment package. Actual childcare and legal advice are outside the product boundary.",
+      "evidence_status": "Task definition",
+      "falsification_or_replacement": "A larger cohort, additional employers or round-the-clock scheduling needs require a new estimate."
+    },
+    {
+      "id": "A02",
+      "topic": "competent_reference",
+      "assumption": "A competent human-led practitioner/team can reuse ordinary spreadsheets, Python, established solvers and the same inspected native components; no hand enumeration, novice learning penalty or from-scratch solver is imposed.",
+      "evidence_status": "Analyst baseline definition",
+      "falsification_or_replacement": "Observe a qualified practitioner attempting the same input and acceptance contract."
+    },
+    {
+      "id": "A03",
+      "topic": "workforce_mapping",
+      "assumption": "Industrial-engineer wages proxy constraint modeling and verification; HR-officer wages proxy intake, coordination and operational preparation. This is a labor-cost proxy, not proof of licensure or consulting competence.",
+      "evidence_status": "Analyst mapping using official wage data",
+      "falsification_or_replacement": "Replace role mix or rates with actual qualified staffing arrangements; HR-professional sensitivity is provided."
+    },
+    {
+      "id": "A04",
+      "topic": "wage_reference",
+      "assumption": "Use the published Montréal low/median/high wages at their stated reference dates without an invented 2026 inflation adjustment. Wages are employee pay measures, not contractor quotations or product prices.",
+      "evidence_status": "Observed primary-source wage records",
+      "falsification_or_replacement": "Obtain a more recent applicable wage release or actual quote."
+    },
+    {
+      "id": "A05",
+      "topic": "development_hours",
+      "assumption": "The explicit task hours are planning judgments for a small first-cohort package, not a human time study, actual invoice, measured experiment or guaranteed maximum.",
+      "evidence_status": "Unobserved analyst assumption",
+      "falsification_or_replacement": "Time a competent human-led construction with the same inputs, reuse rights and acceptance tests."
+    },
+    {
+      "id": "A06",
+      "topic": "scenario_combination",
+      "assumption": "Low/central/high jointly vary task hours, corresponding wage column and overhead factor. They are illustrative resource scenarios, not percentiles, confidence intervals or probabilities.",
+      "evidence_status": "Analyst scenario design",
+      "falsification_or_replacement": "Vary hours and rates independently when assessing sensitivity; do not label these scenarios statistical bounds."
+    },
+    {
+      "id": "A07",
+      "topic": "overhead_single_application",
+      "assumption": "Apply one composite factor of 1.20/1.35/1.50 once to direct wage cost. It covers employer burden and general office/shared support not separately itemized. No second payroll, utilization, management or profit multiplier is added.",
+      "evidence_status": "Unobserved composite allowance",
+      "falsification_or_replacement": "Replace the factor with one documented allocation of actual nonduplicated costs."
+    },
+    {
+      "id": "A08",
+      "topic": "no_double_count",
+      "assumption": "Task-specific intake, meetings, review, coordination and routine account work are already in the task-hour rows. They must not be added again as project management or generic review overhead.",
+      "evidence_status": "Accounting rule",
+      "falsification_or_replacement": "Reconcile every expense and hour to one task or the single general-overhead allowance."
+    },
+    {
+      "id": "A09",
+      "topic": "existing_tools",
+      "assumption": "A computer, ordinary local software and repository dependencies are already available. No incremental paid API, proprietary solver licence or new platform build is required by this reference. Ordinary shared-tool cost is inside general overhead; additional required cash spend is unknown until specified.",
+      "evidence_status": "Analyst resource assumption",
+      "falsification_or_replacement": "Add only actual incremental tools or licences, removing any duplicate overhead allocation."
+    },
+    {
+      "id": "A10",
+      "topic": "duration",
+      "assumption": "Assume approximately 3/6/12 active working days and 1/2/4 calendar weeks for development once sufficiently complete authorized inputs are available. Person-hours may overlap across two roles. External negotiation/licensing/site waiting time is not bounded by this schedule.",
+      "evidence_status": "Unobserved scheduling assumption",
+      "falsification_or_replacement": "Observe actual staffing availability, iteration count and elapsed waits."
+    },
+    {
+      "id": "A11",
+      "topic": "recurring_scope",
+      "assumption": "Recurring estimates cover the same cohort and one planned monthly release with bounded revisions, not childcare shifts, emergency cover, unlimited customer support, new-cohort sales or a full rescheduling service.",
+      "evidence_status": "Unobserved operating-scope assumption",
+      "falsification_or_replacement": "Record monthly exceptions, revision counts and support time; price a broader service separately."
+    },
+    {
+      "id": "A12",
+      "topic": "external_prerequisites",
+      "assumption": "Actual provider capacity, premises/staffing, licensing/legal/privacy review where applicable, employer/parent/provider signoff, and actual committed/received funds remain external prerequisites. Their costs and timing are unknown, not zero.",
+      "evidence_status": "Task boundary; no empirical completion evidence",
+      "falsification_or_replacement": "Obtain competent approvals, provider offer, authorized participation and actual commitment/funding records."
+    },
+    {
+      "id": "A13",
+      "topic": "ece_use",
+      "assumption": "ECE wages are contextual labor evidence only. No care hours, staffing ratio, fully loaded provider cost, legal requirement or childcare selling price is inferred from them. They are not included in coordination-package costs.",
+      "evidence_status": "Observed wage data with explicit scope restriction",
+      "falsification_or_replacement": "Obtain a real provider quote and legally appropriate capacity/staffing plan before modeling care economics."
+    },
+    {
+      "id": "A14",
+      "topic": "symmetric_verification",
+      "assumption": "The package must satisfy the same substantive verification/rights contract whether human-led or agent-led. Fixed manual-review hours are not imposed on the agent merely to make a comparison; real external approvals apply to either method and must be counted once.",
+      "evidence_status": "Comparison-design rule",
+      "falsification_or_replacement": "Audit both routes against the same acceptance conditions and actual incremental human involvement."
+    },
+    {
+      "id": "A15",
+      "topic": "conditional_feasibility",
+      "assumption": "The numerical feasibility range is an uncalibrated planning judgment about producing a technically consistent package within the stated effort once complete authorized inputs and an admissible provider option exist. It is not a forecast of business launch, uptake or legal approval.",
+      "evidence_status": "Unobserved analyst judgment",
+      "falsification_or_replacement": "Run prospective construction attempts and independent checks; keep acceptance and prerequisite realization separate."
+    },
+    {
+      "id": "A16",
+      "topic": "no_market_price",
+      "assumption": "No observed human-service price, buyer willingness to pay, paid contract, supplier quote or human-versus-agent advantage is established. Modeled resource cost must not be relabelled a market fee.",
+      "evidence_status": "Evidence limitation",
+      "falsification_or_replacement": "Obtain comparable concrete quotes or observe competitive procurement and payment."
+    },
+    {
+      "id": "A17",
+      "topic": "allocation_horizon",
+      "assumption": "The illustrative monthly full-cost allocation assumes one cohort uses the first-cohort development work for 12 releases. This horizon is optional accounting, not a contract term, demand forecast or assured retention.",
+      "evidence_status": "Unobserved allocation assumption",
+      "falsification_or_replacement": "Replace with actual useful life, reuse across cohorts and retained customer-months."
+    },
+    {
+      "id": "A18",
+      "topic": "commercial_exclusions",
+      "assumption": "General overhead excludes profit margin, exceptional liability reserves, sales/acquisition effort, taxes on sales, payment-processing charges and specialist external prerequisite fees. These are unmeasured rather than guaranteed absent.",
+      "evidence_status": "Explicit cost boundary",
+      "falsification_or_replacement": "Add actual relevant costs before claiming a commercial break-even price or margin."
+    },
+    {
+      "id": "A19",
+      "topic": "probability_arithmetic",
+      "assumption": "Do not divide development cost by feasibility probability to assert an expected successful-project cost: repeatability, salvage, dependence and retry policy have not been measured.",
+      "evidence_status": "Accounting and inference restriction",
+      "falsification_or_replacement": "Specify an empirically supported retry/salvage model before expected-value calculations."
+    },
+    {
+      "id": "A20",
+      "topic": "outside_option",
+      "assumption": "A competent employer/provider may use an existing spreadsheet, an ordinary coordinator or an existing care arrangement. The comparison must retain those options and the original employment/childcare outcomes; a bespoke package is not automatically the buyer's cheapest useful choice.",
+      "evidence_status": "Conventional opportunity assessment",
+      "falsification_or_replacement": "Obtain actual current outside-option constraints and costs rather than assuming a weak manual baseline."
+    },
+    {
+      "id": "A21",
+      "topic": "funding_language",
+      "assumption": "A simulated contribution ledger or unsigned commitment draft is not funded childcare capacity. The package may describe a proposed funded-cohort structure, but a delivery claim of funding requires actual authorized evidence.",
+      "evidence_status": "Claim-boundary rule",
+      "falsification_or_replacement": "Reconcile executed commitments and receipts before reporting funded status."
+    },
+    {
+      "id": "A22",
+      "topic": "unit_boundary",
+      "assumption": "All monetary resource estimates are CAD. No nominal native token fixture is converted into CAD, treated as spending, or used as evidence of available capital.",
+      "evidence_status": "Unit/accounting rule",
+      "falsification_or_replacement": "Keep actual fiat expense evidence and unsubmitted native format fields in separate ledgers."
+    }
+  ],
+  "sources": [
+    {
+      "id": "JB-IE",
+      "title": "Job Bank — industrial and manufacturing engineers, Montréal",
+      "provided_url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/22441/geo25154",
+      "retrieved_primary_urls": [
+        "https://www.jobbank.gc.ca/wagereport/location/geo25154?wbdisable=true",
+        "https://www.jobbank.gc.ca/marketreport/wages-occupation/22440/22446"
+      ],
+      "noc": "21321",
+      "wages_low_median_high_cad_per_hour": [
+        30.55,
+        44.94,
+        65.19
+      ],
+      "wage_update_date": "2025-11-19",
+      "reference_period": "2024",
+      "method": "Small Area Estimation, Statistics Canada",
+      "access": "Provided direct URL was attempted but inaccessible; primary Job Bank search excerpts independently supplied the Montréal figures. An alternate same-NOC occupational page search excerpt supplied update date. Final regional-table open timed out. No full-page-read claim.",
+      "tool_refs": [
+        "turn54search2",
+        "turn54search3",
+        "turn54search0"
+      ],
+      "claim_limit": "Employee wage anchor only; no observed consultancy or service price."
+    },
+    {
+      "id": "JB-ECE",
+      "title": "Job Bank — Early Childhood Educator (ECE), Montréal",
+      "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/5189/geo25154",
+      "noc": "42202",
+      "wages_low_median_high_cad_per_hour": [
+        16.6,
+        24.0,
+        30.03
+      ],
+      "wage_update_date": "2025-11-19",
+      "reference_period": "2023-2024",
+      "method": "Labour Force Survey, Statistics Canada",
+      "access": "Full page successfully opened and region row, update date and reference period read.",
+      "tool_refs": [
+        "turn52view1"
+      ],
+      "claim_limit": "Contextual employee wages only; not used to price care or the coordination product."
+    },
+    {
+      "id": "JB-HR",
+      "title": "Job Bank — Human Resources Officer, Montréal",
+      "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/12522/geo25154",
+      "noc": "12101",
+      "wages_low_median_high_cad_per_hour": [
+        25.0,
+        31.25,
+        46.63
+      ],
+      "wage_update_date": "2025-11-19",
+      "reference_period": "2023-2024",
+      "method": "Labour Force Survey, Statistics Canada",
+      "access": "Primary Job Bank search excerpt read; direct clean URL open was attempted but inaccessible.",
+      "tool_refs": [
+        "turn52search3"
+      ],
+      "claim_limit": "Analyst-selected coordinator wage proxy, not a quote or proof of specialized childcare expertise."
+    },
+    {
+      "id": "JB-HRP",
+      "title": "Job Bank — Human Resources Specialist, Montréal",
+      "url": "https://on.jobbank.gc.ca/marketreport/wages-occupation/281/geo25154",
+      "noc": "11200",
+      "wages_low_median_high_cad_per_hour": [
+        26.0,
+        42.31,
+        57.69
+      ],
+      "wage_update_date": "2025-11-19",
+      "reference_period": "2023-2024",
+      "method": "Labour Force Survey, Statistics Canada",
+      "access": "Primary Job Bank search excerpt only; no additional page open.",
+      "tool_refs": [
+        "turn52search4"
+      ],
+      "claim_limit": "Alternative higher-skilled HR wage sensitivity, not a requirement or service price."
+    }
+  ],
+  "research_budget_actual": {
+    "max_queries": 4,
+    "query_strings_used": 2,
+    "max_page_opens": 4,
+    "page_open_attempts": 4,
+    "successful_page_opens": 1,
+    "failed_page_opens": 3,
+    "finds": 0,
+    "queries": [
+      "site.jobbank.gc.ca/marketreport/wages-occupation \"Human resources\" \"Montréal\" \"2025\"",
+      "site.jobbank.gc.ca/marketreport/wages-occupation/22441/geo25154 \"30.55\" \"44.94\" \"65.19\""
+    ],
+    "opens": [
+      {
+        "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/22441/geo25154",
+        "result": "inaccessible via tool"
+      },
+      {
+        "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/5189/geo25154",
+        "result": "success"
+      },
+      {
+        "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/12522/geo25154",
+        "result": "inaccessible via tool"
+      },
+      {
+        "url": "https://www.jobbank.gc.ca/wagereport/location/geo25154?wbdisable=true",
+        "result": "timeout"
+      }
+    ],
+    "external_actions": "Public source reading only; no outreach or paid service."
+  },
+  "limitations": [
+    "All work-hour, duration, overhead, operating-effort and feasibility-probability values are analyst assumptions, not observed human performance.",
+    "Published employee wages are not fees for novel-combination services. No human-service market price is observed.",
+    "Actual childcare/provider economics, signoff, legal/licensing acceptance, funding and customer demand remain external and unresolved.",
+    "This reference cannot establish human/agent superiority, a beyond-human capability, or the profitability of E1.",
+    "Two primary wage pages could not be opened directly; the report preserves official search-excerpt provenance rather than claiming full retrieval."
+  ],
+  "hr_professional_rate_sensitivity": {
+    "development": {
+      "hr_role": "Human resources professional instead of officer; same hours",
+      "hr_hourly_wage_cad": 42.31,
+      "total_resource_cost_cad": 2484.19,
+      "not_a_quote": true
+    },
+    "recurring_month": {
+      "hr_role": "Human resources professional instead of officer; same hours",
+      "hr_hourly_wage_cad": 42.31,
+      "total_resource_cost_cad": 364.09,
+      "not_a_quote": true
+    }
+  },
+  "arithmetic_verification": {
+    "task_hour_sums_checked": true,
+    "money_computed_from_unrounded_decimal_values": true,
+    "overhead_applied_once": true,
+    "external_prerequisite_unknowns_preserved_as_null": true,
+    "human_performance_observed": false
+  }
+}

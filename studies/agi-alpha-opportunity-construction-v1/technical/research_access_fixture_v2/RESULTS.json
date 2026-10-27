@@ -1,0 +1,249 @@
+{
+  "adapter_sha256": "05c9253fdf6490e761507d084e59459656a7f706a0e4c50f472bd3af1593901f",
+  "boundary": {
+    "actual_customer_data_shared": false,
+    "actual_funds_or_receipts": false,
+    "canonical_roles_or_code_changed": false,
+    "economic_retention": "HOLD",
+    "ephemeral_private_keys_persisted": false,
+    "independent_external_attestation": false,
+    "instrument_executed_by_fixture": false,
+    "live_ens_resolved": false,
+    "network_skill_admitted": false,
+    "network_used": false,
+    "trust_installed_in_running_service": false
+  },
+  "checks": [
+    {
+      "name": "native_verifier_signatures_and_all_research_bindings",
+      "passed": true
+    },
+    {
+      "name": "payload_tampering",
+      "outcome": "record signature is invalid",
+      "passed": true
+    },
+    {
+      "name": "signed_wrong_mission",
+      "outcome": "research mission or action binding mismatch",
+      "passed": true
+    },
+    {
+      "name": "signed_wrong_rights",
+      "outcome": "research code or rights binding mismatch",
+      "passed": true
+    },
+    {
+      "name": "signed_wrong_manifest",
+      "outcome": "research manifest binding mismatch",
+      "passed": true
+    },
+    {
+      "name": "signed_wrong_code",
+      "outcome": "research code or rights binding mismatch",
+      "passed": true
+    },
+    {
+      "name": "signed_wrong_recipient",
+      "outcome": "recipient proof does not match the pinned fixture assessor",
+      "passed": true
+    },
+    {
+      "name": "signed_expired_grant",
+      "outcome": "research grant is expired or not yet valid",
+      "passed": true
+    },
+    {
+      "name": "signed_future_grant",
+      "outcome": "research grant is expired or not yet valid",
+      "passed": true
+    },
+    {
+      "name": "signed_excessive_lifetime",
+      "outcome": "fixture lifetime exceeds one hour",
+      "passed": true
+    },
+    {
+      "name": "execution_request",
+      "outcome": "research access cannot confer execution, admission or live identity",
+      "passed": true
+    },
+    {
+      "name": "network_admission_request",
+      "outcome": "research access cannot confer execution, admission or live identity",
+      "passed": true
+    },
+    {
+      "name": "live_ens_claim",
+      "outcome": "research access cannot confer execution, admission or live identity",
+      "passed": true
+    },
+    {
+      "name": "role_expansion_in_payload",
+      "outcome": "research envelope has missing or extra fields",
+      "passed": true
+    },
+    {
+      "name": "controller_role_not_regranted",
+      "outcome": "principal is not currently trusted for the required role",
+      "passed": true
+    },
+    {
+      "name": "wrong_signature_domain",
+      "outcome": "signed record domain mismatch",
+      "passed": true
+    },
+    {
+      "name": "fresh_recipient_has_no_trust",
+      "outcome": "principal is not currently trusted for the required role",
+      "passed": true
+    },
+    {
+      "name": "uninstalled_recipient_signer",
+      "outcome": "principal is not currently trusted for the required role",
+      "passed": true
+    },
+    {
+      "name": "wrong_key_for_installed_name",
+      "outcome": "record signature is invalid",
+      "passed": true
+    },
+    {
+      "name": "request_replayed_against_other_grant",
+      "outcome": "recipient request names a different signed grant",
+      "passed": true
+    },
+    {
+      "name": "unsupported_native_role_refused",
+      "outcome": "destination trust anchor contains unsupported or duplicate roles",
+      "passed": true
+    },
+    {
+      "name": "revocation_e1-author-fixture.agent.agi.eth",
+      "outcome": "principal is not currently trusted for the required role",
+      "passed": true
+    },
+    {
+      "name": "revocation_e1-assessor-fixture.agent.agi.eth",
+      "outcome": "principal is not currently trusted for the required role",
+      "passed": true
+    },
+    {
+      "name": "changed_manifest_review_pin",
+      "outcome": "manifest differs from the separately supplied review pin",
+      "passed": true
+    },
+    {
+      "name": "code_hash_mismatch",
+      "outcome": "public code differs from its reviewed hash",
+      "passed": true
+    },
+    {
+      "name": "unreviewed_code_path",
+      "outcome": "manifest does not contain exactly the reviewed v2 public modules",
+      "passed": true
+    },
+    {
+      "name": "ordinary_library_identical_public_code",
+      "passed": true
+    }
+  ],
+  "code_control": [
+    {
+      "authenticated_sha256": "4a57ec8f74c72c85c6209b4123692af5c95ac63ca15e856a3626bfdf5c3d1406",
+      "byte_identical": true,
+      "ordinary_library_sha256": "4a57ec8f74c72c85c6209b4123692af5c95ac63ca15e856a3626bfdf5c3d1406",
+      "path": "src/e1_instrument_v2.py"
+    },
+    {
+      "authenticated_sha256": "aa673747ebca69ea44d5ce70c251216705d103f39c4ae85c7e120d1be226cd51",
+      "byte_identical": true,
+      "ordinary_library_sha256": "aa673747ebca69ea44d5ce70c251216705d103f39c4ae85c7e120d1be226cd51",
+      "path": "src/e1_verify_v2.py"
+    }
+  ],
+  "created_at_utc": "2026-10-27T19:30:58.982880+00:00",
+  "grant": {
+    "domain": "ti-library-review",
+    "payload": {
+      "action": "local-code-assessment",
+      "code": {
+        "src/e1_instrument_v2.py": "4a57ec8f74c72c85c6209b4123692af5c95ac63ca15e856a3626bfdf5c3d1406",
+        "src/e1_verify_v2.py": "aa673747ebca69ea44d5ce70c251216705d103f39c4ae85c7e120d1be226cd51"
+      },
+      "execution_authorized": false,
+      "expires_at_utc": "2026-10-27T19:45:58.982880+00:00",
+      "fixture_only": true,
+      "issuer": "e1-author-fixture.agent.agi.eth",
+      "live_ens": false,
+      "manifest_sha256": "4084dc815d927248113faf58744b6c22c8edf758b4883f23fb5c2093ee8379b8",
+      "mission": "e1-v2-public-code-assessment-20261027",
+      "network_admission": false,
+      "not_before_utc": "2026-10-27T19:29:58.982880+00:00",
+      "recipient": "e1-assessor-fixture.agent.agi.eth",
+      "rights_sha256": "cbf240e127f1365e4fc8326ef0cf53d76d8872e9003e726464c854c089352c2f",
+      "schema": "agi-alpha.local-research-access.v1"
+    },
+    "principal": "e1-author-fixture.agent.agi.eth",
+    "signature": "QWdSU7A48qVDYyg0QKr4g/15YVlszPHdsfc1bhKbXlwLlLd9LEVOQ1npA2qrioz2bQjlk+6mVaMxkfyva+0rCg=="
+  },
+  "limitations": [
+    "Keys and agent.agi.eth names are generated local fixtures, not verified live ENS identities.",
+    "The native registry verifies signatures and roles; this study adapter supplies mission, rights, hash and expiry checks.",
+    "Authentication proves fixture provenance of public bytes, not source truth, code safety, delivery validity or value.",
+    "Public Apache-2.0 code remains available to the ordinary library control; no exclusive-rights claim is made.",
+    "No execution permission, production admission, validator role expansion, operational gain or profitable retention follows.",
+    "Fresh runs generate new ephemeral keys and signatures. Semantic outcomes should match; signature bytes will differ."
+  ],
+  "local_public_trust_fixture": {
+    "principals": {
+      "e1-assessor-fixture.agent.agi.eth": {
+        "independence_attestation": "",
+        "provenance": "local",
+        "public_key": "f0dc25b350d03552404db8f535d56c8043d0c077a3e84d6ff37c8f12a54e5817",
+        "roles": [
+          "verifier"
+        ]
+      },
+      "e1-author-fixture.agent.agi.eth": {
+        "independence_attestation": "",
+        "provenance": "local",
+        "public_key": "c76a920d5c72daf5fcd69d6805546150e30e73e1b6d572a9175ac369bb24fe00",
+        "roles": [
+          "verifier"
+        ]
+      }
+    },
+    "schema_version": 1
+  },
+  "manifest_path": "technical/RESEARCH_INSTRUMENT_MANIFEST_V2.json",
+  "manifest_sha256": "4084dc815d927248113faf58744b6c22c8edf758b4883f23fb5c2093ee8379b8",
+  "native_api": [
+    "validate_external_trust_bytes",
+    "TrustRegistry.verify",
+    "TrustRegistry.revoke",
+    "sign_record"
+  ],
+  "native_domain": "ti-library-review",
+  "native_role": "verifier",
+  "native_source_pins": {
+    "alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+    "alpha_factory_v1/core/runtime/successor/signatures.py": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+    "alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd"
+  },
+  "passed": true,
+  "recipient_request": {
+    "domain": "ti-library-review",
+    "payload": {
+      "action": "local-code-assessment",
+      "grant_sha256": "40de621924d673ba94dd366b574cc6d18378a6fbf25a52e69ed3e2efe09de373",
+      "manifest_sha256": "4084dc815d927248113faf58744b6c22c8edf758b4883f23fb5c2093ee8379b8",
+      "mission": "e1-v2-public-code-assessment-20261027",
+      "recipient": "e1-assessor-fixture.agent.agi.eth",
+      "schema": "agi-alpha.local-research-request.v1"
+    },
+    "principal": "e1-assessor-fixture.agent.agi.eth",
+    "signature": "KviX/WCh5vrEfGmHDcpsJZJHNZAwM8jPd/wV6IPuhvOiWASsIwbQZZJ79nQTzdDo/IMZ4CcuKcuv8FsMXaUlCg=="
+  },
+  "schema": "agi-alpha.local-research-access-results.v2"
+}

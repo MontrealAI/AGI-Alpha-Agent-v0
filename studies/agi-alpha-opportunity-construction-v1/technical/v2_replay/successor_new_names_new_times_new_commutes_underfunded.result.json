@@ -1,0 +1,3536 @@
+{
+  "case_id": "successor_new_names_new_times_new_commutes_underfunded",
+  "case_sha256": "269c187ec4720b68dbc74973bcd2f5d871288d2b7f87c02026e687bd4ee7ba2e",
+  "complete_transformation_witness": {
+    "all_four_controls_retained": true,
+    "complete_origin_and_target_schedules_in_results": true,
+    "control_outcomes": {
+      "combined": "refused",
+      "fixed_roster_pooled_care": "refused",
+      "flexible_without_opening_commitment": "refused",
+      "ordinary_exact_same_formulation": "refused"
+    },
+    "input_snapshot": {
+      "case_generation": {
+        "all_participants_and_resources_renamed": true,
+        "construction_and_checker_inherited_without_modification": true,
+        "kind": "prospectively_specified_successor",
+        "new_heterogeneous_location_specific_commutes": true,
+        "new_work_and_care_times": true,
+        "outcome_acceptance_and_economics_not_inherited": true,
+        "underfunded_control": true
+      },
+      "case_id": "successor_new_names_new_times_new_commutes_underfunded",
+      "children": [
+        {
+          "acceptable_location_ids": [
+            "location_NORTH",
+            "location_SOUTH"
+          ],
+          "commute_minutes_by_location": {
+            "location_NORTH": {
+              "after": 25,
+              "before": 20
+            },
+            "location_SOUTH": {
+              "after": 30,
+              "before": 25
+            }
+          },
+          "id": "dependent_EMP_C1_1",
+          "parent_worker_id": "crew_EMP_C1_1"
+        },
+        {
+          "acceptable_location_ids": [
+            "location_NORTH",
+            "location_SOUTH"
+          ],
+          "commute_minutes_by_location": {
+            "location_NORTH": {
+              "after": 20,
+              "before": 25
+            },
+            "location_SOUTH": {
+              "after": 15,
+              "before": 30
+            }
+          },
+          "id": "dependent_EMP_C1_2",
+          "parent_worker_id": "crew_EMP_C1_2"
+        },
+        {
+          "acceptable_location_ids": [
+            "location_NORTH",
+            "location_SOUTH"
+          ],
+          "commute_minutes_by_location": {
+            "location_NORTH": {
+              "after": 15,
+              "before": 30
+            },
+            "location_SOUTH": {
+              "after": 25,
+              "before": 20
+            }
+          },
+          "id": "dependent_EMP_C2_1",
+          "parent_worker_id": "crew_EMP_C2_1"
+        },
+        {
+          "acceptable_location_ids": [
+            "location_NORTH",
+            "location_SOUTH"
+          ],
+          "commute_minutes_by_location": {
+            "location_NORTH": {
+              "after": 30,
+              "before": 15
+            },
+            "location_SOUTH": {
+              "after": 20,
+              "before": 15
+            }
+          },
+          "id": "dependent_EMP_C2_2",
+          "parent_worker_id": "crew_EMP_C2_2"
+        }
+      ],
+      "coordinator_fee_cents": 2500,
+      "currency": "CAD",
+      "disclosures": [
+        "Every person, offer, payment ceiling, wage and price is synthetic.",
+        "Declared capacity/staffing/qualification inputs are contractual scenario data, not legal childcare ratios or licensed-provider validation.",
+        "The output is a verified finite commitment/schedule package, not delivered childcare.",
+        "Backup is prepaid for at most one realized daily world, with the worst declared activation fully reserved.",
+        "Unused activation reserve is refundable; it is not coordinator revenue.",
+        "Workers' permitted shifts and providers' offer-acceptance flags are assumptions of this synthetic instance, not observed consent."
+      ],
+      "employers": [
+        {
+          "id": "EMP_C1",
+          "staffing_quotas": {
+            "afternoon": 2,
+            "morning": 2
+          }
+        },
+        {
+          "id": "EMP_C2",
+          "staffing_quotas": {
+            "afternoon": 2,
+            "morning": 2
+          }
+        }
+      ],
+      "horizon": {
+        "end_minute": 1440,
+        "maximum_backup_event_worlds_realized": 1,
+        "operating_days": 1,
+        "scenario_semantics": "One mutually exclusive full-day world is realized. Any named outage is announced before care begins; no mid-session transfer is promised.",
+        "start_minute": 0
+      },
+      "limits": {
+        "maximum_children": 8,
+        "maximum_offers": 8,
+        "maximum_scenarios": 6,
+        "maximum_search_states": 500000,
+        "maximum_workers": 12
+      },
+      "locations": [
+        {
+          "declared_concurrent_child_capacity": 4,
+          "id": "location_NORTH",
+          "opening_windows": [
+            [
+              420,
+              1020
+            ]
+          ]
+        },
+        {
+          "declared_concurrent_child_capacity": 4,
+          "id": "location_SOUTH",
+          "opening_windows": [
+            [
+              420,
+              1020
+            ]
+          ]
+        }
+      ],
+      "offers": [
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 17000
+          },
+          "declared_child_capacity": 4,
+          "fixed_opening_cost_cents": 17000,
+          "id": "NORTH_morning",
+          "location_id": "location_NORTH",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 600,
+          "provider_id": "care_NORTH",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "carer_NORTH_morning"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            450,
+            750
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 17000
+          },
+          "declared_child_capacity": 4,
+          "fixed_opening_cost_cents": 17000,
+          "id": "NORTH_afternoon",
+          "location_id": "location_NORTH",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 600,
+          "provider_id": "care_NORTH",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "carer_NORTH_afternoon"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            690,
+            990
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 17000
+          },
+          "declared_child_capacity": 4,
+          "fixed_opening_cost_cents": 17000,
+          "id": "SOUTH_morning",
+          "location_id": "location_SOUTH",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 600,
+          "provider_id": "care_SOUTH",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "carer_SOUTH_morning"
+          ],
+          "standby_retainer_cents": 2500,
+          "window": [
+            450,
+            750
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 17000
+          },
+          "declared_child_capacity": 4,
+          "fixed_opening_cost_cents": 17000,
+          "id": "SOUTH_afternoon",
+          "location_id": "location_SOUTH",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 600,
+          "provider_id": "care_SOUTH",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "carer_SOUTH_afternoon"
+          ],
+          "standby_retainer_cents": 2500,
+          "window": [
+            690,
+            990
+          ]
+        }
+      ],
+      "payers": [
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C1_1"
+          ],
+          "id": "family_EMP_C1_1",
+          "kind": "parent",
+          "payment_ceiling_cents": 4000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C1_2"
+          ],
+          "id": "family_EMP_C1_2",
+          "kind": "parent",
+          "payment_ceiling_cents": 4000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve",
+            "worker_compensation",
+            "coordination_fee"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C1_1",
+            "crew_EMP_C1_2",
+            "crew_EMP_C1_3",
+            "crew_EMP_C1_4"
+          ],
+          "id": "sponsor_EMP_C1",
+          "kind": "employer",
+          "payment_ceiling_cents": 14500
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C2_1"
+          ],
+          "id": "family_EMP_C2_1",
+          "kind": "parent",
+          "payment_ceiling_cents": 4000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C2_2"
+          ],
+          "id": "family_EMP_C2_2",
+          "kind": "parent",
+          "payment_ceiling_cents": 4000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve",
+            "worker_compensation",
+            "coordination_fee"
+          ],
+          "beneficiary_worker_ids": [
+            "crew_EMP_C2_1",
+            "crew_EMP_C2_2",
+            "crew_EMP_C2_3",
+            "crew_EMP_C2_4"
+          ],
+          "id": "sponsor_EMP_C2",
+          "kind": "employer",
+          "payment_ceiling_cents": 14500
+        }
+      ],
+      "providers": [
+        {
+          "declared_offer_acceptance": true,
+          "id": "care_NORTH"
+        },
+        {
+          "declared_offer_acceptance": true,
+          "id": "care_SOUTH"
+        }
+      ],
+      "scenarios": [
+        {
+          "announced_minute": 420,
+          "closed_location_ids": [],
+          "failed_provider_ids": [],
+          "failed_staff_ids": [],
+          "id": "normal"
+        },
+        {
+          "announced_minute": 420,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "care_NORTH"
+          ],
+          "failed_staff_ids": [],
+          "id": "north_unavailable"
+        },
+        {
+          "announced_minute": 420,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "care_SOUTH"
+          ],
+          "failed_staff_ids": [],
+          "id": "south_unavailable"
+        }
+      ],
+      "schema": "agi-alpha.e1-case.v1",
+      "shifts": [
+        {
+          "end_minute": 720,
+          "id": "morning",
+          "start_minute": 480
+        },
+        {
+          "end_minute": 960,
+          "id": "afternoon",
+          "start_minute": 720
+        }
+      ],
+      "staff": [
+        {
+          "available_windows": [
+            [
+              450,
+              750
+            ]
+          ],
+          "id": "carer_NORTH_morning",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              690,
+              990
+            ]
+          ],
+          "id": "carer_NORTH_afternoon",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              450,
+              750
+            ]
+          ],
+          "id": "carer_SOUTH_morning",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              690,
+              990
+            ]
+          ],
+          "id": "carer_SOUTH_afternoon",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        }
+      ],
+      "synthetic": true,
+      "workers": [
+        {
+          "change_compensation_cents": {
+            "afternoon": 700,
+            "morning": 0
+          },
+          "current_shift_id": "morning",
+          "employer_id": "EMP_C1",
+          "id": "crew_EMP_C1_1",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 0,
+            "morning": 700
+          },
+          "current_shift_id": "afternoon",
+          "employer_id": "EMP_C1",
+          "id": "crew_EMP_C1_2",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 700,
+            "morning": 0
+          },
+          "current_shift_id": "morning",
+          "employer_id": "EMP_C1",
+          "id": "crew_EMP_C1_3",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 0,
+            "morning": 700
+          },
+          "current_shift_id": "afternoon",
+          "employer_id": "EMP_C1",
+          "id": "crew_EMP_C1_4",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 700,
+            "morning": 0
+          },
+          "current_shift_id": "morning",
+          "employer_id": "EMP_C2",
+          "id": "crew_EMP_C2_1",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 0,
+            "morning": 700
+          },
+          "current_shift_id": "afternoon",
+          "employer_id": "EMP_C2",
+          "id": "crew_EMP_C2_2",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 700,
+            "morning": 0
+          },
+          "current_shift_id": "morning",
+          "employer_id": "EMP_C2",
+          "id": "crew_EMP_C2_3",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "afternoon": 0,
+            "morning": 700
+          },
+          "current_shift_id": "afternoon",
+          "employer_id": "EMP_C2",
+          "id": "crew_EMP_C2_4",
+          "permitted_shift_ids": [
+            "morning",
+            "afternoon"
+          ]
+        }
+      ]
+    }
+  },
+  "results": {
+    "combined": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.021323702996596694,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": 900,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "north_unavailable": 19400,
+            "south_unavailable": 0
+          },
+          "backup_offer_ids": [
+            "SOUTH_afternoon"
+          ],
+          "maximum_activation_reserve_cents": 19400,
+          "reserve_staff_minutes": {
+            "carer_SOUTH_afternoon": 300
+          }
+        },
+        "coordinator_revenue_cents": 2500,
+        "cost_items": [
+          {
+            "amount_cents": 19400,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_1",
+                "dependent_EMP_C2_2"
+              ],
+              "fixed_opening_cost_cents": 17000,
+              "offer_id": "NORTH_afternoon",
+              "opening_cost_breakdown": {
+                "synthetic_complete_opening_quote": 17000
+              },
+              "per_child_cost_cents": 600,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:NORTH_afternoon"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_1",
+                "dependent_EMP_C2_2"
+              ],
+              "offer_id": "SOUTH_afternoon"
+            },
+            "id": "standby:SOUTH_afternoon"
+          },
+          {
+            "amount_cents": 19400,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "north_unavailable": 19400,
+                "south_unavailable": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "morning",
+              "to_shift": "afternoon",
+              "worker_id": "crew_EMP_C1_1"
+            },
+            "id": "worker:crew_EMP_C1_1"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_4"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "afternoon",
+              "to_shift": "morning",
+              "worker_id": "crew_EMP_C1_4"
+            },
+            "id": "worker:crew_EMP_C1_4"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C2_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "morning",
+              "to_shift": "afternoon",
+              "worker_id": "crew_EMP_C2_1"
+            },
+            "id": "worker:crew_EMP_C2_1"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C2_4"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "afternoon",
+              "to_shift": "morning",
+              "worker_id": "crew_EMP_C2_4"
+            },
+            "id": "worker:crew_EMP_C2_4"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 19400,
+          "backup_standby": 2500,
+          "coordination_fee": 2500,
+          "primary_care": 19400,
+          "worker_compensation": 2800
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C1",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          },
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C2",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": 900,
+        "maximum_funded_package_cents": 46600,
+        "pass_through_obligations_cents": 44100,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "family_EMP_C1_1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "family_EMP_C1_2"
+            },
+            {
+              "amount_cents": 11400,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 2500,
+              "item_id": "standby:SOUTH_afternoon",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 600,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "family_EMP_C2_1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "family_EMP_C2_2"
+            },
+            {
+              "amount_cents": 10800,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 700,
+              "item_id": "worker:crew_EMP_C2_1",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 700,
+              "item_id": "worker:crew_EMP_C2_4",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 2300,
+              "item_id": "coordination_fee",
+              "payer_id": "sponsor_EMP_C2"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 45000,
+          "payer_ceilings_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "payer_totals_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "required_cents": 46600,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 1600
+        },
+        "repeatable_eligible_workload": {
+          "children": 4,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 8
+        },
+        "scenario_assignments": {
+          "normal": {
+            "dependent_EMP_C1_1": "NORTH_afternoon",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_afternoon",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          },
+          "north_unavailable": {
+            "dependent_EMP_C1_1": "SOUTH_afternoon",
+            "dependent_EMP_C1_2": "SOUTH_afternoon",
+            "dependent_EMP_C2_1": "SOUTH_afternoon",
+            "dependent_EMP_C2_2": "SOUTH_afternoon"
+          },
+          "south_unavailable": {
+            "dependent_EMP_C1_1": "NORTH_afternoon",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_afternoon",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "269c187ec4720b68dbc74973bcd2f5d871288d2b7f87c02026e687bd4ee7ba2e",
+          "changed_worker_ids": [
+            "crew_EMP_C1_1",
+            "crew_EMP_C1_4",
+            "crew_EMP_C2_1",
+            "crew_EMP_C2_4"
+          ],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "NORTH_afternoon",
+            "SOUTH_afternoon"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "NORTH_afternoon"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 1140,
+            "north_unavailable": 1140,
+            "south_unavailable": 1140
+          },
+          "children_completely_covered_per_world": {
+            "normal": 4,
+            "north_unavailable": 4,
+            "south_unavailable": 4
+          },
+          "children_required": 4
+        },
+        "worker_roster": {
+          "crew_EMP_C1_1": "afternoon",
+          "crew_EMP_C1_2": "afternoon",
+          "crew_EMP_C1_3": "morning",
+          "crew_EMP_C1_4": "morning",
+          "crew_EMP_C2_1": "afternoon",
+          "crew_EMP_C2_2": "afternoon",
+          "crew_EMP_C2_3": "morning",
+          "crew_EMP_C2_4": "morning"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_1"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_2"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_3"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_4"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_1"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_2"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_3"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_4"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 19400
+          },
+          {
+            "activation_cost_cents": 19400,
+            "active_offer_ids": [
+              "SOUTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 30,
+                  "before": 25
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  695,
+                  990
+                ],
+                "required_care_interval": [
+                  695,
+                  990
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 20,
+                  "before": 15
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  980
+                ],
+                "required_care_interval": [
+                  705,
+                  980
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_NORTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "north_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "SOUTH_afternoon",
+                "location_id": "location_SOUTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_SOUTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ],
+                "standby_retainer_cents": 2500,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "north_unavailable",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_SOUTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "south_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "south_unavailable",
+            "unused_refundable_reserve_cents": 19400
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 1600,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 1600,
+      "mode": "combined",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 36
+      },
+      "search_states": 271,
+      "statistics": {
+        "complete_physical_plans": 36,
+        "quota_valid_rosters": 36,
+        "roster_assignments_examined": 36,
+        "roster_partial_nodes": 127
+      },
+      "status": "refused"
+    },
+    "fixed_roster_pooled_care": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.0005572310037678108,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "north_unavailable": 36400,
+            "south_unavailable": 0
+          },
+          "backup_offer_ids": [
+            "SOUTH_afternoon",
+            "SOUTH_morning"
+          ],
+          "maximum_activation_reserve_cents": 36400,
+          "reserve_staff_minutes": {
+            "carer_SOUTH_afternoon": 300,
+            "carer_SOUTH_morning": 300
+          }
+        },
+        "coordinator_revenue_cents": 2500,
+        "cost_items": [
+          {
+            "amount_cents": 18200,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_2"
+              ],
+              "fixed_opening_cost_cents": 17000,
+              "offer_id": "NORTH_afternoon",
+              "opening_cost_breakdown": {
+                "synthetic_complete_opening_quote": 17000
+              },
+              "per_child_cost_cents": 600,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:NORTH_afternoon"
+          },
+          {
+            "amount_cents": 18200,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C2_1"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C2_1"
+              ],
+              "fixed_opening_cost_cents": 17000,
+              "offer_id": "NORTH_morning",
+              "opening_cost_breakdown": {
+                "synthetic_complete_opening_quote": 17000
+              },
+              "per_child_cost_cents": 600,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:NORTH_morning"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_2"
+              ],
+              "offer_id": "SOUTH_afternoon"
+            },
+            "id": "standby:SOUTH_afternoon"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C2_1"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C2_1"
+              ],
+              "offer_id": "SOUTH_morning"
+            },
+            "id": "standby:SOUTH_morning"
+          },
+          {
+            "amount_cents": 36400,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "north_unavailable": 36400,
+                "south_unavailable": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 36400,
+          "backup_standby": 5000,
+          "coordination_fee": 2500,
+          "primary_care": 36400
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C1",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          },
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C2",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": null,
+        "maximum_funded_package_cents": 80300,
+        "pass_through_obligations_cents": 77800,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "family_EMP_C1_2"
+            },
+            {
+              "amount_cents": 14200,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_morning",
+              "payer_id": "family_EMP_C1_1"
+            },
+            {
+              "amount_cents": 300,
+              "item_id": "primary:NORTH_morning",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_morning",
+              "payer_id": "family_EMP_C2_1"
+            },
+            {
+              "amount_cents": 9900,
+              "item_id": "primary:NORTH_morning",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 2500,
+              "item_id": "standby:SOUTH_afternoon",
+              "payer_id": "family_EMP_C2_2"
+            },
+            {
+              "amount_cents": 2500,
+              "item_id": "standby:SOUTH_morning",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 1500,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "family_EMP_C2_2"
+            },
+            {
+              "amount_cents": 2100,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "sponsor_EMP_C2"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 45000,
+          "payer_ceilings_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "payer_totals_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "required_cents": 80300,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 35300
+        },
+        "repeatable_eligible_workload": {
+          "children": 4,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 8
+        },
+        "scenario_assignments": {
+          "normal": {
+            "dependent_EMP_C1_1": "NORTH_morning",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_morning",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          },
+          "north_unavailable": {
+            "dependent_EMP_C1_1": "SOUTH_morning",
+            "dependent_EMP_C1_2": "SOUTH_afternoon",
+            "dependent_EMP_C2_1": "SOUTH_morning",
+            "dependent_EMP_C2_2": "SOUTH_afternoon"
+          },
+          "south_unavailable": {
+            "dependent_EMP_C1_1": "NORTH_morning",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_morning",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "269c187ec4720b68dbc74973bcd2f5d871288d2b7f87c02026e687bd4ee7ba2e",
+          "changed_worker_ids": [],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "NORTH_afternoon",
+            "NORTH_morning",
+            "SOUTH_afternoon",
+            "SOUTH_morning"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "NORTH_afternoon",
+            "NORTH_morning"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 1140,
+            "north_unavailable": 1140,
+            "south_unavailable": 1140
+          },
+          "children_completely_covered_per_world": {
+            "normal": 4,
+            "north_unavailable": 4,
+            "south_unavailable": 4
+          },
+          "children_required": 4
+        },
+        "worker_roster": {
+          "crew_EMP_C1_1": "morning",
+          "crew_EMP_C1_2": "afternoon",
+          "crew_EMP_C1_3": "morning",
+          "crew_EMP_C1_4": "afternoon",
+          "crew_EMP_C2_1": "morning",
+          "crew_EMP_C2_2": "afternoon",
+          "crew_EMP_C2_3": "morning",
+          "crew_EMP_C2_4": "afternoon"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_1"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_2"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_3"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_4"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_1"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_2"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_3"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_4"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon",
+              "NORTH_morning"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  460,
+                  745
+                ],
+                "required_care_interval": [
+                  460,
+                  745
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  450,
+                  735
+                ],
+                "required_care_interval": [
+                  450,
+                  735
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C2_1"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_morning",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  450,
+                  750
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 36400
+          },
+          {
+            "activation_cost_cents": 36400,
+            "active_offer_ids": [
+              "SOUTH_afternoon",
+              "SOUTH_morning"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 30,
+                  "before": 25
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  455,
+                  750
+                ],
+                "required_care_interval": [
+                  455,
+                  750
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  460,
+                  745
+                ],
+                "required_care_interval": [
+                  460,
+                  745
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 20,
+                  "before": 15
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  980
+                ],
+                "required_care_interval": [
+                  705,
+                  980
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_NORTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "north_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "SOUTH_afternoon",
+                "location_id": "location_SOUTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_SOUTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ],
+                "standby_retainer_cents": 2500,
+                "window": [
+                  690,
+                  990
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C2_1"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "SOUTH_morning",
+                "location_id": "location_SOUTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_SOUTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_morning"
+                ],
+                "standby_retainer_cents": 2500,
+                "window": [
+                  450,
+                  750
+                ]
+              }
+            ],
+            "scenario_id": "north_unavailable",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon",
+              "NORTH_morning"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  460,
+                  745
+                ],
+                "required_care_interval": [
+                  460,
+                  745
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_morning",
+                "opening_window": [
+                  450,
+                  750
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  450,
+                  735
+                ],
+                "required_care_interval": [
+                  450,
+                  735
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_SOUTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "south_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C2_1"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_morning",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_morning"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  450,
+                  750
+                ]
+              }
+            ],
+            "scenario_id": "south_unavailable",
+            "unused_refundable_reserve_cents": 36400
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 35300,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 35300,
+      "mode": "fixed_roster_pooled_care",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 1
+      },
+      "search_states": 5,
+      "statistics": {
+        "complete_physical_plans": 1,
+        "quota_valid_rosters": 1,
+        "roster_assignments_examined": 1
+      },
+      "status": "refused"
+    },
+    "flexible_without_opening_commitment": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.00038600299740210176,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "flexible_without_opening_commitment",
+      "offer": null,
+      "rejection_reasons": {
+        "opening_commitment_missing": 144
+      },
+      "search_states": 127,
+      "statistics": {
+        "quota_valid_rosters": 36,
+        "roster_assignments_examined": 36,
+        "roster_partial_nodes": 127
+      },
+      "status": "refused"
+    },
+    "ordinary_exact_same_formulation": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.024849937995895743,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": 900,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "north_unavailable": 19400,
+            "south_unavailable": 0
+          },
+          "backup_offer_ids": [
+            "SOUTH_afternoon"
+          ],
+          "maximum_activation_reserve_cents": 19400,
+          "reserve_staff_minutes": {
+            "carer_SOUTH_afternoon": 300
+          }
+        },
+        "coordinator_revenue_cents": 2500,
+        "cost_items": [
+          {
+            "amount_cents": 19400,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_1",
+                "dependent_EMP_C2_2"
+              ],
+              "fixed_opening_cost_cents": 17000,
+              "offer_id": "NORTH_afternoon",
+              "opening_cost_breakdown": {
+                "synthetic_complete_opening_quote": 17000
+              },
+              "per_child_cost_cents": 600,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:NORTH_afternoon"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "dependent_EMP_C1_1",
+                "dependent_EMP_C1_2",
+                "dependent_EMP_C2_1",
+                "dependent_EMP_C2_2"
+              ],
+              "offer_id": "SOUTH_afternoon"
+            },
+            "id": "standby:SOUTH_afternoon"
+          },
+          {
+            "amount_cents": 19400,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "north_unavailable": 19400,
+                "south_unavailable": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "morning",
+              "to_shift": "afternoon",
+              "worker_id": "crew_EMP_C1_1"
+            },
+            "id": "worker:crew_EMP_C1_1"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_4"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "afternoon",
+              "to_shift": "morning",
+              "worker_id": "crew_EMP_C1_4"
+            },
+            "id": "worker:crew_EMP_C1_4"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C2_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "morning",
+              "to_shift": "afternoon",
+              "worker_id": "crew_EMP_C2_1"
+            },
+            "id": "worker:crew_EMP_C2_1"
+          },
+          {
+            "amount_cents": 700,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C2_4"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "afternoon",
+              "to_shift": "morning",
+              "worker_id": "crew_EMP_C2_4"
+            },
+            "id": "worker:crew_EMP_C2_4"
+          },
+          {
+            "amount_cents": 2500,
+            "beneficiary_worker_ids": [
+              "crew_EMP_C1_1",
+              "crew_EMP_C1_2",
+              "crew_EMP_C2_1",
+              "crew_EMP_C2_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 19400,
+          "backup_standby": 2500,
+          "coordination_fee": 2500,
+          "primary_care": 19400,
+          "worker_compensation": 2800
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C1",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          },
+          {
+            "actual_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "actual_worker_minutes": 960,
+            "employer_id": "EMP_C2",
+            "required_quotas": {
+              "afternoon": 2,
+              "morning": 2
+            },
+            "required_worker_minutes": 960
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": 900,
+        "maximum_funded_package_cents": 46600,
+        "pass_through_obligations_cents": 44100,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "family_EMP_C1_1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "family_EMP_C1_2"
+            },
+            {
+              "amount_cents": 11400,
+              "item_id": "primary:NORTH_afternoon",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 2500,
+              "item_id": "standby:SOUTH_afternoon",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 600,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "sponsor_EMP_C1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "family_EMP_C2_1"
+            },
+            {
+              "amount_cents": 4000,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "family_EMP_C2_2"
+            },
+            {
+              "amount_cents": 10800,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 700,
+              "item_id": "worker:crew_EMP_C2_1",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 700,
+              "item_id": "worker:crew_EMP_C2_4",
+              "payer_id": "sponsor_EMP_C2"
+            },
+            {
+              "amount_cents": 2300,
+              "item_id": "coordination_fee",
+              "payer_id": "sponsor_EMP_C2"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 45000,
+          "payer_ceilings_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "payer_totals_cents": {
+            "family_EMP_C1_1": 4000,
+            "family_EMP_C1_2": 4000,
+            "family_EMP_C2_1": 4000,
+            "family_EMP_C2_2": 4000,
+            "sponsor_EMP_C1": 14500,
+            "sponsor_EMP_C2": 14500
+          },
+          "required_cents": 46600,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 1600
+        },
+        "repeatable_eligible_workload": {
+          "children": 4,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 8
+        },
+        "scenario_assignments": {
+          "normal": {
+            "dependent_EMP_C1_1": "NORTH_afternoon",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_afternoon",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          },
+          "north_unavailable": {
+            "dependent_EMP_C1_1": "SOUTH_afternoon",
+            "dependent_EMP_C1_2": "SOUTH_afternoon",
+            "dependent_EMP_C2_1": "SOUTH_afternoon",
+            "dependent_EMP_C2_2": "SOUTH_afternoon"
+          },
+          "south_unavailable": {
+            "dependent_EMP_C1_1": "NORTH_afternoon",
+            "dependent_EMP_C1_2": "NORTH_afternoon",
+            "dependent_EMP_C2_1": "NORTH_afternoon",
+            "dependent_EMP_C2_2": "NORTH_afternoon"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "269c187ec4720b68dbc74973bcd2f5d871288d2b7f87c02026e687bd4ee7ba2e",
+          "changed_worker_ids": [
+            "crew_EMP_C1_1",
+            "crew_EMP_C1_4",
+            "crew_EMP_C2_1",
+            "crew_EMP_C2_4"
+          ],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "NORTH_afternoon",
+            "SOUTH_afternoon"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "NORTH_afternoon"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 1140,
+            "north_unavailable": 1140,
+            "south_unavailable": 1140
+          },
+          "children_completely_covered_per_world": {
+            "normal": 4,
+            "north_unavailable": 4,
+            "south_unavailable": 4
+          },
+          "children_required": 4
+        },
+        "worker_roster": {
+          "crew_EMP_C1_1": "afternoon",
+          "crew_EMP_C1_2": "afternoon",
+          "crew_EMP_C1_3": "morning",
+          "crew_EMP_C1_4": "morning",
+          "crew_EMP_C2_1": "afternoon",
+          "crew_EMP_C2_2": "afternoon",
+          "crew_EMP_C2_3": "morning",
+          "crew_EMP_C2_4": "morning"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_1"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C1_2"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_3"
+          },
+          {
+            "employer_id": "EMP_C1",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C1_4"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_1"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "afternoon",
+            "work_interval": [
+              720,
+              960
+            ],
+            "worker_id": "crew_EMP_C2_2"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "morning",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_3"
+          },
+          {
+            "employer_id": "EMP_C2",
+            "original_shift_id": "afternoon",
+            "permitted_shift_ids": [
+              "morning",
+              "afternoon"
+            ],
+            "required_compensation_cents": 700,
+            "selected_shift_id": "morning",
+            "work_interval": [
+              480,
+              720
+            ],
+            "worker_id": "crew_EMP_C2_4"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 19400
+          },
+          {
+            "activation_cost_cents": 19400,
+            "active_offer_ids": [
+              "SOUTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 30,
+                  "before": 25
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  695,
+                  990
+                ],
+                "required_care_interval": [
+                  695,
+                  990
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 20,
+                  "before": 15
+                },
+                "location_id": "location_SOUTH",
+                "offer_id": "SOUTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  980
+                ],
+                "required_care_interval": [
+                  705,
+                  980
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_NORTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "north_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "SOUTH_afternoon",
+                "location_id": "location_SOUTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_SOUTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "carer_SOUTH_afternoon"
+                ],
+                "standby_retainer_cents": 2500,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "north_unavailable",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "NORTH_afternoon"
+            ],
+            "child_care": [
+              {
+                "child_id": "dependent_EMP_C1_1",
+                "commute": {
+                  "after": 25,
+                  "before": 20
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_1",
+                "provided_care_interval": [
+                  700,
+                  985
+                ],
+                "required_care_interval": [
+                  700,
+                  985
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C1_2",
+                "commute": {
+                  "after": 20,
+                  "before": 25
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C1_2",
+                "provided_care_interval": [
+                  695,
+                  980
+                ],
+                "required_care_interval": [
+                  695,
+                  980
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_1",
+                "commute": {
+                  "after": 15,
+                  "before": 30
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_1",
+                "provided_care_interval": [
+                  690,
+                  975
+                ],
+                "required_care_interval": [
+                  690,
+                  975
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              },
+              {
+                "child_id": "dependent_EMP_C2_2",
+                "commute": {
+                  "after": 30,
+                  "before": 15
+                },
+                "location_id": "location_NORTH",
+                "offer_id": "NORTH_afternoon",
+                "opening_window": [
+                  690,
+                  990
+                ],
+                "parent_worker_id": "crew_EMP_C2_2",
+                "provided_care_interval": [
+                  705,
+                  990
+                ],
+                "required_care_interval": [
+                  705,
+                  990
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 420,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "care_SOUTH"
+              ],
+              "failed_staff_ids": [],
+              "id": "south_unavailable"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "dependent_EMP_C1_1",
+                  "dependent_EMP_C1_2",
+                  "dependent_EMP_C2_1",
+                  "dependent_EMP_C2_2"
+                ],
+                "commitment_required": true,
+                "cost_breakdown": {
+                  "synthetic_complete_opening_quote": 17000
+                },
+                "declared_child_capacity": 4,
+                "fixed_opening_cost_cents": 17000,
+                "id": "NORTH_afternoon",
+                "location_id": "location_NORTH",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 600,
+                "provider_id": "care_NORTH",
+                "required_qualification_tags": [
+                  "declared_qualified"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "carer_NORTH_afternoon"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  690,
+                  990
+                ]
+              }
+            ],
+            "scenario_id": "south_unavailable",
+            "unused_refundable_reserve_cents": 19400
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 1600,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 1600,
+      "mode": "ordinary_exact_same_formulation",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 36
+      },
+      "search_states": 400,
+      "statistics": {
+        "complete_physical_plans": 36,
+        "quota_valid_rosters": 36,
+        "roster_assignments_examined": 256
+      },
+      "status": "refused"
+    }
+  },
+  "same_formulation_exact_control": {
+    "identical_selected_result": true,
+    "interpretation": "The same formulation permits an ordinary exact coordinator to tie.",
+    "superiority_claim": false
+  },
+  "schema": "agi-alpha.e1-comparison.v1",
+  "synthetic": true
+}

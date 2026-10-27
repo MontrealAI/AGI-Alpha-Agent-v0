@@ -1,0 +1,440 @@
+{
+  "activation_guards": [
+    {
+      "expected_fixture_eligible": true,
+      "name": "All simulated roles and funds",
+      "passed": true,
+      "result": {
+        "errors": [],
+        "fixture_eligible": true,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Missing distinct worker or employer grant",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Missing or extra independent authority role"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Reused prior-mission grant",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Grant belongs to another mission"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "One cent underfunded",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Complete finite obligation is not prefunded"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Changed mission inputs",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Mission changed; recheck and regrant required"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Late commitment",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Expired grant",
+          "Notice/commitment deadline passed"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Unverified live authorization",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Fixture adapter cannot validate live authority"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    },
+    {
+      "expected_fixture_eligible": false,
+      "name": "Fresh day cannot inherit grants",
+      "passed": true,
+      "result": {
+        "errors": [
+          "Mission changed; recheck and regrant required"
+        ],
+        "fixture_eligible": false,
+        "live_authorization": false
+      }
+    }
+  ],
+  "actual_allocation_cad_per_day": {
+    "parent_E_A_W1": 40.0,
+    "parent_E_A_W2": 40.0,
+    "parent_E_B_W1": 40.0,
+    "parent_E_B_W2": 40.0,
+    "payer_E_A": 128.75,
+    "payer_E_B": 128.75
+  },
+  "actual_funds": 0,
+  "actual_signed_contracts": 0,
+  "currency": "CAD",
+  "days": 20,
+  "days_index": [
+    {
+      "case_sha256": "f0be959645a6530f827bb93eb897b38746d50e82e20e638c67a5331fd5024404",
+      "checks": 370,
+      "day": 1,
+      "funding_cents": 41750,
+      "offer_sha256": "b78115cfa3cde24544c54220d3b329c15a3fdbd9e989a7d647eaac4ab39c2bfe",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "185131cb78c738d8c2913d46a42fc9ac14cb3349a22e7707e47f40004abc3603",
+      "checks": 370,
+      "day": 2,
+      "funding_cents": 41750,
+      "offer_sha256": "53e1a1b2b5aa39e7af69076d2119a10720a09524b6a06fb3323e0711cba63aae",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "a5279be599ac7ba2ea5bcb0312ae0810a265876bd2a1571f89ceba24893836ab",
+      "checks": 370,
+      "day": 3,
+      "funding_cents": 41750,
+      "offer_sha256": "6948464a16ede0b525bdb3460e692d5478750d6d05830f63cb26177a8fd98fa8",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "3bb8fa4ec4fb76883fb98a5d3d1b53cb1ec3a390ea48aed3b9c2cafb38fee77b",
+      "checks": 370,
+      "day": 4,
+      "funding_cents": 41750,
+      "offer_sha256": "706559edce0883990e537fc5bdbb72e4fe7c32f129de542ca7723cbe0d40f60a",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "241185a03469fbc0049c4c38335deddd107967c2408634ae7d134461db305256",
+      "checks": 370,
+      "day": 5,
+      "funding_cents": 41750,
+      "offer_sha256": "5b4100213543dd64335cb7b0c7e539b99f731ea548e17a6bf0f1a98d232b9c18",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "badfa293c14f609a69a73e0e3d3f2fe12f8f1074e436f72679be97173a6670a7",
+      "checks": 370,
+      "day": 6,
+      "funding_cents": 41750,
+      "offer_sha256": "f551a325e7dcfa815b6b69aeab4873778a45ea0808847a21dd18615669ac7caa",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "b179fefcf6437c8a319b8c70e75c592a9f0321bd49c04831d8df1f1c3a839c5b",
+      "checks": 370,
+      "day": 7,
+      "funding_cents": 41750,
+      "offer_sha256": "de4cda2cada53d120d00565702a13e62e41e53d93585fb26db0b7e6abe015250",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "892ca6521a436d7cfabd06e00e924cfc989efcc14a91ad8ab1056faa84e1b225",
+      "checks": 370,
+      "day": 8,
+      "funding_cents": 41750,
+      "offer_sha256": "790dd616f13acc5d584ce4f7a9609d7f6bdad47d0f16e667c246862b594d7ae5",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "87ff6531a0b681196a141e5aeb06d80b70ca4e7f9a8af15c8b6fcfa5559e899a",
+      "checks": 370,
+      "day": 9,
+      "funding_cents": 41750,
+      "offer_sha256": "7f419c27bc2ffa9bf54ec1e13a60961614cb442c37e6c4e6b8cf7267e81fcd4f",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "60279e97f96b92c4f60920bb61b9e33bcec80f90f8e91d3db02ed98e0f2df096",
+      "checks": 370,
+      "day": 10,
+      "funding_cents": 41750,
+      "offer_sha256": "1975921b8c73c20e87b1516dc146b2b148d9330a14782b75701410fcd26813f9",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "a47a297f85ddf5fb71268733a641ad81f5d3d5987a126145e71132c647ed51d9",
+      "checks": 370,
+      "day": 11,
+      "funding_cents": 41750,
+      "offer_sha256": "993dbbe17b945e85e6527c5b37d2f6aa77f82640b53e6d944defabd6d03e3775",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "8cb615c5ce04770915477479a47ddaa84c899df0d9ed26f0867a1b34b1085d74",
+      "checks": 370,
+      "day": 12,
+      "funding_cents": 41750,
+      "offer_sha256": "ad27461f620d62dbe802d964fcb7421ebb9668d32009af0b05bc93fa98beb652",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "7215efde982ce65780079704b7bbd948ab6a30ec6117f7a02c63c49077777a6a",
+      "checks": 370,
+      "day": 13,
+      "funding_cents": 41750,
+      "offer_sha256": "7b7fed1d6fbea2041523f8ea37a019b8a4420e3ab3e51d6a73d276065c1e3c4d",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "90f487340c40d89d35a540e8690f02517e18c34bb9921d9c95468323a0612e3e",
+      "checks": 370,
+      "day": 14,
+      "funding_cents": 41750,
+      "offer_sha256": "d13205ba78b38b028ddb3998cb7255871250e095c674671c0bcd54f78526d985",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "8224204921da12ca75b4fd0ec137765603d8993167db721ae5ea7149745d24e2",
+      "checks": 370,
+      "day": 15,
+      "funding_cents": 41750,
+      "offer_sha256": "821256384d40523eb222b7b58de6688b69607619e2e99a6f237c37e176213755",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "95b959524ed9d4b7ec85bf14a39e93a40f8915c5508ffa426fb41bd7a94f9a9d",
+      "checks": 370,
+      "day": 16,
+      "funding_cents": 41750,
+      "offer_sha256": "31c94341c98a07e0b91293d39b66568fc9384e538d55cdbb052761f384537151",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "0d4303e7bd3830b008e8d1ea2beb74ffe56c6a4c6c491e8dcdfbe66e8dcf4000",
+      "checks": 370,
+      "day": 17,
+      "funding_cents": 41750,
+      "offer_sha256": "9a005e5db1e4e608ee9395f7a4231fa88b4a9b233dfd31db0abef62f0d30085e",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "c7cc8f95f4401fc1acca8a9cd5e156398d38716ed7da83f9bed966a76661291d",
+      "checks": 370,
+      "day": 18,
+      "funding_cents": 41750,
+      "offer_sha256": "c1458394288b654c0935c23e28db621e2ce79679f089b0bdd4572884bec358a3",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "321ddf262ef50ff4b1a0e72337e8a847bf1f15cf69fcab051b56cf9481cb1c85",
+      "checks": 370,
+      "day": 19,
+      "funding_cents": 41750,
+      "offer_sha256": "5dbd7076019950f95cb094843765e6ca118b348cb45e4d36d1aeecddc76ca0b8",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    },
+    {
+      "case_sha256": "66f29864103e9548d06906d00feb6189fbce7c3be617ba4b775c1c51f442271e",
+      "checks": 370,
+      "day": 20,
+      "funding_cents": 41750,
+      "offer_sha256": "06c424e3ae56d78a325ef8407da9133494cf5beceb7ae77c11cf11af5d533442",
+      "payer_totals_cents": {
+        "parent_E_A_W1": 4000,
+        "parent_E_A_W2": 4000,
+        "parent_E_B_W1": 4000,
+        "parent_E_B_W2": 4000,
+        "payer_E_A": 12875,
+        "payer_E_B": 12875
+      }
+    }
+  ],
+  "deferred_service_receivable_cad": 375.0,
+  "fallback": "Only the enumerated pre-start single-provider-outage worlds are covered, with CAD170/day fully reserved. Provider ordinary safeguarding/emergency obligations remain external and must be verified before live contracting; no mid-session transfer or simultaneous-provider survival is promised.",
+  "funding_distinction": "Complete customer liability includes the service fee. Only provider/worker/backup pass obligations are prefunded for care activation; half the service fee is collected separately before package release, half is credit due at 30 days. The company bears default on that receivable.",
+  "individual_ceiling_cad_per_day": {
+    "each_employer": 145,
+    "each_parent": 40
+  },
+  "initial_service_payment_cad": 375.0,
+  "normal_world_pass_consumption_cad": 4200,
+  "physical_care_delivered": false,
+  "price_policy": {
+    "deferred_fraction": 0.5,
+    "name": "750-half-30days",
+    "price_cad": 750
+  },
+  "refundable_backup_reserve_cad": 3400,
+  "schema": "agi-alpha.monthly-care-package.v2",
+  "scope": "Twenty day-specific repetitions of the same declared origin constraints, not twenty independent generalization trials.",
+  "service_payment_terms": "Half after accepted package, half 30 days later; failed package acceptance incurs no service fee. Participant/provider funds are segregated outside company operating cash.",
+  "sold_output": "A verified finite 20-day repeating cohort plan, cost/funding and authority packet; automatic recheck on changed inputs is costed, physical childcare is not delivered by this program.",
+  "source_policy_sha256": "99a9ef5af24936baa4c007041da6a5b490790a0c91d0c33fae26ecb2b4df09c2",
+  "state": "DRAFT_RESEARCH_ONLY",
+  "synthetic": true,
+  "termination": "Before commitment, any missing consent or funding prevents activation. After commitment, stated provider primary/standby costs are nonrefundable; unused activation reserve is returned to its employer funders. Any changed mission requires a new verified plan and separate grants. No arbitrary permission inheritance.",
+  "total_maximum_customer_funding_cad": 8350.0,
+  "total_pass_through_funding_cad": 7600,
+  "total_service_fee_cad": 750.0
+}

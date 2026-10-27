@@ -1,0 +1,92 @@
+{
+  "schema": "agi-alpha.independent-v2-fresh-policy.v1",
+  "created_at_utc": "2026-10-27T19:35:31.787238+00:00",
+  "master_seed": 1189015800197254748,
+  "source_pins": {
+    "e1_instrument_v2.py": "4a57ec8f74c72c85c6209b4123692af5c95ac63ca15e856a3626bfdf5c3d1406",
+    "e1_verify_v2.py": "aa673747ebca69ea44d5ce70c251216705d103f39c4ae85c7e120d1be226cd51"
+  },
+  "snapshot": "technical/independent_audit/v2_snapshot",
+  "runner_sha256": "9005c64639321850c38bd031dac96f49ff67c8b1cc49ba8628e569d38179769b",
+  "original_oracle_sha256": "bc48d1e67175a1c9c0a0ed1605f2da19e3bdf5bfc320cbd6bcf5a1a70f1fcf7a",
+  "case_file_sha256": "6d8f01a061a2c3e19e4008c0b1f2e975d228fc0d615f6f7e33f8b6be9fe65c0f",
+  "cases": [
+    {
+      "seed": 12185748650632732903,
+      "index": 0,
+      "time_offset_minutes": -9,
+      "purpose": "positive anchor with full declared shift choice and sufficient ceiling"
+    },
+    {
+      "seed": 2871229562604685323,
+      "index": 1,
+      "time_offset_minutes": -23,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 6387827713272533741,
+      "index": 2,
+      "time_offset_minutes": -13,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 8092183080703909728,
+      "index": 3,
+      "time_offset_minutes": -18,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 14399235626731240898,
+      "index": 4,
+      "time_offset_minutes": 68,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 2473663850335006818,
+      "index": 5,
+      "time_offset_minutes": -62,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 13043430724743060436,
+      "index": 6,
+      "time_offset_minutes": -71,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 5324018257561303827,
+      "index": 7,
+      "time_offset_minutes": 29,
+      "purpose": "independent randomized prices, permission, budgets and changed time/commute"
+    },
+    {
+      "seed": 1211095376429005731,
+      "index": 8,
+      "time_offset_minutes": 108,
+      "purpose": "backup commute extends beyond every backup offer window"
+    },
+    {
+      "seed": 9520796983224875993,
+      "index": 9,
+      "time_offset_minutes": -19,
+      "purpose": "zero funding ceiling"
+    },
+    {
+      "seed": 15401188544567963406,
+      "index": 10,
+      "time_offset_minutes": -87,
+      "purpose": "no qualified backup staff"
+    },
+    {
+      "seed": 2383363116454030808,
+      "index": 11,
+      "time_offset_minutes": 85,
+      "purpose": "backup provider explicitly declines"
+    }
+  ],
+  "fresh_count": 12,
+  "tamper_count": 20,
+  "selection": "Twelve seeds drawn once after final V2 source pins; no replacement based on solver outcome. Eight varied cases including one positive anchor; four prespecified refusal mechanisms. All identities except protocol normal key renamed, schedules retimed, commute changed.",
+  "limitations": "Same bounded two-employer four-worker two-child family; no wider-distribution, market, human or live care inference.",
+  "disclosure": "New seeds and full cases withheld from engineer until execution completed; all V1 cases treated as regression."
+}

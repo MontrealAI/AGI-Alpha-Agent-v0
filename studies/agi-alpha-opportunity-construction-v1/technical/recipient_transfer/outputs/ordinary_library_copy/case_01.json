@@ -1,0 +1,2383 @@
+{
+  "case_id": "recipient_fresh_1_c0a1333ead9900ad",
+  "case_sha256": "96de7f4675c2685f3ef61d131f4a04160877fc6ed4126e17f446ba22e6120711",
+  "complete_transformation_witness": {
+    "all_four_controls_retained": true,
+    "complete_origin_and_target_schedules_in_results": true,
+    "control_outcomes": {
+      "combined": "refused",
+      "fixed_roster_pooled_care": "refused",
+      "flexible_without_opening_commitment": "refused",
+      "ordinary_exact_same_formulation": "refused"
+    },
+    "input_snapshot": {
+      "case_id": "recipient_fresh_1_c0a1333ead9900ad",
+      "children": [
+        {
+          "acceptable_location_ids": [
+            "locations_d906f921473c_0",
+            "locations_d906f921473c_1"
+          ],
+          "commute_minutes_by_location": {
+            "locations_d906f921473c_0": {
+              "after": 27,
+              "before": 33
+            },
+            "locations_d906f921473c_1": {
+              "after": 8,
+              "before": 12
+            }
+          },
+          "id": "children_d906f921473c_0",
+          "parent_worker_id": "workers_d906f921473c_0"
+        },
+        {
+          "acceptable_location_ids": [
+            "locations_d906f921473c_0",
+            "locations_d906f921473c_1"
+          ],
+          "commute_minutes_by_location": {
+            "locations_d906f921473c_0": {
+              "after": 22,
+              "before": 22
+            },
+            "locations_d906f921473c_1": {
+              "after": 24,
+              "before": 18
+            }
+          },
+          "id": "children_d906f921473c_1",
+          "parent_worker_id": "workers_d906f921473c_2"
+        }
+      ],
+      "coordinator_fee_cents": 1039,
+      "currency": "CAD",
+      "disclosures": [
+        "Independently generated synthetic audit case; no actual consent, price or legal qualification is asserted.",
+        "V2 confirmation: all entity identities renamed; new monetary/permission parameters, retimed schedules, and changed commute assumptions.",
+        "New local recipient portability input; generated after public-code handoff; no answer supplied."
+      ],
+      "employers": [
+        {
+          "id": "employers_d906f921473c_0",
+          "staffing_quotas": {
+            "shifts_d906f921473c_0": 1,
+            "shifts_d906f921473c_1": 1
+          }
+        },
+        {
+          "id": "employers_d906f921473c_1",
+          "staffing_quotas": {
+            "shifts_d906f921473c_0": 1,
+            "shifts_d906f921473c_1": 1
+          }
+        }
+      ],
+      "horizon": {
+        "end_minute": 1440,
+        "maximum_backup_event_worlds_realized": 1,
+        "operating_days": 1,
+        "scenario_semantics": "Exactly one mutually exclusive preannounced whole-day world.",
+        "start_minute": 0
+      },
+      "limits": {
+        "maximum_children": 8,
+        "maximum_offers": 8,
+        "maximum_scenarios": 6,
+        "maximum_search_states": 500000,
+        "maximum_workers": 12
+      },
+      "locations": [
+        {
+          "declared_concurrent_child_capacity": 2,
+          "id": "locations_d906f921473c_0",
+          "opening_windows": [
+            [
+              0,
+              1440
+            ]
+          ]
+        },
+        {
+          "declared_concurrent_child_capacity": 2,
+          "id": "locations_d906f921473c_1",
+          "opening_windows": [
+            [
+              0,
+              1440
+            ]
+          ]
+        }
+      ],
+      "offers": [
+        {
+          "commitment_required": true,
+          "declared_child_capacity": 2,
+          "fixed_opening_cost_cents": 8159,
+          "id": "offers_d906f921473c_0",
+          "location_id": "locations_d906f921473c_0",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 374,
+          "provider_id": "providers_d906f921473c_0",
+          "required_qualification_tags": [
+            "qualification_d906f921473c"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "staff_d906f921473c_0"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            299,
+            555
+          ]
+        },
+        {
+          "commitment_required": true,
+          "declared_child_capacity": 2,
+          "fixed_opening_cost_cents": 13812,
+          "id": "offers_d906f921473c_1",
+          "location_id": "locations_d906f921473c_0",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 782,
+          "provider_id": "providers_d906f921473c_0",
+          "required_qualification_tags": [
+            "qualification_d906f921473c"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "staff_d906f921473c_1"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            555,
+            811
+          ]
+        },
+        {
+          "commitment_required": true,
+          "declared_child_capacity": 2,
+          "fixed_opening_cost_cents": 8551,
+          "id": "offers_d906f921473c_2",
+          "location_id": "locations_d906f921473c_1",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 814,
+          "provider_id": "providers_d906f921473c_1",
+          "required_qualification_tags": [
+            "qualification_d906f921473c"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "staff_d906f921473c_2"
+          ],
+          "standby_retainer_cents": 1102,
+          "window": [
+            299,
+            555
+          ]
+        },
+        {
+          "commitment_required": true,
+          "declared_child_capacity": 2,
+          "fixed_opening_cost_cents": 12122,
+          "id": "offers_d906f921473c_3",
+          "location_id": "locations_d906f921473c_1",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 358,
+          "provider_id": "providers_d906f921473c_1",
+          "required_qualification_tags": [
+            "qualification_d906f921473c"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "staff_d906f921473c_3"
+          ],
+          "standby_retainer_cents": 1448,
+          "window": [
+            555,
+            811
+          ]
+        }
+      ],
+      "payers": [
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve",
+            "worker_compensation",
+            "coordination_fee"
+          ],
+          "beneficiary_worker_ids": [
+            "workers_d906f921473c_0",
+            "workers_d906f921473c_1",
+            "workers_d906f921473c_2",
+            "workers_d906f921473c_3"
+          ],
+          "id": "payers_d906f921473c_0",
+          "kind": "employer",
+          "payment_ceiling_cents": 26254
+        }
+      ],
+      "providers": [
+        {
+          "declared_offer_acceptance": true,
+          "id": "providers_d906f921473c_0"
+        },
+        {
+          "declared_offer_acceptance": true,
+          "id": "providers_d906f921473c_1"
+        }
+      ],
+      "scenarios": [
+        {
+          "announced_minute": 0,
+          "closed_location_ids": [],
+          "failed_provider_ids": [],
+          "failed_staff_ids": [],
+          "id": "normal"
+        },
+        {
+          "announced_minute": 0,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "providers_d906f921473c_0"
+          ],
+          "failed_staff_ids": [],
+          "id": "scenarios_d906f921473c_1"
+        },
+        {
+          "announced_minute": 0,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "providers_d906f921473c_1"
+          ],
+          "failed_staff_ids": [],
+          "id": "scenarios_d906f921473c_2"
+        }
+      ],
+      "schema": "agi-alpha.e1-case.v1",
+      "shifts": [
+        {
+          "end_minute": 520,
+          "id": "shifts_d906f921473c_0",
+          "start_minute": 334
+        },
+        {
+          "end_minute": 776,
+          "id": "shifts_d906f921473c_1",
+          "start_minute": 590
+        }
+      ],
+      "staff": [
+        {
+          "available_windows": [
+            [
+              299,
+              555
+            ]
+          ],
+          "id": "staff_d906f921473c_0",
+          "max_active_minutes": 256,
+          "max_reserved_minutes": 256,
+          "qualification_tags": [
+            "qualification_d906f921473c"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              555,
+              811
+            ]
+          ],
+          "id": "staff_d906f921473c_1",
+          "max_active_minutes": 256,
+          "max_reserved_minutes": 256,
+          "qualification_tags": [
+            "qualification_d906f921473c"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              299,
+              555
+            ]
+          ],
+          "id": "staff_d906f921473c_2",
+          "max_active_minutes": 256,
+          "max_reserved_minutes": 256,
+          "qualification_tags": [
+            "qualification_d906f921473c"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              555,
+              811
+            ]
+          ],
+          "id": "staff_d906f921473c_3",
+          "max_active_minutes": 256,
+          "max_reserved_minutes": 256,
+          "qualification_tags": [
+            "qualification_d906f921473c"
+          ]
+        }
+      ],
+      "synthetic": true,
+      "workers": [
+        {
+          "change_compensation_cents": {
+            "shifts_d906f921473c_0": 0,
+            "shifts_d906f921473c_1": 665
+          },
+          "current_shift_id": "shifts_d906f921473c_0",
+          "employer_id": "employers_d906f921473c_0",
+          "id": "workers_d906f921473c_0",
+          "permitted_shift_ids": [
+            "shifts_d906f921473c_0",
+            "shifts_d906f921473c_1"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "shifts_d906f921473c_0": 260,
+            "shifts_d906f921473c_1": 0
+          },
+          "current_shift_id": "shifts_d906f921473c_1",
+          "employer_id": "employers_d906f921473c_0",
+          "id": "workers_d906f921473c_1",
+          "permitted_shift_ids": [
+            "shifts_d906f921473c_0",
+            "shifts_d906f921473c_1"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "shifts_d906f921473c_0": 542,
+            "shifts_d906f921473c_1": 0
+          },
+          "current_shift_id": "shifts_d906f921473c_1",
+          "employer_id": "employers_d906f921473c_1",
+          "id": "workers_d906f921473c_2",
+          "permitted_shift_ids": [
+            "shifts_d906f921473c_1"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "shifts_d906f921473c_0": 0,
+            "shifts_d906f921473c_1": 840
+          },
+          "current_shift_id": "shifts_d906f921473c_0",
+          "employer_id": "employers_d906f921473c_1",
+          "id": "workers_d906f921473c_3",
+          "permitted_shift_ids": [
+            "shifts_d906f921473c_0",
+            "shifts_d906f921473c_1"
+          ]
+        }
+      ]
+    }
+  },
+  "results": {
+    "combined": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.0007418099994538352,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "scenarios_d906f921473c_1": 12838,
+            "scenarios_d906f921473c_2": 0
+          },
+          "backup_offer_ids": [
+            "offers_d906f921473c_3"
+          ],
+          "maximum_activation_reserve_cents": 12838,
+          "reserve_staff_minutes": {
+            "staff_d906f921473c_3": 256
+          }
+        },
+        "coordinator_revenue_cents": 1039,
+        "cost_items": [
+          {
+            "amount_cents": 15376,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "children_d906f921473c_0",
+                "children_d906f921473c_1"
+              ],
+              "fixed_opening_cost_cents": 13812,
+              "offer_id": "offers_d906f921473c_1",
+              "opening_cost_breakdown": {},
+              "per_child_cost_cents": 782,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:offers_d906f921473c_1"
+          },
+          {
+            "amount_cents": 1448,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "children_d906f921473c_0",
+                "children_d906f921473c_1"
+              ],
+              "offer_id": "offers_d906f921473c_3"
+            },
+            "id": "standby:offers_d906f921473c_3"
+          },
+          {
+            "amount_cents": 12838,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "scenarios_d906f921473c_1": 12838,
+                "scenarios_d906f921473c_2": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 665,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "shifts_d906f921473c_0",
+              "to_shift": "shifts_d906f921473c_1",
+              "worker_id": "workers_d906f921473c_0"
+            },
+            "id": "worker:workers_d906f921473c_0"
+          },
+          {
+            "amount_cents": 260,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "shifts_d906f921473c_1",
+              "to_shift": "shifts_d906f921473c_0",
+              "worker_id": "workers_d906f921473c_1"
+            },
+            "id": "worker:workers_d906f921473c_1"
+          },
+          {
+            "amount_cents": 1039,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 12838,
+          "backup_standby": 1448,
+          "coordination_fee": 1039,
+          "primary_care": 15376,
+          "worker_compensation": 925
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_0",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          },
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_1",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": null,
+        "maximum_funded_package_cents": 31626,
+        "pass_through_obligations_cents": 30587,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 15376,
+              "item_id": "primary:offers_d906f921473c_1",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 1448,
+              "item_id": "standby:offers_d906f921473c_3",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 9430,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "payers_d906f921473c_0"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 26254,
+          "payer_ceilings_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "payer_totals_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "required_cents": 31626,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 5372
+        },
+        "repeatable_eligible_workload": {
+          "children": 2,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 4
+        },
+        "scenario_assignments": {
+          "normal": {
+            "children_d906f921473c_0": "offers_d906f921473c_1",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          },
+          "scenarios_d906f921473c_1": {
+            "children_d906f921473c_0": "offers_d906f921473c_3",
+            "children_d906f921473c_1": "offers_d906f921473c_3"
+          },
+          "scenarios_d906f921473c_2": {
+            "children_d906f921473c_0": "offers_d906f921473c_1",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "96de7f4675c2685f3ef61d131f4a04160877fc6ed4126e17f446ba22e6120711",
+          "changed_worker_ids": [
+            "workers_d906f921473c_0",
+            "workers_d906f921473c_1"
+          ],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "offers_d906f921473c_1",
+            "offers_d906f921473c_3"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "offers_d906f921473c_1"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 476,
+            "scenarios_d906f921473c_1": 434,
+            "scenarios_d906f921473c_2": 476
+          },
+          "children_completely_covered_per_world": {
+            "normal": 2,
+            "scenarios_d906f921473c_1": 2,
+            "scenarios_d906f921473c_2": 2
+          },
+          "children_required": 2
+        },
+        "worker_roster": {
+          "workers_d906f921473c_0": "shifts_d906f921473c_1",
+          "workers_d906f921473c_1": "shifts_d906f921473c_0",
+          "workers_d906f921473c_2": "shifts_d906f921473c_1",
+          "workers_d906f921473c_3": "shifts_d906f921473c_0"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 665,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_0"
+          },
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 260,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_1"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_2"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_3"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  557,
+                  803
+                ],
+                "required_care_interval": [
+                  557,
+                  803
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 12838
+          },
+          {
+            "activation_cost_cents": 12838,
+            "active_offer_ids": [
+              "offers_d906f921473c_3"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 8,
+                  "before": 12
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_3",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  578,
+                  784
+                ],
+                "required_care_interval": [
+                  578,
+                  784
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 24,
+                  "before": 18
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_3",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  572,
+                  800
+                ],
+                "required_care_interval": [
+                  572,
+                  800
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_0"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_1"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 12122,
+                "id": "offers_d906f921473c_3",
+                "location_id": "locations_d906f921473c_1",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 358,
+                "provider_id": "providers_d906f921473c_1",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ],
+                "standby_retainer_cents": 1448,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_1",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  557,
+                  803
+                ],
+                "required_care_interval": [
+                  557,
+                  803
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_1"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_2"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_2",
+            "unused_refundable_reserve_cents": 12838
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 5372,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 5372,
+      "mode": "combined",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 2
+      },
+      "search_states": 17,
+      "statistics": {
+        "complete_physical_plans": 2,
+        "quota_valid_rosters": 2,
+        "roster_assignments_examined": 2,
+        "roster_partial_nodes": 9
+      },
+      "status": "refused"
+    },
+    "fixed_roster_pooled_care": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.000602269996306859,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "scenarios_d906f921473c_1": 21845,
+            "scenarios_d906f921473c_2": 0
+          },
+          "backup_offer_ids": [
+            "offers_d906f921473c_2",
+            "offers_d906f921473c_3"
+          ],
+          "maximum_activation_reserve_cents": 21845,
+          "reserve_staff_minutes": {
+            "staff_d906f921473c_2": 256,
+            "staff_d906f921473c_3": 256
+          }
+        },
+        "coordinator_revenue_cents": 1039,
+        "cost_items": [
+          {
+            "amount_cents": 8533,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "children_d906f921473c_0"
+              ],
+              "fixed_opening_cost_cents": 8159,
+              "offer_id": "offers_d906f921473c_0",
+              "opening_cost_breakdown": {},
+              "per_child_cost_cents": 374,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:offers_d906f921473c_0"
+          },
+          {
+            "amount_cents": 14594,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "children_d906f921473c_1"
+              ],
+              "fixed_opening_cost_cents": 13812,
+              "offer_id": "offers_d906f921473c_1",
+              "opening_cost_breakdown": {},
+              "per_child_cost_cents": 782,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:offers_d906f921473c_1"
+          },
+          {
+            "amount_cents": 1102,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "children_d906f921473c_0"
+              ],
+              "offer_id": "offers_d906f921473c_2"
+            },
+            "id": "standby:offers_d906f921473c_2"
+          },
+          {
+            "amount_cents": 1448,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "children_d906f921473c_1"
+              ],
+              "offer_id": "offers_d906f921473c_3"
+            },
+            "id": "standby:offers_d906f921473c_3"
+          },
+          {
+            "amount_cents": 21845,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "scenarios_d906f921473c_1": 21845,
+                "scenarios_d906f921473c_2": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 1039,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 21845,
+          "backup_standby": 2550,
+          "coordination_fee": 1039,
+          "primary_care": 23127
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_0",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          },
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_1",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": null,
+        "maximum_funded_package_cents": 48561,
+        "pass_through_obligations_cents": 47522,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 8533,
+              "item_id": "primary:offers_d906f921473c_0",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 14594,
+              "item_id": "primary:offers_d906f921473c_1",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 1102,
+              "item_id": "standby:offers_d906f921473c_2",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 1448,
+              "item_id": "standby:offers_d906f921473c_3",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 577,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "payers_d906f921473c_0"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 26254,
+          "payer_ceilings_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "payer_totals_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "required_cents": 48561,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 22307
+        },
+        "repeatable_eligible_workload": {
+          "children": 2,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 4
+        },
+        "scenario_assignments": {
+          "normal": {
+            "children_d906f921473c_0": "offers_d906f921473c_0",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          },
+          "scenarios_d906f921473c_1": {
+            "children_d906f921473c_0": "offers_d906f921473c_2",
+            "children_d906f921473c_1": "offers_d906f921473c_3"
+          },
+          "scenarios_d906f921473c_2": {
+            "children_d906f921473c_0": "offers_d906f921473c_0",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "96de7f4675c2685f3ef61d131f4a04160877fc6ed4126e17f446ba22e6120711",
+          "changed_worker_ids": [],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "offers_d906f921473c_0",
+            "offers_d906f921473c_1",
+            "offers_d906f921473c_2",
+            "offers_d906f921473c_3"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "offers_d906f921473c_0",
+            "offers_d906f921473c_1"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 476,
+            "scenarios_d906f921473c_1": 434,
+            "scenarios_d906f921473c_2": 476
+          },
+          "children_completely_covered_per_world": {
+            "normal": 2,
+            "scenarios_d906f921473c_1": 2,
+            "scenarios_d906f921473c_2": 2
+          },
+          "children_required": 2
+        },
+        "worker_roster": {
+          "workers_d906f921473c_0": "shifts_d906f921473c_0",
+          "workers_d906f921473c_1": "shifts_d906f921473c_1",
+          "workers_d906f921473c_2": "shifts_d906f921473c_1",
+          "workers_d906f921473c_3": "shifts_d906f921473c_0"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_0"
+          },
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_1"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_2"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_3"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_0",
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_0",
+                "opening_window": [
+                  299,
+                  555
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  301,
+                  547
+                ],
+                "required_care_interval": [
+                  301,
+                  547
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_0"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 8159,
+                "id": "offers_d906f921473c_0",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 374,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_0"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  299,
+                  555
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 21845
+          },
+          {
+            "activation_cost_cents": 21845,
+            "active_offer_ids": [
+              "offers_d906f921473c_2",
+              "offers_d906f921473c_3"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 8,
+                  "before": 12
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_2",
+                "opening_window": [
+                  299,
+                  555
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  322,
+                  528
+                ],
+                "required_care_interval": [
+                  322,
+                  528
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_2"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 24,
+                  "before": 18
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_3",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  572,
+                  800
+                ],
+                "required_care_interval": [
+                  572,
+                  800
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_0"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_1"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 8551,
+                "id": "offers_d906f921473c_2",
+                "location_id": "locations_d906f921473c_1",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 814,
+                "provider_id": "providers_d906f921473c_1",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_2"
+                ],
+                "standby_retainer_cents": 1102,
+                "window": [
+                  299,
+                  555
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 12122,
+                "id": "offers_d906f921473c_3",
+                "location_id": "locations_d906f921473c_1",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 358,
+                "provider_id": "providers_d906f921473c_1",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ],
+                "standby_retainer_cents": 1448,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_1",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_0",
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_0",
+                "opening_window": [
+                  299,
+                  555
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  301,
+                  547
+                ],
+                "required_care_interval": [
+                  301,
+                  547
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_0"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_1"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_2"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 8159,
+                "id": "offers_d906f921473c_0",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 374,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_0"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  299,
+                  555
+                ]
+              },
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_2",
+            "unused_refundable_reserve_cents": 21845
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 22307,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 22307,
+      "mode": "fixed_roster_pooled_care",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 1
+      },
+      "search_states": 5,
+      "statistics": {
+        "complete_physical_plans": 1,
+        "quota_valid_rosters": 1,
+        "roster_assignments_examined": 1
+      },
+      "status": "refused"
+    },
+    "flexible_without_opening_commitment": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.0001122899993788451,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "flexible_without_opening_commitment",
+      "offer": null,
+      "rejection_reasons": {
+        "opening_commitment_missing": 4
+      },
+      "search_states": 9,
+      "statistics": {
+        "quota_valid_rosters": 2,
+        "roster_assignments_examined": 2,
+        "roster_partial_nodes": 9
+      },
+      "status": "refused"
+    },
+    "ordinary_exact_same_formulation": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.0007901240023784339,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": {
+        "backup_obligation": {
+          "activation_cost_by_scenario_cents": {
+            "normal": 0,
+            "scenarios_d906f921473c_1": 12838,
+            "scenarios_d906f921473c_2": 0
+          },
+          "backup_offer_ids": [
+            "offers_d906f921473c_3"
+          ],
+          "maximum_activation_reserve_cents": 12838,
+          "reserve_staff_minutes": {
+            "staff_d906f921473c_3": 256
+          }
+        },
+        "coordinator_revenue_cents": 1039,
+        "cost_items": [
+          {
+            "amount_cents": 15376,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "primary_care",
+            "detail": {
+              "child_ids": [
+                "children_d906f921473c_0",
+                "children_d906f921473c_1"
+              ],
+              "fixed_opening_cost_cents": 13812,
+              "offer_id": "offers_d906f921473c_1",
+              "opening_cost_breakdown": {},
+              "per_child_cost_cents": 782,
+              "primary_cost_is_nonrefundable_if_provider_absent": true
+            },
+            "id": "primary:offers_d906f921473c_1"
+          },
+          {
+            "amount_cents": 1448,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_standby",
+            "detail": {
+              "covered_child_ids": [
+                "children_d906f921473c_0",
+                "children_d906f921473c_1"
+              ],
+              "offer_id": "offers_d906f921473c_3"
+            },
+            "id": "standby:offers_d906f921473c_3"
+          },
+          {
+            "amount_cents": 12838,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "backup_activation_reserve",
+            "detail": {
+              "coordinator_revenue": false,
+              "maximum_realized_worlds": 1,
+              "mutually_exclusive_world_costs_cents": {
+                "normal": 0,
+                "scenarios_d906f921473c_1": 12838,
+                "scenarios_d906f921473c_2": 0
+              },
+              "refundable_unused_amount": true
+            },
+            "id": "backup_activation_reserve"
+          },
+          {
+            "amount_cents": 665,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "shifts_d906f921473c_0",
+              "to_shift": "shifts_d906f921473c_1",
+              "worker_id": "workers_d906f921473c_0"
+            },
+            "id": "worker:workers_d906f921473c_0"
+          },
+          {
+            "amount_cents": 260,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_1"
+            ],
+            "category": "worker_compensation",
+            "detail": {
+              "from_shift": "shifts_d906f921473c_1",
+              "to_shift": "shifts_d906f921473c_0",
+              "worker_id": "workers_d906f921473c_1"
+            },
+            "id": "worker:workers_d906f921473c_1"
+          },
+          {
+            "amount_cents": 1039,
+            "beneficiary_worker_ids": [
+              "workers_d906f921473c_0",
+              "workers_d906f921473c_2"
+            ],
+            "category": "coordination_fee",
+            "detail": {
+              "childcare_delivery_claim": false,
+              "sold_output": "one-day verified commitment/schedule package"
+            },
+            "id": "coordination_fee"
+          }
+        ],
+        "cost_totals_cents": {
+          "backup_activation_reserve": 12838,
+          "backup_standby": 1448,
+          "coordination_fee": 1039,
+          "primary_care": 15376,
+          "worker_compensation": 925
+        },
+        "employer_output_checks": [
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_0",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          },
+          {
+            "actual_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "actual_worker_minutes": 372,
+            "employer_id": "employers_d906f921473c_1",
+            "required_quotas": {
+              "shifts_d906f921473c_0": 1,
+              "shifts_d906f921473c_1": 1
+            },
+            "required_worker_minutes": 372
+          }
+        ],
+        "maximum_admissible_coordinator_fee_cents": null,
+        "maximum_funded_package_cents": 31626,
+        "pass_through_obligations_cents": 30587,
+        "payer_allocation": {
+          "entries": [
+            {
+              "amount_cents": 15376,
+              "item_id": "primary:offers_d906f921473c_1",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 1448,
+              "item_id": "standby:offers_d906f921473c_3",
+              "payer_id": "payers_d906f921473c_0"
+            },
+            {
+              "amount_cents": 9430,
+              "item_id": "backup_activation_reserve",
+              "payer_id": "payers_d906f921473c_0"
+            }
+          ],
+          "feasible": false,
+          "funded_cents": 26254,
+          "payer_ceilings_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "payer_totals_cents": {
+            "payers_d906f921473c_0": 26254
+          },
+          "required_cents": 31626,
+          "rule": "Deterministic exact eligible maximum flow, not a fairness optimum.",
+          "shortfall_cents": 5372
+        },
+        "repeatable_eligible_workload": {
+          "children": 2,
+          "employers": 2,
+          "future_days_require_identical_or_freshly_verified_inputs": true,
+          "required_worlds_per_day": 3,
+          "verified_operating_days": 1,
+          "workers": 4
+        },
+        "scenario_assignments": {
+          "normal": {
+            "children_d906f921473c_0": "offers_d906f921473c_1",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          },
+          "scenarios_d906f921473c_1": {
+            "children_d906f921473c_0": "offers_d906f921473c_3",
+            "children_d906f921473c_1": "offers_d906f921473c_3"
+          },
+          "scenarios_d906f921473c_2": {
+            "children_d906f921473c_0": "offers_d906f921473c_1",
+            "children_d906f921473c_1": "offers_d906f921473c_1"
+          }
+        },
+        "transformation_witness": {
+          "case_sha256": "96de7f4675c2685f3ef61d131f4a04160877fc6ed4126e17f446ba22e6120711",
+          "changed_worker_ids": [
+            "workers_d906f921473c_0",
+            "workers_d906f921473c_1"
+          ],
+          "financial_instrument": "Prepaid primary and standby offers, fully reserved finite backup, paid worker changes.",
+          "new_commitment_offer_ids": [
+            "offers_d906f921473c_1",
+            "offers_d906f921473c_3"
+          ],
+          "no_external_acceptance_inferred": true,
+          "preserved_obligations": [
+            "every employer shift quota",
+            "every worker permitted shift and compensation",
+            "every child's full commute-inclusive interval and acceptable location",
+            "declared provider capacity, staffing, qualifications and windows",
+            "every enumerated contingency",
+            "every eligible payer ceiling"
+          ],
+          "primary_opened_offer_ids": [
+            "offers_d906f921473c_1"
+          ]
+        },
+        "useful_outcome": {
+          "actual_childcare_delivered": false,
+          "all_employer_quotas_preserved": true,
+          "care_minutes_per_world": {
+            "normal": 476,
+            "scenarios_d906f921473c_1": 434,
+            "scenarios_d906f921473c_2": 476
+          },
+          "children_completely_covered_per_world": {
+            "normal": 2,
+            "scenarios_d906f921473c_1": 2,
+            "scenarios_d906f921473c_2": 2
+          },
+          "children_required": 2
+        },
+        "worker_roster": {
+          "workers_d906f921473c_0": "shifts_d906f921473c_1",
+          "workers_d906f921473c_1": "shifts_d906f921473c_0",
+          "workers_d906f921473c_2": "shifts_d906f921473c_1",
+          "workers_d906f921473c_3": "shifts_d906f921473c_0"
+        },
+        "worker_schedule": [
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 665,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_0"
+          },
+          {
+            "employer_id": "employers_d906f921473c_0",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 260,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_1"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_1",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_1",
+            "work_interval": [
+              590,
+              776
+            ],
+            "worker_id": "workers_d906f921473c_2"
+          },
+          {
+            "employer_id": "employers_d906f921473c_1",
+            "original_shift_id": "shifts_d906f921473c_0",
+            "permitted_shift_ids": [
+              "shifts_d906f921473c_0",
+              "shifts_d906f921473c_1"
+            ],
+            "required_compensation_cents": 0,
+            "selected_shift_id": "shifts_d906f921473c_0",
+            "work_interval": [
+              334,
+              520
+            ],
+            "worker_id": "workers_d906f921473c_3"
+          }
+        ],
+        "worlds": [
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  557,
+                  803
+                ],
+                "required_care_interval": [
+                  557,
+                  803
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [],
+              "failed_staff_ids": [],
+              "id": "normal"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "normal",
+            "unused_refundable_reserve_cents": 12838
+          },
+          {
+            "activation_cost_cents": 12838,
+            "active_offer_ids": [
+              "offers_d906f921473c_3"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 8,
+                  "before": 12
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_3",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  578,
+                  784
+                ],
+                "required_care_interval": [
+                  578,
+                  784
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 24,
+                  "before": 18
+                },
+                "location_id": "locations_d906f921473c_1",
+                "offer_id": "offers_d906f921473c_3",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  572,
+                  800
+                ],
+                "required_care_interval": [
+                  572,
+                  800
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_0"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_1"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 12122,
+                "id": "offers_d906f921473c_3",
+                "location_id": "locations_d906f921473c_1",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 358,
+                "provider_id": "providers_d906f921473c_1",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "backup",
+                "staff_ids": [
+                  "staff_d906f921473c_3"
+                ],
+                "standby_retainer_cents": 1448,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_1",
+            "unused_refundable_reserve_cents": 0
+          },
+          {
+            "activation_cost_cents": 0,
+            "active_offer_ids": [
+              "offers_d906f921473c_1"
+            ],
+            "child_care": [
+              {
+                "child_id": "children_d906f921473c_0",
+                "commute": {
+                  "after": 27,
+                  "before": 33
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_0",
+                "provided_care_interval": [
+                  557,
+                  803
+                ],
+                "required_care_interval": [
+                  557,
+                  803
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              },
+              {
+                "child_id": "children_d906f921473c_1",
+                "commute": {
+                  "after": 22,
+                  "before": 22
+                },
+                "location_id": "locations_d906f921473c_0",
+                "offer_id": "offers_d906f921473c_1",
+                "opening_window": [
+                  555,
+                  811
+                ],
+                "parent_worker_id": "workers_d906f921473c_2",
+                "provided_care_interval": [
+                  568,
+                  798
+                ],
+                "required_care_interval": [
+                  568,
+                  798
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ]
+              }
+            ],
+            "declared_outages": {
+              "announced_minute": 0,
+              "closed_location_ids": [],
+              "failed_provider_ids": [
+                "providers_d906f921473c_1"
+              ],
+              "failed_staff_ids": [],
+              "id": "scenarios_d906f921473c_2"
+            },
+            "opening_plan": [
+              {
+                "assigned_child_ids": [
+                  "children_d906f921473c_0",
+                  "children_d906f921473c_1"
+                ],
+                "commitment_required": true,
+                "declared_child_capacity": 2,
+                "fixed_opening_cost_cents": 13812,
+                "id": "offers_d906f921473c_1",
+                "location_id": "locations_d906f921473c_0",
+                "minimum_qualified_staff": 1,
+                "per_child_cost_cents": 782,
+                "provider_id": "providers_d906f921473c_0",
+                "required_qualification_tags": [
+                  "qualification_d906f921473c"
+                ],
+                "role": "primary",
+                "staff_ids": [
+                  "staff_d906f921473c_1"
+                ],
+                "standby_retainer_cents": 0,
+                "window": [
+                  555,
+                  811
+                ]
+              }
+            ],
+            "scenario_id": "scenarios_d906f921473c_2",
+            "unused_refundable_reserve_cents": 12838
+          }
+        ]
+      },
+      "minimum_funding_shortfall_cents": 5372,
+      "minimum_shortfall_among_rejected_physical_plans_cents": 5372,
+      "mode": "ordinary_exact_same_formulation",
+      "offer": null,
+      "rejection_reasons": {
+        "payment_ceiling_or_eligibility_shortfall": 2
+      },
+      "search_states": 16,
+      "statistics": {
+        "complete_physical_plans": 2,
+        "quota_valid_rosters": 2,
+        "roster_assignments_examined": 8
+      },
+      "status": "refused"
+    }
+  },
+  "same_formulation_exact_control": {
+    "identical_selected_result": true,
+    "interpretation": "The same formulation permits an ordinary exact coordinator to tie.",
+    "superiority_claim": false
+  },
+  "schema": "agi-alpha.e1-comparison.v1",
+  "synthetic": true
+}

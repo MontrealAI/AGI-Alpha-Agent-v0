@@ -1,0 +1,351 @@
+{
+  "schema": "agi-alpha.assumption-register.v1",
+  "date": "2026-10-27",
+  "currency_unless_stated": "CAD",
+  "register": [
+    {
+      "id": "A01",
+      "item": "Exact opportunity and candidate history",
+      "value": "12 candidates, three isolated runs",
+      "evidence_class": "executed_model_assisted_research",
+      "uncertainty_or_range": "One run per arm; subjective internal review; no population inference",
+      "source": "discovery/arms/",
+      "decision_relevance": "Does not establish E superiority or beyond-human foresight"
+    },
+    {
+      "id": "A02",
+      "item": "People, consent, provider qualifications and offers",
+      "value": "Synthetic declared inputs",
+      "evidence_class": "synthetic_fixture",
+      "uncertainty_or_range": "Actual individual grants, age/skill rules and licensed capacity unknown",
+      "source": "technical/origin_case.json",
+      "decision_relevance": "Real mission must recheck every meaning and regrant authority"
+    },
+    {
+      "id": "A03",
+      "item": "Complete fixed provider opening",
+      "value": 150,
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Wage resource stress149.60/212/275.23; no supplier quote",
+      "source": "economics/PROVIDER_COST_CALIBRATION.json",
+      "decision_relevance": "Central wage estimate defeats original payer limits"
+    },
+    {
+      "id": "A04",
+      "item": "Standby price",
+      "value": 20,
+      "evidence_class": "assumed_CAD_per_day",
+      "uncertainty_or_range": "Unquoted; plausible stress20\u2013160, not a measured range",
+      "source": "technical/origin_case.json",
+      "decision_relevance": "A higher retainer can remove fundability; provider commitment needed"
+    },
+    {
+      "id": "A05",
+      "item": "Worker compensation",
+      "value": 5,
+      "evidence_class": "assumed_CAD_per_changed_worker",
+      "uncertainty_or_range": "Personal choice/compensation entirely synthetic; higher-cost targeted refusals retained",
+      "source": "technical/fresh_case_policy.json",
+      "decision_relevance": "Cannot force participation to create an apparent surplus"
+    },
+    {
+      "id": "A06",
+      "item": "Care/production scope",
+      "value": "8 interchangeable workers, 4 children, complete declared intervals",
+      "evidence_class": "bounded_model",
+      "uncertainty_or_range": "Actual occupational skills, child eligibility and legal ratios are not supplied",
+      "source": "technical/input_schema.json",
+      "decision_relevance": "Do not apply to richer obligations without explicit representation"
+    },
+    {
+      "id": "A07",
+      "item": "Payer ceilings",
+      "value": "40/day each parent;145/day each employer",
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Actual willingness and liquid funds unknown; boundary grid varies employer80/145/210/275",
+      "source": "technical/boundary_policy.json",
+      "decision_relevance": "Aggregate surplus does not prove individual participation"
+    },
+    {
+      "id": "A08",
+      "item": "Human wage references",
+      "value": "Industrial30.55/44.94/65.19;HR25/31.25/46.63;ECE16.6/24/30.03",
+      "evidence_class": "externally_sourced_CAD_hour",
+      "uncertainty_or_range": "Employee wage anchors, not service prices; November2025 update",
+      "source": "sources/HUMAN_DEVELOPMENT_REFERENCE.json",
+      "decision_relevance": "Supports resource estimates only"
+    },
+    {
+      "id": "A09",
+      "item": "Human-led development hours",
+      "value": "21/42/79",
+      "evidence_class": "assumed_person_hours",
+      "uncertainty_or_range": "No time study; role and task breakdown retained",
+      "source": "sources/HUMAN_DEVELOPMENT_REFERENCE.json",
+      "decision_relevance": "Human pathway comparison; no observed market price"
+    },
+    {
+      "id": "A10",
+      "item": "Human composite load",
+      "value": "1.20/1.35/1.50",
+      "evidence_class": "assumed_factor",
+      "uncertainty_or_range": "Applied once to human task labour; tools separately declared",
+      "source": "sources/HUMAN_DEVELOPMENT_REFERENCE.json",
+      "decision_relevance": "Do not double-count overhead or add unstated commercial margin"
+    },
+    {
+      "id": "A11",
+      "item": "Model unit prices",
+      "value": "Astra10/50;Sol2/10;Terra1/5 USD per million input/output tokens",
+      "evidence_class": "externally_sourced",
+      "uncertainty_or_range": "Official documentation at study date; actual API entitlement and future prices unverified",
+      "source": "sources/model_register.json",
+      "decision_relevance": "Prices do not identify mission success or access"
+    },
+    {
+      "id": "A12",
+      "item": "Per-attempt model usage",
+      "value": "3.4M input,0.5M output including reasoning",
+      "evidence_class": "assumed_usage",
+      "uncertainty_or_range": "0.5\u20133x complete delivery cost tested; no token meter",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Includes formulation, construction, review and packaging"
+    },
+    {
+      "id": "A13",
+      "item": "USD/CAD conversion",
+      "value": 1.4,
+      "evidence_class": "assumed_conversion",
+      "uncertainty_or_range": "Not a spot-rate claim; reprice before purchasing",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "A documented scenario input, not sourced exchange-rate guidance"
+    },
+    {
+      "id": "A14",
+      "item": "Non-inference delivery cost",
+      "value": 25.5,
+      "evidence_class": "assumed_CAD_attempt",
+      "uncertainty_or_range": "Execution8;tools0.5;storage5;monitoring12, no actual supplier bill",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "All part of A, no recurring B charge for origin work"
+    },
+    {
+      "id": "A15",
+      "item": "Retry and correction expectation",
+      "value": 8,
+      "evidence_class": "assumed_CAD_attempt",
+      "uncertainty_or_range": "20%\u00d725 retry plus5%\u00d760 postaccept correction; physical care liability remains external",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Finite correction cost assumed; do not price unlimited recovery"
+    },
+    {
+      "id": "A16",
+      "item": "Early refusal cost",
+      "value": 15,
+      "evidence_class": "assumed_CAD_refusal",
+      "uncertainty_or_range": "Input/semantic preflight, charged even though no accepted package",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Failed delivery economics preserved"
+    },
+    {
+      "id": "A17",
+      "item": "Qualified lead acquisition",
+      "value": 20,
+      "evidence_class": "assumed_CAD_lead",
+      "uncertainty_or_range": "Broad8\u2013120; one-at-a-time60/120 stress",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "CAD60 stress overturns central profitability"
+    },
+    {
+      "id": "A18",
+      "item": "Qualified leads/month",
+      "value": 12,
+      "evidence_class": "assumed_count",
+      "uncertainty_or_range": "Broad4/8/12/16/20; zero actual pipeline",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Finite acquisition and financing may reduce attempted leads"
+    },
+    {
+      "id": "A19",
+      "item": "Capacity and horizon",
+      "value": "6 attempts/month;12 selling+1 runoff months",
+      "evidence_class": "assumed_operating_limit",
+      "uncertainty_or_range": "No unlimited automated production or demand",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Constrains volume and timing"
+    },
+    {
+      "id": "A20",
+      "item": "Business overhead",
+      "value": 400,
+      "evidence_class": "assumed_CAD_active_month",
+      "uncertainty_or_range": "250\u2013800 broad; host/accounting100,admin100,insurance allowance100,general100",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Insurance allowance is not a bound policy or quote"
+    },
+    {
+      "id": "A21",
+      "item": "Launch and opening finance",
+      "value": "800 operating launch;2500 seed",
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Seed is financing, not revenue; history B/C financed separately",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Early wind-down preserves financing constraint"
+    },
+    {
+      "id": "A22",
+      "item": "Business reserve",
+      "value": 500,
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Not a regulatory minimum; held outside optional spending",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Spendable cash includes remaining seed, not only profit"
+    },
+    {
+      "id": "A23",
+      "item": "Employer enabled value",
+      "value": "2\u201312 prevented shifts\u00d7CAD140\u2013260 contribution",
+      "evidence_class": "assumed_buyer_behavior",
+      "uncertainty_or_range": "Scale0.45\u20131.6 in broad; half-value stress loses; no actual avoided-loss data",
+      "source": "src/economics_v2.py",
+      "decision_relevance": "Each employer must individually support half the fee"
+    },
+    {
+      "id": "A24",
+      "item": "Buyer confidence and outside option",
+      "value": "0.9 outcome confidence;0.25 competition haircut",
+      "evidence_class": "assumed_decision_parameters",
+      "uncertainty_or_range": "Competition0.05\u20130.65 broad; no solved strategic equilibrium",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Higher price reduces participation; outside options matter"
+    },
+    {
+      "id": "A25",
+      "item": "Parent participation",
+      "value": 0.9,
+      "evidence_class": "assumed_joint_coalition_probability",
+      "uncertainty_or_range": "Not a separately measured probability for each of four parents",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "No sale when coalition does not participate"
+    },
+    {
+      "id": "A26",
+      "item": "Technical eligibility",
+      "value": 0.75,
+      "evidence_class": "assumed_prequalified_lead_probability",
+      "uncertainty_or_range": "Broad0.4\u20130.9; not inferred from42,48 or66 synthetic cases",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "0/24 unprequalified mixed cases are preserved, not averaged away"
+    },
+    {
+      "id": "A27",
+      "item": "Semantic acceptance",
+      "value": 0.9,
+      "evidence_class": "assumed_mission_probability",
+      "uncertainty_or_range": "Beta world variation concentration40; broad0.7\u20130.97; quality not benchmark-derived",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Common quality variation models correlated misses"
+    },
+    {
+      "id": "A28",
+      "item": "Provider absence",
+      "value": 0.05,
+      "evidence_class": "assumed_daily_probability",
+      "uncertainty_or_range": "Broad0.01\u20130.15; finite pre-start worlds only",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Backup consumption changes buyer participation, not service revenue"
+    },
+    {
+      "id": "A29",
+      "item": "Annual common disruption",
+      "value": 0.1,
+      "evidence_class": "assumed_probability",
+      "uncertainty_or_range": "Eligibility halves for one quarter if the common event occurs",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Customers do not diversify common failure away"
+    },
+    {
+      "id": "A30",
+      "item": "Deferred-payment default",
+      "value": 0.02,
+      "evidence_class": "assumed_probability",
+      "uncertainty_or_range": "Broad0\u20130.08; applies only to deferred half",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Bad debt reduces profit; advance pass funds cannot cover it"
+    },
+    {
+      "id": "A31",
+      "item": "Buyer reserve financing",
+      "value": 0.0125,
+      "evidence_class": "assumed_monthly_rate",
+      "uncertainty_or_range": "Applied to maximum backup reserve; not a loan quote",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "A financing cost separate from reserve principal"
+    },
+    {
+      "id": "A32",
+      "item": "Counterparty decision work",
+      "value": "2 hours\u00d731.25\u00d71.45 per employer/month",
+      "evidence_class": "assumed_opportunity_cost",
+      "uncertainty_or_range": "Participant time, not an arbitrary mandatory agent manual-review bill",
+      "source": "config/economic_config_v2.json",
+      "decision_relevance": "Included in willingness, not duplicated in company costs"
+    },
+    {
+      "id": "A33",
+      "item": "Retention B",
+      "value": "Assessment120;extraction180;invocation3;maintenance15/month",
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Savings0/5/15/30;uses4/12/24/48/72;maintenance0/15/40",
+      "source": "economics_v2/ALPHA_RESULTS.json",
+      "decision_relevance": "Central24-use case loses; paid network admission HOLD"
+    },
+    {
+      "id": "A34",
+      "item": "Historical C planning estimate",
+      "value": 1100,
+      "evidence_class": "assumed_CAD",
+      "uncertainty_or_range": "Complete actual research cost unmetered; planning sensitivity500\u20134000",
+      "source": "selected_opportunity.json",
+      "decision_relevance": "Unpaid construction is not paid-job learning or a measured bill"
+    },
+    {
+      "id": "A35",
+      "item": "External settlement at runoff",
+      "value": 0,
+      "evidence_class": "scenario_closure_assumption",
+      "uncertainty_or_range": "Finite state conservation executed separately; no account statement",
+      "source": "economics/FINITE_SETTLEMENT_CHECK.json",
+      "decision_relevance": "No observed escrow settlement claimed"
+    },
+    {
+      "id": "A36",
+      "item": "Actual service collections",
+      "value": 0,
+      "evidence_class": "observed_action_boundary",
+      "uncertainty_or_range": "No customer sale, invoice, deposit or collection was executed",
+      "source": "economics_v2/COMMERCIAL_RESULT.json",
+      "decision_relevance": "Simulation revenue remains explicitly modeled"
+    },
+    {
+      "id": "A37",
+      "item": "Actual research execution costs",
+      "value": null,
+      "evidence_class": "unknown_unmetered",
+      "uncertainty_or_range": "Tool/model/internal opportunity costs not invoiced or metered",
+      "source": "sources/model_register.json",
+      "decision_relevance": "Do not report zero actual complete cost"
+    },
+    {
+      "id": "A38",
+      "item": "Research identity/rights",
+      "value": "Ephemeral verifier fixtures; public Apache instrument",
+      "evidence_class": "executed_local_fixture",
+      "uncertainty_or_range": "No live ENS, private customer material or network admission",
+      "source": "technical/research_access_fixture_v2/RESULTS.json",
+      "decision_relevance": "Authenticated assessment access is not acquired internal competence"
+    }
+  ],
+  "coverage": "Core source facts, synthetic construction, human resources, agent delivery, buyer participation, operating finance, B/C, rights and actual/unmetered evidence are separated. Every raw economic parameter also remains in the frozen configuration.",
+  "broad_prior_boundary": "Broad economic prior holds the origin low provider quote and original physical structure fixed; provider wage/standby calibration is a separate sensitivity, not sampled supplier evidence."
+}

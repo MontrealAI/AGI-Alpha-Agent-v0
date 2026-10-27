@@ -1,0 +1,59 @@
+{
+  "schema": "agi-alpha.native-linkage-robustness.v1",
+  "script_sha256": "47f80668390fe75424c5a3fd8b3e824004d93640f10ffc889dd216b5c83a839d",
+  "passed": true,
+  "cases": [
+    {
+      "case": "Declared RPC permission is refused",
+      "passed": true,
+      "observed_refusal": "Milestone permissions exceed the local/public-reading research boundary"
+    },
+    {
+      "case": "Shell-string command is refused",
+      "passed": true,
+      "observed_refusal": "Milestone command must be a nonempty argv array; shell strings are not executed"
+    },
+    {
+      "case": "Forward/cyclic dependency is refused",
+      "passed": true,
+      "observed_refusal": "Dependencies must identify earlier milestones in the ordered plan"
+    },
+    {
+      "case": "Caller token-bounty override is refused",
+      "passed": true,
+      "observed_refusal": "Token/funding inputs are forbidden; native bounty fields are fixed format fixtures"
+    },
+    {
+      "case": "Evidence outside repository is refused",
+      "passed": true,
+      "observed_refusal": "Evidence and component paths must remain inside this repository"
+    },
+    {
+      "case": "Duplicate input keys are refused by native parser",
+      "passed": true,
+      "observed_refusal": "Duplicate JSON keys are not accepted"
+    },
+    {
+      "case": "CAD budget changes annex commitment but cannot change nominal token fixtures",
+      "passed": true,
+      "observed_bounties": [
+        "100",
+        "100",
+        "100"
+      ]
+    },
+    {
+      "case": "Missing source coverage does not force a Nova-Seed draft",
+      "passed": true,
+      "native_status": "NO_REVIEW_PORTFOLIO"
+    },
+    {
+      "case": "Rehashed manifest path injection is refused before file access",
+      "passed": true,
+      "observed_refusal": "Verification manifest file set or research boundary was altered"
+    }
+  ],
+  "commands_executed": false,
+  "wallet_rpc_or_transactions": false,
+  "scope": "Local bounded adapter checks; no user, customer, legal or live-chain acceptance asserted."
+}

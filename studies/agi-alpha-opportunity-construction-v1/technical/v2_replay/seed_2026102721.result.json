@@ -1,0 +1,655 @@
+{
+  "case_id": "seed_2026102721",
+  "case_sha256": "9db1be03fc0110fbe0e9fdc12ee384d4513e6f5d467c93f8d33414ce6a2b5a70",
+  "complete_transformation_witness": {
+    "all_four_controls_retained": true,
+    "complete_origin_and_target_schedules_in_results": true,
+    "control_outcomes": {
+      "combined": "refused",
+      "fixed_roster_pooled_care": "refused",
+      "flexible_without_opening_commitment": "refused",
+      "ordinary_exact_same_formulation": "refused"
+    },
+    "input_snapshot": {
+      "case_generation": {
+        "kind": "fixed_seed_randomized",
+        "seed": 2026102721,
+        "solver_outcome_not_used_to_generate": true
+      },
+      "case_id": "seed_2026102721",
+      "children": [
+        {
+          "acceptable_location_ids": [
+            "site_A",
+            "site_B"
+          ],
+          "commute_minutes_by_location": {
+            "site_A": {
+              "after": 45,
+              "before": 30
+            },
+            "site_B": {
+              "after": 20,
+              "before": 60
+            }
+          },
+          "id": "E_A_W1_C",
+          "parent_worker_id": "E_A_W1"
+        },
+        {
+          "acceptable_location_ids": [
+            "site_A"
+          ],
+          "commute_minutes_by_location": {
+            "site_A": {
+              "after": 10,
+              "before": 10
+            },
+            "site_B": {
+              "after": 20,
+              "before": 60
+            }
+          },
+          "id": "E_A_W2_C",
+          "parent_worker_id": "E_A_W2"
+        },
+        {
+          "acceptable_location_ids": [
+            "site_B"
+          ],
+          "commute_minutes_by_location": {
+            "site_A": {
+              "after": 45,
+              "before": 20
+            },
+            "site_B": {
+              "after": 10,
+              "before": 45
+            }
+          },
+          "id": "E_B_W1_C",
+          "parent_worker_id": "E_B_W1"
+        },
+        {
+          "acceptable_location_ids": [
+            "site_A",
+            "site_B"
+          ],
+          "commute_minutes_by_location": {
+            "site_A": {
+              "after": 45,
+              "before": 30
+            },
+            "site_B": {
+              "after": 20,
+              "before": 60
+            }
+          },
+          "id": "E_B_W2_C",
+          "parent_worker_id": "E_B_W2"
+        }
+      ],
+      "coordinator_fee_cents": 2500,
+      "currency": "CAD",
+      "disclosures": [
+        "Every person, offer, payment ceiling, wage and price is synthetic.",
+        "Declared capacity/staffing/qualification inputs are contractual scenario data, not legal childcare ratios or licensed-provider validation.",
+        "The output is a verified finite commitment/schedule package, not delivered childcare.",
+        "Backup is prepaid for at most one realized daily world, with the worst declared activation fully reserved.",
+        "Unused activation reserve is refundable; it is not coordinator revenue.",
+        "Workers' permitted shifts and providers' offer-acceptance flags are assumptions of this synthetic instance, not observed consent."
+      ],
+      "employers": [
+        {
+          "id": "E_A",
+          "staffing_quotas": {
+            "early": 2,
+            "late": 2
+          }
+        },
+        {
+          "id": "E_B",
+          "staffing_quotas": {
+            "early": 2,
+            "late": 2
+          }
+        }
+      ],
+      "horizon": {
+        "end_minute": 1440,
+        "maximum_backup_event_worlds_realized": 1,
+        "operating_days": 1,
+        "scenario_semantics": "One mutually exclusive full-day world is realized. Any named outage is announced before care begins; no mid-session transfer is promised.",
+        "start_minute": 0
+      },
+      "limits": {
+        "maximum_children": 8,
+        "maximum_offers": 8,
+        "maximum_scenarios": 6,
+        "maximum_search_states": 500000,
+        "maximum_workers": 12
+      },
+      "locations": [
+        {
+          "declared_concurrent_child_capacity": 3,
+          "id": "site_A",
+          "opening_windows": [
+            [
+              300,
+              900
+            ]
+          ]
+        },
+        {
+          "declared_concurrent_child_capacity": 5,
+          "id": "site_B",
+          "opening_windows": [
+            [
+              300,
+              900
+            ]
+          ]
+        }
+      ],
+      "offers": [
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 18500
+          },
+          "declared_child_capacity": 3,
+          "fixed_opening_cost_cents": 18500,
+          "id": "A_early",
+          "location_id": "site_A",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 200,
+          "provider_id": "provider_A",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "staff_A_early"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            330,
+            630
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 11000
+          },
+          "declared_child_capacity": 4,
+          "fixed_opening_cost_cents": 11000,
+          "id": "A_late",
+          "location_id": "site_A",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 500,
+          "provider_id": "provider_A",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "primary",
+          "staff_ids": [
+            "staff_A_late"
+          ],
+          "standby_retainer_cents": 0,
+          "window": [
+            570,
+            870
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 9500
+          },
+          "declared_child_capacity": 2,
+          "fixed_opening_cost_cents": 9500,
+          "id": "B_early",
+          "location_id": "site_B",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 900,
+          "provider_id": "provider_B",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "staff_B_early"
+          ],
+          "standby_retainer_cents": 1500,
+          "window": [
+            330,
+            630
+          ]
+        },
+        {
+          "commitment_required": true,
+          "cost_breakdown": {
+            "synthetic_complete_opening_quote": 19500
+          },
+          "declared_child_capacity": 5,
+          "fixed_opening_cost_cents": 19500,
+          "id": "B_late",
+          "location_id": "site_B",
+          "minimum_qualified_staff": 1,
+          "per_child_cost_cents": 500,
+          "provider_id": "provider_B",
+          "required_qualification_tags": [
+            "declared_qualified"
+          ],
+          "role": "backup",
+          "staff_ids": [
+            "staff_B_late"
+          ],
+          "standby_retainer_cents": 2000,
+          "window": [
+            570,
+            870
+          ]
+        }
+      ],
+      "payers": [
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "E_A_W1"
+          ],
+          "id": "parent_E_A_W1",
+          "kind": "parent",
+          "payment_ceiling_cents": 4000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "E_A_W2"
+          ],
+          "id": "parent_E_A_W2",
+          "kind": "parent",
+          "payment_ceiling_cents": 1500
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve",
+            "worker_compensation",
+            "coordination_fee"
+          ],
+          "beneficiary_worker_ids": [
+            "E_A_W1",
+            "E_A_W2",
+            "E_A_W3",
+            "E_A_W4"
+          ],
+          "id": "payer_E_A",
+          "kind": "employer",
+          "payment_ceiling_cents": 10500
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "E_B_W1"
+          ],
+          "id": "parent_E_B_W1",
+          "kind": "parent",
+          "payment_ceiling_cents": 5000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve"
+          ],
+          "beneficiary_worker_ids": [
+            "E_B_W2"
+          ],
+          "id": "parent_E_B_W2",
+          "kind": "parent",
+          "payment_ceiling_cents": 2000
+        },
+        {
+          "allowed_cost_categories": [
+            "primary_care",
+            "backup_standby",
+            "backup_activation_reserve",
+            "worker_compensation",
+            "coordination_fee"
+          ],
+          "beneficiary_worker_ids": [
+            "E_B_W1",
+            "E_B_W2",
+            "E_B_W3",
+            "E_B_W4"
+          ],
+          "id": "payer_E_B",
+          "kind": "employer",
+          "payment_ceiling_cents": 25000
+        }
+      ],
+      "providers": [
+        {
+          "declared_offer_acceptance": true,
+          "id": "provider_A"
+        },
+        {
+          "declared_offer_acceptance": true,
+          "id": "provider_B"
+        }
+      ],
+      "scenarios": [
+        {
+          "announced_minute": 300,
+          "closed_location_ids": [],
+          "failed_provider_ids": [],
+          "failed_staff_ids": [],
+          "id": "normal"
+        },
+        {
+          "announced_minute": 300,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "provider_A"
+          ],
+          "failed_staff_ids": [],
+          "id": "primary_provider_absent"
+        },
+        {
+          "announced_minute": 300,
+          "closed_location_ids": [],
+          "failed_provider_ids": [
+            "provider_B"
+          ],
+          "failed_staff_ids": [],
+          "id": "backup_provider_absent"
+        }
+      ],
+      "schema": "agi-alpha.e1-case.v1",
+      "shifts": [
+        {
+          "end_minute": 600,
+          "id": "early",
+          "start_minute": 360
+        },
+        {
+          "end_minute": 840,
+          "id": "late",
+          "start_minute": 600
+        }
+      ],
+      "staff": [
+        {
+          "available_windows": [
+            [
+              330,
+              630
+            ]
+          ],
+          "id": "staff_A_early",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              570,
+              870
+            ]
+          ],
+          "id": "staff_A_late",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": []
+        },
+        {
+          "available_windows": [
+            [
+              330,
+              630
+            ]
+          ],
+          "id": "staff_B_early",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        },
+        {
+          "available_windows": [
+            [
+              570,
+              870
+            ]
+          ],
+          "id": "staff_B_late",
+          "max_active_minutes": 300,
+          "max_reserved_minutes": 300,
+          "qualification_tags": [
+            "declared_qualified"
+          ]
+        }
+      ],
+      "synthetic": true,
+      "workers": [
+        {
+          "change_compensation_cents": {
+            "early": 0,
+            "late": 0
+          },
+          "current_shift_id": "early",
+          "employer_id": "E_A",
+          "id": "E_A_W1",
+          "permitted_shift_ids": [
+            "early"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 0,
+            "late": 0
+          },
+          "current_shift_id": "late",
+          "employer_id": "E_A",
+          "id": "E_A_W2",
+          "permitted_shift_ids": [
+            "early",
+            "late"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 0,
+            "late": 1000
+          },
+          "current_shift_id": "early",
+          "employer_id": "E_A",
+          "id": "E_A_W3",
+          "permitted_shift_ids": [
+            "early"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 2000,
+            "late": 0
+          },
+          "current_shift_id": "late",
+          "employer_id": "E_A",
+          "id": "E_A_W4",
+          "permitted_shift_ids": [
+            "early",
+            "late"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 0,
+            "late": 0
+          },
+          "current_shift_id": "early",
+          "employer_id": "E_B",
+          "id": "E_B_W1",
+          "permitted_shift_ids": [
+            "early",
+            "late"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 2000,
+            "late": 0
+          },
+          "current_shift_id": "late",
+          "employer_id": "E_B",
+          "id": "E_B_W2",
+          "permitted_shift_ids": [
+            "late"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 0,
+            "late": 0
+          },
+          "current_shift_id": "early",
+          "employer_id": "E_B",
+          "id": "E_B_W3",
+          "permitted_shift_ids": [
+            "early",
+            "late"
+          ]
+        },
+        {
+          "change_compensation_cents": {
+            "early": 500,
+            "late": 0
+          },
+          "current_shift_id": "late",
+          "employer_id": "E_B",
+          "id": "E_B_W4",
+          "permitted_shift_ids": [
+            "early",
+            "late"
+          ]
+        }
+      ]
+    }
+  },
+  "results": {
+    "combined": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.00017701700562611222,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "combined",
+      "offer": null,
+      "rejection_reasons": {
+        "full_care_interval_uncovered": 9,
+        "insufficient_qualified_staff": 12,
+        "no_acceptable_location": 3
+      },
+      "search_states": 16,
+      "statistics": {
+        "quota_valid_rosters": 3,
+        "roster_assignments_examined": 3,
+        "roster_partial_nodes": 16
+      },
+      "status": "refused"
+    },
+    "fixed_roster_pooled_care": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 7.115700282156467e-05,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "fixed_roster_pooled_care",
+      "offer": null,
+      "rejection_reasons": {
+        "full_care_interval_uncovered": 3,
+        "insufficient_qualified_staff": 4,
+        "no_acceptable_location": 1
+      },
+      "search_states": 1,
+      "statistics": {
+        "quota_valid_rosters": 1,
+        "roster_assignments_examined": 1
+      },
+      "status": "refused"
+    },
+    "flexible_without_opening_commitment": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 7.398199522867799e-05,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "flexible_without_opening_commitment",
+      "offer": null,
+      "rejection_reasons": {
+        "opening_commitment_missing": 12
+      },
+      "search_states": 16,
+      "statistics": {
+        "quota_valid_rosters": 3,
+        "roster_assignments_examined": 3,
+        "roster_partial_nodes": 16
+      },
+      "status": "refused"
+    },
+    "ordinary_exact_same_formulation": {
+      "claim": "Synthetic finite schedule/commitment package; no childcare delivery or human acceptance.",
+      "elapsed_seconds": 0.000384060011128895,
+      "exhaustive_within_declared_bounds": true,
+      "global_maximum_admissible_coordination_fee_cents": null,
+      "least_cost_complete_physical_plan": null,
+      "minimum_funding_shortfall_cents": null,
+      "minimum_shortfall_among_rejected_physical_plans_cents": null,
+      "mode": "ordinary_exact_same_formulation",
+      "offer": null,
+      "rejection_reasons": {
+        "full_care_interval_uncovered": 9,
+        "insufficient_qualified_staff": 12,
+        "no_acceptable_location": 3
+      },
+      "search_states": 32,
+      "statistics": {
+        "quota_valid_rosters": 3,
+        "roster_assignments_examined": 32
+      },
+      "status": "refused"
+    }
+  },
+  "same_formulation_exact_control": {
+    "identical_selected_result": true,
+    "interpretation": "The same formulation permits an ordinary exact coordinator to tie.",
+    "superiority_claim": false
+  },
+  "schema": "agi-alpha.e1-comparison.v1",
+  "synthetic": true
+}
