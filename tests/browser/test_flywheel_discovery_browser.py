@@ -50,13 +50,55 @@ def main() -> None:
                 page.on("pageerror", lambda error: errors.append(str(error)))
                 url = f"http://127.0.0.1:{server.server_port}/flywheel/"
                 page.goto(url)
+                recorded = json.loads((ROOT / "scripts/templates/alpha-flywheel/discovery-evidence.json").read_bytes())
+                expect(page.locator("#verified")).to_be_visible()
+                expect(page.locator("#verified-fresh-count")).to_have_text("12/12")
+                expect(page.locator("#verified-feasible-count")).to_have_text("3")
+                expect(page.locator("#verified-infeasible-count")).to_have_text("9")
+                assert page.locator("#verified-placement .placement-row").count() == 4
+                expect(page.locator("#verified-scope")).to_contain_text("conventional expert matches")
+                expect(page.locator("#verified-scope")).to_contain_text("Complete actual cost is unknown")
+                expect(page.locator("#verified-scope")).to_contain_text("live qualification are not established")
+                assert page.locator("#verified").get_attribute("data-qualification") == "checked"
+                checks.append(
+                    "source-derived technical success distinguishes three feasible plans from nine impossibility checks"
+                )
+                with page.expect_download() as workflow_download:
+                    page.locator("#verified-workflow-download").click()
+                workflow_path = root / "recorded-workflow.json"
+                workflow_download.value.save_as(workflow_path)
+                assert json.loads(workflow_path.read_bytes()) == recorded["connected"]["constructed_workflow"]
+                expect(page.locator("#verified-download-status")).to_contain_text("separate authority")
+                checks.append("actual retained configuration downloads unchanged without granting authority")
+                page.locator("#lang-fr").click()
+                expect(page.locator("#verified-title")).to_contain_text("Un résultat utile")
+                expect(page.locator("#verified-fresh-count")).to_have_text("12/12")
+                expect(page.locator("#verified-scope")).to_contain_text("coût réel complet est inconnu")
+                page.locator("#lang-en").click()
+                page.locator("#verified .verified-evidence summary").click()
+                assert page.locator("#verified-fresh-results tbody tr").count() == 12
+                expect(page.locator("#verified-economics")).to_contain_text("USD 0")
+                with page.expect_download() as dossier_download:
+                    page.locator("#verified-evidence-download").click()
+                dossier_path = root / "recorded-dossier.json"
+                dossier_download.value.save_as(dossier_path)
+                assert json.loads(dossier_path.read_bytes()) == recorded
+                assert recorded["summary"]["authority_inherited"] is False
+                assert recorded["summary"]["live_qualified"] is False
+                page.locator("#verified .verified-evidence summary").click()
+                checks.append(
+                    "EN/FR success retains nearby comparison and cost limits with exact historical dossier export"
+                )
+                if os.environ.get("VERIFIED_UI_SCREENSHOT"):
+                    page.locator("#verified").screenshot(path=os.environ["VERIFIED_UI_SCREENSHOT"])
                 expect(page.locator("#discovery-provenance")).to_contain_text("planning assumptions")
                 assert page.locator("#discovery-needs").input_value() == ""
                 assert page.locator("#discovery-existing").input_value() == ""
                 assert page.locator("#discovery-gap").input_value() == ""
                 assert page.locator("#discovery-why").input_value() == ""
                 assert page.evaluate(
-                    "document.querySelector('#discovery').compareDocumentPosition(document.querySelector('#explore')) & Node.DOCUMENT_POSITION_FOLLOWING"
+                    "document.querySelector('#discovery').compareDocumentPosition("
+                    "document.querySelector('#explore')) & Node.DOCUMENT_POSITION_FOLLOWING"
                 )
                 page.locator("#explore-button").focus()
                 page.keyboard.press("Enter")
@@ -66,6 +108,9 @@ def main() -> None:
                 checks.append("discovery-first CTA opens a blank planner before optional simulation")
                 page.locator("#discovery-review").click()
                 expect(page.locator("#discovery-error")).to_be_visible()
+                assert page.locator("#discovery-needs").is_visible()
+                assert page.locator("#discovery-purpose").is_visible()
+                assert not page.locator("#discovery-existing").is_visible()
                 checks.append("empty useful need refused")
                 page.locator("#discovery-candidate").click()
                 expect(page.locator("#discovery-provenance")).to_contain_text("No new invention or observed demand")
@@ -113,7 +158,7 @@ def main() -> None:
                 second_download.value.save_as(second_path)
                 assert first_path.read_bytes() == second_path.read_bytes()
                 checks.append("duplicate exports preserve one hypothesis and exact history")
-                page.locator("#discovery .discovery-editor details").nth(1).locator("summary").click()
+                page.locator("#discovery .discovery-editor details:has(#discovery-decision) > summary").click()
                 page.locator("#discovery-decision").select_option("stop")
                 with page.expect_download() as stopped_download:
                     page.locator("#discovery-export").click()
@@ -164,26 +209,54 @@ def main() -> None:
                 experiment = candidate["experiment"]
                 assert len(experiment["runs"]) == 76
                 expect(page.locator("#discovery-candidate-recorded")).to_be_visible()
-                expect(page.locator("#candidate-construction-count")).to_contain_text("8 additional recorded report-write actions")
+                expect(page.locator("#candidate-construction-count")).to_contain_text(
+                    "8 additional recorded report-write actions"
+                )
                 assert page.locator("#candidate-recorded-results tbody tr").count() == 4
-                expected_writes = {"schema-only": 8, "full-fresh-contract": 63, "identity-reuse": 21, "ordinary-same-content-library": 21}
+                expected_writes = {
+                    "schema-only": 8,
+                    "full-fresh-contract": 63,
+                    "identity-reuse": 21,
+                    "ordinary-same-content-library": 21,
+                }
                 for index, (arm, result) in enumerate(experiment["summary"].items()):
-                    actual = page.locator("#candidate-recorded-results tbody tr").nth(index).locator("td").all_text_contents()
+                    actual = (
+                        page.locator("#candidate-recorded-results tbody tr")
+                        .nth(index)
+                        .locator("td")
+                        .all_text_contents()
+                    )
                     assert int(actual[2]) == expected_writes[arm]
                     assert actual[1] == f"{result['accepted']} / 19"
                 expect(page.locator("#candidate-artifact-rows")).to_contain_text("ticket-0")
                 expect(page.locator("#candidate-artifact-rows")).to_contain_text("6047")
                 assert re.fullmatch(r"[a-f0-9]{64}", page.locator("#candidate-artifact-sha").text_content())
                 emitted = json.loads(page.locator("#candidate-artifact-json").text_content())
-                assert emitted == {"rows": [{"id": "ticket-0", "milliseconds": 1007}, {"id": "ticket-1", "milliseconds": 2029}, {"id": "ticket-2", "milliseconds": 3011}], "total_milliseconds": 6047}
-                counter_index = next(index for index, run in enumerate(experiment["runs"]) if run["arm"] == "identity-reuse" and run["mission"] == "hidden-third-only")
+                assert emitted == {
+                    "rows": [
+                        {"id": "ticket-0", "milliseconds": 1007},
+                        {"id": "ticket-1", "milliseconds": 2029},
+                        {"id": "ticket-2", "milliseconds": 3011},
+                    ],
+                    "total_milliseconds": 6047,
+                }
+                counter_index = next(
+                    index
+                    for index, run in enumerate(experiment["runs"])
+                    if run["arm"] == "identity-reuse" and run["mission"] == "hidden-third-only"
+                )
                 page.locator("#candidate-recorded-run").select_option(str(counter_index))
                 expect(page.locator("#candidate-run-status")).to_contain_text("rejected")
                 expect(page.locator("#candidate-artifact-title")).to_contain_text("rejected")
-                expect(page.locator("#candidate-counterexample")).to_contain_text("Two probes do not establish a generic semantic guarantee")
+                expect(page.locator("#candidate-counterexample")).to_contain_text(
+                    "Two probes do not establish a generic semantic guarantee"
+                )
                 expect(page.locator("#candidate-recorded-decision")).to_contain_text("STOP")
                 expect(page.locator("#candidate-recorded-witness")).to_contain_text("paused-uncertain")
-                checks.append("actual 76-episode candidate comparison, report artifact, counterexample and justified stop are inspectable")
+                checks.append(
+                    "actual 76-episode candidate comparison, report artifact, counterexample "
+                    "and justified stop are inspectable"
+                )
                 for language in ("en", "fr"):
                     page.locator(f"#lang-{language}").click()
                     for width in (320, 390, 1440):
@@ -197,6 +270,26 @@ def main() -> None:
                     page.locator("#discovery").screenshot(path=os.environ["DISCOVERY_UI_SCREENSHOT"])
                 assert not errors, errors
                 checks.append("no browser script errors")
+                fault_path = root / "scripts/templates/alpha-flywheel/discovery-evidence.json"
+                fault = json.loads(fault_path.read_bytes())
+                fault["connected"]["fresh_evaluation"]["cases"][0]["v2"]["verification"][
+                    "accepted_finite_result"
+                ] = False
+                fault_path.write_text(json.dumps(fault))
+                build(root)
+                page.goto(url + "?check=unverified")
+                expect(page.locator("#verified-fresh-count")).to_have_text("11/12")
+                expect(page.locator("#verified-infeasible-count")).to_have_text("8")
+                expect(page.locator("#verified-scope")).to_contain_text("not independently verified")
+                assert page.locator("#verified").get_attribute("data-qualification") == "partial"
+                page.locator("#verified .verified-evidence summary").click()
+                expect(page.locator("#verified-fresh-results tbody tr").first).to_contain_text(
+                    "Outcome awaiting verification"
+                )
+                expect(page.locator("#verified-fresh-results tbody tr").first).to_contain_text("NOT VERIFIED")
+                expect(page.locator("#verified-comparison")).to_contain_text("not independently verified")
+                assert not errors, errors
+                checks.append("injected missing acceptance cannot become a successful count or established outcome")
                 browser.close()
         finally:
             server.shutdown()

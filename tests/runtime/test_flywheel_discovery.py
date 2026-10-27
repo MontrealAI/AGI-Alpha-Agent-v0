@@ -520,6 +520,60 @@ def test_actual_execution_and_accepted_original_artifact_bind_observation(setup:
     assert result["authority_granted"] is False
 
 
+@pytest.mark.parametrize("interpretation", ["supports", "falsifies", "inconclusive"])
+@pytest.mark.parametrize("sealed_costs", [False, True])
+@pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+    setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+) -> None:
+    state = setup
+    register_witness(state)
+    mission = e.execution(state)[1]
+    spec = bundle(state, mission=mission, bucket="A")
+    record = register_bundle(state, spec)
+    if sealed_costs:
+        s.seal(state, "construction-costs", "A")
+    raw = observation(state, spec).model_dump()
+    raw["interpretation"] = interpretation
+    if receipt_field == "omitted":
+        raw.pop("execution_operation")
+    signed = command(state, "observe", raw, "frozen-observation", record["digest"])
+    before = state["journal"].verify()
+    before_costs = state["costs"].report()
+    before_checkpoint = state["service"].checkpoint.path.read_bytes()
+
+    with pytest.raises(ValueError, match="frozen experiment requires its bound execution receipt"):
+        Discovery(state["service"]).apply(signed)
+
+    assert state["journal"].verify() == before
+    assert state["costs"].report() == before_costs
+    assert state["service"].checkpoint.path.read_bytes() == before_checkpoint
+    assert Discovery(state["service"]).inspect("bundle", spec.bundle_id) == record
+    for kind, identity in (
+        ("observation", "frozen-observation"),
+        ("operation", "frozen-observation"),
+        ("cost-allocation", "construction-costs/A"),
+    ):
+        with pytest.raises(KeyError):
+            state["journal"].latest(key(kind, identity))
+
+    execution = e.launch(state)
+    e.accept(state, execution)
+    raw.update(
+        artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+        cost_operation="placement-origin",
+        execution_operation="placement-origin",
+        elapsed_seconds=1800,
+        acceptance="existing-placement-acceptance",
+    )
+    result = Discovery(state["service"]).apply(command(state, "observe", raw, "frozen-observation", record["digest"]))
+    assert result["status"] == "paused-checkpoint"
+    assert result["observations"][0]["execution_digest"] == execution["digest"]
+    assert result["observations"][0]["complete_selected_bucket"] is True
+    assert result["authority_granted"] is False
+    assert state["costs"].report()["collected_revenue"] == 0
+
+
 @pytest.mark.parametrize("attack", ["bucket", "artifact", "elapsed", "inputs", "acceptance", "mode"])
 def test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance(setup: dict[str, Any], attack: str) -> None:
     state = setup

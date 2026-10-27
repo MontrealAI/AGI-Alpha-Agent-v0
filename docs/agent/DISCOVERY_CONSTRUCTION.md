@@ -36,7 +36,15 @@ Executed observations bind the frozen mission, exact artifact-bearing terminal
 receipt, evidence mode, actual permit bucket, elapsed-time lower bound and original
 requirements. Accepted placement outputs use the existing independent acceptance
 service. Other interpretations remain explicitly attested and unqualified.
-Research artifacts can be recorded without inventing execution receipts.
+Research artifacts can be recorded without inventing execution receipts only when
+the planned step has no frozen execution request. A step that pins a mission must
+bind its actual execution receipt even for an inconclusive or falsifying observation.
+Refusal leaves the bundle, command identity, cost allocation and checkpoint unchanged;
+a corrected observation can then use the actual receipt without replaying execution.
+
+The receipt-binding repair and a fresh source-bound local replay are retained in
+`evidence/discovery-frozen-execution-20261027/`. The original embedded dossier and
+earlier qualification packet remain historical evidence for their own source.
 
 An operation/bucket can be allocated once across all bundles. This reads the
 existing ledger rather than charging it again. Unknown costs pause the package.
@@ -163,6 +171,16 @@ exports and reopening. Existing approaches, gaps, uncertainty, witnesses, decisi
 experiments and stopping conditions stay visible. Populated fields never become
 discovered, constructed, accepted or sold outcomes automatically. Imported projects
 and evidence cannot restore authority. Recorded regression evidence is separate.
+
+The results layer now puts an actual checked origin artifact and downloadable
+workflow configuration before the planning form. Its counts come from the recorded
+dossier: twelve checked fresh results comprise three feasible placements and nine
+verified infeasibility results. It does not count them as twelve delivered jobs.
+The conventional expert's parity, unknown complete actual cost and lack of live or
+commercial qualification stay beside these results. Comparisons, full JSON and
+accounting remain inspectable; the initial discovery form needs only a beneficiary's
+need and the purpose to preserve. Investigation and construction fields expand as
+needed. All existing source exports and project histories keep their original format.
 
 ## Evidence boundaries, dependencies and rollback
 
