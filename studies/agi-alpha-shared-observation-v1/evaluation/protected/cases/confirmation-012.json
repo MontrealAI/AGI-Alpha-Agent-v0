@@ -1,0 +1,176 @@
+{
+  "schema": "shared-observation-mission/v1",
+  "mission_id": "confirmation-012",
+  "evidence_type": "synthetic",
+  "calibration_scope": "shared-secondary-risk-v1",
+  "states": [
+    "secondary-state-0",
+    "secondary-state-1",
+    "secondary-state-2"
+  ],
+  "prior": [
+    0.3325132035,
+    0.4395016487,
+    0.2279851478
+  ],
+  "observation": {
+    "id": "assumed-sensor-confirmation-012",
+    "usable": true,
+    "rights_cleared": true,
+    "calibration_scope": "shared-secondary-risk-v1",
+    "outcomes": [
+      {
+        "id": "signal-0",
+        "likelihood": [
+          0.72568749,
+          0.06932987,
+          0.07632803
+        ],
+        "arrival_hours": 0.393706
+      },
+      {
+        "id": "signal-1",
+        "likelihood": [
+          0.09475058,
+          0.75300868,
+          0.07632803
+        ],
+        "arrival_hours": 0.342452
+      },
+      {
+        "id": "signal-2",
+        "likelihood": [
+          0.09475058,
+          0.06932987,
+          0.7343857
+        ],
+        "arrival_hours": 0.433864
+      },
+      {
+        "id": "no-result",
+        "likelihood": [
+          0.08481135,
+          0.10833158,
+          0.11295824
+        ],
+        "arrival_hours": null
+      }
+    ]
+  },
+  "operators": [
+    {
+      "id": "operator-0",
+      "risk_limit": 0.000102489071,
+      "decision_deadline_hours": 0.794538,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            3.3371615e-05,
+            8.834437e-06,
+            3.9701711e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 1.094538
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            7.903621e-06,
+            1.0490418e-05,
+            6.075899e-06
+          ],
+          "cost_usd": 117.04,
+          "latest_start_hours": 0.9945379999999999
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            1.975905e-06,
+            2.622604e-06,
+            1.518975e-06
+          ],
+          "cost_usd": 158.0,
+          "latest_start_hours": 0.9945379999999999
+        }
+      ]
+    },
+    {
+      "id": "operator-1",
+      "risk_limit": 9.0995516e-05,
+      "decision_deadline_hours": 0.914717,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1.4608444e-05,
+            1.7382316e-05,
+            1.3222055e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 1.214717
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            3.58814e-06,
+            1.0479626e-05,
+            3.48932e-06
+          ],
+          "cost_usd": 232.77,
+          "latest_start_hours": 1.114717
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            8.97035e-07,
+            2.619906e-06,
+            8.7233e-07
+          ],
+          "cost_usd": 314.24,
+          "latest_start_hours": 1.114717
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "risk_limit": 9.961441e-05,
+      "decision_deadline_hours": 2.000815,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            7.556683e-06,
+            6.518367e-06,
+            1.9373095e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 2.3008149999999996
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            6.794749e-06,
+            1.097364e-05,
+            9.573668e-06
+          ],
+          "cost_usd": 99.18,
+          "latest_start_hours": 2.200815
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            1.698687e-06,
+            2.74341e-06,
+            2.393417e-06
+          ],
+          "cost_usd": 133.89,
+          "latest_start_hours": 2.200815
+        }
+      ]
+    }
+  ]
+}

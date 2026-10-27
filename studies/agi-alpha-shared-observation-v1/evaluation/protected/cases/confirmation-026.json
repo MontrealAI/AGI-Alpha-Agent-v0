@@ -1,0 +1,214 @@
+{
+  "schema": "shared-observation-mission/v1",
+  "mission_id": "confirmation-026",
+  "evidence_type": "synthetic",
+  "calibration_scope": "shared-secondary-risk-v1",
+  "states": [
+    "secondary-state-0",
+    "secondary-state-1",
+    "secondary-state-2"
+  ],
+  "prior": [
+    0.387034145,
+    0.4566619494,
+    0.1563039056
+  ],
+  "observation": {
+    "id": "assumed-sensor-confirmation-026",
+    "usable": true,
+    "rights_cleared": true,
+    "calibration_scope": "shared-secondary-risk-v1",
+    "outcomes": [
+      {
+        "id": "signal-0",
+        "likelihood": [
+          0.82412014,
+          0.04371596,
+          0.07784453
+        ],
+        "arrival_hours": 0.25
+      },
+      {
+        "id": "signal-1",
+        "likelihood": [
+          0.06439789,
+          0.85095928,
+          0.07784453
+        ],
+        "arrival_hours": 1.0
+      },
+      {
+        "id": "signal-2",
+        "likelihood": [
+          0.06439789,
+          0.04371596,
+          0.70211421
+        ],
+        "arrival_hours": 1.8
+      },
+      {
+        "id": "no-result",
+        "likelihood": [
+          0.04708408,
+          0.0616088,
+          0.14219673
+        ],
+        "arrival_hours": null
+      }
+    ]
+  },
+  "operators": [
+    {
+      "id": "operator-0",
+      "risk_limit": 9.8955715e-05,
+      "decision_deadline_hours": 0.5,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            4.658482e-06,
+            0.000680977275,
+            1.8295333e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 0.7
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            1.234891e-06,
+            2.015745e-06,
+            3.211224e-06
+          ],
+          "cost_usd": 170.73,
+          "latest_start_hours": 0.7
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            3.08723e-07,
+            5.03936e-07,
+            8.02806e-07
+          ],
+          "cost_usd": 230.49,
+          "latest_start_hours": 0.7
+        }
+      ]
+    },
+    {
+      "id": "operator-1",
+      "risk_limit": 7.7399166e-05,
+      "decision_deadline_hours": 1.25,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            0.000532565022,
+            6.790788e-06,
+            1.7859792e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 1.45
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            9.01812e-07,
+            6.551245e-06,
+            6.421674e-06
+          ],
+          "cost_usd": 143.27,
+          "latest_start_hours": 1.45
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            2.25453e-07,
+            1.637811e-06,
+            1.605419e-06
+          ],
+          "cost_usd": 193.41,
+          "latest_start_hours": 1.45
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "risk_limit": 0.000102558024,
+      "decision_deadline_hours": 2.0,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1.534947e-06,
+            0.000777416957,
+            1.6443291e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 2.2
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            2.03897e-06,
+            6.129283e-06,
+            8.490416e-06
+          ],
+          "cost_usd": 169.68,
+          "latest_start_hours": 2.2
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            5.09742e-07,
+            1.532321e-06,
+            2.122604e-06
+          ],
+          "cost_usd": 229.07,
+          "latest_start_hours": 2.2
+        }
+      ]
+    },
+    {
+      "id": "operator-3",
+      "risk_limit": 0.000104552254,
+      "decision_deadline_hours": 0.5,
+      "fallback_action": "fallback",
+      "actions": [
+        {
+          "id": "coast",
+          "risk_by_state": [
+            1.4393928e-05,
+            0.000683309687,
+            1.9093942e-05
+          ],
+          "cost_usd": 0.0,
+          "latest_start_hours": 0.7
+        },
+        {
+          "id": "fallback",
+          "risk_by_state": [
+            9.084613e-06,
+            1.397452e-06,
+            5.662204e-06
+          ],
+          "cost_usd": 168.94,
+          "latest_start_hours": 0.7
+        },
+        {
+          "id": "conservative",
+          "risk_by_state": [
+            2.271153e-06,
+            3.49363e-07,
+            1.415551e-06
+          ],
+          "cost_usd": 228.07,
+          "latest_start_hours": 0.7
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "schema": "shared-observation-native-reference-reconciliation/v1",
+  "evidence_type": "EXECUTED_NATIVE_ACCOUNTING_WITH_MODELED_SERVICE_AMOUNTS",
+  "source": {
+    "assumptions_sha256": "69f3ad371291069563e751147c219eeea5cb41e0f69a2435830048a4f7d62775",
+    "event_tree_sha256": "8e78740c04d76b66ab633f0ba29e3ae64c0c7223811657010a12123998894182",
+    "path_index": 17
+  },
+  "selected_branch": {
+    "A_cash_cost": 135.0,
+    "accepted": 3,
+    "available_operators": [
+      true,
+      true,
+      true
+    ],
+    "bad_debt": 0.0,
+    "buyer_liquidity_verified": false,
+    "cash_path": [
+      {
+        "available_funds": 1194.0,
+        "cash": 1494.0,
+        "cash_change": -6.0,
+        "day": 0,
+        "event": "quote",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      },
+      {
+        "available_funds": 1080.0,
+        "cash": 2166.0,
+        "cash_change": 672.0,
+        "day": 1,
+        "event": "conditional_deposits",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 114.0
+      },
+      {
+        "available_funds": 465.0,
+        "cash": 1452.0,
+        "cash_change": -714.0,
+        "day": 2,
+        "event": "acquire_and_prepare",
+        "refundable_liability": 672.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 15.0
+      },
+      {
+        "available_funds": 1305.0,
+        "cash": 1620.0,
+        "cash_change": 168.0,
+        "day": 3,
+        "event": "accept_default_or_refund",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 15.0
+      },
+      {
+        "available_funds": 1305.0,
+        "cash": 1605.0,
+        "cash_change": -15.0,
+        "day": 4,
+        "event": "support_settled",
+        "refundable_liability": 0.0,
+        "reserve": 300.0,
+        "unpaid_obligations": 0.0
+      }
+    ],
+    "collected_service_revenue": 240.0,
+    "common_failure": false,
+    "customer_expected_action_savings": 1423.5,
+    "customer_net_value": 523.5,
+    "defaults": 0,
+    "earned_gross_service_revenue": 240.0,
+    "end_available_funds": 1305.0,
+    "end_cash": 1605.0,
+    "extra_financing_required": 0.0,
+    "gross_customer_cash_receipts": 840.0,
+    "minimum_available_funds": 465.0,
+    "operating_profit_before_BC": 105.0,
+    "participants": 3,
+    "pass_through_collected": 600.0,
+    "pass_through_refunded": 0.0,
+    "probability": 0.46078025920335003,
+    "refunds": 0.0,
+    "required_buyer_cash": [
+      800.0,
+      950.0,
+      1100.0
+    ],
+    "sensor_paid": 600.0,
+    "statuses": [
+      "paid",
+      "paid",
+      "paid"
+    ]
+  },
+  "selection": "Illustrative all-available all-paid branch; not an expected result or observed sale.",
+  "expected_native_micro_usd": {
+    "costs": {
+      "A": 135000000,
+      "B": 0,
+      "C": 0
+    },
+    "collected_revenue": 240000000,
+    "complete_cost_profit": 105000000,
+    "cash": 1605000000,
+    "obligations": 0,
+    "reserve": 300000000,
+    "available_funds": 1305000000
+  },
+  "native_report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 135000000,
+      "B": 0,
+      "C": 0
+    },
+    "collected_revenue": 240000000,
+    "delivery_profit": 105000000,
+    "complete_cost_profit": 105000000,
+    "cash": 1605000000,
+    "obligations": 0,
+    "known_obligations": 0,
+    "reserve": 300000000,
+    "available_funds": 1305000000,
+    "complete": true,
+    "bucket_complete": {
+      "A": true,
+      "B": true,
+      "C": true
+    },
+    "unknown_costs": false,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "checks": [
+    {
+      "field": "costs",
+      "passed": true
+    },
+    {
+      "field": "collected_revenue",
+      "passed": true
+    },
+    {
+      "field": "complete_cost_profit",
+      "passed": true
+    },
+    {
+      "field": "cash",
+      "passed": true
+    },
+    {
+      "field": "obligations",
+      "passed": true
+    },
+    {
+      "field": "reserve",
+      "passed": true
+    },
+    {
+      "field": "available_funds",
+      "passed": true
+    },
+    {
+      "field": "separate-custody-terminal-cancellation",
+      "passed": true
+    }
+  ],
+  "passed": 8,
+  "total": 8,
+  "sensor_pass_through_in_native_revenue": false,
+  "custody_boundary": "Interim agency deposits, liabilities and refunds are checked by the separate event ledger.",
+  "completeness_boundary": "Native completeness closes declared modeled categories, not an observed complete bill.",
+  "actual_collections_usd": 0,
+  "actual_complete_cost_usd": null,
+  "actual_complete_profit_usd": null,
+  "production_authority": false
+}

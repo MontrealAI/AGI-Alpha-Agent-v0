@@ -1,0 +1,57 @@
+{
+  "schema": "shared-observation-scoped-static-checks/v1",
+  "recorded_at": "2026-10-27T17:25:39.598622+00:00",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "capability",
+        "economics",
+        "evaluation",
+        "integration/bundle.py",
+        "integration/native_replay.py",
+        "integration/prepare_native_reference.py",
+        "integration/test_bundle.py",
+        "integration/transfer_recipient.py",
+        "paper/build_documents.py",
+        "paper/build_figures.py",
+        "docs/build_demo.py"
+      ],
+      "returncode": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "capability/compiler.py",
+        "paper/build_documents.py"
+      ],
+      "returncode": 1,
+      "stdout": "capability/compiler.py:20: error: Returning Any from function declared to return \"float\"  [no-any-return]\ncapability/compiler.py:145: error: Unsupported operand types for - (\"None\" and \"float\")  [operator]\ncapability/compiler.py:145: error: Unsupported left operand type for - (\"None\")  [operator]\ncapability/compiler.py:145: note: Both left and right operands are unions\nFound 3 errors in 1 file (checked 2 source files)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "black",
+        "--check",
+        "paper/build_documents.py"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 189, in _run_module_as_main\n  File \"<frozen runpy>\", line 148, in _get_module_details\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"src/black/__init__.py\", line 28, in <module>\nModuleNotFoundError: No module named 'pathspec.patterns.gitignore'\n"
+    }
+  ],
+  "full_repository_regression": "not_run; scoped research replay is separate; hosted release gates remain required",
+  "frozen_core_modified": false,
+  "interpretation": "Ruff passes. Exact frozen core strict typing remains unqualified (3 errors). Black is unavailable due to pathspec import error. No check is waived; source is a draft research contribution."
+}

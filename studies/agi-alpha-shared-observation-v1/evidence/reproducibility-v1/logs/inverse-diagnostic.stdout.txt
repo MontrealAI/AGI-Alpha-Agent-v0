@@ -1,0 +1,35 @@
+{
+  "evidence": "postconfirmation_diagnostic_not_new_fresh_evidence_or_market_quote",
+  "origin": {
+    "fixed_service_fee": 80.0,
+    "best_subset": {
+      "operators": [
+        "operator-1",
+        "operator-2",
+        "operator-3"
+      ],
+      "maximum_acquisition": 706.3421052631579
+    },
+    "any_feasible_nonnegative_acquisition": true,
+    "formula": "K_max(S)=|S|*[q*(min_i VOI_i-fee)-adaptation/(1-common_failure)]",
+    "conditional_expected_operating_profit_at_bound": 19.076648463157895,
+    "launch_probability_at_bound": 0.7290000000000001
+  },
+  "recipient_041": {
+    "fixed_service_fee": 80.0,
+    "best_subset": {
+      "operators": [
+        "operator-1"
+      ],
+      "maximum_acquisition": 0.041751160716454905
+    },
+    "any_feasible_nonnegative_acquisition": true,
+    "formula": "K_max(S)=|S|*[q*(min_i VOI_i-fee)-adaptation/(1-common_failure)]",
+    "conditional_expected_operating_profit_at_bound": -17.48713880223224,
+    "launch_probability_at_bound": 0.9000000000000001
+  },
+  "recipient_grid_jointly_viable_cells": 0,
+  "reserve_formula": "required_seed=max_t(refundable_liability_t+unpaid_obligations_t+provider_reserve-net_cashflow_t)",
+  "extra_financing_formula": "max(0,required_seed-existing_seed)",
+  "buyer_cash_formula": "acquisition_share+FULL_service_fee+adaptation+peak_fallback_action_reserve"
+}

@@ -1,0 +1,159 @@
+{
+  "schema": "shared-observation-result/v1",
+  "mission_id": "confirmation-008",
+  "evidence_type": "executed_computation_over_synthetic_probabilities",
+  "observation_accepted": true,
+  "operators": [
+    {
+      "id": "operator-0",
+      "baseline_action": "fallback",
+      "baseline_cost": 222.05,
+      "baseline_valid": true,
+      "contingent_cost": 66.05270481832193,
+      "value_of_information": 155.99729518167808,
+      "valid": true,
+      "peak_action_reserve": 222.05,
+      "branches": [
+        {
+          "id": "signal-0",
+          "probability": 0.1901663216159361,
+          "observed_at_hours": 0.285502,
+          "reachable": true,
+          "posterior": [
+            0.6399712833357958,
+            0.1993536869850518,
+            0.16067502967915234
+          ],
+          "action": "fallback",
+          "risk": 6.52491943958629e-06,
+          "cost_usd": 222.05,
+          "valid": true
+        },
+        {
+          "id": "signal-1",
+          "probability": 0.35296498912326324,
+          "observed_at_hours": 0.351338,
+          "reachable": true,
+          "posterior": [
+            0.025105894456375115,
+            0.8883275045741863,
+            0.0865666009694386
+          ],
+          "action": "coast",
+          "risk": 2.7396372812018673e-05,
+          "cost_usd": 0.0,
+          "valid": true
+        },
+        {
+          "id": "signal-2",
+          "probability": 0.34956730171969147,
+          "observed_at_hours": 0.228758,
+          "reachable": true,
+          "posterior": [
+            0.02534991608234009,
+            0.10844938061432674,
+            0.8662007033033331
+          ],
+          "action": "coast",
+          "risk": 2.2547554212691936e-05,
+          "cost_usd": 0.0,
+          "valid": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.10730138754110922,
+          "observed_at_hours": 2.373308,
+          "reachable": true,
+          "posterior": [
+            0.23136212727204575,
+            0.5924672453716117,
+            0.17617062735634254
+          ],
+          "action": "fallback",
+          "risk": 5.172720586607836e-06,
+          "cost_usd": 222.05,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "id": "operator-1",
+      "baseline_action": "fallback",
+      "baseline_cost": 233.27,
+      "baseline_valid": true,
+      "contingent_cost": 151.7264355278476,
+      "value_of_information": 81.54356447215241,
+      "valid": true,
+      "peak_action_reserve": 233.27,
+      "branches": [
+        {
+          "id": "signal-0",
+          "probability": 0.1901663216159361,
+          "observed_at_hours": 0.285502,
+          "reachable": true,
+          "posterior": [
+            0.6399712833357958,
+            0.1993536869850518,
+            0.16067502967915234
+          ],
+          "action": "fallback",
+          "risk": 6.7948836490199724e-06,
+          "cost_usd": 233.27,
+          "valid": true
+        },
+        {
+          "id": "signal-1",
+          "probability": 0.35296498912326324,
+          "observed_at_hours": 0.351338,
+          "reachable": true,
+          "posterior": [
+            0.025105894456375115,
+            0.8883275045741863,
+            0.0865666009694386
+          ],
+          "action": "fallback",
+          "risk": 5.743361542393681e-06,
+          "cost_usd": 233.27,
+          "valid": true
+        },
+        {
+          "id": "signal-2",
+          "probability": 0.34956730171969147,
+          "observed_at_hours": 0.228758,
+          "reachable": true,
+          "posterior": [
+            0.02534991608234009,
+            0.10844938061432674,
+            0.8662007033033331
+          ],
+          "action": "coast",
+          "risk": 6.298099242672035e-05,
+          "cost_usd": 0.0,
+          "valid": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.10730138754110922,
+          "observed_at_hours": 0.746458,
+          "reachable": true,
+          "posterior": [
+            0.23136212727204575,
+            0.5924672453716117,
+            0.17617062735634254
+          ],
+          "action": "fallback",
+          "risk": 6.241642462956253e-06,
+          "cost_usd": 233.27,
+          "valid": true
+        }
+      ]
+    }
+  ],
+  "total_baseline_cost": 455.32000000000005,
+  "total_contingent_cost": 217.77914034616953,
+  "total_value_of_information": 237.5408596538305,
+  "source_of_probabilities": "supplied_synthetic_mission_not_learned_sensor_or_orbital_model",
+  "execution_authorized": false,
+  "input_sha256": "8923f318073e83d1170702ca21537a79729d8ddff6a5ce4f76f4b3076d81965a",
+  "compiler_sha256": "7a15a72a727ee9b1c6bb715f0c609bf99194150d156851dcb91eed1f347ebb1c"
+}

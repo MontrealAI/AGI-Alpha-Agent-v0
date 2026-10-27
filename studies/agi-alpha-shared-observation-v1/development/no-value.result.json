@@ -1,0 +1,167 @@
+{
+  "schema": "shared-observation-result/v1",
+  "mission_id": "development-no-value",
+  "evidence_type": "executed_computation_over_synthetic_probabilities",
+  "observation_accepted": true,
+  "operators": [
+    {
+      "id": "operator-1",
+      "baseline_action": "maneuver",
+      "baseline_cost": 500,
+      "baseline_valid": true,
+      "contingent_cost": 500.0,
+      "value_of_information": 0.0,
+      "valid": true,
+      "peak_action_reserve": 500,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 500,
+          "valid": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 500,
+          "valid": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.0,
+          "observed_at_hours": 4,
+          "reachable": false,
+          "posterior": null,
+          "action": null,
+          "risk": null,
+          "cost_usd": null,
+          "valid": null
+        }
+      ]
+    },
+    {
+      "id": "operator-2",
+      "baseline_action": "maneuver",
+      "baseline_cost": 650,
+      "baseline_valid": true,
+      "contingent_cost": 650.0,
+      "value_of_information": 0.0,
+      "valid": true,
+      "peak_action_reserve": 650,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 650,
+          "valid": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 650,
+          "valid": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.0,
+          "observed_at_hours": 4,
+          "reachable": false,
+          "posterior": null,
+          "action": null,
+          "risk": null,
+          "cost_usd": null,
+          "valid": null
+        }
+      ]
+    },
+    {
+      "id": "operator-3",
+      "baseline_action": "maneuver",
+      "baseline_cost": 800,
+      "baseline_valid": true,
+      "contingent_cost": 800.0,
+      "value_of_information": 0.0,
+      "valid": true,
+      "peak_action_reserve": 800,
+      "branches": [
+        {
+          "id": "clearer-separation",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 800,
+          "valid": true
+        },
+        {
+          "id": "closer-approach",
+          "probability": 0.5,
+          "observed_at_hours": 2,
+          "reachable": true,
+          "posterior": [
+            0.8,
+            0.2
+          ],
+          "action": "maneuver",
+          "risk": 2.7999999999999997e-07,
+          "cost_usd": 800,
+          "valid": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.0,
+          "observed_at_hours": 4,
+          "reachable": false,
+          "posterior": null,
+          "action": null,
+          "risk": null,
+          "cost_usd": null,
+          "valid": null
+        }
+      ]
+    }
+  ],
+  "total_baseline_cost": 1950.0,
+  "total_contingent_cost": 1950.0,
+  "total_value_of_information": 0.0,
+  "source_of_probabilities": "supplied_synthetic_mission_not_learned_sensor_or_orbital_model",
+  "execution_authorized": false,
+  "input_sha256": "9b47d9c4a71709c19dd878e4d2fa33b2dffa1280fc98cfcfbda87f3b11f40260"
+}

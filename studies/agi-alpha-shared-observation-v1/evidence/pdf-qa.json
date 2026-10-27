@@ -1,0 +1,49 @@
+{
+  "schema": "shared-observation-pdf-qa/v1",
+  "recorded_at": "2026-10-27T17:31:29.415593+00:00",
+  "method": "XeLaTeX diagnostic review, PyMuPDF full-page PNG rendering, human-readable visual inspection by root and same-session assistants. Not external editorial review.",
+  "artifacts": [
+    {
+      "path": "paper/AGI_Alpha_Flywheel.pdf",
+      "sha256": "a12f9f0469b8c03716dce4e3d15d5ea33756fce87676e5bfdae1bd14b89f0a9f",
+      "bytes": 259924,
+      "pages": 19,
+      "all_pages_rendered": true,
+      "render_scale": 1.3,
+      "overfull_boxes": 0,
+      "missing_characters": 0,
+      "visual_review": "Root reviewed all19 pages via rendered contact sheets and full-size cover/scientific-figure samples; corrected cover paragraph spacing, duplicate reference heading and orphan section heading.",
+      "result": "pass"
+    },
+    {
+      "path": "paper/Executive_Brief.pdf",
+      "sha256": "a0560f16a6fc948aec9918735e7f4481b7bc16e2d81f27827fa7b0173efdfa84",
+      "bytes": 41924,
+      "pages": 2,
+      "all_pages_rendered": true,
+      "render_scale": 1.3,
+      "overfull_boxes": 0,
+      "missing_characters": 0,
+      "visual_review": "Calibration agent inspected both final full-size pages; English fits page1 and French page2; title word splits corrected.",
+      "result": "pass"
+    },
+    {
+      "path": "paper/Evidence_Companion.pdf",
+      "sha256": "8ad45911ed305bac86da48bbdacd6396d5b1d7aafe7cff7d5ace40d1d28f21af",
+      "bytes": 64129,
+      "pages": 5,
+      "all_pages_rendered": true,
+      "render_scale": 1.3,
+      "overfull_boxes": 0,
+      "missing_characters": 0,
+      "visual_review": "Opportunity agent inspected all5 original pages and updated contact/changed first2pages; corrected duplicate numbering and title word split.",
+      "result": "pass"
+    }
+  ],
+  "limitations": "Scientific assertions are supported by separate execution records; visual QA does not validate them. Rendered inspection PNGs are reconstructible scratch intermediates.",
+  "preserved_layout_findings": [
+    "Initial companion inline paths overflowed; Lua path wrapping corrected.",
+    "Initial brief needed3pages; compact header and heading hierarchy nowyield2.",
+    "Cover missing paragraph breaks, exact title word splits, duplicate headings and orphan section placement corrected."
+  ]
+}

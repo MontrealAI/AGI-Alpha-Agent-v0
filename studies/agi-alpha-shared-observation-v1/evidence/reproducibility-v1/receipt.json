@@ -1,0 +1,340 @@
+{
+  "schema": "shared-observation-reproduction/v1",
+  "status": "fail",
+  "evidence_type": "REPLAY_OF_RELEASED_FROZEN_INPUTS_NOT_NEW_FRESH_EVIDENCE",
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "dependencies": {
+    "cryptography": "50.0.2",
+    "pydantic": "2.11.7"
+  },
+  "source_files": 111,
+  "source_manifest": "source-manifest.json",
+  "commands": [
+    {
+      "name": "origin",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "capability/compiler.py",
+        "--mission",
+        "data/origin.json",
+        "--output",
+        "results/origin.json",
+        "--profile",
+        "capability/sensor_profile.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.045990745988092385,
+      "stdout": "logs/origin.stdout.txt",
+      "stderr": "logs/origin.stderr.txt"
+    },
+    {
+      "name": "origin-reference",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "evaluation/reference.py",
+        "--mission",
+        "data/origin.json",
+        "--output",
+        "evaluation/origin-check/reference.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.040078050005831756,
+      "stdout": "logs/origin-reference.stdout.txt",
+      "stderr": "logs/origin-reference.stderr.txt"
+    },
+    {
+      "name": "origin-check",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "evaluation/reference.py",
+        "--mission",
+        "data/origin.json",
+        "--candidate",
+        "results/origin.json",
+        "--output",
+        "evaluation/origin-check/check.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06300715300312731,
+      "stdout": "logs/origin-check.stdout.txt",
+      "stderr": "logs/origin-check.stderr.txt"
+    },
+    {
+      "name": "confirmation",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "evaluation/run_confirmation.py",
+        "--root",
+        ".",
+        "--output-dir",
+        "evaluation/confirmation-v1"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.445831183998962,
+      "stdout": "logs/confirmation.stdout.txt",
+      "stderr": "logs/confirmation.stderr.txt"
+    },
+    {
+      "name": "origin-economics",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "economics/economic.py",
+        "results/origin.json",
+        "--assumptions",
+        "economics/assumptions-v1.json",
+        "--output",
+        "results/economics"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.08834189099434298,
+      "stdout": "logs/origin-economics.stdout.txt",
+      "stderr": "logs/origin-economics.stderr.txt"
+    },
+    {
+      "name": "confirmation-economics",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "economics/confirm_economics.py",
+        "evaluation/confirmation-v1",
+        "--output",
+        "results/economics"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.05549961699580308,
+      "stdout": "logs/confirmation-economics.stdout.txt",
+      "stderr": "logs/confirmation-economics.stderr.txt"
+    },
+    {
+      "name": "inverse-diagnostic",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "economics/inverse_diagnostic.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.05254119400342461,
+      "stdout": "logs/inverse-diagnostic.stdout.txt",
+      "stderr": "logs/inverse-diagnostic.stderr.txt"
+    },
+    {
+      "name": "input-contract-probes",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "evaluation/run_input_probes.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.5739844500058098,
+      "stdout": "logs/input-contract-probes.stdout.txt",
+      "stderr": "logs/input-contract-probes.stderr.txt"
+    },
+    {
+      "name": "information-bound",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "evaluation/check_information_bound.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.19985029399686027,
+      "stdout": "logs/information-bound.stdout.txt",
+      "stderr": "logs/information-bound.stderr.txt"
+    },
+    {
+      "name": "accounting-assertions",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "economics/test_economic.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.07762205001199618,
+      "stdout": "logs/accounting-assertions.stdout.txt",
+      "stderr": "logs/accounting-assertions.stderr.txt"
+    },
+    {
+      "name": "bundle-controls",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "integration/test_bundle.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.06945965900376905,
+      "stdout": "logs/bundle-controls.stdout.txt",
+      "stderr": "logs/bundle-controls.stderr.txt"
+    },
+    {
+      "name": "recipient-and-native-conformance",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "integration/transfer_recipient.py",
+        "--compiler",
+        "capability/compiler.py",
+        "--profile",
+        "capability/sensor_profile.json",
+        "--mission",
+        "evaluation/protected/cases/confirmation-041.json",
+        "--out",
+        "evidence/recipient-transfer",
+        "--checker",
+        "evaluation/reference.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.898405517989886,
+      "stdout": "logs/recipient-and-native-conformance.stdout.txt",
+      "stderr": "logs/recipient-and-native-conformance.stderr.txt"
+    },
+    {
+      "name": "native-economic-reconciliation",
+      "cwd": "workspace",
+      "command": [
+        "python",
+        "integration/prepare_native_reference.py",
+        "--assumptions",
+        "economics/assumptions-v1.json",
+        "--events",
+        "results/economics/event_tree.json",
+        "--out",
+        "evidence/native-economics"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.892869104995043,
+      "stdout": "logs/native-economic-reconciliation.stdout.txt",
+      "stderr": "logs/native-economic-reconciliation.stderr.txt"
+    }
+  ],
+  "checks": [
+    {
+      "name": "evidence/technical-freeze-v1_0_1.json",
+      "passed": true,
+      "files": 9
+    },
+    {
+      "name": "evaluation/reference-freeze-v1.json",
+      "passed": true,
+      "files": 4
+    },
+    {
+      "name": "released-protected-input-identities",
+      "passed": true,
+      "files": 48
+    },
+    {
+      "name": "integration/custody.json",
+      "passed": true,
+      "files": 34
+    },
+    {
+      "name": "integration/source_manifest.json",
+      "passed": true,
+      "files": 29
+    },
+    {
+      "name": "results/origin.json",
+      "passed": false
+    },
+    {
+      "name": "evaluation/origin-check/reference.json",
+      "passed": true
+    },
+    {
+      "name": "evaluation/origin-check/check.json",
+      "passed": true
+    },
+    {
+      "name": "evaluation/information-bound-check.json",
+      "passed": true
+    },
+    {
+      "name": "results/economics/economic_results.json",
+      "passed": false
+    },
+    {
+      "name": "results/economics/summary.json",
+      "passed": true
+    },
+    {
+      "name": "results/economics/event_tree.json",
+      "passed": true
+    },
+    {
+      "name": "results/economics/confirmation_summary.json",
+      "passed": true
+    },
+    {
+      "name": "results/economics/inverse_diagnostic.json",
+      "passed": true
+    },
+    {
+      "name": "results/economics/campaign_summary.json",
+      "passed": true
+    },
+    {
+      "name": "all-confirmation-scientific-records",
+      "passed": true,
+      "compared": 144,
+      "matching": 144
+    },
+    {
+      "name": "sensitivity-csv",
+      "passed": true
+    },
+    {
+      "name": "input-contract-probes",
+      "passed": true
+    },
+    {
+      "name": "recipient-output",
+      "passed": true
+    },
+    {
+      "name": "ordinary-library-parity",
+      "passed": true
+    },
+    {
+      "name": "identical-retained-bundle",
+      "passed": true
+    },
+    {
+      "name": "recipient-checks",
+      "passed": true
+    },
+    {
+      "name": "native-fixture-conformance",
+      "passed": true
+    },
+    {
+      "name": "native-economic-reconciliation",
+      "passed": true
+    },
+    {
+      "name": "native-service-ledger",
+      "passed": true
+    },
+    {
+      "name": "authority-and-real-money-boundaries",
+      "passed": true
+    },
+    {
+      "name": "original-source-files-unchanged",
+      "passed": true
+    }
+  ],
+  "passed": 25,
+  "total": 27,
+  "error": null,
+  "elapsed_seconds": 6.556712784993579,
+  "comparison_policy": "Scientific JSON content and declared ledger reports match; timestamps, paths, process IDs, ephemeral keys and elapsed times are not expected to match.",
+  "actual_customer_collections_usd": 0,
+  "production_authority": false,
+  "full_repository_hooks": "NOT_RUN: bounded study replay only; no provisioning or external publication."
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "shared-observation-reader-browser-qa/v1",
+  "artifact": "paper/AGI_Alpha_Flywheel.html",
+  "artifact_sha256": "9f91759829c2633aad668bf26922b7f8c29cca1bf10115a01d7384315e810d1e",
+  "artifact_bytes": 860567,
+  "parent_declared_final_sha256": "9f91759829c2633aad668bf26922b7f8c29cca1bf10115a01d7384315e810d1e",
+  "browser": "Playwright local Chromium",
+  "browser_version": "139.0.7258.5",
+  "playwright_version": "1.54.0",
+  "checks": [
+    {
+      "name": "parent-final-source-hash",
+      "passed": true
+    },
+    {
+      "name": "exact-reader-title",
+      "passed": true
+    },
+    {
+      "name": "rendered-tables",
+      "passed": true,
+      "count": 10
+    },
+    {
+      "name": "native-mathml",
+      "passed": true,
+      "count": 50
+    },
+    {
+      "name": "reader-no-horizontal-overflow-desktop",
+      "passed": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      }
+    },
+    {
+      "name": "reader-no-horizontal-overflow-mobile",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "reader-no-horizontal-overflow-narrow",
+      "passed": true,
+      "viewport": {
+        "width": 320,
+        "height": 720
+      }
+    },
+    {
+      "name": "local-reader-link-targets",
+      "passed": true,
+      "checked": [
+        "../README.md",
+        "../docs/English_French_Demonstration.html",
+        "AGI_Alpha_Flywheel.pdf",
+        "Evidence_Companion.pdf",
+        "Executive_Brief.pdf"
+      ],
+      "missing": []
+    },
+    {
+      "name": "internal-navigation-targets",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "name": "reader-no-script-errors",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "reader-offline-no-network",
+      "passed": true,
+      "external_requests": []
+    },
+    {
+      "name": "source-stable-through-check",
+      "passed": true
+    }
+  ],
+  "passed": 12,
+  "total": 12,
+  "visual_review": "Final desktop and mobile screenshots visually inspected; no clipping or layout issue observed. Full-document viewport overflow, tables, MathML and link targets checked programmatically.",
+  "screenshots_scope": "Scratch visual QA only, not publication or production evidence.",
+  "production_authority": false,
+  "publication": "NOT_PERFORMED"
+}

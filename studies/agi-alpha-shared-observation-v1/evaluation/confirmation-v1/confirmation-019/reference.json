@@ -1,0 +1,125 @@
+{
+  "schema": "shared-observation-result/v1",
+  "mission_id": "confirmation-019",
+  "input_sha256": "cb0a187efea9bab97aede0d7a07e1c21af0a8b90d8258a5ed95165257159d2c6",
+  "observation_accepted": true,
+  "operators": [
+    {
+      "id": "operator-0",
+      "baseline_cost": 0.0,
+      "baseline_action": "coast",
+      "contingent_cost": 6.628080411264,
+      "value_of_information": -6.628080411264,
+      "valid": true,
+      "peak_action_reserve": 98.54,
+      "branches": [
+        {
+          "id": "reassuring",
+          "probability": 0.9327371584,
+          "posterior": [
+            0.6356013572108161,
+            0.36398249704383173,
+            0.00041614574535213454
+          ],
+          "observed_at_hours": 0.2,
+          "action": "coast",
+          "risk": 1.1984319146259376e-05,
+          "cost_usd": 0.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "adverse",
+          "probability": 0.0472628416,
+          "posterior": [
+            0.12931607988631813,
+            0.07405394770000456,
+            0.7966299724136773
+          ],
+          "observed_at_hours": 0.2,
+          "action": "fallback",
+          "risk": 8.542153159461712e-06,
+          "cost_usd": 98.54,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.02,
+          "posterior": [
+            0.61118454,
+            0.35,
+            0.03881546
+          ],
+          "observed_at_hours": 1.743811,
+          "action": "fallback",
+          "risk": 1.099654906761272e-05,
+          "cost_usd": 98.54,
+          "valid": true,
+          "reachable": true
+        }
+      ]
+    },
+    {
+      "id": "operator-1",
+      "baseline_cost": 0.0,
+      "baseline_action": "coast",
+      "contingent_cost": 5.406587207808,
+      "value_of_information": -5.406587207808,
+      "valid": true,
+      "peak_action_reserve": 80.38,
+      "branches": [
+        {
+          "id": "reassuring",
+          "probability": 0.9327371584,
+          "posterior": [
+            0.6356013572108161,
+            0.36398249704383173,
+            0.00041614574535213454
+          ],
+          "observed_at_hours": 0.2,
+          "action": "coast",
+          "risk": 1.1882692977923887e-05,
+          "cost_usd": 0.0,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "adverse",
+          "probability": 0.0472628416,
+          "posterior": [
+            0.12931607988631813,
+            0.07405394770000456,
+            0.7966299724136773
+          ],
+          "observed_at_hours": 0.2,
+          "action": "fallback",
+          "risk": 1.4016106851634163e-05,
+          "cost_usd": 80.38,
+          "valid": true,
+          "reachable": true
+        },
+        {
+          "id": "__timeout__",
+          "probability": 0.02,
+          "posterior": [
+            0.61118454,
+            0.35,
+            0.03881546
+          ],
+          "observed_at_hours": 2.063129,
+          "action": "fallback",
+          "risk": 1.447474107947786e-05,
+          "cost_usd": 80.38,
+          "valid": true,
+          "reachable": true
+        }
+      ]
+    }
+  ],
+  "total_baseline_cost": 0.0,
+  "total_contingent_cost": 12.034667619072,
+  "total_value_of_information": -12.034667619072,
+  "execution_authorized": false,
+  "reference_method": "independent finite enumeration with rational arithmetic"
+}

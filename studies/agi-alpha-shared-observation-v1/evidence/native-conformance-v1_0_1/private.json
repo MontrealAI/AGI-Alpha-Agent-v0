@@ -1,0 +1,645 @@
+{
+  "schema": "capability-opportunity-lifecycle-replay/v1",
+  "candidates": [
+    {
+      "id": "artifact-conformance",
+      "key": "artifact-conformance@2",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "artifact-conformance",
+        "candidateVersion": "2",
+        "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+        "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+        "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+        "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "admit",
+        "reasons": [],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+        "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+        "assessedLowerBoundNetCents": 800,
+        "lifecycleCostCents": 100,
+        "evaluationCostCents": 100,
+        "completeLifecycleCostCents": 200,
+        "forecastEligibleUses": 10,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": 100,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": 100,
+        "lowerLifetimeNetCents": 800,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "assessed": {
+        "ok": true,
+        "reasons": []
+      },
+      "admission": {
+        "ok": true,
+        "key": "artifact-conformance@2",
+        "status": "ADMITTED",
+        "graphRoot": "4a617bebe5ad7a56afa6062b2c56b4ff268977ee1a6a9a1587f35d803a959432",
+        "simulatedAuthority": true,
+        "cryptographicAuthentication": false
+      },
+      "state": {
+        "key": "artifact-conformance@2",
+        "status": "ADMITTED",
+        "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+        "eligibility": {
+          "ok": true,
+          "reasons": []
+        }
+      },
+      "researchAuthority": "FIXTURE_ONLY",
+      "productionAdmission": "NOT_QUALIFIED",
+      "frontierAlpha": "UNMEASURED"
+    }
+  ],
+  "operations": [
+    {
+      "operation": {
+        "action": "retrieve",
+        "key": "artifact-conformance@2",
+        "member": "atlas.agent.agi.eth"
+      },
+      "result": {
+        "ok": true,
+        "key": "artifact-conformance@2",
+        "right": "retrieve",
+        "member": "atlas.agent.agi.eth",
+        "authorizedCapabilityAccess": true,
+        "executionAuthority": "NOT_GRANTED",
+        "actualExecution": false,
+        "dryRun": false,
+        "exportCopyingLimit": null,
+        "transferredArtifact": {
+          "sha256": "56730d421f19c16044f9e9a57c5d8661c0dfd5f15e8077e3f2ded5c9ff5c74b3",
+          "contentEncoding": "base64",
+          "content": "UEsDBBQAAAAAAAAAIQASg0FFcCUAAHAlAAALAAAAY29tcGlsZXIucHkjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBBcGFjaGUtMi4wCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmltcG9ydCBhcmdwYXJzZQppbXBvcnQgaGFzaGxpYgppbXBvcnQganNvbgppbXBvcnQgbWF0aApmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKZnJvbSB0eXBpbmcgaW1wb3J0IEFueQoKVE9MID0gMWUtMTIKCgpkZWYgbnVtYmVyKHZhbHVlOiBBbnksIG1heGltdW06IGZsb2F0ID0gbWF0aC5pbmYpIC0+IGZsb2F0OgogICAgaWYgaXNpbnN0YW5jZSh2YWx1ZSwgYm9vbCkgb3Igbm90IGlzaW5zdGFuY2UodmFsdWUsIChpbnQsIGZsb2F0KSk6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiQSBmaW5pdGUgbnVtYmVyIGlzIHJlcXVpcmVkIikKICAgIHZhbHVlID0gZmxvYXQodmFsdWUpCiAgICBpZiBub3QgbWF0aC5pc2Zpbml0ZSh2YWx1ZSkgb3IgdmFsdWUgPCAwIG9yIHZhbHVlID4gbWF4aW11bToKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJOdW1iZXIgb3V0c2lkZSB0aGUgZGVjbGFyZWQgZG9tYWluIikKICAgIHJldHVybiB2YWx1ZQoKCmRlZiBuYW1lKHZhbHVlOiBBbnkpIC0+IHN0cjoKICAgIGlmIG5vdCBpc2luc3RhbmNlKHZhbHVlLCBzdHIpIG9yIG5vdCB2YWx1ZSBvciBsZW4odmFsdWUpID4gMTgwOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIkEgYm91bmRlZCBub25lbXB0eSBpZGVudGlmaWVyIGlzIHJlcXVpcmVkIikKICAgIHJldHVybiB2YWx1ZQoKCmRlZiB2ZWN0b3IodmFsdWU6IEFueSwgbjogaW50KSAtPiBsaXN0W2Zsb2F0XToKICAgIGlmIG5vdCBpc2luc3RhbmNlKHZhbHVlLCBsaXN0KSBvciBsZW4odmFsdWUpICE9IG46CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiUHJvYmFiaWxpdHkgdmVjdG9yIGRpbWVuc2lvbiBtaXNtYXRjaCIpCiAgICByZXR1cm4gW251bWJlcih4LCAxKSBmb3IgeCBpbiB2YWx1ZV0KCgpkZWYgdW5pcXVlKHJlY29yZHM6IEFueSwgbGltaXQ6IGludCkgLT4gTm9uZToKICAgIGlmIG5vdCBpc2luc3RhbmNlKHJlY29yZHMsIGxpc3QpIG9yIG5vdCAxIDw9IGxlbihyZWNvcmRzKSA8PSBsaW1pdDoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJSZWNvcmQgY291bnQgb3V0c2lkZSBzY29wZSIpCiAgICBpZHMgPSBbbmFtZSh4WyJpZCJdKSBmb3IgeCBpbiByZWNvcmRzXQogICAgaWYgbGVuKGlkcykgIT0gbGVuKHNldChpZHMpKToKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJEdXBsaWNhdGUgaWRlbnRpZmllciIpCgoKZGVmIHZhbGlkYXRlKG1pc3Npb246IGRpY3Rbc3RyLCBBbnldKSAtPiBOb25lOgogICAgaWYgbWlzc2lvbi5nZXQoInNjaGVtYSIpICE9ICJzaGFyZWQtb2JzZXJ2YXRpb24tbWlzc2lvbi92MSIgb3IgbWlzc2lvbi5nZXQoImV2aWRlbmNlX3R5cGUiKSAhPSAic3ludGhldGljIjoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJPbmx5IHRoZSBkZWNsYXJlZCBzeW50aGV0aWMgcmVzZWFyY2ggc2NvcGUgaXMgc3VwcG9ydGVkIikKICAgIG5hbWUobWlzc2lvblsibWlzc2lvbl9pZCJdKQogICAgbmFtZShtaXNzaW9uWyJjYWxpYnJhdGlvbl9zY29wZSJdKQogICAgc3RhdGVzID0gbWlzc2lvblsic3RhdGVzIl0KICAgIGlmIG5vdCBpc2luc3RhbmNlKHN0YXRlcywgbGlzdCkgb3Igbm90IDEgPD0gbGVuKHN0YXRlcykgPD0gMTI6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiU3RhdGUgY291bnQgb3V0c2lkZSBzY29wZSIpCiAgICBpZiBsZW4oe25hbWUocykgZm9yIHMgaW4gc3RhdGVzfSkgIT0gbGVuKHN0YXRlcyk6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiRHVwbGljYXRlIHN0YXRlIikKICAgIG4gPSBsZW4oc3RhdGVzKQogICAgcHJpb3IgPSB2ZWN0b3IobWlzc2lvblsicHJpb3IiXSwgbikKICAgIGlmIGFicyhtYXRoLmZzdW0ocHJpb3IpIC0gMSkgPiBUT0w6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiUHJpb3IgaXMgbm90IG5vcm1hbGl6ZWQiKQogICAgb2JzID0gbWlzc2lvblsib2JzZXJ2YXRpb24iXQogICAgbmFtZShvYnNbImlkIl0pCiAgICBuYW1lKG9ic1siY2FsaWJyYXRpb25fc2NvcGUiXSkKICAgIGlmIGFueShub3QgaXNpbnN0YW5jZShvYnNba10sIGJvb2wpIGZvciBrIGluIFsidXNhYmxlIiwgInJpZ2h0c19jbGVhcmVkIl0pOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIk9ic2VydmF0aW9uIHByZXJlcXVpc2l0ZXMgbXVzdCBiZSBib29sZWFucyIpCiAgICB1bmlxdWUob2JzWyJvdXRjb21lcyJdLCAxMikKICAgIGZvciBvdXRjb21lIGluIG9ic1sib3V0Y29tZXMiXToKICAgICAgICBpZiBvdXRjb21lWyJpZCJdID09ICJfX3RpbWVvdXRfXyI6CiAgICAgICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIlJlc2VydmVkIG91dGNvbWUgaWRlbnRpZmllciIpCiAgICAgICAgdmVjdG9yKG91dGNvbWVbImxpa2VsaWhvb2QiXSwgbikKICAgICAgICBpZiBvdXRjb21lWyJhcnJpdmFsX2hvdXJzIl0gaXMgbm90IE5vbmU6CiAgICAgICAgICAgIG51bWJlcihvdXRjb21lWyJhcnJpdmFsX2hvdXJzIl0pCiAgICBmb3Igc3RhdGUgaW4gcmFuZ2Uobik6CiAgICAgICAgaWYgYWJzKG1hdGguZnN1bShvWyJsaWtlbGlob29kIl1bc3RhdGVdIGZvciBvIGluIG9ic1sib3V0Y29tZXMiXSkgLSAxKSA+IFRPTDoKICAgICAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiT2JzZXJ2YXRpb24gbGlrZWxpaG9vZCBjb2x1bW5zIGFyZSBub3Qgbm9ybWFsaXplZCIpCiAgICB1bmlxdWUobWlzc2lvblsib3BlcmF0b3JzIl0sIDYpCiAgICBmb3Igb3BlcmF0b3IgaW4gbWlzc2lvblsib3BlcmF0b3JzIl06CiAgICAgICAgbnVtYmVyKG9wZXJhdG9yWyJyaXNrX2xpbWl0Il0sIDEpCiAgICAgICAgbnVtYmVyKG9wZXJhdG9yWyJkZWNpc2lvbl9kZWFkbGluZV9ob3VycyJdKQogICAgICAgIG5hbWUob3BlcmF0b3JbImZhbGxiYWNrX2FjdGlvbiJdKQogICAgICAgIHVuaXF1ZShvcGVyYXRvclsiYWN0aW9ucyJdLCA2KQogICAgICAgIGlmIG9wZXJhdG9yWyJmYWxsYmFja19hY3Rpb24iXSBub3QgaW4ge2FbImlkIl0gZm9yIGEgaW4gb3BlcmF0b3JbImFjdGlvbnMiXX06CiAgICAgICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIkZhbGxiYWNrIGFjdGlvbiBkb2VzIG5vdCBleGlzdCIpCiAgICAgICAgZm9yIGFjdGlvbiBpbiBvcGVyYXRvclsiYWN0aW9ucyJdOgogICAgICAgICAgICB2ZWN0b3IoYWN0aW9uWyJyaXNrX2J5X3N0YXRlIl0sIG4pCiAgICAgICAgICAgIG51bWJlcihhY3Rpb25bImNvc3RfdXNkIl0pCiAgICAgICAgICAgIG51bWJlcihhY3Rpb25bImxhdGVzdF9zdGFydF9ob3VycyJdKQoKCmRlZiByaXNrKGFjdGlvbjogZGljdFtzdHIsIEFueV0sIHBvc3RlcmlvcjogbGlzdFtmbG9hdF0pIC0+IGZsb2F0OgogICAgcmV0dXJuIG1hdGguZnN1bSh4ICogeSBmb3IgeCwgeSBpbiB6aXAoYWN0aW9uWyJyaXNrX2J5X3N0YXRlIl0sIHBvc3Rlcmlvciwgc3RyaWN0PVRydWUpKQoKCmRlZiBhZG1pc3NpYmxlKGFjdGlvbjogZGljdFtzdHIsIEFueV0sIHBvc3RlcmlvcjogbGlzdFtmbG9hdF0sIHdoZW46IGZsb2F0LCBsaW1pdDogZmxvYXQpIC0+IGJvb2w6CiAgICByZXR1cm4gd2hlbiA8PSBhY3Rpb25bImxhdGVzdF9zdGFydF9ob3VycyJdICsgVE9MIGFuZCByaXNrKGFjdGlvbiwgcG9zdGVyaW9yKSA8PSBsaW1pdCArIFRPTAoKCmRlZiBjaG9vc2Uob3BlcmF0b3I6IGRpY3Rbc3RyLCBBbnldLCBwb3N0ZXJpb3I6IGxpc3RbZmxvYXRdLCB3aGVuOiBmbG9hdCkgLT4gZGljdFtzdHIsIEFueV0gfCBOb25lOgogICAgYWxsb3dlZCA9IFthIGZvciBhIGluIG9wZXJhdG9yWyJhY3Rpb25zIl0gaWYgYWRtaXNzaWJsZShhLCBwb3N0ZXJpb3IsIHdoZW4sIG9wZXJhdG9yWyJyaXNrX2xpbWl0Il0pXQogICAgcmV0dXJuIG1pbihhbGxvd2VkLCBrZXk9bGFtYmRhIGE6IChhWyJjb3N0X3VzZCJdLCBhWyJpZCJdKSkgaWYgYWxsb3dlZCBlbHNlIE5vbmUKCgpkZWYgbWFrZV9icmFuY2gob3BlcmF0b3I6IGRpY3Rbc3RyLCBBbnldLCBwcmlvcjogbGlzdFtmbG9hdF0sIGJyYW5jaF9pZDogc3RyLCBsaWtlbGlob29kOiBsaXN0W2Zsb2F0XSwKICAgICAgICAgICAgICAgIHdoZW46IGZsb2F0LCB0aW1lb3V0OiBib29sKSAtPiBkaWN0W3N0ciwgQW55XToKICAgIG1hc3NlcyA9IFtwcmlvcl9tYXNzICogbGlrZWxpaG9vZF9tYXNzIGZvciBwcmlvcl9tYXNzLCBsaWtlbGlob29kX21hc3MgaW4gemlwKHByaW9yLCBsaWtlbGlob29kLCBzdHJpY3Q9VHJ1ZSldCiAgICBwcm9iYWJpbGl0eSA9IG1hdGguZnN1bShtYXNzZXMpCiAgICBicmFuY2ggPSB7ImlkIjogYnJhbmNoX2lkLCAicHJvYmFiaWxpdHkiOiBwcm9iYWJpbGl0eSwgIm9ic2VydmVkX2F0X2hvdXJzIjogd2hlbiwKICAgICAgICAgICAgICAicmVhY2hhYmxlIjogcHJvYmFiaWxpdHkgPiAwLCAicG9zdGVyaW9yIjogTm9uZSwgImFjdGlvbiI6IE5vbmUsICJyaXNrIjogTm9uZSwKICAgICAgICAgICAgICAiY29zdF91c2QiOiBOb25lLCAidmFsaWQiOiBOb25lfQogICAgaWYgcHJvYmFiaWxpdHkgPT0gMDoKICAgICAgICByZXR1cm4gYnJhbmNoCiAgICBwb3N0ZXJpb3IgPSBbeCAvIHByb2JhYmlsaXR5IGZvciB4IGluIG1hc3Nlc10KICAgIGFjdGlvbiA9IChuZXh0KGEgZm9yIGEgaW4gb3BlcmF0b3JbImFjdGlvbnMiXSBpZiBhWyJpZCJdID09IG9wZXJhdG9yWyJmYWxsYmFja19hY3Rpb24iXSkKICAgICAgICAgICAgICBpZiB0aW1lb3V0IGVsc2UgY2hvb3NlKG9wZXJhdG9yLCBwb3N0ZXJpb3IsIHdoZW4pKQogICAgYnJhbmNoLnVwZGF0ZShwb3N0ZXJpb3I9cG9zdGVyaW9yLCB2YWxpZD1GYWxzZSkKICAgIGlmIGFjdGlvbiBpcyBub3QgTm9uZToKICAgICAgICBicmFuY2gudXBkYXRlKGFjdGlvbj1hY3Rpb25bImlkIl0sIHJpc2s9cmlzayhhY3Rpb24sIHBvc3RlcmlvciksIGNvc3RfdXNkPWFjdGlvblsiY29zdF91c2QiXSwKICAgICAgICAgICAgICAgICAgICAgIHZhbGlkPWFkbWlzc2libGUoYWN0aW9uLCBwb3N0ZXJpb3IsIHdoZW4sIG9wZXJhdG9yWyJyaXNrX2xpbWl0Il0pKQogICAgcmV0dXJuIGJyYW5jaAoKCmRlZiBjb21waWxlX21pc3Npb24obWlzc2lvbjogZGljdFtzdHIsIEFueV0pIC0+IGRpY3Rbc3RyLCBBbnldOgogICAgdmFsaWRhdGUobWlzc2lvbikKICAgIHByaW9yLCBvYnMgPSBtaXNzaW9uWyJwcmlvciJdLCBtaXNzaW9uWyJvYnNlcnZhdGlvbiJdCiAgICBwcmVyZXF1aXNpdGVzID0gKG9ic1sidXNhYmxlIl0gYW5kIG9ic1sicmlnaHRzX2NsZWFyZWQiXSBhbmQKICAgICAgICAgICAgICAgICAgICAgb2JzWyJjYWxpYnJhdGlvbl9zY29wZSJdID09IG1pc3Npb25bImNhbGlicmF0aW9uX3Njb3BlIl0pCiAgICByZXBvcnRzID0gW10KICAgIGZvciBvcGVyYXRvciBpbiBtaXNzaW9uWyJvcGVyYXRvcnMiXToKICAgICAgICBiYXNlbGluZSA9IGNob29zZShvcGVyYXRvciwgcHJpb3IsIDApCiAgICAgICAgYmFzZWxpbmVfY29zdCA9IGJhc2VsaW5lWyJjb3N0X3VzZCJdIGlmIGJhc2VsaW5lIGVsc2UgTm9uZQogICAgICAgIGJyYW5jaGVzID0gW10KICAgICAgICBpZiBwcmVyZXF1aXNpdGVzOgogICAgICAgICAgICBsYXRlID0gWzAuMF0gKiBsZW4ocHJpb3IpCiAgICAgICAgICAgIGZvciBvdXRjb21lIGluIG9ic1sib3V0Y29tZXMiXToKICAgICAgICAgICAgICAgIGFycml2YWwgPSBvdXRjb21lWyJhcnJpdmFsX2hvdXJzIl0KICAgICAgICAgICAgICAgIGlmIGFycml2YWwgaXMgTm9uZSBvciBhcnJpdmFsID4gb3BlcmF0b3JbImRlY2lzaW9uX2RlYWRsaW5lX2hvdXJzIl06CiAgICAgICAgICAgICAgICAgICAgbGF0ZSA9IFt4ICsgeSBmb3IgeCwgeSBpbiB6aXAobGF0ZSwgb3V0Y29tZVsibGlrZWxpaG9vZCJdLCBzdHJpY3Q9VHJ1ZSldCiAgICAgICAgICAgICAgICBlbHNlOgogICAgICAgICAgICAgICAgICAgIGJyYW5jaGVzLmFwcGVuZChtYWtlX2JyYW5jaChvcGVyYXRvciwgcHJpb3IsIG91dGNvbWVbImlkIl0sIG91dGNvbWVbImxpa2VsaWhvb2QiXSwgYXJyaXZhbCwgRmFsc2UpKQogICAgICAgICAgICBicmFuY2hlcy5hcHBlbmQobWFrZV9icmFuY2gob3BlcmF0b3IsIHByaW9yLCAiX190aW1lb3V0X18iLCBsYXRlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3BlcmF0b3JbImRlY2lzaW9uX2RlYWRsaW5lX2hvdXJzIl0sIFRydWUpKQogICAgICAgIHZhbGlkID0gcHJlcmVxdWlzaXRlcyBhbmQgYWxsKGJbInZhbGlkIl0gaXMgVHJ1ZSBmb3IgYiBpbiBicmFuY2hlcyBpZiBiWyJyZWFjaGFibGUiXSkKICAgICAgICBpZiBicmFuY2hlcyBhbmQgYWJzKG1hdGguZnN1bShiWyJwcm9iYWJpbGl0eSJdIGZvciBiIGluIGJyYW5jaGVzKSAtIDEpID4gVE9MOgogICAgICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJJbnRlcm5hbCBicmFuY2ggcHJvYmFiaWxpdHkgY29uc2VydmF0aW9uIGZhaWxlZCIpCiAgICAgICAgY29udGluZ2VudCA9IG1hdGguZnN1bShiWyJwcm9iYWJpbGl0eSJdICogYlsiY29zdF91c2QiXSBmb3IgYiBpbiBicmFuY2hlcyBpZiBiWyJyZWFjaGFibGUiXSkgaWYgdmFsaWQgZWxzZSBOb25lCiAgICAgICAgcmVwb3J0cy5hcHBlbmQoeyJpZCI6IG9wZXJhdG9yWyJpZCJdLCAiYmFzZWxpbmVfYWN0aW9uIjogYmFzZWxpbmVbImlkIl0gaWYgYmFzZWxpbmUgZWxzZSBOb25lLAogICAgICAgICAgICAgICAgICAgICAgICAiYmFzZWxpbmVfY29zdCI6IGJhc2VsaW5lX2Nvc3QsICJiYXNlbGluZV92YWxpZCI6IGJhc2VsaW5lIGlzIG5vdCBOb25lLAogICAgICAgICAgICAgICAgICAgICAgICAiY29udGluZ2VudF9jb3N0IjogY29udGluZ2VudCwKICAgICAgICAgICAgICAgICAgICAgICAgInZhbHVlX29mX2luZm9ybWF0aW9uIjogYmFzZWxpbmVfY29zdCAtIGNvbnRpbmdlbnQgaWYgYmFzZWxpbmUgaXMgbm90IE5vbmUgYW5kIHZhbGlkIGVsc2UgTm9uZSwKICAgICAgICAgICAgICAgICAgICAgICAgInZhbGlkIjogdmFsaWQsICJwZWFrX2FjdGlvbl9yZXNlcnZlIjogbWF4KChiWyJjb3N0X3VzZCJdIG9yIDAgZm9yIGIgaW4gYnJhbmNoZXMpLCBkZWZhdWx0PTApLAogICAgICAgICAgICAgICAgICAgICAgICAiYnJhbmNoZXMiOiBicmFuY2hlc30pCiAgICBhY2NlcHRlZCA9IHByZXJlcXVpc2l0ZXMgYW5kIGFsbCh4WyJ2YWxpZCJdIGZvciB4IGluIHJlcG9ydHMpCiAgICBiYXNlbGluZV9hbGwgPSBhbGwoeFsiYmFzZWxpbmVfdmFsaWQiXSBmb3IgeCBpbiByZXBvcnRzKQogICAgcmV0dXJuIHsic2NoZW1hIjogInNoYXJlZC1vYnNlcnZhdGlvbi1yZXN1bHQvdjEiLCAibWlzc2lvbl9pZCI6IG1pc3Npb25bIm1pc3Npb25faWQiXSwKICAgICAgICAgICAgImV2aWRlbmNlX3R5cGUiOiAiZXhlY3V0ZWRfY29tcHV0YXRpb25fb3Zlcl9zeW50aGV0aWNfcHJvYmFiaWxpdGllcyIsCiAgICAgICAgICAgICJvYnNlcnZhdGlvbl9hY2NlcHRlZCI6IGFjY2VwdGVkLCAib3BlcmF0b3JzIjogcmVwb3J0cywKICAgICAgICAgICAgInRvdGFsX2Jhc2VsaW5lX2Nvc3QiOiBtYXRoLmZzdW0oeFsiYmFzZWxpbmVfY29zdCJdIGZvciB4IGluIHJlcG9ydHMpIGlmIGJhc2VsaW5lX2FsbCBlbHNlIE5vbmUsCiAgICAgICAgICAgICJ0b3RhbF9jb250aW5nZW50X2Nvc3QiOiBtYXRoLmZzdW0oeFsiY29udGluZ2VudF9jb3N0Il0gZm9yIHggaW4gcmVwb3J0cykgaWYgYWNjZXB0ZWQgZWxzZSBOb25lLAogICAgICAgICAgICAidG90YWxfdmFsdWVfb2ZfaW5mb3JtYXRpb24iOiBtYXRoLmZzdW0oeFsidmFsdWVfb2ZfaW5mb3JtYXRpb24iXSBmb3IgeCBpbiByZXBvcnRzKSBpZiBhY2NlcHRlZCBhbmQgYmFzZWxpbmVfYWxsIGVsc2UgTm9uZSwKICAgICAgICAgICAgInNvdXJjZV9vZl9wcm9iYWJpbGl0aWVzIjogInN1cHBsaWVkX3N5bnRoZXRpY19taXNzaW9uX25vdF9sZWFybmVkX3NlbnNvcl9vcl9vcmJpdGFsX21vZGVsIiwKICAgICAgICAgICAgImV4ZWN1dGlvbl9hdXRob3JpemVkIjogRmFsc2V9CgoKZGVmIHBhaXJzKGl0ZW1zOiBsaXN0W3R1cGxlW3N0ciwgQW55XV0pIC0+IGRpY3Rbc3RyLCBBbnldOgogICAgb3V0ID0ge30KICAgIGZvciBrZXksIHZhbHVlIGluIGl0ZW1zOgogICAgICAgIGlmIGtleSBpbiBvdXQ6CiAgICAgICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIkR1cGxpY2F0ZSBKU09OIGZpZWxkIikKICAgICAgICBvdXRba2V5XSA9IHZhbHVlCiAgICByZXR1cm4gb3V0CgoKZGVmIG1haW4oKSAtPiBpbnQ6CiAgICBwYXJzZXIgPSBhcmdwYXJzZS5Bcmd1bWVudFBhcnNlcigpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLW1pc3Npb24iLCB0eXBlPVBhdGgsIHJlcXVpcmVkPVRydWUpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLW91dHB1dCIsIHR5cGU9UGF0aCwgcmVxdWlyZWQ9VHJ1ZSkKICAgIHBhcnNlci5hZGRfYXJndW1lbnQoIi0tcHJvZmlsZSIsIHR5cGU9UGF0aCkKICAgIGFyZ3MgPSBwYXJzZXIucGFyc2VfYXJncygpCiAgICB0cnk6CiAgICAgICAgcmF3ID0gYXJncy5taXNzaW9uLnJlYWRfYnl0ZXMoKQogICAgICAgIGlmIGxlbihyYXcpID4gMV8wMDBfMDAwOgogICAgICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJNaXNzaW9uIGlucHV0IGlzIHRvbyBsYXJnZSIpCiAgICAgICAgaWYgYXJncy5wcm9maWxlOgogICAgICAgICAgICBwcm9maWxlID0ganNvbi5sb2FkcyhhcmdzLnByb2ZpbGUucmVhZF9ieXRlcygpLCBvYmplY3RfcGFpcnNfaG9vaz1wYWlycykKICAgICAgICAgICAgaWYgcHJvZmlsZS5nZXQoInNjaGVtYSIpICE9ICJzaGFyZWQtb2JzZXJ2YXRpb24tcHJvZmlsZS92MSIgb3IgcHJvZmlsZS5nZXQoInZlcnNpb24iKSAhPSAiMS4wLjAiOgogICAgICAgICAgICAgICAgcmFpc2UgVmFsdWVFcnJvcigiVW5zdXBwb3J0ZWQgYXJ0aWZhY3QgcHJvZmlsZSIpCiAgICAgICAgcmVzdWx0ID0gY29tcGlsZV9taXNzaW9uKGpzb24ubG9hZHMocmF3LCBvYmplY3RfcGFpcnNfaG9vaz1wYWlycykpCiAgICAgICAgcmVzdWx0WyJpbnB1dF9zaGEyNTYiXSA9IGhhc2hsaWIuc2hhMjU2KHJhdykuaGV4ZGlnZXN0KCkKICAgICAgICByZXN1bHRbImNvbXBpbGVyX3NoYTI1NiJdID0gaGFzaGxpYi5zaGEyNTYoUGF0aChfX2ZpbGVfXykucmVhZF9ieXRlcygpKS5oZXhkaWdlc3QoKQogICAgICAgIGFyZ3Mub3V0cHV0LnBhcmVudC5ta2RpcihwYXJlbnRzPVRydWUsIGV4aXN0X29rPVRydWUpCiAgICAgICAgYXJncy5vdXRwdXQud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlc3VsdCwgaW5kZW50PTIsIGFsbG93X25hbj1GYWxzZSkgKyAiXG4iKQogICAgICAgIHJldHVybiAwCiAgICBleGNlcHQgKFZhbHVlRXJyb3IsIEtleUVycm9yLCBUeXBlRXJyb3IsIE9TRXJyb3IsIFN0b3BJdGVyYXRpb24pIGFzIGVycm9yOgogICAgICAgIGFyZ3Mub3V0cHV0LnBhcmVudC5ta2RpcihwYXJlbnRzPVRydWUsIGV4aXN0X29rPVRydWUpCiAgICAgICAgYXJncy5vdXRwdXQud3JpdGVfdGV4dChqc29uLmR1bXBzKHsiYWNjZXB0ZWQiOiBGYWxzZSwgImVycm9yIjogc3RyKGVycm9yKSwgImV4ZWN1dGlvbl9hdXRob3JpemVkIjogRmFsc2V9KSArICJcbiIpCiAgICAgICAgcmV0dXJuIDIKCgppZiBfX25hbWVfXyA9PSAiX19tYWluX18iOgogICAgcmFpc2UgU3lzdGVtRXhpdChtYWluKCkpClBLAwQUAAAAAAAAACEAnb3L1sACAADAAgAADQAAAG1hbmlmZXN0Lmpzb257CiAgImF1dGhvcml0eSI6ICJOT19MSVZFX0VOU19PUl9QUk9EVUNUSU9OX0FVVEhPUklUWSIsCiAgImZpbGVzIjogWwogICAgewogICAgICAiYnl0ZXMiOiA5NTg0LAogICAgICAibmFtZSI6ICJjb21waWxlci5weSIsCiAgICAgICJzaGEyNTYiOiAiN2ExNWE3MmE3MjdlZTliMWM2YmI3MTVmMGM2MDliZjk5MTk0MTUwZDE1Njg1MWRjYjkxZWVkMWYzNDdlYmIxYyIKICAgIH0sCiAgICB7CiAgICAgICJieXRlcyI6IDEwMTMsCiAgICAgICJuYW1lIjogInNlbnNvcl9wcm9maWxlLmpzb24iLAogICAgICAic2hhMjU2IjogIjgwYWVjZGZkOThkZmY3ZGNkYzE5M2M1OTFlYTZkYjkxZWQ2OWVkZGEzNTcxZDk5ZDUwNzc2ZjYxYTUyMWE0ZGYiCiAgICB9CiAgXSwKICAicHJvdmVuYW5jZSI6ICJSZXNlYXJjaGVyLWNvbnN0cnVjdGVkIGluc3RydW1lbnQ7IHByb2ZpbGUgb3JpZ2luIGlzIHJlY29yZGVkIGluIHN0dWR5IGV2aWRlbmNlLiIsCiAgInJpZ2h0cyI6ICJBcGFjaGUtMi4wIHN0dWR5IHNvdXJjZXM7IHB1YmxpYyBpbnB1dCBkYXRhIHJldGFpbiB0aGVpciBvd24gbGljZW5zZXMuIiwKICAic2NoZW1hIjogInNoYXJlZC1vYnNlcnZhdGlvbi1yZXRhaW5lZC1idW5kbGUvdjEiLAogICJzY29wZSI6ICJCb3VuZGVkIHJlc2VhcmNoIG9ic2VydmF0aW9uLWRlc2lnbiBjb21wdXRhdGlvbiB3aXRoIGZyZXNoIG1pc3Npb24gY2hlY2tpbmcuIgp9ClBLAwQUAAAAAAAAACEAmUsaj/UDAAD1AwAAEwAAAHNlbnNvcl9wcm9maWxlLmpzb257CiAgInNjaGVtYSI6ICJzaGFyZWQtb2JzZXJ2YXRpb24tcHJvZmlsZS92MSIsCiAgInZlcnNpb24iOiAiMS4wLjAiLAogICJwdXJwb3NlIjogIkNvbXBpbGUgYW5kIHJlY2hlY2sgZmluaXRlIG9ic2VydmF0aW9uLWNvbnRpbmdlbnQgZGVjaXNpb24gcGFja2FnZXMgaW4gZXhwbGljaXRseSBzeW50aGV0aWMgd29ybGRzLiIsCiAgImNvbnN0cnVjdGVkX2J5IjogIkFJLWFzc2lzdGVkIHJlc2VhcmNoIHRlYW0gZm9yIFZpbmNlbnQgQm91Y2hlciwgTU9OVFJFQUwuQUkiLAogICJyaWdodHMiOiAiQXBhY2hlLTIuMCIsCiAgInN1cHBvcnRlZF9ldmlkZW5jZV90eXBlIjogInN5bnRoZXRpYyIsCiAgInJlcXVpcmVkX21pc3Npb25fc2NoZW1hIjogInNoYXJlZC1vYnNlcnZhdGlvbi1taXNzaW9uL3YxIiwKICAicHJvYmFiaWxpdHlfdG9sZXJhbmNlIjogMWUtMTIsCiAgIm1heF9zdGF0ZXMiOiAxMiwKICAibWF4X291dGNvbWVzIjogMTIsCiAgIm1heF9vcGVyYXRvcnMiOiA2LAogICJtYXhfYWN0aW9uc19wZXJfb3BlcmF0b3IiOiA2LAogICJtYXhpbXVtX2lucHV0X2J5dGVzIjogMTAwMDAwMCwKICAic2Vuc29yX3Byb2JhYmlsaXR5X2xlYXJuaW5nIjogZmFsc2UsCiAgImNvbnRhaW5zX2V2YWx1YXRpb25fYW5zd2VycyI6IGZhbHNlLAogICJsaW1pdGF0aW9ucyI6IFsKICAgICJTdXBwbGllZCBmaW5pdGUgcHJvYmFiaWxpdGllcyBhcmUgYXNzdW1wdGlvbnMsIG5vdCBlc3RpbWF0ZWQgb3JiaXRhbCByaXNrcy4iLAogICAgIk5vIHN0YXRlLWRlcGVuZGVudCBpbnRlci1vcGVyYXRvciBhY3Rpb24gaW50ZXJhY3Rpb25zIGFyZSBtb2RlbGVkLiIsCiAgICAiTm8gcGh5c2ljYWwgbWFuZXV2ZXIsIGxpdmUgaWRlbnRpdHksIGJpbGxpbmcgb3IgcHJvZHVjdGlvbiBhdXRob3JpdHkgaXMgZ3JhbnRlZC4iLAogICAgIkZyZXNoIG1pc3Npb24gc2NvcGUsIHBvc3RlcmlvciBicmFuY2ggcmlzaywgZGVhZGxpbmVzIGFuZCBhcnRpZmFjdCBpZGVudGl0eSBtdXN0IGJlIHJlY2hlY2tlZC4iCiAgXQp9ClBLAQIUAxQAAAAAAAAAIQASg0FFcCUAAHAlAAALAAAAAAAAAAAAAACkgQAAAABjb21waWxlci5weVBLAQIUAxQAAAAAAAAAIQCdvcvWwAIAAMACAAANAAAAAAAAAAAAAACkgZklAABtYW5pZmVzdC5qc29uUEsBAhQDFAAAAAAAAAAhAJlLGo/1AwAA9QMAABMAAAAAAAAAAAAAAKSBhCgAAHNlbnNvcl9wcm9maWxlLmpzb25QSwUGAAAAAAMAAwC1AAAAqiwAAAAA"
+        }
+      }
+    },
+    {
+      "operation": {
+        "action": "retrieve",
+        "key": "artifact-conformance@2",
+        "member": "lyra.agent.agi.eth"
+      },
+      "result": {
+        "ok": false,
+        "reasons": [
+          "RIGHT_NOT_GRANTED"
+        ]
+      }
+    }
+  ],
+  "snapshot": {
+    "schema": "beyond-beta.lifecycle-snapshot/v1",
+    "networkId": "capability-opportunity-relay-research/v1",
+    "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+    "policy": {
+      "version": "beyond-beta-alpha-policy-v1",
+      "minimumPairedTrials": 6,
+      "validatorQuorum": 1,
+      "requireIndependentValidator": true,
+      "maxAssessmentAge": 104
+    },
+    "week": 1,
+    "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+    "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+    "revision": 6,
+    "records": [
+      {
+        "key": "artifact-conformance@2",
+        "manifest": {
+          "id": "artifact-conformance",
+          "version": "2",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "56730d421f19c16044f9e9a57c5d8661c0dfd5f15e8077e3f2ded5c9ff5c74b3",
+          "equivalenceKey": "artifact-conformance-v2",
+          "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "rights": {
+            "shareable": false,
+            "retrieve": [
+              "atlas.agent.agi.eth"
+            ],
+            "execute": [
+              "atlas.agent.agi.eth"
+            ],
+            "compose": [
+              "atlas.agent.agi.eth"
+            ],
+            "export": false
+          },
+          "payloadDigest": "962a82385cf275cc06d2fbd5964d92ea51ee5a7ed13064078ae72d49f29aea77"
+        },
+        "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+        "status": "ADMITTED",
+        "effective": {
+          "ok": true,
+          "reasons": []
+        },
+        "evidenceDigest": "0f0cc7a69e9f8287ba13150da8ff0bcb63450b5b15380cc76921a9d686879646",
+        "assessmentDigest": "9270e7e46388a50a3ca8eea194a2dd7bf62d2cdda67a1cca376befbbc40a6f80",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "artifact-conformance",
+          "candidateVersion": "2",
+          "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+          "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "admit",
+          "reasons": [],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+          "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+          "assessedLowerBoundNetCents": 800,
+          "lifecycleCostCents": 100,
+          "evaluationCostCents": 100,
+          "completeLifecycleCostCents": 200,
+          "forecastEligibleUses": 10,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": 100,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": 100,
+          "lowerLifetimeNetCents": 800,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "artifact-conformance",
+              "candidateVersion": "2",
+              "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+              "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+              "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+              "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "admit",
+              "reasons": [],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+              "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+              "assessedLowerBoundNetCents": 800,
+              "lifecycleCostCents": 100,
+              "evaluationCostCents": 100,
+              "completeLifecycleCostCents": 200,
+              "forecastEligibleUses": 10,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": 100,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": 100,
+              "lowerLifetimeNetCents": 800,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "9270e7e46388a50a3ca8eea194a2dd7bf62d2cdda67a1cca376befbbc40a6f80",
+            "evidenceDigest": "0f0cc7a69e9f8287ba13150da8ff0bcb63450b5b15380cc76921a9d686879646"
+          }
+        ],
+        "validationHistory": [
+          {
+            "week": 0,
+            "attestations": [
+              {
+                "action": "ISSUE_SKILL_ATTESTATION",
+                "schema": "agi-alpha.skill-attestation.v1",
+                "skill": {
+                  "dependencyDigests": [],
+                  "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                  "evidenceDigest": "5f02bc7c7a78170bb9a6ff13fe4cb3bb561954ba4df5d643e5662a9d26784eaa",
+                  "expiresAt": 100,
+                  "id": "artifact-conformance",
+                  "implementationDigest": "56730d421f19c16044f9e9a57c5d8661c0dfd5f15e8077e3f2ded5c9ff5c74b3",
+                  "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                  "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                  "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                  "version": "2"
+                },
+                "verdict": "PASS_WITH_SCOPE",
+                "mode": "FIXTURE_ONLY",
+                "agent": "validator.agent.agi.eth",
+                "signer": "fixture:validator.agent.agi.eth",
+                "authoritySnapshotId": "network-fixture-state-0",
+                "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                "blockNumber": 0,
+                "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                "registrySchema": "ENS_V1_FIXTURE",
+                "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                "issuedAt": 0,
+                "expiresAt": 100,
+                "nonce": "validation:0",
+                "chainId": 31337,
+                "registry": "fixture:ens-v1",
+                "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+                "signature": {
+                  "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                  "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                  "signer": "fixture:validator.agent.agi.eth",
+                  "payloadDigest": "1706dfcaf385b0a79021753d52087182aded593a069bdb08f58960eb55ba40f1"
+                }
+              }
+            ],
+            "assessmentDigest": "9270e7e46388a50a3ca8eea194a2dd7bf62d2cdda67a1cca376befbbc40a6f80"
+          }
+        ],
+        "createdAt": 0,
+        "admittedAt": 0,
+        "terminalAt": null,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "c31f493198500dcb5790587accae2c9e264d0c211c1f6bd8f16d278d83a9b617",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 15788,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      }
+    ],
+    "events": [
+      {
+        "sequence": 0,
+        "week": 0,
+        "type": "candidate",
+        "key": "artifact-conformance@2",
+        "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318"
+      },
+      {
+        "sequence": 1,
+        "week": 0,
+        "type": "evidence",
+        "key": "artifact-conformance@2",
+        "evidenceDigest": "0f0cc7a69e9f8287ba13150da8ff0bcb63450b5b15380cc76921a9d686879646",
+        "mode": "OBSERVED_LOCAL_TESTS"
+      },
+      {
+        "sequence": 2,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "artifact-conformance@2",
+        "assessmentDigest": "9270e7e46388a50a3ca8eea194a2dd7bf62d2cdda67a1cca376befbbc40a6f80",
+        "verdict": "ASSESSED",
+        "reasons": []
+      },
+      {
+        "sequence": 3,
+        "week": 0,
+        "type": "validation",
+        "key": "artifact-conformance@2",
+        "validators": [
+          "validator.agent.agi.eth"
+        ],
+        "cryptographicAuthentication": false
+      },
+      {
+        "sequence": 4,
+        "week": 0,
+        "type": "admit",
+        "key": "artifact-conformance@2",
+        "graphRoot": "4a617bebe5ad7a56afa6062b2c56b4ff268977ee1a6a9a1587f35d803a959432",
+        "reason": null
+      },
+      {
+        "sequence": 5,
+        "week": 1,
+        "type": "authorized-reuse",
+        "key": "artifact-conformance@2",
+        "member": "atlas.agent.agi.eth",
+        "right": "retrieve",
+        "optional": true
+      }
+    ],
+    "rootHistory": [
+      {
+        "action": "COMMIT_GRAPH_ROOT",
+        "agent": "atlas.agent.agi.eth",
+        "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+        "chainId": 31337,
+        "counts": {
+          "attestation": 1,
+          "edge": 0,
+          "evidence": 1,
+          "metadata": 1,
+          "policy": 1,
+          "proofbundle": 0,
+          "revocation": 0,
+          "skill": 1,
+          "supersession": 0
+        },
+        "epoch": 1,
+        "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+        "graphRoot": "4a617bebe5ad7a56afa6062b2c56b4ff268977ee1a6a9a1587f35d803a959432",
+        "hashSuite": "SHA256_RESEARCH_V1",
+        "mode": "FIXTURE_ONLY",
+        "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+        "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+        "proofLevel": "MODELED_ALPHA_RESEARCH_ADMISSION",
+        "registry": "fixture:ens-v1",
+        "roots": {
+          "attestation": "80d11811c1bdb1e8e3b93eccb7ba1ff8a3360d171be972ecf2ec1a143401836b",
+          "edge": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "evidence": "5fc56e50fbf6390f5b6075b10755105873b682fd9bd305dad10127aff81ba6b3",
+          "metadata": "f5872466750f7278e7634fe0e8d34086e9d3e8cd3a66fa579df9a30395ed91b7",
+          "policy": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+          "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "skill": "505ca796122e4d50c2dbe87ab8422d50e1bc8b6e0d5faae6194c2155b96e2f07",
+          "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+        },
+        "schema": "agi-alpha.graph-epoch.v1",
+        "snapshotDigest": "504d165a1fcb572c031c98828669a33712f64e5f935ada045af4238adef02dd5",
+        "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+        "signer": "fixture:atlas.agent.agi.eth",
+        "authoritySnapshotId": "network-fixture-state-0",
+        "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+        "blockNumber": 0,
+        "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+        "registrySchema": "ENS_V1_FIXTURE",
+        "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+        "issuedAt": 0,
+        "expiresAt": 1000,
+        "nonce": "root:1",
+        "signature": {
+          "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+          "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+          "signer": "fixture:atlas.agent.agi.eth",
+          "payloadDigest": "c3c8cce1d34116396f8b961fc8379b8592392e9653cf10f1c58d7f09834ba2a8"
+        }
+      }
+    ],
+    "rootArtifacts": [
+      {
+        "graphRoot": "4a617bebe5ad7a56afa6062b2c56b4ff268977ee1a6a9a1587f35d803a959432",
+        "forest": {
+          "schema": "agi-alpha.merkle-forest.v1",
+          "hashSuite": "SHA256_RESEARCH_V1",
+          "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+          "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+          "classes": {
+            "skill": {
+              "root": "505ca796122e4d50c2dbe87ab8422d50e1bc8b6e0d5faae6194c2155b96e2f07",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "dependencyDigests": [],
+                    "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                    "evidenceDigest": "5f02bc7c7a78170bb9a6ff13fe4cb3bb561954ba4df5d643e5662a9d26784eaa",
+                    "expiresAt": 100,
+                    "id": "artifact-conformance",
+                    "implementationDigest": "56730d421f19c16044f9e9a57c5d8661c0dfd5f15e8077e3f2ded5c9ff5c74b3",
+                    "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                    "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                    "version": "2"
+                  },
+                  "leafHash": "505ca796122e4d50c2dbe87ab8422d50e1bc8b6e0d5faae6194c2155b96e2f07",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "edge": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "evidence": {
+              "root": "5fc56e50fbf6390f5b6075b10755105873b682fd9bd305dad10127aff81ba6b3",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "0f0cc7a69e9f8287ba13150da8ff0bcb63450b5b15380cc76921a9d686879646",
+                    "key": "artifact-conformance@2"
+                  },
+                  "leafHash": "5fc56e50fbf6390f5b6075b10755105873b682fd9bd305dad10127aff81ba6b3",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "proofbundle": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "policy": {
+              "root": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "version": "beyond-beta-alpha-policy-v1"
+                  },
+                  "leafHash": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "attestation": {
+              "root": "80d11811c1bdb1e8e3b93eccb7ba1ff8a3360d171be972ecf2ec1a143401836b",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "action": "ISSUE_SKILL_ATTESTATION",
+                    "agent": "validator.agent.agi.eth",
+                    "authoritySnapshotId": "network-fixture-state-0",
+                    "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                    "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                    "blockNumber": 0,
+                    "chainId": 31337,
+                    "expiresAt": 100,
+                    "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+                    "issuedAt": 0,
+                    "mode": "FIXTURE_ONLY",
+                    "nonce": "validation:0",
+                    "registry": "fixture:ens-v1",
+                    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                    "registrySchema": "ENS_V1_FIXTURE",
+                    "schema": "agi-alpha.skill-attestation.v1",
+                    "signature": {
+                      "payloadDigest": "1706dfcaf385b0a79021753d52087182aded593a069bdb08f58960eb55ba40f1",
+                      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                      "signer": "fixture:validator.agent.agi.eth"
+                    },
+                    "signer": "fixture:validator.agent.agi.eth",
+                    "skill": {
+                      "dependencyDigests": [],
+                      "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                      "evidenceDigest": "5f02bc7c7a78170bb9a6ff13fe4cb3bb561954ba4df5d643e5662a9d26784eaa",
+                      "expiresAt": 100,
+                      "id": "artifact-conformance",
+                      "implementationDigest": "56730d421f19c16044f9e9a57c5d8661c0dfd5f15e8077e3f2ded5c9ff5c74b3",
+                      "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                      "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                      "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                      "version": "2"
+                    },
+                    "verdict": "PASS_WITH_SCOPE"
+                  },
+                  "leafHash": "80d11811c1bdb1e8e3b93eccb7ba1ff8a3360d171be972ecf2ec1a143401836b",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "revocation": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "supersession": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "metadata": {
+              "root": "f5872466750f7278e7634fe0e8d34086e9d3e8cd3a66fa579df9a30395ed91b7",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+                    "command": {
+                      "action": "admit",
+                      "actor": "atlas.agent.agi.eth",
+                      "key": "artifact-conformance@2"
+                    },
+                    "networkId": "capability-opportunity-relay-research/v1",
+                    "preparedAt": 0,
+                    "revision": 4,
+                    "states": [
+                      {
+                        "assessmentDigest": "9270e7e46388a50a3ca8eea194a2dd7bf62d2cdda67a1cca376befbbc40a6f80",
+                        "candidateDigest": "7f645d57778e9a80d01ca55bac4cc16011270fd9186cdbef8a8ca6f9be8e2318",
+                        "evidenceDigest": "0f0cc7a69e9f8287ba13150da8ff0bcb63450b5b15380cc76921a9d686879646",
+                        "key": "artifact-conformance@2",
+                        "status": "ADMITTED"
+                      }
+                    ]
+                  },
+                  "leafHash": "f5872466750f7278e7634fe0e8d34086e9d3e8cd3a66fa579df9a30395ed91b7",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "canonical": [],
+    "failureMemory": [],
+    "protectedEvaluationCommitments": [],
+    "authorityMode": "FIXTURE_ONLY",
+    "cryptographicAuthentication": false,
+    "liveIdentityEnforcement": "NOT_RUN",
+    "localEncryption": "AES-256-GCM",
+    "zeroKnowledgeProofs": "NOT_IMPLEMENTED",
+    "productionExecution": "NOT_CONNECTED",
+    "jobsClubRoles": "UNCHANGED",
+    "historyImportSupported": false
+  },
+  "liveCapsuleAdmission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "actualFrontierCalls": 0,
+  "actualReceiptsMicroUSD": 0,
+  "distinction": "Research fixture access replays local artifact bytes; it neither deploys a protected service nor runs the artifact."
+}
