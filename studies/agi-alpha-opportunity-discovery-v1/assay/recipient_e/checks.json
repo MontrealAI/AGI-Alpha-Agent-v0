@@ -1,0 +1,75 @@
+{
+  "checked_at_utc": "2026-10-27T16:13:47.099494+00:00",
+  "source_sha256": {
+    "assay/expert_method.txt": "d5a4ade15fa08262b0e0d3b42618d4dbc60f439414cfe5b3f5f85e26c7b78e1e",
+    "data/sources/metadat/data-raw/dat.bangertdrowns2004.r": "57ea4c9ab50aa00ad72109ec3ebe820fdd09fc095503cd6bcb92a2a3ebc1955b",
+    "data/sources/metadat/data-raw/dat.bangertdrowns2004.txt": "f2054192181c0209926c99adb00453e85b5a57552b41d34bbe4d56eb552fb879",
+    "data/sources/metadat/man/dat.bangertdrowns2004.Rd": "5d7bb206cd212fbb74598955f33feb88201a2768a96230cdb62d3df2598238b5",
+    "data/sources/metadat/data-raw/dat.raudenbush1985.r": "2f939070bff9fdecda294be7da5dd9530854e120957c89f1b9b0f95651e57e79",
+    "data/sources/metadat/data-raw/dat.raudenbush1985.txt": "4d5cf83c1911fd0717fed9555abfaa6b02df32fab67c233df6fdf49b8059cfcd",
+    "data/sources/metadat/man/dat.raudenbush1985.Rd": "d1712899e886ca76990c4958e8ae13c6577621123d95f8bb1d15f5aef1f60f75",
+    "data/sources/crop_conflict/raw_data/readme": "aacbb04548d749b82cfe2bf68af43cdcc0c6f0795e423f1ada9688a3566212c2",
+    "data/sources/crop_conflict/network_meta_analysis.qmd": "40fc4fba62e583ccfcd4d03940a72e5368e661da3d22ec2c2ed824a2fd5b6814"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "scipy": "1.17.0"
+  },
+  "input_checks": {
+    "teacher_rows": 19,
+    "writing_rows": 48,
+    "teacher_unique_ids": 19,
+    "teacher_missing_effect_or_variance": 0,
+    "teacher_all_variances_positive": true,
+    "teacher_vi_equals_sei_squared_rounded_4dp": true,
+    "max_absolute_vi_minus_sei_squared": 3.899999999998349e-05,
+    "teacher_unequal_arm_rows": 14,
+    "teacher_weeks_range": [
+      0,
+      24
+    ],
+    "teacher_weeks_over_three": 7,
+    "repeated_author_year": [
+      {
+        "author": "Pellegrini & Hicks",
+        "year": 1972,
+        "studies": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "conditional_teacher_intercept_only_REML": {
+    "k": 19,
+    "method": "Independent Python restricted-likelihood minimization, checked against analytic REML score root",
+    "tau2": 0.01881828872696908,
+    "tau2_score_root": 0.018818288140220678,
+    "mu": 0.08370124239176027,
+    "se_mu": 0.05164067172881493,
+    "z": 1.620839535769553,
+    "two_sided_p_normal": 0.105052057027451,
+    "ci95_normal": [
+      -0.01751261433417277,
+      0.18491509911769333
+    ],
+    "Q": 35.82953629959279,
+    "Q_df": 18,
+    "Q_p": 0.00741931325487901,
+    "all_rows_retained": true,
+    "independence_verified": false,
+    "interpretation": "Numerical reference conditional on the supplied variances and independent rows; not a confirmed causal or editorial conclusion."
+  },
+  "nontransferable_formula_example": {
+    "teacher_study": 1,
+    "n1i": 77,
+    "n2i": 339,
+    "supplied_yi": 0.03,
+    "supplied_vi": 0.0156,
+    "writing_variance_rule_if_wrongly_reused": 0.01
+  },
+  "R_metafor_reference": {
+    "status": "Not executed: Rscript is unavailable in PATH. No packages installed or network accessed."
+  }
+}

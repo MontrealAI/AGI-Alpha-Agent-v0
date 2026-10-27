@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-27",
+  "budget": {"substantive_primary_source_reads_max": 12, "target_minutes": 15},
+  "substantive_primary_source_reads": 9,
+  "search_batches": [
+    {"engine": "system1", "queries": ["site.cisa.gov software end of life small business SaaS data portability resilience", "site.ukri.org research data inaccessible proprietary file formats software preservation", "site.nist.gov federated data collaboration small organizations data spaces interoperability"], "decision": "Broad triage: dependency and data-space concerns are real but broad labels do not establish a narrow opportunity."},
+    {"engine": "system1", "queries": ["site.digital-strategy.ec.europa.eu Data Act SaaS functional equivalence switching data processing services", "site.ncceurope.com SaaS escrow continuity verification", "site.webrecorder.net browsertrix limitations dynamic websites archiving"], "decision": "Separate operational continuity from web replay. Web archive field has strong active tools and papers; do not invent an archive gap from assumptions."},
+    {"engine": "system2", "queries": ["Data Act cloud switching functional equivalence SaaS [official Commission domain]", "data spaces compute to data marketplace Ocean Protocol Ocean enterprise pricing federated analytics", "open source maintenance funding assurance contracts shared dependency security sovereign tech fund unmet need"], "decision": "Compute-to-data marketplaces and collective open-source funding already exist; defer broad variants because proposed novelty was not sharp enough."},
+    {"engine": "system2", "queries": ["site.crossref.org retraction watch database cited corrections research integrity retraction notifications", "site.scite.ai retracted papers cited claims Smart Citations retraction", "site.elicit.com research systematic review update retracted articles", "site.nature.com retracted studies systematic reviews continue citations corrections propagation study 2025"], "decision": "Discover documented evidence-maintenance burden; narrow beyond alerting and citation search, which are already supplied."},
+    {"engine": "system1", "queries": ["site.cloudm.io migrate SaaS Google Workspace Microsoft 365 permission migration pricing", "site.pubmed.ncbi.nlm.nih.gov VITALITY Study I"], "decision": "Strengthen migration counterfactual; VITALITY search returned irrelevant matches and was not used."}
+  ],
+  "substantive_reads": [
+    {"url":"https://digital-strategy.ec.europa.eu/en/factpages/data-act-explained","refs":["turn7search1","turn13view0"],"status":"initial read succeeded; later focused read 403"},
+    {"url":"https://www.crossref.org/documentation/retrieve-metadata/retraction-watch/","refs":["turn13view3"],"status":"read"},
+    {"url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12015725/","refs":["turn10search1","turn13view4"],"status":"initial partial read; focused results fetch captcha; no numerical results used"},
+    {"url":"https://scite.ai/features","refs":["turn14view1"],"status":"read"},
+    {"url":"https://www.cochrane.org/about-us/news/cochrane-strengthens-systems-manage-retracted-publications-its-published-reviews","refs":["turn14view2"],"status":"read"},
+    {"url":"https://www.escode.com/resources/beyond-software-escrow-how-escrow-protects-critical-business-assets/","refs":["turn15view2"],"status":"read; used to locate current SaaS page"},
+    {"url":"https://www.escrowlondon.com/news/software-escrow-evolution-company-rebranding-reflects-current-industry-trends/","refs":["turn15view3"],"status":"read"},
+    {"url":"https://www.retracted.net/","refs":["turn15view4"],"status":"read"},
+    {"url":"https://www.escode.com/saas-escrow/","refs":["turn16view1"],"status":"read"}
+  ],
+  "failed_or_empty_reads": [
+    "https://digital-strategy.ec.europa.eu/en/library/results-study-interoperability-data-processing-services",
+    "https://www.escode.com/solutions/software-escrow/saas-escrow/",
+    "https://www.escode.com/solutions/",
+    "https://docs.elicit.com/",
+    "https://www.bmj.com/content/389/bmj-2024-082068",
+    "https://eur-lex.europa.eu/eli/reg/2023/2854/oj"
+  ],
+  "considered_but_not_developed": [
+    {"candidate":"Generic compute-to-data marketplace","reason":"Ocean Protocol and Ocean Enterprise already implement core mechanism; no particular underserved question or transaction established."},
+    {"candidate":"Generic pooled open-source maintenance","reason":"Sovereign Tech Agency and existing funding mechanisms make broad framing insufficient; requires narrower neglected dependency and participant evidence."},
+    {"candidate":"Generic interactive web preservation","reason":"Browsertrix and recent WebREC research are strong prior art; source investigation did not establish an unmet flagship gap."}
+  ],
+  "claims_not_established": ["No live buyer demand or willingness to pay", "No frontier-model comparison", "No new algorithm", "No demonstrated autonomous discovery", "No profits or revenues", "No legal compliance certification"]
+}

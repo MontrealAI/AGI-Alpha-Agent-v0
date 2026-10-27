@@ -1,0 +1,45 @@
+{
+  "start_utc": "2026-10-27T16:12:29.395697+00:00",
+  "end_utc": "2026-10-27T16:17:10.424583+00:00",
+  "elapsed_seconds": 281.028886,
+  "clock_boundary": "Actual host UTC at first source read through completion of output verification; worklog serialized immediately afterward.",
+  "tool_calls": 8,
+  "tool_call_breakdown": {
+    "functions.exec_invocations": 4,
+    "nested_exec_command_invocations": 4,
+    "counting_convention": "Conservative total counts both orchestration and nested tool invocations. There were four execution operations."
+  },
+  "operations": [
+    "1: Read only the frozen checklist and eight explicitly permitted source files with line coordinates; captured start UTC.",
+    "2: Wrote and executed checks.py; wrote reference.R; produced input hashes, data checks and independent REML objective/score comparisons.",
+    "3: Wrote source-grounded answer.json with all six requested keys.",
+    "4: Condensed answer below 12000 characters, added numeric acceptance check to reference.R, verified JSON keys/source hashes/helper syntax and wrote this worklog."
+  ],
+  "failures_retries": {
+    "failed_tool_calls": 0,
+    "retries": 0,
+    "unavailable_dependency": "Rscript was not found in PATH. No R/metafor execution, installation, network call or substitute claim of package validation was made."
+  },
+  "changes_made": [
+    "assay/recipient_e/answer.json",
+    "assay/recipient_e/worklog.json",
+    "assay/recipient_e/checks.py",
+    "assay/recipient_e/checks.json",
+    "assay/recipient_e/reference.R"
+  ],
+  "verification": {
+    "answer_characters": 11865,
+    "requested_keys_valid": true,
+    "source_hashes_unchanged": true,
+    "python_helper_syntax_valid": true,
+    "numerical_checks": "Executed: 19 teacher rows, 48 writing rows, 14 unequal teacher arms, positive finite variances, rounded SE/variance agreement and REML solver agreement. R reference prepared, not executed.",
+    "crop_fit": "Not attempted: numeric data and scientific prerequisites are missing from authorized inputs."
+  },
+  "limitations": [
+    "No primary-study design/covariance or correction audit was possible from supplied material.",
+    "Normal-Wald reference is explicit; prior reconstruction uncertainty settings were not supplied.",
+    "No corpus outside allowed inputs or other recipient work was read.",
+    "No actions or writes outside assay/recipient_e/ were performed."
+  ],
+  "token_billing_telemetry": "Unavailable; no token or billing estimates asserted."
+}

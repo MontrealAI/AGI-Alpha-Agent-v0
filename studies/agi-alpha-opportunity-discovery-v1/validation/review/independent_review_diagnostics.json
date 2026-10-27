@@ -1,0 +1,563 @@
+{
+  "schema": "independent-review-diagnostics/v1",
+  "date": "2026-10-27",
+  "frozen_source_unchanged": true,
+  "freeze_checks": [
+    {
+      "freeze": "construction-freeze-v1.json",
+      "path": "instrument/continuity.py",
+      "expected": "2e792a6324b7da90d33f26839437784bad9308f11cf4fc5584fe5054883dae2e",
+      "observed": "2e792a6324b7da90d33f26839437784bad9308f11cf4fc5584fe5054883dae2e",
+      "unchanged": true
+    },
+    {
+      "freeze": "construction-freeze-v1.json",
+      "path": "assay/expert_method.txt",
+      "expected": "d5a4ade15fa08262b0e0d3b42618d4dbc60f439414cfe5b3f5f85e26c7b78e1e",
+      "observed": "d5a4ade15fa08262b0e0d3b42618d4dbc60f439414cfe5b3f5f85e26c7b78e1e",
+      "unchanged": true
+    },
+    {
+      "freeze": "construction-freeze-v1.json",
+      "path": "assay/mapping_validator.py",
+      "expected": "6fe494f269b59b5010b544336fc1e159587602917b64f0367316745ac21ad985",
+      "observed": "6fe494f269b59b5010b544336fc1e159587602917b64f0367316745ac21ad985",
+      "unchanged": true
+    },
+    {
+      "freeze": "construction-freeze-v1.json",
+      "path": "assay/protocol.json",
+      "expected": "503cdd18f71ea71b12f424cd51f4835483ddcc6d4d84a9f6ac8ada8d90f6757a",
+      "observed": "503cdd18f71ea71b12f424cd51f4835483ddcc6d4d84a9f6ac8ada8d90f6757a",
+      "unchanged": true
+    },
+    {
+      "freeze": "construction-freeze-v1.json",
+      "path": "discovery/selection.json",
+      "expected": "234dd52831475780ecf43b874798a117721e3e059f514eff4a6514d1833e7186",
+      "observed": "234dd52831475780ecf43b874798a117721e3e059f514eff4a6514d1833e7186",
+      "unchanged": true
+    },
+    {
+      "freeze": "confirmation-freeze-v1.json",
+      "path": "run_study.py",
+      "expected": "135d2f40cd75669fa06ad9fc2741b576ffb95c56b1465eccc6fe1fc4e1630a31",
+      "observed": "135d2f40cd75669fa06ad9fc2741b576ffb95c56b1465eccc6fe1fc4e1630a31",
+      "unchanged": true
+    },
+    {
+      "freeze": "confirmation-freeze-v1.json",
+      "path": "instrument/continuity.py",
+      "expected": "2e792a6324b7da90d33f26839437784bad9308f11cf4fc5584fe5054883dae2e",
+      "observed": "2e792a6324b7da90d33f26839437784bad9308f11cf4fc5584fe5054883dae2e",
+      "unchanged": true
+    },
+    {
+      "freeze": "confirmation-freeze-v1.json",
+      "path": "assay/acceptance_rubric.json",
+      "expected": "9a320d73e50e93ac9026a846f582b5708cfcae727a4d2a5e7eb77e35fbfff818",
+      "observed": "9a320d73e50e93ac9026a846f582b5708cfcae727a4d2a5e7eb77e35fbfff818",
+      "unchanged": true
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "packet_edit_with_original_mission",
+      "result": {
+        "event_id": null,
+        "packet_digest": "886d344d5b90df63b83059da2cb0c80ce53428c940325cbf5873ff25fcd06bbd",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "933529ec1252c62c581fc04d4995e7953bc6be5f3ef0fa5ccbbaffd3aaf8225f",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "hold",
+        "reason": "CURRENT_PACKET_IDENTITY_REQUIRED",
+        "numeric_result": null,
+        "recomputed": false
+      },
+      "expected": "hold",
+      "observed_match": true,
+      "scope": "Digest binds the supplied packet when original mission receipt is retained."
+    },
+    {
+      "name": "purpose_changed",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "933529ec1252c62c581fc04d4995e7953bc6be5f3ef0fa5ccbbaffd3aaf8225f",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "hold",
+        "reason": "PURPOSE_REQUALIFICATION_REQUIRED",
+        "numeric_result": null,
+        "recomputed": false
+      },
+      "expected": "hold",
+      "observed_match": true,
+      "scope": "New mission purpose cannot inherit old purpose digest."
+    },
+    {
+      "name": "authority_string_is_not_boolean_true",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "933529ec1252c62c581fc04d4995e7953bc6be5f3ef0fa5ccbbaffd3aaf8225f",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "hold",
+        "reason": "FRESH_EXECUTION_AUTHORITY_REQUIRED",
+        "numeric_result": null,
+        "recomputed": false
+      },
+      "expected": "hold",
+      "observed_match": true,
+      "scope": "Typed local authority flag is checked; this is not live authentication."
+    },
+    {
+      "name": "missing_event_kind",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "hold",
+        "reason": "ROW_IDENTITY_REQUIRED",
+        "numeric_result": null,
+        "recomputed": false
+      },
+      "expected": "hold",
+      "observed_match": true,
+      "scope": "Missing event kind fails closed with no numerical result."
+    },
+    {
+      "name": "unverified_extra_source_identity",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "702ca12cdb5dbf0fab31859efa1bf87381da21b832aa7269c3c552dad6e3e8cf",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "recomputed",
+        "reason": "QUANTITATIVE_UPDATE_REPRODUCED",
+        "numeric_result": {
+          "k": 19,
+          "estimate": 0.08989278840142693,
+          "se": 0.052498832068285796,
+          "ci_lower": -0.013003031682829666,
+          "ci_upper": 0.19278860848568352,
+          "tau2": 0.019848102700567864,
+          "method": "intercept-only REML; normal interval",
+          "interpretation": "Conditional quantitative reproduction; no causal, editorial or practice verdict"
+        },
+        "recomputed": true,
+        "updated_rows": [
+          {
+            "id": "1",
+            "yi": 0.1,
+            "vi": 0.02,
+            "source_row": 2,
+            "active": true
+          },
+          {
+            "id": "2",
+            "yi": 0.12,
+            "vi": 0.0216,
+            "source_row": 3,
+            "active": true
+          },
+          {
+            "id": "3",
+            "yi": -0.14,
+            "vi": 0.0279,
+            "source_row": 4,
+            "active": true
+          },
+          {
+            "id": "4",
+            "yi": 1.18,
+            "vi": 0.1391,
+            "source_row": 5,
+            "active": true
+          },
+          {
+            "id": "5",
+            "yi": 0.26,
+            "vi": 0.1362,
+            "source_row": 6,
+            "active": true
+          },
+          {
+            "id": "6",
+            "yi": -0.06,
+            "vi": 0.0106,
+            "source_row": 7,
+            "active": true
+          },
+          {
+            "id": "7",
+            "yi": -0.02,
+            "vi": 0.0106,
+            "source_row": 8,
+            "active": true
+          },
+          {
+            "id": "8",
+            "yi": -0.32,
+            "vi": 0.0484,
+            "source_row": 9,
+            "active": true
+          },
+          {
+            "id": "9",
+            "yi": 0.27,
+            "vi": 0.0269,
+            "source_row": 10,
+            "active": true
+          },
+          {
+            "id": "10",
+            "yi": 0.8,
+            "vi": 0.063,
+            "source_row": 11,
+            "active": true
+          },
+          {
+            "id": "11",
+            "yi": 0.54,
+            "vi": 0.0912,
+            "source_row": 12,
+            "active": true
+          },
+          {
+            "id": "12",
+            "yi": 0.18,
+            "vi": 0.0497,
+            "source_row": 13,
+            "active": true
+          },
+          {
+            "id": "13",
+            "yi": -0.02,
+            "vi": 0.0835,
+            "source_row": 14,
+            "active": true
+          },
+          {
+            "id": "14",
+            "yi": 0.23,
+            "vi": 0.0841,
+            "source_row": 15,
+            "active": true
+          },
+          {
+            "id": "15",
+            "yi": -0.18,
+            "vi": 0.0253,
+            "source_row": 16,
+            "active": true
+          },
+          {
+            "id": "16",
+            "yi": -0.06,
+            "vi": 0.0279,
+            "source_row": 17,
+            "active": true
+          },
+          {
+            "id": "17",
+            "yi": 0.3,
+            "vi": 0.0193,
+            "source_row": 18,
+            "active": true
+          },
+          {
+            "id": "18",
+            "yi": 0.07,
+            "vi": 0.0088,
+            "source_row": 19,
+            "active": true
+          },
+          {
+            "id": "19",
+            "yi": -0.07,
+            "vi": 0.0303,
+            "source_row": 20,
+            "active": true
+          }
+        ],
+        "changed_rows": [
+          "1"
+        ],
+        "remaining_review": "Inclusion, dependence, certainty, generalization and publication decisions remain scoped obligations"
+      },
+      "expected": "recomputed",
+      "observed_match": true,
+      "scope": "Observed limitation: event source_id is not validated on corrected_estimate; event typing and scoped evidence are trusted upstream."
+    },
+    {
+      "name": "unsupported_covariance_in_extra_event_fields",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "9ee6a1c02cf3e54ce63c37e36e3cf3d3f12e4895b8997bdef8aa3a3fa308327a",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "recomputed",
+        "reason": "QUANTITATIVE_UPDATE_REPRODUCED",
+        "numeric_result": {
+          "k": 19,
+          "estimate": 0.08989278840142693,
+          "se": 0.052498832068285796,
+          "ci_lower": -0.013003031682829666,
+          "ci_upper": 0.19278860848568352,
+          "tau2": 0.019848102700567864,
+          "method": "intercept-only REML; normal interval",
+          "interpretation": "Conditional quantitative reproduction; no causal, editorial or practice verdict"
+        },
+        "recomputed": true,
+        "updated_rows": [
+          {
+            "id": "1",
+            "yi": 0.1,
+            "vi": 0.02,
+            "source_row": 2,
+            "active": true
+          },
+          {
+            "id": "2",
+            "yi": 0.12,
+            "vi": 0.0216,
+            "source_row": 3,
+            "active": true
+          },
+          {
+            "id": "3",
+            "yi": -0.14,
+            "vi": 0.0279,
+            "source_row": 4,
+            "active": true
+          },
+          {
+            "id": "4",
+            "yi": 1.18,
+            "vi": 0.1391,
+            "source_row": 5,
+            "active": true
+          },
+          {
+            "id": "5",
+            "yi": 0.26,
+            "vi": 0.1362,
+            "source_row": 6,
+            "active": true
+          },
+          {
+            "id": "6",
+            "yi": -0.06,
+            "vi": 0.0106,
+            "source_row": 7,
+            "active": true
+          },
+          {
+            "id": "7",
+            "yi": -0.02,
+            "vi": 0.0106,
+            "source_row": 8,
+            "active": true
+          },
+          {
+            "id": "8",
+            "yi": -0.32,
+            "vi": 0.0484,
+            "source_row": 9,
+            "active": true
+          },
+          {
+            "id": "9",
+            "yi": 0.27,
+            "vi": 0.0269,
+            "source_row": 10,
+            "active": true
+          },
+          {
+            "id": "10",
+            "yi": 0.8,
+            "vi": 0.063,
+            "source_row": 11,
+            "active": true
+          },
+          {
+            "id": "11",
+            "yi": 0.54,
+            "vi": 0.0912,
+            "source_row": 12,
+            "active": true
+          },
+          {
+            "id": "12",
+            "yi": 0.18,
+            "vi": 0.0497,
+            "source_row": 13,
+            "active": true
+          },
+          {
+            "id": "13",
+            "yi": -0.02,
+            "vi": 0.0835,
+            "source_row": 14,
+            "active": true
+          },
+          {
+            "id": "14",
+            "yi": 0.23,
+            "vi": 0.0841,
+            "source_row": 15,
+            "active": true
+          },
+          {
+            "id": "15",
+            "yi": -0.18,
+            "vi": 0.0253,
+            "source_row": 16,
+            "active": true
+          },
+          {
+            "id": "16",
+            "yi": -0.06,
+            "vi": 0.0279,
+            "source_row": 17,
+            "active": true
+          },
+          {
+            "id": "17",
+            "yi": 0.3,
+            "vi": 0.0193,
+            "source_row": 18,
+            "active": true
+          },
+          {
+            "id": "18",
+            "yi": 0.07,
+            "vi": 0.0088,
+            "source_row": 19,
+            "active": true
+          },
+          {
+            "id": "19",
+            "yi": -0.07,
+            "vi": 0.0303,
+            "source_row": 20,
+            "active": true
+          }
+        ],
+        "changed_rows": [
+          "1"
+        ],
+        "remaining_review": "Inclusion, dependence, certainty, generalization and publication decisions remain scoped obligations"
+      },
+      "expected": "recomputed",
+      "observed_match": true,
+      "scope": "Observed limitation: unexpected covariance fields are ignored; the independent-row model remains unchanged. Explicit overlap_disclosed kind is required to hold."
+    },
+    {
+      "name": "explicit_overlap_event",
+      "result": {
+        "event_id": null,
+        "packet_digest": "93759129f4c72be13e4ebbe2a481ccf176635a1f12ceac3a4bfa8927bc21c5d3",
+        "purpose_digest": "0dbc03086ff153c6b7caf0a6f268e755e1856d30508260fd9c5d3a25b8cbfa96",
+        "event_digest": "3064bb5eb58753141d4e7f70b11b87d4d45623fd225742824821bdccdacea303",
+        "evidence": "OBSERVED_EXECUTION_ON_SOURCED_DATA_WITH_INJECTED_EVENT",
+        "authority_evidence": "SIMULATED_MISSION_AUTHORITY; native controls are separate",
+        "production_admission": false,
+        "commercial_acceptance": false,
+        "scientific_conclusion": "No automatic editorial or scientific verdict",
+        "status": "hold",
+        "reason": "DEPENDENCE_MODEL_REQUIRED",
+        "numeric_result": null,
+        "recomputed": false,
+        "needed_evidence": "DEPENDENCE_MODEL_REQUIRED"
+      },
+      "expected": "hold",
+      "observed_match": true,
+      "scope": "Known dependency event kind requests a different dependence model."
+    },
+    {
+      "name": "two_events_are_independent_not_cumulative",
+      "first_k": 18,
+      "second_k": 19,
+      "observed_match": true,
+      "scope": "The main CLI uses the original packet for every event. These are independent one-event fixtures, not a cumulative event ledger."
+    },
+    {
+      "name": "changed_raw_bytes",
+      "observed_match": true,
+      "exception": "Source identity changed; qualify a new packet",
+      "scope": "load_packet detects source byte drift when invoked; process does not poll or refetch source."
+    }
+  ],
+  "analytic_reml_checks": [
+    {
+      "name": "equal_variance_positive_heterogeneity",
+      "actual": {
+        "k": 3,
+        "estimate": 0.0,
+        "se": 0.5773502652611973,
+        "ci_lower": -1.1315857263765934,
+        "ci_upper": 1.1315857263765934,
+        "tau2": 0.8999999863915247,
+        "method": "intercept-only REML; normal interval",
+        "interpretation": "Conditional quantitative reproduction; no causal, editorial or practice verdict"
+      },
+      "analytic": {
+        "estimate": 0.0,
+        "tau2": 0.9,
+        "se": 0.5773502691896257
+      },
+      "passed": true
+    },
+    {
+      "name": "zero_heterogeneity_boundary",
+      "actual": {
+        "k": 3,
+        "estimate": 1.0,
+        "se": 0.2581988897471611,
+        "ci_lower": 0.49393947524733606,
+        "ci_upper": 1.506060524752664,
+        "tau2": 0.0,
+        "method": "intercept-only REML; normal interval",
+        "interpretation": "Conditional quantitative reproduction; no causal, editorial or practice verdict"
+      },
+      "analytic": {
+        "estimate": 1.0,
+        "tau2": 0,
+        "se": 0.2581988897471611
+      },
+      "passed": true
+    }
+  ],
+  "status_note": "Observed limitations are reported without changing frozen code/results. Diagnostic recomputation is not commercial or scientific acceptance."
+}

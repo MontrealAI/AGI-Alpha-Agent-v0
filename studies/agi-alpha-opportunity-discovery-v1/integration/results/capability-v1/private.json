@@ -1,0 +1,645 @@
+{
+  "schema": "capability-opportunity-lifecycle-replay/v1",
+  "candidates": [
+    {
+      "id": "artifact-conformance",
+      "key": "artifact-conformance@2",
+      "assessment": {
+        "schema": "modeled-alpha-assessment/v2",
+        "evidenceCategory": "Assumed or explored",
+        "candidateId": "artifact-conformance",
+        "candidateVersion": "2",
+        "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+        "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+        "policyVersion": "beyond-beta-alpha-policy-v1",
+        "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+        "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+        "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+        "evaluatedAt": 0,
+        "expiresAt": 100,
+        "prerequisitePins": [],
+        "verdict": "admit",
+        "reasons": [],
+        "pairedTrials": 8,
+        "independentClusters": 8,
+        "freshTests": true,
+        "alreadyAvailable": false,
+        "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+        "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+        "assessedLowerBoundNetCents": 800,
+        "lifecycleCostCents": 100,
+        "evaluationCostCents": 100,
+        "completeLifecycleCostCents": 200,
+        "forecastEligibleUses": 10,
+        "correctnessChecksPassed": true,
+        "meanDeltaCents": 100,
+        "standardErrorCents": 0,
+        "lowerDeltaCents": 100,
+        "lowerLifetimeNetCents": 800,
+        "confidenceLevel": 0.95,
+        "criticalValue": 1.894578605,
+        "systematicRiskReserveCentsPerUse": 0,
+        "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+        "empiricalOperationalValidation": false,
+        "truthUsedForAdmission": false,
+        "limitations": [
+          "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+          "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+          "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+          "This report carries no identity, admission, retrieval, composition or execution authority."
+        ]
+      },
+      "assessed": {
+        "ok": true,
+        "reasons": []
+      },
+      "admission": {
+        "ok": true,
+        "key": "artifact-conformance@2",
+        "status": "ADMITTED",
+        "graphRoot": "c35a17d8973c95143e75353b9d419fca30d160c770284b0ebc7edf8f9ab03301",
+        "simulatedAuthority": true,
+        "cryptographicAuthentication": false
+      },
+      "state": {
+        "key": "artifact-conformance@2",
+        "status": "ADMITTED",
+        "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+        "eligibility": {
+          "ok": true,
+          "reasons": []
+        }
+      },
+      "researchAuthority": "FIXTURE_ONLY",
+      "productionAdmission": "NOT_QUALIFIED",
+      "frontierAlpha": "UNMEASURED"
+    }
+  ],
+  "operations": [
+    {
+      "operation": {
+        "action": "retrieve",
+        "key": "artifact-conformance@2",
+        "member": "atlas.agent.agi.eth"
+      },
+      "result": {
+        "ok": true,
+        "key": "artifact-conformance@2",
+        "right": "retrieve",
+        "member": "atlas.agent.agi.eth",
+        "authorizedCapabilityAccess": true,
+        "executionAuthority": "NOT_GRANTED",
+        "actualExecution": false,
+        "dryRun": false,
+        "exportCopyingLimit": null,
+        "transferredArtifact": {
+          "sha256": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+          "contentEncoding": "base64",
+          "content": "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"
+        }
+      }
+    },
+    {
+      "operation": {
+        "action": "retrieve",
+        "key": "artifact-conformance@2",
+        "member": "lyra.agent.agi.eth"
+      },
+      "result": {
+        "ok": false,
+        "reasons": [
+          "RIGHT_NOT_GRANTED"
+        ]
+      }
+    }
+  ],
+  "snapshot": {
+    "schema": "beyond-beta.lifecycle-snapshot/v1",
+    "networkId": "capability-opportunity-relay-research/v1",
+    "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+    "policy": {
+      "version": "beyond-beta-alpha-policy-v1",
+      "minimumPairedTrials": 6,
+      "validatorQuorum": 1,
+      "requireIndependentValidator": true,
+      "maxAssessmentAge": 104
+    },
+    "week": 1,
+    "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+    "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+    "revision": 6,
+    "records": [
+      {
+        "key": "artifact-conformance@2",
+        "manifest": {
+          "id": "artifact-conformance",
+          "version": "2",
+          "ownerAgent": "atlas.agent.agi.eth",
+          "implementationDigest": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+          "equivalenceKey": "artifact-conformance-v2",
+          "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "components": [],
+          "rights": {
+            "shareable": false,
+            "retrieve": [
+              "atlas.agent.agi.eth"
+            ],
+            "execute": [
+              "atlas.agent.agi.eth"
+            ],
+            "compose": [
+              "atlas.agent.agi.eth"
+            ],
+            "export": false
+          },
+          "payloadDigest": "8faa1b7fe148b735502f5c74d56557ebfdf869dbcd5600cd74db93a92ab119c1"
+        },
+        "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+        "status": "ADMITTED",
+        "effective": {
+          "ok": true,
+          "reasons": []
+        },
+        "evidenceDigest": "a0b4a479a453e945f3aa927c4b179b268661f8e4018a7e9742779eda80d9ab3f",
+        "assessmentDigest": "19e2a17467f408e3de032e3408573c0e1f579214e73d4058f4712d7697745a1e",
+        "assessment": {
+          "schema": "modeled-alpha-assessment/v2",
+          "evidenceCategory": "Assumed or explored",
+          "candidateId": "artifact-conformance",
+          "candidateVersion": "2",
+          "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+          "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+          "policyVersion": "beyond-beta-alpha-policy-v1",
+          "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+          "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+          "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+          "evaluatedAt": 0,
+          "expiresAt": 100,
+          "prerequisitePins": [],
+          "verdict": "admit",
+          "reasons": [],
+          "pairedTrials": 8,
+          "independentClusters": 8,
+          "freshTests": true,
+          "alreadyAvailable": false,
+          "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+          "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+          "assessedLowerBoundNetCents": 800,
+          "lifecycleCostCents": 100,
+          "evaluationCostCents": 100,
+          "completeLifecycleCostCents": 200,
+          "forecastEligibleUses": 10,
+          "correctnessChecksPassed": true,
+          "meanDeltaCents": 100,
+          "standardErrorCents": 0,
+          "lowerDeltaCents": 100,
+          "lowerLifetimeNetCents": 800,
+          "confidenceLevel": 0.95,
+          "criticalValue": 1.894578605,
+          "systematicRiskReserveCentsPerUse": 0,
+          "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+          "empiricalOperationalValidation": false,
+          "truthUsedForAdmission": false,
+          "limitations": [
+            "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+            "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+            "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+            "This report carries no identity, admission, retrieval, composition or execution authority."
+          ]
+        },
+        "evaluationHistory": [
+          {
+            "week": 0,
+            "assessment": {
+              "schema": "modeled-alpha-assessment/v2",
+              "evidenceCategory": "Assumed or explored",
+              "candidateId": "artifact-conformance",
+              "candidateVersion": "2",
+              "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+              "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+              "policyVersion": "beyond-beta-alpha-policy-v1",
+              "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+              "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+              "comparisonUniverseDigest": "67ba136fa14a40ef5566fe02a606f15ec7da3274f5ae092bf2a3c2c0e38ec65e",
+              "evaluatedAt": 0,
+              "expiresAt": 100,
+              "prerequisitePins": [],
+              "verdict": "admit",
+              "reasons": [],
+              "pairedTrials": 8,
+              "independentClusters": 8,
+              "freshTests": true,
+              "alreadyAvailable": false,
+              "probeIdsDigest": "be81b37d08af8e10ca1fd5b70afe429a4adae1c5d758b6a12db4f62621760e6f",
+              "observedPairsDigest": "19d2f7a7d028d4aad80af40663604a5c049deb08936a0070f73648b5ed4df077",
+              "assessedLowerBoundNetCents": 800,
+              "lifecycleCostCents": 100,
+              "evaluationCostCents": 100,
+              "completeLifecycleCostCents": 200,
+              "forecastEligibleUses": 10,
+              "correctnessChecksPassed": true,
+              "meanDeltaCents": 100,
+              "standardErrorCents": 0,
+              "lowerDeltaCents": 100,
+              "lowerLifetimeNetCents": 800,
+              "confidenceLevel": 0.95,
+              "criticalValue": 1.894578605,
+              "systematicRiskReserveCentsPerUse": 0,
+              "method": "One-sided 95% Student-t lower bound over independent paired mission-cluster mean deltas, conditional on modeled observations",
+              "empiricalOperationalValidation": false,
+              "truthUsedForAdmission": false,
+              "limitations": [
+                "A small-sample t interval is an approximation for the modeled delta distribution, not a distribution-free guarantee.",
+                "The interval does not bound systematic semantic errors shared by producers and evaluators.",
+                "Forecast uses, modeled resource effects, quality and test coverage remain assumptions; actual evaluation expense is charged in both arms.",
+                "This report carries no identity, admission, retrieval, composition or execution authority."
+              ]
+            },
+            "assessmentDigest": "19e2a17467f408e3de032e3408573c0e1f579214e73d4058f4712d7697745a1e",
+            "evidenceDigest": "a0b4a479a453e945f3aa927c4b179b268661f8e4018a7e9742779eda80d9ab3f"
+          }
+        ],
+        "validationHistory": [
+          {
+            "week": 0,
+            "attestations": [
+              {
+                "action": "ISSUE_SKILL_ATTESTATION",
+                "schema": "agi-alpha.skill-attestation.v1",
+                "skill": {
+                  "dependencyDigests": [],
+                  "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                  "evidenceDigest": "b55dea7a349bb29b5963d4a36d2d4ec8ea01bf037ea2702ee6b08d150dbb3d80",
+                  "expiresAt": 100,
+                  "id": "artifact-conformance",
+                  "implementationDigest": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+                  "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                  "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                  "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                  "version": "2"
+                },
+                "verdict": "PASS_WITH_SCOPE",
+                "mode": "FIXTURE_ONLY",
+                "agent": "validator.agent.agi.eth",
+                "signer": "fixture:validator.agent.agi.eth",
+                "authoritySnapshotId": "network-fixture-state-0",
+                "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                "blockNumber": 0,
+                "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                "registrySchema": "ENS_V1_FIXTURE",
+                "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                "issuedAt": 0,
+                "expiresAt": 100,
+                "nonce": "validation:0",
+                "chainId": 31337,
+                "registry": "fixture:ens-v1",
+                "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+                "signature": {
+                  "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                  "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                  "signer": "fixture:validator.agent.agi.eth",
+                  "payloadDigest": "de2d608b4785d789ed4376ead0eb8d033888adf7a61a77b6b170e772fcb2846e"
+                }
+              }
+            ],
+            "assessmentDigest": "19e2a17467f408e3de032e3408573c0e1f579214e73d4058f4712d7697745a1e"
+          }
+        ],
+        "createdAt": 0,
+        "admittedAt": 0,
+        "terminalAt": null,
+        "encryptedCapsule": {
+          "schema": "beyond-beta.local-encrypted-capsule/v1",
+          "algorithm": "AES-256-GCM",
+          "bindingDigest": "f889ca96846a0e395ad784640f42639fe2228e7eaa55d6dca45dcfaa4f02b6de",
+          "scope": "REAL_LOCAL_ENCRYPTION_ONLY_NO_ONCHAIN_OR_ZK_PROOF",
+          "ciphertextIncluded": false,
+          "ciphertextBytes": 7680,
+          "nonceBytes": 12,
+          "authenticationTagBytes": 16,
+          "qualification": "Randomized encryption remains local; this reproducible projection omits random bytes and their digest."
+        }
+      }
+    ],
+    "events": [
+      {
+        "sequence": 0,
+        "week": 0,
+        "type": "candidate",
+        "key": "artifact-conformance@2",
+        "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2"
+      },
+      {
+        "sequence": 1,
+        "week": 0,
+        "type": "evidence",
+        "key": "artifact-conformance@2",
+        "evidenceDigest": "a0b4a479a453e945f3aa927c4b179b268661f8e4018a7e9742779eda80d9ab3f",
+        "mode": "OBSERVED_LOCAL_TESTS"
+      },
+      {
+        "sequence": 2,
+        "week": 0,
+        "type": "alpha-assessment",
+        "key": "artifact-conformance@2",
+        "assessmentDigest": "19e2a17467f408e3de032e3408573c0e1f579214e73d4058f4712d7697745a1e",
+        "verdict": "ASSESSED",
+        "reasons": []
+      },
+      {
+        "sequence": 3,
+        "week": 0,
+        "type": "validation",
+        "key": "artifact-conformance@2",
+        "validators": [
+          "validator.agent.agi.eth"
+        ],
+        "cryptographicAuthentication": false
+      },
+      {
+        "sequence": 4,
+        "week": 0,
+        "type": "admit",
+        "key": "artifact-conformance@2",
+        "graphRoot": "c35a17d8973c95143e75353b9d419fca30d160c770284b0ebc7edf8f9ab03301",
+        "reason": null
+      },
+      {
+        "sequence": 5,
+        "week": 1,
+        "type": "authorized-reuse",
+        "key": "artifact-conformance@2",
+        "member": "atlas.agent.agi.eth",
+        "right": "retrieve",
+        "optional": true
+      }
+    ],
+    "rootHistory": [
+      {
+        "action": "COMMIT_GRAPH_ROOT",
+        "agent": "atlas.agent.agi.eth",
+        "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+        "chainId": 31337,
+        "counts": {
+          "attestation": 1,
+          "edge": 0,
+          "evidence": 1,
+          "metadata": 1,
+          "policy": 1,
+          "proofbundle": 0,
+          "revocation": 0,
+          "skill": 1,
+          "supersession": 0
+        },
+        "epoch": 1,
+        "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+        "graphRoot": "c35a17d8973c95143e75353b9d419fca30d160c770284b0ebc7edf8f9ab03301",
+        "hashSuite": "SHA256_RESEARCH_V1",
+        "mode": "FIXTURE_ONLY",
+        "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+        "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+        "proofLevel": "MODELED_ALPHA_RESEARCH_ADMISSION",
+        "registry": "fixture:ens-v1",
+        "roots": {
+          "attestation": "3897aea96e700357d33f14c145f0208aa74830d6d036fe5c2e7fb97a05d79eb7",
+          "edge": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "evidence": "55125aa5188f828cf26dcd0463b7418e3d4c27a7784ad9d8900fc17dcc41ae63",
+          "metadata": "4b17ae570993eaf9265d6f344f11453a53e204fe1f0a326058cf394ef71332c4",
+          "policy": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+          "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+          "skill": "c8318ef1f9d7d80951bbf4b2b34b98cf2998e83320fd9313c136f1bae782bf1c",
+          "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+        },
+        "schema": "agi-alpha.graph-epoch.v1",
+        "snapshotDigest": "05954622f2318edd8f665fad84b4794e56e8ea992c328b0de43857c69953ad48",
+        "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+        "signer": "fixture:atlas.agent.agi.eth",
+        "authoritySnapshotId": "network-fixture-state-0",
+        "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+        "blockNumber": 0,
+        "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+        "registrySchema": "ENS_V1_FIXTURE",
+        "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+        "issuedAt": 0,
+        "expiresAt": 1000,
+        "nonce": "root:1",
+        "signature": {
+          "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+          "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+          "signer": "fixture:atlas.agent.agi.eth",
+          "payloadDigest": "6d14e934739c05684ebda34725a4f40029671b8ba1e04e17409775b2416cdb48"
+        }
+      }
+    ],
+    "rootArtifacts": [
+      {
+        "graphRoot": "c35a17d8973c95143e75353b9d419fca30d160c770284b0ebc7edf8f9ab03301",
+        "forest": {
+          "schema": "agi-alpha.merkle-forest.v1",
+          "hashSuite": "SHA256_RESEARCH_V1",
+          "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+          "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+          "classes": {
+            "skill": {
+              "root": "c8318ef1f9d7d80951bbf4b2b34b98cf2998e83320fd9313c136f1bae782bf1c",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "dependencyDigests": [],
+                    "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                    "evidenceDigest": "b55dea7a349bb29b5963d4a36d2d4ec8ea01bf037ea2702ee6b08d150dbb3d80",
+                    "expiresAt": 100,
+                    "id": "artifact-conformance",
+                    "implementationDigest": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+                    "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                    "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                    "version": "2"
+                  },
+                  "leafHash": "c8318ef1f9d7d80951bbf4b2b34b98cf2998e83320fd9313c136f1bae782bf1c",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "edge": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "evidence": {
+              "root": "55125aa5188f828cf26dcd0463b7418e3d4c27a7784ad9d8900fc17dcc41ae63",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "a0b4a479a453e945f3aa927c4b179b268661f8e4018a7e9742779eda80d9ab3f",
+                    "key": "artifact-conformance@2"
+                  },
+                  "leafHash": "55125aa5188f828cf26dcd0463b7418e3d4c27a7784ad9d8900fc17dcc41ae63",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "proofbundle": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "policy": {
+              "root": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "digest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                    "version": "beyond-beta-alpha-policy-v1"
+                  },
+                  "leafHash": "5bc89bf5d0b817b82ca1d54dd3ec3a4257ef5be06d70aabe84aafe12a6730aaf",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "attestation": {
+              "root": "3897aea96e700357d33f14c145f0208aa74830d6d036fe5c2e7fb97a05d79eb7",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "action": "ISSUE_SKILL_ATTESTATION",
+                    "agent": "validator.agent.agi.eth",
+                    "authoritySnapshotId": "network-fixture-state-0",
+                    "authorityStateDigest": "798882d79e8ba425a125ae6bd2d72d2a8b34df71adcfa664260b2300fc039914",
+                    "blockHash": "b2c3200c75ea962679d8f50a1938b35f190328c4340c7d57018c653d91f2f312",
+                    "blockNumber": 0,
+                    "chainId": 31337,
+                    "expiresAt": 100,
+                    "graphId": "capability-opportunity-relay-research/v1:atlas.agent.agi.eth",
+                    "issuedAt": 0,
+                    "mode": "FIXTURE_ONLY",
+                    "nonce": "validation:0",
+                    "registry": "fixture:ens-v1",
+                    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+                    "registrySchema": "ENS_V1_FIXTURE",
+                    "schema": "agi-alpha.skill-attestation.v1",
+                    "signature": {
+                      "payloadDigest": "de2d608b4785d789ed4376ead0eb8d033888adf7a61a77b6b170e772fcb2846e",
+                      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                      "signer": "fixture:validator.agent.agi.eth"
+                    },
+                    "signer": "fixture:validator.agent.agi.eth",
+                    "skill": {
+                      "dependencyDigests": [],
+                      "environmentDigest": "8009a1e072bbcd32431cc74dd30e5ef5c586f81e57d9ac59d37dcdc0454fd427",
+                      "evidenceDigest": "b55dea7a349bb29b5963d4a36d2d4ec8ea01bf037ea2702ee6b08d150dbb3d80",
+                      "expiresAt": 100,
+                      "id": "artifact-conformance",
+                      "implementationDigest": "daa27a2f32cd959757300c9df18be518166027729d549d46f1c422bed999223f",
+                      "policyDigest": "f6c1a595d633591d0adbb59afe0a17e89d7ab0d326707f56488352630435525f",
+                      "rightsDigest": "301fc16306d2e110adf540a8b04cfb80f0b7d5ab446fcb3ea567155572c6eb9b",
+                      "scopeDigest": "3b59c8e0d5e074ddbfd858b3df5065118293eaf576b86596fd2b0fa64a10cc5f",
+                      "version": "2"
+                    },
+                    "verdict": "PASS_WITH_SCOPE"
+                  },
+                  "leafHash": "3897aea96e700357d33f14c145f0208aa74830d6d036fe5c2e7fb97a05d79eb7",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            },
+            "revocation": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "supersession": {
+              "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+              "count": 0,
+              "records": []
+            },
+            "metadata": {
+              "root": "4b17ae570993eaf9265d6f344f11453a53e204fe1f0a326058cf394ef71332c4",
+              "count": 1,
+              "records": [
+                {
+                  "record": {
+                    "betaVersion": "frozen-ordinary-tool-portfolio-v1",
+                    "command": {
+                      "action": "admit",
+                      "actor": "atlas.agent.agi.eth",
+                      "key": "artifact-conformance@2"
+                    },
+                    "networkId": "capability-opportunity-relay-research/v1",
+                    "preparedAt": 0,
+                    "revision": 4,
+                    "states": [
+                      {
+                        "assessmentDigest": "19e2a17467f408e3de032e3408573c0e1f579214e73d4058f4712d7697745a1e",
+                        "candidateDigest": "ce96c032eeae6593988812a0b2f726fa8cf6fad743ba4a35b93a8131655b6df2",
+                        "evidenceDigest": "a0b4a479a453e945f3aa927c4b179b268661f8e4018a7e9742779eda80d9ab3f",
+                        "key": "artifact-conformance@2",
+                        "status": "ADMITTED"
+                      }
+                    ]
+                  },
+                  "leafHash": "4b17ae570993eaf9265d6f344f11453a53e204fe1f0a326058cf394ef71332c4",
+                  "proof": {
+                    "hashSuite": "SHA256_RESEARCH_V1",
+                    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+                    "leafIndex": 0,
+                    "leafCount": 1,
+                    "siblings": []
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "canonical": [],
+    "failureMemory": [],
+    "protectedEvaluationCommitments": [],
+    "authorityMode": "FIXTURE_ONLY",
+    "cryptographicAuthentication": false,
+    "liveIdentityEnforcement": "NOT_RUN",
+    "localEncryption": "AES-256-GCM",
+    "zeroKnowledgeProofs": "NOT_IMPLEMENTED",
+    "productionExecution": "NOT_CONNECTED",
+    "jobsClubRoles": "UNCHANGED",
+    "historyImportSupported": false
+  },
+  "liveCapsuleAdmission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "actualFrontierCalls": 0,
+  "actualReceiptsMicroUSD": 0,
+  "distinction": "Research fixture access replays local artifact bytes; it neither deploys a protected service nor runs the artifact."
+}

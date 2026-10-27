@@ -1,0 +1,23 @@
+{
+  "purpose": "Conditional descriptive reproduction of average standardized IQ difference between expectancy-designated pupils and controls across the 19 supplied rows; no causal or practice verdict.",
+  "effect_measure": "SMD",
+  "promised_units": "standard-deviation units",
+  "effect_input": "Supplied yi from dat.raudenbush1985.txt; retain values without a second bias correction.",
+  "variance_input": "Supplied vi from the same row, not sei and not an equal-arm recomputation.",
+  "variance_derivation": "supplied_vi",
+  "equal_arms_supported": false,
+  "time_meaning": "weeks = teacher-student contact before expectancy induction, not treatment or follow-up duration; year = publication year.",
+  "dependence_limit": "Independent row errors are conditional, not demonstrated. Rows 4 and 5 share author/year/arm sizes but differ in tester; resolve cohort and covariance before unrestricted inference.",
+  "authority_limit": "Current task authorizes local source inspection and checks; it does not confer deployment, publication, editorial or practice authority.",
+  "retraction_decision_automatic": false,
+  "original_source": "data/sources/metadat/data-raw/dat.raudenbush1985.txt",
+  "original_source_sha256": "4d5cf83c1911fd0717fed9555abfaa6b02df32fab67c233df6fdf49b8059cfcd",
+  "normalization": "shlex preserves quoted authors; lossless cell strings written as UTF-8 TSV with header and unchanged row order; original row number = normalized row number.",
+  "source_sha256": "5405475b37365d0d9bdb083052d1490a4ecc92953f1f1cc909f93269acc156c0",
+  "delimiter": "\t",
+  "id_column": "study",
+  "derivation": "supplied_yi_vi",
+  "yi_column": "yi",
+  "vi_column": "vi",
+  "expected_rows": 19
+}

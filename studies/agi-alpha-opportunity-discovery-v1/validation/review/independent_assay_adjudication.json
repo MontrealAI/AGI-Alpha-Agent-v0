@@ -1,0 +1,488 @@
+{
+  "schema": "independent-source-adjudication/v1",
+  "date": "2026-10-27",
+  "reviewer": "discovery_science independent subagent",
+  "rubric_sha256": "9a320d73e50e93ac9026a846f582b5708cfcae727a4d2a5e7eb77e35fbfff818",
+  "assay_results": [
+    {
+      "arm": "recipient_u",
+      "answer_sha256": "e342b694cb93b29184bef8d8cf480a09a074516e92dd8572d551016b7b6eea58",
+      "passed": 18,
+      "total": 18,
+      "strict_semantic_control_acceptance": true,
+      "accepted_paid_outcome": false,
+      "material_contradiction_found": false,
+      "checks": [
+        {
+          "id": "r1",
+          "passed": true,
+          "criterion": "Teacher expectancy on pupil IQ distinguished from writing and general achievement",
+          "answer_field": "teacher_mapping",
+          "reason": "Teacher expectancy on pupil IQ, distinct from writing achievement",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:4-5,25-31"
+        },
+        {
+          "id": "r2",
+          "passed": true,
+          "criterion": "Positive standardized effect means higher IQ in expectancy-designated group",
+          "answer_field": "teacher_mapping",
+          "reason": "Positive effect favors expectancy-designated bloomers",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:29"
+        },
+        {
+          "id": "r3",
+          "passed": true,
+          "criterion": "Use supplied yi without applying Bangert raw-di correction",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied yi retained; writing bias correction not reapplied",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r4",
+          "passed": true,
+          "criterion": "Use supplied vi, not equal-arm reconstruction or rounded sei squared",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied vi retained; squared rounded sei is a transcription consistency check only",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r5",
+          "passed": true,
+          "criterion": "Unequal n1i and n2i preclude assuming equal arms",
+          "answer_field": "teacher_mapping",
+          "reason": "Unequal n1i/n2i explicitly noted; equal-arm reconstruction rejected",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:1-20"
+        },
+        {
+          "id": "r6",
+          "passed": true,
+          "criterion": "Weeks denotes contact before expectancy induction, not intervention duration",
+          "answer_field": "teacher_mapping",
+          "reason": "weeks is prior contact before induction",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:15,29"
+        },
+        {
+          "id": "r7",
+          "passed": true,
+          "criterion": "19 rows distinguished from source title18 experiments without arbitrary deletion",
+          "answer_field": "teacher_mapping",
+          "reason": "19 rows versus 18-experiment title retained as unresolved",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:5,27,34"
+        },
+        {
+          "id": "r8",
+          "passed": true,
+          "criterion": "Repeated author/year is insufficient to infer independent or duplicate cohorts",
+          "answer_field": "teacher_mapping",
+          "reason": "Repeated Pellegrini/Hicks labels neither prove duplication nor independence",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:5-6"
+        },
+        {
+          "id": "r9",
+          "passed": true,
+          "criterion": "Effect and moderator provenance from1985 and1984 distinguished",
+          "answer_field": "teacher_mapping",
+          "reason": "1985 effects and 1984 setting/tester source distinguished",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:31"
+        },
+        {
+          "id": "r10",
+          "passed": true,
+          "criterion": "Intercept-only REML does not reproduce mixed-effects capped-weeks model",
+          "answer_field": "teacher_mapping",
+          "reason": "Intercept-only fit separated from capped-weeks meta-regression",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:50-58"
+        },
+        {
+          "id": "r11",
+          "passed": true,
+          "criterion": "Numerical reproduction is conditional on dependence/variance assumptions, not a scientific verdict",
+          "answer_field": "teacher_mapping",
+          "reason": "Fit conditional on independent errors and variance assumptions; no scientific verdict",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd and model assumptions"
+        },
+        {
+          "id": "c1",
+          "passed": true,
+          "criterion": "Crop SMD computation cannot be reported as kg/ha by relabeling",
+          "answer_field": "crop_disposition",
+          "reason": "SMD remains dimensionless despite kg/ha input labels",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:75-83"
+        },
+        {
+          "id": "c2",
+          "passed": true,
+          "criterion": "Inconsistent crop record counts need data/version/unit-of-analysis reconciliation",
+          "answer_field": "crop_disposition",
+          "reason": "3733,3939,3938,3732 counts require reconciliation",
+          "source_coordinate": "crop_conflict/raw_data/readme:20-21 and network_meta_analysis.qmd:83,100"
+        },
+        {
+          "id": "c3",
+          "passed": true,
+          "criterion": "Multiarm/network analysis cannot be replaced by independent intercept-only engine",
+          "answer_field": "crop_disposition",
+          "reason": "Network/multiarm estimands cannot be silently replaced by intercept-only pool",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:88-89"
+        },
+        {
+          "id": "c4",
+          "passed": true,
+          "criterion": "Ranking direction/settings require verification",
+          "answer_field": "crop_disposition",
+          "reason": "Control-best narrative requires direction/settings/numerical basis verification",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:168-189"
+        },
+        {
+          "id": "c5",
+          "passed": true,
+          "criterion": "Hold unverified crop quantitative claim and identify missing evidence",
+          "answer_field": "crop_disposition",
+          "reason": "Physical-yield conclusion withheld; missing measurements and lineage identified",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:33,75"
+        },
+        {
+          "id": "a1",
+          "passed": true,
+          "criterion": "Fresh mission purpose and authority remain separate from prior artifact success",
+          "answer_field": "fresh_obligations",
+          "reason": "Fresh purpose and scientific/execution authority not inherited automatically",
+          "source_coordinate": "normative acceptance criterion; fresh_obligations plus crop_disposition"
+        },
+        {
+          "id": "a2",
+          "passed": true,
+          "criterion": "Preserve source evidence/coordinate and do not invent absent measurements",
+          "answer_field": "evidence_coordinates",
+          "reason": "Original evidence coordinates retained and absent measurements not invented",
+          "source_coordinate": "all eight permitted original source files"
+        }
+      ]
+    },
+    {
+      "arm": "recipient_e",
+      "answer_sha256": "697de79fc8d1dab032bb94e3d4b11b63a6a5df3c0a7e99d259d999bd301d08d9",
+      "passed": 18,
+      "total": 18,
+      "strict_semantic_control_acceptance": true,
+      "accepted_paid_outcome": false,
+      "material_contradiction_found": false,
+      "checks": [
+        {
+          "id": "r1",
+          "passed": true,
+          "criterion": "Teacher expectancy on pupil IQ distinguished from writing and general achievement",
+          "answer_field": "teacher_mapping",
+          "reason": "Teacher expectancy on pupil IQ, distinct from writing achievement",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:4-5,25-31"
+        },
+        {
+          "id": "r2",
+          "passed": true,
+          "criterion": "Positive standardized effect means higher IQ in expectancy-designated group",
+          "answer_field": "teacher_mapping",
+          "reason": "Positive effect favors expectancy-designated bloomers",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:29"
+        },
+        {
+          "id": "r3",
+          "passed": true,
+          "criterion": "Use supplied yi without applying Bangert raw-di correction",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied yi retained; writing bias correction not reapplied",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r4",
+          "passed": true,
+          "criterion": "Use supplied vi, not equal-arm reconstruction or rounded sei squared",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied vi retained; squared rounded sei is a transcription consistency check only",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r5",
+          "passed": true,
+          "criterion": "Unequal n1i and n2i preclude assuming equal arms",
+          "answer_field": "teacher_mapping",
+          "reason": "Unequal n1i/n2i explicitly noted; equal-arm reconstruction rejected",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:1-20"
+        },
+        {
+          "id": "r6",
+          "passed": true,
+          "criterion": "Weeks denotes contact before expectancy induction, not intervention duration",
+          "answer_field": "teacher_mapping",
+          "reason": "weeks is prior contact before induction",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:15,29"
+        },
+        {
+          "id": "r7",
+          "passed": true,
+          "criterion": "19 rows distinguished from source title18 experiments without arbitrary deletion",
+          "answer_field": "teacher_mapping",
+          "reason": "19 rows versus 18-experiment title retained as unresolved",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:5,27,34"
+        },
+        {
+          "id": "r8",
+          "passed": true,
+          "criterion": "Repeated author/year is insufficient to infer independent or duplicate cohorts",
+          "answer_field": "teacher_mapping",
+          "reason": "Repeated Pellegrini/Hicks labels neither prove duplication nor independence",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:5-6"
+        },
+        {
+          "id": "r9",
+          "passed": true,
+          "criterion": "Effect and moderator provenance from1985 and1984 distinguished",
+          "answer_field": "teacher_mapping",
+          "reason": "1985 effects and 1984 setting/tester source distinguished",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:31"
+        },
+        {
+          "id": "r10",
+          "passed": true,
+          "criterion": "Intercept-only REML does not reproduce mixed-effects capped-weeks model",
+          "answer_field": "teacher_mapping",
+          "reason": "Intercept-only fit separated from capped-weeks meta-regression",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:50-58"
+        },
+        {
+          "id": "r11",
+          "passed": true,
+          "criterion": "Numerical reproduction is conditional on dependence/variance assumptions, not a scientific verdict",
+          "answer_field": "teacher_mapping",
+          "reason": "Fit conditional on independent errors and variance assumptions; no scientific verdict",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd and model assumptions"
+        },
+        {
+          "id": "c1",
+          "passed": true,
+          "criterion": "Crop SMD computation cannot be reported as kg/ha by relabeling",
+          "answer_field": "crop_disposition",
+          "reason": "SMD remains dimensionless despite kg/ha input labels",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:75-83"
+        },
+        {
+          "id": "c2",
+          "passed": true,
+          "criterion": "Inconsistent crop record counts need data/version/unit-of-analysis reconciliation",
+          "answer_field": "crop_disposition",
+          "reason": "3733,3939,3938,3732 counts require reconciliation",
+          "source_coordinate": "crop_conflict/raw_data/readme:20-21 and network_meta_analysis.qmd:83,100"
+        },
+        {
+          "id": "c3",
+          "passed": true,
+          "criterion": "Multiarm/network analysis cannot be replaced by independent intercept-only engine",
+          "answer_field": "crop_disposition",
+          "reason": "Network/multiarm estimands cannot be silently replaced by intercept-only pool",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:88-89"
+        },
+        {
+          "id": "c4",
+          "passed": true,
+          "criterion": "Ranking direction/settings require verification",
+          "answer_field": "crop_disposition",
+          "reason": "Control-best narrative requires direction/settings/numerical basis verification",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:168-189"
+        },
+        {
+          "id": "c5",
+          "passed": true,
+          "criterion": "Hold unverified crop quantitative claim and identify missing evidence",
+          "answer_field": "crop_disposition",
+          "reason": "Physical-yield conclusion withheld; missing measurements and lineage identified",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:33,75"
+        },
+        {
+          "id": "a1",
+          "passed": true,
+          "criterion": "Fresh mission purpose and authority remain separate from prior artifact success",
+          "answer_field": "fresh_obligations",
+          "reason": "Fresh purpose and scientific/execution authority not inherited automatically",
+          "source_coordinate": "normative acceptance criterion; fresh_obligations plus crop_disposition"
+        },
+        {
+          "id": "a2",
+          "passed": true,
+          "criterion": "Preserve source evidence/coordinate and do not invent absent measurements",
+          "answer_field": "evidence_coordinates",
+          "reason": "Original evidence coordinates retained and absent measurements not invented",
+          "source_coordinate": "all eight permitted original source files"
+        }
+      ]
+    },
+    {
+      "arm": "recipient_eplus",
+      "answer_sha256": "446b5f7e5de711a2c41e7fa85190170c09c28c49c813cff7f0fd1a21e59d1e88",
+      "passed": 18,
+      "total": 18,
+      "strict_semantic_control_acceptance": true,
+      "accepted_paid_outcome": false,
+      "material_contradiction_found": false,
+      "checks": [
+        {
+          "id": "r1",
+          "passed": true,
+          "criterion": "Teacher expectancy on pupil IQ distinguished from writing and general achievement",
+          "answer_field": "teacher_mapping",
+          "reason": "Teacher expectancy on pupil IQ, distinct from writing achievement",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:4-5,25-31"
+        },
+        {
+          "id": "r2",
+          "passed": true,
+          "criterion": "Positive standardized effect means higher IQ in expectancy-designated group",
+          "answer_field": "teacher_mapping",
+          "reason": "Positive effect favors expectancy-designated bloomers",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:29"
+        },
+        {
+          "id": "r3",
+          "passed": true,
+          "criterion": "Use supplied yi without applying Bangert raw-di correction",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied yi retained; writing bias correction not reapplied",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r4",
+          "passed": true,
+          "criterion": "Use supplied vi, not equal-arm reconstruction or rounded sei squared",
+          "answer_field": "teacher_mapping",
+          "reason": "Supplied vi retained; squared rounded sei is a transcription consistency check only",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.r:11-14"
+        },
+        {
+          "id": "r5",
+          "passed": true,
+          "criterion": "Unequal n1i and n2i preclude assuming equal arms",
+          "answer_field": "teacher_mapping",
+          "reason": "Unequal n1i/n2i explicitly noted; equal-arm reconstruction rejected",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:1-20"
+        },
+        {
+          "id": "r6",
+          "passed": true,
+          "criterion": "Weeks denotes contact before expectancy induction, not intervention duration",
+          "answer_field": "teacher_mapping",
+          "reason": "weeks is prior contact before induction",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:15,29"
+        },
+        {
+          "id": "r7",
+          "passed": true,
+          "criterion": "19 rows distinguished from source title18 experiments without arbitrary deletion",
+          "answer_field": "teacher_mapping",
+          "reason": "19 rows versus 18-experiment title retained as unresolved",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:5,27,34"
+        },
+        {
+          "id": "r8",
+          "passed": true,
+          "criterion": "Repeated author/year is insufficient to infer independent or duplicate cohorts",
+          "answer_field": "teacher_mapping",
+          "reason": "Repeated Pellegrini/Hicks labels neither prove duplication nor independence",
+          "source_coordinate": "metadat/data-raw/dat.raudenbush1985.txt:5-6"
+        },
+        {
+          "id": "r9",
+          "passed": true,
+          "criterion": "Effect and moderator provenance from1985 and1984 distinguished",
+          "answer_field": "teacher_mapping",
+          "reason": "1985 effects and 1984 setting/tester source distinguished",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:31"
+        },
+        {
+          "id": "r10",
+          "passed": true,
+          "criterion": "Intercept-only REML does not reproduce mixed-effects capped-weeks model",
+          "answer_field": "teacher_mapping",
+          "reason": "Intercept-only fit separated from capped-weeks meta-regression",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd:50-58"
+        },
+        {
+          "id": "r11",
+          "passed": true,
+          "criterion": "Numerical reproduction is conditional on dependence/variance assumptions, not a scientific verdict",
+          "answer_field": "teacher_mapping",
+          "reason": "Fit conditional on independent errors and variance assumptions; no scientific verdict",
+          "source_coordinate": "metadat/man/dat.raudenbush1985.Rd and model assumptions"
+        },
+        {
+          "id": "c1",
+          "passed": true,
+          "criterion": "Crop SMD computation cannot be reported as kg/ha by relabeling",
+          "answer_field": "crop_disposition",
+          "reason": "SMD remains dimensionless despite kg/ha input labels",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:75-83"
+        },
+        {
+          "id": "c2",
+          "passed": true,
+          "criterion": "Inconsistent crop record counts need data/version/unit-of-analysis reconciliation",
+          "answer_field": "crop_disposition",
+          "reason": "3733,3939,3938,3732 counts require reconciliation",
+          "source_coordinate": "crop_conflict/raw_data/readme:20-21 and network_meta_analysis.qmd:83,100"
+        },
+        {
+          "id": "c3",
+          "passed": true,
+          "criterion": "Multiarm/network analysis cannot be replaced by independent intercept-only engine",
+          "answer_field": "crop_disposition",
+          "reason": "Network/multiarm estimands cannot be silently replaced by intercept-only pool",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:88-89"
+        },
+        {
+          "id": "c4",
+          "passed": true,
+          "criterion": "Ranking direction/settings require verification",
+          "answer_field": "crop_disposition",
+          "reason": "Control-best narrative requires direction/settings/numerical basis verification",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:168-189"
+        },
+        {
+          "id": "c5",
+          "passed": true,
+          "criterion": "Hold unverified crop quantitative claim and identify missing evidence",
+          "answer_field": "crop_disposition",
+          "reason": "Physical-yield conclusion withheld; missing measurements and lineage identified",
+          "source_coordinate": "crop_conflict/network_meta_analysis.qmd:33,75"
+        },
+        {
+          "id": "a1",
+          "passed": true,
+          "criterion": "Fresh mission purpose and authority remain separate from prior artifact success",
+          "answer_field": "fresh_obligations",
+          "reason": "Fresh purpose and scientific/execution authority not inherited automatically",
+          "source_coordinate": "normative acceptance criterion; fresh_obligations plus crop_disposition"
+        },
+        {
+          "id": "a2",
+          "passed": true,
+          "criterion": "Preserve source evidence/coordinate and do not invent absent measurements",
+          "answer_field": "evidence_coordinates",
+          "reason": "Original evidence coordinates retained and absent measurements not invented",
+          "source_coordinate": "all eight permitted original source files"
+        }
+      ]
+    }
+  ],
+  "conformance_records": {
+    "count": 64,
+    "all_marked_passed": true,
+    "all_commercial_acceptance_false": true,
+    "all_production_admission_false": true,
+    "all_hold_reject_numeric_results_absent": true
+  },
+  "interpretation": "Three source-grounded semantic mapping/control answers meet frozen rubric. No superiority, representative-user effect, paid service acceptance, new statistical method, market validation, or graph-specific advantage established.",
+  "limits": [
+    "Adjudicator is a sibling AI agent with inherited task context, not an independent human expert panel.",
+    "Read-only inspection used same shared filesystem; technical blinding/isolation not established.",
+    "Real crop semantic refusal is a control pass, not a successful crop analysis or paid useful-yield outcome.",
+    "No live R/metafor execution; numerical reproduction is conditional on working independence and supplied estimates.",
+    "Detailed diagnostics are post-confirmation adversarial checks, not additional preregistered confirmation cases."
+  ]
+}
