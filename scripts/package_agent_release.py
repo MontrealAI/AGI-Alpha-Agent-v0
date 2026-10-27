@@ -158,6 +158,8 @@ def release_documents(version: str) -> tuple[str, ...]:
         )
     if tuple(map(int, version.split("."))) >= (1, 44, 0):
         documents += ("docs/agent/STRATEGY_SUCCESSION.md",)
+    if tuple(map(int, version.split("."))) >= (1, 45, 0):
+        documents += ("docs/agent/ALPHA_FLYWHEEL.md", "examples/alpha-flywheel/README.md")
     return documents
 
 

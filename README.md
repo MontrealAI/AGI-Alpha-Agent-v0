@@ -168,12 +168,15 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[The Next Upgrade](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/the-next-upgrade.pdf)** · A consumer\-specific dependency assessment accepted nine of twelve custom\-method scopes versus twelve of twelve for the conventional comparator\. The custom method was rejected; local task support and reuse do not establish cheaper capability construction or commercial success\. Complete monetary costs, repayment and sustained acceleration remain unestablished\. Economic HOLD\.
   AGI ALPHA Research · 2026-10-26 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f019a1d2d1c1c678c7363bf9cde61dab6ec0de12/studies/agi-alpha-value-compounds-v1/README.md)
+- **[Profitable Work First\. Compounding Capability When Worthwhile\.](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/profitable-work-first.pdf)** · Under declared assumptions, a simulated coordination\-mechanism foundry produces positive mean Beta\-only surplus, including a stricter useful\-receipt\-only sensitivity\. These are conditional model results, not actual customer sales or qualified frontier\-model delivery\. Primary confirmation does not establish a positive additional enterprise benefit from retained Alpha or network sharing; capability compounding remains unproven\.
+  Independent AI\-assisted research edition prepared for MONTREAL\.AI · 2026-10-26 · English PDF.
+  [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/ccf0a08d5b46edb135e144fd81b36b819255623a/studies/network-invented-economy-v1/README.md)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.44.0.** [Checked planning and repair](docs/agent/RELEASE_NOTES_1.44.0.md). [Configure the bounded Strategy Succession executor](docs/agent/STRATEGY_SUCCESSION.md). Published [1.43](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0) remains preserved.
+**Current experimental source candidate · 1.45.0.** [Additive Flywheel flagship](docs/agent/RELEASE_NOTES_1.45.0.md). [Explore the public simulation](https://montrealai.github.io/AGI-Alpha-Agent-v0/flywheel/). [Checked planning and repair](docs/agent/RELEASE_NOTES_1.44.0.md). [Configure the bounded Strategy Succession executor](docs/agent/STRATEGY_SUCCESSION.md). Published [1.43](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0) remains preserved.
 The existing `alpha-agent successor-study` entry point can run an explicitly approved finite operation,
 retain a closed executable source-selection program and test it on later changed inputs. Pause/Stop,
 lease expiry, bounded retries and committed-child recovery keep their existing journal history.

@@ -36,6 +36,13 @@ PREVIEW_RE = re.compile(r"!\[preview\]\(([^)]+)\)")
 
 def version_application_assets(docs_dir: Path, version: str) -> None:
     """Keep local module, worker and data URLs compatible with the release cache."""
+    successor = docs_dir / "successor/index.html"
+    if successor.is_file():
+        source = successor.read_text(encoding="utf-8")
+        updated = re.sub(r'(<meta name="application-version" content=")[^"]+("\s*/?>)',
+                         lambda match: match[1] + version + match[2], source)
+        if updated != source:
+            successor.write_text(updated, encoding="utf-8")
     local_url = re.compile(r"([\"'])(\.{1,2}/[^\"'\\\s?]+\?v=)\d+\.\d+\.\d+\1")
     for module in (docs_dir / "assets").rglob("*.mjs"):
         original = module.read_text(encoding="utf-8")
@@ -198,7 +205,8 @@ def insert_back_link(pages: Iterable[Path], *, preserved_pages: Iterable[Path] =
     for page in pages:
         if not page.is_file() or page in preserved:
             continue
-        if page.parts[-2:] in (("transformational-intelligence", "index.html"), ("try", "index.html")):
+        if page.parts[-2:] in (("transformational-intelligence", "index.html"), ("try", "index.html"),
+                              ("flywheel", "index.html")):
             continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
             ("reports", "research-foundry-v2", "index.html"),
@@ -386,6 +394,9 @@ def build_portal_html(entries: list[tuple[str, str, str, str]], version: str, de
 def main() -> None:
     print(DISCLAIMER, file=sys.stderr)
     import importlib
+
+    flywheel = importlib.import_module("scripts.generate_alpha_flywheel" if __package__ else "generate_alpha_flywheel")
+    flywheel.build(REPO_ROOT)
 
     studio_generator = importlib.import_module(
         "scripts.generate_decision_studio" if __package__ else "generate_decision_studio"

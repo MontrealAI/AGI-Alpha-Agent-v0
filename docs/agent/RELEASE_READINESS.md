@@ -1,5 +1,22 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.45.0 additive Flywheel flagship
+
+The new public `/flywheel/` experience explores modeled profitable engineering delivery before optional
+skill retention. Its [operating guide](ALPHA_FLYWHEEL.md) distinguishes the deterministic simulation,
+existing Alpha project preparation, and unqualified live execution/private skill sharing. Existing flagship,
+comparison, personal lab, Nova-Seed, publications, contracts and settlement remain preserved.
+
+This candidate retains the complete #4955 worker-edition binding and #4953 approved paper bytes,
+then admits a separately reviewed complete generated worker edition for the new source. Earlier worker
+editions remain immutable; no history or review qualifies the changed bytes. The final composed source
+requires configured exact-source review, applicable PR checks and all existing resulting-main acceptance,
+security, integrity, coverage, installation, tested-site publication and public-byte checks. New Flywheel
+browser acceptance and accounting/lifecycle regressions join those gates. No fixture establishes live
+ENS authorization, runtime adoption, actual sales or commercial profitability.
+
+## Preserved 1.44.0 preparation record
+
 # Release readiness — 1.44.0 checked planning and repair
 
 This source candidate adds the separately installable Strategy Succession companion. Its scope is
