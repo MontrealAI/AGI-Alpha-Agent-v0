@@ -1,0 +1,33 @@
+{
+  "schema": "observation-pilot-protocol/v1",
+  "purpose": "Inspect the exact requested artifact without duplicating a write or treating unknown billing as free",
+  "donor": "JSON source-evidence export",
+  "recipient": "CSV acceptance ledger with different bytes and format",
+  "actual_effect": "An authored child writes and fsyncs once, then exits 23 before an acknowledgement; no remote action or held production executor",
+  "primary_checks": [
+    "Exact expected byte acceptance independent of the compiler",
+    "All declared absent/corrupt/partial states remain unsatisfied or HOLD",
+    "Unknown observations remain HOLD",
+    "Actual compiled artifact reused, fresh purpose/environment binding",
+    "Native idempotency, direct expert checks and identical-content ordinary library remain competent alternatives"
+  ],
+  "bounds": {
+    "campaigns": 1,
+    "artifact_families": 2,
+    "subsets_per_problem": 8,
+    "max_probe_resource_units": 4,
+    "paid_infrastructure_micro_usd": 0,
+    "repeat_search_after_outcome": false
+  },
+  "stopping_rule": "If a strong conventional method matches, retain engineering utility but reject an additional-Alpha claim; no extra simulation to obtain a favorable result.",
+  "costs": "Use existing disjoint C R&D accounting. Human/provider/compute monetary allocation unknown; zero observed customer collections. No assumed review minutes or market price.",
+  "claims_excluded": [
+    "Autonomous frontier invention",
+    "Current model superiority",
+    "Live ENS admission",
+    "Safe external retry",
+    "Commercial feasibility",
+    "Graph-specific gain",
+    "Paid delivery or earned revenue"
+  ]
+}
