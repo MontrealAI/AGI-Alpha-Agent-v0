@@ -1,0 +1,134 @@
+{
+  "schema": "agi-alpha.novelty-frontier.economics.v1",
+  "currency": "USD",
+  "freeze_utc": "2026-10-27T19:25:08.398575+00:00",
+  "status": "constructed scenarios, not measured demand or field reliability",
+  "price_grid": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    10,
+    12,
+    16,
+    20
+  ],
+  "policies": [
+    "net30",
+    "deposit20_discount5"
+  ],
+  "development_seed": 2026102701,
+  "confirmation_seed": 2026102702,
+  "confirmation_worlds": 512,
+  "months": 12,
+  "annual_capacity": 120000,
+  "fx_cad_per_usd": 1.4025,
+  "fx_date": "2026-10-26",
+  "wage_cad_hour": {
+    "low": 30.43,
+    "central": 44.52,
+    "high": 66.39
+  },
+  "loaded_multiplier": {
+    "low": 1.45,
+    "central": 1.7,
+    "high": 2.1
+  },
+  "human_engineering_hours": {
+    "low": 400,
+    "central": 900,
+    "high": 2200
+  },
+  "physical_test_hours": {
+    "low": 200,
+    "central": 500,
+    "high": 1500
+  },
+  "technician_usd_hour": {
+    "low": 32,
+    "central": 45,
+    "high": 65
+  },
+  "prototype_tooling_external_tests_usd": {
+    "low": 18000,
+    "central": 65000,
+    "high": 220000
+  },
+  "inference_plan": {
+    "input_mtokens": 20,
+    "output_mtokens": 4,
+    "input_usd_per_mtoken": 10,
+    "output_usd_per_mtoken": 50,
+    "tool_compute_usd": 200
+  },
+  "extra_retention_usd": 2500,
+  "extra_maintenance_annual_usd": 1200,
+  "reuse_saving_per_new_mission_usd": 0,
+  "optional_gym_usd": 0,
+  "scenario": {
+    "conservative": {
+      "potential_buyers": 18,
+      "exposure_rate": 0.008,
+      "avoidable_loss": 300,
+      "staff_saving": 0.5,
+      "false_alarm_rate": 0.015,
+      "false_alarm_cost": 40,
+      "annual_units_per_buyer": 2000,
+      "unit_cost": 3.6,
+      "fixed_overhead": 70000,
+      "acquisition_per_buyer": 1200,
+      "qualified_device_probability": 0.25
+    },
+    "central": {
+      "potential_buyers": 40,
+      "exposure_rate": 0.02,
+      "avoidable_loss": 500,
+      "staff_saving": 1.5,
+      "false_alarm_rate": 0.005,
+      "false_alarm_cost": 40,
+      "annual_units_per_buyer": 3000,
+      "unit_cost": 2.4,
+      "fixed_overhead": 90000,
+      "acquisition_per_buyer": 800,
+      "qualified_device_probability": 0.5
+    },
+    "favorable": {
+      "potential_buyers": 70,
+      "exposure_rate": 0.03,
+      "avoidable_loss": 700,
+      "staff_saving": 2,
+      "false_alarm_rate": 0.002,
+      "false_alarm_cost": 40,
+      "annual_units_per_buyer": 3500,
+      "unit_cost": 1.6,
+      "fixed_overhead": 120000,
+      "acquisition_per_buyer": 600,
+      "qualified_device_probability": 0.75
+    }
+  },
+  "performance_conditional": {
+    "prevented_loss_fraction": 0.7,
+    "participation_value_share_cap": 0.7
+  },
+  "cost_components": {
+    "materials_fraction": 0.4,
+    "fabrication_fraction": 0.25,
+    "acceptance_qa_fraction": 0.15,
+    "packaging_shipping_fraction": 0.12,
+    "support_recovery_fraction": 0.08
+  },
+  "warranty_reserve_fraction_of_sales": 0.03,
+  "credit_loss_fraction": 0.01,
+  "finance_annual_rate": 0.1,
+  "actual": {
+    "physical_qualification": false,
+    "buyers": 0,
+    "deliveries": 0,
+    "recognized_revenue": 0,
+    "collections": 0,
+    "token_receipts": 0,
+    "attributable_full_session_cost": null
+  }
+}

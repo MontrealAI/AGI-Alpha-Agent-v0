@@ -1,0 +1,43 @@
+\usepackage{fontspec,microtype,booktabs,longtable,array,tabularx}
+\usepackage{tikz,tcolorbox,fancyhdr,titlesec,caption,xurl,needspace,hyperref}
+\usetikzlibrary{calc}
+\definecolor{DeepPurple}{HTML}{301356}
+\definecolor{RoyalPurple}{HTML}{8051C9}
+\definecolor{Lilac}{HTML}{C4A8F0}
+\definecolor{PalePurple}{HTML}{F4EFFA}
+\definecolor{Ink}{HTML}{201A2A}
+\definecolor{Muted}{HTML}{665D70}
+\definecolor{AccentGreen}{HTML}{247C68}
+\setmainfont{DejaVu Serif}[ItalicFont={Nimbus Roman Italic},BoldItalicFont={Nimbus Roman Bold Italic}]
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.78]
+\color{Ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.8pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2.6em}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\titleformat{\section}{\Large\sffamily\bfseries\color{DeepPurple}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{DeepPurple}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries\color{DeepPurple}}{\thesubsubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{17pt}{7pt}
+\titlespacing*{\subsection}{0pt}{13pt}{5pt}
+\captionsetup{font=small,labelfont={bf,color=DeepPurple},justification=raggedright,singlelinecheck=false}
+\hypersetup{colorlinks=true,linkcolor=DeepPurple,urlcolor=RoyalPurple,citecolor=DeepPurple,
+pdftitle={🌌♾️ AGI ALPHA FLYWHEEL — When Capability Creates Opportunity},
+pdfauthor={Vincent Boucher — President of MONTREAL.AI},
+pdfsubject={A bounded discovery campaign, exact finite constructions, prior-art comparisons and conditional economics},
+pdfkeywords={AGI ALPHA, opportunity discovery, passive chronology, novelty gate, finite-model evidence}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\scriptsize\sffamily\color{DeepPurple}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\scriptsize\sffamily\color{Muted}WHEN CAPABILITY CREATES OPPORTUNITY}
+\fancyfoot[L]{\scriptsize\sffamily\color{Muted}MONTREAL.AI \quad Research edition 01 \quad 27 October 2026}
+\fancyfoot[R]{\small\sffamily\color{DeepPurple}\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{20pt}
+\setlength{\footskip}{29pt}
+\let\oldquote\quote
+\let\endoldquote\endquote
+\renewenvironment{quote}{\begin{tcolorbox}[colback=PalePurple,colframe=Lilac,boxrule=0.45pt,arc=2pt,left=10pt,right=10pt,top=7pt,bottom=7pt]}{\end{tcolorbox}}

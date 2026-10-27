@@ -1,0 +1,138 @@
+{
+  "schema": "agialpha.study.offline-integration.v1",
+  "upstream_commit": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "input_sha256": "271b21b2aaddfdebd99b01aaf3b2e48d45da1425942fe919168608ae83212773",
+  "source_lock_sha256": "aa67470a1ba0febcdaa6ef6b2c1a64437129961585442f3f8e62bbd9465987b6",
+  "passed": 13,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "native_fusionplan_rebuild",
+      "passed": true,
+      "jobs": 2
+    },
+    {
+      "name": "fusionplan_metric_substitution",
+      "passed": true,
+      "observed": "refused",
+      "reason": "FusionPlan commitment, proofs or metadata do not match"
+    },
+    {
+      "name": "native_novaseed_roundtrip",
+      "passed": true
+    },
+    {
+      "name": "novaseed_wrong_passphrase",
+      "passed": true,
+      "observed": "refused",
+      "reason": "Could not open this seed. Check the passphrase and file integrity."
+    },
+    {
+      "name": "novaseed_altered_commitment",
+      "passed": true,
+      "observed": "refused",
+      "reason": "Could not open this seed. Check the passphrase and file integrity."
+    },
+    {
+      "name": "same_activity_cannot_be_recharged_in_another_bucket",
+      "passed": true,
+      "observed": "refused",
+      "reason": "activity already charged; A, B and C cannot overlap"
+    },
+    {
+      "name": "unknown_cost_cannot_be_labeled_zero",
+      "passed": true,
+      "observed": "refused",
+      "reason": "1 validation error for Charge\n  Value error, unknown costs must stay unknown rather than becoming zero [type=value_error, input_value={'activity_id': 'a-origin...ured provider invoice.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/value_error"
+    },
+    {
+      "name": "incomplete_costs_do_not_produce_profit",
+      "passed": true
+    },
+    {
+      "name": "no_customer_collection_record",
+      "passed": true
+    },
+    {
+      "name": "new_instrument_scope_not_production_admitted",
+      "passed": true,
+      "observed": "refused",
+      "reason": "1 validation error for CapsuleManifest\nsupported_scope\n  Input should be 'bounded-public-source-selection/v1' [type=literal_error, input_value='new-research-instrument/v1', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/literal_error"
+    },
+    {
+      "name": "unreviewed_rights_not_production_admitted",
+      "passed": true,
+      "observed": "refused",
+      "reason": "1 validation error for CapsuleManifest\nrights\n  Input should be 'cleared-for-authenticated-network' [type=literal_error, input_value='unreviewed', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/literal_error"
+    },
+    {
+      "name": "valid_local_signature_without_live_ENS_authority_denied",
+      "passed": true,
+      "observed": "refused",
+      "reason": "Offline research: live ENS reads are unavailable; authority denied."
+    },
+    {
+      "name": "denied_authority_does_not_consume_challenge",
+      "passed": true
+    }
+  ],
+  "actual_upstream_imports": [
+    "alpha_factory_v1/__init__.py",
+    "alpha_factory_v1/core/__init__.py",
+    "alpha_factory_v1/core/evaluators/__init__.py",
+    "alpha_factory_v1/core/evaluators/feasibility_critic.py",
+    "alpha_factory_v1/core/evaluators/lead_time.py",
+    "alpha_factory_v1/core/evaluators/logic_critic.py",
+    "alpha_factory_v1/core/evaluators/novelty.py",
+    "alpha_factory_v1/core/runtime/__init__.py",
+    "alpha_factory_v1/core/runtime/ascension.py",
+    "alpha_factory_v1/core/runtime/chain.py",
+    "alpha_factory_v1/core/runtime/engine.py",
+    "alpha_factory_v1/core/runtime/models.py",
+    "alpha_factory_v1/core/runtime/provider.py",
+    "alpha_factory_v1/core/runtime/store.py",
+    "alpha_factory_v1/core/runtime/successor/__init__.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_access.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+    "alpha_factory_v1/core/runtime/successor/protocol.py",
+    "alpha_factory_v1/core/runtime/successor/signatures.py",
+    "alpha_factory_v1/core/runtime/successor/transformation.py",
+    "alpha_factory_v1/core/runtime/successor/transformation_library.py",
+    "alpha_factory_v1/core/runtime/successor/trust.py",
+    "alpha_factory_v1/core/runtime/work.py",
+    "alpha_factory_v1/core/self_edit/__init__.py",
+    "alpha_factory_v1/core/self_edit/safety.py",
+    "alpha_factory_v1/core/self_edit/tools.py",
+    "alpha_factory_v1/core/simulation/__init__.py",
+    "alpha_factory_v1/core/simulation/forecast.py",
+    "alpha_factory_v1/core/simulation/mats.py",
+    "alpha_factory_v1/core/simulation/mats_ops.py",
+    "alpha_factory_v1/core/simulation/replay.py",
+    "alpha_factory_v1/core/simulation/sector.py",
+    "alpha_factory_v1/core/simulation/selector.py",
+    "alpha_factory_v1/core/simulation/surrogate_fitness.py"
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "node": "v24.22.1",
+    "packages": {
+      "pydantic": "2.11.7",
+      "cryptography": "50.0.2",
+      "numpy": "2.3.2",
+      "httpx": "0.28.1",
+      "PyYAML": "6.0.2",
+      "eth-hash": "0.8.0",
+      "eth-utils": "6.0.0",
+      "eth-account": "0.14.0",
+      "pycryptodome": "3.24.1"
+    }
+  },
+  "scientific_result_certified": false,
+  "commercial_result_certified": false,
+  "model_calls": 0,
+  "on_chain_actions": 0,
+  "production_admission": "DENIED",
+  "source_qualification": "Scoped offline component execution only; not installed/released repository qualification."
+}

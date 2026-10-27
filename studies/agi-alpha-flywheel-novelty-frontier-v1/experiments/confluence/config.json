@@ -1,0 +1,22 @@
+{
+  "study":"Confluent internal avalanches and order-sensitive external pulses",
+  "version":"1.0",
+  "evidence_class":"locally executed finite phenomenological model; novelty not established; no physical prototype",
+  "integer_scale":100,
+  "up_threshold":100,
+  "down_threshold":-80,
+  "coupling":60,
+  "high_drive":120,
+  "low_drive":60,
+  "reset_drive":-200,
+  "dimensions":[2,3,4],
+  "full_word_alphabet":["A","B","C","R"],
+  "full_word_max_length":6,
+  "confirmation_seed":2026102707,
+  "confirmation_random_words":1024,
+  "confirmation_max_length":64,
+  "tolerance_half_width":4,
+  "tolerance_draws":512,
+  "acceptance":["Every allowed asynchronous update schedule terminates","All schedules for the same state and held field reach exactly one terminal state","AB and BA differ from reset at 2,3,4 bits","All event histories match a separately specified Boolean oracle","Independent hysteron ablation fails order discrimination","Known monotone closure control exactly matches proposal","An adversarial negative-coupling example is correctly detected as nonconfluent","An asymmetric nonpassive cycle is detected"],
+  "limitations":["A and B are distinct vector input pulses, not one scalar input","Each pulse is held until settling and then returns to zero","No kinetic timescale or real overlapping pulse model","C means both input fields held together until settling; 1111 cannot distinguish C from ABA/BAB","Dimensionless thresholds are not calibrated to forces, material properties or manufacturing tolerances","No paid model trial, human-expert trial, buyer acceptance, sale, cash receipt or device fabrication"]
+}

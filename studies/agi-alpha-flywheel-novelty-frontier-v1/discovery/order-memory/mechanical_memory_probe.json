@@ -1,0 +1,3026 @@
+{
+  "evidence_label": "exhaustive_abstract_discrete_computation; no material built; ordinary coding repair not discovery",
+  "parameters": {
+    "events": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "cycle_edges": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "D",
+        "A"
+      ]
+    ],
+    "complete_edges": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "C",
+        "D"
+      ]
+    ],
+    "seed": null,
+    "randomness": "none; all permutations and erasure locations enumerated"
+  },
+  "cycle_readout_classes": {
+    "(1, 1, 1, 0)": [
+      "ABCD"
+    ],
+    "(1, 1, 0, 0)": [
+      "ABDC",
+      "ADBC"
+    ],
+    "(1, 0, 1, 0)": [
+      "ACBD",
+      "ACDB",
+      "CABD",
+      "CADB"
+    ],
+    "(1, 0, 0, 0)": [
+      "ADCB"
+    ],
+    "(0, 1, 1, 0)": [
+      "BACD",
+      "BCAD"
+    ],
+    "(0, 1, 0, 0)": [
+      "BADC"
+    ],
+    "(0, 1, 1, 1)": [
+      "BCDA"
+    ],
+    "(0, 1, 0, 1)": [
+      "BDAC",
+      "BDCA",
+      "DBAC",
+      "DBCA"
+    ],
+    "(0, 0, 1, 0)": [
+      "CBAD"
+    ],
+    "(0, 0, 1, 1)": [
+      "CBDA",
+      "CDBA"
+    ],
+    "(1, 0, 1, 1)": [
+      "CDAB"
+    ],
+    "(1, 1, 0, 1)": [
+      "DABC"
+    ],
+    "(1, 0, 0, 1)": [
+      "DACB",
+      "DCAB"
+    ],
+    "(0, 0, 0, 1)": [
+      "DCBA"
+    ]
+  },
+  "cycle_distinct_readouts": 14,
+  "full_pairwise_distinct_readouts": 24,
+  "minimum_hamming_distance_pairwise": 1,
+  "minimum_hamming_distance_with_parity": 2,
+  "single_erasure_results": {
+    "pairwise": {
+      "cases": 144,
+      "unique_recoveries": 72,
+      "ambiguous_recoveries": 72,
+      "fraction_unique": 0.5,
+      "histories_with_some_ambiguous_erasure": 24
+    },
+    "pairwise_plus_xor": {
+      "cases": 168,
+      "unique_recoveries": 168,
+      "ambiguous_recoveries": 0,
+      "fraction_unique": 1.0,
+      "histories_with_some_ambiguous_erasure": 0
+    }
+  },
+  "pairwise_only_lower_bound_bits_for_single_erasure": 12,
+  "parity_code_bits": 7,
+  "lower_bound_argument": "Every unordered event pair can be adjacent in some history. Exchanging adjacent events changes only that pairwise relation. If that pair has fewer than two independent stored copies, erasing it makes those two histories indistinguishable. Hence every one of the six pairs must be stored twice in the pairwise-only class.",
+  "parity_repair_boundary": "XOR is a conventional one-erasure-correcting code. Seven abstract stored bits are not seven proven physical devices. Mechanical realizability, couplers, ancillas, readout burden, fabrication tolerances, timing, wear and manufacturing cost are unmeasured. This code is not a substantive discovery beyond coding prior art.",
+  "oracle": "Independent enumerator uses explicit precedence constraints and permutation inversion parity, not the encoder function.",
+  "assumptions": [
+    "Each of four labeled events occurs exactly once.",
+    "Each binary pairwise recorder faithfully reports which endpoint occurred first.",
+    "One known erasure; no unmarked substitutions or two erasures.",
+    "All six recorder outputs and optional parity are available after the sequence.",
+    "No physical material dynamics or fabrication model is claimed."
+  ],
+  "code_sha256": "ff18e37911610ce2a127600e692fb4a6dcf346419f7f15785586550d999b3c3f",
+  "cases": [
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABCD",
+        "BACD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 1,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 2,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 3,
+      "recovery_set": [
+        "ABCD",
+        "ACBD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 4,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABCD",
+      "erased_index": 5,
+      "recovery_set": [
+        "ABCD",
+        "ABDC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 1,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 2,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 3,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 4,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 5,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABCD",
+      "erased_index": 6,
+      "recovery_set": [
+        "ABCD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABDC",
+        "BADC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 1,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 2,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 3,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 4,
+      "recovery_set": [
+        "ABDC",
+        "ADBC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ABDC",
+      "erased_index": 5,
+      "recovery_set": [
+        "ABCD",
+        "ABDC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 1,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 2,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 3,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 4,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 5,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ABDC",
+      "erased_index": 6,
+      "recovery_set": [
+        "ABDC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 0,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACBD",
+        "CABD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 2,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 3,
+      "recovery_set": [
+        "ABCD",
+        "ACBD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 4,
+      "recovery_set": [
+        "ACBD",
+        "ACDB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACBD",
+      "erased_index": 5,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 0,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 2,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 3,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 4,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 5,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACBD",
+      "erased_index": 6,
+      "recovery_set": [
+        "ACBD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 0,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACDB",
+        "CADB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 2,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 3,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 4,
+      "recovery_set": [
+        "ACBD",
+        "ACDB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ACDB",
+      "erased_index": 5,
+      "recovery_set": [
+        "ACDB",
+        "ADCB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 0,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 2,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 3,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 4,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 5,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ACDB",
+      "erased_index": 6,
+      "recovery_set": [
+        "ACDB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 0,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 1,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADBC",
+        "DABC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 3,
+      "recovery_set": [
+        "ADBC",
+        "ADCB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 4,
+      "recovery_set": [
+        "ABDC",
+        "ADBC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADBC",
+      "erased_index": 5,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 0,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 1,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 3,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 4,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 5,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADBC",
+      "erased_index": 6,
+      "recovery_set": [
+        "ADBC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 0,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 1,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADCB",
+        "DACB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 3,
+      "recovery_set": [
+        "ADBC",
+        "ADCB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 4,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "ADCB",
+      "erased_index": 5,
+      "recovery_set": [
+        "ACDB",
+        "ADCB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 0,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 1,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 3,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 4,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 5,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "ADCB",
+      "erased_index": 6,
+      "recovery_set": [
+        "ADCB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABCD",
+        "BACD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 1,
+      "recovery_set": [
+        "BACD",
+        "BCAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 2,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 3,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 4,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BACD",
+      "erased_index": 5,
+      "recovery_set": [
+        "BACD",
+        "BADC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 0,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 1,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 2,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 3,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 4,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 5,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BACD",
+      "erased_index": 6,
+      "recovery_set": [
+        "BACD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 0,
+      "recovery_set": [
+        "ABDC",
+        "BADC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 1,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 2,
+      "recovery_set": [
+        "BADC",
+        "BDAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 3,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 4,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BADC",
+      "erased_index": 5,
+      "recovery_set": [
+        "BACD",
+        "BADC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 0,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 1,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 2,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 3,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 4,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 5,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BADC",
+      "erased_index": 6,
+      "recovery_set": [
+        "BADC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 0,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 1,
+      "recovery_set": [
+        "BACD",
+        "BCAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 2,
+      "recovery_set": [
+        "BCAD",
+        "BCDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCAD",
+        "CBAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 4,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCAD",
+      "erased_index": 5,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 0,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 1,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 2,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 4,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 5,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCAD",
+      "erased_index": 6,
+      "recovery_set": [
+        "BCAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 0,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 1,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 2,
+      "recovery_set": [
+        "BCAD",
+        "BCDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCDA",
+        "CBDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 4,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BCDA",
+      "erased_index": 5,
+      "recovery_set": [
+        "BCDA",
+        "BDCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 0,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 1,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 2,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 4,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 5,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BCDA",
+      "erased_index": 6,
+      "recovery_set": [
+        "BCDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 0,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 1,
+      "recovery_set": [
+        "BDAC",
+        "BDCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 2,
+      "recovery_set": [
+        "BADC",
+        "BDAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 3,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDAC",
+        "DBAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDAC",
+      "erased_index": 5,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 0,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 1,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 2,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 3,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 5,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDAC",
+      "erased_index": 6,
+      "recovery_set": [
+        "BDAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 0,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 1,
+      "recovery_set": [
+        "BDAC",
+        "BDCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 2,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 3,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDCA",
+        "DBCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "BDCA",
+      "erased_index": 5,
+      "recovery_set": [
+        "BCDA",
+        "BDCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 0,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 1,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 2,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 3,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 5,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "BDCA",
+      "erased_index": 6,
+      "recovery_set": [
+        "BDCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 0,
+      "recovery_set": [
+        "CABD",
+        "CBAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACBD",
+        "CABD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 2,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 3,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 4,
+      "recovery_set": [
+        "CABD",
+        "CADB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CABD",
+      "erased_index": 5,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 0,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 1,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 2,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 3,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 4,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 5,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CABD",
+      "erased_index": 6,
+      "recovery_set": [
+        "CABD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 0,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 1,
+      "recovery_set": [
+        "ACDB",
+        "CADB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 2,
+      "recovery_set": [
+        "CADB",
+        "CDAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 3,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 4,
+      "recovery_set": [
+        "CABD",
+        "CADB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CADB",
+      "erased_index": 5,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 0,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 1,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 2,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 3,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 4,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 5,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CADB",
+      "erased_index": 6,
+      "recovery_set": [
+        "CADB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 0,
+      "recovery_set": [
+        "CABD",
+        "CBAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 1,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 2,
+      "recovery_set": [
+        "CBAD",
+        "CBDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCAD",
+        "CBAD"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 4,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBAD",
+      "erased_index": 5,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 0,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 1,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 2,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 3,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 4,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 5,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBAD",
+      "erased_index": 6,
+      "recovery_set": [
+        "CBAD"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 0,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 1,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 2,
+      "recovery_set": [
+        "CBAD",
+        "CBDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 3,
+      "recovery_set": [
+        "BCDA",
+        "CBDA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 4,
+      "recovery_set": [
+        "CBDA",
+        "CDBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CBDA",
+      "erased_index": 5,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 0,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 1,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 2,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 3,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 4,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 5,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CBDA",
+      "erased_index": 6,
+      "recovery_set": [
+        "CBDA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 0,
+      "recovery_set": [
+        "CDAB",
+        "CDBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 1,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 2,
+      "recovery_set": [
+        "CADB",
+        "CDAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 3,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 4,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDAB",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDAB",
+        "DCAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 0,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 1,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 2,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 3,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 4,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDAB",
+      "erased_index": 6,
+      "recovery_set": [
+        "CDAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 0,
+      "recovery_set": [
+        "CDAB",
+        "CDBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 1,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 2,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 3,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 4,
+      "recovery_set": [
+        "CBDA",
+        "CDBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "CDBA",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDBA",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 0,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 1,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 2,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 3,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 4,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "CDBA",
+      "erased_index": 6,
+      "recovery_set": [
+        "CDBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 0,
+      "recovery_set": [
+        "DABC",
+        "DBAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 1,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADBC",
+        "DABC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 3,
+      "recovery_set": [
+        "DABC",
+        "DACB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 4,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DABC",
+      "erased_index": 5,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 0,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 1,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 2,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 3,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 4,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 5,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DABC",
+      "erased_index": 6,
+      "recovery_set": [
+        "DABC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 0,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 1,
+      "recovery_set": [
+        "DACB",
+        "DCAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 2,
+      "recovery_set": [
+        "ADCB",
+        "DACB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 3,
+      "recovery_set": [
+        "DABC",
+        "DACB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 4,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DACB",
+      "erased_index": 5,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 0,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 1,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 2,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 3,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 4,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 5,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DACB",
+      "erased_index": 6,
+      "recovery_set": [
+        "DACB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 0,
+      "recovery_set": [
+        "DABC",
+        "DBAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 1,
+      "recovery_set": [
+        "DBAC",
+        "DBCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 2,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 3,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDAC",
+        "DBAC"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBAC",
+      "erased_index": 5,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 0,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 1,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 2,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 3,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 4,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 5,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBAC",
+      "erased_index": 6,
+      "recovery_set": [
+        "DBAC"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 0,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 1,
+      "recovery_set": [
+        "DBAC",
+        "DBCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 2,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 3,
+      "recovery_set": [
+        "DBCA",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 4,
+      "recovery_set": [
+        "BDCA",
+        "DBCA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DBCA",
+      "erased_index": 5,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 0,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 1,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 2,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 3,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 4,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 5,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DBCA",
+      "erased_index": 6,
+      "recovery_set": [
+        "DBCA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 0,
+      "recovery_set": [
+        "DCAB",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 1,
+      "recovery_set": [
+        "DACB",
+        "DCAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 2,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 3,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 4,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCAB",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDAB",
+        "DCAB"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 0,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 1,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 2,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 3,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 4,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 5,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCAB",
+      "erased_index": 6,
+      "recovery_set": [
+        "DCAB"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 0,
+      "recovery_set": [
+        "DCAB",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 1,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 2,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 3,
+      "recovery_set": [
+        "DBCA",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 4,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise",
+      "history": "DCBA",
+      "erased_index": 5,
+      "recovery_set": [
+        "CDBA",
+        "DCBA"
+      ],
+      "unique": false
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 0,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 1,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 2,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 3,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 4,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 5,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    },
+    {
+      "scheme": "pairwise_plus_xor",
+      "history": "DCBA",
+      "erased_index": 6,
+      "recovery_set": [
+        "DCBA"
+      ],
+      "unique": true
+    }
+  ]
+}

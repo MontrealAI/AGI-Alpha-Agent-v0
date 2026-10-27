@@ -1,0 +1,92 @@
+{
+  "schema": "agi-alpha.economics.model-review.v1",
+  "review_scope": "Independent rereading of the frozen economics implementation and Decimal recomputation of stored results by the same research team; not external verification, a physical experiment, or a revised economic forecast",
+  "frozen_results_modified": false,
+  "verdict": "Arithmetic reconciles under the stated aggregate scenario. Complete commercial cost, actionable customer benefit, physical qualification, demand, and exact cash timing remain unvalidated. Actual decision remains HOLD.",
+  "audit_reproduction": {
+    "working_directory": "The study directory containing src/, config/, and results/",
+    "command": "python src/audit_economics.py --output /tmp/agi-alpha-economics-audit-new.json",
+    "path_rule": "Choose a new output path if it already exists. The auditor uses exclusive creation and never overwrites reports. It locates study files relative to its source; --study-root and --results-dir can override locations.",
+    "dependencies": "Python standard library; use the normal interpreter without -O, because assertions are part of validation",
+    "persisted_report": "results/economics-independent-audit-replay-v2.json",
+    "original_report": "results/economics-independent-audit.json",
+    "source": "src/audit_economics.py",
+    "source_provenance": "The original inline audit command was not persisted before context compaction. The saved auditor reconstructs its documented check set; it is not asserted byte-identical to that missing command.",
+    "checks": 16968,
+    "additional_numeric_checks": 12543,
+    "worlds": 1536,
+    "core_max_abs_error_usd": 5e-10,
+    "additional_checks_max_abs_error_usd": 5.332534722222222e-10,
+    "original_core_max_abs_error_usd": 5.509e-10,
+    "comparison": "Pass, numeric check count, world count, original output hashes, preserved failed-write prefix, and physical-work invariance agree. The reconstructed numerical path has a different rounding residual, explicitly recorded in the new report; both residuals are below the original 1e-6 USD threshold.",
+    "development_correction_preserved": "The reconstructed auditor initially required an exactly identical maximum residual and stopped before writing a report. A diagnostic rerun exposed 5.0e-10 versus 5.509e-10. The comparison now reports the difference and checks the existing tolerance; no original data, model source, configuration, policy, or result was changed."
+  },
+  "material_findings": [
+    {
+      "id": "uncalibrated-qualification",
+      "finding": "Physical qualification probabilities 0.25/0.50/0.75 are explicit assumptions. Neither the abstract order-recovery construction nor model agreement estimates these probabilities.",
+      "implication": "Favorable expected predevelopment profit is conditional on q and all other assumptions. Its q break-even of approximately 0.3393 is a decision threshold, not evidence that q exceeds it. H and E share the same q; no AI qualification advantage is measured."
+    },
+    {
+      "id": "customer-action-link",
+      "finding": "The buyer model assigns 70% prevented-loss benefit to the hypothetical device. Recovering event order after events have occurred does not by itself establish an actionable intervention, its timing, or avoided loss.",
+      "implication": "Specify what customer action the chronology enables, when it can be taken, and which losses it changes before calling this calibrated customer value. The assumed benefit may instead relate to future loss prevention, adjudication, or investigation, each requiring its own value evidence. The current price and demand outputs remain constructed scenarios."
+    },
+    {
+      "id": "coarse-deposit-and-credit-timing",
+      "finding": "Deposit collection, production expenditure, and assumed acceptance are sequential entries inside one monthly bucket. The deposit liability is extinguished before the period-end available-cash calculation. The 30-day lead appears explicitly in the buyer opportunity-cost formula; no dated seller events demonstrate that same 30-day interval.",
+      "implication": "Describe the seller model as a coarse monthly cash approximation. It does not verify a contractual 30-day advance, intramonth peak liquidity, escrow rules, deposit refunds, or real acceptance timestamps. Under the implementation, the deposit may finance production before same-period acceptance; it is recognized as sales only through the assumed accepted-offering branch."
+    },
+    {
+      "id": "credit-draw-and-launch-timing",
+      "finding": "Interest is charged on opening debt and a new balancing draw occurs after the monthly net flows. Twelve equal production months start immediately after assumed qualification, with one month of runoff. No procurement inventory lead, sales ramp, delayed acceptance, or intramonth financing schedule is resolved.",
+      "implication": "The reported peak credit is a period-end modeled peak, which can miss earlier within-month funding needs. The rate and availability of an unrestricted revolving facility are assumptions. Capital figures are scenario requirements, not a lender commitment or a dated working-capital forecast."
+    },
+    {
+      "id": "cost-scope-completeness",
+      "finding": "Materials, fabrication, QA, packaging/shipping, support/recovery, acquisition, overhead, warranty, credit loss, inference/tools, research, and financing are represented. Their all-in scope is assumed rather than supported by supplier quotations or a physical process plan.",
+      "implication": "Failed prospect/pilot work, manufacturing yield and rework, capacity equipment or leases, production tooling maintenance, applicable qualification or certification, rights clearance, liability/insurance, and exceptional returns/recalls are not separately evidenced. Some could be included in the existing unit cost, external testing, support, or overhead allowances; the model does not establish those inclusions. Do not claim empirically complete delivery cost."
+    },
+    {
+      "id": "semantic-overlap-risk",
+      "finding": "The 8% production-cost support/recovery allocation and the separate 2% of sales warranty expense lack an explicit disjoint scope. Internal physical-test labor and external testing budgets also lack task-level allocation evidence.",
+      "implication": "These may correctly cover distinct activities, but arithmetic alone cannot prove that. Define, for example, ordinary support versus warranty replacements, and internal test work versus purchased lab services, before claiming every real cost is counted exactly once. Do not alter the preserved model merely to remove this uncertainty."
+    },
+    {
+      "id": "binary-gate-and-acceptance",
+      "finding": "A sampled qualification failure incurs the full originating research budget and no operation. A success admits the active operation with every modeled delivered unit accepted; expected warranty costs remain charged. Manufacturing acceptance rates and technical delays are not separately sampled.",
+      "implication": "This is a binary development gate preceding sales, not demonstrated device acceptance or a field-reliability model. Deposit refunds after failed customer acceptance and mixed accepted/rejected lots are outside the modeled state space."
+    },
+    {
+      "id": "acquisition-competition-and-correlation",
+      "finding": "Acquisition is charged per successful buyer. A fixed reachability probability and customer value-share rule stand in for sales effort and participation. Competitor response, measured negotiation behavior, and correlated technical/cost/demand failures are not calibrated.",
+      "implication": "Overhead may cover unsuccessful selling, but that coverage has not been scoped. Tested prices are best within the chosen grid and constructed participation model. Scenario spreads do not establish empirical confidence intervals or a robust global real-world price."
+    },
+    {
+      "id": "time-horizon-and-tax",
+      "finding": "Expected predevelopment profit combines a fully incurred development budget with one subsequent operating year. A simple average deployment finance charge represents development financing. Corporate income tax, a full discounted cash-flow valuation, and terminal value are not included.",
+      "implication": "Label amounts pre-tax scenario profit over the specified development-plus-one-year horizon. Do not label them after-tax distributable returns, a net present value, or a recurring annual return on the same originating investment."
+    },
+    {
+      "id": "retention-boundary",
+      "finding": "B is a prospective extra-retention and maintenance budget; its zero incremental benefit leads to rejection. It is not spent in the active offering baseline. Actual session-wide construction and evaluation costs are unknown.",
+      "implication": "HOLD and rejection avoid future modeled expenditure. They do not erase sunk research, turn unpaid construction into paid-job learning, or establish actual retained Alpha."
+    }
+  ],
+  "verified_non_double_counts": [
+    "The expected warranty expense reduces profit once. The separate warranty cash reserve restricts cash and can increase financing need but is not itself another profit expense.",
+    "The half of expected warranty expense accrued during delivery is paid during runoff without being charged to profit a second time.",
+    "Credit loss reduces collections and profit consistently. Borrowing principal does not enter revenue or operating profit.",
+    "The 15% failed-screen share is a disclosed portion of engineering cost, not an additional charge.",
+    "The no-benefit E pathway adds inference/tools and associated research financing; it does not assume an operational quality or buyer-demand improvement.",
+    "Hypothetical engineering-hour savings preserve physical test hours and external tooling/testing budgets.",
+    "The additional B retention budget is separate from A and optional C, and is not charged again to the modeled baseline that rejects retention."
+  ],
+  "sensitivity_interpretation": {
+    "favorable_expected_predevelopment_profit_usd": 171608.78140749643,
+    "constant_additional_annual_qualified_expense_that_erases_that_mean_usd": 228811.70854332857,
+    "equation": "At unchanged q=0.75, price, demand, quality and research cost: additional annual expense threshold = expected predevelopment profit / q.",
+    "caution": "This arithmetic headroom does not bound missing cost, justify assumed value, or cover a coupled reduction in demand or qualification probability. It is not a new simulated result or a reason to launch."
+  },
+  "next_validation": "Define a rights-cleared physical mechanism and an acceptance test preserving all four event orders after one erased readout; establish which customer decision that information changes; then scope one physical build/test quotation and one buyer value/payment discussion. Do not replace the failed novelty gate with favorable economics."
+}

@@ -1,0 +1,25 @@
+{
+  "scope": "New non-frozen publication/audit utilities only; unchanged frozen sources preserve recorded hashes",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ruff",
+        "check",
+        "src/build_publication.py",
+        "src/audit_economics.py",
+        "src/cost_headroom.py",
+        "src/build_economics_figure.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    }
+  ],
+  "full_repository_tests": "NOT_RUN: isolated additive source-draft study; parent release qualification remains separate",
+  "frozen_source_reformatting": "NOT_PERFORMED: would invalidate frozen source hashes",
+  "pre_commit": "NOT_RUN",
+  "mypy_strict": "NOT_RUN",
+  "production_node_22_17_1": "NOT_RUN; observed Node24.22.1 in native fixture"
+}
