@@ -493,13 +493,15 @@ class ProtectedLibrary:
             cost_report = self.costs.report(plan.retention_cost_record, cx)
             if not cost_report["bucket_complete"]["B"]:
                 raise ValueError("unknown incremental costs prevent a justified net Alpha claim")
-            charges = self.costs.snapshot(cx)["charges"].values()
-            retained_costs = [
-                row for row in charges if row["bucket"] == "B" and row["mission_id"] == plan.retention_cost_record
-            ]
+            charges = list(self.costs.snapshot(cx)["charges"].values())
             for receipt_digest, amount in required_costs:
-                matching = [row for row in retained_costs if row["evidence_digest"] == receipt_digest]
-                if len(matching) != 1 or matching[0]["accrued_micro_usd"] != amount:
+                matching = [row for row in charges if row["evidence_digest"] == receipt_digest]
+                if (
+                    len(matching) != 1
+                    or matching[0]["accrued_micro_usd"] != amount
+                    or matching[0]["bucket"] != "B"
+                    or matching[0]["mission_id"] != plan.retention_cost_record
+                ):
                     raise ValueError(
                         "every matched evaluation invocation must be charged exactly once in incremental retention"
                     )
@@ -701,7 +703,7 @@ class ProtectedLibrary:
             source = digest("ti-source", invocation.document)
             plan = entry["plan"]["payload"]["record"]
             if source in {*plan["fresh_input_digests"], *plan["origin_input_digests"]}:
-                raise ValueError("peer reuse requires fresh work outside development/evaluation")
+                raise ValueError("reuse requires fresh work outside development/evaluation")
             if invocation.mission_id in network["invocations"]:
                 raise Conflict("mission invocation already attempted; inspect durable receipt")
             report = self.costs.report(cx=cx)
@@ -710,12 +712,12 @@ class ProtectedLibrary:
             if self.journal.latest("@control", cx)["state"] != "ready":
                 raise Conflict("agent is stopped")
             authority = self.access.consume(prepared, cx)
-            if (
-                authority["name"] == entry["manifest"]["origin_agent"]
-                or authority["wallet"] == entry["manifest"]["origin_wallet"]
-            ):
-                raise ValueError("peer reuse requires a different eligible originating agent")
+            peer_identity = (
+                authority["name"] != entry["manifest"]["origin_agent"]
+                and authority["wallet"] != entry["manifest"]["origin_wallet"]
+            )
             used, started = 0, time.monotonic_ns()
+            wall_started = int(time.time())
 
             def charge(units: int) -> None:
                 nonlocal used
@@ -752,10 +754,14 @@ class ProtectedLibrary:
                 "authorization": authority,
                 "logical_units": used,
                 "elapsed_ns": time.monotonic_ns() - started,
+                "started_at": wall_started,
+                "finished_at": int(time.time()),
                 "result": result,
                 "error": error,
                 "status": "executed-awaiting-acceptance-and-complete-cost" if result is not None else "failed",
                 "successful_reuse": False,
+                "peer_identity": peer_identity,
+                "successful_peer_reuse": False,
                 "additional_value": None,
                 "cost_cap_micro_usd": invocation.cost_cap_micro_usd,
                 "execution": "installed-closed-selector; no frontier inference in this invocation",
@@ -804,6 +810,8 @@ class ProtectedLibrary:
             )
             self.library._distinct(signed.principal, "acceptance", record.beta_run.principal, "execution")
             self.library._distinct(signed.principal, "acceptance", entry["producer"], "producer")
+            self.library._distinct(record.beta_run.principal, "execution", entry["producer"], "producer")
+            self.library._distinct(record.beta_run.principal, "execution", entry["evidence"]["principal"], "verifier")
             plan = EvaluationPlan.model_validate(entry["plan"]["payload"]["record"])
             if (
                 baseline.input_digest != receipt["input_digest"]
@@ -816,15 +824,40 @@ class ProtectedLibrary:
                 or baseline.recipient_capabilities_digest != receipt["recipient_capabilities_digest"]
             ):
                 raise ValueError("fresh reuse baseline differs from the current matched scope")
+            if baseline.started_at < receipt["authorization"]["request_committed_at"] or baseline.finished_at > int(
+                time.time()
+            ):
+                raise ValueError("reuse baseline must execute inside the fresh request window")
             costs = self.costs.report(record.mission_id, cx)
-            if not costs["complete"]:
+            if not costs["complete"] or not costs["bucket_complete"]["B"]:
                 raise ValueError("complete reconciled reuse and failed-attempt costs are required")
+            baseline_digest = digest("flywheel-frontier-run-record", record.beta_run.model_dump())
+            baseline_charges = [
+                row for row in self.costs.snapshot(cx)["charges"].values() if row["evidence_digest"] == baseline_digest
+            ]
+            if (
+                len(baseline_charges) != 1
+                or baseline_charges[0]["mission_id"] != record.mission_id
+                or baseline_charges[0]["bucket"] != "B"
+                or baseline_charges[0]["accrued_micro_usd"] != baseline.actual_cost_micro_usd
+            ):
+                raise ValueError("actual reuse comparison must be charged exactly once in incremental costs")
             accepted = record.candidate_correct and record.beta_correct
+            peer_identity = (
+                receipt["authorization"]["name"] != entry["manifest"]["origin_agent"]
+                and receipt["authorization"]["wallet"] != entry["manifest"]["origin_wallet"]
+            )
             benefit = baseline.actual_cost_micro_usd - sum(costs["costs"].values())
             receipt.update(
                 status="reused-accepted" if accepted else "reuse-rejected",
                 successful_reuse=accepted,
+                peer_identity=peer_identity,
+                successful_peer_reuse=accepted and peer_identity,
                 additional_value=benefit if accepted else None,
+                comparison_cost_micro_usd=baseline.actual_cost_micro_usd,
+                operating_saving_before_comparison_micro_usd=benefit + baseline.actual_cost_micro_usd
+                if accepted
+                else None,
                 acceptance=signed.model_dump(),
                 baseline_output_digest=baseline.output_digest,
                 cost_report=costs,

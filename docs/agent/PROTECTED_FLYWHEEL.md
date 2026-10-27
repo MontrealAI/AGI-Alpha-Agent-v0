@@ -133,6 +133,14 @@ promotion does not touch protected admissions. Imported state cannot install sig
 An invocation produces an executed receipt, not a successful-reuse claim. The latter requires independent
 acceptance, a fresh current Beta receipt and all-resource cost reconciliation. Attributable additional
 value may be negative; accepting useful work does not imply a positive economic advantage.
+Every eligible network agent, including the originating agent, can discover and invoke an admitted capability
+within its supported scope. successful_reuse records accepted, reconciled work. successful_peer_reuse additionally
+requires a different authenticated name and wallet; origin-agent work or a second name on its wallet cannot
+establish that peer claim. Availability is not restricted to the agent used for the qualification exercise.
+Every actual Beta comparison is itself a chargeable invocation, charged exactly once to B before accepting
+reuse. Its execution must follow the fresh request commitment. Reports show both operating savings before
+comparison overhead and additional value after all current costs. A useful accepted reuse can have negative
+net value during qualification; omitting the baseline bill cannot manufacture a positive return.
 
 ### Storage, keys, recovery and revocation
 
@@ -291,6 +299,15 @@ structurelle ne touche pas aux admissions protégées. Un import n’installe ni
 Une invocation crée un reçu d’exécution, sans revendiquer une réutilisation réussie. Celle-ci demande
 acceptation indépendante, reçu Beta actuel sur la tâche nouvelle et rapprochement de tous les coûts.
 La valeur supplémentaire peut être négative : une tâche utile acceptée ne prouve pas un avantage économique.
+Chaque agent du réseau admissible, y compris l’agent d’origine, peut découvrir et invoquer une capacité admise
+dans sa portée. successful_reuse désigne un travail accepté et rapproché ; successful_peer_reuse exige en plus
+un nom authentifié ET un portefeuille différents. Le travail de l’origine ou un autre nom sur son portefeuille
+ne prouve aucune réutilisation par un pair. L’accès ne se limite pas à l’agent du test de qualification.
+Chaque comparaison Beta réellement exécutée constitue aussi une invocation facturable, comptabilisée une
+fois dans B avant acceptation de la réutilisation. Elle suit l’engagement de la nouvelle requête. Les rapports
+distinguent économie opérationnelle avant comparaison et valeur supplémentaire après tous les coûts.
+Une réutilisation utile acceptée peut avoir une valeur nette négative pendant qualification ; omettre
+la facture Beta ne peut créer un rendement positif.
 
 La branche protégée reste dans le Journal de la TransformationLibrary. Les manifestes publics sont
 distincts des programmes chiffrés AES-GCM ; les données associées lient service, Journal et manifeste

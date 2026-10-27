@@ -323,6 +323,10 @@ class ResourceAccess:
         authority = safe_json_loads(prepared.authority)
         if not isinstance(authority, dict):
             raise ValueError("prepared authority is malformed")
+        authority.update(
+            challenge_id=prepared.proof.challenge_id,
+            request_committed_at=record["payload"]["issued_at"],
+        )
         self.journal.append(
             cx,
             "@flywheel-challenge:" + prepared.proof.challenge_id,

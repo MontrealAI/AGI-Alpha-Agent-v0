@@ -725,9 +725,16 @@ def test_revoked_executor_cannot_support_future_access(setup: dict[str, Any]) ->
         s["service"].manifest(ident, token)
 
 
-def test_reconciled_acceptance_required_for_successful_reuse(setup: dict[str, Any]) -> None:
+@pytest.mark.parametrize("self_invocation,omit_comparison_cost", [(False, False), (True, False), (False, True)])
+def test_reconciled_acceptance_required_for_successful_reuse(
+    setup: dict[str, Any], self_invocation: bool, omit_comparison_cost: bool
+) -> None:
     s = setup
     ident = admitted(s)
+    if self_invocation:
+        s["wallet"] = s["origin_wallet"]
+        for reader in s["rpc"]:
+            reader.owners[namehash("two.agent.agi.eth").hex()] = s["origin_wallet"].address.lower()
     request = invocation()
     receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
     source = receipt["input_digest"]
@@ -775,18 +782,55 @@ def test_reconciled_acceptance_required_for_successful_reuse(setup: dict[str, An
             note="Synthetic all-resource reconciliation",
         )
         account(s, "resolve" if category == "compute" else "charge", charge.model_dump(), "reuse-cost-" + category)
+    if not omit_comparison_cost:
+        comparison = Charge(
+            activity_id="comparison/" + request.mission_id,
+            mission_id=request.mission_id,
+            bucket="B",
+            category="model",
+            accrued_micro_usd=baseline["actual_cost_micro_usd"],
+            paid_micro_usd=0,
+            basis="attested",
+            evidence_digest=digest("flywheel-frontier-run-record", record["beta_run"]),
+            note="Synthetic actual comparison invocation; distinct from the retained program cost",
+        )
+        account(s, "charge", comparison.model_dump(), "reuse-comparison-cost")
     account(
         s,
         "seal-reuse",
         {"mission_id": request.mission_id, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
         "reuse-seal",
     )
+    if omit_comparison_cost:
+        with pytest.raises(ValueError, match="comparison must be charged"):
+            s["service"].accept_reuse(approval)
+        return
     result = s["service"].accept_reuse(approval)
     assert result["successful_reuse"] is True
-    assert result["additional_value"] == 50 - len(CATEGORIES)
+    assert result["peer_identity"] is (not self_invocation)
+    assert result["successful_peer_reuse"] is (not self_invocation)
+    assert result["additional_value"] == -len(CATEGORIES)
+    assert result["operating_saving_before_comparison_micro_usd"] == 50 - len(CATEGORIES)
+    assert result["comparison_cost_micro_usd"] == 50
     assert s["costs"].report(ORIGIN)["costs"]["A"] == len(CATEGORIES)
     with pytest.raises(Conflict):
         s["service"].accept_reuse(approval)
+
+
+def test_originating_eligible_agent_keeps_network_invocation_access(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    challenge = s["access"].challenge(
+        "one.agent.agi.eth", s["origin_wallet"].address, ident, "invoke", digest("flywheel-invocation", request)
+    )
+    signature = Account.sign_message(encode_defunct(text=challenge["message"]), s["origin_wallet"].key).signature.hex()
+    receipt = s["service"].invoke(
+        ident, request, AccessRequest(challenge_id=challenge["challenge_id"], signature=signature)
+    )
+    assert receipt["authorization"]["name"] == "one.agent.agi.eth"
+    assert receipt["status"] == "executed-awaiting-acceptance-and-complete-cost"
+    assert receipt["peer_identity"] is False and receipt["successful_peer_reuse"] is False
 
 
 def test_corrupt_private_capsule_fails_without_plaintext_and_records_attempt(setup: dict[str, Any]) -> None:
@@ -1253,7 +1297,10 @@ def test_execution_environment_changes_require_restart_and_fresh_admission(setup
     assert entry(s, ident)["state"] == "requires-requalification"
 
 
-def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(setup: dict[str, Any]) -> None:
+@pytest.mark.parametrize("attack", ["capabilities", "before-request", "future"])
+def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(
+    setup: dict[str, Any], attack: str
+) -> None:
     s = setup
     ident = admitted(s)
     request = invocation()
@@ -1267,7 +1314,7 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(se
         "reasoning_mode": "fixture",
         "tools_digest": ZERO,
         "resource_rules_digest": ZERO,
-        "recipient_capabilities_digest": "f" * 64,
+        "recipient_capabilities_digest": "f" * 64 if attack == "capabilities" else ZERO,
         "provider_response_digest": ZERO,
         "billing_evidence_digest": ZERO,
         "actual_cost_micro_usd": 50,
@@ -1276,6 +1323,10 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(se
         "finished_at": int(time.time()),
         "evidence_basis": "configured-executor-attestation",
     }
+    if attack == "before-request":
+        baseline["started_at"] = receipt["authorization"]["request_committed_at"] - 1
+    elif attack == "future":
+        baseline["finished_at"] += 60
     record = {
         "mission_id": request.mission_id,
         "receipt_digest": digest("flywheel-reuse-receipt", receipt),
@@ -1286,7 +1337,7 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(se
         "residual_interventions_digest": ZERO,
         "limitations": "Synthetic mismatched-recipient attack",
     }
-    with pytest.raises(ValueError, match="matched scope"):
+    with pytest.raises(ValueError, match="matched scope" if attack == "capabilities" else "fresh request window"):
         s["service"].accept_reuse(signed(s, "reuse-acceptance", "acceptor", record, "wrong-recipient-baseline"))
 
 

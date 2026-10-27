@@ -30,7 +30,7 @@ def record() -> dict[str, Any]:
     spec.loader.exec_module(module)
     with tempfile.TemporaryDirectory(prefix="protected-flywheel-conformance-") as temporary:
         state = module.setup.__wrapped__(Path(temporary))
-        module.test_reconciled_acceptance_required_for_successful_reuse(state)
+        module.test_reconciled_acceptance_required_for_successful_reuse(state, False, False)
         before_payment = state["costs"].report()
         module.account(
             state,
