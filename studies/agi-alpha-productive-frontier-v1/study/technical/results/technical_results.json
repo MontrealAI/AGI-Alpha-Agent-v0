@@ -1,0 +1,546 @@
+{
+  "protocol": {
+    "study": "Certified disturbance-energy screening for damped coupled dynamical systems",
+    "version": "1.0-frozen-before-confirmation",
+    "family": "A = -D + K, D positive diagonal, K skew symmetric, n=192; two localized stochastic input channels",
+    "artifact": "orthonormal reduced Lyapunov subspace; versioned numpy array",
+    "learning": "POD of solution covariance eigenspaces from paid-work instances; optional Gym adds the four worst development residuals and refits",
+    "seeds": {
+      "work": 1401,
+      "development": 2401,
+      "confirmation": 3401,
+      "shift": 4401,
+      "prototype": 5401
+    },
+    "counts": {
+      "work": 6,
+      "development": 20,
+      "confirmation": 64,
+      "shift": 32,
+      "prototype": 32
+    },
+    "operating_box": {
+      "damping": [
+        0.6,
+        2.0
+      ],
+      "coupling": [
+        0.5,
+        2.5
+      ],
+      "heterogeneity": [
+        0.7,
+        1.3
+      ],
+      "input_scale": [
+        0.5,
+        1.5
+      ]
+    },
+    "shift_box": {
+      "damping": [
+        0.3,
+        0.6
+      ],
+      "coupling": [
+        2.5,
+        3.5
+      ],
+      "heterogeneity": [
+        0.5,
+        1.5
+      ],
+      "input_scale": [
+        0.5,
+        1.5
+      ]
+    },
+    "acceptance": {
+      "relative_trace_certificate_max": 0.01,
+      "relative_trace_reference_error_max": 0.01,
+      "relative_frobenius_reference_error_max": 0.02,
+      "fresh_reliability_min": 0.95,
+      "standard_batch_seconds_32": 5.0,
+      "interactive_batch_seconds_32": 0.25
+    },
+    "certificate": "alpha=min(diag(D)); ||X-Xhat||F <= ||A Xhat+Xhat A^T+B B^T||F/(2 alpha); trace absolute bound delta=sqrt(n)*bound; certified relative trace error <=delta/(trace(Xhat)-delta) when denominator positive",
+    "baselines": [
+      "SciPy Bartels-Stewart Schur solve",
+      "adaptive block Krylov with residual stopping",
+      "fixed central-instance block Krylov library basis of rank 48",
+      "work-only POD rank 24",
+      "work-only POD rank 48",
+      "Gym-updated POD rank 48"
+    ],
+    "timing": "single BLAS thread; matched matrix assembly time added to all methods; full residual certification included; one warm-up; fresh instances timed once; actual consecutive 32-case batch sums plus median and p95",
+    "claim_limits": [
+      "Synthetic stable dynamical systems, not validated physical controllers",
+      "No live frontier-model calls or customer trials",
+      "Frozen engineering contracts are explicit research service hypotheses, not documented buyer SLAs",
+      "Schur and adaptive Krylov represent competent numerical tools, not measured model reasoning quality",
+      "No graph-specific advantage claim",
+      "No assumed specialist multiplier"
+    ],
+    "search_budget": {
+      "Gym_additional_full_solves": 4,
+      "retained_basis_rank": 48,
+      "postconfirmation_retuning": 0
+    }
+  },
+  "hashes": {
+    "protocol_sha256": "9dba80b867dc00f497d30ab34f342461eb67d8c8788dc0094333f0516ca9fc3c",
+    "implementation_sha256": "124da4d93774f5150dee668e6ada3c8c677b1db63532075801063a7ff4b647c2",
+    "bases": {
+      "work_pod24": "dcf4a7e8295ed6c187be5204aa9f3b93284c7c8dd03045b0381a4f9793297b47",
+      "work_pod48": "4de5fd89a70311d1e2a3052a71b74540a78a83ed3c2b85ce7e95b78b7f873d03",
+      "gym_pod48": "17e460c41ad1571a6ed7243967974ba21c515093324a91d55bc8ab04f2caf9ce",
+      "fixed_krylov48": "379aa74b2747fc3e9aac9aaf271b87dfaf8829b42b413ccdb783531f95ddd677"
+    },
+    "selection": [
+      [
+        0.013867667796175069,
+        14
+      ],
+      [
+        0.009679252508025522,
+        11
+      ],
+      [
+        0.0030878420837193677,
+        15
+      ],
+      [
+        0.0005506818846675226,
+        10
+      ]
+    ],
+    "stage_costs": [
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 0,
+        "full_solves": 1,
+        "seconds": 0.04305719900003169
+      },
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 1,
+        "full_solves": 1,
+        "seconds": 0.03192046099866275
+      },
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 2,
+        "full_solves": 1,
+        "seconds": 0.03246885500266217
+      },
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 3,
+        "full_solves": 1,
+        "seconds": 0.02997886500088498
+      },
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 4,
+        "full_solves": 1,
+        "seconds": 0.029484047001460567
+      },
+      {
+        "category": "A",
+        "stage": "paid_work_snapshot",
+        "case": 5,
+        "full_solves": 1,
+        "seconds": 0.03505511498951819
+      },
+      {
+        "category": "B",
+        "stage": "work_retention_fit",
+        "seconds": 0.005681349997757934,
+        "full_solves": 0
+      },
+      {
+        "category": "C",
+        "stage": "Gym_candidate_assessment",
+        "seconds": 0.042695081006968394,
+        "full_solves": 0
+      },
+      {
+        "category": "C",
+        "stage": "Gym_add_snapshot",
+        "case": 14,
+        "pre_certificate": 0.013867667796175069,
+        "seconds": 0.03137367399176583,
+        "full_solves": 1
+      },
+      {
+        "category": "C",
+        "stage": "Gym_add_snapshot",
+        "case": 11,
+        "pre_certificate": 0.009679252508025522,
+        "seconds": 0.029185514998971485,
+        "full_solves": 1
+      },
+      {
+        "category": "C",
+        "stage": "Gym_add_snapshot",
+        "case": 15,
+        "pre_certificate": 0.0030878420837193677,
+        "seconds": 0.030674367997562513,
+        "full_solves": 1
+      },
+      {
+        "category": "C",
+        "stage": "Gym_add_snapshot",
+        "case": 10,
+        "pre_certificate": 0.0005506818846675226,
+        "seconds": 0.027399244994740002,
+        "full_solves": 1
+      },
+      {
+        "category": "C",
+        "stage": "Gym_refit",
+        "seconds": 0.0030492300138575956,
+        "full_solves": 0
+      },
+      {
+        "category": "B",
+        "stage": "ordinary_library_basis_build",
+        "seconds": 0.0019440890027908608,
+        "full_solves": 0
+      }
+    ],
+    "confirmation_has_been_run": false
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "scipy": "1.17.0",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "blas_threads": 1
+  },
+  "summary": {
+    "confirmation": {
+      "adaptive_krylov": {
+        "n": 64,
+        "accepted": 64,
+        "acceptance_rate": 1.0,
+        "seconds_median": 0.004581030989356805,
+        "seconds_p95": 0.017397927462297937,
+        "seconds_total": 0.40139646413445007,
+        "batch32_seconds_mean": 0.20069823206722504,
+        "batch32_seconds_observed": [
+          0.17718032107222825,
+          0.22421614306222182
+        ],
+        "batch32_seconds_p95_proxy": 0.556733678793534,
+        "max_relative_trace_error": 8.761310391262773e-06,
+        "max_relative_fro_error": 0.000776997267316825,
+        "max_trace_certificate": 0.009378767852646555,
+        "median_rank": 24.0
+      },
+      "fixed_krylov48": {
+        "n": 64,
+        "accepted": 2,
+        "acceptance_rate": 0.03125,
+        "seconds_median": 0.0024404450014117174,
+        "seconds_p95": 0.0032321293489076188,
+        "seconds_total": 0.16363982207258232,
+        "batch32_seconds_mean": 0.08181991103629116,
+        "batch32_seconds_observed": [
+          0.08074212104838807,
+          0.08289770102419425
+        ],
+        "batch32_seconds_p95_proxy": 0.1034281391650438,
+        "max_relative_trace_error": 0.000732076032545719,
+        "max_relative_fro_error": 0.09159468870644773,
+        "max_trace_certificate": 2.6092292597316225,
+        "median_rank": 48.0
+      },
+      "gym_pod48": {
+        "n": 64,
+        "accepted": 62,
+        "acceptance_rate": 0.96875,
+        "seconds_median": 0.0024368190061068162,
+        "seconds_p95": 0.003085988012753659,
+        "seconds_total": 0.15870173108123709,
+        "batch32_seconds_mean": 0.07935086554061854,
+        "batch32_seconds_observed": [
+          0.0775153340655379,
+          0.08118639701569919
+        ],
+        "batch32_seconds_p95_proxy": 0.09875161640811708,
+        "max_relative_trace_error": 5.37509793348956e-05,
+        "max_relative_fro_error": 0.002414463268557898,
+        "max_trace_certificate": 0.029061422294130505,
+        "median_rank": 48.0
+      },
+      "schur": {
+        "n": 64,
+        "accepted": 64,
+        "acceptance_rate": 1.0,
+        "seconds_median": 0.034219802502775565,
+        "seconds_p95": 0.043056113162310776,
+        "seconds_total": 2.249499038036447,
+        "batch32_seconds_mean": 1.1247495190182235,
+        "batch32_seconds_observed": [
+          1.1014373100042576,
+          1.1480617280321894
+        ],
+        "batch32_seconds_p95_proxy": 1.3777956211939448,
+        "max_relative_trace_error": 0.0,
+        "max_relative_fro_error": 0.0,
+        "max_trace_certificate": 1.573287485979984e-13,
+        "median_rank": 192.0
+      },
+      "work_pod24": {
+        "n": 64,
+        "accepted": 17,
+        "acceptance_rate": 0.265625,
+        "seconds_median": 0.0016459175021736883,
+        "seconds_p95": 0.0018435957397741729,
+        "seconds_total": 0.10839911598304752,
+        "batch32_seconds_mean": 0.05419955799152376,
+        "batch32_seconds_observed": [
+          0.052454243021202274,
+          0.05594487296184525
+        ],
+        "batch32_seconds_p95_proxy": 0.05899506367277353,
+        "max_relative_trace_error": 0.0003575677632474033,
+        "max_relative_fro_error": 0.0418979944904626,
+        "max_trace_certificate": 0.9909849183155687,
+        "median_rank": 24.0
+      },
+      "work_pod48": {
+        "n": 64,
+        "accepted": 62,
+        "acceptance_rate": 0.96875,
+        "seconds_median": 0.0024534495023544878,
+        "seconds_p95": 0.0038056289107771552,
+        "seconds_total": 0.16742240703024436,
+        "batch32_seconds_mean": 0.08371120351512218,
+        "batch32_seconds_observed": [
+          0.07821263001824263,
+          0.08920977701200172
+        ],
+        "batch32_seconds_p95_proxy": 0.12178012514486897,
+        "max_relative_trace_error": 6.469079626676789e-05,
+        "max_relative_fro_error": 0.0037274580994361437,
+        "max_trace_certificate": 0.04856949573104254,
+        "median_rank": 48.0
+      }
+    },
+    "shift": {
+      "adaptive_krylov": {
+        "n": 32,
+        "accepted": 22,
+        "acceptance_rate": 0.6875,
+        "seconds_median": 0.04119296500721248,
+        "seconds_p95": 0.050643413142097415,
+        "seconds_total": 1.2225723959854804,
+        "batch32_seconds_mean": 1.2225723959854804,
+        "batch32_seconds_observed": [
+          1.2225723959854804
+        ],
+        "batch32_seconds_p95_proxy": 1.6205892205471173,
+        "max_relative_trace_error": 0.00011324965693838513,
+        "max_relative_fro_error": 0.00412426110299891,
+        "max_trace_certificate": 0.0730255081437822,
+        "median_rank": 96.0
+      },
+      "fixed_krylov48": {
+        "n": 32,
+        "accepted": 0,
+        "acceptance_rate": 0.0,
+        "seconds_median": 0.002256045991089195,
+        "seconds_p95": 0.002880641686351737,
+        "seconds_total": 0.07554646900098305,
+        "batch32_seconds_mean": 0.07554646900098305,
+        "batch32_seconds_observed": [
+          0.07554646900098305
+        ],
+        "batch32_seconds_p95_proxy": 0.09218053396325558,
+        "max_relative_trace_error": 0.0028567336455133183,
+        "max_relative_fro_error": 0.27343346263428875,
+        "max_trace_certificate": 6.645796099291653e+300,
+        "median_rank": 48.0
+      },
+      "gym_pod48": {
+        "n": 32,
+        "accepted": 0,
+        "acceptance_rate": 0.0,
+        "seconds_median": 0.0021853345024283044,
+        "seconds_p95": 0.0034408472478389732,
+        "seconds_total": 0.07558908000646625,
+        "batch32_seconds_mean": 0.07558908000646625,
+        "batch32_seconds_observed": [
+          0.07558908000646625
+        ],
+        "batch32_seconds_p95_proxy": 0.11010711193084714,
+        "max_relative_trace_error": 0.001048478592527595,
+        "max_relative_fro_error": 0.06405602360120134,
+        "max_trace_certificate": 4.757207828703767,
+        "median_rank": 48.0
+      },
+      "schur": {
+        "n": 32,
+        "accepted": 32,
+        "acceptance_rate": 1.0,
+        "seconds_median": 0.03170564851461677,
+        "seconds_p95": 0.036858748588565506,
+        "seconds_total": 1.0222196069807978,
+        "batch32_seconds_mean": 1.0222196069807978,
+        "batch32_seconds_observed": [
+          1.0222196069807978
+        ],
+        "batch32_seconds_p95_proxy": 1.1794799548340962,
+        "max_relative_trace_error": 0.0,
+        "max_relative_fro_error": 0.0,
+        "max_trace_certificate": 2.9767792532606705e-13,
+        "median_rank": 192.0
+      },
+      "work_pod24": {
+        "n": 32,
+        "accepted": 0,
+        "acceptance_rate": 0.0,
+        "seconds_median": 0.0015493325045099482,
+        "seconds_p95": 0.0019798735876975114,
+        "seconds_total": 0.05103437096113339,
+        "batch32_seconds_mean": 0.05103437096113339,
+        "batch32_seconds_observed": [
+          0.05103437096113339
+        ],
+        "batch32_seconds_p95_proxy": 0.06335595480632036,
+        "max_relative_trace_error": 0.0026596547600618832,
+        "max_relative_fro_error": 0.23580700074591923,
+        "max_trace_certificate": 9.743965967184238e+300,
+        "median_rank": 24.0
+      },
+      "work_pod48": {
+        "n": 32,
+        "accepted": 0,
+        "acceptance_rate": 0.0,
+        "seconds_median": 0.0021855690065422095,
+        "seconds_p95": 0.002996540890308097,
+        "seconds_total": 0.07352337401243858,
+        "batch32_seconds_mean": 0.07352337401243858,
+        "batch32_seconds_observed": [
+          0.07352337401243858
+        ],
+        "batch32_seconds_p95_proxy": 0.0958893084898591,
+        "max_relative_trace_error": 0.0015731037323702042,
+        "max_relative_fro_error": 0.07105603897798089,
+        "max_trace_certificate": 1.3799281464398453e+300,
+        "median_rank": 48.0
+      }
+    },
+    "prototype": {
+      "adaptive_krylov": {
+        "n": 32,
+        "accepted": 32,
+        "acceptance_rate": 1.0,
+        "seconds_median": 0.004581221503030974,
+        "seconds_p95": 0.012454091337713179,
+        "seconds_total": 0.19490358405164443,
+        "batch32_seconds_mean": 0.19490358405164443,
+        "batch32_seconds_observed": [
+          0.19490358405164443
+        ],
+        "batch32_seconds_p95_proxy": 0.39853092280682173,
+        "max_relative_trace_error": 7.461077562069058e-06,
+        "max_relative_fro_error": 0.0008575754033148526,
+        "max_trace_certificate": 0.009291823284901612,
+        "median_rank": 24.0
+      },
+      "fixed_krylov48": {
+        "n": 32,
+        "accepted": 0,
+        "acceptance_rate": 0.0,
+        "seconds_median": 0.0021957545104669407,
+        "seconds_p95": 0.0025215105546521955,
+        "seconds_total": 0.07213452502037399,
+        "batch32_seconds_mean": 0.07213452502037399,
+        "batch32_seconds_observed": [
+          0.07213452502037399
+        ],
+        "batch32_seconds_p95_proxy": 0.08068833774887026,
+        "max_relative_trace_error": 0.0003663206697802618,
+        "max_relative_fro_error": 0.07813141305455076,
+        "max_trace_certificate": 2.4088615564376545,
+        "median_rank": 48.0
+      },
+      "gym_pod48": {
+        "n": 32,
+        "accepted": 31,
+        "acceptance_rate": 0.96875,
+        "seconds_median": 0.0021957700009807013,
+        "seconds_p95": 0.0025947568668925666,
+        "seconds_total": 0.07480286006466486,
+        "batch32_seconds_mean": 0.07480286006466486,
+        "batch32_seconds_observed": [
+          0.07480286006466486
+        ],
+        "batch32_seconds_p95_proxy": 0.08303221974056213,
+        "max_relative_trace_error": 1.6852705740330427e-05,
+        "max_relative_fro_error": 0.0013679793798745039,
+        "max_trace_certificate": 0.016969736817534223,
+        "median_rank": 48.0
+      },
+      "schur": {
+        "n": 32,
+        "accepted": 32,
+        "acceptance_rate": 1.0,
+        "seconds_median": 0.031027732002257835,
+        "seconds_p95": 0.03365532094903756,
+        "seconds_total": 0.9910409929871093,
+        "batch32_seconds_mean": 0.9910409929871093,
+        "batch32_seconds_observed": [
+          0.9910409929871093
+        ],
+        "batch32_seconds_p95_proxy": 1.076970270369202,
+        "max_relative_trace_error": 0.0,
+        "max_relative_fro_error": 0.0,
+        "max_trace_certificate": 1.5196552777461553e-13,
+        "median_rank": 192.0
+      },
+      "work_pod24": {
+        "n": 32,
+        "accepted": 7,
+        "acceptance_rate": 0.21875,
+        "seconds_median": 0.0015405595040647313,
+        "seconds_p95": 0.0017144543453468941,
+        "seconds_total": 0.049953438006923534,
+        "batch32_seconds_mean": 0.049953438006923534,
+        "batch32_seconds_observed": [
+          0.049953438006923534
+        ],
+        "batch32_seconds_p95_proxy": 0.05486253905110061,
+        "max_relative_trace_error": 0.00021155788607312237,
+        "max_relative_fro_error": 0.033948273269663806,
+        "max_trace_certificate": 0.7477842938564127,
+        "median_rank": 24.0
+      },
+      "work_pod48": {
+        "n": 32,
+        "accepted": 30,
+        "acceptance_rate": 0.9375,
+        "seconds_median": 0.0022256750089582056,
+        "seconds_p95": 0.00250262890549493,
+        "seconds_total": 0.07328332305769436,
+        "batch32_seconds_mean": 0.07328332305769436,
+        "batch32_seconds_observed": [
+          0.07328332305769436
+        ],
+        "batch32_seconds_p95_proxy": 0.08008412497583776,
+        "max_relative_trace_error": 1.2362154852053988e-05,
+        "max_relative_fro_error": 0.0027932604250050976,
+        "max_trace_certificate": 0.037660047772872615,
+        "median_rank": 48.0
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "productive-frontier-repository-adapter-validation/v1",
+  "source_commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+  "observed_on": "2026-10-27",
+  "tests": {
+    "command": "python -m unittest discover -s studies/agi-alpha-productive-frontier-v1/study -p test_repository_adapter.py -v",
+    "passed": 10,
+    "failed": 0,
+    "duration_seconds": 0.947
+  },
+  "lint": {
+    "command": "python -m ruff check studies/agi-alpha-productive-frontier-v1/study/repository_adapter.py studies/agi-alpha-productive-frontier-v1/study/test_repository_adapter.py",
+    "exit_code": 0
+  },
+  "types": {
+    "command": "python -m mypy --strict --follow-imports=silent studies/agi-alpha-productive-frontier-v1/study/repository_adapter.py",
+    "exit_code": 0,
+    "source_files": 1
+  },
+  "environment": {
+    "dependency_precheck": "All required packages available",
+    "check_env_auto_install": "Environment OK; missing google-adk installed"
+  },
+  "limits": [
+    "Local native fixture commands only",
+    "No ENS authentication or protected scientific production admission",
+    "No actual frontier call or customer collection",
+    "Full hosted repository/release acceptance not run"
+  ],
+  "files": [
+    {
+      "path": "study/repository_adapter.py",
+      "sha256": "cdbda65db6f7bd68f5cb50f61bf0cfb835b9ba5f7a6cea90f5c8c40f66ddabfd",
+      "bytes": 7618
+    },
+    {
+      "path": "study/test_repository_adapter.py",
+      "sha256": "20592337735dbe2b92a27a2e77b11300cacc972aae33a84ba2800bebcf4a2fda",
+      "bytes": 6193
+    },
+    {
+      "path": "evidence/native_source_manifest.json",
+      "sha256": "de44eae13cede2f4460732dd264d3d413019e892ebb69a67dda5865fab4835f8",
+      "bytes": 3518
+    },
+    {
+      "path": "evidence/native_accounting_fixture.json",
+      "sha256": "3480f8ad440497c2137813cbb78524da7dc0be5760bd2dba188b7393f5ea8203",
+      "bytes": 19401
+    },
+    {
+      "path": "evidence/native_unknown_cost_fixture.json",
+      "sha256": "9b1d40d53f7bc9ad68a06f1c41ad9972d04e8d848e7afc6c707531ae919c6851",
+      "bytes": 4974
+    }
+  ]
+}

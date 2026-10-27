@@ -1,0 +1,141 @@
+{
+  "schema": "productive-frontier-native-accounting/v1",
+  "repository_commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+  "report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "collected_revenue": 0,
+    "delivery_profit": null,
+    "complete_cost_profit": null,
+    "cash": 0,
+    "obligations": null,
+    "known_obligations": 0,
+    "reserve": 0,
+    "available_funds": null,
+    "complete": false,
+    "bucket_complete": {
+      "A": false,
+      "B": false,
+      "C": false
+    },
+    "unknown_costs": true,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "journal_verification": {
+    "valid": true,
+    "events": 6
+  },
+  "commands": [
+    {
+      "operation_id": "research-command-0",
+      "action": "charge",
+      "record": {
+        "activity_id": "actual-unmetered-research",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "compute",
+        "accrued_micro_usd": null,
+        "paid_micro_usd": 0,
+        "basis": "unknown",
+        "evidence_digest": "09c2771c176f03dca751c1014bd3b64c34d1bbaaaa96a3f5b37b73e02d773cc0",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-1",
+      "action": "reserve",
+      "record": 0
+    }
+  ],
+  "authority": "LOCAL_EPHEMERAL_TEST_SIGNER; NOT_ENS_AUTHENTICATION",
+  "amount_basis": "SUPPLIED_RESEARCH_ATTESTATIONS; NOT_PROVIDER_OR_BANK_VERIFICATION",
+  "actual_customer_collections_micro_usd": 0,
+  "production_capability_admission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "reused_source_files": [
+    {
+      "path": "alpha_factory_v1/__init__.py",
+      "bytes": 1452,
+      "sha256": "065ed77bc53191bf762d2402be898be7d1e605ee94ea05ae2d3bc9eeaf5b3421",
+      "git_blob": "1e02fd448337e10b79d63d8f37a16862cf422bbf"
+    },
+    {
+      "path": "alpha_factory_v1/core/__init__.py",
+      "bytes": 106,
+      "sha256": "b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd",
+      "git_blob": "bd3579b5219c5e3dbb1a33e614f4a9e3a4132e37"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/__init__.py",
+      "bytes": 254,
+      "sha256": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
+      "git_blob": "4a25b21ecc8916f0c6cc08d3fe8b3da54129e5d6"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/models.py",
+      "bytes": 8098,
+      "sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+      "git_blob": "dfeaf594e4111ae7afd866ffe2ffb7a4c6e5f856"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/store.py",
+      "bytes": 27752,
+      "sha256": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+      "git_blob": "eeccfa187f3f91fd32a9bd89aabb01078ddf3266"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/__init__.py",
+      "bytes": 118,
+      "sha256": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771",
+      "git_blob": "2d5d184e6bc59631834609110f6058aa0ff67020"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py",
+      "bytes": 3680,
+      "sha256": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+      "git_blob": "c07d691d01b42b9c4b4df53c3fd4b5f5bf92ff32"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+      "bytes": 19976,
+      "sha256": "4d2e19b937471bdc247a9b0bb66bd4c315da5a9c6498591bc9f24496e07feb13",
+      "git_blob": "a67831004bd9abb85aa12e03f1cfc6d0f4444f59"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/protocol.py",
+      "bytes": 37652,
+      "sha256": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+      "git_blob": "a027036c91951a2beb65e490cd8fc28507c73309"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/signatures.py",
+      "bytes": 2490,
+      "sha256": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+      "git_blob": "2a440d80c43c57d4b5923c8e452ef12391c30a65"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/transformation.py",
+      "bytes": 75444,
+      "sha256": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+      "git_blob": "6f1e99d2086ce03a7c039ae53ecdce041a57b26b"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/transformation_library.py",
+      "bytes": 22682,
+      "sha256": "c78903802ba0379cdd1907c6472630e488d55cbfe7b1fb99ce0d275bb758d172",
+      "git_blob": "0059ce95b00cbe96268daa4dcb40b452143df541"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/trust.py",
+      "bytes": 13314,
+      "sha256": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+      "git_blob": "b7b0a65e65b0726392d678ceaf43e4e47bf1b1d6"
+    }
+  ],
+  "scope": "Actual complete research expense is unmetered; unknown costs remain unknown"
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "productive-frontier-source-distribution-review/v1",
+  "reviewer": "independent technical subagent",
+  "result": "PASS",
+  "archive_sources_verified": 7,
+  "maintained_solver_ast_equivalence_verified": 4,
+  "source_records": [
+    {
+      "path": "study/technical/lyapunov_study.py",
+      "executed_sha256": "9c17d9ab4339dd3a4add18310d105d56775fd4ab28538a724fedd153b25b7993",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true,
+      "maintained_ast_exactly_equal_ignoring_locations": true,
+      "maintained_digest_matches": true
+    },
+    {
+      "path": "study/technical/prototype_study.py",
+      "executed_sha256": "ab2891a0d218f257a8b457e8e3329236cf6690e74f9564675b55c8e5a64982f4",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true,
+      "maintained_ast_exactly_equal_ignoring_locations": true,
+      "maintained_digest_matches": true
+    },
+    {
+      "path": "study/technical/fallback_validation.py",
+      "executed_sha256": "58b6ed8c5bb7b1665ea321a5e71fb7118103e5b9cd0134d9469e501bba9d777b",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true,
+      "maintained_ast_exactly_equal_ignoring_locations": true,
+      "maintained_digest_matches": true
+    },
+    {
+      "path": "study/technical/recipient.py",
+      "executed_sha256": "888dce6c2c12336a297a21245f9da6649e02e6ccfbc7a1a6d2701d3ad0ccbfa8",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true,
+      "maintained_ast_exactly_equal_ignoring_locations": true,
+      "maintained_digest_matches": true
+    },
+    {
+      "path": "study/technical/test_numerics.py",
+      "executed_sha256": "1527bb0c4e67d124d0cd8b29e69b84bea385c8007f7aac71b3492b84b44c8c68",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true
+    },
+    {
+      "path": "study/technical/archived_initial/lyapunov_study.py",
+      "executed_sha256": "124da4d93774f5150dee668e6ada3c8c677b1db63532075801063a7ff4b647c2",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true
+    },
+    {
+      "path": "study/technical/archived_initial/prototype_study.py",
+      "executed_sha256": "f420836a052ee4d2d569049175112247b5c34d6c1c71fbf80add83bc8050bb71",
+      "gzip_digest_matches": true,
+      "executed_digest_matches": true,
+      "gzip_mtime_zero": true,
+      "preformat_zip_bytes_identical": true
+    }
+  ],
+  "restore": {
+    "helper_returncode": 0,
+    "unique_new_destination_used": true,
+    "restored_sources": 7
+  },
+  "delivery_manifest_before_original_tests": {
+    "entries": 56,
+    "matched": 56,
+    "mismatches": []
+  },
+  "original_six_tests": {
+    "returncode": 0,
+    "tests_run": 6,
+    "passed": true,
+    "wall_seconds": 0.8814627770043444,
+    "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.595s\n\nOK"
+  },
+  "delivery_manifest_after_original_tests": {
+    "entries": 56,
+    "matched": 56,
+    "mismatches": []
+  },
+  "maintained_six_tests": {
+    "returncode": 0,
+    "tests_run": 6,
+    "passed": true,
+    "wall_seconds": 0.9222019830049248,
+    "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.576s\n\nOK"
+  },
+  "published_technical_tree_changed_by_review": [],
+  "maintained_test_only_changes_verified": [
+    "Import gzip and hash decompressed historical source against the same original frozen SHA-256",
+    "Do not rewrite the published recipient receipt"
+  ],
+  "limits": [
+    "AST equality is verified for the four solver/recipient modules, not asserted for the packaging-adapted test module.",
+    "Formatting changes source bytes and source-introspection hashes/locations; restored executed archives are authoritative for byte-exact replay.",
+    "These focused tests do not establish physical validity, live authentication, market demand or universal behavioral equivalence."
+  ]
+}

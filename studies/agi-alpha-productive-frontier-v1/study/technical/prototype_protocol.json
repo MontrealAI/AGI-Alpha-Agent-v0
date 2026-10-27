@@ -1,0 +1,16 @@
+{
+  "version": "secondary-prototype-frozen-before-seed6401",
+  "status": "Declared after confirmation experiment A; no training or model selection changes permitted",
+  "seed": 6401,
+  "cases": 8,
+  "gain_grid": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7],
+  "purpose": "Select added diagonal damping g for synthetic stable coupled modes, minimizing J=trace(X_g)+0.15*g^2, where A_g=A-gI",
+  "certificate": "Same Lyapunov residual trace bound; numerical covariance certification only, not plant robustness or real control safety",
+  "acceptance": {"maximum_objective_regret": 0.000001, "must_certify_separation_or_abstain": true, "eight_case_service_deadline_seconds": 2.0},
+  "methods": ["Schur", "adaptive Krylov then Schur on certificate failure", "work POD48 then adaptive Krylov then Schur on certificate failure", "Gym POD48 then adaptive Krylov then Schur on certificate failure"],
+  "selection": "Eliminate candidates whose lower objective bound exceeds the smallest upper bound; if remaining intervals overlap, recompute all potential winners with Schur; abstain if numerical intervals still overlap",
+  "timing": "Each policy runs fresh matrices, full certification, fallback and selection end to end with one BLAS thread; independent Schur oracle excluded from policy time",
+  "maximum_new_training_solves": 0,
+  "maximum_candidate_queries": 64,
+  "market_status": "Research service hypothesis, no documented buyer willingness to pay"
+}

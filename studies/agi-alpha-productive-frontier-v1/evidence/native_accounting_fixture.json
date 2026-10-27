@@ -1,0 +1,608 @@
+{
+  "schema": "productive-frontier-native-accounting/v1",
+  "repository_commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+  "report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 100000000,
+      "B": 7000000,
+      "C": 13000000
+    },
+    "collected_revenue": 200000000,
+    "delivery_profit": 100000000,
+    "complete_cost_profit": 80000000,
+    "cash": 1130000000,
+    "obligations": 50000000,
+    "known_obligations": 50000000,
+    "reserve": 40000000,
+    "available_funds": 1040000000,
+    "complete": true,
+    "bucket_complete": {
+      "A": true,
+      "B": true,
+      "C": true
+    },
+    "unknown_costs": false,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "journal_verification": {
+    "valid": true,
+    "events": 68
+  },
+  "commands": [
+    {
+      "operation_id": "research-command-0",
+      "action": "capital",
+      "record": {
+        "record_id": "research-capital",
+        "mission_id": "enterprise",
+        "amount_micro_usd": 1000000000,
+        "evidence_digest": "467cb81358aeb0a406790c991c500583a5e30e5093b9032c32348589a5da991c"
+      }
+    },
+    {
+      "operation_id": "research-command-1",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-model",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "model",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "3af4b4c3da4d4ebfa7f2eb9ee36fd5f26ef5d238da4e7634a923f095c46754b3",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-2",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-tools",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "tools",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "7b54ad470d7cf25cc8227ca832c4ad4236f3f4e136966c79ca2e9880cbb5cb3e",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-3",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-compute",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "compute",
+        "accrued_micro_usd": 100000000,
+        "paid_micro_usd": 50000000,
+        "basis": "attested",
+        "evidence_digest": "f2112a0d4b57a1e82cfd5ed4e75e696bd046409289212fcf758a10f2f39a39ac",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-4",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-storage",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "storage",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "be48f90bf3fb3c415ddc503fc63cc1a45ac3e02cb887d79ca398634c9268b654",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-5",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-network",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "network",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "a544710974a18f684cc3bdbdc95f2f6f8dfd9c53defdce44117239e4940ba984",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-6",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-human",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "human",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "9b10f03cfa5d26063c7abc98567be28de1560a257eccb43a325af0973e55a98a",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-7",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-acceptance",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "acceptance",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "55eadabac7d2fcdb941cd98104be6e3e5a0a78f3ba987cc649beb6619aaf0dde",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-8",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-correction",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "correction",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "fe3e33ca1b42566a018fe2bfe5f95e73ad74d0013d9139e906aa5eeb5d1b6a19",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-9",
+      "action": "charge",
+      "record": {
+        "activity_id": "A-overhead",
+        "mission_id": "mission",
+        "bucket": "A",
+        "category": "overhead",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "84c43d4e6176ba7ea92f08bb2d22f1a70ad1dd90913a1d8e33d26fba239e338a",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-10",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-model",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "model",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "46e1803b127ef28af7591b00202fb84376de9087c84401a0571bd8a230860740",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-11",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-tools",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "tools",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "1e9be8100eb7546da9ed0bee6039fc360ad992b12f5ede11b1b54639de6a3815",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-12",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-compute",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "compute",
+        "accrued_micro_usd": 7000000,
+        "paid_micro_usd": 7000000,
+        "basis": "attested",
+        "evidence_digest": "99ee67738dc757f793254d63ef4451cf0dd9362fed0cc8d1e61fb7f5b31a35bc",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-13",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-storage",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "storage",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "1d9b8d9876a05e0eaf6a77342ecd83171bf5069f4f34ca554f90a564bc7aebf3",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-14",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-network",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "network",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "90d4cfa898f8d757df84fca601d013876dcd870261267000337a44ee64a69661",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-15",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-human",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "human",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "f212736e01907aab57609216bf5ebefc3657dce5267a96dd5785891aebd38f72",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-16",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-acceptance",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "acceptance",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "3c0a0d37f8cc6dde07a74cfc0a6a7e82fb1b3701a8744297c813e21bff3dc963",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-17",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-correction",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "correction",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "27bd2d051a2d39871b4aee9ffaa85673a8fe56bc557c8121f50f16a1844552eb",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-18",
+      "action": "charge",
+      "record": {
+        "activity_id": "B-overhead",
+        "mission_id": "mission",
+        "bucket": "B",
+        "category": "overhead",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "af8dae603b6e3a9c7e56101929413ef70cedba8b456d57b2c8009c020f809e61",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-19",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-model",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "model",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "d1707a86bdb27e6d2d6971f1b1a64cfc3fd7f81bd7b51cc567f7167c9cbd96bf",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-20",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-tools",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "tools",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "0b37e603c10d000fcd970da33f30be9d1b95faa894c3c3431ef5b00b53de7140",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-21",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-compute",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "compute",
+        "accrued_micro_usd": 13000000,
+        "paid_micro_usd": 13000000,
+        "basis": "attested",
+        "evidence_digest": "acf91b5c497b775614dfa7bd69bb8a0956f8250da5aa5d5b9be1b0f9c9f73bb6",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-22",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-storage",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "storage",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "c8739c11a656c66cbad80fbbf5dae2e43491a043a992291e74dd897d9e7d4542",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-23",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-network",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "network",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "c0dfe04b874b6aacee98dbeabb4b5a9c0ca3e9c57f04933ee76f0919cfc555bf",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-24",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-human",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "human",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "ad6761852412464a8ce9a4a2e49c5299cf7da831a879213b6c2d852737a08c68",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-25",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-acceptance",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "acceptance",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "53f6df4fa2c3324c1b3eb9386ccc8e6248b354b952e5f92fcb44a2c0a219acb2",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-26",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-correction",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "correction",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "d6198ad4a736efed6f97b737c0fddc8140c1f9e310bd5c6785fa3a0f16b6a32f",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-27",
+      "action": "charge",
+      "record": {
+        "activity_id": "C-overhead",
+        "mission_id": "mission",
+        "bucket": "C",
+        "category": "overhead",
+        "accrued_micro_usd": 0,
+        "paid_micro_usd": 0,
+        "basis": "attested",
+        "evidence_digest": "206d231c67dca877f4153392eccf822922dffecbb52dcb9f6421ba3e32f9e8ad",
+        "note": "Synthetic local accounting fixture"
+      }
+    },
+    {
+      "operation_id": "research-command-28",
+      "action": "collection",
+      "record": {
+        "record_id": "fictional-collection",
+        "mission_id": "mission",
+        "amount_micro_usd": 200000000,
+        "evidence_digest": "0ab89d2d0dd9a10b0dcd05cc021e3b33bde9b73699935d8f83ad850d77ab0ca9"
+      }
+    },
+    {
+      "operation_id": "research-command-29",
+      "action": "seal",
+      "record": {
+        "mission_id": "mission",
+        "categories": [
+          "acceptance",
+          "compute",
+          "correction",
+          "human",
+          "model",
+          "network",
+          "overhead",
+          "storage",
+          "tools"
+        ],
+        "evidence_digest": "e6ec6d2120085944d747b6f5570f0690465b8321c7705df2ce541e7d4dc7b911"
+      }
+    },
+    {
+      "operation_id": "research-command-30",
+      "action": "seal-retention",
+      "record": {
+        "mission_id": "mission",
+        "categories": [
+          "acceptance",
+          "compute",
+          "correction",
+          "human",
+          "model",
+          "network",
+          "overhead",
+          "storage",
+          "tools"
+        ],
+        "evidence_digest": "d8e8f9571efe792e8a193759ed519c6393b8addd6df72325714ff3707a7bb77b"
+      }
+    },
+    {
+      "operation_id": "research-command-31",
+      "action": "seal-investment",
+      "record": {
+        "mission_id": "mission",
+        "categories": [
+          "acceptance",
+          "compute",
+          "correction",
+          "human",
+          "model",
+          "network",
+          "overhead",
+          "storage",
+          "tools"
+        ],
+        "evidence_digest": "dab962d0712675d8cc2e0c62f96d2c6f4a18ef9cc09226a6ddc33adf52fe29bc"
+      }
+    },
+    {
+      "operation_id": "research-command-32",
+      "action": "reserve",
+      "record": 40000000
+    }
+  ],
+  "authority": "LOCAL_EPHEMERAL_TEST_SIGNER; NOT_ENS_AUTHENTICATION",
+  "amount_basis": "SUPPLIED_RESEARCH_ATTESTATIONS; NOT_PROVIDER_OR_BANK_VERIFICATION",
+  "actual_customer_collections_micro_usd": 0,
+  "production_capability_admission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+  "reused_source_files": [
+    {
+      "path": "alpha_factory_v1/__init__.py",
+      "bytes": 1452,
+      "sha256": "065ed77bc53191bf762d2402be898be7d1e605ee94ea05ae2d3bc9eeaf5b3421",
+      "git_blob": "1e02fd448337e10b79d63d8f37a16862cf422bbf"
+    },
+    {
+      "path": "alpha_factory_v1/core/__init__.py",
+      "bytes": 106,
+      "sha256": "b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd",
+      "git_blob": "bd3579b5219c5e3dbb1a33e614f4a9e3a4132e37"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/__init__.py",
+      "bytes": 254,
+      "sha256": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
+      "git_blob": "4a25b21ecc8916f0c6cc08d3fe8b3da54129e5d6"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/models.py",
+      "bytes": 8098,
+      "sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+      "git_blob": "dfeaf594e4111ae7afd866ffe2ffb7a4c6e5f856"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/store.py",
+      "bytes": 27752,
+      "sha256": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+      "git_blob": "eeccfa187f3f91fd32a9bd89aabb01078ddf3266"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/__init__.py",
+      "bytes": 118,
+      "sha256": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771",
+      "git_blob": "2d5d184e6bc59631834609110f6058aa0ff67020"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py",
+      "bytes": 3680,
+      "sha256": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+      "git_blob": "c07d691d01b42b9c4b4df53c3fd4b5f5bf92ff32"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+      "bytes": 19976,
+      "sha256": "4d2e19b937471bdc247a9b0bb66bd4c315da5a9c6498591bc9f24496e07feb13",
+      "git_blob": "a67831004bd9abb85aa12e03f1cfc6d0f4444f59"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/protocol.py",
+      "bytes": 37652,
+      "sha256": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+      "git_blob": "a027036c91951a2beb65e490cd8fc28507c73309"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/signatures.py",
+      "bytes": 2490,
+      "sha256": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+      "git_blob": "2a440d80c43c57d4b5923c8e452ef12391c30a65"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/transformation.py",
+      "bytes": 75444,
+      "sha256": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+      "git_blob": "6f1e99d2086ce03a7c039ae53ecdce041a57b26b"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/transformation_library.py",
+      "bytes": 22682,
+      "sha256": "c78903802ba0379cdd1907c6472630e488d55cbfe7b1fb99ce0d275bb758d172",
+      "git_blob": "0059ce95b00cbe96268daa4dcb40b452143df541"
+    },
+    {
+      "path": "alpha_factory_v1/core/runtime/successor/trust.py",
+      "bytes": 13314,
+      "sha256": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+      "git_blob": "b7b0a65e65b0726392d678ceaf43e4e47bf1b1d6"
+    }
+  ],
+  "scope": "Explicit synthetic accounting conformance example, separate from enterprise simulation and actual research expense"
+}
