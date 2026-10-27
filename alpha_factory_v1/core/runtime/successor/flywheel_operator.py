@@ -86,6 +86,23 @@ def add_commands(commands: Any) -> None:
     enterprise_receipt = actions.add_parser("enterprise-receipt", help="Inspect an offering, decision or launch")
     enterprise_receipt.add_argument("kind", choices=("offering", "decision", "launch"))
     enterprise_receipt.add_argument("identity")
+    discovery_receipt = actions.add_parser(
+        "discovery-receipt", help="Inspect bounded discovery records without execution"
+    )
+    discovery_receipt.add_argument(
+        "kind",
+        choices=(
+            "opportunity",
+            "witness",
+            "bundle",
+            "observation",
+            "decision",
+            "comparison",
+            "arrangement",
+            "offering-link",
+        ),
+    )
+    discovery_receipt.add_argument("identity")
     for action in (
         "configure",
         "plan",
@@ -101,6 +118,7 @@ def add_commands(commands: Any) -> None:
         "gym-run",
         "general-acceptance",
         "enterprise-command",
+        "discovery-command",
     ):
         sub = actions.add_parser(action, help="Apply a separately signed bounded " + action + " decision")
         sub.add_argument("signed", type=Path)
@@ -148,6 +166,13 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "costs": service.costs.report(),
             "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",
             "capsule_export": "controlled-invocation-only",
+            "discovery": {
+                "interface": "flywheel-opportunity/v1",
+                "commands": ["discovery-command", "discovery-receipt"],
+                "scope": "signed hypotheses, purpose-preserving witnesses and bounded experiment records",
+                "execution_authority": False,
+                "commercial_projection_is_receipt": False,
+            },
         }
     if action == "receipt":
         result = service.inspect_invocation(args.mission_id)
@@ -166,7 +191,11 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         from .flywheel_enterprise import Enterprise
 
         result = Enterprise(service).inspect(args.kind, args.identity)
-    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt"}:
+    if action == "discovery-receipt":
+        from .flywheel_discovery import Discovery
+
+        result = Discovery(service).inspect(args.kind, args.identity)
+    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt", "discovery-receipt"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:
@@ -246,6 +275,10 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         from .flywheel_enterprise import Enterprise
 
         result = Enterprise(service).apply(signed)
+    elif action == "discovery-command":
+        from .flywheel_discovery import Discovery
+
+        result = Discovery(service).apply(signed)
     elif action == "gym-run":
         from .flywheel_gym import GymCampaign
 

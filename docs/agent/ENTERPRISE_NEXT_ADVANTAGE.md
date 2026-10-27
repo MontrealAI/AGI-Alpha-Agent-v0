@@ -10,6 +10,10 @@ general executor and specialist network uses the existing Journal, protected
 service, A/B/C CostLedger, checkpoints and native operator. It creates no second
 registry, executor, financial authority or publication path.
 
+The additive [discovery and construction guide](DISCOVERY_CONSTRUCTION.md) connects
+opportunity records, transformation witnesses, bounded experiment packages and
+projected arrangements to these services. Discovery metadata grants no authority.
+
 [Typeset paper](../papers/agi-alpha-enterprise-implementation-v4.pdf) ·
 [LaTeX](../papers/agi-alpha-enterprise-implementation-v4.tex) ·
 [Recorded bilingual journey](../flywheel/index.html#enterprise)

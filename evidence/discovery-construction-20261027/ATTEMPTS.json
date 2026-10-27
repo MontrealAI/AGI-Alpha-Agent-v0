@@ -1,0 +1,67 @@
+{
+  "schema": "flywheel-development-attempts/v1",
+  "attempts": [
+    {
+      "stage": "checkout",
+      "original": "Local clone failed because a promisor object was unavailable",
+      "correction": "Isolated checkout uses the existing object store and exact 57ad82c parent; all working source was preserved"
+    },
+    {
+      "stage": "environment",
+      "original": "Full setup returned 1 with shared-environment dependency conflicts",
+      "correction": "Environment validation passed; no clean-bootstrap claim. Formatter dependencies were isolated locally"
+    },
+    {
+      "stage": "formatter",
+      "original": "System Black failed with missing pathspec.patterns.gitignore",
+      "correction": "Isolated Black 25.1.0 formatted source; pinned Black and Ruff hooks then passed"
+    },
+    {
+      "stage": "focused command",
+      "original": "An expanded command named nonexistent tests/runtime/test_flywheel_gym.py; no tests ran",
+      "correction": "Actual specialist/Gym test paths selected; final runtime campaign passes 274 cases"
+    },
+    {
+      "stage": "typing",
+      "original": "Generic mypy.ini skips imports and produced Any-based errors on the selected files",
+      "correction": "Unchanged canonical mypy-runtime.ini passes all 71 runtime files; no typing policy was relaxed"
+    },
+    {
+      "stage": "hooks",
+      "original": "Pinned Ruff caught E721 exact-type syntax",
+      "correction": "Existing _is_exact_type helper preserves exact-type semantics; selected blocking hooks pass; advisory Flake8 findings remain"
+    },
+    {
+      "stage": "browser",
+      "original": "Full Chromium singleton socket was denied; first supported-shell campaign then found 320px overflow",
+      "correction": "Supported installed headless shell and bounded select/definition-list layout pass all 13 final browser groups"
+    },
+    {
+      "stage": "coverage",
+      "original": "First 90-case command inherited repository-wide scope and failed the 80% gate at 41.12%",
+      "correction": "Separate explicit three-new-module diagnostic passes 94.63% with the same 80% floor. Global release coverage is still unqualified",
+      "original_report": "initial-aggregate-coverage.txt",
+      "corrected_report": "three-module-coverage.txt"
+    },
+    {
+      "stage": "full regression",
+      "original": "Interrupted with exit 130 after an observed failure; no final JUnit or coverage pass",
+      "correction": "First failure identified and reproduced as missing axe-core 4.10.3. Unchanged npm lock installed; exact failing browser case passes. Complete campaign remains unqualified",
+      "original_report": "full-regression-interrupted.txt",
+      "reproduction_report": "budget-browser-missing-dependency.txt",
+      "corrected_report": "budget-browser-after-dependency.txt"
+    },
+    {
+      "stage": "installed overlay",
+      "original": "First replay omitted the repository scripts namespace from PYTHONPATH and failed before conformance",
+      "correction": "Explicit installed-target-first PYTHONPATH permits development scripts without substituting source modules. All 71 wheel/runtime bytes match and installed conformance passes",
+      "report": "installed-replay-summary.json"
+    },
+    {
+      "stage": "evidence whitespace",
+      "original": "Three raw pytest failure lines retain trailing whitespace",
+      "correction": "Raw failure bytes preserved; source-only whitespace check passes"
+    }
+  ],
+  "meaning": "Corrections do not retroactively qualify earlier attempts. All identity/model/money fixtures remain explicitly synthetic."
+}

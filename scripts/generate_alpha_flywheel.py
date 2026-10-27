@@ -75,6 +75,16 @@ def build(root: Path = ROOT) -> None:
         + json.dumps(enterprise_evidence, ensure_ascii=True, separators=(",", ":"))
         + ";\n"
     )
+    discovery_evidence = json.loads((template / "discovery-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst DISCOVERY_EVIDENCE=" + json.dumps(discovery_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+    )
+    opportunity_evidence = json.loads((template / "opportunity-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst OPPORTUNITY_EVIDENCE="
+        + json.dumps(opportunity_evidence, ensure_ascii=True, separators=(",", ":"))
+        + ";\n"
+    )
     code += (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the Flywheel bundle")
