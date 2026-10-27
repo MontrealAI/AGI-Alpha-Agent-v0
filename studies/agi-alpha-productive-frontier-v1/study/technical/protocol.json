@@ -1,0 +1,88 @@
+{
+  "study": "Certified disturbance-energy screening for damped coupled dynamical systems",
+  "version": "1.0-frozen-before-confirmation",
+  "family": "A = -D + K, D positive diagonal, K skew symmetric, n=192; two localized stochastic input channels",
+  "artifact": "orthonormal reduced Lyapunov subspace; versioned numpy array",
+  "learning": "POD of solution covariance eigenspaces from paid-work instances; optional Gym adds the four worst development residuals and refits",
+  "seeds": {
+    "work": 1401,
+    "development": 2401,
+    "confirmation": 3401,
+    "shift": 4401,
+    "prototype": 5401
+  },
+  "counts": {
+    "work": 6,
+    "development": 20,
+    "confirmation": 64,
+    "shift": 32,
+    "prototype": 32
+  },
+  "operating_box": {
+    "damping": [
+      0.6,
+      2.0
+    ],
+    "coupling": [
+      0.5,
+      2.5
+    ],
+    "heterogeneity": [
+      0.7,
+      1.3
+    ],
+    "input_scale": [
+      0.5,
+      1.5
+    ]
+  },
+  "shift_box": {
+    "damping": [
+      0.3,
+      0.6
+    ],
+    "coupling": [
+      2.5,
+      3.5
+    ],
+    "heterogeneity": [
+      0.5,
+      1.5
+    ],
+    "input_scale": [
+      0.5,
+      1.5
+    ]
+  },
+  "acceptance": {
+    "relative_trace_certificate_max": 0.01,
+    "relative_trace_reference_error_max": 0.01,
+    "relative_frobenius_reference_error_max": 0.02,
+    "fresh_reliability_min": 0.95,
+    "standard_batch_seconds_32": 5.0,
+    "interactive_batch_seconds_32": 0.25
+  },
+  "certificate": "alpha=min(diag(D)); ||X-Xhat||F <= ||A Xhat+Xhat A^T+B B^T||F/(2 alpha); trace absolute bound delta=sqrt(n)*bound; certified relative trace error <=delta/(trace(Xhat)-delta) when denominator positive",
+  "baselines": [
+    "SciPy Bartels-Stewart Schur solve",
+    "adaptive block Krylov with residual stopping",
+    "fixed central-instance block Krylov library basis of rank 48",
+    "work-only POD rank 24",
+    "work-only POD rank 48",
+    "Gym-updated POD rank 48"
+  ],
+  "timing": "single BLAS thread; matched matrix assembly time added to all methods; full residual certification included; one warm-up; fresh instances timed once; actual consecutive 32-case batch sums plus median and p95",
+  "claim_limits": [
+    "Synthetic stable dynamical systems, not validated physical controllers",
+    "No live frontier-model calls or customer trials",
+    "Frozen engineering contracts are explicit research service hypotheses, not documented buyer SLAs",
+    "Schur and adaptive Krylov represent competent numerical tools, not measured model reasoning quality",
+    "No graph-specific advantage claim",
+    "No assumed specialist multiplier"
+  ],
+  "search_budget": {
+    "Gym_additional_full_solves": 4,
+    "retained_basis_rank": 48,
+    "postconfirmation_retuning": 0
+  }
+}

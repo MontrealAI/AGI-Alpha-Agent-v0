@@ -1,0 +1,543 @@
+{
+  "as_of": "2026-10-27",
+  "source_classification": "Primary official product documentation, primary software/research sources, and vendors' own advertised price pages. No customer interviews, quotations, signed contracts or sales were collected.",
+  "models": [
+    {
+      "id": "gpt-6-astra",
+      "role": "demanding reasoning, scientific strategy, validation",
+      "standard_usd_per_million": {
+        "input": 10,
+        "cached_input": 1,
+        "output": 50,
+        "cache_write_30m": 12.5,
+        "cache_write_12h": 25
+      },
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "reasoning_effort": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses API",
+      "fine_tuning_supported": false,
+      "sources": [
+        "openai_astra",
+        "openai_models",
+        "openai_guide",
+        "openai_pricing"
+      ]
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "role": "complex coding and professional work at lower token prices",
+      "standard_usd_per_million": {
+        "input": 2,
+        "cached_input": 0.1,
+        "output": 10,
+        "cache_write_30m": 2.5,
+        "cache_write_12h": 5
+      },
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "reasoning_effort": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses API",
+      "fine_tuning_supported": false,
+      "sources": [
+        "openai_sol",
+        "openai_models",
+        "openai_guide",
+        "openai_pricing"
+      ]
+    },
+    {
+      "id": "gpt-6.1-terra",
+      "role": "visual reasoning and precise computer use",
+      "standard_usd_per_million": {
+        "input": 1,
+        "cached_input": 0.05,
+        "output": 5,
+        "cache_write_30m": 1.25,
+        "cache_write_12h": 2.5
+      },
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "reasoning_effort": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses API",
+      "fine_tuning_supported": false,
+      "sources": [
+        "openai_terra",
+        "openai_models",
+        "openai_guide",
+        "openai_pricing"
+      ]
+    }
+  ],
+  "model_caveats": [
+    "Prices are text-token Standard rates in USD; prompt sizes above 272K receive 2x input/cache and 1.5x output rates for the full request. Batch/Flex is 50% of Standard; Fast is 2x.",
+    "API tool calls and infrastructure are additional: web search USD10/1000 calls plus search content tokens; file search USD2.50/1000 calls; hosted shell/code-interpreter containers are priced by session/size.",
+    "A public model page or ChatGPT Pro subscription does not establish this study's API key access, quotas, billing, or trial entitlements. No live API calls were performed by the source-research task.",
+    "Published Astra API limits: Free unsupported; Build 5000 RPM/1M TPM/3M batch queue; Launch 10000 RPM/4M TPM/200M queue; Grow 15000 RPM/40M TPM/15B queue. Actual account limits must be checked, never inferred.",
+    "OpenAI's model capabilities and benchmarks are provider descriptions; they are not independent evidence of task accuracy in this study. Any modeled Beta success/latency remains an assumption or calibration, not a measured Astra result.",
+    "Do not assume proprietary weight access or unsupported fine-tuning. Use executable reduced-basis artifacts, workflows, supported external components or services."
+  ],
+  "opportunity_shortlist": [
+    {
+      "domain": "Certified covariance and disturbance-energy reports for damped coupled-mode linear systems",
+      "beneficiary": "Control or simulation engineering team comparing stable candidate models under a specified disturbance law",
+      "deliverable": "Validated input matrices and dissipativity checks; covariance/energy values with residual-derived numerical error bounds; candidate ranking or inconclusive labels; reproducible outputs and model limitations",
+      "bottleneck": "Repeated Lyapunov solutions and trustworthy error assessment across parameter values, with full-order solver and verification costs",
+      "capability": "Snapshot-trained low-rank subspace plus independent residual certificate; optional richer basis from Gym; fallback to conventional Lyapunov or adaptive Krylov solver",
+      "need_evidence": [
+        "mess_paper",
+        "krylov_adi",
+        "mathworks_h2",
+        "mathworks_variance",
+        "apics_prices"
+      ],
+      "price_evidence": "No exact matched service price found. Use explicitly estimated hours and billing rate for a narrowly scoped offline report; BLS/Job Bank anchor labor wages, ApICS rate only contextualizes a related, broader field service.",
+      "falsifiers": [
+        "Adaptive ordinary Krylov/ADI already meets every acceptance threshold",
+        "Cash value of saved solver time cannot repay training, integration and maintenance",
+        "Basis fails after mode/forcing/parameter shift",
+        "Numerical certificate is mistaken for plant or model-form validation",
+        "Customer data qualification dominates and demand never materializes"
+      ],
+      "recommendation": "Selected after owner coordination. Strongest initial result may be a no-investment policy: deliver with competent ordinary methods and reject extra specialization if marginal gains are negligible."
+    },
+    {
+      "domain": "Reusable thermal/elliptic parameter-sweep analysis",
+      "beneficiary": "Engineering team exploring conductivities or operating parameters on a fixed validated geometry",
+      "deliverable": "Input contract, verified numerical solver, parameter-response table, bounded model-reduction error, reproducible files, limitations report",
+      "bottleneck": "Many expensive full-order solves; repeated analyst setup and validation; uncertainty in surrogate error",
+      "capability": "Snapshot-trained reduced basis with stable residual certificate and fallback",
+      "need_evidence": [
+        "pymor",
+        "chen_uq",
+        "buhr_estimator",
+        "deeb_prices",
+        "cofan_prices"
+      ],
+      "price_evidence": "Related scoped CFD/thermal consulting advertised prices; no exact service-match price for the synthetic benchmark",
+      "falsifiers": [
+        "Sparse direct/Krylov/factorization reuse or existing pyMOR workflow is already cheaper at needed latency",
+        "Surrogate overhead/certification costs erase speedup",
+        "Geometry or load changes cause negative transfer",
+        "Customers require physical validation absent from study"
+      ],
+      "recommendation": "Primary executable portfolio, but call known engineering services newly feasible under declared tested conditions, not new markets."
+    },
+    {
+      "domain": "Inverse identification and robustness screening",
+      "beneficiary": "Same team inferring material/operating parameters or screening margins across uncertainty",
+      "deliverable": "Fresh synthetic observation fit, uncertainty assumptions, held-out error and objective validation, sensitivity/robustness report",
+      "bottleneck": "Repeated forward evaluations within optimization or integration",
+      "capability": "Transferred forward reduced solver plus independently tested search/inference method",
+      "need_evidence": [
+        "chen_uq",
+        "operator_inference",
+        "hpc_rom",
+        "comsol_rom"
+      ],
+      "price_evidence": "Explicit buyer-value/willingness-to-pay hypothesis unless full scope matches an advertised optimization service",
+      "falsifiers": [
+        "Identifiability fails",
+        "Reduced model optimizes a numerical artifact",
+        "Uncertainty law is unsupported",
+        "Ordinary solver/optimizer meets requirements anyway"
+      ],
+      "recommendation": "Next known offering in the same technical lineage. Cannot claim genuinely new offering invention merely by attaching an optimizer."
+    },
+    {
+      "domain": "Adaptive experimental design",
+      "beneficiary": "R&D team choosing costly simulation or physical test settings",
+      "deliverable": "Budgeted experiment sequence with information/optimization objective, constraints, audit trail and fresh outcome evaluation",
+      "bottleneck": "Limited experimental budget, delayed noisy feedback, exploration/exploitation tradeoff",
+      "capability": "Adaptive surrogate or acquisition/search policy",
+      "need_evidence": [
+        "ax"
+      ],
+      "price_evidence": "No price or customer workload established in this search",
+      "falsifiers": [
+        "Off-the-shelf Ax/BoTorch wins",
+        "Delay/noise negates sample efficiency",
+        "Simulated design does not improve real decisions"
+      ],
+      "recommendation": "Credible later candidate; ordinary Ax is mandatory acquisition alternative. Do not include expensive live lab work in this edition."
+    },
+    {
+      "domain": "Manufacturing scheduling and re-planning",
+      "beneficiary": "Production planner managing precedence and machine capacity",
+      "deliverable": "Feasible executable schedule, independent constraint checker, deadline/gap report",
+      "bottleneck": "Combinatorial search, changing capacity, integration with reliable shop data",
+      "capability": "Domain-specific decomposition or learned warm start with exact constraint validation",
+      "need_evidence": [
+        "ortools"
+      ],
+      "price_evidence": "No matched service price or demand evidence established",
+      "falsifiers": [
+        "CP-SAT already meets deadline",
+        "Warm start worsens unfamiliar instances",
+        "Data cleaning/integration dominate all solver gains"
+      ],
+      "recommendation": "Strong alternative domain; rejected for current focused portfolio to preserve coherent technical transfer and avoid weak baselines."
+    }
+  ],
+  "price_references": [
+    {
+      "source": "deeb_prices",
+      "currency": "USD",
+      "advertised_items": {
+        "focused_study_from": 1500,
+        "heat_transfer_analysis_from": 3000,
+        "design_assessment_up_to_two_cases_from": 3500,
+        "optimization_up_to_three_cases_plus_agreed_parametric_scope_from": 7500,
+        "expert_consultation_per_hour_from": 120,
+        "advanced_troubleshooting_per_hour_from": 150
+      },
+      "matched_scope": "Engineering geometry/physics, agreed operating cases, mesh/convergence checks, report, files and specified support; optimization includes ranked options and consultation.",
+      "limitations": "Indicative starting rates, not transaction prices or demand. A synthetic 2D PDE solve lacks much of this scope; do not use these full prices as its established market price."
+    },
+    {
+      "source": "cofan_prices",
+      "currency": "Dollar symbol only; currency not explicitly specified on opened page",
+      "advertised_items": {
+        "standard_cfd_range": [
+          2800,
+          5500
+        ],
+        "standard_hourly": 100,
+        "advanced_per_simulation_range": [
+          600,
+          1800
+        ],
+        "advanced_minimum_purchase": 5
+      },
+      "matched_scope": "Thermal simulation based on customer's design; advanced stage adds suggestions and depends on standard stage. Quote needs 3D CAD, boundary conditions, project requirements.",
+      "limitations": "Do not silently relabel as USD; not independent sales or evidence for willingness-to-pay for this study."
+    }
+  ],
+  "references": [
+    {
+      "key": "openai_astra",
+      "title": "GPT-6 Astra Model",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "ref": "turn1view0",
+      "accessed": "2026-10-27",
+      "supports": "Exact API ID, context/output limits, token prices, capabilities, no fine-tuning, and public usage tiers. Provider documentation only."
+    },
+    {
+      "key": "openai_sol",
+      "title": "GPT-6.1 Sol Model",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "ref": "turn1view2",
+      "accessed": "2026-10-27",
+      "supports": "Exact API ID, Standard token prices, cache rates and service-tier modifiers."
+    },
+    {
+      "key": "openai_terra",
+      "title": "GPT-6.1 Terra Model",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "ref": "turn1view1",
+      "accessed": "2026-10-27",
+      "supports": "Visual reasoning/computer-use role, effort settings, Responses tool requirement, token prices and context limits."
+    },
+    {
+      "key": "openai_models",
+      "title": "Models",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/models",
+      "ref": "turn0search4",
+      "accessed": "2026-10-27",
+      "supports": "Current flagship names and efforts. Search result retrieved; root should open if using directly."
+    },
+    {
+      "key": "openai_guide",
+      "title": "Using GPT-6",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "ref": "turn1view4",
+      "accessed": "2026-10-27",
+      "supports": "Supported tool API and reasoning effort distinctions. No none for Astra/Sol; Terra none through max. Provider comparisons are claims rather than study outcomes."
+    },
+    {
+      "key": "openai_pricing",
+      "title": "Pricing",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "ref": "turn1view3",
+      "accessed": "2026-10-27",
+      "supports": "Standard rates Astra 10/50, Sol 2/10, Terra 1/5 USD per million input/output tokens; cache and tool prices. Short versus long context and speed tiers must be distinguished."
+    },
+    {
+      "key": "openai_limits",
+      "title": "Rate limits",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://developers.openai.com/api/docs/guides/rate-limits",
+      "ref": "turn4view4",
+      "accessed": "2026-10-27",
+      "supports": "Limits set by organization/project/model; account limits and monthly approved usage differ from configurable spend limits."
+    },
+    {
+      "key": "chatgpt_pricing",
+      "title": "Pricing: ChatGPT Work and Codex",
+      "author": "OpenAI",
+      "year": 2026,
+      "url": "https://learn.chatgpt.com/docs/pricing",
+      "ref": "turn4view3",
+      "accessed": "2026-10-27",
+      "supports": "API token billing separate from subscription usage; API-key model availability follows key access. ChatGPT Pro is a plan, not an API slug."
+    },
+    {
+      "key": "pymor",
+      "title": "pyMOR: Model Order Reduction with Python",
+      "author": "pyMOR developers",
+      "year": 2026,
+      "url": "https://pymor.org/",
+      "ref": "turn4view0",
+      "accessed": "2026-10-27",
+      "supports": "Existing open BSD-2-clause library with reduced basis, POD and interfaces for NumPy/SciPy and external PDE solvers. Establishes ordinary alternative and prior art."
+    },
+    {
+      "key": "buhr_estimator",
+      "title": "A numerically stable a posteriori error estimator for reduced basis approximations of elliptic equations",
+      "author": "Andreas Buhr; Christian Engwer; Mario Ohlberger; Stephan Rave",
+      "year": 2014,
+      "url": "https://arxiv.org/abs/1407.8005",
+      "ref": "turn5view4",
+      "accessed": "2026-10-27",
+      "supports": "Snapshot/offline and Galerkin/online decomposition; numerical instability of naive residual estimators; orthonormal residual basis remedy."
+    },
+    {
+      "key": "chen_uq",
+      "title": "Reduced order methods for uncertainty quantification problems",
+      "author": "Peng Chen; Alfio Quarteroni; Gianluigi Rozza",
+      "year": 2015,
+      "url": "https://www.sam.math.ethz.ch/sam_reports/reports_final/reports2015/2015-03.pdf",
+      "ref": "turn4view1",
+      "accessed": "2026-10-27",
+      "supports": "POD/greedy reduced basis, a posteriori error estimates, failure-probability/inverse/data-assimilation use cases; gains depend on low-dimensional solution/output manifolds."
+    },
+    {
+      "key": "operator_inference",
+      "title": "Non-intrusive reduced-order models for parametric partial differential equations via data-driven operator inference",
+      "author": "Shane A. McQuarrie; Parisa Khodabakhshi; Karen E. Willcox",
+      "year": 2021,
+      "url": "https://arxiv.org/abs/2110.07653",
+      "ref": "turn4view2",
+      "accessed": "2026-10-27",
+      "supports": "Data-driven operator inference for fast parametric PDE maps; many-query inverse/UQ use; regularization and well-posedness matter."
+    },
+    {
+      "key": "hpc_rom",
+      "title": "Parallel Reduced Order Modeling for Digital Twins using High-Performance Computing Workflows",
+      "author": "S. Ares de Parga and others",
+      "year": 2024,
+      "url": "https://arxiv.org/abs/2409.09080",
+      "ref": "turn5view3",
+      "accessed": "2026-10-27",
+      "supports": "End-to-end ROM training/deployment workflow and thermal motor case study; portability through interfaces. Not commercial sales evidence."
+    },
+    {
+      "key": "comsol_rom",
+      "title": "COMSOL 6.4: Reduced-Order Modeling",
+      "author": "COMSOL",
+      "year": 2026,
+      "url": "https://doc.comsol.com/6.4/doc/com.comsol.help.comsol/comsol_ref_definitions.21.146.html",
+      "ref": "turn5view5",
+      "accessed": "2026-10-27",
+      "supports": "Commercial existing ROM software, training/use distinction, portable file/interface concept, frequency response and system/submodel applications."
+    },
+    {
+      "key": "deeb_prices",
+      "title": "CFD consulting and engineering analysis services",
+      "author": "DEEB-FLOW",
+      "year": 2026,
+      "url": "https://www.deeb-flow.com/en/services",
+      "ref": "turn5view0",
+      "accessed": "2026-10-27",
+      "supports": "Advertised USD starting prices and defined case/report/support scope; manufacturing, EPC and R&D beneficiary descriptions. Does not establish transactions or demand."
+    },
+    {
+      "key": "cofan_prices",
+      "title": "Thermal simulation",
+      "author": "COFAN Thermal",
+      "year": 2026,
+      "url": "https://www.cofanthermal.com/thermal-simulation/",
+      "ref": "turn5view1",
+      "accessed": "2026-10-27",
+      "supports": "Published thermal-simulation service scope and dollar-sign prices; currency unspecified in retrieved page."
+    },
+    {
+      "key": "ax",
+      "title": "Ax: A Platform for Adaptive Experimentation",
+      "author": "Miles Olson and others",
+      "year": 2025,
+      "url": "https://proceedings.mlr.press/v293/olson25a.html",
+      "ref": "turn7view1",
+      "accessed": "2026-10-27",
+      "supports": "Existing adaptive experimentation platform and real-world engineering/science optimization; ordinary alternative for experiment design specialists."
+    },
+    {
+      "key": "ortools",
+      "title": "The Job Shop Problem",
+      "author": "Google",
+      "year": 2026,
+      "url": "https://developers.google.com/optimization/scheduling/job_shop",
+      "ref": "turn7view0",
+      "accessed": "2026-10-27",
+      "supports": "Strong ordinary scheduling baseline with precedence/exclusivity constraints and exact-solver status; no demand/price evidence."
+    },
+    {
+      "key": "scipy_lyapunov",
+      "title": "scipy.linalg.solve_continuous_lyapunov",
+      "author": "SciPy community",
+      "year": 2026,
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_continuous_lyapunov.html",
+      "ref": "turn9view0",
+      "accessed": "2026-10-27",
+      "supports": "Solves AX+XA^H=Q using Bartels-Stewart and LAPACK TRSYL. Establishes available competent dense baseline; not asymptotic sparse best method."
+    },
+    {
+      "key": "mess",
+      "title": "M.E.S.S. (Matrix Equation Sparse Solver)",
+      "author": "Max Planck Institute for Dynamics of Complex Technical Systems",
+      "year": 2026,
+      "url": "https://www.mpi-magdeburg.mpg.de/projects/mess",
+      "ref": "turn9view1",
+      "accessed": "2026-10-27",
+      "supports": "Established large sparse Lyapunov/Riccati and model reduction package; MATLAB/C implementations and Python bindings. Existing ordinary acquisition alternative."
+    },
+    {
+      "key": "mess_paper",
+      "title": "Matrix Equations, Sparse Solvers: M-M.E.S.S.-2.0.1 — Philosophy, Features and Application for (Parametric) Model Order Reduction",
+      "author": "Peter Benner; Martin Köhler; Jens Saak",
+      "year": 2020,
+      "url": "https://arxiv.org/abs/2003.02088",
+      "ref": "turn9view3",
+      "accessed": "2026-10-27",
+      "supports": "Low-rank matrix equations in large-scale LTI/MOR. Residual-based LR-ADI with automatic shifts. Parametric examples are built from package routines; v2.0.1 did not directly support PMOR by default. Do not call parameter reuse a new algorithm."
+    },
+    {
+      "key": "krylov_adi",
+      "title": "On an integrated Krylov-ADI solver for large-scale Lyapunov equations",
+      "author": "Peter Benner; Davide Palitta; Jens Saak",
+      "year": 2022,
+      "url": "https://link.springer.com/article/10.1007/s11075-022-01409-5",
+      "ref": "turn12view1",
+      "accessed": "2026-10-27",
+      "supports": "Established LR-ADI extended-Krylov alternative, reuse of one approximation space across shifted solves, shift-selection costs and assumptions. Published algorithm is stronger than a naive repeated dense baseline."
+    },
+    {
+      "key": "inexact_lyapunov",
+      "title": "Inexact methods for the low rank solution to large scale Lyapunov equations",
+      "author": "Patrick Kürschner; Melina A. Freitag",
+      "year": 2019,
+      "url": "https://arxiv.org/abs/1809.06903",
+      "ref": "turn13view2",
+      "accessed": "2026-10-27",
+      "supports": "Primary literature for practical inexact low-rank Lyapunov solvers and residual stopping; no commercial evidence."
+    },
+    {
+      "key": "mathworks_h2",
+      "title": "norm: Norm of linear model",
+      "author": "MathWorks",
+      "year": 2026,
+      "url": "https://www.mathworks.com/help/control/ref/dynamicsystem.norm.html",
+      "ref": "turn12view2",
+      "accessed": "2026-10-27",
+      "supports": "H2 squared equals steady-state expected output squared magnitude under unit white-noise input. H2 infinite for unstable systems or continuous systems with nonzero feedthrough. Existing ordinary software computes it."
+    },
+    {
+      "key": "mathworks_variance",
+      "title": "TuningGoal.WeightedVariance: Frequency-weighted H2 norm constraint for control system tuning",
+      "author": "MathWorks",
+      "year": 2026,
+      "url": "https://www.mathworks.com/help/control/ref/tuninggoal.weightedvariance.html",
+      "ref": "turn12view0",
+      "accessed": "2026-10-27",
+      "supports": "Frequency-weighted H2 objective supports tuning stochastic disturbances including colored noise/wind gusts and LQG-like objectives. Source validates use-case mechanism, not customer demand."
+    },
+    {
+      "key": "apics_prices",
+      "title": "Industrial Automation and Motion Control Services and Case Studies",
+      "author": "ApICS LLC",
+      "year": 2026,
+      "url": "https://apicsllc.com/apics/Services.html",
+      "ref": "turn11view0",
+      "accessed": "2026-10-27",
+      "supports": "Vendor advertises on-site industrial control stability support at $180/hr up to eight hours, overtime/travel extra; negotiated project prices not disclosed. Scope differs from offline covariance reports; advertised prices and self-reported case studies are not independently verified sales."
+    },
+    {
+      "key": "bls_electrical",
+      "title": "Electrical and Electronics Engineers: Occupational Outlook Handbook",
+      "author": "U.S. Bureau of Labor Statistics",
+      "year": 2026,
+      "url": "https://www.bls.gov/ooh/architecture-and-engineering/electrical-and-electronics-engineers.htm",
+      "ref": "turn13view0",
+      "accessed": "2026-10-27",
+      "supports": "May 2025 median U.S. electrical-engineer annual wage USD120,630; engineering-services sector USD105,780. Wage is not a consultancy billing rate or the price of the proposed report."
+    },
+    {
+      "key": "jobbank_automation",
+      "title": "Automation Engineer in Québec: Wages",
+      "author": "Government of Canada Job Bank",
+      "year": 2025,
+      "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/296279/QC",
+      "ref": "turn13view1",
+      "accessed": "2026-10-27",
+      "supports": "Updated 2025-11-19 from 2023–24 LFS: Québec low/median/high hourly wages 35.00/53.85/78.21 Canadian dollars. Wages only; not contractor or customer prices."
+    }
+  ],
+  "interpretation_guardrails": [
+    "ROM speedup is established scientific prior art; the study contribution must be causal lifecycle/economic integration, not invention of POD or model reduction.",
+    "A residual bound certifies error relative to the chosen discrete physics model; it does not certify mesh/discretization error, model-form correctness, uncertain boundary inputs, manufacturing feasibility or real-world safety.",
+    "Inverse design and robustness screening are existing service categories. Discovering them in a constrained agent experiment is portfolio discovery, not proof of a new market.",
+    "Give baselines sparse solvers, caching, factorization reuse when mathematically valid, and the option to adopt an existing ROM library. Otherwise measured Alpha may be withheld ordinary tooling.",
+    "For one-off work, customer data/model validation and integration may dominate solver cost. Repeated workloads and latency constraints are plausible but must be hypotheses until observed.",
+    "Published price schedules support possible economic scale, not a conversion probability, workload, or valid selling price for unmatched scope.",
+    "A benchmark frontier crossing is conditional on preregistered latency/quality/budget requirements; avoid claiming commercial qualification without user effort, contract obligations and physical validation.",
+    "Technical transfer uses a learned basis artifact and dependencies. Invoking a specialist service does not transfer the policy or intelligence to the caller."
+  ],
+  "selected_domain": "Certified covariance and disturbance-energy analysis for stable linear dynamical systems; thermal and manufacturing lanes were excluded after owner coordination.",
+  "certificate_derivation": {
+    "assumptions": "Real A, stable strictly dissipative with (A+A^T)/2 <= -alpha I for independently established alpha>0; covariance X solves AX+XA^T+BB^T=0; no direct feedthrough for continuous-time H2.",
+    "residual": "R=A Xhat+Xhat A^T+BB^T.",
+    "bound": "X-Xhat = integral_0^infinity exp(At) R exp(A^T t) dt; hence ||X-Xhat||F <= ||R||F/(2 alpha).",
+    "output": "For J=tr(C X C^T)=||G||H2^2, |J-Jhat| <= ||C^T C||F ||R||F/(2 alpha).",
+    "derivation_status": "Elementary derived bound from dissipative semigroup contraction, not a claimed new theorem. Sign of residual integral is as written because L(X-Xhat)=-R.",
+    "limits": "Stability alone does not imply the alpha bound. If symmetric part fails, either establish a valid Lyapunov-operator separation/error bound or refuse this certificate. Bounds concern numerical solution of the stated model, not unmodeled dynamics, physical safety, all-parameter robust stability, demand or real sales."
+  },
+  "commercial_calibration_suggestion": {
+    "primary_reference": "No matched vendor contract price for this proposed offline report was established.",
+    "human_scope": "Researcher-estimated 4–12 hours for a prevalidated stable model and specified disturbance report; separate additional time for real input/model qualification when needed.",
+    "rate": "An assumed USD120–180/hour billing band may be shown separately from wages and broader field-service pricing. USD150/hour is a transparent scenario, not a measured market quote.",
+    "wage_anchor_arithmetic": "USD120630/2080 = USD57.995/hour, using a disclosed 2080-hour convention. Any 2–3x billing multiplier is an assumption, not BLS evidence.",
+    "screening_rule": "If the learned specialist saves only a fraction of a CPU second per batch and baseline satisfies requirements, no premium or added demand should be assigned without a separate buyer-value hypothesis."
+  }
+}

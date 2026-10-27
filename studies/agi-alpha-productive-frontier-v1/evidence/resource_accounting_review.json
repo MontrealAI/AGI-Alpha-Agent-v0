@@ -1,0 +1,193 @@
+{
+  "schema": "productive-frontier-independent-resource-review/v1",
+  "status": "PASS",
+  "reviewed_at_utc": "2026-10-27T14:12:39.492917+00:00",
+  "reviewer": "Independent technical agent /root/technical (AI-assisted review, not external certification)",
+  "engine_sha256": "f25aa63935785f7ff0901e9c03c50269220fc188c4e73a5c9b8395ace1c4ac7b",
+  "test_source_sha256": "f796751b6e254c7b3fa37dc8d341f25cada0a6d89835ad766ed18b0099c81343",
+  "scope": "FIFO preparation carryover, deferred audit/capability/prototype availability, common readiness/capacity acquisition stop, daily/cumulative capacity conservation, task/cash retention, and unsupported-overrun rejection.",
+  "changes_made_by_reviewer": "No economic engine, protocol, numerical source, or experimental result changes. This review receipt only.",
+  "unit_regressions": {
+    "command": "python -m unittest discover -s study -p 'test_economics.py' -v",
+    "passed": 29,
+    "failed": 0,
+    "preexisting": 17,
+    "new_resource_regressions": 12
+  },
+  "independent_closed_form_matrix": {
+    "engine_sha256": "2fc1ee10b260b630131bde408e9f195a0e1d2b1510ff868e052c8ff68bd88496",
+    "status": "PASS",
+    "counts": {
+      "matrix_runs": 864,
+      "daily_identities": 3461,
+      "timing_edges": 3
+    },
+    "protected_confirmation_seeds_used": false,
+    "audit_only_grid": {
+      "setup_seconds": [
+        0,
+        400,
+        900,
+        2001
+      ],
+      "retention_seconds": [
+        0,
+        600
+      ],
+      "gym_seconds": [
+        0,
+        900
+      ],
+      "capacity_per_day": [
+        0,
+        400,
+        1800
+      ],
+      "days": [
+        1,
+        3,
+        8
+      ],
+      "policies": [
+        "competent_beta",
+        "private_work",
+        "shared_work",
+        "shared_gym",
+        "ordinary_library",
+        "selective"
+      ]
+    }
+  },
+  "independent_state_transition_fixtures": {
+    "status": "PASS",
+    "engine_sha256": "2fc1ee10b260b630131bde408e9f195a0e1d2b1510ff868e052c8ff68bd88496",
+    "prefix_latent_outcome_independence": true,
+    "pending_prototype_costs_usd": 110,
+    "failed_and_completed_prototypes": [
+      {
+        "task_id": "preparation-1",
+        "kind": "prototype",
+        "submitted_day": 0,
+        "total_seconds": 600.0,
+        "remaining_seconds": 0.0,
+        "completed_day": 3,
+        "status": "completed",
+        "offer": "screen",
+        "proposal_index": 1,
+        "success": true
+      },
+      {
+        "task_id": "preparation-2",
+        "kind": "prototype",
+        "submitted_day": 0,
+        "total_seconds": 600.0,
+        "remaining_seconds": 0.0,
+        "completed_day": 5,
+        "status": "completed",
+        "offer": "select",
+        "proposal_index": 2,
+        "success": false
+      }
+    ],
+    "selective_pending": {
+      "investment_count": 1,
+      "mode": "beta",
+      "committed_mode": "work",
+      "backlog_seconds": 5900.0,
+      "cost_B": 58.0
+    },
+    "capacity_acquisition_gate": [
+      {
+        "policy": "competent_beta",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      },
+      {
+        "policy": "private_work",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      },
+      {
+        "policy": "shared_work",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      },
+      {
+        "policy": "shared_gym",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      },
+      {
+        "policy": "ordinary_library",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      },
+      {
+        "policy": "selective",
+        "lead_purchases": 0,
+        "capacity_halt_events": 1
+      }
+    ],
+    "protected_confirmation_seeds_used": false
+  },
+  "independent_existing_development_scenario_review": {
+    "status": "PASS",
+    "engine_sha256": "2fc1ee10b260b630131bde408e9f195a0e1d2b1510ff868e052c8ff68bd88496",
+    "development_seed": 8000,
+    "runs": 72,
+    "daily_ledgers_checked": 4320,
+    "histories_with_growth": 6,
+    "max_identity_error_seconds": 0.0,
+    "max_observed_pending_preparation_seconds": 3300.0,
+    "completed_preparation_tasks": 252,
+    "failed_prototype_tasks": 66,
+    "shared_library_identity": true,
+    "protected_confirmation_seeds_used": false
+  },
+  "identities_checked": [
+    "Each day: gross capacity = preparation consumed + production reserved + unused capacity.",
+    "Each day: opening backlog + newly committed preparation = preparation consumed + closing backlog.",
+    "Every prefix and horizon: total committed preparation = total consumed preparation + unfinished backlog.",
+    "Every prefix and horizon: total gross capacity = total preparation consumed + total production reserved + total unused capacity.",
+    "Available offerings and active specialist mode equal only tasks completed by that day.",
+    "Profit = collections - complete A/B/C costs; available funds = seed capital + profit - reserves."
+  ],
+  "semantic_findings": [
+    "Setup completion gates the first audit. Exact-boundary completion does not create extra production capacity.",
+    "Forced and selective commitments preserve a distinct committed target and active mode; repeated checkpoints do not duplicate pending investment.",
+    "Prototype outcomes are revealed at completion only. Pending and failed prototypes retain committed cash charges and all consumed capacity.",
+    "Zero-duration tasks complete at zero capacity while positive-duration tasks remain pending.",
+    "The acquisition gate is common to all six policies and executes before hidden lead fields are accessed.",
+    "Ordinary-library and shared-work paths, cash, costs and preparation records remain exactly identical on the existing development seed across all scenarios.",
+    "Realized numerical work exceeding its declared reservation raises ValueError; it is not clipped or silently omitted from a returned result."
+  ],
+  "interpretation_limits": [
+    "The task ledger models assumed preparation reservations; it is not a measurement of real enterprise capacity or labor.",
+    "Production_reserved_seconds is conservative capacity reservation, not measured CPU consumption. Model/preparation reservations remain assumed.",
+    "Calendar upkeep remains charged on the committed specialist target even while preparation is pending; this preserved cost assumption is explicitly labeled in the engine.",
+    "acquisition_capacity_holds counts halt events, not the number of unseen leads censored.",
+    "Unsupported duration overruns invalidate the simulation run. This edition does not model overrunning production as new queued work.",
+    "These software tests do not validate demand, willingness to pay, prices, market size or commercial profitability.",
+    "No protected 11000-cohort seed or result was used in this review."
+  ],
+  "release_recommendation": "The reviewed engine is ready for the declared correctness-amendment freeze and separately authorized fresh confirmation. No further policy tuning is recommended.",
+  "final_export_binding": {
+    "verified_at_utc": "2026-10-27T14:15:14.240722+00:00",
+    "tested_engine_sha256": "2fc1ee10b260b630131bde408e9f195a0e1d2b1510ff868e052c8ff68bd88496",
+    "final_engine_sha256": "f25aa63935785f7ff0901e9c03c50269220fc188c4e73a5c9b8395ace1c4ac7b",
+    "method": "Reversed only the four descriptive capacity_paths export changes in memory. The reconstructed full source hashes exactly to the independently tested engine. No file was rewritten during comparison.",
+    "whole_source_reconstruction_match": true,
+    "simulation_rules_unchanged": true,
+    "test_source_unchanged": true,
+    "new_export_fields": [
+      "ready_offer_fractions.audit",
+      "ready_offer_fractions.screen",
+      "ready_offer_fractions.select",
+      "enterprise_not_ready_fraction"
+    ],
+    "refined_export_semantics": "mode_ready_fractions requires completed common setup; all readiness values are end-of-day after preparation, and do not imply remaining production capacity.",
+    "ready_offerings_schema": "Unchanged horizon count of currently ready offerings; capacity_paths offers remains its per-day mean. The new fractions derive only from the corresponding ready_offers membership.",
+    "additional_experiments_run": false,
+    "protected_confirmation_seeds_used": false
+  }
+}

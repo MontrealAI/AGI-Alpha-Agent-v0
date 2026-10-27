@@ -1,0 +1,86 @@
+{
+  "protocol": {
+    "version": "secondary-prototype-frozen-before-seed6401",
+    "status": "Declared after confirmation experiment A; no training or model selection changes permitted",
+    "seed": 7401,
+    "cases": 8,
+    "gain_grid": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7
+    ],
+    "purpose": "Select added diagonal damping g for synthetic stable coupled modes, minimizing J=trace(X_g)+0.15*g^2, where A_g=A-gI",
+    "certificate": "Same Lyapunov residual trace bound; numerical covariance certification only, not plant robustness or real control safety",
+    "acceptance": {
+      "maximum_objective_regret": 1e-06,
+      "must_certify_separation_or_abstain": true,
+      "eight_case_service_deadline_seconds": 2.0
+    },
+    "methods": [
+      "Schur",
+      "adaptive Krylov then Schur on certificate failure",
+      "work POD48 then adaptive Krylov then Schur on certificate failure",
+      "Gym POD48 then adaptive Krylov then Schur on certificate failure"
+    ],
+    "selection": "Eliminate candidates whose lower objective bound exceeds the smallest upper bound; if remaining intervals overlap, recompute all potential winners with Schur; abstain if numerical intervals still overlap",
+    "timing": "Each policy runs fresh matrices, full certification, fallback and selection end to end with one BLAS thread; independent Schur oracle excluded from policy time",
+    "maximum_new_training_solves": 0,
+    "maximum_candidate_queries": 64,
+    "market_status": "Research service hypothesis, no documented buyer willingness to pay"
+  },
+  "summary": {
+    "schur": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 2.0553997499664547,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 0,
+      "adaptive_calls": 0,
+      "schur_calls": 64,
+      "selection_refinements": 0,
+      "qualifies_frozen_service": false
+    },
+    "adaptive_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.4662158989813179,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 0,
+      "adaptive_calls": 64,
+      "schur_calls": 2,
+      "selection_refinements": 2,
+      "qualifies_frozen_service": true
+    },
+    "work48_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.17280067801766563,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 64,
+      "adaptive_calls": 0,
+      "schur_calls": 0,
+      "selection_refinements": 0,
+      "qualifies_frozen_service": true
+    },
+    "gym48_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.45915170497028157,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 64,
+      "adaptive_calls": 2,
+      "schur_calls": 8,
+      "selection_refinements": 8,
+      "qualifies_frozen_service": true
+    }
+  }
+}
