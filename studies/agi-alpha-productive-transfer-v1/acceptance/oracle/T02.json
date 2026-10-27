@@ -1,0 +1,129 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "T02",
+  "canonical_input_sha256": "ece163f606e1bce0ee5238a97d04e53ac98998a617b274bce0f5c76957aa30f3",
+  "oracle_owner": "separate same-session production-audit agent; not institutionally independent replication",
+  "basis": "Manual source inventory and attribution, independently reconstructed Python inspect.Signature contract; no candidate extractor, product creator or target package execution. Original consumer bytes unchanged.",
+  "calls": [
+    {
+      "line": 755,
+      "column": 8,
+      "callee": "super().__init__",
+      "consumer_sha256": "a282c2356d8996d03b37ecd973c7144dcf1f897e9d0050a99efa84bcf8f40dbc",
+      "snippet_sha256": "107a4cf7f8112e3d3e3b6636e18f289956008b549f049e1eaabfed34d9f6964d",
+      "unsupported_reason": "EXPANDED_ARGUMENTS",
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "Client.__init__",
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "declaration_line": 628,
+          "declaration_end_line": 724,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, proxies=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, app=None, trust_env=None, default_encoding=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "Client.__init__",
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "declaration_line": 639,
+          "declaration_end_line": 716,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, trust_env=None, http1=None, http2=None, proxy=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, default_encoding=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    },
+    {
+      "line": 1335,
+      "column": 8,
+      "callee": "super().__init__",
+      "consumer_sha256": "a282c2356d8996d03b37ecd973c7144dcf1f897e9d0050a99efa84bcf8f40dbc",
+      "snippet_sha256": "107a4cf7f8112e3d3e3b6636e18f289956008b549f049e1eaabfed34d9f6964d",
+      "unsupported_reason": "EXPANDED_ARGUMENTS",
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "AsyncClient.__init__",
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "declaration_line": 1375,
+          "declaration_end_line": 1471,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, proxies=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, app=None, trust_env=None, default_encoding=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "AsyncClient.__init__",
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "declaration_line": 1353,
+          "declaration_end_line": 1430,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, trust_env=None, default_encoding=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 752,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 753,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 754,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 755,
+      "column": 8,
+      "callee": "super",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 1332,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 1333,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 1334,
+      "column": 8,
+      "callee": "kwargs.setdefault",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 1335,
+      "column": 8,
+      "callee": "super",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    }
+  ],
+  "complete_call_count": 2,
+  "accepted_truthful_assessment": "Exact complete relevant-call inventory, no spurious target relationships, source-bound conditional conclusions, and explicit justified abstention where core cannot decide. Decisive coverage reported separately; complete unresolved packet is not compatibility acceptance."
+}

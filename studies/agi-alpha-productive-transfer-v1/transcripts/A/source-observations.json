@@ -1,0 +1,1032 @@
+{
+  "schema": "agi-alpha-curator-source-observations/v1",
+  "arm": "A",
+  "authorship": "Current-session AI curator; not observed human labor",
+  "method": "Manual source inspection with ordinary stdlib AST location listings; hard-coded selector materialization only",
+  "limitations": [
+    "No inspected consumer or provider source was executed.",
+    "No external network was used.",
+    "No B compiler, C extractor, other-arm response/result, production audit or oracle was read.",
+    "No core assessment, binding, critic or verifier outcome was executed during selection.",
+    "Source relationship declarations do not establish runtime object identity or behavior."
+  ],
+  "tasks": {
+    "T01": {
+      "rawInputSha256": "80196e229d25378f3de07fc52c825b6458d45ef9014ca06ea32f9fbc4e53d757",
+      "sourceHashes": {
+        "consumer": "d6e0a28e95804f79ff37efd5dcd0e7357888961378c5d9e60a781faeb39996ee",
+        "b0": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+        "b1": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+        "b2": "2606242b822e0b73ef88b63e0e7c9a9bf9fe3318d3e60fdd2626d4496b6dfca7",
+        "b3": "ca3555466cb45578499e059bc59f0f9e7d89a70afedb6672fc93da91fc91a965",
+        "a0": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+        "a1": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+        "a2": "757f7d551d4348e1e9828f40abb3f360ee0529dc6a2a3c32369f20adff1d1cdd",
+        "a3": "e3ffc6bb2bf580bc6e6428708a6f247d036220e709f5a72b785392babbd97e6b"
+      },
+      "scope": [
+        {
+          "symbol": "evaluate_agent",
+          "line": 21,
+          "endLine": 76,
+          "text": "def evaluate_agent(agent: Agent, model: str) -> float:\n    \"\"\"Return agent score when evaluated with ``model``.\n\n    The archive must provide ``transfer_cases`` with ``prompt`` and ``expected``\n    fields. The operator explicitly selects a compatible endpoint through\n    ``ALPHA_TRANSFER_BASE_URL``. No archived score is relabeled as evaluation.\n    \"\"\"\n\n    import httpx\n    from alpha_factory_v1.core.runtime.models import RuntimeConfig\n\n    endpoint = os.getenv(\"ALPHA_TRANSFER_BASE_URL\", \"\")\n    config = RuntimeConfig(\n        llm_url=endpoint, llm_model=model, allow_remote_llm=os.getenv(\"ALPHA_TRANSFER_ALLOW_REMOTE\") == \"1\"\n    )\n    cases = agent.meta.get(\"transfer_cases\")\n    if not endpoint or not isinstance(cases, list) or not 1 <= len(cases) <= 100:\n        raise ValueError(\"transfer evaluation requires an explicit provider and 1–100 archived transfer_cases\")\n    headers = {\"Accept-Encoding\": \"identity\"}\n    key = os.getenv(\"ALPHA_TRANSFER_API_KEY\")\n    if key:\n        headers[\"Authorization\"] = f\"Bearer {key}\"\n    local = httpx.URL(endpoint).host in {\"localhost\", \"127.0.0.1\", \"::1\"}\n    passed = 0\n    with httpx.Client(timeout=60, follow_redirects=False, trust_env=not local) as client:\n        for case in cases:\n            if (\n                not isinstance(case, dict)\n                or set(case) != {\"prompt\", \"expected\"}\n                or not all(isinstance(v, str) and len(v) <= 10000 for v in case.values())\n            ):\n                raise ValueError(\"invalid transfer benchmark case\")\n            with client.stream(\n                \"POST\",\n                endpoint.rstrip(\"/\") + \"/chat/completions\",\n                headers=headers,\n                json={\n                    \"model\": config.llm_model,\n                    \"temperature\": 0,\n                    \"max_tokens\": 512,\n                    \"messages\": [{\"role\": \"user\", \"content\": case[\"prompt\"]}],\n                },\n            ) as response:\n                response.raise_for_status()\n                if response.headers.get(\"content-encoding\", \"identity\").lower() != \"identity\":\n                    raise ValueError(\"transfer response must use identity encoding\")\n                content = bytearray()\n                for chunk in response.iter_raw(chunk_size=65536):\n                    if len(content) + len(chunk) > 1024**2:\n                        raise ValueError(\"transfer response exceeds 1 MiB\")\n                    content.extend(chunk)\n            choice = json.loads(content)[\"choices\"][0]\n            if choice.get(\"finish_reason\") != \"stop\":\n                raise ValueError(\"transfer response did not complete\")\n            passed += choice[\"message\"][\"content\"].strip() == case[\"expected\"].strip()\n    return passed / len(cases)",
+          "allExplicitCallLocations": [
+            {
+              "line": 32,
+              "column": 15,
+              "callee": "os.getenv"
+            },
+            {
+              "line": 33,
+              "column": 13,
+              "callee": "RuntimeConfig"
+            },
+            {
+              "line": 34,
+              "column": 60,
+              "callee": "os.getenv"
+            },
+            {
+              "line": 36,
+              "column": 12,
+              "callee": "agent.meta.get"
+            },
+            {
+              "line": 37,
+              "column": 27,
+              "callee": "isinstance"
+            },
+            {
+              "line": 37,
+              "column": 63,
+              "callee": "len"
+            },
+            {
+              "line": 38,
+              "column": 14,
+              "callee": "ValueError"
+            },
+            {
+              "line": 40,
+              "column": 10,
+              "callee": "os.getenv"
+            },
+            {
+              "line": 43,
+              "column": 12,
+              "callee": "httpx.URL"
+            },
+            {
+              "line": 45,
+              "column": 9,
+              "callee": "httpx.Client"
+            },
+            {
+              "line": 48,
+              "column": 20,
+              "callee": "isinstance"
+            },
+            {
+              "line": 49,
+              "column": 19,
+              "callee": "set"
+            },
+            {
+              "line": 50,
+              "column": 23,
+              "callee": "all"
+            },
+            {
+              "line": 50,
+              "column": 27,
+              "callee": "isinstance"
+            },
+            {
+              "line": 50,
+              "column": 50,
+              "callee": "len"
+            },
+            {
+              "line": 50,
+              "column": 75,
+              "callee": "case.values"
+            },
+            {
+              "line": 52,
+              "column": 22,
+              "callee": "ValueError"
+            },
+            {
+              "line": 53,
+              "column": 17,
+              "callee": "client.stream"
+            },
+            {
+              "line": 55,
+              "column": 16,
+              "callee": "endpoint.rstrip"
+            },
+            {
+              "line": 64,
+              "column": 16,
+              "callee": "response.raise_for_status"
+            },
+            {
+              "line": 65,
+              "column": 19,
+              "callee": "response.headers.get('content-encoding', 'identity').lower"
+            },
+            {
+              "line": 65,
+              "column": 19,
+              "callee": "response.headers.get"
+            },
+            {
+              "line": 66,
+              "column": 26,
+              "callee": "ValueError"
+            },
+            {
+              "line": 67,
+              "column": 26,
+              "callee": "bytearray"
+            },
+            {
+              "line": 68,
+              "column": 29,
+              "callee": "response.iter_raw"
+            },
+            {
+              "line": 69,
+              "column": 23,
+              "callee": "len"
+            },
+            {
+              "line": 69,
+              "column": 38,
+              "callee": "len"
+            },
+            {
+              "line": 70,
+              "column": 30,
+              "callee": "ValueError"
+            },
+            {
+              "line": 71,
+              "column": 20,
+              "callee": "content.extend"
+            },
+            {
+              "line": 72,
+              "column": 21,
+              "callee": "json.loads"
+            },
+            {
+              "line": 73,
+              "column": 15,
+              "callee": "choice.get"
+            },
+            {
+              "line": 74,
+              "column": 22,
+              "callee": "ValueError"
+            },
+            {
+              "line": 75,
+              "column": 22,
+              "callee": "choice['message']['content'].strip"
+            },
+            {
+              "line": 75,
+              "column": 62,
+              "callee": "case['expected'].strip"
+            },
+            {
+              "line": 76,
+              "column": 20,
+              "callee": "len"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T01-call-01",
+          "line": 43,
+          "column": 12,
+          "callee": "httpx.URL",
+          "callText": "httpx.URL(endpoint)",
+          "declarations": {
+            "before": {
+              "source": "b2",
+              "symbol": "URL.__init__",
+              "line": 77,
+              "endLine": 124,
+              "decorators": [],
+              "header": "    def __init__(self, url: URL | str = \"\", **kwargs: typing.Any) -> None:"
+            },
+            "after": {
+              "source": "a2",
+              "symbol": "URL.__init__",
+              "line": 77,
+              "endLine": 124,
+              "decorators": [],
+              "header": "    def __init__(self, url: URL | str = \"\", **kwargs: typing.Any) -> None:"
+            }
+          },
+          "relationship": "Consumer line 29 locally imports httpx. Captured httpx/__init__.py imports _urls at line 12 and lists URL in __all__; both _urls.py files define URL.__init__ at line 77. This is a declared constructor target. Local-import/export resolution and class construction are not runtime identity or dispatch proofs."
+        },
+        {
+          "id": "T01-call-02",
+          "line": 45,
+          "column": 9,
+          "callee": "httpx.Client",
+          "callText": "httpx.Client(timeout=60, follow_redirects=False, trust_env=not local)",
+          "declarations": {
+            "before": {
+              "source": "b1",
+              "symbol": "Client.__init__",
+              "line": 628,
+              "endLine": 724,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            },
+            "after": {
+              "source": "a1",
+              "symbol": "Client.__init__",
+              "line": 639,
+              "endLine": 716,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        trust_env: bool = True,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            }
+          },
+          "relationship": "Consumer line 29 locally imports httpx. Both captured package initializers import _client at line 4 and list Client; _client.__all__ also lists Client. The explicit constructors are Client.__init__ at before line 628 and after line 639. Class construction and runtime export identity are not proved by this declared target."
+        },
+        {
+          "id": "T01-call-03",
+          "line": 53,
+          "column": 17,
+          "callee": "client.stream",
+          "callText": "client.stream(\n                \"POST\",\n                endpoint.rstrip(\"/\") + \"/chat/completions\",\n                headers=headers,\n                json={\n                    \"model\": config.llm_model,\n                    \"temperature\": 0,\n                    \"max_tokens\": 512,\n                    \"messages\": [{\"role\": \"user\", \"content\": case[\"prompt\"]}],\n                },\n            )",
+          "declarations": {
+            "before": {
+              "source": "b1",
+              "symbol": "Client.stream",
+              "line": 840,
+              "endLine": 889,
+              "decorators": [
+                "contextmanager"
+              ],
+              "header": "    def stream(\n        self,\n        method: str,\n        url: URL | str,\n        *,\n        content: RequestContent | None = None,\n        data: RequestData | None = None,\n        files: RequestFiles | None = None,\n        json: typing.Any | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        auth: AuthTypes | UseClientDefault | None = USE_CLIENT_DEFAULT,\n        follow_redirects: bool | UseClientDefault = USE_CLIENT_DEFAULT,\n        timeout: TimeoutTypes | UseClientDefault = USE_CLIENT_DEFAULT,\n        extensions: RequestExtensions | None = None,\n    ) -> typing.Iterator[Response]:"
+            },
+            "after": {
+              "source": "a1",
+              "symbol": "Client.stream",
+              "line": 828,
+              "endLine": 877,
+              "decorators": [
+                "contextmanager"
+              ],
+              "header": "    def stream(\n        self,\n        method: str,\n        url: URL | str,\n        *,\n        content: RequestContent | None = None,\n        data: RequestData | None = None,\n        files: RequestFiles | None = None,\n        json: typing.Any | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        auth: AuthTypes | UseClientDefault | None = USE_CLIENT_DEFAULT,\n        follow_redirects: bool | UseClientDefault = USE_CLIENT_DEFAULT,\n        timeout: TimeoutTypes | UseClientDefault = USE_CLIENT_DEFAULT,\n        extensions: RequestExtensions | None = None,\n    ) -> typing.Iterator[Response]:"
+            }
+          },
+          "relationship": "Consumer line 45 binds client through with httpx.Client(...). Captured Client.__enter__ returns self (before line 1304, after line 1291). Client.stream is defined at before line 840 and after line 828 and decorated with contextmanager. This is a source-supported receiver target; actual receiver identity, descriptor dispatch and decorator behavior remain unverified."
+        },
+        {
+          "id": "T01-call-04",
+          "line": 64,
+          "column": 16,
+          "callee": "response.raise_for_status",
+          "callText": "response.raise_for_status()",
+          "declarations": {
+            "before": {
+              "source": "b3",
+              "symbol": "Response.raise_for_status",
+              "line": 728,
+              "endLine": 763,
+              "decorators": [],
+              "header": "    def raise_for_status(self) -> Response:"
+            },
+            "after": {
+              "source": "a3",
+              "symbol": "Response.raise_for_status",
+              "line": 794,
+              "endLine": 829,
+              "decorators": [],
+              "header": "    def raise_for_status(self) -> Response:"
+            }
+          },
+          "relationship": "Consumer line 53 binds response from client.stream. Both captured Client.stream declarations advertise Iterator[Response], assign response = self.send(...) and yield response; Client.send advertises Response and _client imports Response from _models. Selected Response.raise_for_status definitions begin at before line 728 and after line 794. Return annotations/source flow are evidence for a declared target, not proof of runtime identity or receiver dispatch."
+        },
+        {
+          "id": "T01-call-05",
+          "line": 65,
+          "column": 19,
+          "callee": "response.headers.get",
+          "callText": "response.headers.get(\"content-encoding\", \"identity\")",
+          "declarations": {
+            "before": {
+              "source": "b3",
+              "symbol": "Headers.get",
+              "line": 170,
+              "endLine": 178,
+              "decorators": [],
+              "header": "    def get(self, key: str, default: typing.Any = None) -> typing.Any:"
+            },
+            "after": {
+              "source": "a3",
+              "symbol": "Headers.get",
+              "line": 242,
+              "endLine": 250,
+              "decorators": [],
+              "header": "    def get(self, key: str, default: typing.Any = None) -> typing.Any:"
+            }
+          },
+          "relationship": "The response receiver is source-associated with HTTPX Response through the captured Client.stream body and annotations. Response.__init__ assigns self.headers = Headers(headers) in both captured _models.py files; Headers.get is defined at before line 170 and after line 242. This declared attribute receiver chain is not a runtime identity or descriptor-dispatch proof."
+        },
+        {
+          "id": "T01-call-06",
+          "line": 68,
+          "column": 29,
+          "callee": "response.iter_raw",
+          "callText": "response.iter_raw(chunk_size=65536)",
+          "declarations": {
+            "before": {
+              "source": "b3",
+              "symbol": "Response.iter_raw",
+              "line": 869,
+              "endLine": 893,
+              "decorators": [],
+              "header": "    def iter_raw(self, chunk_size: int | None = None) -> typing.Iterator[bytes]:"
+            },
+            "after": {
+              "source": "a3",
+              "symbol": "Response.iter_raw",
+              "line": 935,
+              "endLine": 959,
+              "decorators": [],
+              "header": "    def iter_raw(self, chunk_size: int | None = None) -> typing.Iterator[bytes]:"
+            }
+          },
+          "relationship": "Consumer response is bound from client.stream at line 53; captured stream yields the self.send result and advertises Iterator[Response], while send advertises Response. Explicit Response.iter_raw definitions begin at before line 869 and after line 935. This declared method target preserves the source-supported relationship without asserting runtime receiver identity or descriptor dispatch."
+        }
+      ],
+      "selectionNotes": [
+        "All explicit dependency-related Call nodes in evaluate_agent are selected, including the Headers.get call within a larger .lower() expression.",
+        "The outer .lower() is associated with the string result: Headers.get returns self[key] or the supplied default, Headers.__getitem__ is annotated str, and this call supplies a literal string default. It is not selected as a separate HTTPX declaration.",
+        "httpx.URL(...).host is an attribute/property access, not a separate explicit Call node. Implicit with/iteration protocol calls are not invented as explicit selected calls.",
+        "Other explicit calls are Python builtins, stdlib functions, consumer-local/runtime configuration, or methods on input/decoded JSON objects. No claim is made about network behavior or provider contact."
+      ],
+      "missingCapturedTargetCount": 0
+    },
+    "T02": {
+      "rawInputSha256": "5424cec0add4b8a05098d26859a4ba0c986c2045c881e1ba48b5bb92eac4ee3c",
+      "sourceHashes": {
+        "consumer": "a282c2356d8996d03b37ecd973c7144dcf1f897e9d0050a99efa84bcf8f40dbc",
+        "b0": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+        "b1": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+        "b2": "2606242b822e0b73ef88b63e0e7c9a9bf9fe3318d3e60fdd2626d4496b6dfca7",
+        "b3": "ca3555466cb45578499e059bc59f0f9e7d89a70afedb6672fc93da91fc91a965",
+        "a0": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+        "a1": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+        "a2": "757f7d551d4348e1e9828f40abb3f360ee0529dc6a2a3c32369f20adff1d1cdd",
+        "a3": "e3ffc6bb2bf580bc6e6428708a6f247d036220e709f5a72b785392babbd97e6b"
+      },
+      "scope": [
+        {
+          "symbol": "_DefaultHttpxClient.__init__",
+          "line": 751,
+          "endLine": 755,
+          "text": "def __init__(self, **kwargs: Any) -> None:\n        kwargs.setdefault(\"timeout\", DEFAULT_TIMEOUT)\n        kwargs.setdefault(\"limits\", DEFAULT_CONNECTION_LIMITS)\n        kwargs.setdefault(\"follow_redirects\", True)\n        super().__init__(**kwargs)",
+          "allExplicitCallLocations": [
+            {
+              "line": 752,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 753,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 754,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 755,
+              "column": 8,
+              "callee": "super().__init__"
+            },
+            {
+              "line": 755,
+              "column": 8,
+              "callee": "super"
+            }
+          ]
+        },
+        {
+          "symbol": "_DefaultAsyncHttpxClient.__init__",
+          "line": 1331,
+          "endLine": 1335,
+          "text": "def __init__(self, **kwargs: Any) -> None:\n        kwargs.setdefault(\"timeout\", DEFAULT_TIMEOUT)\n        kwargs.setdefault(\"limits\", DEFAULT_CONNECTION_LIMITS)\n        kwargs.setdefault(\"follow_redirects\", True)\n        super().__init__(**kwargs)",
+          "allExplicitCallLocations": [
+            {
+              "line": 1332,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 1333,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 1334,
+              "column": 8,
+              "callee": "kwargs.setdefault"
+            },
+            {
+              "line": 1335,
+              "column": 8,
+              "callee": "super().__init__"
+            },
+            {
+              "line": 1335,
+              "column": 8,
+              "callee": "super"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T02-call-01",
+          "line": 755,
+          "column": 8,
+          "callee": "super().__init__",
+          "callText": "super().__init__(**kwargs)",
+          "declarations": {
+            "before": {
+              "source": "b1",
+              "symbol": "Client.__init__",
+              "line": 628,
+              "endLine": 724,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            },
+            "after": {
+              "source": "a1",
+              "symbol": "Client.__init__",
+              "line": 639,
+              "endLine": 716,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        trust_env: bool = True,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            }
+          },
+          "relationship": "Consumer line 750 declares _DefaultHttpxClient(httpx.Client), with httpx imported at line 36. Both captured package initializers export Client through _client. The super().__init__(**kwargs) call is declared against the captured Client.__init__ definitions. Inheritance/runtime dispatch and the contents of expanded kwargs are not established by source selection; no keywords are invented."
+        },
+        {
+          "id": "T02-call-02",
+          "line": 1335,
+          "column": 8,
+          "callee": "super().__init__",
+          "callText": "super().__init__(**kwargs)",
+          "declarations": {
+            "before": {
+              "source": "b1",
+              "symbol": "AsyncClient.__init__",
+              "line": 1375,
+              "endLine": 1471,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            },
+            "after": {
+              "source": "a1",
+              "symbol": "AsyncClient.__init__",
+              "line": 1353,
+              "endLine": 1430,
+              "decorators": [],
+              "header": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:"
+            }
+          },
+          "relationship": "Consumer line 1330 declares _DefaultAsyncHttpxClient(httpx.AsyncClient), with httpx imported at line 36. Both captured package initializers export AsyncClient through _client. The super().__init__(**kwargs) call is declared against captured AsyncClient.__init__ definitions. Inheritance/runtime dispatch and the contents of expanded kwargs are not established by source selection; no keywords are invented."
+        }
+      ],
+      "selectionNotes": [
+        "Each requested initializer scope has one explicit inherited initializer call. The nested super() builtin and kwargs.setdefault calls are not extra dependency calls.",
+        "The exact **kwargs expansions are preserved. Defaults set in surrounding source do not disclose every runtime key or justify materializing a different call."
+      ],
+      "missingCapturedTargetCount": 0
+    },
+    "T03": {
+      "rawInputSha256": "8cc36b26c42142ae19bea838635b7e999d771dd34c501e8342d062f9bfdb1091",
+      "sourceHashes": {
+        "consumer": "b59f0f8cd73ac2523c5e687a24cb06c49ef4339796ef6b9953592509235c1806",
+        "b0": "077bfbbf8d610c122b1d4c5ddc90ce8217604aa95b2949c00086521ae201dc1d",
+        "b1": "ad0088eac3054688078026e803436c0af2eb9ca147d221280de644ef60476d2e",
+        "b2": "5be43c7dee4ad8e7410368c6a10195e5ee03326a364c4d17d9a66c86cc01aa2f",
+        "b3": "5135c3a89dc689287db54e5d48ef46854998ef1c21e11e3307374a913ab4710f",
+        "b4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "b5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d",
+        "a0": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1",
+        "a1": "ad0088eac3054688078026e803436c0af2eb9ca147d221280de644ef60476d2e",
+        "a2": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+        "a3": "5135c3a89dc689287db54e5d48ef46854998ef1c21e11e3307374a913ab4710f",
+        "a4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "a5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d"
+      },
+      "scope": [
+        {
+          "symbol": "KernelPCA._fit_transform",
+          "line": 307,
+          "endLine": 388,
+          "text": "def _fit_transform(self, K):\n        \"\"\"Fit's using kernel K\"\"\"\n        # center kernel\n        K = self._centerer.fit_transform(K)\n\n        # adjust n_components according to user inputs\n        if self.n_components is None:\n            n_components = K.shape[0]  # use all dimensions\n        else:\n            check_scalar(self.n_components, \"n_components\", numbers.Integral, min_val=1)\n            n_components = min(K.shape[0], self.n_components)\n\n        # compute eigenvectors\n        if self.eigen_solver == \"auto\":\n            if K.shape[0] > 200 and n_components < 10:\n                eigen_solver = \"arpack\"\n            else:\n                eigen_solver = \"dense\"\n        else:\n            eigen_solver = self.eigen_solver\n\n        if eigen_solver == \"dense\":\n            # Note: eigvals specifies the indices of smallest/largest to return\n            self.eigenvalues_, self.eigenvectors_ = linalg.eigh(\n                K, eigvals=(K.shape[0] - n_components, K.shape[0] - 1)\n            )\n        elif eigen_solver == \"arpack\":\n            v0 = _init_arpack_v0(K.shape[0], self.random_state)\n            self.eigenvalues_, self.eigenvectors_ = eigsh(\n                K, n_components, which=\"LA\", tol=self.tol, maxiter=self.max_iter, v0=v0\n            )\n        elif eigen_solver == \"randomized\":\n            self.eigenvalues_, self.eigenvectors_ = _randomized_eigsh(\n                K,\n                n_components=n_components,\n                n_iter=self.iterated_power,\n                random_state=self.random_state,\n                selection=\"module\",\n            )\n        else:\n            raise ValueError(\"Unsupported value for `eigen_solver`: %r\" % eigen_solver)\n\n        # make sure that the eigenvalues are ok and fix numerical issues\n        self.eigenvalues_ = _check_psd_eigenvalues(\n            self.eigenvalues_, enable_warnings=False\n        )\n\n        # flip eigenvectors' sign to enforce deterministic output\n        self.eigenvectors_, _ = svd_flip(\n            self.eigenvectors_, np.zeros_like(self.eigenvectors_).T\n        )\n\n        # sort eigenvectors in descending order\n        indices = self.eigenvalues_.argsort()[::-1]\n        self.eigenvalues_ = self.eigenvalues_[indices]\n        self.eigenvectors_ = self.eigenvectors_[:, indices]\n\n        # remove eigenvectors with a zero eigenvalue (null space) if required\n        if self.remove_zero_eig or self.n_components is None:\n            self.eigenvectors_ = self.eigenvectors_[:, self.eigenvalues_ > 0]\n            self.eigenvalues_ = self.eigenvalues_[self.eigenvalues_ > 0]\n\n        # Maintenance note on Eigenvectors normalization\n        # ----------------------------------------------\n        # there is a link between\n        # the eigenvectors of K=Phi(X)'Phi(X) and the ones of Phi(X)Phi(X)'\n        # if v is an eigenvector of K\n        #     then Phi(X)v  is an eigenvector of Phi(X)Phi(X)'\n        # if u is an eigenvector of Phi(X)Phi(X)'\n        #     then Phi(X)'u is an eigenvector of Phi(X)'Phi(X)\n        #\n        # At this stage our self.eigenvectors_ (the v) have norm 1, we need to scale\n        # them so that eigenvectors in kernel feature space (the u) have norm=1\n        # instead\n        #\n        # We COULD scale them here:\n        #       self.eigenvectors_ = self.eigenvectors_ / np.sqrt(self.eigenvalues_)\n        #\n        # But choose to perform that LATER when needed, in `fit()` and in\n        # `transform()`.\n\n        return K",
+          "allExplicitCallLocations": [
+            {
+              "line": 310,
+              "column": 12,
+              "callee": "self._centerer.fit_transform"
+            },
+            {
+              "line": 316,
+              "column": 12,
+              "callee": "check_scalar"
+            },
+            {
+              "line": 317,
+              "column": 27,
+              "callee": "min"
+            },
+            {
+              "line": 330,
+              "column": 52,
+              "callee": "linalg.eigh"
+            },
+            {
+              "line": 334,
+              "column": 17,
+              "callee": "_init_arpack_v0"
+            },
+            {
+              "line": 335,
+              "column": 52,
+              "callee": "eigsh"
+            },
+            {
+              "line": 339,
+              "column": 52,
+              "callee": "_randomized_eigsh"
+            },
+            {
+              "line": 347,
+              "column": 18,
+              "callee": "ValueError"
+            },
+            {
+              "line": 350,
+              "column": 28,
+              "callee": "_check_psd_eigenvalues"
+            },
+            {
+              "line": 355,
+              "column": 32,
+              "callee": "svd_flip"
+            },
+            {
+              "line": 356,
+              "column": 32,
+              "callee": "np.zeros_like"
+            },
+            {
+              "line": 360,
+              "column": 18,
+              "callee": "self.eigenvalues_.argsort"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T03-call-01",
+          "line": 330,
+          "column": 52,
+          "callee": "linalg.eigh",
+          "callText": "linalg.eigh(\n                K, eigvals=(K.shape[0] - n_components, K.shape[0] - 1)\n            )",
+          "declarations": {
+            "before": {
+              "source": "b0",
+              "symbol": "eigh",
+              "line": 267,
+              "endLine": 606,
+              "decorators": [],
+              "header": "def eigh(a, b=None, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, turbo=True, eigvals=None, type=1,\n         check_finite=True, subset_by_index=None, subset_by_value=None,\n         driver=None):"
+            },
+            "after": {
+              "source": "a0",
+              "symbol": "eigh",
+              "line": 270,
+              "endLine": 620,
+              "decorators": [],
+              "header": "def eigh(a, b=None, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, turbo=False, eigvals=None, type=1,\n         check_finite=True, subset_by_index=None, subset_by_value=None,\n         driver=None):"
+            }
+          },
+          "relationship": "Consumer line 9 imports linalg from scipy. Captured scipy/linalg/__init__.py imports ._decomp at line 200 on both sides; each _decomp.__all__ lists eigh, defined at before line 267 and after line 270. This captured export path supports the declared eigh target. Public-module re-exports and uncaptured modules do not establish runtime object identity; the unchanged core's direct-import path does not resolve this re-export."
+        },
+        {
+          "id": "T03-call-02",
+          "line": 335,
+          "column": 52,
+          "callee": "eigsh",
+          "callText": "eigsh(\n                K, n_components, which=\"LA\", tol=self.tol, maxiter=self.max_iter, v0=v0\n            )",
+          "declarations": {
+            "before": {
+              "source": "b2",
+              "symbol": "eigsh",
+              "line": 1350,
+              "endLine": 1691,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            },
+            "after": {
+              "source": "a2",
+              "symbol": "eigsh",
+              "line": 1357,
+              "endLine": 1699,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            }
+          },
+          "relationship": "Consumer line 10 imports eigsh from scipy.sparse.linalg. Both captured sparse/linalg initializers import _eigen at line 123; _eigen imports .arpack at line 9 and includes eigsh in __all__; arpack/__init__.py imports .arpack at line 20. arpack.py includes eigsh in __all__ and defines it at before line 1350 and after line 1357. This source export chain supports a declared target, not runtime identity or the unchanged core's direct-import mapping."
+        }
+      ],
+      "selectionNotes": [
+        "Both SciPy solver branches in KernelPCA._fit_transform are represented.",
+        "_randomized_eigsh and _init_arpack_v0 are imported from sklearn relatives; their internal transitive calls are outside the named source scope. Array operations and sklearn utilities are not added as SciPy calls."
+      ],
+      "missingCapturedTargetCount": 0
+    },
+    "T04": {
+      "rawInputSha256": "013649c13367d115b6982b3b1371b48835468402103b5b3a1e6c723b19eeae1c",
+      "sourceHashes": {
+        "consumer": "b59f0f8cd73ac2523c5e687a24cb06c49ef4339796ef6b9953592509235c1806",
+        "b0": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1",
+        "b1": "ad0088eac3054688078026e803436c0af2eb9ca147d221280de644ef60476d2e",
+        "b2": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+        "b3": "5135c3a89dc689287db54e5d48ef46854998ef1c21e11e3307374a913ab4710f",
+        "b4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "b5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d",
+        "a0": "0f75a0b54a38de1e028dbfbdbcb7a9115b3fec14975f5c182d606d7668513bf3",
+        "a1": "50e1595f8182bacad08dc68f07a34d35eae1b150deef4ec1be57c4ed707c2b35",
+        "a2": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+        "a3": "ff6352181a96a3e31a57f662143cd74584ccf5e5bc45f9ad496569e163044b2c",
+        "a4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "a5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d"
+      },
+      "scope": [
+        {
+          "symbol": "KernelPCA._fit_transform",
+          "line": 307,
+          "endLine": 388,
+          "text": "def _fit_transform(self, K):\n        \"\"\"Fit's using kernel K\"\"\"\n        # center kernel\n        K = self._centerer.fit_transform(K)\n\n        # adjust n_components according to user inputs\n        if self.n_components is None:\n            n_components = K.shape[0]  # use all dimensions\n        else:\n            check_scalar(self.n_components, \"n_components\", numbers.Integral, min_val=1)\n            n_components = min(K.shape[0], self.n_components)\n\n        # compute eigenvectors\n        if self.eigen_solver == \"auto\":\n            if K.shape[0] > 200 and n_components < 10:\n                eigen_solver = \"arpack\"\n            else:\n                eigen_solver = \"dense\"\n        else:\n            eigen_solver = self.eigen_solver\n\n        if eigen_solver == \"dense\":\n            # Note: eigvals specifies the indices of smallest/largest to return\n            self.eigenvalues_, self.eigenvectors_ = linalg.eigh(\n                K, eigvals=(K.shape[0] - n_components, K.shape[0] - 1)\n            )\n        elif eigen_solver == \"arpack\":\n            v0 = _init_arpack_v0(K.shape[0], self.random_state)\n            self.eigenvalues_, self.eigenvectors_ = eigsh(\n                K, n_components, which=\"LA\", tol=self.tol, maxiter=self.max_iter, v0=v0\n            )\n        elif eigen_solver == \"randomized\":\n            self.eigenvalues_, self.eigenvectors_ = _randomized_eigsh(\n                K,\n                n_components=n_components,\n                n_iter=self.iterated_power,\n                random_state=self.random_state,\n                selection=\"module\",\n            )\n        else:\n            raise ValueError(\"Unsupported value for `eigen_solver`: %r\" % eigen_solver)\n\n        # make sure that the eigenvalues are ok and fix numerical issues\n        self.eigenvalues_ = _check_psd_eigenvalues(\n            self.eigenvalues_, enable_warnings=False\n        )\n\n        # flip eigenvectors' sign to enforce deterministic output\n        self.eigenvectors_, _ = svd_flip(\n            self.eigenvectors_, np.zeros_like(self.eigenvectors_).T\n        )\n\n        # sort eigenvectors in descending order\n        indices = self.eigenvalues_.argsort()[::-1]\n        self.eigenvalues_ = self.eigenvalues_[indices]\n        self.eigenvectors_ = self.eigenvectors_[:, indices]\n\n        # remove eigenvectors with a zero eigenvalue (null space) if required\n        if self.remove_zero_eig or self.n_components is None:\n            self.eigenvectors_ = self.eigenvectors_[:, self.eigenvalues_ > 0]\n            self.eigenvalues_ = self.eigenvalues_[self.eigenvalues_ > 0]\n\n        # Maintenance note on Eigenvectors normalization\n        # ----------------------------------------------\n        # there is a link between\n        # the eigenvectors of K=Phi(X)'Phi(X) and the ones of Phi(X)Phi(X)'\n        # if v is an eigenvector of K\n        #     then Phi(X)v  is an eigenvector of Phi(X)Phi(X)'\n        # if u is an eigenvector of Phi(X)Phi(X)'\n        #     then Phi(X)'u is an eigenvector of Phi(X)'Phi(X)\n        #\n        # At this stage our self.eigenvectors_ (the v) have norm 1, we need to scale\n        # them so that eigenvectors in kernel feature space (the u) have norm=1\n        # instead\n        #\n        # We COULD scale them here:\n        #       self.eigenvectors_ = self.eigenvectors_ / np.sqrt(self.eigenvalues_)\n        #\n        # But choose to perform that LATER when needed, in `fit()` and in\n        # `transform()`.\n\n        return K",
+          "allExplicitCallLocations": [
+            {
+              "line": 310,
+              "column": 12,
+              "callee": "self._centerer.fit_transform"
+            },
+            {
+              "line": 316,
+              "column": 12,
+              "callee": "check_scalar"
+            },
+            {
+              "line": 317,
+              "column": 27,
+              "callee": "min"
+            },
+            {
+              "line": 330,
+              "column": 52,
+              "callee": "linalg.eigh"
+            },
+            {
+              "line": 334,
+              "column": 17,
+              "callee": "_init_arpack_v0"
+            },
+            {
+              "line": 335,
+              "column": 52,
+              "callee": "eigsh"
+            },
+            {
+              "line": 339,
+              "column": 52,
+              "callee": "_randomized_eigsh"
+            },
+            {
+              "line": 347,
+              "column": 18,
+              "callee": "ValueError"
+            },
+            {
+              "line": 350,
+              "column": 28,
+              "callee": "_check_psd_eigenvalues"
+            },
+            {
+              "line": 355,
+              "column": 32,
+              "callee": "svd_flip"
+            },
+            {
+              "line": 356,
+              "column": 32,
+              "callee": "np.zeros_like"
+            },
+            {
+              "line": 360,
+              "column": 18,
+              "callee": "self.eigenvalues_.argsort"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T04-call-01",
+          "line": 330,
+          "column": 52,
+          "callee": "linalg.eigh",
+          "callText": "linalg.eigh(\n                K, eigvals=(K.shape[0] - n_components, K.shape[0] - 1)\n            )",
+          "declarations": {
+            "before": {
+              "source": "b0",
+              "symbol": "eigh",
+              "line": 270,
+              "endLine": 620,
+              "decorators": [],
+              "header": "def eigh(a, b=None, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, turbo=False, eigvals=None, type=1,\n         check_finite=True, subset_by_index=None, subset_by_value=None,\n         driver=None):"
+            },
+            "after": {
+              "source": "a0",
+              "symbol": "eigh",
+              "line": 283,
+              "endLine": 618,
+              "decorators": [],
+              "header": "def eigh(a, b=None, *, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, type=1, check_finite=True, subset_by_index=None,\n         subset_by_value=None, driver=None):"
+            }
+          },
+          "relationship": "Consumer line 9 imports linalg from scipy. Captured scipy/linalg/__init__.py imports ._decomp at before line 200 and after line 206; each _decomp.__all__ lists eigh, defined at before line 270 and after line 283. This captured export path supports the declared eigh target. Public-module re-exports and uncaptured modules do not establish runtime object identity; the unchanged core's direct-import path does not resolve this re-export."
+        },
+        {
+          "id": "T04-call-02",
+          "line": 335,
+          "column": 52,
+          "callee": "eigsh",
+          "callText": "eigsh(\n                K, n_components, which=\"LA\", tol=self.tol, maxiter=self.max_iter, v0=v0\n            )",
+          "declarations": {
+            "before": {
+              "source": "b2",
+              "symbol": "eigsh",
+              "line": 1357,
+              "endLine": 1699,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            },
+            "after": {
+              "source": "a2",
+              "symbol": "eigsh",
+              "line": 1360,
+              "endLine": 1702,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            }
+          },
+          "relationship": "Consumer line 10 imports eigsh from scipy.sparse.linalg. Captured sparse/linalg initializers import _eigen at before line 123 and after line 132; _eigen imports .arpack at line 9 and includes eigsh in __all__; arpack/__init__.py imports .arpack at line 20. arpack.py includes eigsh in __all__ and defines it at before line 1357 and after line 1360. This source export chain supports a declared target, not runtime identity or the unchanged core's direct-import mapping."
+        }
+      ],
+      "selectionNotes": [
+        "The consumer source is byte-identical to T03; its two SciPy call locations are retained, with this task's distinct before/after source sets.",
+        "Only the specified direct scope is inventoried; transitive sklearn helper internals are not inferred."
+      ],
+      "missingCapturedTargetCount": 0
+    },
+    "T05": {
+      "rawInputSha256": "2ca3215aac8fd833790bc6ce8b4698a7bc7722558607e08e326069fe0b3cb199",
+      "sourceHashes": {
+        "consumer": "f57eb9cc2a7a9a6b3c411f8634c8e06c95189766437fd8df8658076f3702da40",
+        "b0": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1",
+        "b1": "ad0088eac3054688078026e803436c0af2eb9ca147d221280de644ef60476d2e",
+        "b2": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+        "b3": "5135c3a89dc689287db54e5d48ef46854998ef1c21e11e3307374a913ab4710f",
+        "b4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "b5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d",
+        "a0": "0f75a0b54a38de1e028dbfbdbcb7a9115b3fec14975f5c182d606d7668513bf3",
+        "a1": "50e1595f8182bacad08dc68f07a34d35eae1b150deef4ec1be57c4ed707c2b35",
+        "a2": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+        "a3": "ff6352181a96a3e31a57f662143cd74584ccf5e5bc45f9ad496569e163044b2c",
+        "a4": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+        "a5": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d"
+      },
+      "scope": [
+        {
+          "symbol": "null_space",
+          "line": 125,
+          "endLine": 198,
+          "text": "def null_space(\n    M, k, k_skip=1, eigen_solver=\"arpack\", tol=1e-6, max_iter=100, random_state=None\n):\n    \"\"\"\n    Find the null space of a matrix M.\n\n    Parameters\n    ----------\n    M : {array, matrix, sparse matrix, LinearOperator}\n        Input covariance matrix: should be symmetric positive semi-definite\n\n    k : int\n        Number of eigenvalues/vectors to return\n\n    k_skip : int, default=1\n        Number of low eigenvalues to skip.\n\n    eigen_solver : {'auto', 'arpack', 'dense'}, default='arpack'\n        auto : algorithm will attempt to choose the best method for input data\n        arpack : use arnoldi iteration in shift-invert mode.\n                    For this method, M may be a dense matrix, sparse matrix,\n                    or general linear operator.\n                    Warning: ARPACK can be unstable for some problems.  It is\n                    best to try several random seeds in order to check results.\n        dense  : use standard dense matrix operations for the eigenvalue\n                    decomposition.  For this method, M must be an array\n                    or matrix type.  This method should be avoided for\n                    large problems.\n\n    tol : float, default=1e-6\n        Tolerance for 'arpack' method.\n        Not used if eigen_solver=='dense'.\n\n    max_iter : int, default=100\n        Maximum number of iterations for 'arpack' method.\n        Not used if eigen_solver=='dense'\n\n    random_state : int, RandomState instance, default=None\n        Determines the random number generator when ``solver`` == 'arpack'.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n    \"\"\"\n    if eigen_solver == \"auto\":\n        if M.shape[0] > 200 and k + k_skip < 10:\n            eigen_solver = \"arpack\"\n        else:\n            eigen_solver = \"dense\"\n\n    if eigen_solver == \"arpack\":\n        v0 = _init_arpack_v0(M.shape[0], random_state)\n        try:\n            eigen_values, eigen_vectors = eigsh(\n                M, k + k_skip, sigma=0.0, tol=tol, maxiter=max_iter, v0=v0\n            )\n        except RuntimeError as e:\n            raise ValueError(\n                \"Error in determining null-space with ARPACK. Error message: \"\n                \"'%s'. Note that eigen_solver='arpack' can fail when the \"\n                \"weight matrix is singular or otherwise ill-behaved. In that \"\n                \"case, eigen_solver='dense' is recommended. See online \"\n                \"documentation for more information.\" % e\n            ) from e\n\n        return eigen_vectors[:, k_skip:], np.sum(eigen_values[k_skip:])\n    elif eigen_solver == \"dense\":\n        if hasattr(M, \"toarray\"):\n            M = M.toarray()\n        eigen_values, eigen_vectors = eigh(\n            M, subset_by_index=(k_skip, k + k_skip - 1), overwrite_a=True\n        )\n        index = np.argsort(np.abs(eigen_values))\n        return eigen_vectors[:, index], np.sum(eigen_values)\n    else:\n        raise ValueError(\"Unrecognized eigen_solver '%s'\" % eigen_solver)",
+          "allExplicitCallLocations": [
+            {
+              "line": 174,
+              "column": 13,
+              "callee": "_init_arpack_v0"
+            },
+            {
+              "line": 176,
+              "column": 42,
+              "callee": "eigsh"
+            },
+            {
+              "line": 180,
+              "column": 18,
+              "callee": "ValueError"
+            },
+            {
+              "line": 188,
+              "column": 42,
+              "callee": "np.sum"
+            },
+            {
+              "line": 190,
+              "column": 11,
+              "callee": "hasattr"
+            },
+            {
+              "line": 191,
+              "column": 16,
+              "callee": "M.toarray"
+            },
+            {
+              "line": 192,
+              "column": 38,
+              "callee": "eigh"
+            },
+            {
+              "line": 195,
+              "column": 16,
+              "callee": "np.argsort"
+            },
+            {
+              "line": 195,
+              "column": 27,
+              "callee": "np.abs"
+            },
+            {
+              "line": 196,
+              "column": 40,
+              "callee": "np.sum"
+            },
+            {
+              "line": 198,
+              "column": 14,
+              "callee": "ValueError"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T05-call-01",
+          "line": 176,
+          "column": 42,
+          "callee": "eigsh",
+          "callText": "eigsh(\n                M, k + k_skip, sigma=0.0, tol=tol, maxiter=max_iter, v0=v0\n            )",
+          "declarations": {
+            "before": {
+              "source": "b2",
+              "symbol": "eigsh",
+              "line": 1357,
+              "endLine": 1699,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            },
+            "after": {
+              "source": "a2",
+              "symbol": "eigsh",
+              "line": 1360,
+              "endLine": 1702,
+              "decorators": [],
+              "header": "def eigsh(A, k=6, M=None, sigma=None, which='LM', v0=None,\n          ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n          Minv=None, OPinv=None, mode='normal'):"
+            }
+          },
+          "relationship": "Consumer line 12 imports eigsh from scipy.sparse.linalg. Captured sparse/linalg initializers import _eigen at before line 123 and after line 132; _eigen imports .arpack at line 9 and includes eigsh in __all__; arpack/__init__.py imports .arpack at line 20. arpack.py includes eigsh in __all__ and defines it at before line 1357 and after line 1360. This captured chain supports a declared target, not runtime object identity or the unchanged core's direct-import mapping."
+        },
+        {
+          "id": "T05-call-02",
+          "line": 192,
+          "column": 38,
+          "callee": "eigh",
+          "callText": "eigh(\n            M, subset_by_index=(k_skip, k + k_skip - 1), overwrite_a=True\n        )",
+          "declarations": {
+            "before": {
+              "source": "b0",
+              "symbol": "eigh",
+              "line": 270,
+              "endLine": 620,
+              "decorators": [],
+              "header": "def eigh(a, b=None, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, turbo=False, eigvals=None, type=1,\n         check_finite=True, subset_by_index=None, subset_by_value=None,\n         driver=None):"
+            },
+            "after": {
+              "source": "a0",
+              "symbol": "eigh",
+              "line": 283,
+              "endLine": 618,
+              "decorators": [],
+              "header": "def eigh(a, b=None, *, lower=True, eigvals_only=False, overwrite_a=False,\n         overwrite_b=False, type=1, check_finite=True, subset_by_index=None,\n         subset_by_value=None, driver=None):"
+            }
+          },
+          "relationship": "Consumer line 10 imports eigh from scipy.linalg. Captured scipy/linalg/__init__.py imports ._decomp at before line 200 and after line 206; each _decomp.__all__ lists eigh, defined at before line 270 and after line 283. This captured export path supports the declared target. Runtime export identity is not proved, and the unchanged core's direct-import mapping does not follow this re-export."
+        }
+      ],
+      "selectionNotes": [
+        "Both explicitly imported SciPy solver calls in null_space are represented.",
+        "M.toarray at consumer line 191 is guarded by hasattr and M is an untyped function parameter accepting several documented object forms. The captured source does not identify a concrete dependency receiver/class for that duck-typed operation. It is not asserted to be a specific SciPy declaration.",
+        "Calls imported from sklearn, numpy array operations, hasattr and exception construction are not separate SciPy API calls in this scope."
+      ],
+      "missingCapturedTargetCount": 0
+    },
+    "T06": {
+      "rawInputSha256": "238edae7fb5322ccb7a2bc6c67cec14013f5ddd5c45565ebebf7236b0bd86f8b",
+      "sourceHashes": {
+        "consumer": "1dd25ede73509245ff3cd179fef2a3e3fa53153ba0dfc501fa4b83f64fa76560",
+        "b0": "944dcbbe8eac825688e350f3850693dcaf1da4699d626eeb8535d140a04ad015",
+        "b1": "f37950d4b01542a40619c567faee4179c40df7d0f7a72470a6c83d06f193fd6e",
+        "a0": "c8f3365d3a909ef535cba39bbb62f195eb99be142278c46d6b1cd71c2350b5bc",
+        "a1": "35bd3a83516f8044c33dfba5b51e32fc9199091df593dc6bbe972ae55b6818fa"
+      },
+      "scope": [
+        {
+          "symbol": "get_covder2",
+          "line": 239,
+          "endLine": 260,
+          "text": "def get_covder2(smoother, k_points=3, integration_points=None,\n                skip_ctransf=False, deriv=2):\n    \"\"\"\n    Approximate integral of cross product of second derivative of smoother\n\n    This uses scipy.integrate simps to compute an approximation to the\n    integral of the smoother derivative cross-product at knots plus k_points\n    in between knots.\n    \"\"\"\n    try:\n        from scipy.integrate import simpson\n    except ImportError:\n        # Remove after SciPy 1.7 is the minimum version\n        from scipy.integrate import simps as simpson\n    knots = smoother.knots\n    if integration_points is None:\n        x = _get_integration_points(knots, k_points=k_points)\n    else:\n        x = integration_points\n    d2 = smoother.transform(x, deriv=deriv, skip_ctransf=skip_ctransf)\n    covd2 = simpson(d2[:, :, None] * d2[:, None, :], x=x, axis=0)\n    return covd2",
+          "allExplicitCallLocations": [
+            {
+              "line": 255,
+              "column": 12,
+              "callee": "_get_integration_points"
+            },
+            {
+              "line": 258,
+              "column": 9,
+              "callee": "smoother.transform"
+            },
+            {
+              "line": 259,
+              "column": 12,
+              "callee": "simpson"
+            }
+          ]
+        }
+      ],
+      "selected": [
+        {
+          "id": "T06-call-01",
+          "line": 259,
+          "column": 12,
+          "callee": "simpson",
+          "callText": "simpson(d2[:, :, None] * d2[:, None, :], x=x, axis=0)",
+          "declarations": {
+            "before": {
+              "source": "b0",
+              "symbol": "simpson",
+              "line": 536,
+              "endLine": 664,
+              "decorators": [],
+              "header": "def simpson(y, x=None, dx=1.0, axis=-1, even='avg'):"
+            },
+            "after": {
+              "source": "a0",
+              "symbol": "simpson",
+              "line": 535,
+              "endLine": 697,
+              "decorators": [],
+              "header": "def simpson(y, *, x=None, dx=1.0, axis=-1):"
+            }
+          },
+          "relationship": "Consumer locally tries from scipy.integrate import simpson at line 249, with an ImportError fallback importing simps as simpson at line 252. Both specified source versions expose simpson: integrate/__init__.py imports _quadrature (before line 91, after line 94), whose __all__ includes simpson and whose explicit definitions begin at before line 536 and after line 535. The selection uses this present simpson export on both sides. The conditional local import and uncaptured import execution remain limitations; no runtime branch or fallback identity is invented."
+        }
+      ],
+      "selectionNotes": [
+        "The single explicit imported integration call is selected once. Both specified provider versions capture simpson and the export path used by the try import.",
+        "The ImportError fallback is retained as an explicit limitation. An absent after-side simps fallback is not substituted for the present simpson definition; no execution of imports was attempted.",
+        "smoother.transform is a method on a passed consumer smoother, and _get_integration_points is consumer-local; neither is selected as an upstream SciPy declaration."
+      ],
+      "missingCapturedTargetCount": 0
+    }
+  },
+  "materializationStartedUtc": "2026-10-26T17:23:00.183012+00:00",
+  "materializationFinishedUtc": "2026-10-26T17:23:00.516476+00:00"
+}

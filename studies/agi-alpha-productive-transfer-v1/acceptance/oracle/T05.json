@@ -1,0 +1,135 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "T05",
+  "canonical_input_sha256": "120030841866381ae1ba907bcc7249f87e86bf9b5d94dd984362e3e40cc17cfd",
+  "oracle_owner": "separate same-session production-audit agent; not institutionally independent replication",
+  "basis": "Manual source inventory and attribution, independently reconstructed Python inspect.Signature contract; no candidate extractor, product creator or target package execution. Original consumer bytes unchanged.",
+  "calls": [
+    {
+      "line": 176,
+      "column": 42,
+      "callee": "eigsh",
+      "consumer_sha256": "f57eb9cc2a7a9a6b3c411f8634c8e06c95189766437fd8df8658076f3702da40",
+      "snippet_sha256": "1ec478a78c6ea0b60a413c2c285cc81bde0826a1536ff6e92ab23323969cfe30",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b2",
+          "symbol": "eigsh",
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "declaration_line": 1357,
+          "declaration_end_line": 1699,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, mode=None)"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "eigsh",
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "declaration_line": 1360,
+          "declaration_end_line": 1702,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, mode=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    },
+    {
+      "line": 192,
+      "column": 38,
+      "callee": "eigh",
+      "consumer_sha256": "f57eb9cc2a7a9a6b3c411f8634c8e06c95189766437fd8df8658076f3702da40",
+      "snippet_sha256": "5fe0bbcfef1cdfe53e46e008b7642208a5e72d0a1286da59911f21e1c76b9856",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b0",
+          "symbol": "eigh",
+          "sha256": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1",
+          "declaration_line": 270,
+          "declaration_end_line": 620,
+          "decorators": [],
+          "signature": "(a, b=None, lower=None, eigvals_only=None, overwrite_a=None, overwrite_b=None, turbo=None, eigvals=None, type=None, check_finite=None, subset_by_index=None, subset_by_value=None, driver=None)"
+        },
+        "after": {
+          "source": "a0",
+          "symbol": "eigh",
+          "sha256": "0f75a0b54a38de1e028dbfbdbcb7a9115b3fec14975f5c182d606d7668513bf3",
+          "declaration_line": 283,
+          "declaration_end_line": 618,
+          "decorators": [],
+          "signature": "(a, b=None, *, lower=None, eigvals_only=None, overwrite_a=None, overwrite_b=None, type=None, check_finite=None, subset_by_index=None, subset_by_value=None, driver=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 174,
+      "column": 13,
+      "callee": "_init_arpack_v0",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 188,
+      "column": 42,
+      "callee": "np.sum",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 190,
+      "column": 11,
+      "callee": "hasattr",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 195,
+      "column": 16,
+      "callee": "np.argsort",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 198,
+      "column": 14,
+      "callee": "ValueError",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 180,
+      "column": 18,
+      "callee": "ValueError",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 191,
+      "column": 16,
+      "callee": "M.toarray",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 195,
+      "column": 27,
+      "callee": "np.abs",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 196,
+      "column": 40,
+      "callee": "np.sum",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    }
+  ],
+  "complete_call_count": 2,
+  "accepted_truthful_assessment": "Exact complete relevant-call inventory, no spurious target relationships, source-bound conditional conclusions, and explicit justified abstention where core cannot decide. Decisive coverage reported separately; complete unresolved packet is not compatibility acceptance."
+}

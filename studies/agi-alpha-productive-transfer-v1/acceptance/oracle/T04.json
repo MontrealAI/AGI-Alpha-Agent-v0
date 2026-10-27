@@ -1,0 +1,144 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "T04",
+  "canonical_input_sha256": "22010d0236da54acf1dd7b6035d7f07ca00fc7b91c95a2958a724c7011513804",
+  "oracle_owner": "separate same-session production-audit agent; not institutionally independent replication",
+  "basis": "Manual source inventory and attribution, independently reconstructed Python inspect.Signature contract; no candidate extractor, product creator or target package execution. Original consumer bytes unchanged.",
+  "calls": [
+    {
+      "line": 330,
+      "column": 52,
+      "callee": "linalg.eigh",
+      "consumer_sha256": "b59f0f8cd73ac2523c5e687a24cb06c49ef4339796ef6b9953592509235c1806",
+      "snippet_sha256": "811916cbd88430776dcb108c89a49dba2f69394f3180e95656ac13f2da617735",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b0",
+          "symbol": "eigh",
+          "sha256": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1",
+          "declaration_line": 270,
+          "declaration_end_line": 620,
+          "decorators": [],
+          "signature": "(a, b=None, lower=None, eigvals_only=None, overwrite_a=None, overwrite_b=None, turbo=None, eigvals=None, type=None, check_finite=None, subset_by_index=None, subset_by_value=None, driver=None)"
+        },
+        "after": {
+          "source": "a0",
+          "symbol": "eigh",
+          "sha256": "0f75a0b54a38de1e028dbfbdbcb7a9115b3fec14975f5c182d606d7668513bf3",
+          "declaration_line": 283,
+          "declaration_end_line": 618,
+          "decorators": [],
+          "signature": "(a, b=None, *, lower=None, eigvals_only=None, overwrite_a=None, overwrite_b=None, type=None, check_finite=None, subset_by_index=None, subset_by_value=None, driver=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": false
+      },
+      "argument_binding_error": {
+        "after": "got an unexpected keyword argument 'eigvals'"
+      },
+      "expected_core_scope_outcome": "BINDING_CONFLICT",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    },
+    {
+      "line": 335,
+      "column": 52,
+      "callee": "eigsh",
+      "consumer_sha256": "b59f0f8cd73ac2523c5e687a24cb06c49ef4339796ef6b9953592509235c1806",
+      "snippet_sha256": "2f854a0df5c115f7052e67128ce6826210ee473676c6bfd0a6c24f4533b005e8",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b2",
+          "symbol": "eigsh",
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "declaration_line": 1357,
+          "declaration_end_line": 1699,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, mode=None)"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "eigsh",
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "declaration_line": 1360,
+          "declaration_end_line": 1702,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, mode=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 310,
+      "column": 12,
+      "callee": "self._centerer.fit_transform",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 350,
+      "column": 28,
+      "callee": "_check_psd_eigenvalues",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 355,
+      "column": 32,
+      "callee": "svd_flip",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 316,
+      "column": 12,
+      "callee": "check_scalar",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 317,
+      "column": 27,
+      "callee": "min",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 360,
+      "column": 18,
+      "callee": "self.eigenvalues_.argsort",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 334,
+      "column": 17,
+      "callee": "_init_arpack_v0",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 356,
+      "column": 32,
+      "callee": "np.zeros_like",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 339,
+      "column": 52,
+      "callee": "_randomized_eigsh",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 347,
+      "column": 18,
+      "callee": "ValueError",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    }
+  ],
+  "complete_call_count": 2,
+  "accepted_truthful_assessment": "Exact complete relevant-call inventory, no spurious target relationships, source-bound conditional conclusions, and explicit justified abstention where core cannot decide. Decisive coverage reported separately; complete unresolved packet is not compatibility acceptance."
+}

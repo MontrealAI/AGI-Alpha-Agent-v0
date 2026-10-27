@@ -1,0 +1,366 @@
+{
+  "absentTargetEvidence": [],
+  "arm": "A",
+  "calls": [
+    {
+      "after": {
+        "declaration": {
+          "endLine": 1357,
+          "line": 1105,
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "snippet": "def eigs(A, k=6, M=None, sigma=None, which='LM', v0=None,\n         ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n         Minv=None, OPinv=None, OPpart=None):\n    \"\"\"\n    Find k eigenvalues and eigenvectors of the square matrix A.\n\n    Solves ``A @ x[i] = w[i] * x[i]``, the standard eigenvalue problem\n    for w[i] eigenvalues with corresponding eigenvectors x[i].\n\n    If M is specified, solves ``A @ x[i] = w[i] * M @ x[i]``, the\n    generalized eigenvalue problem for w[i] eigenvalues\n    with corresponding eigenvectors x[i]\n\n    Parameters\n    ----------\n    A : ndarray, sparse matrix or LinearOperator\n        An array, sparse matrix, or LinearOperator representing\n        the operation ``A @ x``, where A is a real or complex square matrix.\n    k : int, optional\n        The number of eigenvalues and eigenvectors desired.\n        `k` must be smaller than N-1. It is not possible to compute all\n        eigenvectors of a matrix.\n    M : ndarray, sparse matrix or LinearOperator, optional\n        An array, sparse matrix, or LinearOperator representing\n        the operation M@x for the generalized eigenvalue problem\n\n            A @ x = w * M @ x.\n\n        M must represent a real symmetric matrix if A is real, and must\n        represent a complex Hermitian matrix if A is complex. For best\n        results, the data type of M should be the same as that of A.\n        Additionally:\n\n            If `sigma` is None, M is positive definite\n\n            If sigma is specified, M is positive semi-definite\n\n        If sigma is None, eigs requires an operator to compute the solution\n        of the linear equation ``M @ x = b``.  This is done internally via a\n        (sparse) LU decomposition for an explicit matrix M, or via an\n        iterative solver for a general linear operator.  Alternatively,\n        the user can supply the matrix or operator Minv, which gives\n        ``x = Minv @ b = M^-1 @ b``.\n    sigma : real or complex, optional\n        Find eigenvalues near sigma using shift-invert mode.  This requires\n        an operator to compute the solution of the linear system\n        ``[A - sigma * M] @ x = b``, where M is the identity matrix if\n        unspecified. This is computed internally via a (sparse) LU\n        decomposition for explicit matrices A & M, or via an iterative\n        solver if either A or M is a general linear operator.\n        Alternatively, the user can supply the matrix or operator OPinv,\n        which gives ``x = OPinv @ b = [A - sigma * M]^-1 @ b``.\n        For a real matrix A, shift-invert can either be done in imaginary\n        mode or real mode, specified by the parameter OPpart ('r' or 'i').\n        Note that when sigma is specified, the keyword 'which' (below)\n        refers to the shifted eigenvalues ``w'[i]`` where:\n\n            If A is real and OPpart == 'r' (default),\n              ``w'[i] = 1/2 * [1/(w[i]-sigma) + 1/(w[i]-conj(sigma))]``.\n\n            If A is real and OPpart == 'i',\n              ``w'[i] = 1/2i * [1/(w[i]-sigma) - 1/(w[i]-conj(sigma))]``.\n\n            If A is complex, ``w'[i] = 1/(w[i]-sigma)``.\n\n    v0 : ndarray, optional\n        Starting vector for iteration.\n        Default: random\n    ncv : int, optional\n        The number of Lanczos vectors generated\n        `ncv` must be greater than `k`; it is recommended that ``ncv > 2*k``.\n        Default: ``min(n, max(2*k + 1, 20))``\n    which : str, ['LM' | 'SM' | 'LR' | 'SR' | 'LI' | 'SI'], optional\n        Which `k` eigenvectors and eigenvalues to find:\n\n            'LM' : largest magnitude\n\n            'SM' : smallest magnitude\n\n            'LR' : largest real part\n\n            'SR' : smallest real part\n\n            'LI' : largest imaginary part\n\n            'SI' : smallest imaginary part\n\n        When sigma != None, 'which' refers to the shifted eigenvalues w'[i]\n        (see discussion in 'sigma', above).  ARPACK is generally better\n        at finding large values than small values.  If small eigenvalues are\n        desired, consider using shift-invert mode for better performance.\n    maxiter : int, optional\n        Maximum number of Arnoldi update iterations allowed\n        Default: ``n*10``\n    tol : float, optional\n        Relative accuracy for eigenvalues (stopping criterion)\n        The default value of 0 implies machine precision.\n    return_eigenvectors : bool, optional\n        Return eigenvectors (True) in addition to eigenvalues\n    Minv : ndarray, sparse matrix or LinearOperator, optional\n        See notes in M, above.\n    OPinv : ndarray, sparse matrix or LinearOperator, optional\n        See notes in sigma, above.\n    OPpart : {'r' or 'i'}, optional\n        See notes in sigma, above\n\n    Returns\n    -------\n    w : ndarray\n        Array of k eigenvalues.\n    v : ndarray\n        An array of `k` eigenvectors.\n        ``v[:, i]`` is the eigenvector corresponding to the eigenvalue w[i].\n\n    Raises\n    ------\n    ArpackNoConvergence\n        When the requested convergence is not obtained.\n        The currently converged eigenvalues and eigenvectors can be found\n        as ``eigenvalues`` and ``eigenvectors`` attributes of the exception\n        object.\n\n    See Also\n    --------\n    eigsh : eigenvalues and eigenvectors for symmetric matrix A\n    svds : singular value decomposition for a matrix A\n\n    Notes\n    -----\n    This function is a wrapper to the ARPACK [1]_ SNEUPD, DNEUPD, CNEUPD,\n    ZNEUPD, functions which use the Implicitly Restarted Arnoldi Method to\n    find the eigenvalues and eigenvectors [2]_.\n\n    References\n    ----------\n    .. [1] ARPACK Software, https://github.com/opencollab/arpack-ng\n    .. [2] R. B. Lehoucq, D. C. Sorensen, and C. Yang,  ARPACK USERS GUIDE:\n       Solution of Large Scale Eigenvalue Problems by Implicitly Restarted\n       Arnoldi Methods. SIAM, Philadelphia, PA, 1998.\n\n    Examples\n    --------\n    Find 6 eigenvectors of the identity matrix:\n\n    >>> import numpy as np\n    >>> from scipy.sparse.linalg import eigs\n    >>> id = np.eye(13)\n    >>> vals, vecs = eigs(id, k=6)\n    >>> vals\n    array([ 1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j])\n    >>> vecs.shape\n    (13, 6)\n\n    \"\"\"\n    if A.shape[0] != A.shape[1]:\n        raise ValueError(f'expected square matrix (shape={A.shape})')\n    if M is not None:\n        if M.shape != A.shape:\n            raise ValueError(f'wrong M dimensions {M.shape}, should be {A.shape}')\n        if np.dtype(M.dtype).char.lower() != np.dtype(A.dtype).char.lower():\n            warnings.warn('M does not have the same type precision as A. '\n                          'This may adversely affect ARPACK convergence',\n                          stacklevel=2)\n\n    n = A.shape[0]\n\n    if k <= 0:\n        raise ValueError(\"k=%d must be greater than 0.\" % k)\n\n    if k >= n - 1:\n        warnings.warn(\"k >= N - 1 for N * N square matrix. \"\n                      \"Attempting to use scipy.linalg.eig instead.\",\n                      RuntimeWarning, stacklevel=2)\n\n        if issparse(A):\n            raise TypeError(\"Cannot use scipy.linalg.eig for sparse A with \"\n                            \"k >= N - 1. Use scipy.linalg.eig(A.toarray()) or\"\n                            \" reduce k.\")\n        if isinstance(A, LinearOperator):\n            raise TypeError(\"Cannot use scipy.linalg.eig for LinearOperator \"\n                            \"A with k >= N - 1.\")\n        if isinstance(M, LinearOperator):\n            raise TypeError(\"Cannot use scipy.linalg.eig for LinearOperator \"\n                            \"M with k >= N - 1.\")\n\n        return eig(A, b=M, right=return_eigenvectors)\n\n    if sigma is None:\n        matvec = _aslinearoperator_with_dtype(A).matvec\n\n        if OPinv is not None:\n            raise ValueError(\"OPinv should not be specified \"\n                             \"with sigma = None.\")\n        if OPpart is not None:\n            raise ValueError(\"OPpart should not be specified with \"\n                             \"sigma = None or complex A\")\n\n        if M is None:\n            #standard eigenvalue problem\n            mode = 1\n            M_matvec = None\n            Minv_matvec = None\n            if Minv is not None:\n                raise ValueError(\"Minv should not be \"\n                                 \"specified with M = None.\")\n        else:\n            #general eigenvalue problem\n            mode = 2\n            if Minv is None:\n                Minv_matvec = get_inv_matvec(M, hermitian=True, tol=tol)\n            else:\n                Minv = _aslinearoperator_with_dtype(Minv)\n                Minv_matvec = Minv.matvec\n            M_matvec = _aslinearoperator_with_dtype(M).matvec\n    else:\n        #sigma is not None: shift-invert mode\n        if np.issubdtype(A.dtype, np.complexfloating):\n            if OPpart is not None:\n                raise ValueError(\"OPpart should not be specified \"\n                                 \"with sigma=None or complex A\")\n            mode = 3\n        elif OPpart is None or OPpart.lower() == 'r':\n            mode = 3\n        elif OPpart.lower() == 'i':\n            if np.imag(sigma) == 0:\n                raise ValueError(\"OPpart cannot be 'i' if sigma is real\")\n            mode = 4\n        else:\n            raise ValueError(\"OPpart must be one of ('r','i')\")\n\n        matvec = _aslinearoperator_with_dtype(A).matvec\n        if Minv is not None:\n            raise ValueError(\"Minv should not be specified when sigma is\")\n        if OPinv is None:\n            Minv_matvec = get_OPinv_matvec(A, M, sigma,\n                                           hermitian=False, tol=tol)\n        else:\n            OPinv = _aslinearoperator_with_dtype(OPinv)\n            Minv_matvec = OPinv.matvec\n        if M is None:\n            M_matvec = None\n        else:\n            M_matvec = _aslinearoperator_with_dtype(M).matvec\n\n    params = _UnsymmetricArpackParams(n, k, A.dtype.char, matvec, mode,\n                                      M_matvec, Minv_matvec, sigma,\n                                      ncv, v0, maxiter, which, tol)\n\n    with _ARPACK_LOCK:\n        while not params.converged:\n            params.iterate()\n\n        return params.extract(return_eigenvectors)",
+          "source": "a7",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/_eigen/arpack/arpack.py#L1105-L1357"
+        },
+        "signatureLines": {
+          "endLine": 1107,
+          "line": 1105,
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "snippet": "def eigs(A, k=6, M=None, sigma=None, which='LM', v0=None,\n         ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n         Minv=None, OPinv=None, OPpart=None):",
+          "source": "a7",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/_eigen/arpack/arpack.py#L1105-L1107"
+        },
+        "source": "a7",
+        "symbol": "eigs"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 1354,
+          "line": 1102,
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "snippet": "def eigs(A, k=6, M=None, sigma=None, which='LM', v0=None,\n         ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n         Minv=None, OPinv=None, OPpart=None):\n    \"\"\"\n    Find k eigenvalues and eigenvectors of the square matrix A.\n\n    Solves ``A @ x[i] = w[i] * x[i]``, the standard eigenvalue problem\n    for w[i] eigenvalues with corresponding eigenvectors x[i].\n\n    If M is specified, solves ``A @ x[i] = w[i] * M @ x[i]``, the\n    generalized eigenvalue problem for w[i] eigenvalues\n    with corresponding eigenvectors x[i]\n\n    Parameters\n    ----------\n    A : ndarray, sparse matrix or LinearOperator\n        An array, sparse matrix, or LinearOperator representing\n        the operation ``A @ x``, where A is a real or complex square matrix.\n    k : int, optional\n        The number of eigenvalues and eigenvectors desired.\n        `k` must be smaller than N-1. It is not possible to compute all\n        eigenvectors of a matrix.\n    M : ndarray, sparse matrix or LinearOperator, optional\n        An array, sparse matrix, or LinearOperator representing\n        the operation M@x for the generalized eigenvalue problem\n\n            A @ x = w * M @ x.\n\n        M must represent a real symmetric matrix if A is real, and must\n        represent a complex Hermitian matrix if A is complex. For best\n        results, the data type of M should be the same as that of A.\n        Additionally:\n\n            If `sigma` is None, M is positive definite\n\n            If sigma is specified, M is positive semi-definite\n\n        If sigma is None, eigs requires an operator to compute the solution\n        of the linear equation ``M @ x = b``.  This is done internally via a\n        (sparse) LU decomposition for an explicit matrix M, or via an\n        iterative solver for a general linear operator.  Alternatively,\n        the user can supply the matrix or operator Minv, which gives\n        ``x = Minv @ b = M^-1 @ b``.\n    sigma : real or complex, optional\n        Find eigenvalues near sigma using shift-invert mode.  This requires\n        an operator to compute the solution of the linear system\n        ``[A - sigma * M] @ x = b``, where M is the identity matrix if\n        unspecified. This is computed internally via a (sparse) LU\n        decomposition for explicit matrices A & M, or via an iterative\n        solver if either A or M is a general linear operator.\n        Alternatively, the user can supply the matrix or operator OPinv,\n        which gives ``x = OPinv @ b = [A - sigma * M]^-1 @ b``.\n        For a real matrix A, shift-invert can either be done in imaginary\n        mode or real mode, specified by the parameter OPpart ('r' or 'i').\n        Note that when sigma is specified, the keyword 'which' (below)\n        refers to the shifted eigenvalues ``w'[i]`` where:\n\n            If A is real and OPpart == 'r' (default),\n              ``w'[i] = 1/2 * [1/(w[i]-sigma) + 1/(w[i]-conj(sigma))]``.\n\n            If A is real and OPpart == 'i',\n              ``w'[i] = 1/2i * [1/(w[i]-sigma) - 1/(w[i]-conj(sigma))]``.\n\n            If A is complex, ``w'[i] = 1/(w[i]-sigma)``.\n\n    v0 : ndarray, optional\n        Starting vector for iteration.\n        Default: random\n    ncv : int, optional\n        The number of Lanczos vectors generated\n        `ncv` must be greater than `k`; it is recommended that ``ncv > 2*k``.\n        Default: ``min(n, max(2*k + 1, 20))``\n    which : str, ['LM' | 'SM' | 'LR' | 'SR' | 'LI' | 'SI'], optional\n        Which `k` eigenvectors and eigenvalues to find:\n\n            'LM' : largest magnitude\n\n            'SM' : smallest magnitude\n\n            'LR' : largest real part\n\n            'SR' : smallest real part\n\n            'LI' : largest imaginary part\n\n            'SI' : smallest imaginary part\n\n        When sigma != None, 'which' refers to the shifted eigenvalues w'[i]\n        (see discussion in 'sigma', above).  ARPACK is generally better\n        at finding large values than small values.  If small eigenvalues are\n        desired, consider using shift-invert mode for better performance.\n    maxiter : int, optional\n        Maximum number of Arnoldi update iterations allowed\n        Default: ``n*10``\n    tol : float, optional\n        Relative accuracy for eigenvalues (stopping criterion)\n        The default value of 0 implies machine precision.\n    return_eigenvectors : bool, optional\n        Return eigenvectors (True) in addition to eigenvalues\n    Minv : ndarray, sparse matrix or LinearOperator, optional\n        See notes in M, above.\n    OPinv : ndarray, sparse matrix or LinearOperator, optional\n        See notes in sigma, above.\n    OPpart : {'r' or 'i'}, optional\n        See notes in sigma, above\n\n    Returns\n    -------\n    w : ndarray\n        Array of k eigenvalues.\n    v : ndarray\n        An array of `k` eigenvectors.\n        ``v[:, i]`` is the eigenvector corresponding to the eigenvalue w[i].\n\n    Raises\n    ------\n    ArpackNoConvergence\n        When the requested convergence is not obtained.\n        The currently converged eigenvalues and eigenvectors can be found\n        as ``eigenvalues`` and ``eigenvectors`` attributes of the exception\n        object.\n\n    See Also\n    --------\n    eigsh : eigenvalues and eigenvectors for symmetric matrix A\n    svds : singular value decomposition for a matrix A\n\n    Notes\n    -----\n    This function is a wrapper to the ARPACK [1]_ SNEUPD, DNEUPD, CNEUPD,\n    ZNEUPD, functions which use the Implicitly Restarted Arnoldi Method to\n    find the eigenvalues and eigenvectors [2]_.\n\n    References\n    ----------\n    .. [1] ARPACK Software, http://www.caam.rice.edu/software/ARPACK/\n    .. [2] R. B. Lehoucq, D. C. Sorensen, and C. Yang,  ARPACK USERS GUIDE:\n       Solution of Large Scale Eigenvalue Problems by Implicitly Restarted\n       Arnoldi Methods. SIAM, Philadelphia, PA, 1998.\n\n    Examples\n    --------\n    Find 6 eigenvectors of the identity matrix:\n\n    >>> import numpy as np\n    >>> from scipy.sparse.linalg import eigs\n    >>> id = np.eye(13)\n    >>> vals, vecs = eigs(id, k=6)\n    >>> vals\n    array([ 1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j])\n    >>> vecs.shape\n    (13, 6)\n\n    \"\"\"\n    if A.shape[0] != A.shape[1]:\n        raise ValueError('expected square matrix (shape=%s)' % (A.shape,))\n    if M is not None:\n        if M.shape != A.shape:\n            raise ValueError('wrong M dimensions %s, should be %s'\n                             % (M.shape, A.shape))\n        if np.dtype(M.dtype).char.lower() != np.dtype(A.dtype).char.lower():\n            warnings.warn('M does not have the same type precision as A. '\n                          'This may adversely affect ARPACK convergence')\n\n    n = A.shape[0]\n\n    if k <= 0:\n        raise ValueError(\"k=%d must be greater than 0.\" % k)\n\n    if k >= n - 1:\n        warnings.warn(\"k >= N - 1 for N * N square matrix. \"\n                      \"Attempting to use scipy.linalg.eig instead.\",\n                      RuntimeWarning)\n\n        if issparse(A):\n            raise TypeError(\"Cannot use scipy.linalg.eig for sparse A with \"\n                            \"k >= N - 1. Use scipy.linalg.eig(A.toarray()) or\"\n                            \" reduce k.\")\n        if isinstance(A, LinearOperator):\n            raise TypeError(\"Cannot use scipy.linalg.eig for LinearOperator \"\n                            \"A with k >= N - 1.\")\n        if isinstance(M, LinearOperator):\n            raise TypeError(\"Cannot use scipy.linalg.eig for LinearOperator \"\n                            \"M with k >= N - 1.\")\n\n        return eig(A, b=M, right=return_eigenvectors)\n\n    if sigma is None:\n        matvec = _aslinearoperator_with_dtype(A).matvec\n\n        if OPinv is not None:\n            raise ValueError(\"OPinv should not be specified \"\n                             \"with sigma = None.\")\n        if OPpart is not None:\n            raise ValueError(\"OPpart should not be specified with \"\n                             \"sigma = None or complex A\")\n\n        if M is None:\n            #standard eigenvalue problem\n            mode = 1\n            M_matvec = None\n            Minv_matvec = None\n            if Minv is not None:\n                raise ValueError(\"Minv should not be \"\n                                 \"specified with M = None.\")\n        else:\n            #general eigenvalue problem\n            mode = 2\n            if Minv is None:\n                Minv_matvec = get_inv_matvec(M, hermitian=True, tol=tol)\n            else:\n                Minv = _aslinearoperator_with_dtype(Minv)\n                Minv_matvec = Minv.matvec\n            M_matvec = _aslinearoperator_with_dtype(M).matvec\n    else:\n        #sigma is not None: shift-invert mode\n        if np.issubdtype(A.dtype, np.complexfloating):\n            if OPpart is not None:\n                raise ValueError(\"OPpart should not be specified \"\n                                 \"with sigma=None or complex A\")\n            mode = 3\n        elif OPpart is None or OPpart.lower() == 'r':\n            mode = 3\n        elif OPpart.lower() == 'i':\n            if np.imag(sigma) == 0:\n                raise ValueError(\"OPpart cannot be 'i' if sigma is real\")\n            mode = 4\n        else:\n            raise ValueError(\"OPpart must be one of ('r','i')\")\n\n        matvec = _aslinearoperator_with_dtype(A).matvec\n        if Minv is not None:\n            raise ValueError(\"Minv should not be specified when sigma is\")\n        if OPinv is None:\n            Minv_matvec = get_OPinv_matvec(A, M, sigma,\n                                           hermitian=False, tol=tol)\n        else:\n            OPinv = _aslinearoperator_with_dtype(OPinv)\n            Minv_matvec = OPinv.matvec\n        if M is None:\n            M_matvec = None\n        else:\n            M_matvec = _aslinearoperator_with_dtype(M).matvec\n\n    params = _UnsymmetricArpackParams(n, k, A.dtype.char, matvec, mode,\n                                      M_matvec, Minv_matvec, sigma,\n                                      ncv, v0, maxiter, which, tol)\n\n    with _ARPACK_LOCK:\n        while not params.converged:\n            params.iterate()\n\n        return params.extract(return_eigenvectors)",
+          "source": "b7",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/_eigen/arpack/arpack.py#L1102-L1354"
+        },
+        "signatureLines": {
+          "endLine": 1104,
+          "line": 1102,
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "snippet": "def eigs(A, k=6, M=None, sigma=None, which='LM', v0=None,\n         ncv=None, maxiter=None, tol=0, return_eigenvectors=True,\n         Minv=None, OPinv=None, OPpart=None):",
+          "source": "b7",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/_eigen/arpack/arpack.py#L1102-L1104"
+        },
+        "source": "b7",
+        "symbol": "eigs"
+      },
+      "consumer": {
+        "callee": "sp.sparse.linalg.eigs",
+        "column": 21,
+        "endLine": 338,
+        "line": 336,
+        "sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+        "snippet": "sp.sparse.linalg.eigs(\n        M.T, k=1, which=\"LR\", maxiter=max_iter, tol=tol\n    )",
+        "source": "consumer",
+        "url": "https://github.com/networkx/networkx/blob/9c1ee6392311d056760714d4126cd6382f75a96f/networkx/algorithms/centrality/eigenvector.py#L336-L338"
+      },
+      "id": "F03-c01",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "The captured scipy root has conditional/lazy submodule loading; sparse.__init__ does not directly import linalg. Successful runtime attribute availability is not proved.",
+        "M.T, solver convergence, graph semantics and numerical results require separate runtime evidence."
+      ],
+      "mapping": {
+        "explanation": "consumer:329 imports scipy as sp locally. Captured sparse.linalg exports _eigen (b4:123/a4:132), whose .arpack export and __all__ include eigs (b5/a5:9-17); arpack/__init__.py:20 exports arpack.py, with eigs in __all__ and direct eigs definitions b7:1102/a7:1105. This is conditional source evidence, not core direct-import proof: the import is local, exports are indirect, and runtime sparse.linalg availability/import identity is unproved. Solver convergence and numerical behavior remain outside intake.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "eigenvector_centrality_numpy",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 329,
+          "line": 329,
+          "sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+          "snippet": "    import scipy as sp",
+          "source": "consumer",
+          "url": "https://github.com/networkx/networkx/blob/9c1ee6392311d056760714d4126cd6382f75a96f/networkx/algorithms/centrality/eigenvector.py#L329-L329"
+        },
+        {
+          "endLine": 207,
+          "line": 165,
+          "sha256": "7b52b07fd3c9c9e9425b3c4deddda6fb67c64aae4e08f122224867d0e75fddaf",
+          "snippet": "    submodules = [\n        'cluster',\n        'datasets',\n        'fft',\n        'fftpack',\n        'integrate',\n        'interpolate',\n        'io',\n        'linalg',\n        'misc',\n        'ndimage',\n        'odr',\n        'optimize',\n        'signal',\n        'sparse',\n        'spatial',\n        'special',\n        'stats'\n    ]\n\n    __all__ = submodules + [\n        'LowLevelCallable',\n        'test',\n        'show_config',\n        '__version__',\n        '__numpy_version__'\n    ]\n\n    def __dir__():\n        return __all__\n\n    import importlib as _importlib\n\n    def __getattr__(name):\n        if name in submodules:\n            return _importlib.import_module(f'scipy.{name}')\n        else:\n            try:\n                return globals()[name]\n            except KeyError:\n                raise AttributeError(\n                    f\"Module 'scipy' has no attribute '{name}'\"\n                )",
+          "source": "b0",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/__init__.py#L165-L207"
+        },
+        {
+          "endLine": 141,
+          "line": 99,
+          "sha256": "099cd64551527a8f4c4dd5488fbf7f441d4dd877bb2632807fd4e1dd0a642eb8",
+          "snippet": "submodules = [\n    'cluster',\n    'constants',\n    'datasets',\n    'fft',\n    'fftpack',\n    'integrate',\n    'interpolate',\n    'io',\n    'linalg',\n    'misc',\n    'ndimage',\n    'odr',\n    'optimize',\n    'signal',\n    'sparse',\n    'spatial',\n    'special',\n    'stats'\n]\n\n__all__ = submodules + [\n    'LowLevelCallable',\n    'test',\n    'show_config',\n    '__version__',\n]\n\n\ndef __dir__():\n    return __all__\n\n\ndef __getattr__(name):\n    if name in submodules:\n        return _importlib.import_module(f'scipy.{name}')\n    else:\n        try:\n            return globals()[name]\n        except KeyError:\n            raise AttributeError(\n                f\"Module 'scipy' has no attribute '{name}'\"\n            )",
+          "source": "a0",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/__init__.py#L99-L141"
+        },
+        {
+          "endLine": 123,
+          "line": 123,
+          "sha256": "5135c3a89dc689287db54e5d48ef46854998ef1c21e11e3307374a913ab4710f",
+          "snippet": "from ._eigen import *",
+          "source": "b4",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/__init__.py#L123-L123"
+        },
+        {
+          "endLine": 132,
+          "line": 132,
+          "sha256": "ff6352181a96a3e31a57f662143cd74584ccf5e5bc45f9ad496569e163044b2c",
+          "snippet": "from ._eigen import *",
+          "source": "a4",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/__init__.py#L132-L132"
+        },
+        {
+          "endLine": 17,
+          "line": 9,
+          "sha256": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+          "snippet": "from .arpack import *\nfrom .lobpcg import *\nfrom ._svds import svds\n\nfrom . import arpack\n\n__all__ = [\n    'ArpackError', 'ArpackNoConvergence',\n    'eigs', 'eigsh', 'lobpcg', 'svds'",
+          "source": "b5",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/_eigen/__init__.py#L9-L17"
+        },
+        {
+          "endLine": 17,
+          "line": 9,
+          "sha256": "4b0361a3789666efe526f71d4a8980e5c41d70353c82870a6e64679ba05ff7ed",
+          "snippet": "from .arpack import *\nfrom .lobpcg import *\nfrom ._svds import svds\n\nfrom . import arpack\n\n__all__ = [\n    'ArpackError', 'ArpackNoConvergence',\n    'eigs', 'eigsh', 'lobpcg', 'svds'",
+          "source": "a5",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/_eigen/__init__.py#L9-L17"
+        },
+        {
+          "endLine": 20,
+          "line": 20,
+          "sha256": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d",
+          "snippet": "from .arpack import *",
+          "source": "b6",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/_eigen/arpack/__init__.py#L20-L20"
+        },
+        {
+          "endLine": 20,
+          "line": 20,
+          "sha256": "cc3c5ff4ba24c8f8ad9f7ff477e3d45e804287ab562b47944afb008fa9e45c8d",
+          "snippet": "from .arpack import *",
+          "source": "a6",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/_eigen/arpack/__init__.py#L20-L20"
+        },
+        {
+          "endLine": 40,
+          "line": 40,
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "snippet": "__all__ = ['eigs', 'eigsh', 'ArpackError', 'ArpackNoConvergence']",
+          "source": "b7",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/sparse/linalg/_eigen/arpack/arpack.py#L40-L40"
+        },
+        {
+          "endLine": 53,
+          "line": 53,
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "snippet": "__all__ = ['eigs', 'eigsh', 'ArpackError', 'ArpackNoConvergence']",
+          "source": "a7",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/sparse/linalg/_eigen/arpack/arpack.py#L53-L53"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 178,
+          "line": 17,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "def norm(a, ord=None, axis=None, keepdims=False, check_finite=True):\n    \"\"\"\n    Matrix or vector norm.\n\n    This function is able to return one of eight different matrix norms,\n    or one of an infinite number of vector norms (described below), depending\n    on the value of the ``ord`` parameter. For tensors with rank different from\n    1 or 2, only `ord=None` is supported.\n\n    Parameters\n    ----------\n    a : array_like\n        Input array. If `axis` is None, `a` must be 1-D or 2-D, unless `ord`\n        is None. If both `axis` and `ord` are None, the 2-norm of\n        ``a.ravel`` will be returned.\n    ord : {int, inf, -inf, 'fro', 'nuc', None}, optional\n        Order of the norm (see table under ``Notes``). inf means NumPy's\n        `inf` object.\n    axis : {int, 2-tuple of ints, None}, optional\n        If `axis` is an integer, it specifies the axis of `a` along which to\n        compute the vector norms. If `axis` is a 2-tuple, it specifies the\n        axes that hold 2-D matrices, and the matrix norms of these matrices\n        are computed. If `axis` is None then either a vector norm (when `a`\n        is 1-D) or a matrix norm (when `a` is 2-D) is returned.\n    keepdims : bool, optional\n        If this is set to True, the axes which are normed over are left in the\n        result as dimensions with size one. With this option the result will\n        broadcast correctly against the original `a`.\n    check_finite : bool, optional\n        Whether to check that the input matrix contains only finite numbers.\n        Disabling may give a performance gain, but may result in problems\n        (crashes, non-termination) if the inputs do contain infinities or NaNs.\n\n    Returns\n    -------\n    n : float or ndarray\n        Norm of the matrix or vector(s).\n\n    Notes\n    -----\n    For values of ``ord <= 0``, the result is, strictly speaking, not a\n    mathematical 'norm', but it may still be useful for various numerical\n    purposes.\n\n    The following norms can be calculated:\n\n    =====  ============================  ==========================\n    ord    norm for matrices             norm for vectors\n    =====  ============================  ==========================\n    None   Frobenius norm                2-norm\n    'fro'  Frobenius norm                --\n    'nuc'  nuclear norm                  --\n    inf    max(sum(abs(a), axis=1))      max(abs(a))\n    -inf   min(sum(abs(a), axis=1))      min(abs(a))\n    0      --                            sum(a != 0)\n    1      max(sum(abs(a), axis=0))      as below\n    -1     min(sum(abs(a), axis=0))      as below\n    2      2-norm (largest sing. value)  as below\n    -2     smallest singular value       as below\n    other  --                            sum(abs(a)**ord)**(1./ord)\n    =====  ============================  ==========================\n\n    The Frobenius norm is given by [1]_:\n\n        :math:`||A||_F = [\\\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`\n\n    The nuclear norm is the sum of the singular values.\n\n    Both the Frobenius and nuclear norm orders are only defined for\n    matrices.\n\n    References\n    ----------\n    .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,\n           Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from scipy.linalg import norm\n    >>> a = np.arange(9) - 4.0\n    >>> a\n    array([-4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])\n    >>> b = a.reshape((3, 3))\n    >>> b\n    array([[-4., -3., -2.],\n           [-1.,  0.,  1.],\n           [ 2.,  3.,  4.]])\n\n    >>> norm(a)\n    7.745966692414834\n    >>> norm(b)\n    7.745966692414834\n    >>> norm(b, 'fro')\n    7.745966692414834\n    >>> norm(a, np.inf)\n    4\n    >>> norm(b, np.inf)\n    9\n    >>> norm(a, -np.inf)\n    0\n    >>> norm(b, -np.inf)\n    2\n\n    >>> norm(a, 1)\n    20\n    >>> norm(b, 1)\n    7\n    >>> norm(a, -1)\n    -4.6566128774142013e-010\n    >>> norm(b, -1)\n    6\n    >>> norm(a, 2)\n    7.745966692414834\n    >>> norm(b, 2)\n    7.3484692283495345\n\n    >>> norm(a, -2)\n    0\n    >>> norm(b, -2)\n    1.8570331885190563e-016\n    >>> norm(a, 3)\n    5.8480354764257312\n    >>> norm(a, -3)\n    0\n\n    \"\"\"\n    # Differs from numpy only in non-finite handling and the use of blas.\n    if check_finite:\n        a = np.asarray_chkfinite(a)\n    else:\n        a = np.asarray(a)\n\n    if a.size and a.dtype.char in 'fdFD' and axis is None and not keepdims:\n\n        if ord in (None, 2) and (a.ndim == 1):\n            # use blas for fast and stable euclidean norm\n            nrm2 = get_blas_funcs('nrm2', dtype=a.dtype, ilp64='preferred')\n            return nrm2(a)\n\n        if a.ndim == 2:\n            # Use lapack for a couple fast matrix norms.\n            # For some reason the *lange frobenius norm is slow.\n            lange_args = None\n            # Make sure this works if the user uses the axis keywords\n            # to apply the norm to the transpose.\n            if ord == 1:\n                if np.isfortran(a):\n                    lange_args = '1', a\n                elif np.isfortran(a.T):\n                    lange_args = 'i', a.T\n            elif ord == np.inf:\n                if np.isfortran(a):\n                    lange_args = 'i', a\n                elif np.isfortran(a.T):\n                    lange_args = '1', a.T\n            if lange_args:\n                lange = get_lapack_funcs('lange', dtype=a.dtype, ilp64='preferred')\n                return lange(*lange_args)\n\n    # fall back to numpy in every other case\n    return np.linalg.norm(a, ord=ord, axis=axis, keepdims=keepdims)",
+          "source": "a2",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/linalg/_misc.py#L17-L178"
+        },
+        "signatureLines": {
+          "endLine": 17,
+          "line": 17,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "def norm(a, ord=None, axis=None, keepdims=False, check_finite=True):",
+          "source": "a2",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/linalg/_misc.py#L17-L17"
+        },
+        "source": "a2",
+        "symbol": "norm"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 178,
+          "line": 17,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "def norm(a, ord=None, axis=None, keepdims=False, check_finite=True):\n    \"\"\"\n    Matrix or vector norm.\n\n    This function is able to return one of eight different matrix norms,\n    or one of an infinite number of vector norms (described below), depending\n    on the value of the ``ord`` parameter. For tensors with rank different from\n    1 or 2, only `ord=None` is supported.\n\n    Parameters\n    ----------\n    a : array_like\n        Input array. If `axis` is None, `a` must be 1-D or 2-D, unless `ord`\n        is None. If both `axis` and `ord` are None, the 2-norm of\n        ``a.ravel`` will be returned.\n    ord : {int, inf, -inf, 'fro', 'nuc', None}, optional\n        Order of the norm (see table under ``Notes``). inf means NumPy's\n        `inf` object.\n    axis : {int, 2-tuple of ints, None}, optional\n        If `axis` is an integer, it specifies the axis of `a` along which to\n        compute the vector norms. If `axis` is a 2-tuple, it specifies the\n        axes that hold 2-D matrices, and the matrix norms of these matrices\n        are computed. If `axis` is None then either a vector norm (when `a`\n        is 1-D) or a matrix norm (when `a` is 2-D) is returned.\n    keepdims : bool, optional\n        If this is set to True, the axes which are normed over are left in the\n        result as dimensions with size one. With this option the result will\n        broadcast correctly against the original `a`.\n    check_finite : bool, optional\n        Whether to check that the input matrix contains only finite numbers.\n        Disabling may give a performance gain, but may result in problems\n        (crashes, non-termination) if the inputs do contain infinities or NaNs.\n\n    Returns\n    -------\n    n : float or ndarray\n        Norm of the matrix or vector(s).\n\n    Notes\n    -----\n    For values of ``ord <= 0``, the result is, strictly speaking, not a\n    mathematical 'norm', but it may still be useful for various numerical\n    purposes.\n\n    The following norms can be calculated:\n\n    =====  ============================  ==========================\n    ord    norm for matrices             norm for vectors\n    =====  ============================  ==========================\n    None   Frobenius norm                2-norm\n    'fro'  Frobenius norm                --\n    'nuc'  nuclear norm                  --\n    inf    max(sum(abs(a), axis=1))      max(abs(a))\n    -inf   min(sum(abs(a), axis=1))      min(abs(a))\n    0      --                            sum(a != 0)\n    1      max(sum(abs(a), axis=0))      as below\n    -1     min(sum(abs(a), axis=0))      as below\n    2      2-norm (largest sing. value)  as below\n    -2     smallest singular value       as below\n    other  --                            sum(abs(a)**ord)**(1./ord)\n    =====  ============================  ==========================\n\n    The Frobenius norm is given by [1]_:\n\n        :math:`||A||_F = [\\\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`\n\n    The nuclear norm is the sum of the singular values.\n\n    Both the Frobenius and nuclear norm orders are only defined for\n    matrices.\n\n    References\n    ----------\n    .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,\n           Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from scipy.linalg import norm\n    >>> a = np.arange(9) - 4.0\n    >>> a\n    array([-4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])\n    >>> b = a.reshape((3, 3))\n    >>> b\n    array([[-4., -3., -2.],\n           [-1.,  0.,  1.],\n           [ 2.,  3.,  4.]])\n\n    >>> norm(a)\n    7.745966692414834\n    >>> norm(b)\n    7.745966692414834\n    >>> norm(b, 'fro')\n    7.745966692414834\n    >>> norm(a, np.inf)\n    4\n    >>> norm(b, np.inf)\n    9\n    >>> norm(a, -np.inf)\n    0\n    >>> norm(b, -np.inf)\n    2\n\n    >>> norm(a, 1)\n    20\n    >>> norm(b, 1)\n    7\n    >>> norm(a, -1)\n    -4.6566128774142013e-010\n    >>> norm(b, -1)\n    6\n    >>> norm(a, 2)\n    7.745966692414834\n    >>> norm(b, 2)\n    7.3484692283495345\n\n    >>> norm(a, -2)\n    0\n    >>> norm(b, -2)\n    1.8570331885190563e-016\n    >>> norm(a, 3)\n    5.8480354764257312\n    >>> norm(a, -3)\n    0\n\n    \"\"\"\n    # Differs from numpy only in non-finite handling and the use of blas.\n    if check_finite:\n        a = np.asarray_chkfinite(a)\n    else:\n        a = np.asarray(a)\n\n    if a.size and a.dtype.char in 'fdFD' and axis is None and not keepdims:\n\n        if ord in (None, 2) and (a.ndim == 1):\n            # use blas for fast and stable euclidean norm\n            nrm2 = get_blas_funcs('nrm2', dtype=a.dtype, ilp64='preferred')\n            return nrm2(a)\n\n        if a.ndim == 2:\n            # Use lapack for a couple fast matrix norms.\n            # For some reason the *lange frobenius norm is slow.\n            lange_args = None\n            # Make sure this works if the user uses the axis keywords\n            # to apply the norm to the transpose.\n            if ord == 1:\n                if np.isfortran(a):\n                    lange_args = '1', a\n                elif np.isfortran(a.T):\n                    lange_args = 'i', a.T\n            elif ord == np.inf:\n                if np.isfortran(a):\n                    lange_args = 'i', a\n                elif np.isfortran(a.T):\n                    lange_args = '1', a.T\n            if lange_args:\n                lange = get_lapack_funcs('lange', dtype=a.dtype, ilp64='preferred')\n                return lange(*lange_args)\n\n    # fall back to numpy in every other case\n    return np.linalg.norm(a, ord=ord, axis=axis, keepdims=keepdims)",
+          "source": "b2",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/linalg/_misc.py#L17-L178"
+        },
+        "signatureLines": {
+          "endLine": 17,
+          "line": 17,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "def norm(a, ord=None, axis=None, keepdims=False, check_finite=True):",
+          "source": "b2",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/linalg/_misc.py#L17-L17"
+        },
+        "source": "b2",
+        "symbol": "norm"
+      },
+      "consumer": {
+        "callee": "sp.linalg.norm",
+        "column": 36,
+        "endLine": 340,
+        "line": 340,
+        "sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+        "snippet": "sp.linalg.norm(largest)",
+        "source": "consumer",
+        "url": "https://github.com/networkx/networkx/blob/9c1ee6392311d056760714d4126cd6382f75a96f/networkx/algorithms/centrality/eigenvector.py#L340-L340"
+      },
+      "id": "F03-c02",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "largest is produced by the solver and NumPy array operations; its values, type and norm behavior are not established by declaration selection."
+      ],
+      "mapping": {
+        "explanation": "consumer:329 imports scipy as sp locally. Captured linalg/__init__.py imports ._misc by star (b1:197/a1:203); b2/a2:6 explicitly include norm in __all__, and both directly define norm at line 17. This supports the conditional scipy.linalg._misc.norm declaration. Local import, lazy submodule loading and re-exports are outside the core direct-import rule. Runtime identity, numerical input and normalization results remain unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "eigenvector_centrality_numpy",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 329,
+          "line": 329,
+          "sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+          "snippet": "    import scipy as sp",
+          "source": "consumer",
+          "url": "https://github.com/networkx/networkx/blob/9c1ee6392311d056760714d4126cd6382f75a96f/networkx/algorithms/centrality/eigenvector.py#L329-L329"
+        },
+        {
+          "endLine": 207,
+          "line": 165,
+          "sha256": "7b52b07fd3c9c9e9425b3c4deddda6fb67c64aae4e08f122224867d0e75fddaf",
+          "snippet": "    submodules = [\n        'cluster',\n        'datasets',\n        'fft',\n        'fftpack',\n        'integrate',\n        'interpolate',\n        'io',\n        'linalg',\n        'misc',\n        'ndimage',\n        'odr',\n        'optimize',\n        'signal',\n        'sparse',\n        'spatial',\n        'special',\n        'stats'\n    ]\n\n    __all__ = submodules + [\n        'LowLevelCallable',\n        'test',\n        'show_config',\n        '__version__',\n        '__numpy_version__'\n    ]\n\n    def __dir__():\n        return __all__\n\n    import importlib as _importlib\n\n    def __getattr__(name):\n        if name in submodules:\n            return _importlib.import_module(f'scipy.{name}')\n        else:\n            try:\n                return globals()[name]\n            except KeyError:\n                raise AttributeError(\n                    f\"Module 'scipy' has no attribute '{name}'\"\n                )",
+          "source": "b0",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/__init__.py#L165-L207"
+        },
+        {
+          "endLine": 141,
+          "line": 99,
+          "sha256": "099cd64551527a8f4c4dd5488fbf7f441d4dd877bb2632807fd4e1dd0a642eb8",
+          "snippet": "submodules = [\n    'cluster',\n    'constants',\n    'datasets',\n    'fft',\n    'fftpack',\n    'integrate',\n    'interpolate',\n    'io',\n    'linalg',\n    'misc',\n    'ndimage',\n    'odr',\n    'optimize',\n    'signal',\n    'sparse',\n    'spatial',\n    'special',\n    'stats'\n]\n\n__all__ = submodules + [\n    'LowLevelCallable',\n    'test',\n    'show_config',\n    '__version__',\n]\n\n\ndef __dir__():\n    return __all__\n\n\ndef __getattr__(name):\n    if name in submodules:\n        return _importlib.import_module(f'scipy.{name}')\n    else:\n        try:\n            return globals()[name]\n        except KeyError:\n            raise AttributeError(\n                f\"Module 'scipy' has no attribute '{name}'\"\n            )",
+          "source": "a0",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/__init__.py#L99-L141"
+        },
+        {
+          "endLine": 197,
+          "line": 197,
+          "sha256": "ad0088eac3054688078026e803436c0af2eb9ca147d221280de644ef60476d2e",
+          "snippet": "from ._misc import *",
+          "source": "b1",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/linalg/__init__.py#L197-L197"
+        },
+        {
+          "endLine": 203,
+          "line": 203,
+          "sha256": "50e1595f8182bacad08dc68f07a34d35eae1b150deef4ec1be57c4ed707c2b35",
+          "snippet": "from ._misc import *",
+          "source": "a1",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/linalg/__init__.py#L203-L203"
+        },
+        {
+          "endLine": 6,
+          "line": 6,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "__all__ = ['LinAlgError', 'LinAlgWarning', 'norm']",
+          "source": "b2",
+          "url": "https://github.com/scipy/scipy/blob/c1ed5ece8ffbf05356a22a8106affcd11bd3aee0/scipy/linalg/_misc.py#L6-L6"
+        },
+        {
+          "endLine": 6,
+          "line": 6,
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "snippet": "__all__ = ['LinAlgError', 'LinAlgWarning', 'norm']",
+          "source": "a2",
+          "url": "https://github.com/scipy/scipy/blob/92d2a8592782ee19a1161d0bf3fc2241ba78bb63/scipy/linalg/_misc.py#L6-L6"
+        }
+      ]
+    }
+  ],
+  "compatibilityAssessmentPerformed": false,
+  "excludedScopeCalls": [
+    {
+      "callee": "nx._dispatch",
+      "column": 1,
+      "line": 196,
+      "reason": "NetworkX function/decorator; outside the selected SciPy call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "len",
+      "column": 7,
+      "line": 331,
+      "reason": "Python builtin; outside the selected dependency call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "nx.NetworkXPointlessConcept",
+      "column": 14,
+      "line": 332,
+      "reason": "NetworkX function/decorator; outside the selected SciPy call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "nx.to_scipy_sparse_array",
+      "column": 8,
+      "line": 335,
+      "reason": "NetworkX function/decorator; outside the selected SciPy call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "list",
+      "column": 45,
+      "line": 335,
+      "reason": "Python builtin; outside the selected dependency call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "eigenvector.flatten",
+      "column": 14,
+      "line": 339,
+      "reason": "Array-result operations, not a call to a captured SciPy export; numerical/type behavior remains a separate runtime concern.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "np.sign",
+      "column": 11,
+      "line": 340,
+      "reason": "NumPy import; outside the selected SciPy call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "largest.sum",
+      "column": 19,
+      "line": 340,
+      "reason": "Array-result operations, not a call to a captured SciPy export; numerical/type behavior remains a separate runtime concern.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "dict",
+      "column": 11,
+      "line": 341,
+      "reason": "Python builtin; outside the selected dependency call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    },
+    {
+      "callee": "zip",
+      "column": 16,
+      "line": 341,
+      "reason": "Python builtin; outside the selected dependency call scope.",
+      "scopeSymbol": "eigenvector_centrality_numpy"
+    }
+  ],
+  "rawTaskSha256": "290f5d2d6703043b4350cf9861e0ed9474c8f0f586f56f798216e3697a11d4a7",
+  "relevantCallCount": 2,
+  "schema": "alpha-curator-source-intake-evidence/v1",
+  "schemaGaps": [],
+  "scope": {
+    "scopeSymbols": [
+      "eigenvector_centrality_numpy"
+    ],
+    "source": "consumer"
+  },
+  "sourceExecution": false,
+  "taskId": "F03"
+}

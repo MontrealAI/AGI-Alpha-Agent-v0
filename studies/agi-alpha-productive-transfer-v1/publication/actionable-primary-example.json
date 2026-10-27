@@ -1,0 +1,36 @@
+{
+  "schema": "agi-alpha-post-primary-evidence-note/v1",
+  "createdAt": "2026-10-26T17:41:22.784857+00:00",
+  "task": "T04",
+  "classification": "Post-outcome publication interpretation of preserved primary evidence; not a new trial or a repaired primary acceptance",
+  "observed": {
+    "consumerCall": "linalg.eigh(K, eigvals=(K.shape[0] - n_components, K.shape[0] - 1))",
+    "beforeVersion": "1.10.1",
+    "afterVersion": "1.14.1",
+    "beforeAliasLine": 486,
+    "afterDeclarationLine": 283
+  },
+  "recommendation": "Hold the affected dense KernelPCA upgrade path; investigate replacing eigvals with subset_by_index using the same index pair, then confirm imported target and run consumer numerical regression tests under both versions. No behavioral patch or runtime compatibility approved.",
+  "sources": {
+    "consumer": {
+      "repository": "scikit-learn/scikit-learn",
+      "commit": "ffc0f66676b4835eb1bdd3f3ecab025e9c1be9fe",
+      "path": "sklearn/decomposition/_kernel_pca.py",
+      "sha256": "b59f0f8cd73ac2523c5e687a24cb06c49ef4339796ef6b9953592509235c1806"
+    },
+    "b0": {
+      "repository": "scipy/scipy",
+      "commit": "c1ed5ece8ffbf05356a22a8106affcd11bd3aee0",
+      "path": "scipy/linalg/_decomp.py",
+      "sha256": "f7ae83c4d6a222bc17cec1c8fb33c35744ceeb39ef4d1bc889b0ad1cf7c82aa1"
+    },
+    "a0": {
+      "repository": "scipy/scipy",
+      "commit": "92d2a8592782ee19a1161d0bf3fc2241ba78bb63",
+      "path": "scipy/linalg/_decomp.py",
+      "sha256": "0f75a0b54a38de1e028dbfbdbcb7a9115b3fec14975f5c182d606d7668513bf3"
+    }
+  },
+  "armAttribution": "A and B found the same conditional binding conflict. Primary complete handoff remains failed.",
+  "completeCustomerAcceptance": false
+}

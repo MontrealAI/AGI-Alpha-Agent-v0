@@ -1,0 +1,68 @@
+{
+  "schema": "alpha-transfer-task-selection/v1",
+  "prepared_at": "2026-10-26T17:15:16.851836+00:00",
+  "tasks": [
+    {
+      "id": "T01",
+      "path": "tasks/T01.json",
+      "sha256": "80196e229d25378f3de07fc52c825b6458d45ef9014ca06ea32f9fbc4e53d757",
+      "canonical_input_sha256": "399a10aa8e0d2cae0b9ad97b581ee84c19ebd9a084ee1023cc2db0f2d196edaf",
+      "bytes": 289221,
+      "source_component": "alpha:evaluate_agent",
+      "family": "httpx",
+      "source_payload_bytes": 273236
+    },
+    {
+      "id": "T02",
+      "path": "tasks/T02.json",
+      "sha256": "5424cec0add4b8a05098d26859a4ba0c986c2045c881e1ba48b5bb92eac4ee3c",
+      "canonical_input_sha256": "ece163f606e1bce0ee5238a97d04e53ac98998a617b274bce0f5c76957aa30f3",
+      "bytes": 355767,
+      "source_component": "openai:_DefaultHttpxClient.__init__,_DefaultAsyncHttpxClient.__init__",
+      "family": "httpx",
+      "source_payload_bytes": 337470
+    },
+    {
+      "id": "T03",
+      "path": "tasks/T03.json",
+      "sha256": "8cc36b26c42142ae19bea838635b7e999d771dd34c501e8342d062f9bfdb1091",
+      "canonical_input_sha256": "55aad154d00df9e6655275c3ead29890d99182a03cbc703314b34fc1693b9ed9",
+      "bytes": 317952,
+      "source_component": "sklearn-old:KernelPCA._fit_transform",
+      "family": "scipy",
+      "source_payload_bytes": 302957
+    },
+    {
+      "id": "T04",
+      "path": "tasks/T04.json",
+      "sha256": "013649c13367d115b6982b3b1371b48835468402103b5b3a1e6c723b19eeae1c",
+      "canonical_input_sha256": "22010d0236da54acf1dd7b6035d7f07ca00fc7b91c95a2958a724c7011513804",
+      "bytes": 319365,
+      "source_component": "sklearn-old:KernelPCA._fit_transform",
+      "family": "scipy",
+      "source_payload_bytes": 304301
+    },
+    {
+      "id": "T05",
+      "path": "tasks/T05.json",
+      "sha256": "2ca3215aac8fd833790bc6ce8b4698a7bc7722558607e08e326069fe0b3cb199",
+      "canonical_input_sha256": "120030841866381ae1ba907bcc7249f87e86bf9b5d94dd984362e3e40cc17cfd",
+      "bytes": 327705,
+      "source_component": "sklearn-new:null_space",
+      "family": "scipy",
+      "source_payload_bytes": 312306
+    },
+    {
+      "id": "T06",
+      "path": "tasks/T06.json",
+      "sha256": "238edae7fb5322ccb7a2bc6c67cec14013f5ddd5c45565ebebf7236b0bd86f8b",
+      "canonical_input_sha256": "38e685274fddbffeffcd84c54829b78b8e715d7e6a1365eb689860ded872db03",
+      "bytes": 160444,
+      "source_component": "statsmodels:get_covder2",
+      "family": "scipy",
+      "source_payload_bytes": 152443
+    }
+  ],
+  "units": "Six unique component/transition questions, five unique source components, two dependency families. Multiple calls and two target methods in one component packet are not separate jobs. T03/T04 share a consumer and are clustered.",
+  "source_selection": "Purposive structural coverage of real historical maintenance transitions; not a random demand sample or estimate of future defect prevalence. Historical/pretraining exposure remains possible. Selection/oracle owner alone inspected sources before candidate freeze. No candidate sees primary inputs or labels before its source/prompt freeze."
+}

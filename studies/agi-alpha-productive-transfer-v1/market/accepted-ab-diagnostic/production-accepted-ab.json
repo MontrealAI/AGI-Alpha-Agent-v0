@@ -1,0 +1,203 @@
+{
+  "schema": "agi-alpha-accepted-ab-diagnostic-production/v1",
+  "missions": [
+    "F01",
+    "F02",
+    "F03",
+    "F04"
+  ],
+  "evidenceSHA256": "23a21db151e18f3efe559e7087462cd9efecc5d0611a4cc7e0a18c0726ba3fb2",
+  "sourceThreeArmBridge": {
+    "path": "market/production-followup.json",
+    "sha256": "85d4962eefbe87a6a4ed167140bdaf5759d43d24a63b7f784f74ddd22486f009",
+    "campaignStatus": "GATED_UNEXECUTED",
+    "completeAcceptanceStatus": "FAIL",
+    "plannedCells": 166,
+    "reason": "C2 fails F03 complete acceptance; no common-subset narrowing or zero-runtime-model discount."
+  },
+  "arms": {
+    "A": {
+      "attemptedMissionIds": [
+        "F01",
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "acceptedMissionIds": [
+        "F01",
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "completeRecurringCostCents": null,
+      "completeConstructionCostCents": null,
+      "resources": {
+        "scope": "known-process-lower-bound",
+        "cpuSecondsPerAccepted": 0.148562319,
+        "wallSecondsPerAccepted": 0.14860482475,
+        "basis": "All attempted recorded process costs divided by accepted handoffs; outside-process model extraction, authoring, customer effort and full workflow remain unknown."
+      }
+    },
+    "B": {
+      "attemptedMissionIds": [
+        "F01",
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "acceptedMissionIds": [
+        "F01",
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "completeRecurringCostCents": null,
+      "completeConstructionCostCents": null,
+      "resources": {
+        "scope": "known-process-lower-bound",
+        "cpuSecondsPerAccepted": 0.275987179,
+        "wallSecondsPerAccepted": 0.27607034125,
+        "basis": "All attempted recorded process costs divided by accepted handoffs; outside-process model extraction, authoring, customer effort and full workflow remain unknown."
+      },
+      "asset": {
+        "id": "source-intake-model-extraction/v1",
+        "path": "protocol/asset-B.json",
+        "sha256": "dffb7c21f8c8387f07720c291aaad1145fa60068202115e822480605bda63bfc"
+      }
+    }
+  },
+  "acceptedAsset": {
+    "id": "source-intake-model-extraction/v1",
+    "path": "protocol/asset-B.json",
+    "sha256": "dffb7c21f8c8387f07720c291aaad1145fa60068202115e822480605bda63bfc"
+  },
+  "independentAcceptance": {
+    "path": "results/independent-followup-audit/summary.json",
+    "receiptSHA256": "4f4324d733a346b3c9c1b0cacd94e7de49723e4f0fa24b2659986458fcb748ae",
+    "verifierSHA256": "bf118f261d3a97813020f3697fb472a07eb63e4d5740dffc4cd0047af5043140",
+    "scope": "complete-useful-deliverable",
+    "independentlyVerified": true,
+    "identitiesAccepted": true,
+    "workbenchAccepted": true,
+    "rows": [
+      {
+        "task": "F01",
+        "arm": "A",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "729a6e57f699f19f3ac02e7782aad220811afdf2ea55b9c0be115ee0c32b78a2",
+        "deliveryReceiptSha256": "c517328b471383b884fde83a30190735f38a1c1318b66389cb39ac7d2b4eac2b",
+        "independentReviewSha256": "cc97c0c6721823c2542770dc040e0d94e9d2c338ec8998a59e11f124b6885d09"
+      },
+      {
+        "task": "F01",
+        "arm": "B",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "979145f953505a2e316fa252769c8d51ab1251936910acdefe4c937818b72059",
+        "deliveryReceiptSha256": "b9ee0530d63186c3aa0c2aa9ce8186b231c405c9449ae0170f0675fcf0648c23",
+        "independentReviewSha256": "8353bf6b876453eae056adadb77e31244dc45c2b143049ef21a4c789828962c7"
+      },
+      {
+        "task": "F02",
+        "arm": "A",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "edecaecb2ea384d4ee0ab7bff57b1f277aac08d2efaacac9e42791e9df4fd682",
+        "deliveryReceiptSha256": "049b398b61c6a078ee03d45566c7332e81821d824e8db44c05eb3ae2b15b6ba8",
+        "independentReviewSha256": "8dbea5e28dc0b4512d6f299f6870eed14f45a16674915a7f2d6c9037ae8875f0"
+      },
+      {
+        "task": "F02",
+        "arm": "B",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "113137de72b250151a6fafdcf59818479cc838d0f21bb308d4a7eb0a57c31409",
+        "deliveryReceiptSha256": "63c3f0d9436d92e8d91e6eb50e4e263b9d47af3c303e0296e4eb6977bc1b69b2",
+        "independentReviewSha256": "5e3aa052bf1a7c75f7078224e64584135f6e19e30a1f17b4207bc162b8af2306"
+      },
+      {
+        "task": "F03",
+        "arm": "A",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "8faa8af622750458f3956f27716bc7f6dce1e5e75b922532c9c274317f17f32c",
+        "deliveryReceiptSha256": "c013741b6ac370987111e14e7348f0ea953b5cdb4dc18beaccf8eccfdcf80a0d",
+        "independentReviewSha256": "52d5b3973f14478785abf14af0443dd23c166fab0dccce8ebd31481878bc3af2"
+      },
+      {
+        "task": "F03",
+        "arm": "B",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "144e58d46cd0889a874103f082a647b3174c4e42eb7a2be4706c727c598a67ed",
+        "deliveryReceiptSha256": "598fe0ce77de9b9db30bfcd960d18d9c847a974ce81b6f222a4ad1830210bc33",
+        "independentReviewSha256": "3be252f8e99f8010efd624a128d07da98c95eedf9dd97e34c2fe1a9bac27b0e4"
+      },
+      {
+        "task": "F04",
+        "arm": "A",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "57d565b388d2972caaa8b43616243c1d2f990c2f81690bb7a6744d6863ab63aa",
+        "deliveryReceiptSha256": "dcc24765ee165d41d4f993ef9f0b06c0dd9de87eac6170825240f52a6d1b0b14",
+        "independentReviewSha256": "e5e291c9a767b4262be3496a7b186f1b753dade591183e20c0b84fce719857c7"
+      },
+      {
+        "task": "F04",
+        "arm": "B",
+        "inventoryAccepted": true,
+        "completeHandoffAccepted": true,
+        "omittedCalls": 0,
+        "spuriousCalls": 0,
+        "wrongTargetCalls": 0,
+        "materialErrors": [],
+        "resultSha256": "b98516691e17f02569f2b203fe6dce6e0f602574f95aa30e444eabdcf1705005",
+        "deliveryReceiptSha256": "cbd76dcbf6c8f8fa7de6e0a8b7c2c46daab99c7bd6ad354dd2d5244265624578",
+        "independentReviewSha256": "e7cc4383675fd3ad05e6faff021edad6ac99d48f02310083631b6bed8f3a914c"
+      }
+    ]
+  },
+  "acceptanceQualification": "Acceptance means complete customer handoff under the frozen independent checker. An auxiliary Workbench fullTask captured-source reference had one too few parent path components at trial time. The identical delivery/raw-task.json exists and customer-report references resolve. Any publication navigation aliases are post-outcome repairs, not successful trial links or semantic reruns; no quality, cost or effort premium is credited.",
+  "excludedComparator": {
+    "label": "C2",
+    "acceptedJobs": 3,
+    "attemptedJobs": 4,
+    "failedMissionIds": [
+      "F03"
+    ],
+    "financialComparisonQualified": false,
+    "reason": "Two out-of-scope NumPy data methods included in SciPy call scope."
+  },
+  "observedCustomerCollectionsCents": 0,
+  "actualFinancialAction": false,
+  "inference": "Internal acceptance supplies scope qualification and exact asset identity only. No lower complete monetary cost, customer effort, field reliability, capacity or demand effect is identified."
+}

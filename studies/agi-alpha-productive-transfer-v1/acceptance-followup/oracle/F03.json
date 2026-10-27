@@ -1,0 +1,141 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "F03",
+  "canonical_input_sha256": "2af3c24f97099f56a78067528bbfa0c80b25f322dd46191dc550510ec891a250",
+  "oracle_owner": "Separate same-session production audit; not institutional replication",
+  "basis": "Manual whole-scope inventory plus independent inert Python signature reconstruction; no candidate outcome or inspected package execution.",
+  "calls": [
+    {
+      "line": 336,
+      "column": 21,
+      "callee": "sp.sparse.linalg.eigs",
+      "consumer_sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+      "snippet_sha256": "9a4bdffa83845ad38f1619def11da225c358da20a6e77e600668d4f214d4eb9f",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b7",
+          "symbol": "eigs",
+          "sha256": "a9d851468f5052ad198baea6d499a13fc8793a78f187948ea549e7c1e7cfb916",
+          "declaration_line": 1102,
+          "declaration_end_line": 1354,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, OPpart=None)"
+        },
+        "after": {
+          "source": "a7",
+          "symbol": "eigs",
+          "sha256": "052917b5fc2f994b6605e8ee809904d8b38f786b55f8cb3b4f15c72290ff471f",
+          "declaration_line": 1105,
+          "declaration_end_line": 1357,
+          "decorators": [],
+          "signature": "(A, k=None, M=None, sigma=None, which=None, v0=None, ncv=None, maxiter=None, tol=None, return_eigenvectors=None, Minv=None, OPinv=None, OPpart=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    },
+    {
+      "line": 340,
+      "column": 36,
+      "callee": "sp.linalg.norm",
+      "consumer_sha256": "a34aa658e88c7f5f07a1f770d0009a00edd30127890bcf51d66782af720b262d",
+      "snippet_sha256": "f95b05fd19fceb0ca2d965914f9a4729967a280f40d63ac7713afca71d6fa4f5",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b2",
+          "symbol": "norm",
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "declaration_line": 17,
+          "declaration_end_line": 178,
+          "decorators": [],
+          "signature": "(a, ord=None, axis=None, keepdims=None, check_finite=None)"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "norm",
+          "sha256": "dc83eaf8b21073157b10b6ed72064af118bad1859b86937fcbb5187ba04a1200",
+          "declaration_line": 17,
+          "declaration_end_line": 178,
+          "decorators": [],
+          "signature": "(a, ord=None, axis=None, keepdims=None, check_finite=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 196,
+      "column": 1,
+      "callee": "nx._dispatch",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 335,
+      "column": 8,
+      "callee": "nx.to_scipy_sparse_array",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 341,
+      "column": 11,
+      "callee": "dict",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 331,
+      "column": 7,
+      "callee": "len",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 332,
+      "column": 14,
+      "callee": "nx.NetworkXPointlessConcept",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 339,
+      "column": 14,
+      "callee": "eigenvector.flatten",
+      "reason": "The captured eigs return documentation specifies NumPy ndarray eigenvectors. Flatten and sum here operate on returned numerical data, not a SciPy-defined receiver. This NumPy/data operation is outside the registered SciPy call inventory."
+    },
+    {
+      "line": 340,
+      "column": 11,
+      "callee": "np.sign",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 341,
+      "column": 16,
+      "callee": "zip",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 335,
+      "column": 45,
+      "callee": "list",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    },
+    {
+      "line": 340,
+      "column": 19,
+      "callee": "largest.sum",
+      "reason": "The captured eigs return documentation specifies NumPy ndarray eigenvectors. Flatten and sum here operate on returned numerical data, not a SciPy-defined receiver. This NumPy/data operation is outside the registered SciPy call inventory."
+    }
+  ],
+  "complete_call_count": 2,
+  "accepted_truthful_assessment": "Complete exact inventory, valid conditional targets or substantiated abstention, independent binding agreement, and separately checked complete bilingual handoff."
+}

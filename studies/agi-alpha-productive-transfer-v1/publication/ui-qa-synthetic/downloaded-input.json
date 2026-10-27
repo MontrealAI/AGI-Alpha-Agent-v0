@@ -1,0 +1,56 @@
+{
+  "schema": "alpha-transfer-raw-task/v1",
+  "id": "UI-CONTROL-01",
+  "title": "SYNTHETIC UI CONTROL",
+  "purpose": "UI presentation only; not a production mission.",
+  "dependency": {
+    "package": "qa_dependency",
+    "importRoots": [
+      "qa_dependency"
+    ],
+    "before": {
+      "version": "0.1-fixture"
+    },
+    "after": {
+      "version": "0.2-fixture"
+    }
+  },
+  "consumer": {
+    "source": "consumer",
+    "scopeSymbols": [
+      "consumer"
+    ]
+  },
+  "sources": {
+    "consumer": {
+      "repository": "synthetic-ui-control/consumer",
+      "commit": "1111111111111111111111111111111111111111",
+      "path": "src/fixture_consumer.py",
+      "sha256": "9381dd2832079664e879bf3454352e63ca758d9357a6ee9e489bc5d133e0205a",
+      "text": "# SYNTHETIC UI CONTROL — aucune preuve d’étude\r\nfrom qa_dependency import decide\r\ndef consumer(value):\r\n    return decide(value, removed=True)\r\n# </script><script>globalThis.QA_INJECTION_EXECUTED=true</script>\r\n# Literal source tokens: __ENGINE_BUNDLE__ __STUDY_DATA__\r\n"
+    },
+    "before": {
+      "repository": "synthetic-ui-control/dependency",
+      "commit": "2222222222222222222222222222222222222222",
+      "path": "qa_dependency.py",
+      "text": "def decide(value, removed=False):\n    return value\n",
+      "sha256": "f9adb76ef3784475f4665d9fc904b226d7b9900710daf07c3f6ebe91c387e59b"
+    },
+    "after": {
+      "repository": "synthetic-ui-control/dependency",
+      "commit": "3333333333333333333333333333333333333333",
+      "path": "qa_dependency.py",
+      "text": "def decide(value):\n    return value\n",
+      "sha256": "de946a91c89b0fa25c6d62f2fa305474b51535bd52b9b05015963f5d76f77952"
+    }
+  },
+  "providerSides": {
+    "before": [
+      "before"
+    ],
+    "after": [
+      "after"
+    ]
+  },
+  "licenseRecords": []
+}

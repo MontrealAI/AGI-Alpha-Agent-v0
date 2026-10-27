@@ -1,0 +1,555 @@
+{
+  "schema": "alpha-manual-curator-selection/v1",
+  "createdAt": "2026-10-26T17:44:15.983960+00:00",
+  "arm": "A",
+  "method": "Explicit current-session model-curator source inspection; fixed rows selected before any outcome execution.",
+  "tasks": {
+    "F01": [
+      {
+        "id": "F01-c01",
+        "scope": "show_server_banner",
+        "line": 724,
+        "column": 8,
+        "callee": "click.echo",
+        "before": {
+          "source": "b1",
+          "symbol": "echo"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo"
+        },
+        "evidence": [
+          [
+            "consumer",
+            15,
+            15
+          ],
+          [
+            "b0",
+            66,
+            66
+          ],
+          [
+            "a0",
+            66,
+            66
+          ]
+        ],
+        "explanation": "consumer:15 imports click. Captured b0/a0:66 re-export echo from .utils, whose direct declarations are b1:219 and a1:222. This supports the conditional click.utils.echo target. The core direct-import rule cannot establish the package re-export from click.echo to click.utils.echo; runtime import identity and terminal behavior remain unproved.",
+        "limits": [
+          "Conditional app_import_path branch and f-string evaluation remain runtime concerns."
+        ]
+      },
+      {
+        "id": "F01-c02",
+        "scope": "show_server_banner",
+        "line": 727,
+        "column": 8,
+        "callee": "click.echo",
+        "before": {
+          "source": "b1",
+          "symbol": "echo"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo"
+        },
+        "evidence": [
+          [
+            "consumer",
+            15,
+            15
+          ],
+          [
+            "b0",
+            66,
+            66
+          ],
+          [
+            "a0",
+            66,
+            66
+          ]
+        ],
+        "explanation": "consumer:15 imports click. Captured b0/a0:66 re-export echo from .utils, whose direct declarations are b1:219 and a1:222. This supports the conditional click.utils.echo target. The core direct-import rule cannot establish the package re-export from click.echo to click.utils.echo; runtime import identity and terminal behavior remain unproved.",
+        "limits": [
+          "Conditional debug branch, truth-value evaluation and f-string evaluation remain runtime concerns."
+        ]
+      }
+    ],
+    "F02": [
+      {
+        "id": "F02-c01",
+        "scope": "_out",
+        "line": 20,
+        "column": 18,
+        "callee": "style",
+        "before": {
+          "source": "b2",
+          "symbol": "style"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "style"
+        },
+        "evidence": [
+          [
+            "consumer",
+            11,
+            11
+          ],
+          [
+            "b0",
+            50,
+            50
+          ],
+          [
+            "a0",
+            50,
+            50
+          ]
+        ],
+        "explanation": "consumer:11 imports style from click. Captured b0/a0:50 re-export style from .termui; b2:462 and a2:512 directly define style. The export relationship supports a conditional target but is outside the core direct-import rule. The exact call retains **styles; its expanded keys and values require runtime evidence and are not replaced with guessed keywords.",
+        "limits": [
+          "The **styles expansion is retained exactly; no concrete expanded argument set is available.",
+          "The consumer defaults bold only when absent; callers may supply other style keys or values."
+        ]
+      },
+      {
+        "id": "F02-c02",
+        "scope": "_out",
+        "line": 21,
+        "column": 4,
+        "callee": "echo",
+        "before": {
+          "source": "b1",
+          "symbol": "echo"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo"
+        },
+        "evidence": [
+          [
+            "consumer",
+            11,
+            11
+          ],
+          [
+            "b0",
+            66,
+            66
+          ],
+          [
+            "a0",
+            66,
+            66
+          ]
+        ],
+        "explanation": "consumer:11 imports echo from click. Captured b0/a0:66 re-export echo from .utils; b1:219 and a1:222 directly define echo. This supports the conditional click.utils.echo target, while the core direct-import rule cannot prove a package re-export. Runtime imported identity and terminal output remain unproved.",
+        "limits": [
+          "message may have passed through style with expanded **styles; message/nl values and terminal behavior remain runtime concerns."
+        ]
+      },
+      {
+        "id": "F02-c03",
+        "scope": "_err",
+        "line": 29,
+        "column": 18,
+        "callee": "style",
+        "before": {
+          "source": "b2",
+          "symbol": "style"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "style"
+        },
+        "evidence": [
+          [
+            "consumer",
+            11,
+            11
+          ],
+          [
+            "b0",
+            50,
+            50
+          ],
+          [
+            "a0",
+            50,
+            50
+          ]
+        ],
+        "explanation": "consumer:11 imports style from click. Captured b0/a0:50 re-export style from .termui; b2:462 and a2:512 directly define style. The export relationship supports a conditional target but is outside the core direct-import rule. The exact call retains **styles; its expanded keys and values require runtime evidence and are not replaced with guessed keywords.",
+        "limits": [
+          "The **styles expansion is retained exactly; no concrete expanded argument set is available.",
+          "The consumer defaults fg to red only when absent; callers may supply other style keys or values."
+        ]
+      },
+      {
+        "id": "F02-c04",
+        "scope": "_err",
+        "line": 30,
+        "column": 4,
+        "callee": "echo",
+        "before": {
+          "source": "b1",
+          "symbol": "echo"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo"
+        },
+        "evidence": [
+          [
+            "consumer",
+            11,
+            11
+          ],
+          [
+            "b0",
+            66,
+            66
+          ],
+          [
+            "a0",
+            66,
+            66
+          ]
+        ],
+        "explanation": "consumer:11 imports echo from click. Captured b0/a0:66 re-export echo from .utils; b1:219 and a1:222 directly define echo. This supports the conditional click.utils.echo target, while the core direct-import rule cannot prove a package re-export. Runtime imported identity and terminal output remain unproved.",
+        "limits": [
+          "message may have passed through style with expanded **styles; message/nl values and terminal behavior remain runtime concerns."
+        ]
+      }
+    ],
+    "F03": [
+      {
+        "id": "F03-c01",
+        "scope": "eigenvector_centrality_numpy",
+        "line": 336,
+        "column": 21,
+        "callee": "sp.sparse.linalg.eigs",
+        "before": {
+          "source": "b7",
+          "symbol": "eigs"
+        },
+        "after": {
+          "source": "a7",
+          "symbol": "eigs"
+        },
+        "evidence": [
+          [
+            "consumer",
+            329,
+            329
+          ],
+          [
+            "b0",
+            165,
+            207
+          ],
+          [
+            "a0",
+            99,
+            141
+          ],
+          [
+            "b4",
+            123,
+            123
+          ],
+          [
+            "a4",
+            132,
+            132
+          ],
+          [
+            "b5",
+            9,
+            17
+          ],
+          [
+            "a5",
+            9,
+            17
+          ],
+          [
+            "b6",
+            20,
+            20
+          ],
+          [
+            "a6",
+            20,
+            20
+          ],
+          [
+            "b7",
+            40,
+            40
+          ],
+          [
+            "a7",
+            53,
+            53
+          ]
+        ],
+        "explanation": "consumer:329 imports scipy as sp locally. Captured sparse.linalg exports _eigen (b4:123/a4:132), whose .arpack export and __all__ include eigs (b5/a5:9-17); arpack/__init__.py:20 exports arpack.py, with eigs in __all__ and direct eigs definitions b7:1102/a7:1105. This is conditional source evidence, not core direct-import proof: the import is local, exports are indirect, and runtime sparse.linalg availability/import identity is unproved. Solver convergence and numerical behavior remain outside intake.",
+        "limits": [
+          "The captured scipy root has conditional/lazy submodule loading; sparse.__init__ does not directly import linalg. Successful runtime attribute availability is not proved.",
+          "M.T, solver convergence, graph semantics and numerical results require separate runtime evidence."
+        ]
+      },
+      {
+        "id": "F03-c02",
+        "scope": "eigenvector_centrality_numpy",
+        "line": 340,
+        "column": 36,
+        "callee": "sp.linalg.norm",
+        "before": {
+          "source": "b2",
+          "symbol": "norm"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "norm"
+        },
+        "evidence": [
+          [
+            "consumer",
+            329,
+            329
+          ],
+          [
+            "b0",
+            165,
+            207
+          ],
+          [
+            "a0",
+            99,
+            141
+          ],
+          [
+            "b1",
+            197,
+            197
+          ],
+          [
+            "a1",
+            203,
+            203
+          ],
+          [
+            "b2",
+            6,
+            6
+          ],
+          [
+            "a2",
+            6,
+            6
+          ]
+        ],
+        "explanation": "consumer:329 imports scipy as sp locally. Captured linalg/__init__.py imports ._misc by star (b1:197/a1:203); b2/a2:6 explicitly include norm in __all__, and both directly define norm at line 17. This supports the conditional scipy.linalg._misc.norm declaration. Local import, lazy submodule loading and re-exports are outside the core direct-import rule. Runtime identity, numerical input and normalization results remain unproved.",
+        "limits": [
+          "largest is produced by the solver and NumPy array operations; its values, type and norm behavior are not established by declaration selection."
+        ]
+      }
+    ],
+    "F04": [
+      {
+        "id": "F04-c01",
+        "scope": "default_client_factory",
+        "line": 130,
+        "column": 11,
+        "callee": "httpx.Client",
+        "before": {
+          "source": "b1",
+          "symbol": "Client.__init__"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "Client.__init__"
+        },
+        "evidence": [
+          [
+            "consumer",
+            29,
+            29
+          ],
+          [
+            "b0",
+            4,
+            5
+          ],
+          [
+            "a0",
+            4,
+            5
+          ],
+          [
+            "b1",
+            60,
+            60
+          ],
+          [
+            "a1",
+            54,
+            54
+          ]
+        ],
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:4 exports _client; _client.__all__ includes Client (b1:60/a1:54), with explicit Client.__init__ at b1:628/a1:639. Selectors identify those captured initializers only. Package re-export is outside the core direct-import rule, and this class construction requires constructor/descriptor receiver dispatch verification; no receiver is guessed and no constructor compatibility conclusion is made.",
+        "limits": [
+          "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+          "Nested Timeout construction, event hook behavior, transport initialization and successful runtime setup remain unproved."
+        ]
+      },
+      {
+        "id": "F04-c02",
+        "scope": "default_client_factory",
+        "line": 133,
+        "column": 16,
+        "callee": "httpx.Timeout",
+        "before": {
+          "source": "b2",
+          "symbol": "Timeout.__init__"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "Timeout.__init__"
+        },
+        "evidence": [
+          [
+            "consumer",
+            29,
+            29
+          ],
+          [
+            "b0",
+            4,
+            5
+          ],
+          [
+            "a0",
+            4,
+            5
+          ],
+          [
+            "b2",
+            17,
+            17
+          ],
+          [
+            "a2",
+            13,
+            13
+          ]
+        ],
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:5 exports _config; _config.__all__ includes Timeout (b2:17/a2:13), with explicit Timeout.__init__ at b2:210/a2:86. Selectors identify those captured initializers only. Re-export and class-constructor receiver dispatch are not proved by the core. The exact nested call and constants.DEFAULT_REQUEST_TIMEOUT expression remain unchanged; timeout behavior is unproved.",
+        "limits": [
+          "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+          "The actual DEFAULT_REQUEST_TIMEOUT value and timeout validation/behavior require separate evidence."
+        ]
+      },
+      {
+        "id": "F04-c03",
+        "scope": "default_async_client_factory",
+        "line": 141,
+        "column": 11,
+        "callee": "httpx.AsyncClient",
+        "before": {
+          "source": "b1",
+          "symbol": "AsyncClient.__init__"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "AsyncClient.__init__"
+        },
+        "evidence": [
+          [
+            "consumer",
+            29,
+            29
+          ],
+          [
+            "b0",
+            4,
+            5
+          ],
+          [
+            "a0",
+            4,
+            5
+          ],
+          [
+            "b1",
+            60,
+            60
+          ],
+          [
+            "a1",
+            54,
+            54
+          ]
+        ],
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:4 exports _client; _client.__all__ includes AsyncClient (b1:60/a1:54), with explicit AsyncClient.__init__ at b1:1375/a1:1353. Selectors identify those captured initializers only. Package re-export is outside the core direct-import rule, and this class construction requires constructor/descriptor receiver dispatch verification; no receiver is guessed and no constructor compatibility conclusion is made.",
+        "limits": [
+          "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+          "Nested Timeout construction, asynchronous hook behavior, transport initialization and successful runtime setup remain unproved."
+        ]
+      },
+      {
+        "id": "F04-c04",
+        "scope": "default_async_client_factory",
+        "line": 144,
+        "column": 16,
+        "callee": "httpx.Timeout",
+        "before": {
+          "source": "b2",
+          "symbol": "Timeout.__init__"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "Timeout.__init__"
+        },
+        "evidence": [
+          [
+            "consumer",
+            29,
+            29
+          ],
+          [
+            "b0",
+            4,
+            5
+          ],
+          [
+            "a0",
+            4,
+            5
+          ],
+          [
+            "b2",
+            17,
+            17
+          ],
+          [
+            "a2",
+            13,
+            13
+          ]
+        ],
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:5 exports _config; _config.__all__ includes Timeout (b2:17/a2:13), with explicit Timeout.__init__ at b2:210/a2:86. Selectors identify those captured initializers only. Re-export and class-constructor receiver dispatch are not proved by the core. The exact nested call and constants.DEFAULT_REQUEST_TIMEOUT expression remain unchanged; timeout behavior is unproved.",
+        "limits": [
+          "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+          "The actual DEFAULT_REQUEST_TIMEOUT value and timeout validation/behavior require separate evidence."
+        ]
+      }
+    ]
+  }
+}

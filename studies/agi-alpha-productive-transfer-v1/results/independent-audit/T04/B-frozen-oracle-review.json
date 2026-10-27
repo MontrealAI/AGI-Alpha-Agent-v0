@@ -1,0 +1,38 @@
+{
+  "schema": "alpha-transfer-independent-extraction-review/v1",
+  "task": "T04",
+  "inputSha256": "22010d0236da54acf1dd7b6035d7f07ca00fc7b91c95a2958a724c7011513804",
+  "responseSha256": "1f7ebeae58a48fe4f23a9f733959e493f6039f97fa725a4032bc5f148a19e205",
+  "complete_truthful_inventory": true,
+  "required_calls": 2,
+  "submitted_claims": 2,
+  "submitted_unresolved": 0,
+  "material_errors": [],
+  "conservative_unresolved_on_bindable_source": [],
+  "claim_oracle_expectations": [
+    {
+      "call": [
+        330,
+        52,
+        "linalg.eigh"
+      ],
+      "expected_core_scope_outcome": "BINDING_CONFLICT"
+    },
+    {
+      "call": [
+        335,
+        52,
+        "eigsh"
+      ],
+      "expected_core_scope_outcome": "BINDING_PRESERVED"
+    }
+  ],
+  "limits": [
+    "Long refusal text alone does not substantiate its semantics. Same-session reviewer must inspect unresolved reasons and any stronger downstream prose claim.",
+    "Complete truthful scope includes explicit unresolved work, not compatibility acceptance.",
+    "Counts are calls within a job, not independent maintenance jobs or customers."
+  ],
+  "arm": "B",
+  "sealedProposalSha256": "1f7ebeae58a48fe4f23a9f733959e493f6039f97fa725a4032bc5f148a19e205",
+  "projectionNote": null
+}

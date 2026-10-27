@@ -1,0 +1,103 @@
+{
+  "schema": "alpha-transfer-model-action-log/v1",
+  "agentRole": "/root/followup_extractor — isolated MODEL EXTRACTION B",
+  "observations": [
+    {
+      "id": "obs-01",
+      "tool": "exec_command",
+      "operation": "Read frozen model-extraction-prompt.txt and followup-protocol.json before release",
+      "paths": [
+        "protocol/model-extraction-prompt.txt",
+        "protocol/followup-protocol.json"
+      ],
+      "timestamp": null,
+      "timestampLimitation": "No time stamp was captured for the setup read.",
+      "sourceExecution": false
+    },
+    {
+      "id": "obs-02",
+      "tool": "exec_command",
+      "operation": "After coordinator RELEASED, read F01-F04 JSON bytes; calculate canonical task and raw file digests; attempt to display full inert tasks",
+      "paths": [
+        "inputs/followup/F01.json",
+        "inputs/followup/F02.json",
+        "inputs/followup/F03.json",
+        "inputs/followup/F04.json"
+      ],
+      "firstCapturedTimestamp": "2026-10-26T17:42:00.168518+00:00",
+      "result": "Output was truncated; no extraction response was produced by this observation. Subsequent narrower source observations supplied the evidence used.",
+      "sourceExecution": false
+    },
+    {
+      "id": "obs-03",
+      "tool": "exec_command",
+      "operation": "Parse captured consumer text with Python ast.parse; display task metadata, all consumer imports, requested scope bodies, ast.Call line/column/callee and call text",
+      "paths": [
+        "inputs/followup/F01.json",
+        "inputs/followup/F02.json",
+        "inputs/followup/F03.json",
+        "inputs/followup/F04.json"
+      ],
+      "capturedTimestampRange": [
+        "2026-10-26T17:42:07.133312+00:00",
+        "2026-10-26T17:42:07.151627+00:00"
+      ],
+      "result": "Observed exact requested scopes and all their call AST nodes; no provider or consumer code imported or executed.",
+      "sourceExecution": false
+    },
+    {
+      "id": "obs-04",
+      "tool": "exec_command",
+      "operation": "Parse captured provider text; verify text SHA-256 values; display export imports, relevant declarations, signatures, decorators and selected return documentation",
+      "paths": [
+        "inputs/followup/F01.json",
+        "inputs/followup/F02.json",
+        "inputs/followup/F03.json",
+        "inputs/followup/F04.json"
+      ],
+      "capturedTimestampRange": [
+        "2026-10-26T17:42:28.064409+00:00",
+        "2026-10-26T17:42:28.144877+00:00"
+      ],
+      "result": "Click and HTTPX relevant declaration evidence was visible. Part of the combined SciPy output was truncated and was read narrowly in obs-05.",
+      "sourceExecution": false
+    },
+    {
+      "id": "obs-05",
+      "tool": "exec_command",
+      "operation": "Read targeted captured SciPy lazy-submodule definitions, relevant star-export chains and __all__ declarations, eigs/norm declarations and return documentation; read HTTPX _client/_config __all__",
+      "paths": [
+        "inputs/followup/F03.json",
+        "inputs/followup/F04.json"
+      ],
+      "capturedTimestamp": "2026-10-26T17:42:44.373861+00:00",
+      "result": "Completed the source evidence needed for conditional declaration hypotheses and documented limitations.",
+      "sourceExecution": false
+    },
+    {
+      "id": "obs-06",
+      "tool": "exec_command",
+      "operation": "Write the model-authored first extraction objects, provenance and action log; hash exact saved response bytes and write seal",
+      "paths": [
+        "transcripts/followup/B/F01.response.json",
+        "transcripts/followup/B/F02.response.json",
+        "transcripts/followup/B/F03.response.json",
+        "transcripts/followup/B/F04.response.json",
+        "transcripts/followup/B/provenance.json",
+        "transcripts/followup/B/action-log.json",
+        "transcripts/followup/B/seal.json"
+      ],
+      "capturedTimestamp": "2026-10-26T17:44:01.477260+00:00",
+      "result": "One initial response for each task; no schema correction, verifier, Workbench, acceptance check, oracle or arm comparison.",
+      "sourceExecution": false
+    }
+  ],
+  "communicationObservations": [
+    "Coordinator assigned isolated role and supplied candidate-freeze digest before source release.",
+    "Agent reported ready after reading the two permitted protocol files.",
+    "Agent waited without reading inputs until coordinator sent RELEASED.",
+    "Coordinator supplied input-freeze digest and stated candidate unchanged; no candidate, other-arm, acceptance or oracle files were inspected.",
+    "Agent reported source inspection complete before writing the first responses."
+  ],
+  "noFurtherInputsNeeded": true
+}

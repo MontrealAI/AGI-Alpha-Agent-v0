@@ -1,0 +1,168 @@
+{
+  "schema": "agi-alpha-transfer-canonical-accounting/v1",
+  "canonicalSourceSHA256": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+  "canonicalSourceModified": false,
+  "projection": {
+    "ledger": {
+      "schema": "alpha-shadow-ledger/v1",
+      "currency": "USD",
+      "events": [
+        {
+          "id": "transfer-study-total:cost:business",
+          "type": "cost",
+          "missionId": "transfer-study-total",
+          "category": "business",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:cost:capability",
+          "type": "cost",
+          "missionId": "transfer-study-total",
+          "category": "capability",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:cost:delivery",
+          "type": "cost",
+          "missionId": "transfer-study-total",
+          "category": "delivery",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:cost:maintenance",
+          "type": "cost",
+          "missionId": "transfer-study-total",
+          "category": "maintenance",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:mission",
+          "type": "mission",
+          "missionId": "transfer-study-total",
+          "acceptance": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:obligation:unpaid",
+          "type": "obligation",
+          "missionId": "transfer-study-total",
+          "category": "unpaid",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:reserve:reliability",
+          "type": "reserve",
+          "missionId": "transfer-study-total",
+          "category": "reliability",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:revenue:collected",
+          "type": "revenue",
+          "missionId": "transfer-study-total",
+          "category": "collected",
+          "amountMinor": 0,
+          "basis": "observed",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        },
+        {
+          "id": "transfer-study-total:revenue:price",
+          "type": "revenue",
+          "missionId": "transfer-study-total",
+          "category": "price",
+          "amountMinor": null,
+          "basis": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl."
+        }
+      ]
+    },
+    "summary": {
+      "schema": "alpha-shadow-ledger-summary/v1",
+      "currency": "USD",
+      "reinvestmentBps": 0,
+      "eventCount": 9,
+      "missions": [
+        {
+          "missionId": "transfer-study-total",
+          "acceptance": "unknown",
+          "reference": "Actual study account; incomplete useful-deliverable acceptance and unexposed full charges. Process resource facts are held separately in resource-ledger.jsonl.",
+          "observed": {
+            "revenue": 0,
+            "fullCost": null,
+            "operatingMargin": null,
+            "reserve": null,
+            "unpaidObligations": null,
+            "afterReserves": null,
+            "availableSurplus": null,
+            "eligibleInvestment": null
+          },
+          "scenario": {
+            "revenue": 0,
+            "fullCost": null,
+            "operatingMargin": null,
+            "reserve": null,
+            "unpaidObligations": null,
+            "afterReserves": null,
+            "availableSurplus": null,
+            "eligibleInvestment": null
+          },
+          "assumedPrice": null,
+          "missingCostCategories": [],
+          "unknownEventIds": [
+            "transfer-study-total:cost:business",
+            "transfer-study-total:cost:capability",
+            "transfer-study-total:cost:delivery",
+            "transfer-study-total:cost:maintenance",
+            "transfer-study-total:obligation:unpaid",
+            "transfer-study-total:reserve:reliability",
+            "transfer-study-total:revenue:price"
+          ],
+          "capabilityEvents": []
+        }
+      ],
+      "observed": {
+        "revenue": 0,
+        "fullCost": null,
+        "operatingMargin": null,
+        "reserve": null,
+        "unpaidObligations": null,
+        "afterReserves": null,
+        "availableSurplus": null,
+        "eligibleInvestment": null
+      },
+      "scenario": {
+        "revenue": 0,
+        "fullCost": null,
+        "operatingMargin": null,
+        "reserve": null,
+        "unpaidObligations": null,
+        "afterReserves": null,
+        "availableSurplus": null,
+        "eligibleInvestment": null
+      },
+      "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+    },
+    "comparison": {
+      "traditionalCost": null,
+      "humanAttentionCost": null,
+      "customerPricePlusAttention": null,
+      "providerFullCost": null,
+      "customerSavings": null,
+      "breakEvenTraditionalMinutes": null,
+      "scope": "Conditional equal-acceptance scenario using supplied wage and duration assumptions; remaining customer attention is distinct from provider costs."
+    }
+  },
+  "boundary": "The canonical API records money only. CPU/wall resources retain physical units in their separate ledger; they are not inserted as dollars or monetized without a tariff. This is one study account, not additive per-asset duplication."
+}

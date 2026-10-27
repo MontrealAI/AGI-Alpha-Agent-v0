@@ -1,0 +1,32 @@
+{
+  "schema": "agi-alpha-transfer-human-comparison-thresholds/v1",
+  "status": "FORMULAS_ONLY_NO_DURATION_OR_COST_ESTIMATE",
+  "currency": "USD",
+  "source": {
+    "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+    "retrieved_date": "2026-10-26",
+    "wage_period": "May 2025",
+    "developer_median_annual_usd": 135980,
+    "qa_median_annual_usd": 104300,
+    "assumed_hours_per_year": 2080,
+    "developer_hourly_usd": 65.375,
+    "qa_hourly_usd": 50.14423076923077,
+    "boundary": "Employee wage anchors only. Benefits, overhead, contractor margin, task duration and buyer willingness to pay are not identified by these figures."
+  },
+  "actual_human_minutes": null,
+  "actual_provider_full_cost_usd": null,
+  "formulas": {
+    "equivalent_human_delivery_cost": "C_human = (r_human * t_human_minutes / 60) + K_human_nonlabor",
+    "provider_cost_break_even_human_minutes": "t_human_star = max(0, 60 * (C_AGI_full_per_equivalent_accepted_output - K_human_nonlabor) / r_human)",
+    "buyer_purchase_break_even_human_minutes": "t_human_star = max(0, 60 * (price + customer_review_cost + integration_cost / accepted_uses - K_human_nonlabor) / r_human)",
+    "incremental_asset_break_even_accepted_jobs": "N_star = ceil((full_construction_cost + fixed_upkeep) / (incumbent_full_cost_per_accepted_job - candidate_full_cost_per_accepted_job - incremental_upkeep_per_job)), only when denominator > 0",
+    "nonpositive_saving": "If the denominator is zero or negative, no finite repetition repays a positive investment through that saving mechanism."
+  },
+  "requirements": [
+    "Compare the same complete useful accepted deliverable and acceptance standard.",
+    "Include failures and correction in cost per equivalent accepted output.",
+    "Use actual active human time only when measured; model/agent elapsed time is never a wage bill.",
+    "Do not substitute customer savings, token issuance or valuation for enterprise collections.",
+    "Simple repayment arithmetic excludes market allocation, competitor response, changing prices and cash timing; use the paired simulator for those conditions."
+  ]
+}

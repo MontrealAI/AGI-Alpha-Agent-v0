@@ -1,0 +1,59 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "T06",
+  "canonical_input_sha256": "38e685274fddbffeffcd84c54829b78b8e715d7e6a1365eb689860ded872db03",
+  "oracle_owner": "separate same-session production-audit agent; not institutionally independent replication",
+  "basis": "Manual source inventory and attribution, independently reconstructed Python inspect.Signature contract; no candidate extractor, product creator or target package execution. Original consumer bytes unchanged.",
+  "calls": [
+    {
+      "line": 259,
+      "column": 12,
+      "callee": "simpson",
+      "consumer_sha256": "1dd25ede73509245ff3cd179fef2a3e3fa53153ba0dfc501fa4b83f64fa76560",
+      "snippet_sha256": "1fd1cc25cc56a011df4644c84fe386c584ca18181c49a2b1eecad1ab3363356e",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b0",
+          "symbol": "simpson",
+          "sha256": "944dcbbe8eac825688e350f3850693dcaf1da4699d626eeb8535d140a04ad015",
+          "declaration_line": 536,
+          "declaration_end_line": 664,
+          "decorators": [],
+          "signature": "(y, x=None, dx=None, axis=None, even=None)"
+        },
+        "after": {
+          "source": "a0",
+          "symbol": "simpson",
+          "sha256": "c8f3365d3a909ef535cba39bbb62f195eb99be142278c46d6b1cd71c2350b5bc",
+          "declaration_line": 535,
+          "declaration_end_line": 697,
+          "decorators": [],
+          "signature": "(y, *, x=None, dx=None, axis=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Correct nominal source target under ordinary package imports, no monkeypatching, and relevant branch execution. Original core may keep mappingVerified false for reexports/local imports. This is not proof of successful argument evaluation, full behavior, safety or deployment."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 258,
+      "column": 9,
+      "callee": "smoother.transform",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    },
+    {
+      "line": 255,
+      "column": 12,
+      "callee": "_get_integration_points",
+      "reason": "Not a call into the declared dependency in this scoped source assessment: builtin, own consumer helper, other dependency, or operation on a plain returned value. The super() constructor of a receiver is part of the outer initializer call and is not a separate dependency invocation."
+    }
+  ],
+  "complete_call_count": 1,
+  "accepted_truthful_assessment": "Exact complete relevant-call inventory, no spurious target relationships, source-bound conditional conclusions, and explicit justified abstention where core cannot decide. Decisive coverage reported separately; complete unresolved packet is not compatibility acceptance."
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "agi-alpha-post-campaign-cash-eligibility-arithmetic-audit/v1",
+  "createdUTC": "2026-10-26T18:00:52.719429+00:00",
+  "status": "PASS",
+  "classification": "POST_CAMPAIGN_SOFTWARE_CONTROL_NOT_REGISTERED_MARKET_OUTCOME",
+  "seed": 3001,
+  "checks": {
+    "declared input identity": 1,
+    "executed source identity": 1,
+    "single prespecified seed": 1,
+    "registered frozen files unchanged": 61,
+    "declared reference identity": 1,
+    "no incremental A/B benefit": 1,
+    "quality competitors and all undeclared inputs unchanged": 175,
+    "declared common cash conditions": 2,
+    "same nominal cost and target price": 2,
+    "declared complete construction envelope": 2,
+    "cash balance conserved and nonnegative": 486,
+    "cash bill paid exactly once": 306,
+    "accepted invoice collected exactly once": 180,
+    "profit excludes initial capital": 2,
+    "rejected work never invoiced": 2,
+    "no forced construction or free activation": 2,
+    "actual collections remain zero": 2,
+    "decision-time earned funds independently reconstructed": 44,
+    "cash sufficient for the complete declared envelope": 44,
+    "same exact accepted B asset offered": 44,
+    "no invented marginal benefit": 44,
+    "full forecast independently reconstructed": 44,
+    "zero-saving refusal isolated from liquidity failure": 44,
+    "all 44 decisions cash eligible": 1
+  },
+  "failures": [],
+  "resultSHA256": "ee9c424975ba3299cade441da7d73f6fbd66bbaab5ae37b6e4e0c4aef92be4b7",
+  "auditSourceSHA256": "2d1c92d4e1530004a711de743a186b7980fa57d32854954e72b4275d734f24a3",
+  "cashEligibleDecisions": 44,
+  "minimumAvailableEarnedCashCents": 16200,
+  "maximumAvailableEarnedCashCents": 108450,
+  "BInvestments": 0,
+  "firstEligibleDecision": {
+    "week": 8,
+    "arm": "B",
+    "action": "retain-incumbent",
+    "asset": {
+      "id": "source-intake-model-extraction/v1",
+      "path": "protocol/asset-B.json",
+      "sha256": "dffb7c21f8c8387f07720c291aaad1145fa60068202115e822480605bda63bfc"
+    },
+    "availableCashCents": 16200,
+    "fullCostCents": 2500,
+    "remainingUsesForecast": 53,
+    "expectedIncrementalSavingPerUseCents": 0,
+    "expectedNetBenefitCents": -7675,
+    "expectedForegoneContributionCents": 3025,
+    "productiveWeeksAfterAdoption": 43,
+    "servicePauseWeeks": 1,
+    "observedPriorAccepted": 20,
+    "funding": "operating-surplus",
+    "costBasis": "prospective-reconstruction",
+    "routes": {
+      "historicalFullCostCents": 2500,
+      "adoptExistingCents": 0,
+      "reconstructCents": 2500,
+      "selectedRoute": "reconstruct-tested-asset",
+      "selectedProspectiveCostCents": 2500,
+      "chargedCents": 2500
+    },
+    "reasons": [
+      "expected full-cost repayment not positive",
+      "no positive task saving"
+    ]
+  },
+  "resources": {
+    "wallSeconds": 0.01645419899796252,
+    "cpuSeconds": null,
+    "monetaryCostCents": null,
+    "authoringInferenceCostCents": null
+  },
+  "boundary": "A separate arithmetic implementation on the same project/session/host. This isolates an incentive-policy path; it is not field validation, new demand calibration or an additional registered world."
+}

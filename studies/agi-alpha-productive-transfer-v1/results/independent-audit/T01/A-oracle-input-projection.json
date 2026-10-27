@@ -1,0 +1,94 @@
+{
+  "schema": "alpha-transfer-extraction/v1",
+  "inputSha256": "399a10aa8e0d2cae0b9ad97b581ee84c19ebd9a084ee1023cc2db0f2d196edaf",
+  "claims": [
+    {
+      "line": 43,
+      "column": 12,
+      "callee": "httpx.URL",
+      "before": {
+        "source": "b2",
+        "symbol": "URL.__init__"
+      },
+      "after": {
+        "source": "a2",
+        "symbol": "URL.__init__"
+      },
+      "explanation": "Consumer line 29 locally imports httpx. Captured httpx/__init__.py imports _urls at line 12 and lists URL in __all__; both _urls.py files define URL.__init__ at line 77. This is a declared constructor target. Local-import/export resolution and class construction are not runtime identity or dispatch proofs."
+    },
+    {
+      "line": 45,
+      "column": 9,
+      "callee": "httpx.Client",
+      "before": {
+        "source": "b1",
+        "symbol": "Client.__init__"
+      },
+      "after": {
+        "source": "a1",
+        "symbol": "Client.__init__"
+      },
+      "explanation": "Consumer line 29 locally imports httpx. Both captured package initializers import _client at line 4 and list Client; _client.__all__ also lists Client. The explicit constructors are Client.__init__ at before line 628 and after line 639. Class construction and runtime export identity are not proved by this declared target."
+    },
+    {
+      "line": 53,
+      "column": 17,
+      "callee": "client.stream",
+      "before": {
+        "source": "b1",
+        "symbol": "Client.stream"
+      },
+      "after": {
+        "source": "a1",
+        "symbol": "Client.stream"
+      },
+      "explanation": "Consumer line 45 binds client through with httpx.Client(...). Captured Client.__enter__ returns self (before line 1304, after line 1291). Client.stream is defined at before line 840 and after line 828 and decorated with contextmanager. This is a source-supported receiver target; actual receiver identity, descriptor dispatch and decorator behavior remain unverified."
+    },
+    {
+      "line": 64,
+      "column": 16,
+      "callee": "response.raise_for_status",
+      "before": {
+        "source": "b3",
+        "symbol": "Response.raise_for_status"
+      },
+      "after": {
+        "source": "a3",
+        "symbol": "Response.raise_for_status"
+      },
+      "explanation": "Consumer line 53 binds response from client.stream. Both captured Client.stream declarations advertise Iterator[Response], assign response = self.send(...) and yield response; Client.send advertises Response and _client imports Response from _models. Selected Response.raise_for_status definitions begin at before line 728 and after line 794. Return annotations/source flow are evidence for a declared target, not proof of runtime identity or receiver dispatch."
+    },
+    {
+      "line": 65,
+      "column": 19,
+      "callee": "response.headers.get",
+      "before": {
+        "source": "b3",
+        "symbol": "Headers.get"
+      },
+      "after": {
+        "source": "a3",
+        "symbol": "Headers.get"
+      },
+      "explanation": "The response receiver is source-associated with HTTPX Response through the captured Client.stream body and annotations. Response.__init__ assigns self.headers = Headers(headers) in both captured _models.py files; Headers.get is defined at before line 170 and after line 242. This declared attribute receiver chain is not a runtime identity or descriptor-dispatch proof."
+    },
+    {
+      "line": 68,
+      "column": 29,
+      "callee": "response.iter_raw",
+      "before": {
+        "source": "b3",
+        "symbol": "Response.iter_raw"
+      },
+      "after": {
+        "source": "a3",
+        "symbol": "Response.iter_raw"
+      },
+      "explanation": "Consumer response is bound from client.stream at line 53; captured stream yields the self.send result and advertises Iterator[Response], while send advertises Response. Explicit Response.iter_raw definitions begin at before line 869 and after line 935. This declared method target preserves the source-supported relationship without asserting runtime receiver identity or descriptor dispatch."
+    }
+  ],
+  "unresolved": [],
+  "provenance": {
+    "mode": "audit-projection-of-sealed-native-request"
+  }
+}

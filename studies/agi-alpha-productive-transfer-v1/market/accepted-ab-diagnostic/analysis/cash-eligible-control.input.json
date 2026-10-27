@@ -1,0 +1,57 @@
+{
+  "schema": "agi-alpha-post-campaign-cash-eligibility-control-input/v1",
+  "preparedUTC": "2026-10-26T17:59:44.904891+00:00",
+  "status": "DECLARED_BEFORE_SINGLE_CONTROL_EXECUTION",
+  "seed": 3001,
+  "scenario": {
+    "id": "post-campaign-cash-eligibility-software-control",
+    "basis": "EXPLICIT_CONDITIONAL_ASSUMPTIONS",
+    "class": "exploratory-accepted-ab-no-benefit",
+    "financing": "operating-surplus",
+    "shared": {
+      "pricingPolicy": "fixed",
+      "initialPriceCents": 2000,
+      "choiceModel": "deterministic",
+      "integrationCents": 0,
+      "arrivalProbability": 1,
+      "reserveCents": 0
+    },
+    "costs": {
+      "A": {
+        "completeRecurringCostCents": 500,
+        "completeConstructionCostCents": 0,
+        "maintenancePerWeekCents": 0,
+        "assumedIntakeMinutes": 0
+      },
+      "B": {
+        "completeRecurringCostCents": 500,
+        "completeConstructionCostCents": 2500,
+        "maintenancePerWeekCents": 50,
+        "assumedIntakeMinutes": 0
+      }
+    },
+    "inheritedScenarioId": "primary-reference-deterministic",
+    "mechanism": "Post-campaign software control: seek an earned-cash eligible decision while incremental A/B operating savings remain zero.",
+    "assumptions": {
+      "basis": "EXPLICIT_POST_CAMPAIGN_SOFTWARE_CONTROL",
+      "commonNominalAttemptCostCents": 500,
+      "BCompleteConstructionEnvelopeCents": 2500,
+      "noRealCostEstimate": true,
+      "notNewRegisteredMarketCell": true,
+      "qualityCompetitorAndOtherBuyerInputs": "Unchanged from inherited reference configuration.",
+      "noTuningRule": "One execution at declared seed 3001. If earned cash never covers construction, report this guard condition as inconclusive; do not change inputs or search seeds."
+    }
+  },
+  "source": {
+    "frozenAdapterSHA256": "6f72f7eb0adb090b4a6da1d27e997168bf9b08812860b6962ca2884703136afb",
+    "frozenCoreSHA256": "40d8ecbe1521346a3b993bec3782e1d84fcb6be46e5c9248e9f580e1fe018a61",
+    "productionSHA256": "c655eee3abd23f732dd34112515f7f02843899c61a0c31c523babed5621cf5ba",
+    "registeredScenarioSHA256": "8f7df668f6a0389b31fd63eddd49ad452f07b8358132cdac1195f970bdf05e4a",
+    "approvedCampaignFreezeSHA256": "83e825c5de9124375a76b8d6c45c84ed29b008bff3f17b823a5a359859d99b35"
+  },
+  "purpose": "Isolate zero-saving investment refusal if earned cash is sufficient. This is a software/incentive-path check after the registered campaign, not new demand calibration, a new registered world, or evidence of real B benefit.",
+  "authoringInferenceCostCents": null,
+  "humanMinutes": null,
+  "observedCollectionsCents": 0,
+  "actualFinancialAction": false
+}

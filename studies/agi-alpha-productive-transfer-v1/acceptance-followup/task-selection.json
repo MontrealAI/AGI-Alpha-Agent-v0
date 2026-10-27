@@ -1,0 +1,101 @@
+[
+  {
+    "id": "F01",
+    "consumerId": "consumer-flask",
+    "scopes": [
+      "show_server_banner"
+    ],
+    "package": "click",
+    "before": [
+      "click-before",
+      "8.1.7"
+    ],
+    "after": [
+      "click-after",
+      "8.2.1"
+    ],
+    "providers": [
+      "src/click/__init__.py",
+      "src/click/utils.py",
+      "src/click/termui.py"
+    ],
+    "title": "Flask startup banner across the Click 8.1.7 to 8.2.1 transition",
+    "purpose": "Assess every Click call in the real Flask development-server banner, including conditional app/debug output. Identify the precise argument or runtime evidence needed before relying on this CLI output under the target version."
+  },
+  {
+    "id": "F02",
+    "consumerId": "consumer-black",
+    "scopes": [
+      "_out",
+      "_err"
+    ],
+    "package": "click",
+    "before": [
+      "click-before",
+      "8.1.7"
+    ],
+    "after": [
+      "click-after",
+      "8.2.1"
+    ],
+    "providers": [
+      "src/click/__init__.py",
+      "src/click/utils.py",
+      "src/click/termui.py"
+    ],
+    "title": "Black output and error formatting across the Click transition",
+    "purpose": "Review the complete Click-call intake for Black's paired internal output/error helpers as one maintenance question. Preserve formatting-argument uncertainty and distinguish it from declaration binding; no terminal or formatter process is executed."
+  },
+  {
+    "id": "F03",
+    "consumerId": "consumer-networkx",
+    "scopes": [
+      "eigenvector_centrality_numpy"
+    ],
+    "package": "scipy",
+    "before": [
+      "scipy-110",
+      "1.10.1"
+    ],
+    "after": [
+      "scipy-after",
+      "1.14.1"
+    ],
+    "providers": [
+      "scipy/__init__.py",
+      "scipy/linalg/__init__.py",
+      "scipy/linalg/_misc.py",
+      "scipy/sparse/__init__.py",
+      "scipy/sparse/linalg/__init__.py",
+      "scipy/sparse/linalg/_eigen/__init__.py",
+      "scipy/sparse/linalg/_eigen/arpack/__init__.py",
+      "scipy/sparse/linalg/_eigen/arpack/arpack.py"
+    ],
+    "title": "NetworkX eigenvector centrality across the SciPy transition",
+    "purpose": "Review every SciPy call in the real NumPy-backed eigenvector-centrality implementation. Separate the upstream solver and normalization contracts from numerical convergence, graph behavior and operations belonging to other libraries."
+  },
+  {
+    "id": "F04",
+    "consumerId": "consumer-huggingface",
+    "scopes": [
+      "default_client_factory",
+      "default_async_client_factory"
+    ],
+    "package": "httpx",
+    "before": [
+      "httpx-before",
+      "0.27.2"
+    ],
+    "after": [
+      "httpx-after",
+      "0.28.1"
+    ],
+    "providers": [
+      "httpx/__init__.py",
+      "httpx/_client.py",
+      "httpx/_config.py"
+    ],
+    "title": "Hugging Face Hub default HTTP client factories across the HTTPX transition",
+    "purpose": "Review both real synchronous/asynchronous default client factories as one integration component. Include nested dependency construction. Identify what constructor, timeout, hook or runtime evidence remains necessary without sending any request."
+  }
+]
