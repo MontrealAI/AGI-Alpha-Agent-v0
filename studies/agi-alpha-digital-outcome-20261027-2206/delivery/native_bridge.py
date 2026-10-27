@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -12,7 +13,6 @@ import tempfile
 from typing import Any
 
 sys.dont_write_bytecode = True
-sys.path.insert(0, str(Path(__file__).resolve().parent / "native_reuse"))
 
 SOURCE_COMMIT = "3947e4ec8fd74ad40e13e8ff825a149fa98a10e9"
 ARMS = ("ordinary", "expert", "conventional")
@@ -20,6 +20,16 @@ ARMS = ("ordinary", "expert", "conventional")
 
 def capture(experiment: Path, temporary_root: Path | None = None) -> dict[str, Any]:
     """Record research acceptance and explicitly unknown actual costs, without customer approval."""
+    # Load the reviewed sibling verifier before placing any native dependency on the import path.
+    directory = Path(__file__).resolve().parent
+    spec = importlib.util.spec_from_file_location("agi_alpha_replay_integrity", directory / "reproduce.py")
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Could not load the trusted native-closure verifier")
+    verifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(verifier)
+    getattr(verifier, "verify_native_closure")()
+    sys.path.insert(0, str(directory / "native_reuse"))
+
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
     from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
     from alpha_factory_v1.core.eval.fitness import compute_fitness

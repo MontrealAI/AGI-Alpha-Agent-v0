@@ -70,7 +70,7 @@ Canonical publication needs exact-source owner review, required hosted checks, a
 
 ## Review corrections
 
-The replay verifies a pinned inventory of 652 vendored dependency files before importing or compiling them. The archive builder rejects symlinks, paths outside the authorized input roots, and output paths that would overwrite or alias an input. Both figures in the GitHub reading edition resolve beneath `edition/figures/`. The original review findings, earlier source and archive identities, 29 archive safety checks, 16 dependency-integrity checks, independent audit and unchanged 64/64 replay results are preserved in the source/evidence ZIP. These delivery corrections do not revise the frozen experiment, paper, brief, HTML edition or economics.
+The replay verifies pinned closed inventories of 652 numerical dependency files and 24 reused native files before importing or compiling them. The standalone native bridge applies the same native preflight. The archive builder rejects symlinks, paths outside the authorized input roots, and output paths that would overwrite or alias an input. Receipt publication validates its destination before writes and uses atomic replacement to preserve aliased inputs. Both figures in the GitHub reading edition resolve beneath `edition/figures/`. The original review findings, earlier source and archive identities, 37 archive safety checks, native import-shadow controls, 16 dependency-integrity checks, independent audit and unchanged 64/64 replay results are preserved in the source/evidence ZIP. These delivery corrections do not revise the frozen experiment, paper, brief, HTML edition or economics.
 
 ## Rebuild the paper, brief and browser edition
 

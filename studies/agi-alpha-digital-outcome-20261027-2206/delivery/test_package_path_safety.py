@@ -275,6 +275,112 @@ class PackagePathSafetyTests(unittest.TestCase):
             package.main()
         self.assertEqual(self.frozen.read_bytes(), original)
 
+    def assert_receipt_alias_refused_before_output(self, *, hardlink: bool) -> None:
+        prior = self.root / "AGI_ALPHA_Gap_Experiment.zip"
+        prior.write_bytes(b"synthetic prior")
+        destination = self.root / "delivery/package_receipt.json"
+        destination.parent.mkdir()
+        original = self.frozen.read_bytes()
+        if hardlink:
+            os.link(self.frozen, destination)
+        else:
+            destination.symlink_to(self.frozen)
+        output = self.root / "deliverables/output.zip"
+        with (
+            mock.patch.object(package, "ROOT", self.root),
+            mock.patch.object(package, "GAP_SHA256", hashlib.sha256(prior.read_bytes()).hexdigest()),
+            mock.patch("sys.argv", ["package_edition.py", "--output", str(output), "--replace"]),
+            self.assertRaisesRegex(ValueError, "Receipt destination"),
+        ):
+            package.main()
+        self.assertEqual(self.frozen.read_bytes(), original)
+        self.assertEqual(package.verify_frozen(self.root), 1)
+        self.assertFalse(output.exists())
+        self.assertFalse(output.parent.exists())
+
+    def test_receipt_symlink_refused_before_any_output_write(self) -> None:
+        self.assert_receipt_alias_refused_before_output(hardlink=False)
+
+    def test_receipt_hardlink_refused_before_any_output_write(self) -> None:
+        self.assert_receipt_alias_refused_before_output(hardlink=True)
+
+    def test_archive_output_cannot_equal_missing_receipt(self) -> None:
+        prior = self.root / "AGI_ALPHA_Gap_Experiment.zip"
+        prior.write_bytes(b"synthetic prior")
+        destination = self.root / "delivery/package_receipt.json"
+        destination.parent.mkdir()
+        with (
+            mock.patch.object(package, "ROOT", self.root),
+            mock.patch.object(package, "GAP_SHA256", hashlib.sha256(prior.read_bytes()).hexdigest()),
+            mock.patch("sys.argv", ["package_edition.py", "--output", str(destination), "--replace"]),
+            self.assertRaisesRegex(ValueError, "receipt destination"),
+        ):
+            package.main()
+        self.assertFalse(destination.exists())
+        self.assertEqual(package.verify_frozen(self.root), 1)
+
+    def test_archive_output_cannot_equal_existing_receipt(self) -> None:
+        destination = self.root / "delivery/package_receipt.json"
+        destination.parent.mkdir()
+        destination.write_bytes(b"old receipt")
+        with self.assertRaisesRegex(ValueError, "receipt destination"):
+            package.receipt_parent(self.root, destination)
+        self.assertEqual(destination.read_bytes(), b"old receipt")
+
+    def test_receipt_parent_symlink_is_rejected(self) -> None:
+        (self.root / "delivery").symlink_to(self.outside, target_is_directory=True)
+        with self.assertRaises(OSError):
+            package.receipt_parent(self.root, self.root / "output.zip")
+        self.assertFalse((self.outside / "package_receipt.json").exists())
+
+    def test_atomic_receipt_write_updates_only_receipt(self) -> None:
+        (self.root / "delivery").mkdir()
+        original = self.frozen.read_bytes()
+        fd = package.receipt_parent(self.root, self.root / "output.zip")
+        try:
+            package.write_receipt_atomic(fd, b'{"accepted": true}\n')
+            package.write_receipt_atomic(fd, b'{"accepted": true, "updated": true}\n')
+        finally:
+            os.close(fd)
+        self.assertEqual(self.frozen.read_bytes(), original)
+        self.assertEqual(package.verify_frozen(self.root), 1)
+        self.assertEqual(
+            json.loads((self.root / "delivery/package_receipt.json").read_text()), {"accepted": True, "updated": True}
+        )
+        self.assertEqual(list((self.root / "delivery").glob(".package-receipt-*.tmp")), [])
+
+    def test_late_receipt_hardlink_is_refused_without_truncating_target(self) -> None:
+        (self.root / "delivery").mkdir()
+        original = self.frozen.read_bytes()
+        fd = package.receipt_parent(self.root, self.root / "output.zip")
+        os.link(self.frozen, self.root / "delivery/package_receipt.json")
+        try:
+            with self.assertRaisesRegex(ValueError, "Receipt destination"):
+                package.write_receipt_atomic(fd, b"new receipt")
+        finally:
+            os.close(fd)
+        self.assertEqual(self.frozen.read_bytes(), original)
+        self.assertEqual(package.verify_frozen(self.root), 1)
+
+    def test_atomic_replace_does_not_follow_last_moment_alias(self) -> None:
+        (self.root / "delivery").mkdir()
+        original = self.frozen.read_bytes()
+        fd = package.receipt_parent(self.root, self.root / "output.zip")
+        real_replace = os.replace
+
+        def replace_after_alias(src: str, dst: str, *, src_dir_fd: int, dst_dir_fd: int) -> None:
+            os.link(self.frozen, self.root / "delivery/package_receipt.json")
+            real_replace(src, dst, src_dir_fd=src_dir_fd, dst_dir_fd=dst_dir_fd)
+
+        try:
+            with mock.patch.object(os, "replace", side_effect=replace_after_alias):
+                package.write_receipt_atomic(fd, b"new receipt")
+        finally:
+            os.close(fd)
+        self.assertEqual(self.frozen.read_bytes(), original)
+        self.assertEqual(package.verify_frozen(self.root), 1)
+        self.assertEqual((self.root / "delivery/package_receipt.json").read_bytes(), b"new receipt")
+
     def test_explicit_review_receipt_symlink_is_rejected(self) -> None:
         self.link("publication/review_receipts/cfee251_review.json")
         with self.assertRaises(ValueError):

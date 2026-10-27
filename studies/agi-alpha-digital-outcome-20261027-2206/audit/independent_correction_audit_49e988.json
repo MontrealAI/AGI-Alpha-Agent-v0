@@ -1,0 +1,63 @@
+{
+  "review_completed_at_utc": "2026-10-27T23:45:38.600616+00:00",
+  "review_target": "PR4998 head49e988 adjacent native-shadow and receipt-alias P2 findings",
+  "verdict": "Approve the two scoped corrections for the final archive and next review commit.",
+  "reviewed_sources_sha256": {
+    "reproduce.py": "783a4a172c3859a6044f1a7d558d4a0a4e9e983dd3c23824fe3b07b6e769dcde",
+    "native_bridge.py": "6f948f01633e637ecb6ecc1320d36a7d28bcc27b948c5390c1fe519b176b318f",
+    "package_edition.py": "b6949252a47b9f3721ea53a76f3bcaba68640412dc255406c9edca0542d8ed11"
+  },
+  "native_closed_inventory": {
+    "independent_checks_executed": 3,
+    "results": [
+      "An actual extra alpha_factory_v1/core/eval/fitness/__init__.py is refused by reproduce.py --native before output creation; its synthetic payload is not imported.",
+      "The same extra package is refused by standalone native_bridge.py before the native path is inserted or imported.",
+      "Removing the injected package permits a clean direct native capture with21valid journal events, zero recorded receipts and unknown complete actual cost."
+    ],
+    "native_original_files_unchanged": 24,
+    "implementation_review": "Existing native manifest is pinned by SHA256andlength; complete inventory rejects extra, missing, modified, symlinked and special files. Source-freeze and provenance manifests are also pinned. Direct bridge loads the trusted sibling verifier before adding native_reuse to sys.path.",
+    "author_mutation_receipt_reviewed": "delivery/attempts/native_review_correction/native_mutation_receipt.json;14passed",
+    "runnable_independent_check": "audit/independent_native_guard_check.py",
+    "independent_receipt": "audit/independent_native_guard_49e988/independent_native_guard_receipt.json"
+  },
+  "receipt_write_protection": {
+    "independent_new_checks_executed": 8,
+    "all_passed": true,
+    "results": [
+      "Preexisting receipt symlink and hardlink aliases to synthetic frozen inputs are refused before archive directory creation or output writes.",
+      "Receipt/output identity and parent symlinks are refused.",
+      "Clean receipt writes and updates succeed without changing synthetic frozen data.",
+      "Late hardlinks are rejected; a last-moment alias at atomic replacement is unlinked/replaced rather than followed, preserving its target."
+    ],
+    "implementation_review": "No-follow directory descriptors are held from preflight. Receipt destinations must be regular withlinkcount1. Exclusive temporary file plusfsync anddescriptor-relative atomicreplace avoids opening/truncating the old target; frozen hashes are checked again afterward.",
+    "independent_receipt": "audit/independent_receipt_alias_49e988.json",
+    "author_full_path_suite": "37passed; independent rerun deliberately limited to8new receiptchecks"
+  },
+  "dependent_checker_update": {
+    "path": "audit/independent_vendor_mutation_check.py",
+    "sha256": "96fefe0561deff2946e6cbfdabc45084469266e289a20412e5f9acc03d8ca9e9",
+    "trusted_runtime_pin": "783a4a172c3859a6044f1a7d558d4a0a4e9e983dd3c23824fe3b07b6e769dcde",
+    "change": "Only reviewed runtime SHA updated; mutation assertions and vendor-manifest anchor unchanged. Old checker preserved as audit/independent_vendor_mutation_check_before_49e988.py.",
+    "record": "audit/independent_checker_pin_update_49e988.json"
+  },
+  "scientific_preservation": {
+    "frozen_original_files_verified": 98,
+    "changed_files": [],
+    "paper_brief_browser_hashes_unchanged": {
+      "AGI_ALPHA_Flywheel_Digital_R1.pdf": true,
+      "AGI_ALPHA_Flywheel_Digital_R1_Brief.pdf": true,
+      "AGI_ALPHA_Flywheel_Digital_R1.html": true
+    },
+    "interpretation": "No new numerical case or changed research result; these are reproducibility and evidence-preservation repairs."
+  },
+  "scope_limits": [
+    "Trusted distributed verifier and wrapper, interpreter, compiler and operating system remain explicit assumptions.",
+    "No broad security certification or privileged concurrent operating-system attacker guarantee.",
+    "Fresh numerical acceptance remains64/64perarm; conventional midpoint defect and correction remain preserved."
+  ],
+  "remaining_publication_steps": [
+    "Build the sealed final archive and perform the planned clean replay.",
+    "Commit and verify exact immutable public source, actual rendered image URLs and download bytes.",
+    "Canonical production publication still follows its separate owner approval and hosted gates."
+  ]
+}

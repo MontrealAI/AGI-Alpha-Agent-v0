@@ -1,0 +1,45 @@
+{
+  "completed_at_utc": "2026-10-27T23:44:43.288380+00:00",
+  "source_sha256": {
+    "reproduce.py": "783a4a172c3859a6044f1a7d558d4a0a4e9e983dd3c23824fe3b07b6e769dcde",
+    "native_bridge.py": "6f948f01633e637ecb6ecc1320d36a7d28bcc27b948c5390c1fe519b176b318f"
+  },
+  "cases": [
+    {
+      "case": "reproduce_native_rejects_shadow",
+      "pass": true,
+      "returncode": 1,
+      "output_created": false,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/reproduce.py\", line 308, in <module>\n    main()\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/reproduce.py\", line 192, in main\n    checks = verify_frozen_files()\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/reproduce.py\", line 144, in verify_frozen_files\n    native_checks = verify_native_closure()\n                    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/reproduce.py\", line 124, in verify_native_closure\n    raise ValueError(f\"Unexpected native file: {relative}\")\nValueError: Unexpected native file: alpha_factory_v1/core/eval/fitness/__init__.py\n"
+    },
+    {
+      "case": "direct_bridge_rejects_shadow",
+      "pass": true,
+      "returncode": 1,
+      "output_created": false,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/native_bridge.py\", line 146, in <module>\n    main()\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/native_bridge.py\", line 140, in main\n    result = capture(arguments.experiment, arguments.output.parent)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/native_bridge.py\", line 30, in capture\n    getattr(verifier, \"verify_native_closure\")()\n  File \"/dev/shm/agi_alpha_digital_20261027/audit/independent_native_guard_49e988/native-shadow-check-dd8r5vmu/delivery/reproduce.py\", line 124, in verify_native_closure\n    raise ValueError(f\"Unexpected native file: {relative}\")\nValueError: Unexpected native file: alpha_factory_v1/core/eval/fitness/__init__.py\n"
+    },
+    {
+      "case": "clean_direct_native_capture",
+      "pass": true,
+      "returncode": 0,
+      "journal_verification": {
+        "valid": true,
+        "events": 21,
+        "head": "e2200db75f4c80eacdb9f230b36bc346f8d0165302e7778137d5981b0a6cb1d8",
+        "identity": "urn:agialpha:ed25519:606a5cc1344214372098d5108c4d3fe1d5a0a8dcb874790a0fa63df47de0f4fa"
+      },
+      "receipts_micro_usd": 0,
+      "known_actual_complete_cost_micro_usd": null,
+      "events": 21,
+      "stdout": "{\"journal_verification\": {\"valid\": true, \"events\": 21, \"head\": \"e2200db75f4c80eacdb9f230b36bc346f8d0165302e7778137d5981b0a6cb1d8\", \"identity\": \"urn:agialpha:ed25519:606a5cc1344214372098d5108c4d3fe1d5a0a8dcb874790a0fa63df47de0f4fa\"}, \"receipts_micro_usd\": 0}\n",
+      "stderr": ""
+    }
+  ],
+  "passed": 3,
+  "failed": 0,
+  "native_originals_unchanged": 24,
+  "scope": "Specific shadow-package regression at both entry points plus a clean native capture; no new numerical cases."
+}

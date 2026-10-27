@@ -297,5 +297,84 @@
       "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py": "48aab6f23a6d25e6d57871b47f914ab92a21dd535794f0bc690d7b2831561099"
     },
     "scope": "The same eight new delivery, authoring and economics scripts after external review corrections; frozen numerical sources unchanged."
+  },
+  "second_external_review_corrections": {
+    "at_utc": "2026-10-27T23:45:21.858751+00:00",
+    "reviewed_commit": "49e988446834fd084be080ab7489a6c380fdc729",
+    "checks": [
+      {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "--line-length",
+          "120",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+        ],
+        "returncode": 0,
+        "stdout": "8 files already formatted\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "ruff",
+          "check",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+        ],
+        "returncode": 0,
+        "stdout": "All checks passed!\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "--ignore-missing-imports",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py",
+          "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py",
+          "/dev/shm/agi_alpha_digital_20261027/economics/economics.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py",
+          "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py"
+        ],
+        "returncode": 0,
+        "stdout": "Success: no issues found in 8 source files\n",
+        "stderr": ""
+      }
+    ],
+    "source_sha256": {
+      "/dev/shm/agi_alpha_digital_20261027/edition/build_edition.py": "0719fd52d488ec46b1276751777e4de0e36f5aef489d0d04cf2cfb091c7c59e7",
+      "/dev/shm/agi_alpha_digital_20261027/edition/build_brief.py": "124021d7e912c2d9e81bfd15bb5eff759f6a800739b82c2f87f270faddb58c9f",
+      "/dev/shm/agi_alpha_digital_20261027/edition/build_figures.py": "d966dbcfb886b8de0675de915c21f36d2c70b74c2bc653eb2cbef130a0862ee3",
+      "/dev/shm/agi_alpha_digital_20261027/economics/economics.py": "1a514a00af25b4897f34e859b72def3aa15e77ca2eb443042b189e92a7088004",
+      "/dev/shm/agi_alpha_digital_20261027/delivery/reproduce.py": "783a4a172c3859a6044f1a7d558d4a0a4e9e983dd3c23824fe3b07b6e769dcde",
+      "/dev/shm/agi_alpha_digital_20261027/delivery/native_bridge.py": "6f948f01633e637ecb6ecc1320d36a7d28bcc27b948c5390c1fe519b176b318f",
+      "/dev/shm/agi_alpha_digital_20261027/delivery/package_edition.py": "b6949252a47b9f3721ea53a76f3bcaba68640412dc255406c9edca0542d8ed11",
+      "/dev/shm/agi_alpha_digital_20261027/delivery/fetch_public_inputs.py": "48aab6f23a6d25e6d57871b47f914ab92a21dd535794f0bc690d7b2831561099"
+    },
+    "scope": "Same eight scripts after native entry-point/closed manifest and atomic receipt fixes; frozen numerical sources unchanged."
   }
 }

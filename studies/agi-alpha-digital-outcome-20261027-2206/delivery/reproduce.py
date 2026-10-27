@@ -20,6 +20,12 @@ ARMS = ("ordinary", "expert", "conventional")
 ROOT = Path(__file__).resolve().parents[1]
 VENDOR_MANIFEST_SHA256 = "a4cd4c283e6f1f860487b50195ec4c71bf5fd4b8c1e1c36ecf2b96e473092709"
 VENDOR_MANIFEST_BYTES = 127993
+NATIVE_MANIFEST_SHA256 = "1df647a26674c8bff52dd14b7869b9d9c619ca376973033b2f91d9b8949dfc13"
+NATIVE_MANIFEST_BYTES = 5596
+SOURCE_FREEZE_SHA256 = "d167d2c13e8fbf303fe7872711dca0c924b218b169bcd5681cedbe876dc97e40"
+SOURCE_FREEZE_BYTES = 11830
+PROVENANCE_SHA256 = "b970c2444b45050c7f8194c9ea4ed75276860f9b45f5d9fe3f08645f460b69ef"
+PROVENANCE_BYTES = 5969
 
 
 def sha256(path: Path) -> str:
@@ -27,17 +33,17 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def regular_bytes(path: Path, expected_size: int) -> bytes:
+def regular_bytes(path: Path, expected_size: int, label: str = "Vendor") -> bytes:
     """Read a bounded regular file without following a symlink or blocking on a special file."""
     descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(descriptor, "rb") as stream:
         before = os.fstat(stream.fileno())
         if not stat.S_ISREG(before.st_mode) or before.st_size != expected_size:
-            raise ValueError(f"Vendor file type or size mismatch: {path}")
+            raise ValueError(f"{label} file type or size mismatch: {path}")
         data = stream.read(expected_size + 1)
         after = os.fstat(stream.fileno())
         if len(data) != expected_size or (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
-            raise ValueError(f"Vendor file changed while reading: {path}")
+            raise ValueError(f"{label} file changed while reading: {path}")
         return data
 
 
@@ -84,24 +90,74 @@ def verify_vendor_closure(vendor_root: Path | None = None) -> dict[str, int]:
     return {"required_vendor_files": len(required), "verified_optional_cache_files": len(found & set(optional))}
 
 
+def verify_native_closure(native_root: Path | None = None) -> dict[str, int]:
+    """Reject extra importable code as well as altered or missing pinned native files."""
+    native = native_root if native_root is not None else ROOT / "delivery/native_reuse"
+    data = regular_bytes(ROOT / "delivery/native_reuse_manifest.json", NATIVE_MANIFEST_BYTES, "Native")
+    if hashlib.sha256(data).hexdigest() != NATIVE_MANIFEST_SHA256:
+        raise ValueError("Native manifest identity mismatch")
+    manifest = json.loads(data)
+    expected = {row["path"]: row["sha256"] for row in manifest["files"]}
+    if len(expected) != len(manifest["files"]):
+        raise ValueError("Duplicate native manifest paths")
+    for relative in expected:
+        path = Path(relative)
+        if path.is_absolute() or ".." in path.parts or path.as_posix() != relative:
+            raise ValueError("Unsafe native manifest path")
+    if not stat.S_ISDIR(native.lstat().st_mode):
+        raise ValueError("Native root must be an actual directory, not a symlink")
+    found: set[str] = set()
+    pending = [native]
+    while pending:
+        directory = pending.pop()
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                path = Path(entry.path)
+                relative = path.relative_to(native).as_posix()
+                metadata = entry.stat(follow_symlinks=False)
+                if stat.S_ISDIR(metadata.st_mode):
+                    pending.append(path)
+                    continue
+                if not stat.S_ISREG(metadata.st_mode):
+                    raise ValueError(f"Native symlink or special file refused: {relative}")
+                if relative not in expected:
+                    raise ValueError(f"Unexpected native file: {relative}")
+                if metadata.st_size > 2 * 1024 * 1024:
+                    raise ValueError(f"Native file exceeds bounded size: {relative}")
+                content = regular_bytes(path, metadata.st_size, "Native")
+                if hashlib.sha256(content).hexdigest() != expected[relative]:
+                    raise ValueError(f"Native content mismatch: {relative}")
+                found.add(relative)
+    missing = set(expected) - found
+    if missing:
+        raise ValueError(f"Missing required native files: {sorted(missing)}")
+    return {"native_source_files": len(expected)}
+
+
 def verify_frozen_files() -> dict[str, Any]:
-    """Refuse modified vendor dependencies, experiment evidence or upstream module closure."""
+    """Check pinned manifests and closed dependencies under the trusted reviewed-verifier boundary.
+
+    This script and the reviewed native_bridge.py wrapper are trusted entrypoints; the operating
+    system, interpreter and compiler remain outside this artifact-integrity check.
+    """
     vendor_checks = verify_vendor_closure()
+    native_checks = verify_native_closure()
     experiment = ROOT / "experiment"
-    manifest = json.loads((experiment / "source_freeze.json").read_text())
+    source_bytes = regular_bytes(experiment / "source_freeze.json", SOURCE_FREEZE_BYTES, "Source freeze")
+    if hashlib.sha256(source_bytes).hexdigest() != SOURCE_FREEZE_SHA256:
+        raise ValueError("Source freeze manifest identity mismatch")
+    manifest = json.loads(source_bytes)
     for name, expected in manifest["files"].items():
         if sha256(experiment / name) != expected:
             raise ValueError(f"Frozen artifact mismatch: {name}")
-    native = json.loads((ROOT / "delivery/native_reuse_manifest.json").read_text())
-    for row in native["files"]:
-        path = ROOT / "delivery/native_reuse" / row["path"]
-        if sha256(path) != row["sha256"]:
-            raise ValueError(f"Native closure mismatch: {row['path']}")
-    provenance = json.loads((ROOT / "delivery/provenance.json").read_text())
+    provenance_bytes = regular_bytes(ROOT / "delivery/provenance.json", PROVENANCE_BYTES, "Provenance")
+    if hashlib.sha256(provenance_bytes).hexdigest() != PROVENANCE_SHA256:
+        raise ValueError("Provenance manifest identity mismatch")
+    provenance = json.loads(provenance_bytes)
     for name, expected in provenance["frozen_confirmation_sha256"].items():
         if sha256(ROOT / name) != expected:
             raise ValueError(f"Confirmation evidence mismatch: {name}")
-    return {"frozen_arm_files": len(manifest["files"]), "native_source_files": len(native["files"]), **vendor_checks}
+    return {"frozen_arm_files": len(manifest["files"]), **native_checks, **vendor_checks}
 
 
 def run(command: list[str], cwd: Path, environment: dict[str, str], name: str, output: Path) -> dict[str, Any]:

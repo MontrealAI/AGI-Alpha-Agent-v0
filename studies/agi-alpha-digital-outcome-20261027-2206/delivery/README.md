@@ -38,7 +38,7 @@ python -B delivery/reproduce.py --output ../beta-replay --native
 
 The output directory must not already exist. The script:
 
-1. Verifies the pinned vendored dependency inventory and hashes before importing or compiling those sources, then verifies all 98 frozen arm files, the confirmation evidence and the 24 reused upstream files.
+1. Verifies the pinned closed numerical-dependency and native-reuse inventories before importing or compiling their sources, and verifies all 98 frozen arm files and the anchored confirmation evidence. The standalone native bridge applies the same native preflight.
 2. Copies each arm into an isolated working tree and rebuilds its C++ wrapper from the pinned headers.
 3. Executes the exact recorded 64-case bank, recomputes the 80/120-digit references and applies the frozen scorer.
 4. Checks that acceptance counts match the published result and that original files remain unchanged.

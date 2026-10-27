@@ -8,6 +8,7 @@ import ast
 import hashlib
 import json
 import os
+import secrets
 import stat
 import zipfile
 from datetime import datetime, timezone
@@ -228,6 +229,64 @@ def write_entry(archive: zipfile.ZipFile, name: str, data: bytes, mode: int = 0o
     archive.writestr(info, data, compresslevel=9)
 
 
+def check_receipt_entry(directory_fd: int) -> None:
+    """Refuse receipt links and nonregular destinations without following them."""
+    try:
+        existing = os.stat("package_receipt.json", dir_fd=directory_fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return
+    if not stat.S_ISREG(existing.st_mode) or existing.st_nlink != 1:
+        raise ValueError("Receipt destination must be a regular unaliased file, not a symlink or hard link")
+
+
+def receipt_parent(root: Path, output: Path) -> int:
+    """Validate and hold the receipt parent before any output or receipt write."""
+    parent = (root / "delivery").absolute()
+    receipt = parent / "package_receipt.json"
+    if ".." in parent.parts or output.absolute() == receipt:
+        raise ValueError("Archive output cannot be the receipt destination")
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    directory_fd = os.open(parent.anchor, flags)
+    try:
+        for component in parent.parts[1:]:
+            next_fd = os.open(component, flags, dir_fd=directory_fd)
+            os.close(directory_fd)
+            directory_fd = next_fd
+        check_receipt_entry(directory_fd)
+        try:
+            receipt_stat = os.stat("package_receipt.json", dir_fd=directory_fd, follow_symlinks=False)
+        except FileNotFoundError:
+            receipt_stat = None
+        if receipt_stat is not None and output.exists():
+            output_stat = output.stat()
+            if (receipt_stat.st_dev, receipt_stat.st_ino) == (output_stat.st_dev, output_stat.st_ino):
+                raise ValueError("Archive output aliases the receipt destination")
+        return directory_fd
+    except BaseException:
+        os.close(directory_fd)
+        raise
+
+
+def write_receipt_atomic(directory_fd: int, payload: bytes) -> None:
+    """Replace the receipt entry atomically; never open/truncate its old target."""
+    check_receipt_entry(directory_fd)
+    temporary = ".package-receipt-" + secrets.token_hex(12) + ".tmp"
+    file_fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory_fd)
+    try:
+        with os.fdopen(file_fd, "wb") as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        check_receipt_entry(directory_fd)
+        os.replace(temporary, "package_receipt.json", src_dir_fd=directory_fd, dst_dir_fd=directory_fd)
+        os.fsync(directory_fd)
+    finally:
+        try:
+            os.unlink(temporary, dir_fd=directory_fd)
+        except FileNotFoundError:
+            pass
+
+
 def main() -> None:
     """Package current final artifacts and verify every member against the manifest."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -249,81 +308,87 @@ def main() -> None:
     for source in files.values():
         if output == source.absolute() or (output.exists() and output.samefile(source)):
             raise ValueError("Cannot overwrite a selected source or evidence input")
-    virtual, mappings = normalized_sources(files)
-    virtual["LICENSE"] = safe_file(ROOT, ROOT / "delivery/native_reuse/LICENSE")[0]
-    virtual["README.md"] = (
-        "# AGI ALPHA FLYWHEEL - DIGITAL-20261027-R1\n\n"
-        "Research review edition. Read [the complete paper](edition/AGI_ALPHA_Flywheel_Digital_R1.pdf), "
-        "[the executive brief](edition/AGI_ALPHA_Flywheel_Digital_R1_Brief.pdf), or "
-        "[the complete offline browser edition](edition/AGI_ALPHA_Flywheel_Digital_R1.html). "
-        "The common manuscript, compilable LaTeX, bibliography and figure sources are in `edition/`.\n\n"
-        "Distribution and original-versus-normalized source identities are explained in "
-        "[DISTRIBUTION_POLICY.md](delivery/DISTRIBUTION_POLICY.md). "
-        "The archive contains the preserved earlier kinetics edition under its unchanged identity.\n\n"
-        + safe_file(ROOT, ROOT / "delivery/README.md")[0].decode("utf-8")
-    ).encode()
-    virtual["normalization_manifest.json"] = (
-        json.dumps(
-            {
-                "edition": "DIGITAL-20261027-R1",
-                "purpose": "Publication license normalization only, never primary evidence or replay substitution",
-                "copies": mappings,
-            },
-            indent=2,
-        )
-        + "\n"
-    ).encode()
-    entries: dict[str, dict[str, Any]] = {}
-    for name, path in sorted(files.items()):
-        data, _ = read_member(ROOT, name, path)
-        entries[name] = {"sha256": digest(data), "bytes": len(data)}
-    for name, data in sorted(virtual.items()):
-        if name in entries:
-            raise ValueError(f"Duplicate archive entry: {name}")
-        entries[name] = {"sha256": digest(data), "bytes": len(data)}
-    manifest = {
-        "edition": "DIGITAL-20261027-R1",
-        "frozen_original_files_verified": count,
-        "manifest_scope": "Every archive member except archive_manifest.json itself; no self-hash claim",
-        "normalization_copies": len(mappings),
-        "entries": entries,
-    }
-    manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode()
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+    receipt_fd = receipt_parent(ROOT, output)
+    try:
+        virtual, mappings = normalized_sources(files)
+        virtual["LICENSE"] = safe_file(ROOT, ROOT / "delivery/native_reuse/LICENSE")[0]
+        virtual["README.md"] = (
+            "# AGI ALPHA FLYWHEEL - DIGITAL-20261027-R1\n\n"
+            "Research review edition. Read [the complete paper](edition/AGI_ALPHA_Flywheel_Digital_R1.pdf), "
+            "[the executive brief](edition/AGI_ALPHA_Flywheel_Digital_R1_Brief.pdf), or "
+            "[the complete offline browser edition](edition/AGI_ALPHA_Flywheel_Digital_R1.html). "
+            "The common manuscript, compilable LaTeX, bibliography and figure sources are in `edition/`.\n\n"
+            "Distribution and original-versus-normalized source identities are explained in "
+            "[DISTRIBUTION_POLICY.md](delivery/DISTRIBUTION_POLICY.md). "
+            "The archive contains the preserved earlier kinetics edition under its unchanged identity.\n\n"
+            + safe_file(ROOT, ROOT / "delivery/README.md")[0].decode("utf-8")
+        ).encode()
+        virtual["normalization_manifest.json"] = (
+            json.dumps(
+                {
+                    "edition": "DIGITAL-20261027-R1",
+                    "purpose": "Publication license normalization only, never primary evidence or replay substitution",
+                    "copies": mappings,
+                },
+                indent=2,
+            )
+            + "\n"
+        ).encode()
+        entries: dict[str, dict[str, Any]] = {}
         for name, path in sorted(files.items()):
-            data, mode = read_member(ROOT, name, path)
-            write_entry(archive, name, data, mode)
+            data, _ = read_member(ROOT, name, path)
+            entries[name] = {"sha256": digest(data), "bytes": len(data)}
         for name, data in sorted(virtual.items()):
-            write_entry(archive, name, data)
-        write_entry(archive, "archive_manifest.json", manifest_bytes)
-    with zipfile.ZipFile(output) as archive:
-        if archive.testzip() is not None:
-            raise ValueError("ZIP CRC check failed")
-        if set(archive.namelist()) != set(entries) | {"archive_manifest.json"}:
-            raise ValueError("ZIP member set mismatch")
-        for name, record in entries.items():
-            data = archive.read(name)
-            if digest(data) != record["sha256"] or len(data) != record["bytes"]:
-                raise ValueError(f"Archive readback hash mismatch: {name}")
-    if verify_frozen(ROOT) != count:
-        raise ValueError("Frozen count changed during packaging")
-    receipt = {
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "archive": str(output),
-        "archive_sha256": digest(output.read_bytes()),
-        "archive_bytes": output.stat().st_size,
-        "members": len(entries) + 1,
-        "uncompressed_bytes": sum(row["bytes"] for row in entries.values()) + len(manifest_bytes),
-        "all_member_crc_and_sha256_verified": True,
-        "frozen_original_files_before_and_after": count,
-        "normalized_source_copies": len(mappings),
-        "raw_third_party_issue_prose_redistributed": False,
-        "prior_gap_sha256": GAP_SHA256,
-        "status": "Built local review package; publication and attachment delivery require separate verification",
-    }
-    (ROOT / "delivery/package_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
-    print(json.dumps(receipt, indent=2))
+            if name in entries:
+                raise ValueError(f"Duplicate archive entry: {name}")
+            entries[name] = {"sha256": digest(data), "bytes": len(data)}
+        manifest = {
+            "edition": "DIGITAL-20261027-R1",
+            "frozen_original_files_verified": count,
+            "manifest_scope": "Every archive member except archive_manifest.json itself; no self-hash claim",
+            "normalization_copies": len(mappings),
+            "entries": entries,
+        }
+        manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode()
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+            for name, path in sorted(files.items()):
+                data, mode = read_member(ROOT, name, path)
+                write_entry(archive, name, data, mode)
+            for name, data in sorted(virtual.items()):
+                write_entry(archive, name, data)
+            write_entry(archive, "archive_manifest.json", manifest_bytes)
+        with zipfile.ZipFile(output) as archive:
+            if archive.testzip() is not None:
+                raise ValueError("ZIP CRC check failed")
+            if set(archive.namelist()) != set(entries) | {"archive_manifest.json"}:
+                raise ValueError("ZIP member set mismatch")
+            for name, record in entries.items():
+                data = archive.read(name)
+                if digest(data) != record["sha256"] or len(data) != record["bytes"]:
+                    raise ValueError(f"Archive readback hash mismatch: {name}")
+        if verify_frozen(ROOT) != count:
+            raise ValueError("Frozen count changed during packaging")
+        receipt = {
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+            "archive": str(output),
+            "archive_sha256": digest(output.read_bytes()),
+            "archive_bytes": output.stat().st_size,
+            "members": len(entries) + 1,
+            "uncompressed_bytes": sum(row["bytes"] for row in entries.values()) + len(manifest_bytes),
+            "all_member_crc_and_sha256_verified": True,
+            "frozen_original_files_before_and_after": count,
+            "normalized_source_copies": len(mappings),
+            "raw_third_party_issue_prose_redistributed": False,
+            "prior_gap_sha256": GAP_SHA256,
+            "status": "Built local review package; publication and attachment delivery require separate verification",
+        }
+        write_receipt_atomic(receipt_fd, (json.dumps(receipt, indent=2) + "\n").encode("utf-8"))
+        if verify_frozen(ROOT) != count:
+            raise ValueError("Frozen files changed after atomic receipt publication")
+        print(json.dumps(receipt, indent=2))
+    finally:
+        os.close(receipt_fd)
 
 
 if __name__ == "__main__":
