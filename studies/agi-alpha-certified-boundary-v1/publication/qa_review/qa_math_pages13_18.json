@@ -1,0 +1,116 @@
+{
+  "status": "PASS on mathematical rendering and clipping; minor layout correction requested",
+  "pass": false,
+  "mathematical_rendering_pass": true,
+  "clipping_and_overflow_pass": true,
+  "inspection_method": "Every requested PNG was opened individually through tools.view_image at original resolution and visually inspected; no contact-sheet-only or text-only review.",
+  "pages_checked": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "printed_page_numbers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "pages": [
+    {
+      "image": "paper_13.png",
+      "pdf_page": 13,
+      "printed_page": 12,
+      "pass": false,
+      "observations": "Body text, citations, heading colors and footer are legible and unclipped. Appendix A title is stranded alone at the bottom of the page; A.1 starts on the next page.",
+      "issue_ids": [
+        "QA13-01"
+      ]
+    },
+    {
+      "image": "paper_14.png",
+      "pdf_page": 14,
+      "printed_page": 13,
+      "pass": true,
+      "observations": "Main boxed bound, >= relation, knot-value table, integral, derivative variation and normalization are correct and legible. Table whitespace is balanced. A.2 begins with sufficient text, but its final lead-in is separated from the defining display.",
+      "issue_ids": [
+        "QA14-01"
+      ]
+    },
+    {
+      "image": "paper_15.png",
+      "pdf_page": 15,
+      "printed_page": 14,
+      "pass": true,
+      "observations": "Domain, vertices, knot lines, Hessian argument, crossing formula and exact maximum are readable and within margins. The maximum display continues into its attainment clause on the next page; this is acceptable mathematical paragraph continuation.",
+      "issue_ids": []
+    },
+    {
+      "image": "paper_16.png",
+      "pdf_page": 16,
+      "printed_page": 15,
+      "pass": true,
+      "observations": "Audit paths fit, and the trapezoid inequality, tail bound, cell integrals and normalized points are legible. The final equation lead-in is separated from its display on the next page.",
+      "issue_ids": [
+        "QA16-01"
+      ]
+    },
+    {
+      "image": "paper_17.png",
+      "pdf_page": 17,
+      "printed_page": 16,
+      "pass": true,
+      "observations": "Cell-integral transfer and >=J conclusion are correct. Appendix B begins with both heading and content. Restored Chebyshev definition, complete polynomial formula and exact I fraction are visible and correct. B.2 ends with an equation lead-in continued on the next page.",
+      "issue_ids": [
+        "QA17-01"
+      ]
+    },
+    {
+      "image": "paper_18.png",
+      "pdf_page": 18,
+      "printed_page": 17,
+      "pass": true,
+      "observations": "Domain inequalities, polynomial cell-weight assignment, labels (B1)/(B2), two-square parameterization and moment identity are legible and unclipped. No misattributed final-certificate claim is present; this is clearly the secondary polynomial appendix.",
+      "issue_ids": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA13-01",
+      "severity": "medium",
+      "category": "orphan heading",
+      "location": "paper_13.png bottom; Appendix A title",
+      "recommendation": "Keep the Appendix A title with A.1 and its first paragraph, preferably by starting Appendix A on a fresh page.",
+      "requires_fix_for_layout_pass": true
+    },
+    {
+      "id": "QA14-01",
+      "severity": "low",
+      "category": "equation lead-in page break",
+      "location": "paper_14.png final line: The closed domain",
+      "recommendation": "Keep this short lead-in with the D_k display on the next page.",
+      "requires_fix_for_layout_pass": false
+    },
+    {
+      "id": "QA16-01",
+      "severity": "low",
+      "category": "equation lead-in page break",
+      "location": "paper_16.png final line: Integrating its certified inequality in t yields",
+      "recommendation": "Keep the lead-in and following integral identity together.",
+      "requires_fix_for_layout_pass": false
+    },
+    {
+      "id": "QA17-01",
+      "severity": "low",
+      "category": "equation lead-in page break",
+      "location": "paper_17.png B.2 paragraph ending Consequently",
+      "recommendation": "Keep the sentence ending Consequently with the following domain display, or remove the dangling connective and rephrase the next-page introduction.",
+      "requires_fix_for_layout_pass": false
+    }
+  ],
+  "scope_note": "No paper source, figure source or PDF was edited. This report covers only requested physical PDF pages13\u201318, whose printed page numbers are12\u201317."
+}

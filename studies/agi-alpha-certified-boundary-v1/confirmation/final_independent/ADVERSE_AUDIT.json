@@ -1,0 +1,698 @@
+{
+  "status": "PASS: corrected final proof recomputed and all scope/input controls fail closed",
+  "wrapper_sha256": "a326acba5f745b3410e58b6a2ab59b446e563bad0bd4236106e3f4f0852bfb48",
+  "protocol_version": 2,
+  "protocol_sha256": "62ca75a01651a8c2c2cc57179f0b6d76f78b89e816955491880625b1ec1f7b07",
+  "witness_sha256": "999b723a1fa3b9a40519a7ec6b59adac9e02b04519af5868903e92608b87d6a5",
+  "full_recomputation_seconds": 1.4871307610010263,
+  "elapsed_seconds": 2.8260851730010472,
+  "scope_cases": [
+    {
+      "case": "original threshold strict",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "49/50",
+        "bound_relation": ">"
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "49/50",
+        "requested_relation": ">",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "exact final constant non-strict",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "17902560/18258529",
+        "requested_relation": ">=",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "translated finite interval",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 509,
+        "interval_start": -4000,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "17902560/18258529",
+        "requested_relation": ">=",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "positive translated interval",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 251,
+        "interval_start": 1000000000,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "17902560/18258529",
+        "requested_relation": ">=",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "at least three hits subset",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 3,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": true,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "17902560/18258529",
+        "requested_relation": ">=",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "old polynomial bound strict",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "1891871140656049/1929687500000000",
+        "bound_relation": ">"
+      },
+      "expected_scope_admissible": true,
+      "actual_scope_admissible": true,
+      "answer": {
+        "status": "SCOPE_ADMISSIBLE; proof recomputation still required",
+        "requested_lower_bound": "1891871140656049/1929687500000000",
+        "requested_relation": ">",
+        "proved_lower_bound": "17902560/18258529",
+        "proved_relation": ">=",
+        "distinct_moduli_required_by_proof": false,
+        "existence_of_a_cover_asserted": false
+      }
+    },
+    {
+      "case": "uncertified strictness at final constant",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">"
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "strictness at the exact final constant is not certified"
+      }
+    },
+    {
+      "case": "above final constant",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560000018258529/18258529000000000000",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "bound outside proved range"
+      }
+    },
+    {
+      "case": "singletons",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 1,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "singleton classes unsupported"
+      }
+    },
+    {
+      "case": "two dimensions",
+      "request": {
+        "dimension": 2,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "only dimension one is proved"
+      }
+    },
+    {
+      "case": "arbitrary arithmetic progressions",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "arbitrary_ap",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "complete restricted residue classes required"
+      }
+    },
+    {
+      "case": "overlapping covering",
+      "request": {
+        "dimension": 1,
+        "coverage": "at_least_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "exact partition required"
+      }
+    },
+    {
+      "case": "incomplete packing",
+      "request": {
+        "dimension": 1,
+        "coverage": "at_most_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "exact partition required"
+      }
+    },
+    {
+      "case": "float threshold",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": 0.98,
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "bound must be an exact rational string"
+      }
+    },
+    {
+      "case": "zero-denominator rational",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "1/0",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "invalid rational"
+      }
+    },
+    {
+      "case": "nonnumeric rational",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "NaN",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "malformed rational"
+      }
+    },
+    {
+      "case": "invalid relation",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": "="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "unsupported inequality relation"
+      }
+    },
+    {
+      "case": "boolean dimension",
+      "request": {
+        "dimension": true,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "only dimension one is proved"
+      }
+    },
+    {
+      "case": "boolean hits",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": true,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "singleton classes unsupported"
+      }
+    },
+    {
+      "case": "fractional translation",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": "1/2",
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "interval start must be an integer"
+      }
+    },
+    {
+      "case": "length one",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": 1,
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">="
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "length must be all or an integer at least two"
+      }
+    },
+    {
+      "case": "unknown schema field",
+      "request": {
+        "dimension": 1,
+        "coverage": "exactly_once",
+        "class_type": "full_residue",
+        "minimum_hits": 2,
+        "interval_length": "all",
+        "interval_start": -1207,
+        "distinct_moduli": false,
+        "lower_bound": "17902560/18258529",
+        "bound_relation": ">=",
+        "special_approval": true
+      },
+      "expected_scope_admissible": false,
+      "actual_scope_admissible": false,
+      "answer": {
+        "reason": "missing or unknown request fields"
+      }
+    }
+  ],
+  "disposable_cli_controls": [
+    {
+      "case": "null_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "supplied request must be a JSON object"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "list_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "supplied request must be a JSON object"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "scalar_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "supplied request must be a JSON object"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "string_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "supplied request must be a JSON object"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "boolean_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "supplied request must be a JSON object"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "malformed_json_request",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "missing_fields",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "missing or unknown request fields"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "strict_at_bound",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "strictness at the exact final constant is not certified"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "above_bound",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "bound outside proved range"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "forged_witness",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: certificate/weight.json"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "missing_witness",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/final_independent/final_adverse_i5h9q7uo/certificate/weight.json'"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "changed_middle_height",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: certificate/weight.json"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "changed_normalizer",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: certificate/weight.json"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "malformed_rational_witness",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: certificate/weight.json"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "changed_checker",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: lineage/audit_conventional_weight.py"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "missing_checker",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/final_independent/final_adverse_ngpdbzl6/fresh_conventional/verify_weight.py'"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "changed_common_helper",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "frozen input changed: certificate_service.py"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "missing_common_helper",
+      "return_code": 1,
+      "structured_refusal": false,
+      "error": {
+        "exception_stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/819ced921600/confirmation/final_independent/final_adverse_atb3vga1/final_certificate.py\", line 21, in <module>\n    from certificate_service import Refusal, rational, require\nModuleNotFoundError: No module named 'certificate_service'\n"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "missing_protocol",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "[Errno 2] No such file or directory: '/workspace/scratch/819ced921600/confirmation/final_independent/final_adverse_1c38axbp/study/final_confirmation_protocol.json'"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "optimized_python",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "run without -O; underlying research checkers use assertions"
+      },
+      "acceptance_created": false
+    },
+    {
+      "case": "existing_output",
+      "return_code": 2,
+      "structured_refusal": true,
+      "error": {
+        "status": "REFUSED",
+        "reason": "choose a fresh output directory; evidence is never overwritten"
+      },
+      "acceptance_created": false
+    }
+  ],
+  "original_sources_unchanged": true,
+  "source_hashes_before": {
+    "certificate/weight.json": "999b723a1fa3b9a40519a7ec6b59adac9e02b04519af5868903e92608b87d6a5",
+    "fresh_conventional/verify_weight.py": "888f9b529d84426f1a2fed15a5b9e7d3dd585b4ebea239acd46fae795d7aa744",
+    "lineage/audit_conventional_weight.py": "6ff46878772edc80132e9de74ca56106810e6405e33e63ce8ac5e2b3f436f244",
+    "certificate_service.py": "c9b0e414d17f2058c40491912222b61336a407afda711540fd29ab2410018b27",
+    "final_certificate.py": "a326acba5f745b3410e58b6a2ab59b446e563bad0bd4236106e3f4f0852bfb48",
+    "study/final_confirmation_protocol.json": "62ca75a01651a8c2c2cc57179f0b6d76f78b89e816955491880625b1ec1f7b07"
+  },
+  "source_hashes_after": {
+    "certificate/weight.json": "999b723a1fa3b9a40519a7ec6b59adac9e02b04519af5868903e92608b87d6a5",
+    "fresh_conventional/verify_weight.py": "888f9b529d84426f1a2fed15a5b9e7d3dd585b4ebea239acd46fae795d7aa744",
+    "lineage/audit_conventional_weight.py": "6ff46878772edc80132e9de74ca56106810e6405e33e63ce8ac5e2b3f436f244",
+    "certificate_service.py": "c9b0e414d17f2058c40491912222b61336a407afda711540fd29ab2410018b27",
+    "final_certificate.py": "a326acba5f745b3410e58b6a2ab59b446e563bad0bd4236106e3f4f0852bfb48",
+    "study/final_confirmation_protocol.json": "62ca75a01651a8c2c2cc57179f0b6d76f78b89e816955491880625b1ec1f7b07"
+  },
+  "fresh_mathematical_confirmation": "confirmation/final_weight_exact_cases.json",
+  "preserved_interface_failure": "confirmation/final_null_request_probe_record.json",
+  "minor_behavior_note": "Removing the Python helper module causes an import error with exit1, before CLI handlers load. This fails closed with no acceptance, while all supplied malformed requests and other tested proof-input failures return structured refusal exit2.",
+  "comparison_scope": "Descriptive agreement with explicit same-asset theorem assumptions; no blinded model A/B, operational advantage or skill Alpha is inferred."
+}

@@ -1,0 +1,9 @@
+/workspace/scratch/819ced921600/fresh_conventional/relax.py:14: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.
+  r=linprog(c,A_ub=A[n:],b_ub=np.ones(n-1),A_eq=A[:n],b_eq=np.ones(n),bounds=(0,1),method='highs',options={'threads':1,'time_limit':12})
+{"n": 50, "lp": 0.986573913877507, "cpu": 0.019660418999999985, "wall": 0.019665751009597443, "status": 0}
+{"n": 75, "lp": 0.9863739612093796, "cpu": 0.08650930600000001, "wall": 0.08735679199162405, "status": 0}
+{"n": 100, "lp": 0.9863503820786991, "cpu": 0.25368915099999995, "wall": 0.25432914998964407, "status": 0}
+{"n": 150, "lp": 0.9863102379239889, "cpu": 1.4444657159999998, "wall": 1.4444960970140528, "status": 0}
+{"n": 200, "lp": 0.9862948771997601, "cpu": 6.161171405999999, "wall": 6.165979564000736, "status": 0}
+{"n": 300, "lp": null, "cpu": 12.059193577, "wall": 12.063459338998655, "status": 1}
+{"n": 500, "lp": null, "cpu": 12.135785282000004, "wall": 12.137707648987998, "status": 1}

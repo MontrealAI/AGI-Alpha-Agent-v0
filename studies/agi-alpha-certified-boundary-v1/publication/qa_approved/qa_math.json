@@ -1,0 +1,97 @@
+{
+  "status": "PASS: approved for bundling with accepted minor pagination continuations",
+  "pass": true,
+  "individual_images_inspected": [
+    14,
+    15,
+    16,
+    18
+  ],
+  "printed_page_numbers_inspected": [
+    13,
+    14,
+    15,
+    17
+  ],
+  "prior_visual_review_carried_forward": {
+    "pages": [
+      13,
+      17
+    ],
+    "basis": "Root reported these images pixel-identical to qa_final; both were individually inspected in the previous pass."
+  },
+  "inspection_method": "Opened each changed requested PNG individually with tools.view_image at original resolution. No new numerical tests, source edits or optional inspections were performed.",
+  "checks": {
+    "clipping": false,
+    "overflow": false,
+    "missing_or_illegible_math": false,
+    "incorrect_math_labels": false,
+    "orphan_major_headings": false,
+    "mathematical_context_preserved": true
+  },
+  "pages": [
+    {
+      "image": "paper_14.png",
+      "pass": true,
+      "observations": "Appendix A opens cleanly with A.1, correct >=J boxed bound, coefficient table, I_W, variation and M. A.2 no longer leaves a heading and one-line introduction at this page bottom. Intentional remaining whitespace is acceptable."
+    },
+    {
+      "image": "paper_15.png",
+      "pass": true,
+      "observations": "A.2 heading, introductory line and S_k display are now together at the page top. Domain, vertices and A.3 equations render correctly. The final prose paragraph continues normally to page16."
+    },
+    {
+      "image": "paper_16.png",
+      "pass": true,
+      "observations": "Quadratic-maximization continuation, exact M, attaining parameters, audit paths, tail inequality and cell integrals are readable and within margins. A.5 has substantive content. Its points-definition lead-in still continues to the unchanged next page; accepted as minor."
+    },
+    {
+      "image": "paper_18.png",
+      "pass": true,
+      "observations": "Exact I fraction is clear at the top; B.2 domain, assigned weights, equations(B1)/(B2), parameterization and P_k remain legible and correct. The I display follows its lead-in on unchanged page17; accepted as minor."
+    }
+  ],
+  "prior_issue_disposition": [
+    {
+      "id": "QA13-01",
+      "status": "RESOLVED",
+      "description": "Appendix A starts with content on a new page."
+    },
+    {
+      "id": "QA14-01",
+      "status": "RESOLVED",
+      "description": "Closed-domain lead-in and display remain together."
+    },
+    {
+      "id": "QA16-01",
+      "status": "RESOLVED",
+      "description": "Integration lead-in and identity remain together on the unchanged page17."
+    },
+    {
+      "id": "QA17-01",
+      "status": "RESOLVED",
+      "description": "Consequently lead-in and domain display are together on page18."
+    },
+    {
+      "id": "FINAL14-01",
+      "status": "RESOLVED",
+      "description": "A.2 heading, consider-the-sum lead-in and S_k display are together on page15."
+    },
+    {
+      "id": "FINAL16-01",
+      "status": "CLOSED_ACCEPTED_MINOR",
+      "severity": "low",
+      "blocking": false,
+      "description": "Page16 still ends its points before x_j(t) on unchanged page17. This is a readable adjacent-page mathematical continuation and does not block bundling."
+    },
+    {
+      "id": "FINAL17-01",
+      "status": "CLOSED_ACCEPTED_MINOR",
+      "severity": "low",
+      "blocking": false,
+      "description": "Unchanged page17 ends exact witness integral is before I on page18. The continuation is legible, mathematically unambiguous and accepted without another layout cycle."
+    }
+  ],
+  "open_blocking_issues": [],
+  "additional_work_requested": false
+}

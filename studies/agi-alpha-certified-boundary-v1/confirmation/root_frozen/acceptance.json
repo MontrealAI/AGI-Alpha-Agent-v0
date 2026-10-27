@@ -1,0 +1,59 @@
+{
+  "status": "PASS: exact research certificate recomputed",
+  "witness_sha256": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+  "strict_lower_bound": "1891871140656049/1929687500000000",
+  "original_threshold": "49/50",
+  "scope": "One-dimensional exact partitions into full residue classes, each hitting at least twice.",
+  "executions": [
+    {
+      "command": [
+        "scout/certify_bernstein.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.23004499801027123
+    },
+    {
+      "command": [
+        "lineage/myerson_independent_bounds.py",
+        "scout/revised_polynomial.json",
+        "lineage/myerson_revised_independent_bounds.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.1591968669963535
+    },
+    {
+      "command": [
+        "lineage/myerson_independent_bivariate.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.093073933996493
+    },
+    {
+      "command": [
+        "study/midpoint_uniform.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.04256702499696985
+    },
+    {
+      "command": [
+        "lineage/myerson_independent_uniform.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.08588274000794627
+    }
+  ],
+  "elapsed_seconds": 4.613247386005241,
+  "request_decision": {
+    "status": "ACCEPTED_WITHIN_STATED_ASSUMPTIONS",
+    "requested_strict_lower_bound": "49/50",
+    "proved_strict_lower_bound": "1891871140656049/1929687500000000",
+    "distinct_moduli_required_by_proof": false,
+    "existence_of_a_cover_asserted": false,
+    "translation": "Integer interval translations preserve the residue-class assumptions."
+  },
+  "external_peer_review": false,
+  "proof_assistant_formalization": false,
+  "model_performance_comparison": false,
+  "revenue_or_demand_established": false
+}

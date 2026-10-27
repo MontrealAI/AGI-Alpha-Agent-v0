@@ -1,0 +1,186 @@
+{
+  "candidate": {
+    "id": "myerson-heft-certificate-v1",
+    "title": "A universal heft barrier for finite residue partitions",
+    "sector": "Computer-assisted mathematics and reusable proof certificates",
+    "thesis": "An exact rational polynomial certificate replaces unbounded enumeration with a universal lower bound, independently recomputed in two implementations. This is a mathematical research result; priority, external review, commercial demand and model superiority are separate questions.",
+    "goal": "Verify h > 1891871140656049/1929687500000000 for every finite exact residue-class partition with at least two points per class.",
+    "successMetric": "Two independently derived exact certificate implementations agree; all 78 short-class patches, the infinite-length tail and every finite n pass; the known invalid grid witness is refused. No external peer review or production qualification is asserted."
+  },
+  "sources": [
+    {
+      "id": "myerson-author-question",
+      "title": "Gerry Myerson: finite residue covers and heft question",
+      "url": "https://mathoverflow.net/questions/462981/open-problems-which-might-benefit-from-computational-experiments/499017",
+      "excerpt": "The author defines distinct-modulus residue classes that partition 1 through n, each containing at least two interval elements, and asks whether any has total reciprocal modulus below 0.98. August 2026 updates address other directions. This paraphrase records the inspected question, not an ownership claim.",
+      "kind": "public-excerpt"
+    },
+    {
+      "id": "myerson-poon-simpson-2009",
+      "title": "Incongruent restricted disjoint covering systems",
+      "url": "https://doi.org/10.1016/j.disc.2009.02.002",
+      "excerpt": "Myerson, Poon and Simpson introduced this finite covering-system setting and reported structural and computational results. The inspected primary search extract gives heft bounds in terms of interval length and number of classes; the full CORE PDF was unavailable to this audit.",
+      "kind": "public-excerpt"
+    },
+    {
+      "id": "lyman-morris-toomey-2012",
+      "title": "Incongruent Restricted Disjoint Covering Systems",
+      "url": "https://www.laura-lyman.com/uploads/3/9/7/4/39745896/correctirdcspaper.pdf",
+      "excerpt": "The authors define incongruent restricted disjoint covering systems with at least two interval elements per congruence class and describe structural families and finite computations. The study preserves the original partition requirement.",
+      "kind": "public-excerpt"
+    }
+  ],
+  "witness": {
+    "theorem": "For every n>=2, every partition of {1,...,n} into complete truncated residue classes, each containing at least two points, has h=sum(1/m)>1891871140656049/1929687500000000>49/50. Distinct moduli are not required by the proof.",
+    "bound_exact": "1891871140656049/1929687500000000",
+    "witness_sha256": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+    "evidence_class": "Executed exact computer-assisted proof; independently recomputed by a same-session workstream; no proof-assistant formalization or external peer review.",
+    "proof_obligations": {
+      "short_classes": "78 exact tensor-Bernstein patches for lengths2..40; independent generic Horner checker passes with95 leaves,maxdepth6.",
+      "long_classes": "Exact bound I+abs(f0)/40+TV(gprime)/(8*40^2)<1 covers all lengths>=41.",
+      "all_interval_lengths": "Independent telescoping centered-moment recurrence matches Euler-Maclaurin coefficients;16 rational Bernstein intervals and exactn2,3 prove midpoint average>I for alln>=2.",
+      "refusal": "Original coarse-grid witness has exact finite-class violation n26,m15,r11, with normalized left side1.0464113181398584>1."
+    },
+    "artifacts": [
+      {
+        "path": "scout/revised_polynomial.json",
+        "sha256": "c92bc1977bbb6804af862d52c82507793ff57e2355c501477f609e7a1dd22633",
+        "bytes": 557
+      },
+      {
+        "path": "scout/certify_bernstein.py",
+        "sha256": "8f752d85798f6acf2a7a4572fe7880a0300d0bb5c6de12cdebcf4ea60e57972c",
+        "bytes": 3167
+      },
+      {
+        "path": "scout/bernstein_results.json",
+        "sha256": "e927ce55f574174003a9b7d1be1bb89178201eb6223d5bca09ddbe3611beca3b",
+        "bytes": 10790
+      },
+      {
+        "path": "lineage/myerson_independent_bivariate.py",
+        "sha256": "02a4d6bfff1c2fc80168647a49fe8bc40c0805df6266d89b6ef930c0af1e9e55",
+        "bytes": 5783
+      },
+      {
+        "path": "lineage/myerson_independent_bivariate.json",
+        "sha256": "6c440ce0fff1285a7b6ee6fd768b779407af2a16bc6835ecd778dd8c275aab95",
+        "bytes": 36620
+      },
+      {
+        "path": "lineage/myerson_independent_bounds.py",
+        "sha256": "bca91770fdd390ea1592ed2f81ed2855fad8f6aab44b970d5afdc03485cd4894",
+        "bytes": 6022
+      },
+      {
+        "path": "lineage/myerson_revised_independent_bounds.json",
+        "sha256": "f55e284163945dd830d2c328b7fa357e5d009473eac900012b1d42fa6b8e6b0e",
+        "bytes": 4830
+      },
+      {
+        "path": "study/midpoint_uniform.py",
+        "sha256": "b17ca8018e8d16a306df17c9f32ab7cb558a5f90178c88df288a30b1972f7569",
+        "bytes": 2133
+      },
+      {
+        "path": "study/midpoint_uniform_result.json",
+        "sha256": "8c0de89fc4eb1c6cdb324da1a891799b4b3c6b392bd5225fa49a50e79e55430d",
+        "bytes": 2163
+      },
+      {
+        "path": "lineage/myerson_independent_uniform.py",
+        "sha256": "fa94e7bd2227f1196e5ab323421599c12d0642b761337e9e282fac1feea7e380",
+        "bytes": 4452
+      },
+      {
+        "path": "lineage/myerson_independent_uniform.json",
+        "sha256": "ae92e44d316c99f361381872903c9b4516665989bb2d3f7fea41f289c284aa54",
+        "bytes": 5788
+      },
+      {
+        "path": "lineage/myerson_original_counterexample.json",
+        "sha256": "99b3d089c9ead55df40186e67132daf340d7bbdbd13daef08cf56308aba9c430",
+        "bytes": 1708
+      }
+    ]
+  },
+  "rights": {
+    "new_material": "Original mathematical calculations and certificate implementations produced in this study; no claim to ownership of the underlying open problem.",
+    "public_sources": "Primary sources are cited and briefly paraphrased. No unlicensed external implementation is copied into the mathematical certificate.",
+    "native_reuse": "Unchanged Apache-2.0 source closure at47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4; LICENSE and per-file notices preserved. Adapter is unchanged from979f50024ddbf3d6eff6c49d3271898c64b240f8.",
+    "permissions": "Local research execution and reviewable artifacts only. No external contact, publication, minting, trading, spending, permission change, live ENS authentication or MARK activation."
+  },
+  "uncertainty": {
+    "priority": "Scoped primary-source search found an author-posted open question; universal novelty is not established by that search.",
+    "verification": "Two same-session independent computational derivations and analytic review; external mathematician review remains desirable. Integrity hashes do not establish mathematical truth by themselves.",
+    "models": "No separately metered live frontier-model benchmark, ordinary-versus-expert controlled trial, or superhuman-specialist claim.",
+    "economics": "Actual authoring cost and demand are not measured here. Zero receipts; no profitable business claim follows from this mathematical result.",
+    "capsule": "Production scope is not qualified; the adapter must preserve the unsupported scientific capsule refusal."
+  },
+  "milestones": [
+    {
+      "id": "freeze-and-check",
+      "goal": "Recompute the frozen rational witness and both exact finite-class certificates.",
+      "successMetric": "Witness digest matches;78/78 patches pass in both implementations;alln and infinite-tail obligations pass.",
+      "depends_on": [],
+      "budget": {
+        "cpu_seconds_ceiling": 60,
+        "memory_mib_ceiling": 512,
+        "external_spend_usd": 0
+      },
+      "permissions": [
+        "local read-only source verification",
+        "local new artifact writes"
+      ],
+      "falsifiers": [
+        "Any exact negative class-constraint witness",
+        "Any uncovered parameter domain",
+        "Any input digest mismatch"
+      ],
+      "duration_seconds": 600
+    },
+    {
+      "id": "fresh-adverse-review",
+      "goal": "Confirm frozen proof on fresh exact cases and refuse malformed or inflated claims.",
+      "successMetric": "Fresh direct checks agree and designed invalid artifacts fail;universal proof is never inferred from finite sampling.",
+      "depends_on": [
+        "freeze-and-check"
+      ],
+      "budget": {
+        "cpu_seconds_ceiling": 120,
+        "memory_mib_ceiling": 512,
+        "external_spend_usd": 0
+      },
+      "permissions": [
+        "local executable research",
+        "no external actions"
+      ],
+      "falsifiers": [
+        "Verifier accepts known invalid grid witness",
+        "Verifier accepts changed bound or coefficients without new proof"
+      ],
+      "duration_seconds": 600
+    },
+    {
+      "id": "research-review-edition",
+      "goal": "Assemble the proof, failed evidence, sources and independent audit for research review.",
+      "successMetric": "PDF and browser edition agree on theorem and scope;external-review and canonical-release statuses remain explicit.",
+      "depends_on": [
+        "fresh-adverse-review"
+      ],
+      "budget": {
+        "editorial_minutes_ceiling": 30,
+        "external_spend_usd": 0
+      },
+      "permissions": [
+        "local publication package",
+        "existing review process only"
+      ],
+      "falsifiers": [
+        "An unproven economic or model-superiority claim is presented as measured",
+        "A local draft is reported as a canonical merged release"
+      ],
+      "duration_seconds": 1800
+    }
+  ]
+}

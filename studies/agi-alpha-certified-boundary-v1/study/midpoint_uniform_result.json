@@ -1,0 +1,85 @@
+{
+  "claim": "For every integer n>=2, the midpoint average is strictly greater than the integral I. Exact Euler-Maclaurin polynomial and positive Bernstein coefficients on t=1/n^2 in (0,1/16], with n=2,3 checked exactly certify this.",
+  "integral": "1891871140656049/1929687500000000",
+  "integral_decimal": 0.9804028583156853,
+  "coefficients_Qn_minus_I_div_t": [
+    "48086621821/500000000000",
+    "3011017942428209/15625000000000",
+    "-4998202822745699/93750000000",
+    "5453003495605907297/976562500000",
+    "-147268380741229232597/537109375000",
+    "5442305554476982461081/793457031250",
+    "-536527600907005247386/6103515625",
+    "661497530827411804904/1220703125",
+    "-473264950898930221144736/347900390625",
+    "302044032432792140506624/335693359375"
+  ],
+  "exact_identity_checks_n": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    101,
+    997
+  ],
+  "positive_intervals": [
+    {
+      "lo": "3/64",
+      "hi": "1/16",
+      "min_coefficient": "43095048108263954677/252928000000000000000",
+      "depth": 2
+    },
+    {
+      "lo": "5/128",
+      "hi": "3/64",
+      "min_coefficient": "73631641115638120374200873357/298737309266739200000000000000",
+      "depth": 3
+    },
+    {
+      "lo": "9/256",
+      "hi": "5/128",
+      "min_coefficient": "1198512894989116570148014340807/69524319247532032000000000000000",
+      "depth": 4
+    },
+    {
+      "lo": "1/32",
+      "hi": "9/256",
+      "min_coefficient": "250161836116509379027373066141/29330572182552576000000000000000",
+      "depth": 4
+    },
+    {
+      "lo": "1/64",
+      "hi": "1/32",
+      "min_coefficient": "458600135703819341287531/5697961984000000000000000",
+      "depth": 2
+    },
+    {
+      "lo": "0",
+      "hi": "1/64",
+      "min_coefficient": "46226955782448179138159/506068992000000000000000",
+      "depth": 2
+    }
+  ],
+  "uniform_implies": "heft > I, conditional on all residue-class dual inequalities",
+  "uses_existing_polynomial_conversion": "lineage/myerson_independent_bounds.py",
+  "independent_audit_required": true
+}
