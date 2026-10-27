@@ -1,0 +1,940 @@
+{
+  "schema": "network-economy-calibration/v1",
+  "title": "Paid Work. Retained Alpha. Expanding Possibility.",
+  "evidence_cutoff": "2026-10-26",
+  "currency": "USD",
+  "purpose": "Inputs for protocol design; candidate assumption ranges are advisory, not frozen experiment parameters.",
+  "observed_local_model_trials": 0,
+  "observed_customer_jobs": 0,
+  "observed_collections_usd": 0,
+  "classification_definitions": {
+    "official_documentation": "Provider-published product/billing facts retrieved at the evidence date.",
+    "provider_reported_evaluation": "Vendor evaluation claims; not independent replication.",
+    "observed_service_rate": "Published provider service hourly price; not wage or quote for this project.",
+    "external_reported_finding": "Result in a cited primary paper; not replicated here.",
+    "derived_reference_with_assumed_effort": "Arithmetic combines observed rates with explicitly hypothesized matched labor.",
+    "explicit_unmeasured_scenario_assumption": "Unmeasured quantity varied transparently; not a calibrated empirical estimate.",
+    "local_measurement": "Reserved for measurements obtained by the actual study; none supplied in this screen."
+  },
+  "models": {
+    "gpt-6-astra": {
+      "evidence_class": "official_documentation",
+      "source_ids": [
+        "OAI-ASTRA",
+        "OAI-PRICING",
+        "OAI-REASONING"
+      ],
+      "currency": "USD",
+      "rates_per_million": {
+        "uncached_input": 10,
+        "cached_input": 1,
+        "cache_write_30m": 12.5,
+        "cache_write_12h": 25,
+        "output_including_reasoning": 50
+      },
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "reasoning_efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "mode": "pro",
+      "primary_effort": "max",
+      "service_tier": "standard",
+      "immutable_snapshot": "not_exposed_on_inspected_page",
+      "live_access_verified": false
+    },
+    "gpt-6.1-terra": {
+      "evidence_class": "official_documentation",
+      "source_ids": [
+        "OAI-TERRA",
+        "OAI-PRICING",
+        "OAI-REASONING"
+      ],
+      "currency": "USD",
+      "rates_per_million": {
+        "uncached_input": 1,
+        "cached_input": 0.05,
+        "cache_write_30m": 1.25,
+        "cache_write_12h": 2.5,
+        "output_including_reasoning": 5
+      },
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "reasoning_efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "mode": "standard",
+      "primary_effort": "medium",
+      "escalation_effort": "high",
+      "service_tier": "standard",
+      "immutable_snapshot": "not_exposed_on_inspected_page",
+      "live_access_verified": false
+    }
+  },
+  "roles": [
+    {
+      "role": "producer_inventor",
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "max",
+      "configuration_class": "study_design_assumption",
+      "tools": [
+        "source_retrieval",
+        "sandboxed_code",
+        "exact_property_checks",
+        "counterexample_search"
+      ],
+      "independence_claim": "Separate contexts are not independent correctness proof."
+    },
+    {
+      "role": "substantive_validator",
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "max",
+      "configuration_class": "study_design_assumption",
+      "tools": [
+        "source_retrieval",
+        "sandboxed_code",
+        "exact_property_checks",
+        "counterexample_search"
+      ],
+      "independence_claim": "Separate contexts are not independent correctness proof."
+    },
+    {
+      "role": "capability_builder",
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "max",
+      "configuration_class": "study_design_assumption",
+      "tools": [
+        "source_retrieval",
+        "sandboxed_code",
+        "exact_property_checks",
+        "counterexample_search"
+      ],
+      "independence_claim": "Separate contexts are not independent correctness proof."
+    },
+    {
+      "role": "difficult_correction",
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "max",
+      "configuration_class": "study_design_assumption",
+      "tools": [
+        "source_retrieval",
+        "sandboxed_code",
+        "exact_property_checks",
+        "counterexample_search"
+      ],
+      "independence_claim": "Separate contexts are not independent correctness proof."
+    },
+    {
+      "role": "investment_evaluator",
+      "model": "gpt-6-astra",
+      "reasoning_mode": "pro",
+      "reasoning_effort": "max",
+      "configuration_class": "study_design_assumption",
+      "tools": [
+        "source_retrieval",
+        "sandboxed_code",
+        "exact_property_checks",
+        "counterexample_search"
+      ],
+      "independence_claim": "Separate contexts are not independent correctness proof."
+    },
+    {
+      "role": "routine_visual_and_computer_execution",
+      "model": "gpt-6.1-terra",
+      "reasoning_mode": "standard",
+      "reasoning_effort": "medium",
+      "configuration_class": "study_design_assumption",
+      "qualification": "Use only after matching task-specific quality requirements; escalate or abstain otherwise."
+    }
+  ],
+  "common_model_constraints": {
+    "aggregate_all_pro_work_tokens": true,
+    "reasoning_tokens_in_output": true,
+    "per_request_long_context_threshold": 272000,
+    "long_context_input_cache_multiplier": 2,
+    "long_context_output_multiplier": 1.5,
+    "subscription_is_unlimited_api": false,
+    "published_build_tier_rpm": 5000,
+    "published_build_tier_tpm": 1000000,
+    "actual_account_quota_verified": false,
+    "no_cache_sensitivity_hit_fraction": 0,
+    "adopted_primary_cache_policy": {
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "enabled": true,
+      "fresh_input_billing": "conservatively charge every fresh Astra/Terra input token at the documented 30-minute cache-write rate",
+      "astra_fresh_input_usd_per_million": 12.5,
+      "terra_fresh_input_usd_per_million": 1.25,
+      "cache_reads": "separate workload quantities at Astra1/Terra0.05 USD per million",
+      "read_hit_quantities": "stage-specific assumed Work catalog quantities, not measured hit rates",
+      "disabled_sensitivity": "all input including formerly cached quantities charged at standard Astra10/Terra1; no cache-read discount",
+      "output_rates_unchanged": true,
+      "repeated_first_write_charge": "conservative accounting assumption, not a claim that every real request is billed as a fresh write"
+    }
+  },
+  "tools_prices": {
+    "classification": "official_documentation",
+    "source_ids": [
+      "OAI-PRICING"
+    ],
+    "web_search_usd_per_call": 0.01,
+    "web_content_tokens_extra": true,
+    "container_usd_per_20_minute_session": {
+      "1GiB": 0.03,
+      "4GiB": 0.12,
+      "16GiB": 0.48,
+      "64GiB": 1.92
+    },
+    "file_search_usd_per_call": 0.0025,
+    "file_search_usd_per_GiB_day": 0.1,
+    "free_allowance_not_multiplied_by_agents": true
+  },
+  "human_team_reference": {
+    "currency": "USD",
+    "geography": "United States domestic professional services",
+    "evidence_class": "derived_reference_with_assumed_effort",
+    "rate_evidence_class": "observed_service_rate",
+    "effort_evidence_class": "explicit_assumption",
+    "roles": [
+      {
+        "name": "economics_policy_researcher_level3",
+        "usd_hour": 334.18,
+        "source_id": "RAND-RATES"
+      },
+      {
+        "name": "senior_software_engineer",
+        "usd_hour": 213.72,
+        "source_id": "ZFED-RATES"
+      },
+      {
+        "name": "technical_quantitative_research_analyst",
+        "usd_hour": 264.95,
+        "source_id": "RAND-RATES"
+      },
+      {
+        "name": "project_manager",
+        "usd_hour": 200.09,
+        "source_id": "ZFED-RATES"
+      }
+    ],
+    "illustrative_scope": "Bounded executable mechanism, requirements contract, type-profile adversarial search, reproducible verification and integration guide; no live operations, legal opinion, deployment, stakeholder negotiation.",
+    "hour_scenarios": {
+      "low": {
+        "role_hours": [
+          24,
+          40,
+          24,
+          12
+        ],
+        "total_hours": 100,
+        "derived_labor_reference_usd": 25329.0
+      },
+      "central": {
+        "role_hours": [
+          48,
+          80,
+          48,
+          20
+        ],
+        "total_hours": 196,
+        "derived_labor_reference_usd": 49857.64
+      },
+      "high": {
+        "role_hours": [
+          96,
+          160,
+          96,
+          32
+        ],
+        "total_hours": 384,
+        "derived_labor_reference_usd": 98114.56
+      }
+    },
+    "verified_human_only_effort": false,
+    "matched_project_quote_observed": false,
+    "price_is_optimized_separately": true
+  },
+  "candidate_assumptions": [
+    {
+      "id": "A-CAPABILITY",
+      "quantity": "candidate invention success",
+      "candidate_range": [
+        0.2,
+        0.8
+      ],
+      "unit": "probability_per_independent_campaign",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Direct precedent establishes possibility, not success frequency for this workflow.",
+      "source_context": [
+        "AMD-LLM",
+        "ALPHAEVOLVE"
+      ],
+      "required_stress": [
+        "zero useful invention",
+        "successful artifact with zero demand"
+      ]
+    },
+    {
+      "id": "A-OVERLAP",
+      "quantity": "recipient already possesses an equivalent capability",
+      "candidate_range": [
+        0.1,
+        0.95
+      ],
+      "unit": "fraction_of_relevant_recipient_skill_pairs",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "General model knowledge and prior experience must remain in baseline.",
+      "source_context": [
+        "AMD-LLM",
+        "SWE-SKILLS"
+      ],
+      "required_stress": [
+        "overlap1.0",
+        "cheap frontier reconstruction"
+      ]
+    },
+    {
+      "id": "A-TRANSFER",
+      "quantity": "successful nonredundant transfer",
+      "candidate_range": [
+        0.4,
+        0.95
+      ],
+      "unit": "probability_conditional_on_genuine_missing_capability_and_eligible_package",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Requires fresh recipient tests; packages can fail integration.",
+      "source_context": [
+        "SKILLLENS",
+        "SKILLSBENCH",
+        "SWE-SKILLS"
+      ],
+      "required_stress": [
+        "zero benefit",
+        "negative benefit",
+        "large adaptation cost"
+      ]
+    },
+    {
+      "id": "A-RECONSTRUCTION",
+      "quantity": "avoided complete reconstruction cost on a useful transfer",
+      "candidate_range": [
+        0,
+        0.6
+      ],
+      "unit": "fraction_of_matched_full_delivery_cost_before_adaptation",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Runtime savings and reduced validation effort must be separated from nominal file reuse.",
+      "source_context": [
+        "SWE-SKILLS",
+        "AMD-LLM"
+      ],
+      "required_stress": [
+        "zero avoided cost",
+        "extra token overhead"
+      ]
+    },
+    {
+      "id": "A-VALIDATION",
+      "quantity": "false pass conditional on a materially wrong candidate",
+      "candidate_range": [
+        0.01,
+        0.25
+      ],
+      "unit": "probability",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "No target-domain joint generator/checker measurement exists.",
+      "source_context": [
+        "JUDGE-CORRELATION"
+      ],
+      "required_stress": [
+        "common cause shock",
+        "false rejection",
+        "correction failure",
+        "abstention"
+      ]
+    },
+    {
+      "id": "A-QUALITY",
+      "quantity": "initial substantive correctness",
+      "candidate_range": [
+        0.45,
+        0.95
+      ],
+      "unit": "probability_per_scoped_job",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Benchmark results are not converted into customer acceptance.",
+      "source_context": [
+        "OAI-ASTRA-RELEASE",
+        "AMD-LLM"
+      ],
+      "required_stress": [
+        "harder fresh tasks",
+        "scope misinterpretation",
+        "model update"
+      ]
+    },
+    {
+      "id": "A-DEMAND",
+      "quantity": "qualified venture opportunities",
+      "candidate_range": [
+        0.1,
+        2.0
+      ],
+      "unit": "opportunities_per_week_at_start",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "No buyer demand or acquisition funnel measured.",
+      "source_context": [],
+      "required_stress": [
+        "zero demand",
+        "price-sensitive demand",
+        "human-provider substitution",
+        "postponement"
+      ]
+    },
+    {
+      "id": "A-LIFE",
+      "quantity": "useful capability lifetime",
+      "candidate_range": [
+        4,
+        52
+      ],
+      "unit": "weeks",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Copying, provider progress, changing dependencies and domain shift can remove value.",
+      "source_context": [
+        "SKILL-CONFLICT",
+        "SWE-SKILLS"
+      ],
+      "required_stress": [
+        "rapid obsolescence",
+        "high maintenance",
+        "external reconstruction catches up"
+      ]
+    },
+    {
+      "id": "A-COLLECTION",
+      "quantity": "collection delay",
+      "candidate_range": [
+        0,
+        60
+      ],
+      "unit": "days_after_accepted_delivery",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Net30 rate-card terms are an anchor, not this venture contract.",
+      "source_context": [
+        "RAND-RATES",
+        "ZFED-RATES"
+      ],
+      "required_stress": [
+        "nonpayment",
+        "refunds",
+        "cash shortage before collection"
+      ]
+    },
+    {
+      "id": "A-QUOTA",
+      "quantity": "effective concurrent substantive jobs",
+      "candidate_range": [
+        1,
+        16
+      ],
+      "unit": "network_level_concurrent_jobs",
+      "classification": "explicit_unmeasured_scenario_assumption",
+      "reason": "Published token limits do not guarantee latency/concurrency or per-agent independent quotas.",
+      "source_context": [
+        "OAI-ASTRA",
+        "OAI-TERRA"
+      ],
+      "required_stress": [
+        "validator bottleneck",
+        "request queue",
+        "long-context cost",
+        "correlated provider outage"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "OAI-ASTRA",
+      "title": "GPT-6 Astra Model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "kind": "official_documentation",
+      "locator": "Model, Pricing, Snapshots, Rate limits",
+      "web_ref": "turn2view0",
+      "claims": [
+        "Standard rates: input 10, cached input 1, output 50 USD per million tokens.",
+        "Context 1050000; maximum output 128000; effort low/medium/high/xhigh/max.",
+        "Input over 272000 tokens doubles input/cache rates and multiplies output rate by 1.5 for the full request.",
+        "Build 5000 RPM/1000000 TPM; Launch 10000/4000000; Grow 15000/40000000.",
+        "Only the gpt-6-astra alias was exposed in the inspected snapshots section."
+      ],
+      "limits": [
+        "No account access, throughput or task success was measured."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-TERRA",
+      "title": "GPT-6.1 Terra Model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "kind": "official_documentation",
+      "locator": "Model, Pricing, Snapshots, Rate limits",
+      "web_ref": "turn2view1",
+      "claims": [
+        "Standard rates: input 1, cached input 0.05, output 5 USD per million tokens.",
+        "Context 1050000; maximum output 128000; efforts none/low/medium/high/xhigh/max.",
+        "Same documented long-context multipliers and tier limits as Astra.",
+        "Tool calling requires Responses API.",
+        "Only the gpt-6.1-terra alias was exposed in the inspected snapshots section."
+      ],
+      "limits": [
+        "Capabilities require task-specific qualification; no exact job acceptance rate follows."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-REASONING",
+      "title": "Reasoning models",
+      "url": "https://developers.openai.com/api/docs/guides/reasoning",
+      "kind": "official_documentation",
+      "locator": "Reasoning mode; How reasoning works; Controlling costs",
+      "web_ref": "turn4view0",
+      "claims": [
+        "GPT-6 supports reasoning.mode standard or pro independently of reasoning.effort.",
+        "Pro aggregates underlying work tokens and bills at model token rates.",
+        "Reasoning tokens are included in billed output; incomplete generations can incur cost."
+      ],
+      "limits": [
+        "A fixed Pro cost or quality multiplier is not documented."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-PRICING",
+      "title": "OpenAI API Pricing",
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "kind": "official_documentation",
+      "locator": "Flagship models; Built-in tools",
+      "web_ref": "turn1view1",
+      "claims": [
+        "Astra 30-minute/12-hour cache writes cost 12.5/25 USD per million tokens; Terra 1.25/2.5.",
+        "Web search 10 USD per thousand calls plus content tokens.",
+        "Container 20-minute session rates: 1GB 0.03,4GB 0.12,16GB 0.48,64GB 1.92 USD.",
+        "File search storage 0.10 USD/GB-day after allowance and calls 2.50 USD/thousand.",
+        "Batch/Flex half Standard; Fast twice Standard; no such discount assumed in primary study."
+      ],
+      "limits": [
+        "Prices do not cover all local infrastructure or enterprise operations."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-LATEST",
+      "title": "Using GPT-6",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "kind": "official_documentation",
+      "locator": "Model choices; Pro mode",
+      "web_ref": "turn1view0",
+      "claims": [
+        "Names the GPT-6 model family and discusses context, tools and quality-cost evaluation."
+      ],
+      "limits": [
+        "Some legacy explanatory text remains; reasoning-mode guide explicitly confirms GPT-6 Pro support."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-WORK",
+      "title": "Managing usage with GPT-6 Astra in Work and Codex",
+      "url": "https://help.openai.com/en/articles/20001516-managing-usage-with-gpt-6-astra-in-work-and-codex",
+      "kind": "official_documentation",
+      "locator": "Allowance; Chat/Work distinction",
+      "web_ref": "turn2view2",
+      "claims": [
+        "GPT-6 Pro in Chat is Astra-powered. Chat, Work/Codex and API billing/limits are distinct.",
+        "API usage is separately billed. Subscription availability does not establish unlimited API capacity."
+      ],
+      "limits": [
+        "Actual subscription allowances were not inspected."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-TERRA-RELEASE",
+      "title": "Introducing GPT-6.1 Terra",
+      "url": "https://openai.com/index/introducing-gpt-6-1-terra/",
+      "kind": "provider_reported_evaluation",
+      "locator": "Visual reasoning and coding evaluations",
+      "web_ref": "turn12view1",
+      "claims": [
+        "Describes efficient visual reasoning/computer use; recommends Astra/Sol for the most complex coding.",
+        "Reported maximum-effort Terminal-Bench 4.0 result is 50.3%."
+      ],
+      "limits": [
+        "This benchmark score is not a mechanism-design or customer-acceptance probability."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "OAI-ASTRA-RELEASE",
+      "title": "GPT-6 Astra: A new generation of intelligence",
+      "url": "https://openai.com/index/gpt-6-astra/",
+      "kind": "provider_reported_evaluation",
+      "locator": "Science, coding and computer use",
+      "web_ref": "turn12view0",
+      "claims": [
+        "Reports demanding reasoning, software and scientific benchmark capabilities."
+      ],
+      "limits": [
+        "No reported benchmark supplies matched commercial mechanism-design acceptance or demand."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "RAND-RATES",
+      "title": "RAND GSA Federal Supply Schedule price list",
+      "url": "https://www.gsaadvantage.gov/ref_text/47QRAA24D008Z/110BBS.3WQO6G_47QRAA24D008Z_47QRAA24D008ZCPA19672FNL.PDF",
+      "kind": "observed_service_rate",
+      "document_date": "2025-10-15",
+      "valid_contract_period": [
+        "2024-06-04",
+        "2029-06-03"
+      ],
+      "locator": "Printed pp.5-7; role descriptions pp.10-11",
+      "web_ref": "turn6view0",
+      "claims": [
+        "USD hourly government net rates including 0.75% IFF, US domestic.",
+        "Economics policy researcher level3 334.18; technical/quantitative research analyst264.95; research analyst205.07; IS project management142.09.",
+        "Payment terms net30 or negotiated."
+      ],
+      "limits": [
+        "Service rates, not project quotes or verified human-only productivity.",
+        "Government contract eligibility and responsibilities differ from a startup purchase."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "ZFED-RATES",
+      "title": "Z, Inc. GSA MAS price list modification PO-0018",
+      "url": "https://www.zfederal.com/wp-content/uploads/2024/10/Z-INC-GSA-MAS-Pricelist-Mod-18.pdf",
+      "kind": "observed_service_rate",
+      "document_date": "2024-05-30",
+      "rate_period": [
+        "2026-07-25",
+        "2027-07-24"
+      ],
+      "locator": "Printed pp.5-6; senior software role p.16",
+      "web_ref": "turn6view1",
+      "claims": [
+        "USD hourly government net rates including IFF, US domestic.",
+        "2026-27 contractor-facility senior software engineer213.72; project manager200.09.",
+        "Senior software scope includes analysis, design, technical solutions and integration/testing."
+      ],
+      "limits": [
+        "No matched mechanism-project effort observation; no statement that staff avoid AI."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "AMD-LLM",
+      "title": "An Interpretable Automated Mechanism Design Framework with Large Language Models",
+      "authors": [
+        "Jiayuan Liu",
+        "Mingyu Guo",
+        "Vincent Conitzer"
+      ],
+      "url": "https://arxiv.org/html/2502.12203v1",
+      "publication_date": "2025-02-16",
+      "kind": "external_reported_finding",
+      "locator": "Sections3-6, appendixA.3",
+      "web_ref": "turn9view1",
+      "claims": [
+        "Mechanism-code search with problem-specific correction provides a direct technical precedent.",
+        "Reported known-theory recovery and distribution-overfitting require strong no-sharing baselines and fresh tests."
+      ],
+      "limits": [
+        "Specialized supplied fixes are part of the system. No Astra task success, commercial demand or complete enterprise costs measured."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SKILLSBENCH",
+      "title": "SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks",
+      "authors": [
+        "Xiangyi Li et al."
+      ],
+      "url": "https://arxiv.org/abs/2602.12670v4",
+      "publication_date": "2026-06-14",
+      "kind": "external_reported_finding",
+      "locator": "v4 abstract",
+      "web_ref": "turn14view0",
+      "claims": [
+        "87 tasks,18 model-harness configurations; curated skills average pass33.9% to50.5%, gain16.6 percentage points.",
+        "Focused packages outperform larger bundles in this benchmark."
+      ],
+      "limits": [
+        "Curated skill effect is not self-invention or Astra mechanism-work evidence."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SWE-SKILLS",
+      "title": "SWE-Skills-Bench: Do Agent Skills Actually Help in Real-World Software Engineering?",
+      "authors": [
+        "Tingxu Han et al."
+      ],
+      "url": "https://arxiv.org/abs/2603.15401v1",
+      "publication_date": "2026-03-16",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn14view1",
+      "claims": [
+        "39 of49 skills yield no pass-rate improvement; reported average gain1.2%.",
+        "Some skills increase token use by451% without improving pass rates; version mismatch can harm."
+      ],
+      "limits": [
+        "Supports redundant/harmful-transfer scenarios, not a universal expected gain."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SKILLLENS",
+      "title": "From Raw Experience to Skill Consumption: A Systematic Study of Model-Generated Agent Skills",
+      "authors": [
+        "Zisu Huang et al."
+      ],
+      "url": "https://arxiv.org/abs/2605.23899v1",
+      "publication_date": "2026-05-22",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn14view2",
+      "claims": [
+        "Across five agentic domains, average benefit coexists with negative transfer; extractor and consumer strengths differ."
+      ],
+      "limits": [
+        "No justified invariant benefit across models, tasks or skill formats."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "JUDGE-CORRELATION",
+      "title": "Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM Evaluation Panels",
+      "authors": [
+        "Guneet Kohli"
+      ],
+      "url": "https://arxiv.org/abs/2605.29800v1",
+      "publication_date": "2026-05-28",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn8view1",
+      "claims": [
+        "Nine frontier judges from seven families supplied roughly two independent votes in the reported NLI evaluation.",
+        "Common mistakes materially reduced the independent-vote benefit."
+      ],
+      "limits": [
+        "Do not transfer its numerical correlation to mechanism correctness; use it to motivate broad common-cause stress."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SKILL-CONFLICT",
+      "title": "One Skill Too Many: How Co-Installed Skills Conflict in Coding Agents",
+      "authors": [
+        "Chaoliang Yan et al."
+      ],
+      "url": "https://arxiv.org/abs/2610.11647v2",
+      "publication_date": "2026-10-13",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn14view3",
+      "claims": [
+        "Co-installed similar skills can displace behavior and lose exclusive functions without lowering task completion."
+      ],
+      "limits": [
+        "Access/discovery does not imply safe simultaneous use; scope and policy compatibility require separate evaluation."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "VOYAGER",
+      "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+      "authors": [
+        "Guanzhi Wang et al."
+      ],
+      "url": "https://arxiv.org/abs/2305.16291v2",
+      "publication_date": "2023-10-19",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn8view2",
+      "claims": [
+        "An executable skill library and feedback loop supports transfer to new Minecraft tasks."
+      ],
+      "limits": [
+        "Minecraft evidence supports architecture plausibility only, not commercial or frontier-agent calibration."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "ALPHAEVOLVE",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "authors": [
+        "Alexander Novikov et al."
+      ],
+      "url": "https://arxiv.org/abs/2506.13131v1",
+      "publication_date": "2025-06-16",
+      "kind": "external_reported_finding",
+      "locator": "Abstract",
+      "web_ref": "turn8view3",
+      "claims": [
+        "Evaluator-guided code evolution produced reported scientific and infrastructure improvements."
+      ],
+      "limits": [
+        "Different models, resources and problems; no economic success probability is transferred."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "PROGRAM-SYNTHESIS",
+      "title": "Automating Mechanism Design with Program Synthesis",
+      "authors": [
+        "Sai Kiran Narayanaswami",
+        "Swarat Chaudhuri",
+        "Moshe Vardi",
+        "Peter Stone"
+      ],
+      "url": "https://ala2022.github.io/papers/ALA2022_paper_30.pdf",
+      "publication_date": "2022-05",
+      "kind": "external_reported_finding",
+      "locator": "Abstract and formulation",
+      "web_ref": "turn9view2",
+      "claims": [
+        "Programmatic mechanism synthesis with user-defined behavioral assumptions was evaluated in two domains."
+      ],
+      "limits": [
+        "Finite model assumptions bound correctness and strategic claims."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SHARDSTORE",
+      "title": "Using lightweight formal methods to validate a key-value storage node in Amazon S3",
+      "authors": [
+        "James Bornholt",
+        "Rajeev Joshi",
+        "Vytautas Astrauskas",
+        "Brendan Cully",
+        "Bernhard Kragl",
+        "Seth Markle",
+        "Kyle Sauri",
+        "Drew Schleit",
+        "Grant Slatton",
+        "Serdar Tasiran",
+        "Jacob Van Geffen",
+        "Andrew Warfield"
+      ],
+      "url": "https://www.amazon.science/publications/using-lightweight-formal-methods-to-validate-a-key-value-storage-node-in-amazon-s3",
+      "publication_date": "2021",
+      "kind": "external_reported_finding",
+      "locator": "Author abstract and publication metadata",
+      "web_ref": "turn20view1",
+      "claims": [
+        "The authors report lightweight formal-methods validation of an evolving production storage node using executable reference models and checks matched to different properties."
+      ],
+      "limits": [
+        "Primary technical precedent for a deferred venture; not evidence of fully automated delivery, matched project price or Astra task success."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "COMPOSITIONAL-SYNTHESIS",
+      "title": "Compositional Synthesis of Modular Systems (Full Version)",
+      "authors": [
+        "Bernd Finkbeiner",
+        "Noemi Passing"
+      ],
+      "url": "https://arxiv.org/abs/2106.14783v2",
+      "publication_date": "2022-08-12",
+      "kind": "external_reported_finding",
+      "locator": "Abstract and version history",
+      "web_ref": "turn19view1",
+      "claims": [
+        "Per-process implementations and interface certificates enable separate requirements in a compositional synthesis method.",
+        "Reported performance advantage depends on reasonably small certificates."
+      ],
+      "limits": [
+        "Existing method belongs in the competent Beta reference; does not calibrate customer demand, frontier success or transfer economics."
+      ],
+      "retrieved_on": "2026-10-26"
+    },
+    {
+      "id": "SPDZ",
+      "title": "Multiparty Computation from Somewhat Homomorphic Encryption",
+      "authors": [
+        "I. Damgard",
+        "V. Pastro",
+        "N. P. Smart",
+        "S. Zakarias"
+      ],
+      "url": "https://eprint.iacr.org/2011/535",
+      "publication_date": "2011-10-01",
+      "last_revision": "2012-11-06",
+      "kind": "external_reported_finding",
+      "locator": "Abstract and revision metadata",
+      "web_ref": "turn19view2",
+      "claims": [
+        "The proposed multiparty-computation protocol separates preprocessing independent of inputs/function from online execution under a specified adversary model."
+      ],
+      "limits": [
+        "Motivates only a deferred public/synthetic protocol-compiler opportunity.",
+        "Historical timings are not current cost calibration; identity or synthetic functional checks do not establish cryptographic security."
+      ],
+      "retrieved_on": "2026-10-26"
+    }
+  ],
+  "prohibited_inferences": [
+    "A benchmark pass rate equals customer acceptance.",
+    "A missing skill file means a recipient lacks the underlying knowledge.",
+    "Two same-model judgments are independent evidence.",
+    "An on-chain commitment establishes usefulness or evidence truth.",
+    "Published hourly rates establish project hours, willingness to pay or human-only work.",
+    "Simulation collections are realized receipts.",
+    "More graph entries, agents or descendants establish independent invention or compounding.",
+    "A subscription price supports unbounded API production.",
+    "Positive modeled margin relative to a human-service price establishes Alpha.",
+    "A correct or admitted artifact automatically creates positive complete-cost recipient benefit.",
+    "A prior Alpha assessment remains current after its Beta version changes.",
+    "Known-method local operation counts establish frontier model invention or dollar delivery cost."
+  ],
+  "conceptual_definitions": {
+    "beta": "Versioned competent frontier reasoning, tools, standard methods, correction and ordinary accumulated recipient experience, including already held equivalent capabilities.",
+    "alpha": "Supported positive complete-cost increment over versioned Beta and current recipient capabilities in a declared scope; assessment status must distinguish measured, modeled, unresolved and nonpositive.",
+    "commercial_reference": "Matched human-delivered service; Beta is an internal causal control, not an external AI-market price benchmark.",
+    "moving_beta": "A baseline version change invalidates the freshness of an earlier Alpha assessment until reassessment; correctness, permissions and current economic increment remain distinct.",
+    "hypotheses": [
+      "Hbeta: ordinary modeled human-service margin",
+      "Halpha: candidate or bundle increment above strong Beta",
+      "Hshare: network sharing increment above isolated retention",
+      "Hdurability: persistence or erosion under moving Beta"
+    ],
+    "conclusions_supplied_by_register": false
+  },
+  "paid_job_learning_revision": {
+    "historical_job_cost_recharged_to_retention": false,
+    "retention_workload_source": "workload_catalog.json RETENTION (explicit assumptions)",
+    "optional_rd_source": "workload_catalog.json CONSTRUCTION",
+    "original_protocol_archive": "evidence/development/protocol-v1",
+    "fresh_seed_ranges": "760001 training; 770001 confirmation; 780001 sensitivity"
+  }
+}

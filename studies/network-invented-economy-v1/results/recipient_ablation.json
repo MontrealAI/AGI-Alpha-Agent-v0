@@ -1,0 +1,3093 @@
+{
+  "actual_activity": {
+    "collections_usd": 0,
+    "customer_jobs": 0,
+    "live_ens_enforcement": false,
+    "live_role_model_calls": 0
+  },
+  "evidence_kind": "deterministic-modeled-cost-comparison",
+  "frozen_recipient_probes": [
+    {
+      "beta": {
+        "constraints": {
+          "cash": true,
+          "deadline": true,
+          "input_quota": true,
+          "output_quota": true
+        },
+        "cost_usd": 3632.6375,
+        "feasible": true,
+        "input_m": 180.57,
+        "output_m": 26.155,
+        "serial_latency_weeks": 4.9,
+        "work": {
+          "astra_cache": 32.26,
+          "astra_input": 88.56,
+          "astra_output": 17.715000000000003,
+          "latency": 4.9,
+          "terra_cache": 13.55,
+          "terra_input": 46.2,
+          "terra_output": 8.440000000000001,
+          "tools": 1507.0
+        }
+      },
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_hash": "c549bd3d5176c04226162ff1af903153ca8a34a3c0104882f00b0078a08849e2",
+      "comparator_capability_set_hash": "a4fab8406dc92a6618ed0b8fe9d64b88f75a46f48213b478c77897675d695c2f",
+      "eligibility_rejections": [],
+      "expected_delivery_saving_usd": 750.083,
+      "interpretation": "Required modeled complete mission costs; no cash spent, sale, correctness trial or measured frontier outcome.",
+      "lost_feasibility_probability": 0.0,
+      "mission": "frozen-bounded-mechanism",
+      "newly_feasible_probability": 0.0,
+      "ordinary_component_routes": {
+        "0": "competent-reconstruction",
+        "1": "competent-reconstruction",
+        "2": "competent-reconstruction"
+      },
+      "preserved_equivalents": [],
+      "recipient": "competent-frontier-reconstructor",
+      "schema": "beyond-beta.recipient-ablation.v2",
+      "selected_components": [
+        0,
+        1,
+        2
+      ],
+      "shared_conditional_routes": {
+        "failed": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 4545.3095,
+          "feasible": true,
+          "input_m": 229.05,
+          "output_m": 33.231,
+          "probability": 0.2,
+          "serial_latency_weeks": 6.358,
+          "work": {
+            "astra_cache": 40.62,
+            "astra_input": 112.03999999999999,
+            "astra_output": 22.411,
+            "latency": 6.3580000000000005,
+            "terra_cache": 17.79,
+            "terra_input": 58.6,
+            "terra_output": 10.820000000000002,
+            "tools": 1855.4
+          }
+        },
+        "harmful": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 5312.4095,
+          "feasible": true,
+          "input_m": 263.05,
+          "output_m": 38.031,
+          "probability": 0.028,
+          "serial_latency_weeks": 7.258,
+          "work": {
+            "astra_cache": 46.62,
+            "astra_input": 130.04,
+            "astra_output": 26.011000000000003,
+            "latency": 7.258000000000001,
+            "terra_cache": 19.79,
+            "terra_input": 66.6,
+            "terra_output": 12.020000000000001,
+            "tools": 2195.4
+          }
+        },
+        "success": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 2363.6595,
+          "feasible": true,
+          "input_m": 118.05,
+          "output_m": 16.731,
+          "probability": 0.772,
+          "serial_latency_weeks": 3.508,
+          "work": {
+            "astra_cache": 20.619999999999997,
+            "astra_input": 52.03999999999999,
+            "astra_output": 10.411000000000001,
+            "latency": 3.508,
+            "terra_cache": 9.79,
+            "terra_input": 35.6,
+            "terra_output": 6.32,
+            "tools": 1095.4
+          }
+        }
+      },
+      "shared_expected_cost_usd": 2882.5545,
+      "shared_feasible_probability": 1.0,
+      "source_kind": "simulation",
+      "state_hash": "c826aeea359467a4aa673c68565a44f41c0790720b556b88e8e186d3ff2b7067",
+      "transfer_cost_breakdown": {
+        "failed_recovery_work": {
+          "astra_cache": 2,
+          "astra_input": 6,
+          "astra_output": 1.2,
+          "latency": 0.45,
+          "terra_cache": 1,
+          "terra_input": 3,
+          "terra_output": 0.5,
+          "tools": 90
+        },
+        "harmful_additional_validation_work": {
+          "astra_cache": 6,
+          "astra_input": 18,
+          "astra_output": 3.6,
+          "latency": 0.9,
+          "terra_cache": 2,
+          "terra_input": 8,
+          "terra_output": 1.2,
+          "tools": 340
+        },
+        "integration_work": {
+          "astra_cache": 1.7999999999999998,
+          "astra_input": 3.5999999999999996,
+          "astra_output": 0.72,
+          "latency": 0.36,
+          "terra_cache": 1.5,
+          "terra_input": 4.5,
+          "terra_output": 0.8999999999999999,
+          "tools": 66.0
+        },
+        "receiving_validation_work": {
+          "astra_cache": 0.6,
+          "astra_input": 2.0,
+          "astra_output": 0.4,
+          "latency": 0.12,
+          "terra_cache": 0.2,
+          "terra_input": 0.5,
+          "terra_output": 0.1,
+          "tools": 45.0
+        },
+        "residual_work": {
+          "astra_cache": 3.96,
+          "astra_input": 11.879999999999999,
+          "astra_output": 2.3760000000000003,
+          "latency": 0.528,
+          "terra_cache": 1.54,
+          "terra_input": 4.4,
+          "terra_output": 0.8800000000000001,
+          "tools": 147.4
+        }
+      }
+    },
+    {
+      "beta": {
+        "constraints": {
+          "cash": true,
+          "deadline": true,
+          "input_quota": true,
+          "output_quota": true
+        },
+        "cost_usd": 2853.2975,
+        "feasible": true,
+        "input_m": 140.97,
+        "output_m": 20.235,
+        "serial_latency_weeks": 3.94,
+        "work": {
+          "astra_cache": 25.060000000000002,
+          "astra_input": 66.96,
+          "astra_output": 13.395,
+          "latency": 3.94,
+          "terra_cache": 10.75,
+          "terra_input": 38.2,
+          "terra_output": 6.84,
+          "tools": 1239.0
+        }
+      },
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_hash": "c549bd3d5176c04226162ff1af903153ca8a34a3c0104882f00b0078a08849e2",
+      "comparator_capability_set_hash": "707e61dfa7726a4bcc0045e294f2362b67b3cef6837ecee95fd7ab1a6485dc07",
+      "eligibility_rejections": [],
+      "expected_delivery_saving_usd": 148.43252,
+      "interpretation": "Required modeled complete mission costs; no cash spent, sale, correctness trial or measured frontier outcome.",
+      "lost_feasibility_probability": 0.0,
+      "mission": "frozen-bounded-mechanism",
+      "newly_feasible_probability": 0.0,
+      "ordinary_component_routes": {
+        "0": "competent-reconstruction",
+        "1": "competent-reconstruction",
+        "2": "competent-reconstruction"
+      },
+      "preserved_equivalents": [],
+      "recipient": "ordinary-experienced",
+      "schema": "beyond-beta.recipient-ablation.v2",
+      "selected_components": [
+        0,
+        1,
+        2
+      ],
+      "shared_conditional_routes": {
+        "failed": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 3765.9695,
+          "feasible": true,
+          "input_m": 189.45,
+          "output_m": 27.311,
+          "probability": 0.2,
+          "serial_latency_weeks": 5.398,
+          "work": {
+            "astra_cache": 33.42,
+            "astra_input": 90.44,
+            "astra_output": 18.090999999999998,
+            "latency": 5.398000000000001,
+            "terra_cache": 14.99,
+            "terra_input": 50.6,
+            "terra_output": 9.22,
+            "tools": 1587.4
+          }
+        },
+        "harmful": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 4533.0695,
+          "feasible": true,
+          "input_m": 223.45,
+          "output_m": 32.111,
+          "probability": 0.028,
+          "serial_latency_weeks": 6.298,
+          "work": {
+            "astra_cache": 39.42,
+            "astra_input": 108.44,
+            "astra_output": 21.691,
+            "latency": 6.298000000000001,
+            "terra_cache": 16.990000000000002,
+            "terra_input": 58.6,
+            "terra_output": 10.42,
+            "tools": 1927.4
+          }
+        },
+        "success": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 2363.6595,
+          "feasible": true,
+          "input_m": 118.05,
+          "output_m": 16.731,
+          "probability": 0.772,
+          "serial_latency_weeks": 3.508,
+          "work": {
+            "astra_cache": 20.619999999999997,
+            "astra_input": 52.03999999999999,
+            "astra_output": 10.411000000000001,
+            "latency": 3.508,
+            "terra_cache": 9.79,
+            "terra_input": 35.6,
+            "terra_output": 6.32,
+            "tools": 1095.4
+          }
+        }
+      },
+      "shared_expected_cost_usd": 2704.86498,
+      "shared_feasible_probability": 1.0,
+      "source_kind": "simulation",
+      "state_hash": "557258100977028ee0312e75c65fae9589530939f94738561fdf7b23645e4493",
+      "transfer_cost_breakdown": {
+        "failed_recovery_work": {
+          "astra_cache": 2,
+          "astra_input": 6,
+          "astra_output": 1.2,
+          "latency": 0.45,
+          "terra_cache": 1,
+          "terra_input": 3,
+          "terra_output": 0.5,
+          "tools": 90
+        },
+        "harmful_additional_validation_work": {
+          "astra_cache": 6,
+          "astra_input": 18,
+          "astra_output": 3.6,
+          "latency": 0.9,
+          "terra_cache": 2,
+          "terra_input": 8,
+          "terra_output": 1.2,
+          "tools": 340
+        },
+        "integration_work": {
+          "astra_cache": 1.7999999999999998,
+          "astra_input": 3.5999999999999996,
+          "astra_output": 0.72,
+          "latency": 0.36,
+          "terra_cache": 1.5,
+          "terra_input": 4.5,
+          "terra_output": 0.8999999999999999,
+          "tools": 66.0
+        },
+        "receiving_validation_work": {
+          "astra_cache": 0.6,
+          "astra_input": 2.0,
+          "astra_output": 0.4,
+          "latency": 0.12,
+          "terra_cache": 0.2,
+          "terra_input": 0.5,
+          "terra_output": 0.1,
+          "tools": 45.0
+        },
+        "residual_work": {
+          "astra_cache": 3.96,
+          "astra_input": 11.879999999999999,
+          "astra_output": 2.3760000000000003,
+          "latency": 0.528,
+          "terra_cache": 1.54,
+          "terra_input": 4.4,
+          "terra_output": 0.8800000000000001,
+          "tools": 147.4
+        }
+      }
+    },
+    {
+      "beta": {
+        "constraints": {
+          "cash": true,
+          "deadline": true,
+          "input_quota": true,
+          "output_quota": true
+        },
+        "cost_usd": 2327.243,
+        "feasible": true,
+        "input_m": 114.24,
+        "output_m": 16.239,
+        "serial_latency_weeks": 3.292,
+        "work": {
+          "astra_cache": 20.2,
+          "astra_input": 52.379999999999995,
+          "astra_output": 10.479000000000001,
+          "latency": 3.292,
+          "terra_cache": 8.86,
+          "terra_input": 32.8,
+          "terra_output": 5.760000000000001,
+          "tools": 1058.1
+        }
+      },
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_hash": "c549bd3d5176c04226162ff1af903153ca8a34a3c0104882f00b0078a08849e2",
+      "comparator_capability_set_hash": "7776d979d397355b173d035ade01ddbd5e1ae45cdf3361f43e009b68210141c4",
+      "eligibility_rejections": [],
+      "expected_delivery_saving_usd": 0.0,
+      "interpretation": "Required modeled complete mission costs; no cash spent, sale, correctness trial or measured frontier outcome.",
+      "lost_feasibility_probability": 0.0,
+      "mission": "frozen-bounded-mechanism",
+      "newly_feasible_probability": 0.0,
+      "ordinary_component_routes": {
+        "0": "competent-reconstruction",
+        "1": "competent-reconstruction",
+        "2": "competent-reconstruction"
+      },
+      "preserved_equivalents": [],
+      "recipient": "ordinary-specialist",
+      "schema": "beyond-beta.recipient-ablation.v2",
+      "selected_components": [],
+      "shared_conditional_routes": {
+        "ordinary": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 2327.243,
+          "feasible": true,
+          "input_m": 114.24,
+          "output_m": 16.239,
+          "probability": 1.0,
+          "serial_latency_weeks": 3.292,
+          "work": {
+            "astra_cache": 20.2,
+            "astra_input": 52.379999999999995,
+            "astra_output": 10.479000000000001,
+            "latency": 3.292,
+            "terra_cache": 8.86,
+            "terra_input": 32.8,
+            "terra_output": 5.760000000000001,
+            "tools": 1058.1
+          }
+        }
+      },
+      "shared_expected_cost_usd": 2327.243,
+      "shared_feasible_probability": 1.0,
+      "source_kind": "simulation",
+      "state_hash": "ed196deb0709101768a43a952cf3eae74330089c4be45ec5cdc28ce4b596def7",
+      "transfer_cost_breakdown": {}
+    },
+    {
+      "beta": {
+        "constraints": {
+          "cash": true,
+          "deadline": true,
+          "input_quota": true,
+          "output_quota": true
+        },
+        "cost_usd": 3147.8975,
+        "feasible": true,
+        "input_m": 154.47,
+        "output_m": 22.195,
+        "serial_latency_weeks": 4.27,
+        "work": {
+          "astra_cache": 27.759999999999998,
+          "astra_input": 74.16,
+          "astra_output": 14.835,
+          "latency": 4.27,
+          "terra_cache": 11.75,
+          "terra_input": 40.8,
+          "terra_output": 7.36,
+          "tools": 1363.0
+        }
+      },
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_hash": "c549bd3d5176c04226162ff1af903153ca8a34a3c0104882f00b0078a08849e2",
+      "comparator_capability_set_hash": "f5cf322b0b694d8d12cb4d23689a47a47751f3a850843a5d82216374ec577480",
+      "eligibility_rejections": [],
+      "expected_delivery_saving_usd": 505.7758,
+      "interpretation": "Required modeled complete mission costs; no cash spent, sale, correctness trial or measured frontier outcome.",
+      "lost_feasibility_probability": 0.0,
+      "mission": "frozen-bounded-mechanism",
+      "newly_feasible_probability": 0.0,
+      "ordinary_component_routes": {
+        "0": "existing-equivalent",
+        "1": "competent-reconstruction",
+        "2": "competent-reconstruction"
+      },
+      "preserved_equivalents": [
+        0
+      ],
+      "recipient": "partial-equivalent",
+      "schema": "beyond-beta.recipient-ablation.v2",
+      "selected_components": [
+        1,
+        2
+      ],
+      "shared_conditional_routes": {
+        "failed": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 3889.0775,
+          "feasible": true,
+          "input_m": 192.77,
+          "output_m": 27.763,
+          "probability": 0.2,
+          "serial_latency_weeks": 5.454,
+          "work": {
+            "astra_cache": 34.42,
+            "astra_input": 92.92,
+            "astra_output": 18.587,
+            "latency": 5.454,
+            "terra_cache": 15.05,
+            "terra_input": 50.379999999999995,
+            "terra_output": 9.176,
+            "tools": 1654.2
+          }
+        },
+        "harmful": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 4656.1775,
+          "feasible": true,
+          "input_m": 226.77,
+          "output_m": 32.563,
+          "probability": 0.028,
+          "serial_latency_weeks": 6.354,
+          "work": {
+            "astra_cache": 40.42,
+            "astra_input": 110.92,
+            "astra_output": 22.187,
+            "latency": 6.354,
+            "terra_cache": 17.05,
+            "terra_input": 58.379999999999995,
+            "terra_output": 10.376,
+            "tools": 1994.2
+          }
+        },
+        "success": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 2246.0275,
+          "feasible": true,
+          "input_m": 110.77,
+          "output_m": 15.663,
+          "probability": 0.772,
+          "serial_latency_weeks": 3.304,
+          "work": {
+            "astra_cache": 19.42,
+            "astra_input": 48.919999999999995,
+            "astra_output": 9.787,
+            "latency": 3.304,
+            "terra_cache": 9.05,
+            "terra_input": 33.38,
+            "terra_output": 5.876000000000001,
+            "tools": 1054.2
+          }
+        }
+      },
+      "shared_expected_cost_usd": 2642.1217,
+      "shared_feasible_probability": 1.0,
+      "source_kind": "simulation",
+      "state_hash": "7cd3b6a298481b602fb550a8a92fe5ec59d2326f85814796692a6c68f172eac3",
+      "transfer_cost_breakdown": {
+        "failed_recovery_work": {
+          "astra_cache": 2,
+          "astra_input": 6,
+          "astra_output": 1.2,
+          "latency": 0.45,
+          "terra_cache": 1,
+          "terra_input": 3,
+          "terra_output": 0.5,
+          "tools": 90
+        },
+        "harmful_additional_validation_work": {
+          "astra_cache": 6,
+          "astra_input": 18,
+          "astra_output": 3.6,
+          "latency": 0.9,
+          "terra_cache": 2,
+          "terra_input": 8,
+          "terra_output": 1.2,
+          "tools": 340
+        },
+        "integration_work": {
+          "astra_cache": 1.2,
+          "astra_input": 2.4,
+          "astra_output": 0.48,
+          "latency": 0.24,
+          "terra_cache": 1.0,
+          "terra_input": 3.0,
+          "terra_output": 0.6,
+          "tools": 44.0
+        },
+        "receiving_validation_work": {
+          "astra_cache": 0.6,
+          "astra_input": 2.0,
+          "astra_output": 0.4,
+          "latency": 0.12,
+          "terra_cache": 0.2,
+          "terra_input": 0.5,
+          "terra_output": 0.1,
+          "tools": 45.0
+        },
+        "residual_work": {
+          "astra_cache": 2.8600000000000003,
+          "astra_input": 8.36,
+          "astra_output": 1.6720000000000002,
+          "latency": 0.374,
+          "terra_cache": 1.1,
+          "terra_input": 3.08,
+          "terra_output": 0.6160000000000001,
+          "tools": 112.2
+        }
+      }
+    },
+    {
+      "beta": {
+        "constraints": {
+          "cash": true,
+          "deadline": true,
+          "input_quota": true,
+          "output_quota": true
+        },
+        "cost_usd": 1879.1225,
+        "feasible": true,
+        "input_m": 91.47,
+        "output_m": 12.835,
+        "serial_latency_weeks": 2.74,
+        "work": {
+          "astra_cache": 16.06,
+          "astra_input": 39.959999999999994,
+          "astra_output": 7.995000000000001,
+          "latency": 2.74,
+          "terra_cache": 7.25,
+          "terra_input": 28.2,
+          "terra_output": 4.840000000000001,
+          "tools": 904.0
+        }
+      },
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_hash": "c549bd3d5176c04226162ff1af903153ca8a34a3c0104882f00b0078a08849e2",
+      "comparator_capability_set_hash": "b179c4abcafa792205bf397ddf23bf59e596f4fede88964db32668eacfd79b78",
+      "eligibility_rejections": [],
+      "expected_delivery_saving_usd": 0.0,
+      "interpretation": "Required modeled complete mission costs; no cash spent, sale, correctness trial or measured frontier outcome.",
+      "lost_feasibility_probability": 0.0,
+      "mission": "frozen-bounded-mechanism",
+      "newly_feasible_probability": 0.0,
+      "ordinary_component_routes": {
+        "0": "existing-equivalent",
+        "1": "existing-equivalent",
+        "2": "existing-equivalent"
+      },
+      "preserved_equivalents": [
+        0,
+        1,
+        2
+      ],
+      "recipient": "already-equivalent",
+      "schema": "beyond-beta.recipient-ablation.v2",
+      "selected_components": [],
+      "shared_conditional_routes": {
+        "ordinary": {
+          "constraints": {
+            "cash": true,
+            "deadline": true,
+            "input_quota": true,
+            "output_quota": true
+          },
+          "cost_usd": 1879.1225,
+          "feasible": true,
+          "input_m": 91.47,
+          "output_m": 12.835,
+          "probability": 1.0,
+          "serial_latency_weeks": 2.74,
+          "work": {
+            "astra_cache": 16.06,
+            "astra_input": 39.959999999999994,
+            "astra_output": 7.995000000000001,
+            "latency": 2.74,
+            "terra_cache": 7.25,
+            "terra_input": 28.2,
+            "terra_output": 4.840000000000001,
+            "tools": 904.0
+          }
+        }
+      },
+      "shared_expected_cost_usd": 1879.1225,
+      "shared_feasible_probability": 1.0,
+      "source_kind": "simulation",
+      "state_hash": "9c49b26d0dde19233d474258d199118b07c00b0c303b1782802e20502ca0e23b",
+      "transfer_cost_breakdown": {}
+    }
+  ],
+  "interpretation": "These are assumed workload/resource economics. Exact witness operation counts are never dollar-calibrated here.",
+  "lifecycle": {
+    "additional_upfront_cash_required": 0,
+    "all_modeled_delivery_routes_feasible": true,
+    "assessment": {
+      "beta_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "comparator_capability_set_hash": "2e611de6f8ced037b1b5a5470fff0b45c568d4c1848afa28b4ee26fa4e1aa4d0",
+      "costs": {
+        "acquisition": 375.0,
+        "construction": 423.535,
+        "distribution": 0.0,
+        "integration": 0.0,
+        "maintenance": 8645.859000000004,
+        "migration": 0.0,
+        "operating": 0.0,
+        "risk": 0.0,
+        "validation": 51.30499999999999
+      },
+      "dependency_hashes": [
+        "dd12fb2f9fba61ba6e83ef95c0edbf6393cebd3e5a328e73d194c769c04721a7",
+        "5f1a650a8dd4ea04073a9f8388a60337c17891b3a48d3e6d271c004352d75370",
+        "86bfcb787ed9db08943896d81b0ba611e021b2e977fe2711b21d917507b86f5d"
+      ],
+      "evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "paired_gains": [
+        502.79157628425,
+        499.27712756849996,
+        495.76267884600003,
+        492.2482301302501,
+        488.7337814145,
+        485.21933269875,
+        481.70488397625,
+        478.1904352605,
+        474.67598654474995,
+        471.161537829,
+        467.64708910650006,
+        464.13264039075,
+        460.61819167500005,
+        457.10374295925004,
+        453.5892942435,
+        450.074845521,
+        446.56039680525,
+        443.04594808950003,
+        439.53149937374997,
+        436.01705065125003,
+        432.5026019355,
+        428.98815321975,
+        425.473704504,
+        421.95925578149996,
+        418.44480706575,
+        414.93035835,
+        411.41590963425,
+        407.9014609185,
+        404.387012196,
+        400.87256348025005,
+        397.35811476450004,
+        393.84366604875,
+        390.32921732625,
+        386.8147686105,
+        383.30031989475003,
+        379.78587117899997,
+        376.27142245650003,
+        372.75697374075,
+        369.242525025,
+        365.72807630925
+      ],
+      "paired_weights": [],
+      "planned_reuse": 80,
+      "protocol_id": "frozen-recipient-incremental-retention-v2",
+      "redundant": false,
+      "scope": [
+        "bounded-mechanism-required-cost",
+        "declared-beta-path",
+        "joint-bundle"
+      ],
+      "source_kind": "simulation",
+      "uncertainty_margin_per_use": 0.0,
+      "unit": "USD"
+    },
+    "assumptions": {
+      "all_fresh_uses_pay_receiving_costs": true,
+      "campaign_success_probability": 0.9,
+      "functional_fallback_is_assumed": true,
+      "interval_is_not_a_statistical_confidence_interval": true,
+      "no_quality_multiplier": true,
+      "outcomes_are_declared_model_branches": true,
+      "revalidation_reassessment_success_assumed": true,
+      "same_ordinary_models_tools_and_experience": true,
+      "source_job_learning_is_already_in_job_ledger": true
+    },
+    "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+    "beta_complete_delivery_cost": 247245.22519231,
+    "beta_reassessment_cost": 46.1745,
+    "candidate_is_recommended_now": true,
+    "complete_lifecycle_cost": 9495.699,
+    "decision": {
+      "accepted": true,
+      "assessment_hash": "8620d3bc35e433ee9825d356e88793c2a8e0afbafc458804f6166bc266e77107",
+      "beta_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "expected_net": 25245.087103618494,
+      "lower_net": 25245.087103618494,
+      "reason": "positive-lower-net-bound",
+      "source_kind": "simulation",
+      "upper_net": 25245.087103618494
+    },
+    "durable_positive_lifetime_weeks_within_range": 2,
+    "failed_construction_subset": 0,
+    "failed_retention_subset": 0.0,
+    "first_positive_lifetime_weeks": 2,
+    "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+    "ledgers": {
+      "A_job": {
+        "added_again_to_alpha": false,
+        "included_in_enterprise_job_ledger": true,
+        "memo": null,
+        "status": "source-job-amount-not-supplied"
+      },
+      "B_additional_retention": {
+        "receiver_costs_already_in_paired_delivery": true,
+        "total_additional_lifecycle": 9495.699,
+        "upfront": {
+          "acquisition": 375.0,
+          "construction": 423.535,
+          "distribution": 0.0,
+          "integration": 0.0,
+          "maintenance": 0.0,
+          "migration": 0.0,
+          "operating": 0.0,
+          "risk": 0.0,
+          "validation": 51.30499999999999
+        },
+        "upkeep_revalidation_reassessment": 8645.859
+      },
+      "C_optional_new_rd": {
+        "costs": {
+          "acquisition": 0.0,
+          "construction": 0.0,
+          "distribution": 0.0,
+          "integration": 0.0,
+          "maintenance": 0.0,
+          "migration": 0.0,
+          "operating": 0.0,
+          "risk": 0.0,
+          "validation": 0.0
+        },
+        "total": 0.0
+      }
+    },
+    "limitation": "Modeled cost and constraint comparisons, not realized receipts, measured invention, graph authorization or a financing schedule.",
+    "lower_project_net": 25245.08710362,
+    "mean_delivery_saving_per_use": 434.2598263,
+    "planned_reuse": 80,
+    "population": {
+      "already-equivalent": 0.25,
+      "competent-frontier-reconstructor": 0.75
+    },
+    "project_net": 25245.08710362,
+    "prospective_net": 25245.08710362,
+    "protocol_id": "frozen-recipient-incremental-retention-v2",
+    "required_reuses_at_declared_lifetime": 22,
+    "revalidation_cost": 247.6845,
+    "schema": "beyond-beta.recipient-ablation.v2",
+    "shared_complete_delivery_cost": 212504.43908869,
+    "source_kind": "simulation",
+    "upfront_affordable_without_future_receipts": true,
+    "upfront_cost": 849.84,
+    "upkeep_cost": 8352.0,
+    "weekly": [
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 1058.64,
+        "cumulative_delivery_saving": 1005.58315257,
+        "expected_saving_per_use": 502.79157628,
+        "frontier_factor": 0.99653846,
+        "lower_project_net": -53.05684743,
+        "project_net": -53.05684743,
+        "prospective_net": -53.05684743,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 2,
+        "week": 1
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 1267.44,
+        "cumulative_delivery_saving": 2004.13740771,
+        "expected_saving_per_use": 499.27712757,
+        "frontier_factor": 0.99307692,
+        "lower_project_net": 736.69740771,
+        "project_net": 736.69740771,
+        "prospective_net": 736.69740771,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 4,
+        "week": 2
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 1476.24,
+        "cumulative_delivery_saving": 2995.6627654,
+        "expected_saving_per_use": 495.76267885,
+        "frontier_factor": 0.98961538,
+        "lower_project_net": 1519.4227654,
+        "project_net": 1519.4227654,
+        "prospective_net": 1519.4227654,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 6,
+        "week": 3
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 1685.04,
+        "cumulative_delivery_saving": 3980.15922566,
+        "expected_saving_per_use": 492.24823013,
+        "frontier_factor": 0.98615385,
+        "lower_project_net": 2295.11922566,
+        "project_net": 2295.11922566,
+        "prospective_net": 2295.11922566,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 8,
+        "week": 4
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 1893.84,
+        "cumulative_delivery_saving": 4957.62678849,
+        "expected_saving_per_use": 488.73378141,
+        "frontier_factor": 0.98269231,
+        "lower_project_net": 3063.78678849,
+        "project_net": 3063.78678849,
+        "prospective_net": 3063.78678849,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 10,
+        "week": 5
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 2102.64,
+        "cumulative_delivery_saving": 5928.06545388,
+        "expected_saving_per_use": 485.2193327,
+        "frontier_factor": 0.97923077,
+        "lower_project_net": 3825.42545388,
+        "project_net": 3825.42545388,
+        "prospective_net": 3825.42545388,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 12,
+        "week": 6
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 2311.44,
+        "cumulative_delivery_saving": 6891.47522184,
+        "expected_saving_per_use": 481.70488398,
+        "frontier_factor": 0.97576923,
+        "lower_project_net": 4580.03522184,
+        "project_net": 4580.03522184,
+        "prospective_net": 4580.03522184,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 14,
+        "week": 7
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 2520.24,
+        "cumulative_delivery_saving": 7847.85609236,
+        "expected_saving_per_use": 478.19043526,
+        "frontier_factor": 0.97230769,
+        "lower_project_net": 5327.61609236,
+        "project_net": 5327.61609236,
+        "prospective_net": 5327.61609236,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 16,
+        "week": 8
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 2729.04,
+        "cumulative_delivery_saving": 8797.20806545,
+        "expected_saving_per_use": 474.67598654,
+        "frontier_factor": 0.96884615,
+        "lower_project_net": 6068.16806545,
+        "project_net": 6068.16806545,
+        "prospective_net": 6068.16806545,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 18,
+        "week": 9
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 2937.84,
+        "cumulative_delivery_saving": 9739.53114111,
+        "expected_saving_per_use": 471.16153783,
+        "frontier_factor": 0.96538462,
+        "lower_project_net": 6801.69114111,
+        "project_net": 6801.69114111,
+        "prospective_net": 6801.69114111,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 20,
+        "week": 10
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 3146.64,
+        "cumulative_delivery_saving": 10674.82531932,
+        "expected_saving_per_use": 467.64708911,
+        "frontier_factor": 0.96192308,
+        "lower_project_net": 7528.18531932,
+        "project_net": 7528.18531932,
+        "prospective_net": 7528.18531932,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 22,
+        "week": 11
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 3438.0015,
+        "cumulative_delivery_saving": 11603.0906001,
+        "expected_saving_per_use": 464.13264039,
+        "frontier_factor": 0.95846154,
+        "lower_project_net": 8165.0891001,
+        "project_net": 8165.0891001,
+        "prospective_net": 8165.0891001,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 24,
+        "week": 12
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 3646.8015,
+        "cumulative_delivery_saving": 12524.32698345,
+        "expected_saving_per_use": 460.61819168,
+        "frontier_factor": 0.955,
+        "lower_project_net": 8877.52548345,
+        "project_net": 8877.52548345,
+        "prospective_net": 8877.52548345,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 26,
+        "week": 13
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 3855.6015,
+        "cumulative_delivery_saving": 13438.53446937,
+        "expected_saving_per_use": 457.10374296,
+        "frontier_factor": 0.95153846,
+        "lower_project_net": 9582.93296937,
+        "project_net": 9582.93296937,
+        "prospective_net": 9582.93296937,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 28,
+        "week": 14
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 4064.4015,
+        "cumulative_delivery_saving": 14345.71305786,
+        "expected_saving_per_use": 453.58929424,
+        "frontier_factor": 0.94807692,
+        "lower_project_net": 10281.31155786,
+        "project_net": 10281.31155786,
+        "prospective_net": 10281.31155786,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 30,
+        "week": 15
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 4273.2015,
+        "cumulative_delivery_saving": 15245.8627489,
+        "expected_saving_per_use": 450.07484552,
+        "frontier_factor": 0.94461538,
+        "lower_project_net": 10972.6612489,
+        "project_net": 10972.6612489,
+        "prospective_net": 10972.6612489,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 32,
+        "week": 16
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 4482.0015,
+        "cumulative_delivery_saving": 16138.98354251,
+        "expected_saving_per_use": 446.56039681,
+        "frontier_factor": 0.94115385,
+        "lower_project_net": 11656.98204251,
+        "project_net": 11656.98204251,
+        "prospective_net": 11656.98204251,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 34,
+        "week": 17
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 4690.8015,
+        "cumulative_delivery_saving": 17025.07543869,
+        "expected_saving_per_use": 443.04594809,
+        "frontier_factor": 0.93769231,
+        "lower_project_net": 12334.27393869,
+        "project_net": 12334.27393869,
+        "prospective_net": 12334.27393869,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 36,
+        "week": 18
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 4899.6015,
+        "cumulative_delivery_saving": 17904.13843743,
+        "expected_saving_per_use": 439.53149937,
+        "frontier_factor": 0.93423077,
+        "lower_project_net": 13004.53693743,
+        "project_net": 13004.53693743,
+        "prospective_net": 13004.53693743,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 38,
+        "week": 19
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 5108.4015,
+        "cumulative_delivery_saving": 18776.17253874,
+        "expected_saving_per_use": 436.01705065,
+        "frontier_factor": 0.93076923,
+        "lower_project_net": 13667.77103874,
+        "project_net": 13667.77103874,
+        "prospective_net": 13667.77103874,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 40,
+        "week": 20
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 5317.2015,
+        "cumulative_delivery_saving": 19641.17774261,
+        "expected_saving_per_use": 432.50260194,
+        "frontier_factor": 0.92730769,
+        "lower_project_net": 14323.97624261,
+        "project_net": 14323.97624261,
+        "prospective_net": 14323.97624261,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 42,
+        "week": 21
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 5526.0015,
+        "cumulative_delivery_saving": 20499.15404905,
+        "expected_saving_per_use": 428.98815322,
+        "frontier_factor": 0.92384615,
+        "lower_project_net": 14973.15254905,
+        "project_net": 14973.15254905,
+        "prospective_net": 14973.15254905,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 44,
+        "week": 22
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 5734.8015,
+        "cumulative_delivery_saving": 21350.10145806,
+        "expected_saving_per_use": 425.4737045,
+        "frontier_factor": 0.92038462,
+        "lower_project_net": 15615.29995806,
+        "project_net": 15615.29995806,
+        "prospective_net": 15615.29995806,
+        "revalidation_cost_to_date": 82.5615,
+        "uses": 46,
+        "week": 23
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 6026.163,
+        "cumulative_delivery_saving": 22194.01996962,
+        "expected_saving_per_use": 421.95925578,
+        "frontier_factor": 0.91692308,
+        "lower_project_net": 16167.85696962,
+        "project_net": 16167.85696962,
+        "prospective_net": 16167.85696962,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 48,
+        "week": 24
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 6234.963,
+        "cumulative_delivery_saving": 23030.90958375,
+        "expected_saving_per_use": 418.44480707,
+        "frontier_factor": 0.91346154,
+        "lower_project_net": 16795.94658375,
+        "project_net": 16795.94658375,
+        "prospective_net": 16795.94658375,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 50,
+        "week": 25
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 6489.9375,
+        "cumulative_delivery_saving": 23860.77030045,
+        "expected_saving_per_use": 414.93035835,
+        "frontier_factor": 0.91,
+        "lower_project_net": 17370.83280045,
+        "project_net": 17370.83280045,
+        "prospective_net": 17370.83280045,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 52,
+        "week": 26
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 6698.7375,
+        "cumulative_delivery_saving": 24683.60211972,
+        "expected_saving_per_use": 411.41590963,
+        "frontier_factor": 0.90653846,
+        "lower_project_net": 17984.86461972,
+        "project_net": 17984.86461972,
+        "prospective_net": 17984.86461972,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 54,
+        "week": 27
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 6907.5375,
+        "cumulative_delivery_saving": 25499.40504156,
+        "expected_saving_per_use": 407.90146092,
+        "frontier_factor": 0.90307692,
+        "lower_project_net": 18591.86754156,
+        "project_net": 18591.86754156,
+        "prospective_net": 18591.86754156,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 56,
+        "week": 28
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 7116.3375,
+        "cumulative_delivery_saving": 26308.17906595,
+        "expected_saving_per_use": 404.3870122,
+        "frontier_factor": 0.89961538,
+        "lower_project_net": 19191.84156595,
+        "project_net": 19191.84156595,
+        "prospective_net": 19191.84156595,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 58,
+        "week": 29
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 7325.1375,
+        "cumulative_delivery_saving": 27109.92419291,
+        "expected_saving_per_use": 400.87256348,
+        "frontier_factor": 0.89615385,
+        "lower_project_net": 19784.78669291,
+        "project_net": 19784.78669291,
+        "prospective_net": 19784.78669291,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 60,
+        "week": 30
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 7533.9375,
+        "cumulative_delivery_saving": 27904.64042244,
+        "expected_saving_per_use": 397.35811476,
+        "frontier_factor": 0.89269231,
+        "lower_project_net": 20370.70292244,
+        "project_net": 20370.70292244,
+        "prospective_net": 20370.70292244,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 62,
+        "week": 31
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 7742.7375,
+        "cumulative_delivery_saving": 28692.32775453,
+        "expected_saving_per_use": 393.84366605,
+        "frontier_factor": 0.88923077,
+        "lower_project_net": 20949.59025453,
+        "project_net": 20949.59025453,
+        "prospective_net": 20949.59025453,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 64,
+        "week": 32
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 7951.5375,
+        "cumulative_delivery_saving": 29472.98618919,
+        "expected_saving_per_use": 390.32921733,
+        "frontier_factor": 0.88576923,
+        "lower_project_net": 21521.44868919,
+        "project_net": 21521.44868919,
+        "prospective_net": 21521.44868919,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 66,
+        "week": 33
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 8160.3375,
+        "cumulative_delivery_saving": 30246.61572641,
+        "expected_saving_per_use": 386.81476861,
+        "frontier_factor": 0.88230769,
+        "lower_project_net": 22086.27822641,
+        "project_net": 22086.27822641,
+        "prospective_net": 22086.27822641,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 68,
+        "week": 34
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 8369.1375,
+        "cumulative_delivery_saving": 31013.2163662,
+        "expected_saving_per_use": 383.30031989,
+        "frontier_factor": 0.87884615,
+        "lower_project_net": 22644.0788662,
+        "project_net": 22644.0788662,
+        "prospective_net": 22644.0788662,
+        "revalidation_cost_to_date": 165.123,
+        "uses": 70,
+        "week": 35
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 8660.499,
+        "cumulative_delivery_saving": 31772.78810856,
+        "expected_saving_per_use": 379.78587118,
+        "frontier_factor": 0.87538462,
+        "lower_project_net": 23112.28910856,
+        "project_net": 23112.28910856,
+        "prospective_net": 23112.28910856,
+        "revalidation_cost_to_date": 247.6845,
+        "uses": 72,
+        "week": 36
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 8869.299,
+        "cumulative_delivery_saving": 32525.33095347,
+        "expected_saving_per_use": 376.27142246,
+        "frontier_factor": 0.87192308,
+        "lower_project_net": 23656.03195347,
+        "project_net": 23656.03195347,
+        "prospective_net": 23656.03195347,
+        "revalidation_cost_to_date": 247.6845,
+        "uses": 74,
+        "week": 37
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 9078.099,
+        "cumulative_delivery_saving": 33270.84490095,
+        "expected_saving_per_use": 372.75697374,
+        "frontier_factor": 0.86846154,
+        "lower_project_net": 24192.74590095,
+        "project_net": 24192.74590095,
+        "prospective_net": 24192.74590095,
+        "revalidation_cost_to_date": 247.6845,
+        "uses": 76,
+        "week": 38
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 9286.899,
+        "cumulative_delivery_saving": 34009.329951,
+        "expected_saving_per_use": 369.24252503,
+        "frontier_factor": 0.865,
+        "lower_project_net": 24722.430951,
+        "project_net": 24722.430951,
+        "prospective_net": 24722.430951,
+        "revalidation_cost_to_date": 247.6845,
+        "uses": 78,
+        "week": 39
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 46.1745,
+        "complete_lifecycle_cost": 9495.699,
+        "cumulative_delivery_saving": 34740.78610362,
+        "expected_saving_per_use": 365.72807631,
+        "frontier_factor": 0.86153846,
+        "lower_project_net": 25245.08710362,
+        "project_net": 25245.08710362,
+        "prospective_net": 25245.08710362,
+        "revalidation_cost_to_date": 247.6845,
+        "uses": 80,
+        "week": 40
+      }
+    ]
+  },
+  "optional_new_rd_comparison": {
+    "additional_upfront_cash_required": 0,
+    "all_modeled_delivery_routes_feasible": true,
+    "assessment": {
+      "beta_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "comparator_capability_set_hash": "2e611de6f8ced037b1b5a5470fff0b45c568d4c1848afa28b4ee26fa4e1aa4d0",
+      "costs": {
+        "acquisition": 375.0,
+        "construction": 23657.735,
+        "distribution": 0.0,
+        "integration": 0.0,
+        "maintenance": 6225.018480000006,
+        "migration": 0.0,
+        "operating": 0.0,
+        "risk": 0.0,
+        "validation": 51.30499999999999
+      },
+      "dependency_hashes": [
+        "dd12fb2f9fba61ba6e83ef95c0edbf6393cebd3e5a328e73d194c769c04721a7",
+        "5f1a650a8dd4ea04073a9f8388a60337c17891b3a48d3e6d271c004352d75370",
+        "86bfcb787ed9db08943896d81b0ba611e021b2e977fe2711b21d917507b86f5d"
+      ],
+      "evidence_hash": "7c4cfdc1c66aba2a49429919067655410d1bd37a20f9b99ca2b9c36ac26aa335",
+      "paired_gains": [
+        362.00993492466,
+        359.47953184932,
+        356.94912876912,
+        354.41872569378006,
+        351.88832261844004,
+        349.3579195431,
+        346.8275164629,
+        344.29711338756,
+        341.76671031221997,
+        339.23630723688,
+        336.70590415668005,
+        334.17550108134,
+        331.64509800600007,
+        329.11469493066,
+        326.58429185532,
+        324.05388877512,
+        321.52348569978,
+        318.99308262444004,
+        316.4626795491,
+        313.9322764689,
+        311.40187339356004,
+        308.87147031822,
+        306.34106724288,
+        303.81066416268,
+        301.28026108733997,
+        298.749858012,
+        296.21945493666,
+        293.68905186132,
+        291.15864878112,
+        288.62824570578005,
+        286.09784263044,
+        283.5674395551,
+        281.0370364749,
+        278.50663339956,
+        275.97623032422,
+        273.44582724888,
+        270.91542416868003,
+        268.38502109334,
+        265.85461801800005,
+        263.32421494266
+      ],
+      "paired_weights": [],
+      "planned_reuse": 80,
+      "protocol_id": "frozen-recipient-incremental-retention-v2",
+      "redundant": false,
+      "scope": [
+        "bounded-mechanism-required-cost",
+        "declared-beta-path",
+        "joint-bundle"
+      ],
+      "source_kind": "simulation",
+      "uncertainty_margin_per_use": 0.0,
+      "unit": "USD"
+    },
+    "assumptions": {
+      "all_fresh_uses_pay_receiving_costs": true,
+      "campaign_success_probability": 0.648,
+      "functional_fallback_is_assumed": true,
+      "interval_is_not_a_statistical_confidence_interval": true,
+      "no_quality_multiplier": true,
+      "outcomes_are_declared_model_branches": true,
+      "revalidation_reassessment_success_assumed": true,
+      "same_ordinary_models_tools_and_experience": true,
+      "source_job_learning_is_already_in_job_ledger": true
+    },
+    "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+    "beta_complete_delivery_cost": 247245.22519231,
+    "beta_reassessment_cost": 33.24564,
+    "candidate_is_recommended_now": false,
+    "complete_lifecycle_cost": 30309.05848,
+    "decision": {
+      "accepted": false,
+      "assessment_hash": "f4fa1ab50d93b0a3ddd2be5f558af524225d08336820494eb8c28bbcff969b6f",
+      "beta_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "expected_net": -5295.6924853946875,
+      "lower_net": -5295.6924853946875,
+      "reason": "nonpositive-lower-net-bound",
+      "source_kind": "simulation",
+      "upper_net": -5295.6924853946875
+    },
+    "durable_positive_lifetime_weeks_within_range": null,
+    "failed_construction_subset": 11617.1,
+    "failed_retention_subset": 0.0,
+    "first_positive_lifetime_weeks": null,
+    "input_and_evidence_hash": "7c4cfdc1c66aba2a49429919067655410d1bd37a20f9b99ca2b9c36ac26aa335",
+    "ledgers": {
+      "A_job": {
+        "added_again_to_alpha": false,
+        "included_in_enterprise_job_ledger": true,
+        "memo": null,
+        "status": "source-job-amount-not-supplied"
+      },
+      "B_additional_retention": {
+        "receiver_costs_already_in_paired_delivery": true,
+        "total_additional_lifecycle": 7074.85848,
+        "upfront": {
+          "acquisition": 375.0,
+          "construction": 423.535,
+          "distribution": 0.0,
+          "integration": 0.0,
+          "maintenance": 0.0,
+          "migration": 0.0,
+          "operating": 0.0,
+          "risk": 0.0,
+          "validation": 51.30499999999999
+        },
+        "upkeep_revalidation_reassessment": 6225.01848
+      },
+      "C_optional_new_rd": {
+        "costs": {
+          "acquisition": 0.0,
+          "construction": 23234.2,
+          "distribution": 0.0,
+          "integration": 0.0,
+          "maintenance": 0.0,
+          "migration": 0.0,
+          "operating": 0.0,
+          "risk": 0.0,
+          "validation": 0.0
+        },
+        "total": 23234.2
+      }
+    },
+    "limitation": "Modeled cost and constraint comparisons, not realized receipts, measured invention, graph authorization or a financing schedule.",
+    "lower_project_net": -5295.69248539,
+    "mean_delivery_saving_per_use": 312.66707493,
+    "planned_reuse": 80,
+    "population": {
+      "already-equivalent": 0.25,
+      "competent-frontier-reconstructor": 0.75
+    },
+    "project_net": -5295.69248539,
+    "prospective_net": -5295.69248539,
+    "protocol_id": "frozen-recipient-incremental-retention-v2",
+    "required_reuses_at_declared_lifetime": 97,
+    "revalidation_cost": 178.33284,
+    "schema": "beyond-beta.recipient-ablation.v2",
+    "shared_complete_delivery_cost": 222231.8591977,
+    "source_kind": "simulation",
+    "upfront_affordable_without_future_receipts": true,
+    "upfront_cost": 24084.04,
+    "upkeep_cost": 6013.44,
+    "weekly": [
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24234.376,
+        "cumulative_delivery_saving": 724.01986985,
+        "expected_saving_per_use": 362.00993492,
+        "frontier_factor": 0.99653846,
+        "lower_project_net": -23510.35613015,
+        "project_net": -23510.35613015,
+        "prospective_net": -23510.35613015,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 2,
+        "week": 1
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24384.712,
+        "cumulative_delivery_saving": 1442.97893355,
+        "expected_saving_per_use": 359.47953185,
+        "frontier_factor": 0.99307692,
+        "lower_project_net": -22941.73306645,
+        "project_net": -22941.73306645,
+        "prospective_net": -22941.73306645,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 4,
+        "week": 2
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24535.048,
+        "cumulative_delivery_saving": 2156.87719109,
+        "expected_saving_per_use": 356.94912877,
+        "frontier_factor": 0.98961538,
+        "lower_project_net": -22378.17080891,
+        "project_net": -22378.17080891,
+        "prospective_net": -22378.17080891,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 6,
+        "week": 3
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24685.384,
+        "cumulative_delivery_saving": 2865.71464247,
+        "expected_saving_per_use": 354.41872569,
+        "frontier_factor": 0.98615385,
+        "lower_project_net": -21819.66935753,
+        "project_net": -21819.66935753,
+        "prospective_net": -21819.66935753,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 8,
+        "week": 4
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24835.72,
+        "cumulative_delivery_saving": 3569.49128771,
+        "expected_saving_per_use": 351.88832262,
+        "frontier_factor": 0.98269231,
+        "lower_project_net": -21266.22871229,
+        "project_net": -21266.22871229,
+        "prospective_net": -21266.22871229,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 10,
+        "week": 5
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 24986.056,
+        "cumulative_delivery_saving": 4268.2071268,
+        "expected_saving_per_use": 349.35791954,
+        "frontier_factor": 0.97923077,
+        "lower_project_net": -20717.8488732,
+        "project_net": -20717.8488732,
+        "prospective_net": -20717.8488732,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 12,
+        "week": 6
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25136.392,
+        "cumulative_delivery_saving": 4961.86215972,
+        "expected_saving_per_use": 346.82751646,
+        "frontier_factor": 0.97576923,
+        "lower_project_net": -20174.52984028,
+        "project_net": -20174.52984028,
+        "prospective_net": -20174.52984028,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 14,
+        "week": 7
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25286.728,
+        "cumulative_delivery_saving": 5650.4563865,
+        "expected_saving_per_use": 344.29711339,
+        "frontier_factor": 0.97230769,
+        "lower_project_net": -19636.2716135,
+        "project_net": -19636.2716135,
+        "prospective_net": -19636.2716135,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 16,
+        "week": 8
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25437.064,
+        "cumulative_delivery_saving": 6333.98980712,
+        "expected_saving_per_use": 341.76671031,
+        "frontier_factor": 0.96884615,
+        "lower_project_net": -19103.07419288,
+        "project_net": -19103.07419288,
+        "prospective_net": -19103.07419288,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 18,
+        "week": 9
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25587.4,
+        "cumulative_delivery_saving": 7012.4624216,
+        "expected_saving_per_use": 339.23630724,
+        "frontier_factor": 0.96538462,
+        "lower_project_net": -18574.9375784,
+        "project_net": -18574.9375784,
+        "prospective_net": -18574.9375784,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 20,
+        "week": 10
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25737.736,
+        "cumulative_delivery_saving": 7685.87422991,
+        "expected_saving_per_use": 336.70590416,
+        "frontier_factor": 0.96192308,
+        "lower_project_net": -18051.86177009,
+        "project_net": -18051.86177009,
+        "prospective_net": -18051.86177009,
+        "revalidation_cost_to_date": 0.0,
+        "uses": 22,
+        "week": 11
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 25947.51628,
+        "cumulative_delivery_saving": 8354.22523207,
+        "expected_saving_per_use": 334.17550108,
+        "frontier_factor": 0.95846154,
+        "lower_project_net": -17593.29104793,
+        "project_net": -17593.29104793,
+        "prospective_net": -17593.29104793,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 24,
+        "week": 12
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26097.85228,
+        "cumulative_delivery_saving": 9017.51542808,
+        "expected_saving_per_use": 331.64509801,
+        "frontier_factor": 0.955,
+        "lower_project_net": -17080.33685192,
+        "project_net": -17080.33685192,
+        "prospective_net": -17080.33685192,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 26,
+        "week": 13
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26248.18828,
+        "cumulative_delivery_saving": 9675.74481795,
+        "expected_saving_per_use": 329.11469493,
+        "frontier_factor": 0.95153846,
+        "lower_project_net": -16572.44346205,
+        "project_net": -16572.44346205,
+        "prospective_net": -16572.44346205,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 28,
+        "week": 14
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26398.52428,
+        "cumulative_delivery_saving": 10328.91340166,
+        "expected_saving_per_use": 326.58429186,
+        "frontier_factor": 0.94807692,
+        "lower_project_net": -16069.61087834,
+        "project_net": -16069.61087834,
+        "prospective_net": -16069.61087834,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 30,
+        "week": 15
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26548.86028,
+        "cumulative_delivery_saving": 10977.02117921,
+        "expected_saving_per_use": 324.05388878,
+        "frontier_factor": 0.94461538,
+        "lower_project_net": -15571.83910079,
+        "project_net": -15571.83910079,
+        "prospective_net": -15571.83910079,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 32,
+        "week": 16
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26699.19628,
+        "cumulative_delivery_saving": 11620.06815061,
+        "expected_saving_per_use": 321.5234857,
+        "frontier_factor": 0.94115385,
+        "lower_project_net": -15079.12812939,
+        "project_net": -15079.12812939,
+        "prospective_net": -15079.12812939,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 34,
+        "week": 17
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26849.53228,
+        "cumulative_delivery_saving": 12258.05431585,
+        "expected_saving_per_use": 318.99308262,
+        "frontier_factor": 0.93769231,
+        "lower_project_net": -14591.47796415,
+        "project_net": -14591.47796415,
+        "prospective_net": -14591.47796415,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 36,
+        "week": 18
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 26999.86828,
+        "cumulative_delivery_saving": 12890.97967495,
+        "expected_saving_per_use": 316.46267955,
+        "frontier_factor": 0.93423077,
+        "lower_project_net": -14108.88860505,
+        "project_net": -14108.88860505,
+        "prospective_net": -14108.88860505,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 38,
+        "week": 19
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27150.20428,
+        "cumulative_delivery_saving": 13518.84422789,
+        "expected_saving_per_use": 313.93227647,
+        "frontier_factor": 0.93076923,
+        "lower_project_net": -13631.36005211,
+        "project_net": -13631.36005211,
+        "prospective_net": -13631.36005211,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 40,
+        "week": 20
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27300.54028,
+        "cumulative_delivery_saving": 14141.64797468,
+        "expected_saving_per_use": 311.40187339,
+        "frontier_factor": 0.92730769,
+        "lower_project_net": -13158.89230532,
+        "project_net": -13158.89230532,
+        "prospective_net": -13158.89230532,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 42,
+        "week": 21
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27450.87628,
+        "cumulative_delivery_saving": 14759.39091531,
+        "expected_saving_per_use": 308.87147032,
+        "frontier_factor": 0.92384615,
+        "lower_project_net": -12691.48536469,
+        "project_net": -12691.48536469,
+        "prospective_net": -12691.48536469,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 44,
+        "week": 22
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27601.21228,
+        "cumulative_delivery_saving": 15372.0730498,
+        "expected_saving_per_use": 306.34106724,
+        "frontier_factor": 0.92038462,
+        "lower_project_net": -12229.1392302,
+        "project_net": -12229.1392302,
+        "prospective_net": -12229.1392302,
+        "revalidation_cost_to_date": 59.44428,
+        "uses": 46,
+        "week": 23
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27810.99256,
+        "cumulative_delivery_saving": 15979.69437813,
+        "expected_saving_per_use": 303.81066416,
+        "frontier_factor": 0.91692308,
+        "lower_project_net": -11831.29818187,
+        "project_net": -11831.29818187,
+        "prospective_net": -11831.29818187,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 48,
+        "week": 24
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1"
+        ],
+        "beta_reassessment_cost_to_date": 0.0,
+        "complete_lifecycle_cost": 27961.32856,
+        "cumulative_delivery_saving": 16582.2549003,
+        "expected_saving_per_use": 301.28026109,
+        "frontier_factor": 0.91346154,
+        "lower_project_net": -11379.0736597,
+        "project_net": -11379.0736597,
+        "prospective_net": -11379.0736597,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 50,
+        "week": 25
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28144.9102,
+        "cumulative_delivery_saving": 17179.75461632,
+        "expected_saving_per_use": 298.74985801,
+        "frontier_factor": 0.91,
+        "lower_project_net": -10965.15558368,
+        "project_net": -10965.15558368,
+        "prospective_net": -10965.15558368,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 52,
+        "week": 26
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28295.2462,
+        "cumulative_delivery_saving": 17772.1935262,
+        "expected_saving_per_use": 296.21945494,
+        "frontier_factor": 0.90653846,
+        "lower_project_net": -10523.0526738,
+        "project_net": -10523.0526738,
+        "prospective_net": -10523.0526738,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 54,
+        "week": 27
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28445.5822,
+        "cumulative_delivery_saving": 18359.57162992,
+        "expected_saving_per_use": 293.68905186,
+        "frontier_factor": 0.90307692,
+        "lower_project_net": -10086.01057008,
+        "project_net": -10086.01057008,
+        "prospective_net": -10086.01057008,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 56,
+        "week": 28
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28595.9182,
+        "cumulative_delivery_saving": 18941.88892748,
+        "expected_saving_per_use": 291.15864878,
+        "frontier_factor": 0.89961538,
+        "lower_project_net": -9654.02927252,
+        "project_net": -9654.02927252,
+        "prospective_net": -9654.02927252,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 58,
+        "week": 29
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28746.2542,
+        "cumulative_delivery_saving": 19519.14541889,
+        "expected_saving_per_use": 288.62824571,
+        "frontier_factor": 0.89615385,
+        "lower_project_net": -9227.10878111,
+        "project_net": -9227.10878111,
+        "prospective_net": -9227.10878111,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 60,
+        "week": 30
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 28896.5902,
+        "cumulative_delivery_saving": 20091.34110415,
+        "expected_saving_per_use": 286.09784263,
+        "frontier_factor": 0.89269231,
+        "lower_project_net": -8805.24909585,
+        "project_net": -8805.24909585,
+        "prospective_net": -8805.24909585,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 62,
+        "week": 31
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29046.9262,
+        "cumulative_delivery_saving": 20658.47598326,
+        "expected_saving_per_use": 283.56743956,
+        "frontier_factor": 0.88923077,
+        "lower_project_net": -8388.45021674,
+        "project_net": -8388.45021674,
+        "prospective_net": -8388.45021674,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 64,
+        "week": 32
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29197.2622,
+        "cumulative_delivery_saving": 21220.55005621,
+        "expected_saving_per_use": 281.03703647,
+        "frontier_factor": 0.88576923,
+        "lower_project_net": -7976.71214379,
+        "project_net": -7976.71214379,
+        "prospective_net": -7976.71214379,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 66,
+        "week": 33
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29347.5982,
+        "cumulative_delivery_saving": 21777.56332301,
+        "expected_saving_per_use": 278.5066334,
+        "frontier_factor": 0.88230769,
+        "lower_project_net": -7570.03487699,
+        "project_net": -7570.03487699,
+        "prospective_net": -7570.03487699,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 68,
+        "week": 34
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29497.9342,
+        "cumulative_delivery_saving": 22329.51578366,
+        "expected_saving_per_use": 275.97623032,
+        "frontier_factor": 0.87884615,
+        "lower_project_net": -7168.41841634,
+        "project_net": -7168.41841634,
+        "prospective_net": -7168.41841634,
+        "revalidation_cost_to_date": 118.88856,
+        "uses": 70,
+        "week": 35
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29707.71448,
+        "cumulative_delivery_saving": 22876.40743816,
+        "expected_saving_per_use": 273.44582725,
+        "frontier_factor": 0.87538462,
+        "lower_project_net": -6831.30704184,
+        "project_net": -6831.30704184,
+        "prospective_net": -6831.30704184,
+        "revalidation_cost_to_date": 178.33284,
+        "uses": 72,
+        "week": 36
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 29858.05048,
+        "cumulative_delivery_saving": 23418.2382865,
+        "expected_saving_per_use": 270.91542417,
+        "frontier_factor": 0.87192308,
+        "lower_project_net": -6439.8121935,
+        "project_net": -6439.8121935,
+        "prospective_net": -6439.8121935,
+        "revalidation_cost_to_date": 178.33284,
+        "uses": 74,
+        "week": 37
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 30008.38648,
+        "cumulative_delivery_saving": 23955.00832868,
+        "expected_saving_per_use": 268.38502109,
+        "frontier_factor": 0.86846154,
+        "lower_project_net": -6053.37815132,
+        "project_net": -6053.37815132,
+        "prospective_net": -6053.37815132,
+        "revalidation_cost_to_date": 178.33284,
+        "uses": 76,
+        "week": 38
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 30158.72248,
+        "cumulative_delivery_saving": 24486.71756472,
+        "expected_saving_per_use": 265.85461802,
+        "frontier_factor": 0.865,
+        "lower_project_net": -5672.00491528,
+        "project_net": -5672.00491528,
+        "prospective_net": -5672.00491528,
+        "revalidation_cost_to_date": 178.33284,
+        "uses": 78,
+        "week": 39
+      },
+      {
+        "baseline_versions": [
+          "competent-beta-cost-probe-v1/epoch-1"
+        ],
+        "beta_reassessment_cost_to_date": 33.24564,
+        "complete_lifecycle_cost": 30309.05848,
+        "cumulative_delivery_saving": 25013.36599461,
+        "expected_saving_per_use": 263.32421494,
+        "frontier_factor": 0.86153846,
+        "lower_project_net": -5295.69248539,
+        "project_net": -5295.69248539,
+        "prospective_net": -5295.69248539,
+        "revalidation_cost_to_date": 178.33284,
+        "uses": 80,
+        "week": 40
+      }
+    ]
+  },
+  "protocol": {
+    "candidate": {
+      "beta_id": "competent-beta-cost-probe-v1",
+      "candidate_id": "compiled-coordination-bundle",
+      "components": [
+        0,
+        1,
+        2
+      ],
+      "domain": 0,
+      "expires_week": 10000,
+      "residual_work": [
+        {
+          "astra_cache": 1.1,
+          "astra_input": 3.52,
+          "astra_output": 0.7040000000000001,
+          "latency": 0.154,
+          "terra_cache": 0.44,
+          "terra_input": 1.32,
+          "terra_output": 0.264,
+          "tools": 35.2
+        },
+        {
+          "astra_cache": 1.1,
+          "astra_input": 3.08,
+          "astra_output": 0.616,
+          "latency": 0.154,
+          "terra_cache": 0.44,
+          "terra_input": 1.32,
+          "terra_output": 0.264,
+          "tools": 44.0
+        },
+        {
+          "astra_cache": 1.76,
+          "astra_input": 5.28,
+          "astra_output": 1.056,
+          "latency": 0.22,
+          "terra_cache": 0.66,
+          "terra_input": 1.76,
+          "terra_output": 0.35200000000000004,
+          "tools": 68.2
+        }
+      ],
+      "status": "admitted",
+      "validation_due_week": 12
+    },
+    "grid": {
+      "frontier_improvement": [
+        0.0,
+        0.18,
+        0.5,
+        1.0
+      ],
+      "overlap": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "useful_lifetime_weeks": [
+        4,
+        12,
+        26,
+        40,
+        64,
+        104
+      ],
+      "uses_per_week": [
+        0,
+        1,
+        2,
+        4,
+        8
+      ],
+      "validation_overhead": [
+        0.5,
+        1.0,
+        2.0,
+        4.0,
+        8.0
+      ]
+    },
+    "mission": {
+      "available_cash": 10000.0,
+      "common_work": {
+        "astra_cache": 14.26,
+        "astra_input": 34.559999999999995,
+        "astra_output": 6.915000000000001,
+        "latency": 2.5,
+        "terra_cache": 6.55,
+        "terra_input": 26.2,
+        "terra_output": 4.44,
+        "tools": 837.0
+      },
+      "components": [
+        0,
+        1,
+        2
+      ],
+      "deadline_weeks": 12.0,
+      "domain": 0,
+      "input_limit_m": 2400.0,
+      "mission_id": "frozen-bounded-mechanism",
+      "output_limit_m": 480.0,
+      "week": 0
+    },
+    "plan": {
+      "available_investment_cash": 50000.0,
+      "beta_reassessment_cost": 51.30499999999999,
+      "campaign_success_probability": 0.9,
+      "failed_construction_cost": 0,
+      "failed_retention_cost": 0.0,
+      "job_ledger_memo": null,
+      "optional_rd": {
+        "acquisition": 0.0,
+        "construction": 0.0,
+        "distribution": 0.0,
+        "integration": 0.0,
+        "maintenance": 0.0,
+        "migration": 0.0,
+        "operating": 0.0,
+        "risk": 0.0,
+        "validation": 0.0
+      },
+      "reassess_moving_beta": true,
+      "revalidation_cost": 91.735,
+      "revalidation_period_weeks": 12,
+      "uncertainty_margin_per_use": 0.0,
+      "upfront": {
+        "acquisition": 375.0,
+        "construction": 423.535,
+        "distribution": 0.0,
+        "integration": 0.0,
+        "maintenance": 0.0,
+        "migration": 0.0,
+        "operating": 0.0,
+        "risk": 0.0,
+        "validation": 51.30499999999999
+      },
+      "useful_lifetime_weeks": 40,
+      "uses_per_week": 2,
+      "weekly_upkeep": 232.0
+    },
+    "recipients": [
+      {
+        "beta": {
+          "beta_id": "competent-beta-cost-probe-v1",
+          "configuration_hash": "6f02c17965d7a31ad12a189c75c9c9a51794e36f0b92ff09e33f7d1a417bc9f5",
+          "description": "Astra Pro reasoning, Terra execution, ordinary theory/solvers, source grounding, critique/correction and accumulated experience; no missing-file incapacity.",
+          "source_kind": "simulation"
+        },
+        "equivalents": [
+          null,
+          null,
+          null
+        ],
+        "name": "competent-frontier-reconstructor",
+        "ordinary_factors": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "beta": {
+          "beta_id": "competent-beta-cost-probe-v1",
+          "configuration_hash": "6f02c17965d7a31ad12a189c75c9c9a51794e36f0b92ff09e33f7d1a417bc9f5",
+          "description": "Astra Pro reasoning, Terra execution, ordinary theory/solvers, source grounding, critique/correction and accumulated experience; no missing-file incapacity.",
+          "source_kind": "simulation"
+        },
+        "equivalents": [
+          null,
+          null,
+          null
+        ],
+        "name": "ordinary-experienced",
+        "ordinary_factors": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      {
+        "beta": {
+          "beta_id": "competent-beta-cost-probe-v1",
+          "configuration_hash": "6f02c17965d7a31ad12a189c75c9c9a51794e36f0b92ff09e33f7d1a417bc9f5",
+          "description": "Astra Pro reasoning, Terra execution, ordinary theory/solvers, source grounding, critique/correction and accumulated experience; no missing-file incapacity.",
+          "source_kind": "simulation"
+        },
+        "equivalents": [
+          null,
+          null,
+          null
+        ],
+        "name": "ordinary-specialist",
+        "ordinary_factors": [
+          0.33,
+          0.33,
+          0.33
+        ]
+      },
+      {
+        "beta": {
+          "beta_id": "competent-beta-cost-probe-v1",
+          "configuration_hash": "6f02c17965d7a31ad12a189c75c9c9a51794e36f0b92ff09e33f7d1a417bc9f5",
+          "description": "Astra Pro reasoning, Terra execution, ordinary theory/solvers, source grounding, critique/correction and accumulated experience; no missing-file incapacity.",
+          "source_kind": "simulation"
+        },
+        "equivalents": [
+          {
+            "astra_cache": 0.5,
+            "astra_input": 1.6,
+            "astra_output": 0.32000000000000006,
+            "latency": 0.06999999999999999,
+            "terra_cache": 0.2,
+            "terra_input": 0.6000000000000001,
+            "terra_output": 0.12,
+            "tools": 16.0
+          },
+          null,
+          null
+        ],
+        "name": "partial-equivalent",
+        "ordinary_factors": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "beta": {
+          "beta_id": "competent-beta-cost-probe-v1",
+          "configuration_hash": "6f02c17965d7a31ad12a189c75c9c9a51794e36f0b92ff09e33f7d1a417bc9f5",
+          "description": "Astra Pro reasoning, Terra execution, ordinary theory/solvers, source grounding, critique/correction and accumulated experience; no missing-file incapacity.",
+          "source_kind": "simulation"
+        },
+        "equivalents": [
+          {
+            "astra_cache": 0.5,
+            "astra_input": 1.6,
+            "astra_output": 0.32000000000000006,
+            "latency": 0.06999999999999999,
+            "terra_cache": 0.2,
+            "terra_input": 0.6000000000000001,
+            "terra_output": 0.12,
+            "tools": 16.0
+          },
+          {
+            "astra_cache": 0.5,
+            "astra_input": 1.4000000000000001,
+            "astra_output": 0.27999999999999997,
+            "latency": 0.06999999999999999,
+            "terra_cache": 0.2,
+            "terra_input": 0.6000000000000001,
+            "terra_output": 0.12,
+            "tools": 20.0
+          },
+          {
+            "astra_cache": 0.8,
+            "astra_input": 2.4000000000000004,
+            "astra_output": 0.48,
+            "latency": 0.1,
+            "terra_cache": 0.30000000000000004,
+            "terra_input": 0.8,
+            "terra_output": 0.16000000000000003,
+            "tools": 31.0
+          }
+        ],
+        "name": "already-equivalent",
+        "ordinary_factors": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "scenario": {
+      "admission_false_pass": 0.08,
+      "admission_false_rejection": 0.045,
+      "agents": 6,
+      "asset_defect_probability": 0.06,
+      "beta_epoch_weeks": 26,
+      "cache_enabled": true,
+      "choice_temperature": 0.14,
+      "collection_delay": 4,
+      "common_fault_probability": 0.055,
+      "construction_cost_factor": 1.0,
+      "construction_success": 0.72,
+      "copying_hazard": 0.006,
+      "correction_success": 0.78,
+      "default_probability": 0.04,
+      "demand_dispersion": 0.35,
+      "demand_value": 1.45,
+      "depth_weights": [
+        0.45,
+        0.35,
+        0.2
+      ],
+      "distribution_fixed": 70.0,
+      "distribution_per_skill": 2.0,
+      "diversity": 3,
+      "executable_detection": 0.97,
+      "external_improvement": 0.18,
+      "false_rejection": 0.035,
+      "harmful_transfer": 0.035,
+      "human_price_factor": 1.0,
+      "implementation_error": 0.1,
+      "initial_overlap": 0.25,
+      "initial_trust": 0.78,
+      "integration_fraction": 0.13,
+      "invention_probability": 0.48,
+      "leads_per_week": 4.0,
+      "maintenance_per_skill": 22.0,
+      "max_queue": 24,
+      "member_overhead": 4.0,
+      "membership_count": 24,
+      "name": "central",
+      "obsolete_hazard": 0.006,
+      "ordinary_learning_rate": 0.12,
+      "quality_decay_load": 0.025,
+      "quota_input_m": 200.0,
+      "quota_output_m": 40.0,
+      "refund_probability": 0.9,
+      "repeat_probability": 0.18,
+      "retention_cost_factor": 1.0,
+      "retention_generalization_success": 0.9,
+      "reuse_savings_factor": 1.0,
+      "revalidation_failure": 0.08,
+      "revalidation_false_negative": 0.05,
+      "revalidation_period": 12,
+      "runoff": 16,
+      "seed_capital": 60000,
+      "semantic_detection": 0.78,
+      "setup_cost": 9500,
+      "shareable_probability": 0.9,
+      "sharing_bounty": 125.0,
+      "spec_error": 0.045,
+      "specialization": 0.45,
+      "ticks_per_week": 5,
+      "token_cost_factor": 1.0,
+      "tool_cost_factor": 1.0,
+      "transfer_success": 0.8,
+      "transfer_validation_factor": 1.0,
+      "useful_lifetime": 40,
+      "validator_slots": 2,
+      "warranty_weeks": 6,
+      "weeks": 104
+    }
+  },
+  "protocol_id": "frozen-recipient-incremental-retention-v2",
+  "schema": "beyond-beta.recipient-ablation.v2",
+  "sensitivity": [
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 1,
+      "first_positive_lifetime_weeks": 1,
+      "input_and_evidence_hash": "2efb444e7e36dcf974820b9d6a59213441ea11c0182dfbb16ba8546bfcd500f9",
+      "lower_project_net": 36825.34913816,
+      "mean_delivery_saving_per_use": 579.01310173,
+      "parameter": "overlap",
+      "planned_reuse": 80,
+      "project_net": 36825.34913816,
+      "required_reuses_at_declared_lifetime": 17,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "lower_project_net": 25245.08710362,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "overlap",
+      "planned_reuse": 80,
+      "project_net": 25245.08710362,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.25
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "20985d4fb8c044386d46642557c3ab903b543604feee620b9e2e64c131db0765",
+      "lower_project_net": 13664.82506908,
+      "mean_delivery_saving_per_use": 289.50655086,
+      "parameter": "overlap",
+      "planned_reuse": 80,
+      "project_net": 13664.82506908,
+      "required_reuses_at_declared_lifetime": 33,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.5
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 8,
+      "first_positive_lifetime_weeks": 8,
+      "input_and_evidence_hash": "f4c11e70ecfedc03ed4bf21521e93ea58769349f4071c41effc21cd32d3da18e",
+      "lower_project_net": 2084.56303454,
+      "mean_delivery_saving_per_use": 144.75327543,
+      "parameter": "overlap",
+      "planned_reuse": 80,
+      "project_net": 2084.56303454,
+      "required_reuses_at_declared_lifetime": 66,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.75
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": false,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": null,
+      "first_positive_lifetime_weeks": null,
+      "input_and_evidence_hash": "25bd9138b9907e522d8445550e4ae13e5f0b48ae287cdc49644f89a82c62a4c4",
+      "lower_project_net": -9495.699,
+      "mean_delivery_saving_per_use": 0.0,
+      "parameter": "overlap",
+      "planned_reuse": 80,
+      "project_net": -9495.699,
+      "required_reuses_at_declared_lifetime": null,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 1.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": false,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": null,
+      "first_positive_lifetime_weeks": null,
+      "input_and_evidence_hash": "f7c1ad961871e8da7ed42c5adb71ec2e47c8cf4d5248024662067877e87fe4ea",
+      "lower_project_net": -9495.699,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "uses_per_week",
+      "planned_reuse": 0,
+      "project_net": -9495.699,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 3,
+      "first_positive_lifetime_weeks": 3,
+      "input_and_evidence_hash": "f66baad199a1be39a4569121cc58d7bb9537cfe7feebfb5e85e8e96739b18f4a",
+      "lower_project_net": 7874.69405181,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "uses_per_week",
+      "planned_reuse": 40,
+      "project_net": 7874.69405181,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 1
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "lower_project_net": 25245.08710362,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "uses_per_week",
+      "planned_reuse": 80,
+      "project_net": 25245.08710362,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 2
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 1,
+      "first_positive_lifetime_weeks": 1,
+      "input_and_evidence_hash": "b3de7ef6ad3c27a0d7e0751960e340156ef5df85e630776f9ef1114bd56839e3",
+      "lower_project_net": 59985.87320724,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "uses_per_week",
+      "planned_reuse": 160,
+      "project_net": 59985.87320724,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 4
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 1,
+      "first_positive_lifetime_weeks": 1,
+      "input_and_evidence_hash": "1559e9d491cbb0abd58e63abc972732e797bca73e7cc2fe2905dc5272328ba9a",
+      "lower_project_net": 129467.44541447,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "uses_per_week",
+      "planned_reuse": 320,
+      "project_net": 129467.44541447,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 8
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 1,
+      "first_positive_lifetime_weeks": 1,
+      "input_and_evidence_hash": "462489e1b85f27dc4db05f55525762b17247ff60bd7327a84a3cfe6199183934",
+      "lower_project_net": 32014.93210362,
+      "mean_delivery_saving_per_use": 518.8828888,
+      "parameter": "validation_overhead",
+      "planned_reuse": 80,
+      "project_net": 32014.93210362,
+      "required_reuses_at_declared_lifetime": 19,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.5
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "lower_project_net": 25245.08710362,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "validation_overhead",
+      "planned_reuse": 80,
+      "project_net": 25245.08710362,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 1.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "503bc486cda711651cacf4a15b7a7716916f5a47f778629ad86265e5aaee09cc",
+      "lower_project_net": 11705.39710362,
+      "mean_delivery_saving_per_use": 265.0137013,
+      "parameter": "validation_overhead",
+      "planned_reuse": 80,
+      "project_net": 11705.39710362,
+      "required_reuses_at_declared_lifetime": 36,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 2.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": false,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": null,
+      "first_positive_lifetime_weeks": null,
+      "input_and_evidence_hash": "ef4e1e5be41b7ebd580d779c235c0db4f046166ef625b723c48f9c4203e10b9a",
+      "lower_project_net": -9495.699,
+      "mean_delivery_saving_per_use": 0.0,
+      "parameter": "validation_overhead",
+      "planned_reuse": 80,
+      "project_net": -9495.699,
+      "required_reuses_at_declared_lifetime": null,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 4.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": false,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": null,
+      "first_positive_lifetime_weeks": null,
+      "input_and_evidence_hash": "3cdc3e7a4cf3e1c1186cda873ce0b6c09aa7ff1e4295a1db472682518f7c9f7b",
+      "lower_project_net": -9495.699,
+      "mean_delivery_saving_per_use": 0.0,
+      "parameter": "validation_overhead",
+      "planned_reuse": 80,
+      "project_net": -9495.699,
+      "required_reuses_at_declared_lifetime": null,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 8.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-d392e2116e43183fa1a4",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9449.5245,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "73375722a0ac6b07895e21ea001b7d4635fbb9c0660295296f6dca3212fbded9",
+      "lower_project_net": 31054.9575,
+      "mean_delivery_saving_per_use": 506.306025,
+      "parameter": "frontier_improvement",
+      "planned_reuse": 80,
+      "project_net": 31054.9575,
+      "required_reuses_at_declared_lifetime": 19,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "lower_project_net": 25245.08710362,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "frontier_improvement",
+      "planned_reuse": 80,
+      "project_net": 25245.08710362,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.18
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-b0e27ecda6fb0d0f72cd",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "74ad0efbc3425a72b751dbaf434509ab7cd0855c359dae4b0829e6866d69371a",
+      "lower_project_net": 14998.51662116,
+      "mean_delivery_saving_per_use": 306.17769526,
+      "parameter": "frontier_improvement",
+      "planned_reuse": 80,
+      "project_net": 14998.51662116,
+      "required_reuses_at_declared_lifetime": 32,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 0.5
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-dfbbef3690b706eea48c",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "22d192cc7ed1b60b3ac399cc47ac41392dc1f740e3eec74d2c04ac437764b2e5",
+      "lower_project_net": 3128.5374375,
+      "mean_delivery_saving_per_use": 157.80295547,
+      "parameter": "frontier_improvement",
+      "planned_reuse": 80,
+      "project_net": 3128.5374375,
+      "required_reuses_at_declared_lifetime": 61,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 1.0
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 1685.04,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "285ff233121245068756117e93a6eac0000121374dce132b69dfd8b510d9867f",
+      "lower_project_net": 2295.11922566,
+      "mean_delivery_saving_per_use": 497.51990321,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 8,
+      "project_net": 2295.11922566,
+      "required_reuses_at_declared_lifetime": 4,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 4
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 3438.0015,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "84e340d401648163d39ee21c977b316b70fa3b9b5dd36add045f8a06cc7c7443",
+      "lower_project_net": 8165.0891001,
+      "mean_delivery_saving_per_use": 483.46210834,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 24,
+      "project_net": 8165.0891001,
+      "required_reuses_at_declared_lifetime": 8,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 12
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 6489.9375,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "039b95d60dc2ffb85cec932160f13a08870dc8ea4ec692dee7a6642566178c65",
+      "lower_project_net": 17370.83280045,
+      "mean_delivery_saving_per_use": 458.86096732,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 52,
+      "project_net": 17370.83280045,
+      "required_reuses_at_declared_lifetime": 15,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 26
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 9495.699,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "a5d8c88666874b66462359870aade257c862dbfc61499ab4819bb96be80ee57a",
+      "lower_project_net": 25245.08710362,
+      "mean_delivery_saving_per_use": 434.2598263,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 80,
+      "project_net": 25245.08710362,
+      "required_reuses_at_declared_lifetime": 22,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 40
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 14718.1965,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "f2092bd0f19e16ef349329ff0253428d70eb3ce7e1161b61e268c04a89a5ef72",
+      "lower_project_net": 35468.868036,
+      "mean_delivery_saving_per_use": 392.08644169,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 128,
+      "project_net": 35468.868036,
+      "required_reuses_at_declared_lifetime": 38,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 64
+    },
+    {
+      "all_modeled_delivery_routes_feasible": true,
+      "baseline_path_id": "declared-beta-path-6da08ce8a2c38dbfc62a",
+      "candidate_is_recommended_now": true,
+      "complete_lifecycle_cost": 23410.23,
+      "durable_positive_lifetime_weeks_within_range": 2,
+      "first_positive_lifetime_weeks": 2,
+      "input_and_evidence_hash": "72c37b63bff1dd4bcbc1a7e49070ddc78889739c73895ce1880324e5f9aca388",
+      "lower_project_net": 43523.643207,
+      "mean_delivery_saving_per_use": 321.79746734,
+      "parameter": "useful_lifetime_weeks",
+      "planned_reuse": 208,
+      "project_net": 43523.643207,
+      "required_reuses_at_declared_lifetime": 73,
+      "upfront_affordable_without_future_receipts": true,
+      "value": 104
+    }
+  ]
+}

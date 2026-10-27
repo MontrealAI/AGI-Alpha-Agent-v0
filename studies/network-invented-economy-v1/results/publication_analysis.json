@@ -1,0 +1,421 @@
+{
+  "demand_sign_brackets": {
+    "beta": [
+      [
+        0.05,
+        0.25
+      ]
+    ],
+    "network": [
+      [
+        0.05,
+        0.25
+      ]
+    ]
+  },
+  "favorable_ablations": [
+    {
+      "control": "remove_representation",
+      "lower": 1215509.2931214804,
+      "mean": 1591249.86,
+      "n": 16,
+      "upper": 1966990.4268785198
+    },
+    {
+      "control": "remove_falsifier",
+      "lower": 354032.78814082313,
+      "mean": 607214.7468750001,
+      "n": 16,
+      "upper": 860396.705609177
+    },
+    {
+      "control": "remove_composition",
+      "lower": -17870.5043657569,
+      "mean": 13804.78375000006,
+      "n": 16,
+      "upper": 45480.071865757025
+    },
+    {
+      "control": "duplicate",
+      "lower": -84833.9436025843,
+      "mean": 94431.34312500001,
+      "n": 16,
+      "upper": 273696.62985258433
+    },
+    {
+      "control": "no_retention",
+      "lower": 155366.76008020286,
+      "mean": 407495.7156250001,
+      "n": 16,
+      "upper": 659624.6711697974
+    }
+  ],
+  "input_hashes": {
+    "ablation_runs.json": "230a13a8a54ae95fdc4c624cf36807e7bc609a166523cda278fb354c71258be2",
+    "capacity_policy.json": "b174764704af89392f3d36cae2865b85615e105ef604859ee710da99756e1e3b",
+    "confirmation_runs.jsonl": "dbab57901445f88696dd03f331eaf52abe8d3ffbe2fb64c3531e24a9065c628a",
+    "output_audit.json": "d933f160e350c0a3a1405f26dcf9cd69baa6c745e23c56b22ae9426a683bc9da",
+    "recipient_ablation.json": "c315abb5a7bf0faa5ea0102a2faa3c8150b9196bd9e457d8d230e0dc0a9d4bdf",
+    "selected_policies.json": "807d31c1de6072c577091cb028451edba415ac491e7d31e52b31199f47122bfd",
+    "sensitivity.json": "00ea04e7fc0f4f0b14134bbcee53950efe7d076b70224ec3317fe77edf971a64",
+    "sensitivity_runs.jsonl": "44fcd2e0e8f3568b07dc7c0b133f3abc5940dcf186dca68574241b2141f29a6b",
+    "summary.json": "16aaa53ee1e14c625bac0cd86a19b351a76ff16e512e991a2bde2bedd4419f7f"
+  },
+  "kind": "publication-postprocessing",
+  "scenarios": {
+    "central": {
+      "isolated-minus-beta": {
+        "accepted_useful": {
+          "lower": 0.0,
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "n": 64,
+          "upper": 0.0
+        },
+        "profit": {
+          "lower": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 64,
+          "upper": 0.0
+        }
+      },
+      "network-minus-beta": {
+        "accepted_useful": {
+          "lower": -0.16763576004018993,
+          "max": 7,
+          "mean": 0.140625,
+          "median": 0.0,
+          "min": -4,
+          "n": 64,
+          "upper": 0.44888576004018993
+        },
+        "profit": {
+          "lower": -18515.76875571858,
+          "max": 145722.00999999978,
+          "mean": -12062.700468750001,
+          "median": -14148.0,
+          "min": -121724.29000000004,
+          "n": 64,
+          "upper": -5609.632181781421
+        }
+      },
+      "network-minus-isolated": {
+        "accepted_useful": {
+          "lower": -0.16763576004018993,
+          "max": 7,
+          "mean": 0.140625,
+          "median": 0.0,
+          "min": -4,
+          "n": 64,
+          "upper": 0.44888576004018993
+        },
+        "profit": {
+          "lower": -18515.76875571858,
+          "max": 145722.00999999978,
+          "mean": -12062.700468750001,
+          "median": -14148.0,
+          "min": -121724.29000000004,
+          "n": 64,
+          "upper": -5609.632181781421
+        }
+      },
+      "network-minus-network_no_invest": {
+        "accepted_useful": {
+          "lower": 0.0,
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "n": 64,
+          "upper": 0.0
+        },
+        "profit": {
+          "lower": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 64,
+          "upper": 0.0
+        }
+      }
+    },
+    "conservative": {
+      "isolated-minus-beta": {
+        "accepted_useful": {
+          "lower": 0.0,
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "n": 64,
+          "upper": 0.0
+        },
+        "profit": {
+          "lower": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 64,
+          "upper": 0.0
+        }
+      },
+      "network-minus-beta": {
+        "accepted_useful": {
+          "lower": -0.04625,
+          "max": 0,
+          "mean": -0.015625,
+          "median": 0.0,
+          "min": -1,
+          "n": 64,
+          "upper": 0.015
+        },
+        "profit": {
+          "lower": -14104.300032733896,
+          "max": -13100.0,
+          "mean": -13946.960156250001,
+          "median": -13886.0,
+          "min": -18704.45000000001,
+          "n": 64,
+          "upper": -13789.620279766106
+        }
+      },
+      "network-minus-isolated": {
+        "accepted_useful": {
+          "lower": -0.04625,
+          "max": 0,
+          "mean": -0.015625,
+          "median": 0.0,
+          "min": -1,
+          "n": 64,
+          "upper": 0.015
+        },
+        "profit": {
+          "lower": -14104.300032733896,
+          "max": -13100.0,
+          "mean": -13946.960156250001,
+          "median": -13886.0,
+          "min": -18704.45000000001,
+          "n": 64,
+          "upper": -13789.620279766106
+        }
+      },
+      "network-minus-network_no_invest": {
+        "accepted_useful": {
+          "lower": 0.0,
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "n": 64,
+          "upper": 0.0
+        },
+        "profit": {
+          "lower": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 64,
+          "upper": 0.0
+        }
+      }
+    },
+    "favorable": {
+      "isolated-minus-beta": {
+        "accepted_useful": {
+          "lower": -1.0780950085006573,
+          "max": 41,
+          "mean": 1.421875,
+          "median": -0.5,
+          "min": -19,
+          "n": 64,
+          "upper": 3.9218450085006573
+        },
+        "profit": {
+          "lower": -41031.50193846413,
+          "max": 1192317.92,
+          "mean": 42352.01999999995,
+          "median": -35843.62000000011,
+          "min": -628532.4000000004,
+          "n": 64,
+          "upper": 125735.54193846404
+        }
+      },
+      "network-minus-beta": {
+        "accepted_useful": {
+          "lower": -4.033565514772665,
+          "max": 32,
+          "mean": -0.875,
+          "median": 0.0,
+          "min": -31,
+          "n": 64,
+          "upper": 2.283565514772665
+        },
+        "profit": {
+          "lower": -118841.7237065572,
+          "max": 1094645.5499999998,
+          "mean": -8765.777031250007,
+          "median": -32985.28999999957,
+          "min": -1433252.1400000006,
+          "n": 64,
+          "upper": 101310.16964405718
+        }
+      },
+      "network-minus-isolated": {
+        "accepted_useful": {
+          "lower": -6.180166940274743,
+          "max": 24,
+          "mean": -2.296875,
+          "median": -1.0,
+          "min": -64,
+          "n": 64,
+          "upper": 1.5864169402747428
+        },
+        "profit": {
+          "lower": -180073.30097508765,
+          "max": 908040.4100000001,
+          "mean": -51117.79703124996,
+          "median": -54318.96500000032,
+          "min": -1777029.9800000004,
+          "n": 64,
+          "upper": 77837.70691258772
+        }
+      },
+      "network-minus-network_no_invest": {
+        "accepted_useful": {
+          "lower": 0.0,
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "n": 64,
+          "upper": 0.0
+        },
+        "profit": {
+          "lower": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 64,
+          "upper": 0.0
+        }
+      }
+    }
+  },
+  "script_sha256": "8d7975f0a27c235900eb1fafcc91f116ba1a1d331d16d07d76294330c5283f51",
+  "selected_stresses": [
+    {
+      "case": "central-reference",
+      "network_profit": {
+        "lower": 2916222.550467756,
+        "mean": 3322575.205,
+        "n": 16,
+        "upper": 3728927.859532244
+      },
+      "paired_profit": {
+        "lower": -255084.7223656969,
+        "mean": -77839.11749999995,
+        "n": 16,
+        "upper": 99406.487365697
+      }
+    },
+    {
+      "case": "human-price-10pct",
+      "network_profit": {
+        "lower": 32240.001513173785,
+        "mean": 55483.213125,
+        "n": 16,
+        "upper": 78726.42473682621
+      },
+      "paired_profit": {
+        "lower": -38251.276765321236,
+        "mean": -24721.278125,
+        "n": 16,
+        "upper": -11191.279484678767
+      }
+    },
+    {
+      "case": "retention-effort-10",
+      "network_profit": {
+        "lower": 3205804.395383967,
+        "mean": 3547113.84875,
+        "n": 16,
+        "upper": 3888423.3021160327
+      },
+      "paired_profit": {
+        "lower": -25015.92790985678,
+        "mean": 146699.52625000005,
+        "n": 16,
+        "upper": 318414.9804098569
+      }
+    },
+    {
+      "case": "overlap-0.90",
+      "network_profit": {
+        "lower": 3294921.815420036,
+        "mean": 3655114.285625,
+        "n": 16,
+        "upper": 4015306.755829964
+      },
+      "paired_profit": {
+        "lower": -156919.31421633327,
+        "mean": -42715.679375000036,
+        "n": 16,
+        "upper": 71487.95546633318
+      }
+    },
+    {
+      "case": "beta-fast",
+      "network_profit": {
+        "lower": 3059492.423258679,
+        "mean": 3496426.56,
+        "n": 16,
+        "upper": 3933360.696741321
+      },
+      "paired_profit": {
+        "lower": -288873.4001398609,
+        "mean": -152226.19812500005,
+        "n": 16,
+        "upper": -15578.996110139153
+      }
+    },
+    {
+      "case": "lifetime-104",
+      "network_profit": {
+        "lower": 2951786.3158528917,
+        "mean": 3373915.096875,
+        "n": 16,
+        "upper": 3796043.877897108
+      },
+      "paired_profit": {
+        "lower": -158373.05436805353,
+        "mean": -26499.22562500005,
+        "n": 16,
+        "upper": 105374.60311805343
+      }
+    },
+    {
+      "case": "joint-commercial-downside",
+      "network_profit": {
+        "lower": -18781.94814244211,
+        "mean": -18757.093125,
+        "n": 16,
+        "upper": -18732.23810755789
+      },
+      "paired_profit": {
+        "lower": -2096.0,
+        "mean": -2096.0,
+        "n": 16,
+        "upper": -2096.0
+      }
+    }
+  ]
+}
