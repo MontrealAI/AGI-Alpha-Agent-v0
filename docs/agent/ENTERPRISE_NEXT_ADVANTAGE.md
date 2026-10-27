@@ -10,8 +10,8 @@ general executor and specialist network uses the existing Journal, protected
 service, A/B/C CostLedger, checkpoints and native operator. It creates no second
 registry, executor, financial authority or publication path.
 
-[Typeset paper](../papers/agi-alpha-enterprise-implementation-v2.pdf) ·
-[LaTeX](../papers/agi-alpha-enterprise-implementation-v2.tex) ·
+[Typeset paper](../papers/agi-alpha-enterprise-implementation-v3.pdf) ·
+[LaTeX](../papers/agi-alpha-enterprise-implementation-v3.tex) ·
 [Recorded bilingual journey](../flywheel/index.html#enterprise)
 
 ## What was implemented
@@ -28,7 +28,8 @@ advance an offering. Prototype qualification requires its own actual enterprise
 launch and exact terminal executor record. Technical qualification uses the
 existing independently signed, rights-bound general acceptance and complete A
 accounting. Its current implemented adapter remains finite service placement.
-Commercial forecasts remain signed assumptions. A negative assessment stays
+Commercial forecasts remain signed assumptions. Their evidence is checked again
+when considering and dispatching production, including after authorization. A negative assessment stays
 recorded and cannot authorize production. Even a positive fictional assessment
 does not establish a live customer or grant permission to make external commitments.
 

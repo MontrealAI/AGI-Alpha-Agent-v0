@@ -194,6 +194,11 @@ class Enterprise:
             if self.journal.latest(ref.journal_key, cx)["digest"] != ref.record_digest:
                 raise Conflict("evidence is stale or differs from current recorded history")
 
+    def _commercial_evidence(self, offering: dict[str, Any], cx: Any) -> CommercialAssessment:
+        assessment = CommercialAssessment.model_validate(offering["commercial"])
+        self._evidence(assessment.evidence, cx)
+        return assessment
+
     def _context(self, cx: Any) -> dict[str, Any]:
         _, network = self.service._state(cx)
         active = self._read("active", "capacity", cx)
@@ -337,8 +342,7 @@ class Enterprise:
                     raise ValueError("commercial price is outside the versioned policy")
                 value["commercial"] = assessment.model_dump()
             else:
-                assessment = CommercialAssessment.model_validate(value["commercial"])
-                self._evidence(assessment.evidence, cx)
+                assessment = self._commercial_evidence(value, cx)
                 if raw["commercial"] is not None or assessment.lower_net_value_micro_usd <= 0:
                     raise ValueError("authorization requires a positive conservative commercial assessment")
         value["history"].append({"from_digest": old["digest"], "stage": stage, "terms": raw})
@@ -368,6 +372,11 @@ class Enterprise:
                         offering["stage"] != "authorized" or offering["qualification_source"] != context["source"]
                     ):
                         reasons.append("offering not currently authorized")
+                    elif alternative.action == "produce":
+                        try:
+                            self._commercial_evidence(offering, cx)
+                        except (KeyError, ValueError):
+                            reasons.append("commercial assessment evidence is missing or stale")
                     if (
                         alternative.price_micro_usd is not None
                         and alternative.price_micro_usd not in spec.price_candidates_micro_usd
@@ -475,6 +484,12 @@ class Enterprise:
                         raise Conflict("alternative offering changed since decision; reassess")
                     if current_offering is not None:
                         self._evidence(Offering.model_validate(current_offering["spec"]).need_evidence, cx)
+                        if (
+                            frozen_row["eligible"]
+                            and alternative.action == "produce"
+                            and current_offering["stage"] == "authorized"
+                        ):
+                            self._commercial_evidence(current_offering, cx)
             row = next(
                 x for x in decision["alternatives"] if x["alternative"]["alternative_id"] == decision["selected"]
             )

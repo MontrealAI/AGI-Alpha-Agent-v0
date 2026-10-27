@@ -481,3 +481,40 @@ def test_changed_commercial_assessment_evidence_cannot_authorize(setup: dict[str
     with pytest.raises(Conflict, match="evidence is stale"):
         advance(setup, "authorized")
     assert Enterprise(setup["service"]).inspect("offering", "resilient-placement")["stage"] == "commercially-assessed"
+
+
+def test_withdrawn_authorized_commercial_evidence_blocks_decision_and_dispatch(setup: dict[str, Any]) -> None:
+    record = launch(setup)
+    advance(setup, "prototype")
+    accept(setup, record)
+    advance(setup, "technically-qualified")
+    forecast = "@authorized-commercial-forecast"
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast, {"demand": "fictional-positive"})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    terms = commercial(setup, 100)
+    terms["evidence"] = [evidence(setup, forecast).model_dump()]
+    advance(setup, "commercially-assessed", terms)
+    advance(setup, "authorized")
+    assert decision(setup, "before-withdrawal", action="produce")["selected"] == "deliver"
+    with setup["journal"].transaction() as cx:
+        setup["journal"].append(cx, forecast, {"demand": "withdrawn"})
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    held = decision(setup, "after-withdrawal", action="produce")
+    assert held["selected"] == "hold"
+    assert "commercial assessment evidence is missing or stale" in held["alternatives"][0]["reasons"]
+    enterprise = Enterprise(setup["service"])
+    with pytest.raises(Conflict, match="evidence is stale"):
+        enterprise.run("before-withdrawal", *execution(setup, "withdrawn-production"))
+    assert not enterprise.inspect("decision", "before-withdrawal")["consumed"]
+    with pytest.raises(KeyError):
+        setup["journal"].latest(operation_key("withdrawn-production"))
+    request = copy.deepcopy(held["request"])
+    request["decision_id"] = "research-without-sales"
+    prototype = copy.deepcopy(request["alternatives"][0])
+    prototype.update(alternative_id="internal-prototype", action="prototype")
+    request["alternatives"].append(prototype)
+    selected = enterprise.apply(command(setup, "decide", request, "research-without-sales"))
+    assert selected["selected"] == "internal-prototype"
+    result = enterprise.run("research-without-sales", *execution(setup, "internal-after-withdrawal"))
+    assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
