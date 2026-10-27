@@ -43,7 +43,11 @@ def current_profile():
         records[name] = len(raw), hashlib.sha256(raw).hexdigest()
     matches = matching_profiles(records)
     assert len(matches) == 1
-    assert matches[0] in (HELPER.PAPERS_20261026_EXTRA_FILES, HELPER.NEXT_UPGRADE_20261026_EXTRA_FILES)
+    assert matches[0] in (
+        HELPER.PAPERS_20261026_EXTRA_FILES,
+        HELPER.NEXT_UPGRADE_20261026_EXTRA_FILES,
+        HELPER.PROFITABLE_WORK_20261027_EXTRA_FILES,
+    )
     return matches[0]
 
 
@@ -147,4 +151,84 @@ def test_complete_next_checkout_is_read_only_and_mixed_checkout_refuses(tmp_path
         assert report["checked"] == 61
         assert report["needsRefresh"] == []
         assert report["applied"] is False and report["backupDirectory"] is None
+    assert {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == bodies
+
+
+# Literal identities independently recomputed from the passive publication output.
+PROFITABLE_WORK_SOURCE_COMMIT = "0c33e4764b72fafec963c9020daca82f3a090a1c"
+PROFITABLE_WORK_PINS = {
+    WORKERS[0]: (
+        23501,
+        "558ce6e044dfbf6f5d330f67aedfa7f02ce276b09578334ed38a9401aa4b6d47",
+        "4cd48a7098d6932e72963bd5e30d346e6a7a0293",
+    ),
+    WORKERS[1]: (
+        23938,
+        "99aa41c0ca3be166621612ff5110d70a2f651459380a7ecf777c2337f6699ebf",
+        "16b1247929d157d61bd08c2b95dd9ecabd0755cc",
+    ),
+    WORKERS[2]: (
+        26560,
+        "6fc4239d456bd3b0474a935e6f7d12310621513f6f82288da27ae46f2dce0854",
+        "e61b83a04a5ffa1793705d1684c84fb357b10303",
+    ),
+}
+
+
+def profitable_workers():
+    """Reconstruct exact inert bytes from the unchanged authenticated 27-paper fixture."""
+    old = b'const CACHE = "agialpha-gallery-3dd55926d8ce5ef5";'
+    new = b'const CACHE = "agialpha-gallery-de1066a749ab5973";'
+    workers = {}
+    for name, previous in next_workers().items():
+        assert previous.count(old) == 1
+        body = previous.replace(old, new, 1)
+        size, digest, blob = PROFITABLE_WORK_PINS[name]
+        assert len(body) == size
+        assert hashlib.sha256(body).hexdigest() == digest
+        assert hashlib.sha1(b"blob " + str(size).encode() + b"\0" + body).hexdigest() == blob
+        assert HELPER.PROFITABLE_WORK_20261027_EXTRA_FILES[name] == (size, digest)
+        workers[name] = body
+    return workers
+
+
+@pytest.mark.parametrize("name", WORKERS)
+def test_profitable_worker_exact_lf_and_crlf_identity(name):
+    body = profitable_workers()[name]
+    size, digest, _ = PROFITABLE_WORK_PINS[name]
+    assert HELPER._canonical(body, digest, size, name) == body
+    assert HELPER._canonical(body.replace(b"\n", b"\r\n"), digest, size, name) == body
+
+
+@pytest.mark.parametrize("name", WORKERS)
+@pytest.mark.parametrize("same_size", [False, True])
+def test_profitable_worker_tampering_refuses(name, same_size):
+    body = profitable_workers()[name]
+    damaged = b"!" + body[1:] if same_size else body + b"// unreviewed\n"
+    size, digest, _ = PROFITABLE_WORK_PINS[name]
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        HELPER._canonical(damaged, digest, size, name)
+
+
+@pytest.mark.parametrize("mask", range(8))
+def test_profitable_and_next_complete_checkouts_never_admit_mixed_epochs(tmp_path, mask):
+    preceding, future = next_workers(), profitable_workers()
+    catalog = json.loads((ROOT / HELPER.CATALOG).read_bytes())
+    names = set(catalog["sources"]) | set(HELPER.PROFITABLE_WORK_20261027_EXTRA_FILES)
+    bodies = {name: (ROOT / name).read_bytes() for name in names}
+    for index, name in enumerate(WORKERS):
+        bodies[name] = future[name] if mask & (1 << index) else preceding[name]
+    records = {name: (len(bodies[name]), hashlib.sha256(bodies[name]).hexdigest()) for name in WORKERS}
+    assert len(matching_profiles(records)) == (1 if mask in (0, 7) else 0)
+    for name, body in bodies.items():
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(body)
+    if mask in (0, 7):
+        report = HELPER.refresh(tmp_path)
+        assert report["checked"] == 61 and report["needsRefresh"] == []
+        assert report["applied"] is False and report["backupDirectory"] is None
+    else:
+        with pytest.raises(ValueError, match="unexpected capability bytes"):
+            HELPER.refresh(tmp_path)
     assert {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == bodies
