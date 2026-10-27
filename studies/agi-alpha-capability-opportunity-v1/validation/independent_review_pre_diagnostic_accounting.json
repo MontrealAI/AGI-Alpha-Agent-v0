@@ -1,0 +1,578 @@
+{
+  "schema": "capability-opportunity-independent-role-probes/v1",
+  "status": "INDEPENDENT_REVIEW_ROLE_WITHIN_SAME_RESEARCH_TEAM",
+  "organizationally_independent": false,
+  "checks": [
+    {
+      "name": "primary_source_freeze",
+      "passed": true,
+      "evidence": {
+        "PROTOCOL.json": true,
+        "technical/benchmark.py": true,
+        "technical/learning.py": true,
+        "technical/predict.py": true,
+        "technical/recipient.py": true,
+        "technical/run_study.py": true
+      }
+    },
+    {
+      "name": "primary_artifact_freeze",
+      "passed": true,
+      "evidence": {
+        "origin-deliverable.json": true,
+        "recipient-replay-mission.json": true,
+        "v1.json": true,
+        "v2.json": true,
+        "wrong-prior.json": true
+      }
+    },
+    {
+      "name": "disjoint_task_seeds",
+      "passed": true,
+      "evidence": {
+        "learning:robust_development": [],
+        "learning:robust_confirmation": [],
+        "development:learning": [],
+        "development:robust_development": [],
+        "development:robust_confirmation": [],
+        "confirmation:learning": [],
+        "confirmation:development": [],
+        "confirmation:robust_development": [],
+        "confirmation:robust_confirmation": [],
+        "robust_confirmation:robust_development": []
+      }
+    },
+    {
+      "name": "primary_complete_confirmation",
+      "passed": true,
+      "evidence": {
+        "rows": 1728,
+        "unique_keys": 1728,
+        "expected": 1728
+      }
+    },
+    {
+      "name": "primary_all_observation_budgets",
+      "passed": true,
+      "evidence": {
+        "violations": []
+      }
+    },
+    {
+      "name": "primary_same_content_library_parity",
+      "passed": true,
+      "evidence": {
+        "paired_task_budgets": 192,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "robust_complete_confirmation",
+      "passed": true,
+      "evidence": {
+        "rows": 1728,
+        "unique_keys": 1728,
+        "expected": 1728
+      }
+    },
+    {
+      "name": "robust_all_observation_budgets",
+      "passed": true,
+      "evidence": {
+        "violations": []
+      }
+    },
+    {
+      "name": "robust_same_content_library_parity",
+      "passed": true,
+      "evidence": {
+        "paired_task_budgets": 192,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "primary_actual_verification_acceptance_and_cost_inclusion",
+      "passed": true,
+      "evidence": {
+        "rows_checked": 1728,
+        "violations": []
+      }
+    },
+    {
+      "name": "robust_actual_sixteen_context_acceptance",
+      "passed": true,
+      "evidence": {
+        "rows_checked": 1728,
+        "violations": []
+      }
+    },
+    {
+      "name": "robust_predeclared_source_unchanged_through_confirmation",
+      "passed": true,
+      "evidence": {
+        "artifacts/v1.json": true,
+        "artifacts/v2.json": true,
+        "artifacts/wrong-prior.json": true,
+        "benchmark.py": true,
+        "learning.py": true,
+        "predict.py": true,
+        "recipient.py": true,
+        "robust/PROTOCOL.json": true,
+        "robust/run_robust.py": true,
+        "run_study.py": true
+      }
+    },
+    {
+      "name": "artifacts_are_updates_of_empirically_fitted_models",
+      "passed": true,
+      "evidence": {
+        "learning_jobs": 11,
+        "v1_terms": 9,
+        "v2_terms": 21
+      }
+    },
+    {
+      "name": "gym_decisions_do_not_read_v2_outcomes",
+      "passed": true,
+      "evidence": [
+        {
+          "policy": "private",
+          "before": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "after": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "equal": true
+        },
+        {
+          "policy": "shared",
+          "before": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "after": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "equal": true
+        },
+        {
+          "policy": "shared_no_gym",
+          "before": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "after": {
+            "candidate": "gym",
+            "decision": "preserve_cash",
+            "rule": "v1 development forecast must cover its assessment/retention/upkeep plus the actual Gym query budget; v2 outcomes are not read for this decision",
+            "forecast_from_v1_only": 0.0,
+            "cost_C": 128.0
+          },
+          "equal": true
+        }
+      ]
+    },
+    {
+      "name": "enterprise_selection_does_not_read_regime_labels",
+      "passed": true,
+      "evidence": {
+        "equal_policy": true
+      }
+    },
+    {
+      "name": "complete_cost_cash_fees_refunds_delay_identities",
+      "passed": true,
+      "evidence": [
+        {
+          "truth": true,
+          "collection_delay": 1,
+          "report": {
+            "policy": "accounting-review-fixture",
+            "simulated_revenue": 100.0,
+            "gross_invoices": 100.0,
+            "simulated_collections": 100.0,
+            "refunds_paid": 0.0,
+            "false_accepted_invoice_total": 0.0,
+            "cost_A": 21.2,
+            "cost_B": 3.0,
+            "cost_C": 4.0,
+            "complete_cost": 28.2,
+            "profit": 71.8,
+            "cash": 12071.8,
+            "seed_capital": 12000.0,
+            "receivables": 0,
+            "refund_obligations": 0,
+            "payment_fee_payables": 0.0,
+            "obligations": 0.0,
+            "reserves": 2005.0,
+            "available_funds": 10066.8,
+            "available_earned_surplus": 0,
+            "jobs_executed": 1,
+            "true_accepted_jobs": 1,
+            "failed_jobs": 0,
+            "false_acceptances": 0,
+            "cash_rejections": 0,
+            "capacity_rejections": 0,
+            "unqualified_rejections": 0,
+            "human_choices": 0,
+            "defer_decline": 0,
+            "query_calls": 2.0,
+            "query_capacity": 28800.0,
+            "lost_opportunity_estimate_not_expensed": 0.0,
+            "accepted_output_cost": 28.2,
+            "setup_funded": true,
+            "surplus_financed_expansion": false,
+            "skill_retired": false,
+            "cash_identity_residual": 0.0
+          },
+          "passed": true
+        },
+        {
+          "truth": true,
+          "collection_delay": 40,
+          "report": {
+            "policy": "accounting-review-fixture",
+            "simulated_revenue": 100.0,
+            "gross_invoices": 100.0,
+            "simulated_collections": 0.0,
+            "refunds_paid": 0.0,
+            "false_accepted_invoice_total": 0.0,
+            "cost_A": 21.2,
+            "cost_B": 3.0,
+            "cost_C": 4.0,
+            "complete_cost": 28.2,
+            "profit": 71.8,
+            "cash": 11974.8,
+            "seed_capital": 12000.0,
+            "receivables": 100.0,
+            "refund_obligations": 0,
+            "payment_fee_payables": 3.0,
+            "obligations": 3.0,
+            "reserves": 2005.0,
+            "available_funds": 9966.8,
+            "available_earned_surplus": 0,
+            "jobs_executed": 1,
+            "true_accepted_jobs": 1,
+            "failed_jobs": 0,
+            "false_acceptances": 0,
+            "cash_rejections": 0,
+            "capacity_rejections": 0,
+            "unqualified_rejections": 0,
+            "human_choices": 0,
+            "defer_decline": 0,
+            "query_calls": 2.0,
+            "query_capacity": 28800.0,
+            "lost_opportunity_estimate_not_expensed": 0.0,
+            "accepted_output_cost": 28.2,
+            "setup_funded": true,
+            "surplus_financed_expansion": false,
+            "skill_retired": false,
+            "cash_identity_residual": 0.0
+          },
+          "passed": true
+        },
+        {
+          "truth": false,
+          "collection_delay": 1,
+          "report": {
+            "policy": "accounting-review-fixture",
+            "simulated_revenue": 0.0,
+            "gross_invoices": 100.0,
+            "simulated_collections": 100.0,
+            "refunds_paid": 100.0,
+            "false_accepted_invoice_total": 100.0,
+            "cost_A": 21.2,
+            "cost_B": 3.0,
+            "cost_C": 4.0,
+            "complete_cost": 28.2,
+            "profit": -28.2,
+            "cash": 11971.8,
+            "seed_capital": 12000.0,
+            "receivables": 0,
+            "refund_obligations": 0,
+            "payment_fee_payables": 0.0,
+            "obligations": 0.0,
+            "reserves": 2000.0,
+            "available_funds": 9971.8,
+            "available_earned_surplus": 0,
+            "jobs_executed": 1,
+            "true_accepted_jobs": 0,
+            "failed_jobs": 1,
+            "false_acceptances": 1,
+            "cash_rejections": 0,
+            "capacity_rejections": 0,
+            "unqualified_rejections": 0,
+            "human_choices": 0,
+            "defer_decline": 0,
+            "query_calls": 2.0,
+            "query_capacity": 28800.0,
+            "lost_opportunity_estimate_not_expensed": 0.0,
+            "accepted_output_cost": null,
+            "setup_funded": true,
+            "surplus_financed_expansion": false,
+            "skill_retired": false,
+            "cash_identity_residual": 0.0
+          },
+          "passed": true
+        },
+        {
+          "truth": false,
+          "collection_delay": 40,
+          "report": {
+            "policy": "accounting-review-fixture",
+            "simulated_revenue": 0.0,
+            "gross_invoices": 100.0,
+            "simulated_collections": 0.0,
+            "refunds_paid": 0.0,
+            "false_accepted_invoice_total": 100.0,
+            "cost_A": 21.2,
+            "cost_B": 3.0,
+            "cost_C": 4.0,
+            "complete_cost": 28.2,
+            "profit": -28.2,
+            "cash": 11974.8,
+            "seed_capital": 12000.0,
+            "receivables": 100.0,
+            "refund_obligations": 100.0,
+            "payment_fee_payables": 3.0,
+            "obligations": 103.0,
+            "reserves": 2000.0,
+            "available_funds": 9871.8,
+            "available_earned_surplus": 0,
+            "jobs_executed": 1,
+            "true_accepted_jobs": 0,
+            "failed_jobs": 1,
+            "false_acceptances": 1,
+            "cash_rejections": 0,
+            "capacity_rejections": 0,
+            "unqualified_rejections": 0,
+            "human_choices": 0,
+            "defer_decline": 0,
+            "query_calls": 2.0,
+            "query_capacity": 28800.0,
+            "lost_opportunity_estimate_not_expensed": 0.0,
+            "accepted_output_cost": null,
+            "setup_funded": true,
+            "surplus_financed_expansion": false,
+            "skill_retired": false,
+            "cash_identity_residual": 0.0
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "empirical_candidates_remain_denied",
+      "passed": true,
+      "evidence": [
+        {
+          "id": "experience-support-v2-design-b96",
+          "verdict": "reject",
+          "mean_delta_cents": -685,
+          "lower_delta_cents": -791.257476565013,
+          "lower_lifetime_net_cents": -59236,
+          "reasons": [
+            "nonpositive-lower-per-use-advantage",
+            "nonpositive-or-insufficient-complete-net-alpha"
+          ],
+          "admission": null
+        },
+        {
+          "id": "experience-support-v2-design-b40",
+          "verdict": "reject",
+          "mean_delta_cents": 6548.666666666667,
+          "lower_delta_cents": -21456.190383675814,
+          "lower_lifetime_net_cents": -961113,
+          "reasons": [
+            "nonpositive-lower-per-use-advantage",
+            "nonpositive-or-insufficient-complete-net-alpha"
+          ],
+          "admission": null
+        }
+      ]
+    }
+  ],
+  "passed": 17,
+  "total": 17,
+  "source_sha256": {
+    "technical/run_study.py": "ea19cf1b3d3b4cc3917af47be379f048d21862887992e2fbe0476672bdcd5ecf",
+    "technical/benchmark.py": "f37a14bce5de8f632c934edd2122b5cfdb33d4eeb636bc6f176952cb88c6d500",
+    "technical/learning.py": "e6c91cdf055584745e9a38ec62387aead55e6350421f9489a334403015b6851e",
+    "technical/robust/run_robust.py": "b418ff10092e242c16fef15faab8598d615e602a891d823511cb39a71acf2a28",
+    "economics/run_economics.py": "35e597ba041946821d491478001bb602dbf58ddcf6403ef421644e3f52651588"
+  },
+  "recorded_failures_preserved": [
+    "validation/reservations_before_correction.json"
+  ],
+  "corrected_reservations": {
+    "schema": "nonanticipative-admission-probe/v1",
+    "source_path": "studies/agi-alpha-capability-opportunity-v1/economics/run_economics.py",
+    "source_sha256": "ed11fe0f13578dc713b369ab6e03086243220de4b959e6a6516ccd369cb511b1",
+    "controls": [
+      {
+        "name": "insufficient_cash",
+        "expected_decision": "preserve_cash",
+        "actual_decision": "preserve_cash",
+        "future_outcome_reads": [],
+        "passed": true,
+        "realized_queries_if_executed": 2,
+        "declared_queries_before_execution": 96,
+        "cash_before_admission": 2010.5,
+        "reserve_floor": 2000.0,
+        "cash_identity_residual": 0.0,
+        "query_calls": 0.0,
+        "query_capacity": 960.0,
+        "ledger": [
+          {
+            "day": 0,
+            "kind": "origin_and_setup",
+            "A_cost": 9.0,
+            "B_cost": 0.0,
+            "C_cost": 0.0,
+            "cash": 2010.5,
+            "origin_accepted": false,
+            "origin_revenue": 0,
+            "setup_funded": true,
+            "query_calls": 0.0,
+            "seed_capital": 2019.5
+          },
+          {
+            "event_id": 0,
+            "day": 1,
+            "task_id": "future-task",
+            "offering": "verified_design",
+            "agent": 0,
+            "buyer_u": 0.9,
+            "transfer_u": 0.9,
+            "validator_bad": false,
+            "policy": "review-fixture",
+            "A_cost": 0.0,
+            "B_cost": 0.0,
+            "C_cost": 0.0,
+            "method": "beta_direct",
+            "budget": 96,
+            "quoted_price": 100.0,
+            "customer_choice": "buy_ai",
+            "reserved_query_calls": 96,
+            "reserved_cost": 18.6,
+            "observed_invoice_based_reserve": 2000.0,
+            "decision": "preserve_cash",
+            "cash": 2010.5,
+            "recognized_revenue": 0.0,
+            "cost_A_cumulative": 9.0,
+            "cost_B_cumulative": 0.0,
+            "cost_C_cumulative": 0.0,
+            "cumulative_profit": -9.0
+          },
+          {
+            "day": 1,
+            "kind": "day_close",
+            "cash": 2010.5,
+            "collections": 0.0,
+            "refunds": 0.0,
+            "recognized_revenue": 0.0,
+            "cost_A": 9.0,
+            "cost_B": 0.0,
+            "cost_C": 0.0,
+            "profit": -9.0,
+            "query_calls": 0.0,
+            "setup_backlog_calls": 0.0
+          }
+        ]
+      },
+      {
+        "name": "insufficient_capacity",
+        "expected_decision": "capacity_decline",
+        "actual_decision": "capacity_decline",
+        "future_outcome_reads": [],
+        "passed": true,
+        "realized_queries_if_executed": 2,
+        "declared_queries_before_execution": 96,
+        "cash_before_admission": 11991.0,
+        "reserve_floor": 2000.0,
+        "cash_identity_residual": 0.0,
+        "query_calls": 0.0,
+        "query_capacity": 10.0,
+        "ledger": [
+          {
+            "day": 0,
+            "kind": "origin_and_setup",
+            "A_cost": 9.0,
+            "B_cost": 0.0,
+            "C_cost": 0.0,
+            "cash": 11991.0,
+            "origin_accepted": false,
+            "origin_revenue": 0,
+            "setup_funded": true,
+            "query_calls": 0.0,
+            "seed_capital": 12000.0
+          },
+          {
+            "event_id": 0,
+            "day": 1,
+            "task_id": "future-task",
+            "offering": "verified_design",
+            "agent": 0,
+            "buyer_u": 0.9,
+            "transfer_u": 0.9,
+            "validator_bad": false,
+            "policy": "review-fixture",
+            "A_cost": 0.0,
+            "B_cost": 0.0,
+            "C_cost": 0.0,
+            "method": "beta_direct",
+            "budget": 96,
+            "quoted_price": 100.0,
+            "customer_choice": "buy_ai",
+            "reserved_query_calls": 96,
+            "reserved_cost": 18.6,
+            "observed_invoice_based_reserve": 2000.0,
+            "decision": "capacity_decline",
+            "cash": 11991.0,
+            "recognized_revenue": 0.0,
+            "cost_A_cumulative": 9.0,
+            "cost_B_cumulative": 0.0,
+            "cost_C_cumulative": 0.0,
+            "cumulative_profit": -9.0
+          },
+          {
+            "day": 1,
+            "kind": "day_close",
+            "cash": 11991.0,
+            "collections": 0.0,
+            "refunds": 0.0,
+            "recognized_revenue": 0.0,
+            "cost_A": 9.0,
+            "cost_B": 0.0,
+            "cost_C": 0.0,
+            "profit": -9.0,
+            "query_calls": 0.0,
+            "setup_backlog_calls": 0.0
+          }
+        ]
+      }
+    ],
+    "all_passed": true,
+    "scope": "Wholly artificial boundary fixtures; no claimed enterprise result or measured revenue."
+  },
+  "limits": "Synthetic executable tests and source review only. Market assumptions, frontier ability, physical validity, current identities and organizational independence are not validated."
+}

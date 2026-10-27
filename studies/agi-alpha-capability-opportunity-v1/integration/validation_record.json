@@ -1,0 +1,249 @@
+{
+  "schema": "capability-opportunity-local-integration-validation/v1",
+  "completed_utc": "2026-10-27T14:08:36.418461+00:00",
+  "source_sha256": {
+    "integration/bridge.py": "6acad454931d3a7b86e254a365a732dba5d0f5866a04f45dbce6c5890de4446a",
+    "integration/run_integration.py": "9e553e42a4301d107e487e762525e1941dcb80a44fbec43f64f879bb0a7b1251",
+    "integration/recipient_check.py": "fce84020704213f2b7124546d7f80d73256a9468a16482130e483556067ab8d0",
+    "integration/admission_check.py": "fc58dfdc32c18183591538e627e528a52a360279533573f89cf59dc07647869d",
+    "integration/replay.mjs": "21424aca2d4cbd5ed2553875e5f8120de2a51dcdbf21bdedc12b01534cc969c7",
+    "integration/crypto_controls.mjs": "7767b56c6938ca4353ce5f99e7ad5fdff8212e7029958283498b9d956924db68",
+    "validation/probe_reservations.py": "7efe59648b714cd839ae1cd20d17fab550583799f7adf72511c6f50c7d8db91a",
+    "validation/review_probes.py": "de1e4a22cd284bbbc81dbb3febe61422b4947cbe4a44f3dd22cc511814f5ec5f"
+  },
+  "vendored_unchanged_files": 29,
+  "conformance": {
+    "schema": "capability-opportunity-integration-controls/v1",
+    "artifact_sha256": "97d42f04166d6faf961d4452392d8c043b98ff56f4f2e70c3fe2ce546d1ea5b1",
+    "artifact_bytes": 2753,
+    "artifact_filename": "v2.json",
+    "checks": [
+      {
+        "name": "unchanged-upstream-source-closure",
+        "passed": true,
+        "files": 29
+      },
+      {
+        "name": "network-member-identical-byte-retrieval",
+        "member": "atlas.agent.agi.eth",
+        "passed": true
+      },
+      {
+        "name": "network-member-identical-byte-retrieval",
+        "member": "lyra.agent.agi.eth",
+        "passed": true
+      },
+      {
+        "name": "network-member-identical-byte-retrieval",
+        "member": "orion.agent.agi.eth",
+        "passed": true
+      },
+      {
+        "name": "network-member-identical-byte-retrieval",
+        "member": "validator.agent.agi.eth",
+        "passed": true
+      },
+      {
+        "name": "unknown-member-refused",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "HISTORICAL_IDENTITY_NOT_FOUND",
+            "CURRENT_IDENTITY_NOT_FOUND"
+          ],
+          "historyValid": false,
+          "currentReuseAllowed": false,
+          "mode": "FIXTURE_ONLY",
+          "liveIdentityEnforcement": "NOT_RUN",
+          "cryptographicAuthentication": false,
+          "nonceKey": "capability-opportunity-relay-research/v1:membership|ISSUE_SKILL_ATTESTATION|unknown.agent.agi.eth|member:6",
+          "skillId": "network-member:unknown.agent.agi.eth",
+          "skillVersion": "beyond-beta-alpha-policy-v1"
+        }
+      },
+      {
+        "name": "nested-name-refused",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "DIRECT_AGENT_REQUIRED"
+          ]
+        }
+      },
+      {
+        "name": "jobs-club-role-unmodified",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "DIRECT_AGENT_REQUIRED"
+          ]
+        }
+      },
+      {
+        "name": "export-right-refused",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "RIGHT_NOT_GRANTED"
+          ]
+        }
+      },
+      {
+        "name": "separate-execution-authority-required",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "SEPARATE_MISSION_EXECUTION_AUTHORITY_REQUIRED"
+          ]
+        }
+      },
+      {
+        "name": "revoked-capability-refused",
+        "passed": true,
+        "result": {
+          "ok": false,
+          "reasons": [
+            "NOT_ADMITTED:REVOKED",
+            "TERMINAL_LIFECYCLE_STATE"
+          ]
+        }
+      },
+      {
+        "name": "private-owner-only",
+        "passed": true
+      },
+      {
+        "name": "negative-conditional-alpha-refused",
+        "passed": true
+      },
+      {
+        "name": "changed-beta-invalidates-prior-admission",
+        "passed": true
+      },
+      {
+        "name": "version-history-cannot-overwrite",
+        "passed": true
+      },
+      {
+        "name": "shareable-means-all-authorized-members",
+        "passed": true
+      },
+      {
+        "name": "registered-protected-material-excluded",
+        "passed": true
+      },
+      {
+        "name": "changed-frozen-artifact-refused",
+        "passed": true
+      },
+      {
+        "name": "actual-aes-gcm-roundtrip",
+        "passed": true
+      },
+      {
+        "name": "changed-ciphertext-refused",
+        "passed": true,
+        "reason": "CAPSULE_BYTES_CHANGED"
+      },
+      {
+        "name": "changed-context-refused",
+        "passed": true,
+        "reason": "CAPSULE_CONTEXT_MISMATCH"
+      },
+      {
+        "name": "wrong-key-refused",
+        "passed": true,
+        "reason": "Unsupported state or unable to authenticate data"
+      },
+      {
+        "name": "identical-command-is-idempotent",
+        "passed": true
+      },
+      {
+        "name": "duplicate-activity-across-buckets-refused",
+        "passed": true,
+        "reason": "activity already charged; A, B and C cannot overlap"
+      },
+      {
+        "name": "native-scientific-capsule-refused",
+        "passed": true,
+        "reason": "supported_scope literal rejects scientific component"
+      },
+      {
+        "name": "revoked-accounting-authority-refused",
+        "passed": true,
+        "reason": "principal is not currently trusted for the required role"
+      },
+      {
+        "name": "capital-and-invoice-are-not-collected-revenue",
+        "passed": true
+      },
+      {
+        "name": "disjoint-complete-cost-profit-reconciles",
+        "passed": true
+      },
+      {
+        "name": "unknown-costs-block-complete-profit-and-available-funds",
+        "passed": true
+      }
+    ],
+    "passed": 29,
+    "total": 29,
+    "scope": "Executable integration conformance using actual artifact bytes and artificial monetary evidence.",
+    "empirical_alpha_admission": false,
+    "fresh_transfer_claim": false,
+    "live_ens_authentications": 0,
+    "actual_model_calls": 0,
+    "actual_revenue_usd": 0,
+    "production_admission": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE",
+    "execution_boundary": "Lifecycle retrieval does not execute the artifact. A separate recipient replay must do so.",
+    "copy_boundary": "Revocation blocks new mediated access; it cannot erase already retrieved bytes.",
+    "graph_specific_advantage": "Not established; identical authorized library bytes are a parity control."
+  },
+  "independent_review_checks": {
+    "passed": 20,
+    "total": 20
+  },
+  "local_checks": [
+    {
+      "name": "ruff",
+      "scope": "six new Python adapter/review files",
+      "passed": true
+    },
+    {
+      "name": "mypy-strict-follow-imports-skip",
+      "scope": "six new Python adapter/review files",
+      "passed": true
+    },
+    {
+      "name": "node-syntax",
+      "scope": "integration/replay.mjs",
+      "passed": true
+    }
+  ],
+  "earlier_optional_check_failure": {
+    "tool": "Black",
+    "error": "environment pathspec component import failure",
+    "represented_as_passed": false
+  },
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "node": "v24.22.1",
+    "packages": {
+      "numpy": "2.3.2",
+      "scipy": "1.17.0",
+      "scikit-learn": "1.8.0",
+      "cryptography": "50.0.2",
+      "pydantic": "2.11.7",
+      "ruff": "0.12.5",
+      "mypy": "1.17.0"
+    }
+  },
+  "full_repository_ci_run_by_this_review": false,
+  "production_scope": "NOT_QUALIFIED_UNSUPPORTED_SCIENTIFIC_SCOPE"
+}
