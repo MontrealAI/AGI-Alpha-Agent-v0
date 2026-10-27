@@ -1,0 +1,50 @@
+{
+  "schema": "discovery-frozen-execution-hosted-status/v1",
+  "source_commit": "e9cc4dcb5a27186fba1253ef0eebbc8df3a0c57b",
+  "source_tree": "db823b3e93971bfcc5b1a04d1c4841c80168dbab",
+  "pr_merge_commit": "824ea4e31c24a4784782f97a68c55d833e940915",
+  "pr_merge_tree_matches_source": true,
+  "pr": 4976,
+  "code_review": {
+    "commit": "e9cc4dcb5a27186fba1253ef0eebbc8df3a0c57b",
+    "status": "completed",
+    "findings": 0,
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4976#issuecomment-6448487877"
+  },
+  "workflows": [
+    {
+      "name": "Transformational Intelligence acceptance",
+      "run_id": 40548268877,
+      "conclusion": "success"
+    },
+    {
+      "name": "MARK wallet acceptance",
+      "run_id": 40548268921,
+      "conclusion": "success"
+    },
+    {
+      "name": "SUCCESSOR mission recovery",
+      "run_id": 40548268945,
+      "conclusion": "failure",
+      "job_id": 122344903500,
+      "failed_steps": [
+        "Generated source is current",
+        "Retain discovery browser screenshots"
+      ],
+      "browser_recovery": "not run: generator failed before browser stage",
+      "upstream_provisioning": "passed"
+    }
+  ],
+  "worker_control": {
+    "same_canonical_asset_bytes": true,
+    "asset_count": 438,
+    "same_worker_drift": true,
+    "stored_cache": "agialpha-gallery-ad95f74d442075f0",
+    "generated_cache": "agialpha-gallery-aba7e8d3935cd34f",
+    "scope": "exact Git blobs and existing canonical pure renderer; no worker or fixture changed"
+  },
+  "disposition": "hold merge; keep draft",
+  "remaining_dependency": "Existing #4960/#4961/#4963/#4972 owners reconcile against the qualified #4973/v1.46.1 publication source, regenerate all three workers through the canonical path and rerun applicable exact-source/installed/public gates.",
+  "release_or_publication_performed": false,
+  "qualification": "not passed; the failure and downstream nonexecution remain blocking"
+}
