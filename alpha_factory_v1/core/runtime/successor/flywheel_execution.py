@@ -41,6 +41,14 @@ def operation_key(operation_id: str) -> str:
     return KEY + digest("flywheel-execution-operation", {"operation_id": operation_id})
 
 
+def _computer_action(value: dict[str, Any]) -> dict[str, Any]:
+    """Normalize only supported empty pointer modifiers on an execution copy."""
+    action = copy.deepcopy(value)
+    if action.get("type") in {"click", "double_click", "drag", "move", "scroll"} and action.get("keys") == []:
+        del action["keys"]
+    return validate_action(action)
+
+
 class ExecutionProfile(StrictModel):
     """Operator-qualified exact model capabilities; names never imply support."""
 
@@ -416,6 +424,13 @@ class LazyDockerEnvironment:
 def _response_items(body: dict[str, Any], profile: ExecutionProfile) -> list[dict[str, Any]]:
     if body.get("status") != "completed" or body.get("model") != (profile.model_revision or profile.model_id):
         raise ValueError("incomplete response or unapproved model substitution")
+    reasoning = body.get("reasoning")
+    if reasoning is not None and (
+        not isinstance(reasoning, dict)
+        or reasoning.get("effort") is not None
+        and reasoning["effort"] != profile.reasoning_effort
+    ):
+        raise ValueError("provider reported an unapproved reasoning configuration")
     usage = body.get("usage")
     if not isinstance(usage, dict) or any(
         not _is_exact_type(usage.get(k), int) or not 0 <= usage[k] <= 10**12
@@ -648,6 +663,7 @@ class MissionExecutor:
                     "request_digest": digest("flywheel-responses-request", payload),
                     "response_digest": digest("flywheel-responses-response", body),
                     "served_reasoning": "provider-reported only; no independent attestation",
+                    "reported_reasoning": body.get("reasoning"),
                 }
                 state["usage_events"].append(state["last_response"])
                 calls = [item for item in output if item["type"] in {"computer_call", "function_call"}]
@@ -695,7 +711,7 @@ class MissionExecutor:
                     raw_actions = item.get("actions")
                     if not isinstance(raw_actions, list) or not 1 <= len(raw_actions) <= 20:
                         raise ValueError("invalid bounded computer action batch")
-                    actions = [validate_action(copy.deepcopy(action)) for action in raw_actions]
+                    actions = [_computer_action(action) for action in raw_actions]
                 if state["actions"] + len(actions) > mission.max_actions:
                     raise ValueError("mission action budget exhausted before execution")
                 observation = {}
@@ -711,8 +727,17 @@ class MissionExecutor:
                         profile.tool_request_caps_micro_usd.get(str(name), 0),
                     )
                 if name == "computer":
-                    if observation.get("type") != "computer_screenshot":
-                        raise ValueError("computer execution must return a resulting screenshot")
+                    if (
+                        set(observation) != {"type", "image_url", "detail"}
+                        or observation.get("type") != "computer_screenshot"
+                        or observation.get("detail") != "original"
+                        or not isinstance(observation.get("image_url"), str)
+                        or not observation["image_url"].startswith("data:image/png;base64,")
+                    ):
+                        raise ValueError("computer execution must return an inline resulting PNG screenshot")
+                    image = base64.b64decode(observation["image_url"].split(",", 1)[1], validate=True)
+                    if len(image) > 500_000 or not image.startswith(b"\x89PNG\r\n\x1a\n"):
+                        raise ValueError("computer observation exceeds its PNG boundary")
                     reply = {"type": "computer_call_output", "call_id": call_id, "output": observation}
                 else:
                     reply = {

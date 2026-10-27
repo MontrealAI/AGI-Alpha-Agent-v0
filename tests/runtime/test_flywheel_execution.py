@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import base64
 import json
 import time
 from pathlib import Path
@@ -188,7 +189,9 @@ def test_actual_tool_result_flows_back_to_model_and_durable_history(setup: dict[
     assert len(transport.requests) == 2
 
 
-@pytest.mark.parametrize("attack", ["tool", "model", "safety", "replay", "actions", "effort", "mode", "expiry"])
+@pytest.mark.parametrize(
+    "attack", ["tool", "model", "reasoning", "safety", "replay", "actions", "effort", "mode", "expiry"]
+)
 def test_refusal_preserves_failure_without_hidden_execution(setup: dict[str, Any], attack: str) -> None:
     s, task, p, env = setup, mission(), profile(), LocalExperiment()
     call = {"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}
@@ -197,6 +200,8 @@ def test_refusal_preserves_failure_without_hidden_execution(setup: dict[str, Any
         call["name"] = "send_payment"
     elif attack == "model":
         body["model"] = "silently-weaker-model"
+    elif attack == "reasoning":
+        body["reasoning"] = {"effort": "low"}
     elif attack == "safety":
         call["pending_safety_checks"] = [{"id": "requires-review"}]
     elif attack == "actions":
@@ -479,3 +484,55 @@ def test_computer_contract_cannot_be_widened_by_enclosing_mission(
     with pytest.raises(ValueError, match="ComputerTask contract"):
         MissionExecutor(setup["journal"], setup["trust"], setup["costs"], transport, environment).run(task, p, signed)
     assert not transport.requests and environment.computer is None and not setup["costs"].report()["unknown_costs"]
+
+
+@pytest.mark.parametrize("modifiers", [[], ["CTRL"]])
+def test_provider_pointer_modifiers_preserve_raw_history_and_execution_policy(
+    setup: dict[str, Any], modifiers: list[str]
+) -> None:
+    class ComputerFixture(LocalExperiment):
+        identity = {"fixture": "explicitly simulated computer"}
+
+        def perform(self, name: str, arguments: dict[str, Any], active: Any) -> dict[str, Any]:
+            assert name == "computer" and active()
+            self.calls.append(arguments)
+            return {
+                "type": "computer_screenshot",
+                "image_url": "data:image/png;base64," + base64.b64encode(b"\x89PNG\r\n\x1a\nTEST_FIXTURE").decode(),
+                "detail": "original",
+            }
+
+    s, task, env = setup, mission(), ComputerFixture()
+    p = profile().model_copy(update={"tools": [{"type": "computer"}]})
+    action = {"type": "click", "x": 4, "y": 8, "button": "left", "keys": modifiers}
+    transport = ScriptedTransport(
+        [response([{"type": "computer_call", "call_id": "pointer-1", "actions": [action]}]), done()]
+    )
+    signed = permit(s, task, p, env)
+    result = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env).run(task, p, signed)
+    assert result["history"][1]["actions"][0]["keys"] == modifiers
+    if modifiers:
+        assert result["status"] == "failed-or-uncertain" and not env.calls
+    else:
+        assert result["status"] == "delivered-awaiting-independent-acceptance-and-costs"
+        assert env.calls == [{"type": "click", "x": 4, "y": 8, "button": "left"}]
+
+
+def test_computer_observation_cannot_cause_an_unapproved_remote_image_fetch(setup: dict[str, Any]) -> None:
+    class RemoteImageFixture(LocalExperiment):
+        def perform(self, name: str, arguments: dict[str, Any], active: Any) -> dict[str, Any]:
+            self.calls.append(arguments)
+            return {
+                "type": "computer_screenshot",
+                "image_url": "https://unapproved.example/image",
+                "detail": "original",
+            }
+
+    s, task, env = setup, mission(), RemoteImageFixture()
+    p = profile().model_copy(update={"tools": [{"type": "computer"}]})
+    transport = ScriptedTransport(
+        [response([{"type": "computer_call", "call_id": "screenshot-1", "actions": [{"type": "screenshot"}]}]), done()]
+    )
+    result = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env).run(task, p, permit(s, task, p, env))
+    assert result["status"] == "failed-or-uncertain" and len(transport.requests) == 1
+    assert len(env.calls) == 1 and result["actions"] == 1
