@@ -12,6 +12,9 @@ import base64
 import copy
 import secrets
 import time
+import hashlib
+import platform
+from pathlib import Path
 from typing import Any, Literal, cast
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -21,10 +24,17 @@ from pydantic import Field, model_validator
 from ..store import Conflict
 from ..chain import address
 from .flywheel_access import AccessRequest, ResourceAccess, direct_name
-from .flywheel_costs import Charge, CostLedger, KEY as COST_KEY
+from .flywheel_costs import Charge, CostLedger, KEY as COST_KEY, accepted_native_delivery
 from .flywheel_checkpoint import DurableCheckpoint
 from .protocol import Digest, Identifier, StrictModel, Text, canonical, digest, safe_json_loads
-from .transformation import IntentCharter, SelectionProgram, SourceDocument, execute_selection, assert_public_content
+from .transformation import (
+    IntentCharter,
+    SelectionProgram,
+    SourceDocument,
+    execute_selection,
+    assert_public_content,
+    _checked_source_bytes,
+)
 from .transformation_library import KEY, TransformationLibrary
 from .trust import SignedEnvelope
 
@@ -60,6 +70,7 @@ class CapsuleManifest(StrictModel):
 class EvaluationPlan(StrictModel):
     candidate_digest: Digest
     beta_digest: Digest
+    execution_digest: Digest
     model_id: str = Field(min_length=1, max_length=200)
     reasoning_mode: str = Field(min_length=1, max_length=100)
     policy_digest: Digest
@@ -93,6 +104,7 @@ class FrontierRun(StrictModel):
     reasoning_mode: str = Field(min_length=1, max_length=100)
     tools_digest: Digest
     resource_rules_digest: Digest
+    recipient_capabilities_digest: Digest
     provider_response_digest: Digest
     billing_evidence_digest: Digest
     actual_cost_micro_usd: int = Field(ge=0, le=10**15)
@@ -132,6 +144,7 @@ class Invocation(StrictModel):
     charter: IntentCharter
     beta_digest: Digest
     policy_digest: Digest
+    recipient_capabilities_digest: Digest
     prerequisite_digests: list[Digest] = Field(max_length=32)
     logical_limit: int = Field(ge=1, le=100_000)
     cost_cap_micro_usd: int = Field(ge=0, le=10**12)
@@ -165,6 +178,8 @@ class ProtectedLibrary:
             access,
         )
         self.keys, self.active_key, self.checkpoint = dict(keys), active_key, checkpoint
+        self.costs.checkpoint = checkpoint
+        self._boot_execution_digest = self._execution_binding()
         with self.journal.transaction() as cx:
             state = self.library.snapshot()
             if BRANCH not in state:
@@ -179,12 +194,68 @@ class ProtectedLibrary:
                 }
                 self._commit(cx, state)
 
+    def _execution_binding(self) -> str:
+        import cryptography
+        import httpx
+        import pydantic
+
+        here = Path(__file__).parent
+        paths = [
+            *here.glob("flywheel_*.py"),
+            here / "transformation.py",
+            here / "trust.py",
+            here / "protocol.py",
+            here / "signatures.py",
+            here / "transformation_library.py",
+            *[
+                here.parent / name
+                for name in ("chain.py", "engine.py", "models.py", "provider.py", "store.py", "work.py")
+            ],
+        ]
+        sources = {}
+        for path in sorted(paths):
+            if path.is_symlink() or not path.is_file() or path.stat().st_size > 256_000:
+                raise ValueError("installed protected runtime requires bounded regular source files")
+            raw = _checked_source_bytes(path, path.read_bytes(), source_loader=globals().get("__loader__"))
+            sources[path.relative_to(here.parent).as_posix()] = hashlib.sha256(raw).hexdigest()
+        readers = [
+            {
+                "implementation": type(reader).__module__ + "." + type(reader).__qualname__,
+                "configuration": reader.config.model_dump() if hasattr(reader, "config") else None,
+            }
+            for reader in self.access.authority.readers
+        ]
+        from importlib.metadata import version
+
+        dependency_versions = {name: version(name) for name in ("eth-account", "eth-utils", "eth-hash")}
+        return digest(
+            "flywheel-execution-environment",
+            {
+                "sources": sources,
+                "python": platform.python_version(),
+                "cryptography": cryptography.__version__,
+                "pydantic": pydantic.__version__,
+                "httpx": httpx.__version__,
+                "runtime_configuration": self.journal.config.model_dump(),
+                "service": self.access.service.model_dump(),
+                "ens_pins": self.access.authority.pins.model_dump(),
+                "readers": readers,
+                "chain_dependencies": dependency_versions,
+            },
+        )
+
+    @property
+    def execution_digest(self) -> str:
+        return self._boot_execution_digest
+
     def _commit(self, cx: Any, state: dict[str, Any]) -> None:
         canonical(state)
         self.journal.append(cx, KEY, state)
         self.checkpoint.advance(self.journal, cx)
 
     def _state(self, cx: Any) -> tuple[dict[str, Any], dict[str, Any]]:
+        if self._execution_binding() != self._boot_execution_digest:
+            raise Conflict("installed runtime changed; restart and requalify affected claims")
         self.checkpoint.verify(self.journal, cx)
         state = self.journal.document(self.journal.latest(KEY, cx))
         return state, state[BRANCH]
@@ -217,17 +288,19 @@ class ProtectedLibrary:
         record = payload["record"]
         if (
             not isinstance(record, dict)
-            or set(record) != {"beta_digest", "policy_digest"}
+            or set(record) != {"beta_digest", "policy_digest", "execution_digest"}
             or any(
                 not isinstance(v, str) or len(v) != 64 or any(c not in "0123456789abcdef" for c in v)
                 for v in record.values()
             )
         ):
             raise ValueError("current Beta and policy commitments required")
+        if record["execution_digest"] != self.execution_digest:
+            raise ValueError("configuration must bind the actual installed execution environment")
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
             self._begin(network, signed)
-            if record != {k: network[k] for k in record}:
+            if record != {k: network.get(k) for k in record}:
                 network.update(record)
                 network["active"] = {}
                 for entry in network["entries"].values():
@@ -245,6 +318,8 @@ class ProtectedLibrary:
             raise ValueError("producer signature must bind the exact frozen manifest")
         if digest("flywheel-program", program) != manifest.content_digest:
             raise ValueError("candidate implementation digest mismatch")
+        origin_authority = self.access.authority.verify(manifest.origin_agent, manifest.origin_wallet)
+        origin_deadline = time.monotonic_ns() + 2_000_000_000
         nonce = secrets.token_bytes(12)
         aad = canonical(
             {"service": self.access.service.model_dump(), "journal": self.journal.identity, "manifest": ident}
@@ -262,15 +337,16 @@ class ProtectedLibrary:
             ]
             if manifest.version != max(versions, default=0) + 1:
                 raise Conflict("capsule versions must advance without replacing history")
-            origin = self.journal.latest(manifest.origin_mission, cx)
-            if origin["digest"] != manifest.origin_record_digest or origin.get("state") != "accepted":
+            origin = accepted_native_delivery(self.journal, manifest.origin_mission, cx)
+            if origin["digest"] != manifest.origin_record_digest:
                 raise ValueError("candidate must originate in this journal's exact accepted delivery")
-            if not self.costs.report(manifest.origin_mission, cx)["complete"]:
+            if not self.costs.report(manifest.origin_mission, cx)["bucket_complete"]["A"]:
                 raise ValueError("originating delivery costs remain incomplete")
             wallet = self.journal.latest("@wallet", cx)
             if wallet["address"] != manifest.origin_wallet:
                 raise ValueError("origin wallet must be proved through the existing runtime wallet binding")
-            origin_authority = self.access.authority.verify(manifest.origin_agent, manifest.origin_wallet)
+            if time.monotonic_ns() >= origin_deadline:
+                raise Conflict("origin authority evidence became stale before retention")
             network["entries"][ident] = {
                 "manifest": manifest.model_dump(),
                 "origin_authorization": origin_authority,
@@ -308,6 +384,16 @@ class ProtectedLibrary:
                 raise ValueError("evaluation must exclude the originating delivery's actual input commitment")
             if plan.beta_digest != network["beta_digest"] or plan.policy_digest != network["policy_digest"]:
                 raise ValueError("evaluation plan uses stale Beta or policy")
+            if (
+                plan.execution_digest != self.execution_digest
+                or network.get("execution_digest") != self.execution_digest
+            ):
+                raise ValueError("evaluation plan uses an unqualified execution environment")
+            exposures = network.setdefault("evaluation_inputs", {})
+            if set(plan.fresh_input_digests) & set(exposures):
+                raise ValueError("fresh evaluation cannot reuse a previously exposed input commitment")
+            for input_digest in plan.fresh_input_digests:
+                exposures[input_digest] = plan.candidate_digest
             entry.update(
                 state="frozen",
                 frozen_at=int(time.time()),
@@ -341,6 +427,8 @@ class ProtectedLibrary:
                 signed.principal != entry["plan"]["principal"]
                 or plan.beta_digest != network["beta_digest"]
                 or plan.policy_digest != network["policy_digest"]
+                or plan.execution_digest != self.execution_digest
+                or network.get("execution_digest") != self.execution_digest
             ):
                 raise ValueError("evidence evaluator, Beta or policy changed")
             if (
@@ -367,6 +455,7 @@ class ProtectedLibrary:
                         or run.beta_digest != plan.beta_digest
                         or run.tools_digest != plan.matched_tools_digest
                         or run.resource_rules_digest != plan.resource_rules_digest
+                        or run.recipient_capabilities_digest != plan.recipient_capabilities_digest
                     ):
                         raise ValueError("execution receipt differs from the matched frozen plan")
                     if run.candidate_digest != (ident if arm == 0 else None):
@@ -402,7 +491,7 @@ class ProtectedLibrary:
             if evidence.lower_net_saving_per_use_micro_usd > min(verified):
                 raise ValueError("conservative saving bound exceeds an observed paired net saving")
             cost_report = self.costs.report(plan.retention_cost_record, cx)
-            if not cost_report["complete"]:
+            if not cost_report["bucket_complete"]["B"]:
                 raise ValueError("unknown incremental costs prevent a justified net Alpha claim")
             charges = self.costs.snapshot(cx)["charges"].values()
             retained_costs = [
@@ -461,7 +550,8 @@ class ProtectedLibrary:
             self.library._distinct(signed.principal, role, entry["producer"], "producer")
             if action == "revoke":
                 entry.update(state="revoked", revocation=signed.model_dump())
-                network["active"].pop(entry["manifest"]["skill_id"], None)
+                if network["active"].get(entry["manifest"]["skill_id"]) == ident:
+                    network["active"].pop(entry["manifest"]["skill_id"])
                 changed = {ident}
                 for _ in range(len(network["entries"])):
                     added = {
@@ -475,7 +565,8 @@ class ProtectedLibrary:
                         child = network["entries"][key]
                         if child["state"] not in {"revoked", "rejected"}:
                             child["state"] = "requires-requalification"
-                            network["active"].pop(child["manifest"]["skill_id"], None)
+                            if network["active"].get(child["manifest"]["skill_id"]) == key:
+                                network["active"].pop(child["manifest"]["skill_id"])
                     changed |= added
             else:
                 if not int(time.time()) < record["expires_at"] <= int(time.time()) + 30 * 86400:
@@ -485,6 +576,8 @@ class ProtectedLibrary:
                     plan is None
                     or plan.beta_digest != network["beta_digest"]
                     or plan.policy_digest != network["policy_digest"]
+                    or plan.execution_digest != self.execution_digest
+                    or network.get("execution_digest") != self.execution_digest
                 ):
                     raise ValueError("control uses stale evaluation bindings")
                 if action == "validate":
@@ -517,6 +610,11 @@ class ProtectedLibrary:
         if entry["state"] != "admitted" or network["active"].get(entry["manifest"]["skill_id"]) != ident:
             raise Conflict("capsule is not currently admitted and active")
         plan = entry["plan"]["payload"]["record"]
+        if (
+            plan.get("execution_digest") != self.execution_digest
+            or network.get("execution_digest") != self.execution_digest
+        ):
+            raise Conflict("capsule requires requalification in this execution environment")
         if plan["beta_digest"] != network["beta_digest"] or plan["policy_digest"] != network["policy_digest"]:
             raise Conflict("capsule requires fresh Beta/policy requalification")
         self.trust.anchor(entry["producer"], "producer")
@@ -538,13 +636,14 @@ class ProtectedLibrary:
         return cast(dict[str, Any], entry)
 
     def manifest(self, ident: str, proof: AccessRequest) -> dict[str, Any]:
+        prepared = self.access.prepare(
+            proof, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident})
+        )
         with self.journal.transaction() as cx:
             _, network = self._state(cx)
             entry = self._eligible(network, ident)
             self._dependencies(network, entry)
-            authorization = self.access.verify(
-                proof, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}), cx
-            )
+            authorization = self.access.consume(prepared, cx)
             self.checkpoint.advance(self.journal, cx)
             return {
                 "manifest": copy.deepcopy(entry["manifest"]),
@@ -560,11 +659,12 @@ class ProtectedLibrary:
     def catalog(self, proof: AccessRequest) -> dict[str, Any]:
         """Every eligible agent may discover current available manifests after fresh proof."""
         resource = self.catalog_resource()
+        prepared = self.access.prepare(
+            proof, resource, "discover", digest("flywheel-catalog-request", {"resource": resource})
+        )
         with self.journal.transaction() as cx:
             _, network = self._state(cx)
-            authority = self.access.verify(
-                proof, resource, "discover", digest("flywheel-catalog-request", {"resource": resource}), cx
-            )
+            authority = self.access.consume(prepared, cx)
             manifests = []
             for ident in network["active"].values():
                 try:
@@ -587,6 +687,7 @@ class ProtectedLibrary:
     def invoke(self, ident: str, invocation: Invocation, proof: AccessRequest) -> dict[str, Any]:
         invocation = Invocation.model_validate(invocation.model_dump())
         request_hash = digest("flywheel-invocation", invocation)
+        prepared = self.access.prepare(proof, ident, "invoke", request_hash)
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
             entry = self._eligible(network, ident)
@@ -608,7 +709,7 @@ class ProtectedLibrary:
                 raise Conflict("finite available funds cannot cover this invocation's cost cap")
             if self.journal.latest("@control", cx)["state"] != "ready":
                 raise Conflict("agent is stopped")
-            authority = self.access.verify(proof, ident, "invoke", request_hash, cx)
+            authority = self.access.consume(prepared, cx)
             if (
                 authority["name"] == entry["manifest"]["origin_agent"]
                 or authority["wallet"] == entry["manifest"]["origin_wallet"]
@@ -647,6 +748,7 @@ class ProtectedLibrary:
                 "input_digest": source,
                 "beta_digest": invocation.beta_digest,
                 "policy_digest": invocation.policy_digest,
+                "recipient_capabilities_digest": invocation.recipient_capabilities_digest,
                 "authorization": authority,
                 "logical_units": used,
                 "elapsed_ns": time.monotonic_ns() - started,
@@ -657,9 +759,11 @@ class ProtectedLibrary:
                 "additional_value": None,
                 "cost_cap_micro_usd": invocation.cost_cap_micro_usd,
                 "execution": "installed-closed-selector; no frontier inference in this invocation",
+                "execution_digest": self.execution_digest,
             }
             activity = "reuse/" + invocation.mission_id
             costs = self.costs.snapshot(cx)
+            self.costs.require_open(costs, invocation.mission_id, "B")
             if activity in costs["charges"]:
                 raise Conflict("invocation cost activity already exists")
             pending = Charge(
@@ -709,6 +813,7 @@ class ProtectedLibrary:
                 or baseline.resource_rules_digest != plan.resource_rules_digest
                 or baseline.model_id != plan.model_id
                 or baseline.reasoning_mode != plan.reasoning_mode
+                or baseline.recipient_capabilities_digest != receipt["recipient_capabilities_digest"]
             ):
                 raise ValueError("fresh reuse baseline differs from the current matched scope")
             costs = self.costs.report(record.mission_id, cx)

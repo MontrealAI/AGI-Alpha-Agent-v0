@@ -1,9 +1,68 @@
 {
   "actual_customer_collections": 0,
   "actual_frontier_model_execution": false,
-  "catalog_candidate_digests": [
-    "ae0acfe2cec7953832ef889a41b133fd4544892def582ae1409cb5872cadd824"
-  ],
+  "catalog": {
+    "authorization": {
+      "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "block_number": 100,
+      "chain_id": 1,
+      "checked_at": 1793075796,
+      "name": "two.agent.agi.eth",
+      "owners": [
+        {
+          "name": "agi.eth",
+          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "wrapped_expiry": null
+        },
+        {
+          "name": "agent.agi.eth",
+          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "wrapped_expiry": null
+        },
+        {
+          "name": "two.agent.agi.eth",
+          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "wrapped_expiry": null
+        }
+      ],
+      "pins": {
+        "max_block_age_seconds": 60,
+        "registrar_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+        "registry_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84",
+        "schema_version": 1,
+        "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
+      },
+      "registrar_expiry": 1793162195,
+      "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
+      "wallet": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5"
+    },
+    "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "export": "controlled-invocation-only",
+    "manifests": [
+      {
+        "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+        "manifest": {
+          "content_digest": "ccb3d1e85c15d7a23b0c340962bd0b40afdc358189009012f50fa9acf9a3ffab",
+          "dependency_digests": [],
+          "export_policy": "controlled-invocation-only",
+          "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
+          "origin_agent": "one.agent.agi.eth",
+          "origin_mission": "00000000-0000-4000-8000-000000000001",
+          "origin_record_digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
+          "origin_wallet": "0x306776ec68df8d2f23f3c5473ffddddc8052d320",
+          "prerequisites": [],
+          "rights": "cleared-for-authenticated-network",
+          "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
+          "schema_version": 1,
+          "skill_id": "bounded-selector",
+          "supported_scope": "bounded-public-source-selection/v1",
+          "version": 1
+        },
+        "state": "admitted"
+      }
+    ],
+    "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
   "current_state": "revoked",
   "example": {
     "assessment": {
@@ -15,6 +74,11 @@
     },
     "costs": {
       "available_funds": 9902,
+      "bucket_complete": {
+        "A": true,
+        "B": true,
+        "C": false
+      },
       "cash": 10000,
       "collected_revenue": 0,
       "complete": true,
@@ -37,7 +101,7 @@
       "acceptance": {
         "domain": "flywheel-reuse-acceptance",
         "payload": {
-          "journal_identity": "urn:agialpha:ed25519:d4a4115ca22f016219f2956c03ade324a30d8a1ba1db66c2388357eba50b3ee6",
+          "journal_identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
           "operation_id": "accept-reuse",
           "record": {
             "beta_correct": true,
@@ -49,54 +113,55 @@
                 "billing_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "candidate_digest": null,
                 "evidence_basis": "configured-executor-attestation",
-                "finished_at": 1793072584,
+                "finished_at": 1793075796,
                 "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
                 "model_id": "fictional-frontier-receipt-fixture",
                 "output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "provider_response_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "reasoning_mode": "fixture",
+                "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-                "started_at": 1793072584,
+                "started_at": 1793075796,
                 "tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "usage": {
                   "fixture_tokens": 1
                 }
               },
               "principal": "executor",
-              "signature": "6Erm8CtJr9z2Y1xoWX94m7uww3pusaeQVKBCQqXJMEWGJ5cbLl21k5ClI+oD3S+Hdii+SnULP3joan8Ef88ICA=="
+              "signature": "5B7SOf7XAxh79TqIMEcrevt7iBeihhxd7iA1aBR4FxN0GycT7kOQwW1iSpLwyOPi3RR5ILqTOUG8iKsCI04YAw=="
             },
             "candidate_correct": true,
             "independent_tests_digest": "0000000000000000000000000000000000000000000000000000000000000000",
             "limitations": "Synthetic qualification fixture; no real frontier trial",
             "mission_id": "fresh-peer",
-            "receipt_digest": "eaae91db5442c8d849a11a39372ded488ea76edfd7ec06a84c168dac57fe2f7a",
+            "receipt_digest": "75f40625f9e361dfadd7da6c07e173fadfc53f340e345907e7aa9638af900a43",
             "residual_interventions_digest": "0000000000000000000000000000000000000000000000000000000000000000"
           }
         },
         "principal": "acceptor",
-        "signature": "lNwrFaL28B7nT8aZCWnN12IhG0o4HPBh9eQCPdtFY+kmycE2zQJxclmLVCyhUBZ7HHrkgxlNIm4RLY7oX66ACg=="
+        "signature": "z6er4VbX7oBHIbUvXbHS6665dbtGxMqiXC8nS/FD8rj98y3tsZ1qvYfhIu66IeFfu74Pxc70Ic30GVX4/IjQBA=="
       },
       "additional_value": 41,
       "authorization": {
         "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
         "block_number": 100,
         "chain_id": 1,
-        "checked_at": 1793072584,
+        "checked_at": 1793075796,
         "name": "two.agent.agi.eth",
         "owners": [
           {
             "name": "agi.eth",
-            "owner": "0x41660b80d5afd22d296bfc008e841e2a1fdff588",
+            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
             "wrapped_expiry": null
           },
           {
             "name": "agent.agi.eth",
-            "owner": "0x41660b80d5afd22d296bfc008e841e2a1fdff588",
+            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
             "wrapped_expiry": null
           },
           {
             "name": "two.agent.agi.eth",
-            "owner": "0x41660b80d5afd22d296bfc008e841e2a1fdff588",
+            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
             "wrapped_expiry": null
           }
         ],
@@ -107,16 +172,21 @@
           "schema_version": 1,
           "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
         },
-        "registrar_expiry": 1793158984,
+        "registrar_expiry": 1793162195,
         "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
-        "wallet": "0x41660b80d5afd22d296bfc008e841e2a1fdff588"
+        "wallet": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5"
       },
       "baseline_output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
       "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      "candidate_digest": "ae0acfe2cec7953832ef889a41b133fd4544892def582ae1409cb5872cadd824",
+      "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
       "cost_cap_micro_usd": 100,
       "cost_report": {
         "available_funds": 9902,
+        "bucket_complete": {
+          "A": false,
+          "B": true,
+          "C": false
+        },
         "cash": 10000,
         "collected_revenue": 0,
         "complete": true,
@@ -127,7 +197,7 @@
           "C": 0
         },
         "currency": "USD",
-        "delivery_profit": 0,
+        "delivery_profit": null,
         "evidence_basis": "configured accounting signer attestations",
         "obligations": 98,
         "reserve": 0,
@@ -135,13 +205,15 @@
         "unit": "micro_usd",
         "unknown_costs": false
       },
-      "elapsed_ns": 599325,
+      "elapsed_ns": 422397,
       "error": null,
       "execution": "installed-closed-selector; no frontier inference in this invocation",
+      "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
       "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
       "logical_units": 31,
       "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      "request_digest": "adda85748140eddf88bccdec1e42596d0bb70c0fa3c0f46d3b05484bba866345",
+      "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "request_digest": "d3b6e3b44d3f4d397aca722b84d8238ec9dc2570da53ef7d08c2e17810ff4072",
       "result": {
         "covered_weight": 21,
         "program_digest": "bf89094f2247fda8dec0c2059c6fe543e507060ae30934e078f6c3290f290a8d",
@@ -184,9 +256,9 @@
       "export_policy": "controlled-invocation-only",
       "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
       "origin_agent": "one.agent.agi.eth",
-      "origin_mission": "fixture-origin",
-      "origin_record_digest": "873e780f89fd4244316eb5c6a1fa91787e2245d8bd1d0d348c2b6f3a410bc899",
-      "origin_wallet": "0x816400ecc16be320cccb0f2a7484d1209c156915",
+      "origin_mission": "00000000-0000-4000-8000-000000000001",
+      "origin_record_digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
+      "origin_wallet": "0x306776ec68df8d2f23f3c5473ffddddc8052d320",
       "prerequisites": [],
       "rights": "cleared-for-authenticated-network",
       "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -195,123 +267,237 @@
       "supported_scope": "bounded-public-source-selection/v1",
       "version": 1
     },
-    "origin_costs": {
-      "available_funds": 9902,
-      "cash": 10000,
-      "collected_revenue": 0,
-      "complete": true,
-      "complete_cost_profit": -9,
-      "costs": {
-        "A": 9,
-        "B": 0,
-        "C": 0
+    "origin_delivery": {
+      "digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
+      "elapsed_seconds": 0.007025,
+      "error": null,
+      "execution_config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "inference": null,
+      "lease_expires_ns": 1793076456243391820,
+      "request": {
+        "generations": 12,
+        "goal": "List the supported read operations in the supplied RPC source audit",
+        "population": 20,
+        "seed": 42,
+        "work": {
+          "kind": "research",
+          "sources": [
+            {
+              "id": "rpc-allowlist",
+              "text": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt. No RPC request was executed.",
+              "title": "Current public RPC allowlist",
+              "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/95051ed4a58b2f3ded9e392ead5539a90bd8df13/alpha_factory_v1/core/runtime/chain.py"
+            }
+          ]
+        }
       },
-      "currency": "USD",
-      "delivery_profit": -9,
-      "evidence_basis": "configured accounting signer attestations",
-      "obligations": 98,
-      "reserve": 0,
-      "token_movements_included": false,
-      "unit": "micro_usd",
-      "unknown_costs": false
+      "request_hash": "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225",
+      "result": {
+        "findings": [
+          {
+            "claim": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt.",
+            "quote": "Allowed read operations: eth_blockNumber, eth_call, eth_chainId, eth_getBlockByNumber, eth_getCode, eth_getTransactionReceipt.",
+            "source_id": "rpc-allowlist"
+          },
+          {
+            "claim": "No RPC request was executed.",
+            "quote": "No RPC request was executed.",
+            "source_id": "rpc-allowlist"
+          }
+        ],
+        "limits": "Supplied-source analysis; source authenticity and claim interpretation require operator review.",
+        "method": "extractive evidence ranking",
+        "sources": [
+          {
+            "id": "rpc-allowlist",
+            "sha256": "84fbe6caafc4b5434c7bb3119d40e7c150216033cc92b2c8ffbf0996ef836fa2",
+            "title": "Current public RPC allowlist",
+            "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/95051ed4a58b2f3ded9e392ead5539a90bd8df13/alpha_factory_v1/core/runtime/chain.py"
+          }
+        ]
+      },
+      "review": {
+        "actor": "operator",
+        "approved": true,
+        "note": "Local automated quotation and static allowlist checks; no independent organizational acceptance claimed",
+        "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+        "verification": {
+          "checks": [
+            "every quotation occurs in its cited input",
+            "source identifiers are valid"
+          ],
+          "passed": true,
+          "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+          "semantic_review_required": true
+        }
+      },
+      "revision": 18,
+      "stages": [
+        {
+          "detail": {
+            "config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "evaluation_limit": 10000,
+            "goal": "List the supported read operations in the supplied RPC source audit",
+            "input_hash": "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225",
+            "kind": "research",
+            "wall_seconds_limit": 600
+          },
+          "role": "planning"
+        },
+        {
+          "detail": {
+            "input_provenance": "operator-supplied",
+            "parent": null,
+            "parent_digest": null
+          },
+          "role": "research"
+        },
+        {
+          "detail": {
+            "inference": null,
+            "method": "extractive evidence ranking"
+          },
+          "role": "strategy"
+        },
+        {
+          "detail": {
+            "objective_improvement": null,
+            "realized_revenue": null,
+            "token_settlement": "not_recorded",
+            "unit": null
+          },
+          "role": "market"
+        },
+        {
+          "detail": {
+            "artifact_type": "application/json",
+            "execution": "built-in analytical tools; no model-generated code executed",
+            "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60"
+          },
+          "role": "codegen"
+        },
+        {
+          "detail": {
+            "checks": [
+              "every quotation occurs in its cited input",
+              "source identifiers are valid"
+            ],
+            "passed": true,
+            "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+            "semantic_review_required": true
+          },
+          "role": "safety"
+        },
+        {
+          "detail": {
+            "archive": "signed mission journal",
+            "learning_eligible_after_approval": true
+          },
+          "role": "memory"
+        }
+      ],
+      "state": "completed",
+      "verification": {
+        "checks": [
+          "every quotation occurs in its cited input",
+          "source identifiers are valid"
+        ],
+        "passed": true,
+        "result_hash": "11c2c90e027ada241988b823dba39208e9273d884f59422964809b174c9f4d60",
+        "semantic_review_required": true
+      }
+    },
+    "plan": {
+      "domain": "flywheel-plan",
+      "payload": {
+        "journal_identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
+        "operation_id": "plan/662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+        "record": {
+          "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+          "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
+          "fresh_input_digests": [
+            "447ede5cd06b3b530af87e79825474042889e0b0c6abaf9c16625e40702f2e8e",
+            "b266853183daa84456e4ae16fd2c3c6858b91d30108727ecc8f69e725b50ca78"
+          ],
+          "matched_tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "model_id": "fictional-frontier-receipt-fixture",
+          "origin_input_digests": [
+            "beab74aa3696f37885987972491ab7f805fcab19cd1d52f026e822ce23ae2225"
+          ],
+          "planned_reuses": 10,
+          "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "prospective_basis": "Synthetic conservative horizon assumption",
+          "reasoning_mode": "fixture",
+          "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "remaining_retention_micro_usd": 1,
+          "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "retention_cost_record": "retention/662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+          "schema_version": 1
+        }
+      },
+      "principal": "evaluator",
+      "signature": "ClOxHxHVAJxjhxpwFlOogvceJ0zcmeRJ7T6Z6M5TbTu6XsTQAO4Vyd3lUJkFwVAYMtflaKmLg+7mbG9BEnvSCg=="
     }
   },
-  "historical_record": {
-    "file": "protected-flywheel-conformance-historical.json",
-    "scope": "original earlier conformance bytes preserved; not rebound to this source",
-    "sha256": "9d2202568c78b147d38c3a0bbf55611696aa3fd111000bb35a7742ed15ae365a"
-  },
+  "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
+  "historical_records": [
+    {
+      "file": "protected-flywheel-conformance-historical.json",
+      "scope": "original synthetic fixture with constructed origin acceptance; never qualifies native delivery or this source",
+      "sha256": "9d2202568c78b147d38c3a0bbf55611696aa3fd111000bb35a7742ed15ae365a"
+    },
+    {
+      "commit": "93e8422f6417d751ff9de53553b31faf97f60c27",
+      "file": "docs/agent/release-evidence/protected-flywheel-conformance.json",
+      "scope": "superseded synthetic fixture with constructed origin; original bytes remain in Git history",
+      "sha256": "690a0d6c36b548c670ec58c23c360070d116a3c1105795be28cadeb4fdbe1a90"
+    }
+  ],
   "journal_integrity": {
-    "events": 60,
-    "head": "34e40b320637809395099af32a386797a64f1bc720df68fce8b19154974857aa",
-    "identity": "urn:agialpha:ed25519:d4a4115ca22f016219f2956c03ade324a30d8a1ba1db66c2388357eba50b3ee6",
+    "events": 70,
+    "head": "2bcc2ba71154559f2299506e91612f491960fa694c90d8e8e721e0b485df4106",
+    "identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
     "valid": true
   },
   "live_ens_qualification": false,
-  "local_validation": {
-    "existing_runtime_campaign": {
-      "cause": "sparse checkout omitted allocation fixture; exact failed case subsequently passed after materialization",
-      "failed": 1,
-      "passed": 144
-    },
-    "flywheel_browser": {
-      "accessibility": [
-        {
-          "language": "en",
-          "violations": [],
-          "width": 1440
-        },
-        {
-          "language": "fr",
-          "violations": [],
-          "width": 1440
-        },
-        {
-          "language": "en",
-          "violations": [],
-          "width": 390
-        },
-        {
-          "language": "fr",
-          "violations": [],
-          "width": 390
-        },
-        {
-          "language": "en",
-          "violations": [],
-          "width": 320
-        },
-        {
-          "language": "fr",
-          "violations": [],
-          "width": 320
-        }
-      ],
-      "checks": 19,
-      "passed": true,
-      "public_bytes_verified": false
-    },
-    "full_release_acceptance": "not run locally; mandatory hosted gates remain",
-    "protected_conformance_tests": 48,
-    "publication_and_source_tests": 54,
-    "ruff": "passed",
-    "strict_mypy_modules": 7
-  },
+  "origin_execution": "actual native Research submit, execute, quote verification and automated review; no frontier model or independent organizational acceptance",
   "prices_costs_and_funding": "fictional fixture attestations; not observed real amounts",
   "production_service_provisioned": false,
   "real_peer_reuse_qualified": false,
   "required_live_resources": [
-    "approved model/executor, quota, billing and finite allowance",
-    "approved service host, durable encrypted custody and separate high-water custody",
+    "approved frontier model/executor, exact configuration, quota, billing and finite allowance",
+    "approved service host, durable encrypted storage and separately retained key/checkpoint custody",
     "two approved RPC readers and real code pins",
     "two owner-controlled eligible agent wallets signing fresh challenges"
   ],
   "revoked_stale_access_refused": true,
-  "schema": "protected-flywheel-conformance/v1",
-  "scope": "SYNTHETIC PROTOCOL CONFORMANCE ONLY",
+  "schema": "protected-flywheel-conformance/v2",
+  "scope": "LOCAL NATIVE WORK AND SYNTHETIC PROTOCOL CONFORMANCE ONLY",
   "signers_and_chain": "ephemeral fictional role keys and RPC responses; no network requests or actual ENS identities",
-  "software_executed": [
-    "Ed25519 authenticated transitions",
-    "EIP-191 EOA recovery",
-    "fixed-width ENSv1 ABI verification against fictional two-reader responses",
-    "AES-GCM encrypted library retention",
-    "authenticated current-manifest discovery",
-    "installed closed source-selection program",
-    "complete-cost fixture reconciliation",
-    "separate fixture acceptance",
-    "high-water protected revocation"
-  ],
   "source_sha256": {
     "alpha_factory_v1/core/runtime/api.py": "e979bedd41902d6204c70af5c2506bf373c223ac8f7da19d02dba56cb185108f",
+    "alpha_factory_v1/core/runtime/chain.py": "fba94f76ed405a3bb9ec7bb9aaf6b6467fd24a3401068bf52a710bf56e04fc94",
     "alpha_factory_v1/core/runtime/cli.py": "929eab708e63033609eb20ea5900041ea59d66321d28296921a59dcfa9c7f19f",
-    "alpha_factory_v1/core/runtime/successor/flywheel_access.py": "53bdf9f947052368c348e1131711013a26d85444adb50f9153853b939d5367a9",
-    "alpha_factory_v1/core/runtime/successor/flywheel_api.py": "a922516f0a1384c9e4aab75045410e15629725576f03bca7dffcd9e04fef9bc1",
-    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "0946e458c6ace22f9f318c80be7ddf2f10a838eb783fbcbdac01cd6b7c952db7",
-    "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "1c42f30f90005851e9f2f46c275bc0f226fba80446df28d8d83da74b7bb2dabc",
-    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "634c35993036a8e3b163e7c8d8ca9803b5056945f7edb604ed0fd66613c1b6c8",
-    "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "3abfb674c09da8a58ef6072a70665437b0552c4ae85eea634aa4469c5d178d45",
-    "alpha_factory_v1/core/runtime/successor/flywheel_operator.py": "9b0732b171950e5d4d1be4f16ddcb8bbed4de2c4ae14501929d2838fee0a30f6",
+    "alpha_factory_v1/core/runtime/engine.py": "f353c7b545721b25b6fd523837ca7b69bd7edec383e2d43b1421b53714fb4c1f",
+    "alpha_factory_v1/core/runtime/models.py": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+    "alpha_factory_v1/core/runtime/provider.py": "21152a3e0e021ca5a5f5ed5a1b8f1507efb4ff102fa6974a37b55aca4cca58de",
+    "alpha_factory_v1/core/runtime/store.py": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+    "alpha_factory_v1/core/runtime/successor/flywheel_access.py": "316a916611a83082b8b0536365c013b03982ef058d2f6675453ef7c7fac402ca",
+    "alpha_factory_v1/core/runtime/successor/flywheel_api.py": "0a38aa82533e8012e3f7c581f5e8c83404f2c48ec09e82bfa36cd01b17920a4c",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "72e440325e900e2f19cf6bc192130f1862525f6a2553c8f01a87291b8c44b79e",
+    "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "6b64c4032381f7837b7312c1ad275b1dbad3eb20e22757b2f2b81de86d652fb2",
+    "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "fba839dd9335a39f0b74d6ee39a3cc68677b34ccce1268096a5a1ef029f210e8",
+    "alpha_factory_v1/core/runtime/successor/flywheel_operator.py": "0fedec8aa7d51d22c60cfeee604fbce5f2f434648be088cf624e43f7e55abc27",
+    "alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+    "alpha_factory_v1/core/runtime/successor/signatures.py": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+    "alpha_factory_v1/core/runtime/successor/transformation.py": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+    "alpha_factory_v1/core/runtime/successor/transformation_library.py": "5ed6678697511d21ccfa7d5847d7e73667b0b7212d56b3ed8bc5129971a8d092",
     "alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
-    "tests/runtime/test_flywheel_protected.py": "5f26ce5386544a0fc79b328c67f34371b4827e85c832e3431907187828b4cdd0"
+    "alpha_factory_v1/core/runtime/work.py": "0dae1e55376f991a364cbe748fb7eccc3c91be29cfb8ed8a9a43e8366fe4c2c9",
+    "scripts/record_protected_flywheel_conformance.py": "5bc519c13032f6f48e47403db949e9d9cf6c0e7c9df68d65e524d73205ccea1c",
+    "tests/runtime/test_flywheel_protected.py": "302cc2dc5b5626fe9689eb19d8c4377afb1afb6716a4c67ad1ce68f00f4f54b3"
   }
 }

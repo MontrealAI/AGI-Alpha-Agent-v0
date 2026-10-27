@@ -44,6 +44,7 @@ from alpha_factory_v1.core.runtime.successor.trust import SignedEnvelope, TrustA
 
 ZERO = "0" * 64
 BETA, POLICY = "b" * 64, "c" * 64
+ORIGIN = "00000000-0000-4000-8000-000000000001"
 CODE = "0x60006000"
 PIN = hashlib.sha256(bytes.fromhex(CODE[2:])).hexdigest()
 
@@ -223,6 +224,8 @@ def secrets_bytes() -> bytes:
 
 
 def signed(s: dict[str, Any], domain: str, role: str, record: Any, operation: str) -> SignedEnvelope:
+    if domain == "configure":
+        record = {**record, "execution_digest": record.get("execution_digest", s["service"].execution_digest)}
     return sign_record(
         s["keys"][role],
         role,
@@ -244,14 +247,51 @@ def account(s: dict[str, Any], action: str, record: Any, operation: str) -> None
 
 def paid_origin(s: dict[str, Any]) -> dict[str, Any]:
     journal = s["journal"]
-    with journal.transaction() as cx:
-        origin = journal.append(
-            cx, "fixture-origin", {"state": "accepted", "request_hash": ZERO, "result": {"fixture": True}}
-        )
+    from alpha_factory_v1.core.runtime.engine import Engine
+    from alpha_factory_v1.core.runtime.models import Mission
+    from alpha_factory_v1.core.runtime.store import digest as runtime_digest
+    import ast
+
+    source_path = Path(__file__).resolve().parents[2] / "alpha_factory_v1/core/runtime/chain.py"
+    parsed = ast.parse(source_path.read_text())
+    rpc_class = next(node for node in parsed.body if isinstance(node, ast.ClassDef) and node.name == "RPC")
+    call = next(node for node in rpc_class.body if isinstance(node, ast.FunctionDef) and node.name == "call")
+    allowed = next(
+        node.value
+        for node in call.body
+        if isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == "allowed" for target in node.targets)
+    )
+    methods = sorted(item.value for item in allowed.elts)
+    statement = "Allowed read operations: " + ", ".join(methods) + ". No RPC request was executed."
+    mission = Mission(
+        goal="List the supported read operations in the supplied RPC source audit",
+        work={
+            "kind": "research",
+            "sources": [
+                {
+                    "id": "rpc-allowlist",
+                    "title": "Current public RPC allowlist",
+                    "text": statement,
+                    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/95051ed4a58b2f3ded9e392ead5539a90bd8df13/alpha_factory_v1/core/runtime/chain.py",
+                }
+            ],
+        },
+    )
+    engine = Engine(journal)
+    reviewed = engine.execute(journal.submit(mission, ORIGIN)["id"])
+    origin = engine.review(
+        reviewed["id"],
+        reviewed["revision"],
+        runtime_digest(reviewed["result"]),
+        True,
+        "Local automated quotation and static allowlist checks; no independent organizational acceptance claimed",
+    )
+    assert origin["state"] == "completed" and origin["review"]["approved"] is True
     for category in sorted(CATEGORIES):
         record = Charge(
             activity_id="origin/" + category,
-            mission_id="fixture-origin",
+            mission_id=ORIGIN,
             bucket="A",
             category=category,
             accrued_micro_usd=1,
@@ -261,15 +301,13 @@ def paid_origin(s: dict[str, Any]) -> dict[str, Any]:
             note="Synthetic category-completeness fixture",
         ).model_dump()
         account(s, "charge", record, category)
-    account(
-        s, "seal", {"mission_id": "fixture-origin", "evidence_digest": ZERO, "categories": sorted(CATEGORIES)}, "seal"
-    )
+    account(s, "seal", {"mission_id": ORIGIN, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)}, "seal")
     account(
         s,
         "capital",
         {
             "record_id": "fixture-funding",
-            "mission_id": "fixture-origin",
+            "mission_id": ORIGIN,
             "amount_micro_usd": 10_000,
             "evidence_digest": ZERO,
         },
@@ -315,6 +353,7 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
     plan = EvaluationPlan(
         candidate_digest=ident,
         beta_digest=BETA,
+        execution_digest=s["service"].execution_digest,
         model_id="fictional-frontier-receipt-fixture",
         reasoning_mode="fixture",
         policy_digest=POLICY,
@@ -322,13 +361,15 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
         resource_rules_digest=ZERO,
         recipient_capabilities_digest=ZERO,
         retention_cost_record="retention/" + ident,
-        origin_input_digests=[ZERO],
-        fresh_input_digests=["1" * 64, "2" * 64],
+        origin_input_digests=[s["journal"].latest(ORIGIN)["request_hash"]],
+        fresh_input_digests=[
+            digest("conformance-fresh-input", {"candidate": ident, "case": index}) for index in range(2)
+        ],
         planned_reuses=10,
         remaining_retention_micro_usd=1,
         prospective_basis="Synthetic conservative horizon assumption",
     )
-    plan_signed = signed(s, "plan", "evaluator", plan.model_dump(), "plan")
+    plan_signed = signed(s, "plan", "evaluator", plan.model_dump(), "plan/" + ident)
     service.freeze(plan_signed)
     pairs: list[list[SignedEnvelope]] = [[], [], []]
     for input_digest in plan.fresh_input_digests:
@@ -343,6 +384,7 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
                 "reasoning_mode": "fixture",
                 "tools_digest": ZERO,
                 "resource_rules_digest": ZERO,
+                "recipient_capabilities_digest": ZERO,
                 "provider_response_digest": ZERO,
                 "billing_evidence_digest": ZERO,
                 "actual_cost_micro_usd": 10 if arm == 0 else 30,
@@ -378,7 +420,7 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
     for arm, receipts in enumerate(pairs[:2]):
         for index, receipt in enumerate(receipts):
             charge = Charge(
-                activity_id=f"evaluation/{arm}/{index}",
+                activity_id=f"evaluation/{ident}/{arm}/{index}",
                 mission_id="retention/" + ident,
                 bucket="B",
                 category="model",
@@ -388,10 +430,10 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
                 evidence_digest=digest("flywheel-frontier-run-record", receipt.model_dump()),
                 note="Synthetic paired invocation accounting",
             )
-            account(s, "charge", charge.model_dump(), f"eval-cost-{arm}-{index}")
+            account(s, "charge", charge.model_dump(), f"eval-cost-{ident}-{arm}-{index}")
     for category in sorted(CATEGORIES - {"model"}):
         charge = Charge(
-            activity_id="retention/" + category,
+            activity_id="retention/" + ident + "/" + category,
             mission_id="retention/" + ident,
             bucket="B",
             category=category,
@@ -401,14 +443,14 @@ def evaluate(s: dict[str, Any], ident: str, saving: int = 20, correct: bool = Tr
             evidence_digest=ZERO,
             note="Synthetic explicit zero-cost category attestation",
         )
-        account(s, "charge", charge.model_dump(), "retention-cost-" + category)
+        account(s, "charge", charge.model_dump(), "retention-cost-" + ident + "/" + category)
     account(
         s,
         "seal-retention",
         {"mission_id": "retention/" + ident, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
-        "retention-seal",
+        "retention-seal/" + ident,
     )
-    return service.evaluate(signed(s, "evidence", "evaluator", evidence.model_dump(), "evidence"))
+    return service.evaluate(signed(s, "evidence", "evaluator", evidence.model_dump(), "evidence/" + ident))
 
 
 def control(s: dict[str, Any], ident: str, action: str, operation: str | None = None) -> None:
@@ -419,7 +461,10 @@ def control(s: dict[str, Any], ident: str, action: str, operation: str | None = 
         "expires_at": int(time.time()) + 300,
     }
     s["service"].control(
-        signed(s, action, "validator" if action == "validate" else "controller", record, operation or action), action
+        signed(
+            s, action, "validator" if action == "validate" else "controller", record, operation or action + "/" + ident
+        ),
+        action,
     )
 
 
@@ -480,6 +525,7 @@ def invocation() -> Invocation:
         charter=pilot_request().charter,
         beta_digest=BETA,
         policy_digest=POLICY,
+        recipient_capabilities_digest=ZERO,
         prerequisite_digests=[],
         logical_limit=10_000,
         cost_cap_micro_usd=100,
@@ -583,19 +629,19 @@ def test_parallel_proof_consumption_executes_once(setup: dict[str, Any]) -> None
 def test_accounting_no_double_charge_or_invoice_revenue(setup: dict[str, Any]) -> None:
     s = setup
     paid_origin(s)
-    report = s["costs"].report("fixture-origin")
+    report = s["costs"].report(ORIGIN)
     assert report["costs"]["A"] == len(CATEGORIES) and report["delivery_profit"] == -len(CATEGORIES)
     for action in ("offer", "invoice", "pending"):
         account(
             s,
             action,
-            {"record_id": action, "mission_id": "fixture-origin", "amount_micro_usd": 50_000, "evidence_digest": ZERO},
+            {"record_id": action, "mission_id": ORIGIN, "amount_micro_usd": 50_000, "evidence_digest": ZERO},
             action,
         )
-    assert s["costs"].report("fixture-origin")["collected_revenue"] == 0
+    assert s["costs"].report(ORIGIN)["collected_revenue"] == 0
     charge = Charge(
         activity_id="origin/model",
-        mission_id="fixture-origin",
+        mission_id=ORIGIN,
         bucket="B",
         category="model",
         accrued_micro_usd=10,
@@ -694,6 +740,7 @@ def test_reconciled_acceptance_required_for_successful_reuse(setup: dict[str, An
         "reasoning_mode": "fixture",
         "tools_digest": ZERO,
         "resource_rules_digest": ZERO,
+        "recipient_capabilities_digest": ZERO,
         "provider_response_digest": ZERO,
         "billing_evidence_digest": ZERO,
         "actual_cost_micro_usd": 50,
@@ -737,7 +784,7 @@ def test_reconciled_acceptance_required_for_successful_reuse(setup: dict[str, An
     result = s["service"].accept_reuse(approval)
     assert result["successful_reuse"] is True
     assert result["additional_value"] == 50 - len(CATEGORIES)
-    assert s["costs"].report("fixture-origin")["costs"]["A"] == len(CATEGORIES)
+    assert s["costs"].report(ORIGIN)["costs"]["A"] == len(CATEGORIES)
     with pytest.raises(Conflict):
         s["service"].accept_reuse(approval)
 
@@ -789,8 +836,8 @@ def test_frontier_attempt_preserves_unknown_failure_cost_and_never_retries(
     request = pilot_request()
     permit = FrontierPermit(
         operation_id="fixture-attempt",
-        mission_id="fixture-model-delivery",
-        bucket="A",
+        mission_id="fixture-model-investment",
+        bucket="C",
         model_id=s["journal"].config.llm_model,
         requested_reasoning_mode="fixture",
         request_digest=digest("flywheel-model-request", request),
@@ -898,3 +945,346 @@ def test_dependency_revocation_invalidates_future_discovery(setup: dict[str, Any
     token = proof(s, dependent_id, "discover", digest("flywheel-discover", {"candidate_digest": dependent_id}))
     with pytest.raises(Conflict):
         s["service"].manifest(dependent_id, token)
+
+
+def test_cost_seals_are_bound_to_their_own_bucket(setup: dict[str, Any]) -> None:
+    s = setup
+    paid_origin(s)
+    charge = Charge(
+        activity_id="extra-retention-model",
+        mission_id=ORIGIN,
+        bucket="B",
+        category="model",
+        accrued_micro_usd=1,
+        paid_micro_usd=0,
+        basis="attested",
+        evidence_digest=ZERO,
+        note="Known partial B costs must not inherit A completeness",
+    )
+    account(s, "charge", charge.model_dump(), "partial-B")
+    report = s["costs"].report(ORIGIN)
+    assert report["bucket_complete"] == {"A": True, "B": False, "C": False}
+    assert report["complete"] is False and report["complete_cost_profit"] is None
+    assert report["delivery_profit"] == -len(CATEGORIES)
+    for category in sorted(CATEGORIES):
+        charge = Charge(
+            activity_id="only-B/" + category,
+            mission_id="only-B",
+            bucket="B",
+            category=category,
+            accrued_micro_usd=1,
+            paid_micro_usd=0,
+            basis="attested",
+            evidence_digest=ZERO,
+            note="B-only completeness never establishes complete originating A",
+        )
+        account(s, "charge", charge.model_dump(), "only-B/" + category)
+    account(
+        s,
+        "seal-retention",
+        {"mission_id": "only-B", "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+        "only-B-seal",
+    )
+    report = s["costs"].report("only-B")
+    assert report["bucket_complete"]["A"] is False and report["bucket_complete"]["B"] is True
+    assert report["delivery_profit"] is None
+
+
+def test_revoking_old_version_preserves_independently_active_new_version(setup: dict[str, Any]) -> None:
+    s = setup
+    old = admitted(s)
+    manifest = CapsuleManifest.model_validate({**entry(s, old)["manifest"], "version": 2})
+    program = SelectionProgram(representation="argument-graph", production="closure-search")
+    ident = digest("flywheel-manifest", manifest)
+    s["service"].retain(manifest, program, signed(s, "candidate", "producer", {"manifest_digest": ident}, "retain-v2"))
+    assert evaluate(s, ident) == "assessed"
+    control(s, ident, "validate")
+    control(s, ident, "admit")
+    assert s["library"].snapshot()[BRANCH]["active"]["bounded-selector"] == ident
+    control(s, old, "revoke")
+    assert s["library"].snapshot()[BRANCH]["active"]["bounded-selector"] == ident
+    token = proof(s, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    assert s["service"].manifest(ident, token)["manifest"]["version"] == 2
+
+
+def test_paid_attempt_custody_prevents_replay_after_restoring_old_backup(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    import sqlite3
+    from contextlib import closing
+    from alpha_factory_v1.core.runtime.successor.flywheel_frontier import FrontierConnector, FrontierPermit
+    from alpha_factory_v1.core.runtime import provider
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    s = setup
+    paid_origin(s)
+    s["journal"].control(True)
+    s["journal"].configure(RuntimeConfig(llm_url="http://127.0.0.1:9999/v1", llm_model="fictional-test-provider"))
+    s["journal"].control(False)
+    request = pilot_request()
+    permit = FrontierPermit(
+        operation_id="custody-attempt",
+        mission_id="custody-model-investment",
+        bucket="C",
+        model_id=s["journal"].config.llm_model,
+        requested_reasoning_mode="fixture",
+        request_digest=digest("flywheel-model-request", request),
+        config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
+        tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
+        quota_evidence_digest=ZERO,
+        max_charge_micro_usd=10,
+        expires_at=int(time.time()) + 300,
+    )
+    authorization = sign_record(
+        s["keys"]["controller"],
+        "controller",
+        "flywheel-model-permit",
+        {"journal_identity": s["journal"].identity, "permit": permit.model_dump()},
+    )
+    old = tmp_path / "before-provider.sqlite3"
+    with closing(sqlite3.connect(s["journal"].path)) as current, closing(sqlite3.connect(old)) as backup:
+        current.backup(backup)
+    calls = []
+
+    def fail(*args: Any, **kwargs: Any) -> Any:
+        calls.append(1)
+        raise TimeoutError("Synthetic lost response; no network call")
+
+    monkeypatch.setattr(provider, "complete_json", fail)
+    connector = FrontierConnector(s["journal"], s["trust"], s["costs"])
+    assert connector.run(request, authorization)["state"] == "failed-or-uncertain"
+    with closing(sqlite3.connect(old)) as backup, closing(sqlite3.connect(s["journal"].path)) as current:
+        backup.backup(current)
+    with pytest.raises(Conflict, match="high-water"):
+        connector.run(request, authorization)
+    assert calls == [1]
+
+
+@pytest.mark.parametrize("attack", ["accepted-flag", "missing-review", "changed-result"])
+def test_candidate_cannot_replace_native_completion_with_a_status_flag(setup: dict[str, Any], attack: str) -> None:
+    s = setup
+    ident = retain(s)
+    with s["journal"].transaction() as cx:
+        native = s["journal"].document(s["journal"].latest(ORIGIN, cx))
+        if attack == "accepted-flag":
+            native["state"] = "accepted"
+        elif attack == "missing-review":
+            native["review"] = {}
+        else:
+            native["result"]["findings"][0]["quote"] = "not present in the actual source"
+        bad = s["journal"].append(cx, ORIGIN, native)
+    manifest = CapsuleManifest.model_validate(
+        {**entry(s, ident)["manifest"], "version": 2, "origin_record_digest": bad["digest"]}
+    )
+    candidate = digest("flywheel-manifest", manifest)
+    with pytest.raises(ValueError, match="native delivery"):
+        s["service"].retain(
+            manifest,
+            SelectionProgram(representation="argument-graph", production="closure-search"),
+            signed(s, "candidate", "producer", {"manifest_digest": candidate}, "invalid-origin"),
+        )
+
+
+def test_retention_connector_carries_actual_accepted_native_work(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import json
+    from alpha_factory_v1.core.runtime.successor.flywheel_frontier import FrontierConnector, FrontierPermit
+    from alpha_factory_v1.core.runtime import provider
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    s = setup
+    origin = paid_origin(s)
+    s["journal"].control(True)
+    s["journal"].configure(RuntimeConfig(llm_url="http://127.0.0.1:9999/v1", llm_model="fictional-test-provider"))
+    s["journal"].control(False)
+    request = pilot_request()
+    permit = FrontierPermit(
+        operation_id="extract-from-native",
+        mission_id="native-retention-costs",
+        origin_mission=ORIGIN,
+        origin_record_digest=origin["digest"],
+        bucket="B",
+        model_id=s["journal"].config.llm_model,
+        requested_reasoning_mode="fixture",
+        request_digest=digest("flywheel-model-request", request),
+        config_digest=digest("flywheel-model-config", s["journal"].config.model_dump()),
+        tools_digest=digest("flywheel-model-tools", {"tools": [], "output": "selection-program/v1"}),
+        quota_evidence_digest=ZERO,
+        max_charge_micro_usd=10,
+        expires_at=int(time.time()) + 300,
+    )
+    authorization = sign_record(
+        s["keys"]["controller"],
+        "controller",
+        "flywheel-model-permit",
+        {"journal_identity": s["journal"].identity, "permit": permit.model_dump()},
+    )
+    captured = []
+
+    def fixture_provider(payload: dict[str, Any], cfg: Any, **kwargs: Any) -> Any:
+        assert kwargs["active"]()
+        captured.append(json.loads(payload["messages"][1]["content"]))
+        return {
+            "candidates": [
+                {"program": SelectionProgram().model_dump(), "hypothesis": "Synthetic provider transport contract only"}
+            ]
+        }, {
+            "reported_model": cfg.llm_model,
+            "usage": {"prompt_tokens": 1, "completion_tokens": 1},
+            "request_hash": ZERO,
+            "response_hash": ZERO,
+        }
+
+    monkeypatch.setattr(provider, "complete_json", fixture_provider)
+    result = FrontierConnector(s["journal"], s["trust"], s["costs"]).run(request, authorization)
+    assert result["state"] == "responded-awaiting-billing-and-independent-acceptance"
+    assert captured[0]["originating_native_work"]["accepted_result"] == origin["result"]
+    assert captured[0]["originating_native_work"]["record_digest"] == origin["digest"]
+    assert s["costs"].snapshot()["charges"]["model/extract-from-native"]["bucket"] == "B"
+    assert s["costs"].report(ORIGIN)["bucket_complete"]["A"] is True
+
+
+def test_operator_stop_is_not_blocked_by_identity_network_reads(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import threading
+
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    token = proof(s, ident, "invoke", digest("flywheel-invocation", request))
+    entered, release = threading.Event(), threading.Event()
+    original = s["access"].authority.verify
+
+    def delayed(name: str, wallet: str, **kwargs: Any) -> Any:
+        entered.set()
+        assert release.wait(2)
+        return original(name, wallet, **kwargs)
+
+    monkeypatch.setattr(s["access"].authority, "verify", delayed)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(s["service"].invoke, ident, request, token)
+        assert entered.wait(1)
+        started = time.monotonic()
+        s["journal"].control(True)
+        elapsed = time.monotonic() - started
+        release.set()
+        assert elapsed < 0.5
+        with pytest.raises(Conflict, match="stopped"):
+            pending.result(timeout=3)
+    assert s["library"].snapshot()[BRANCH]["invocations"] == {}
+
+
+def test_authority_refuses_an_old_tip_when_other_reader_is_ahead() -> None:
+    wallet = Account.create().address
+    authority, pair = readers(wallet)
+    original = pair[1].call
+    ahead = {**pair[1].block, "number": "0x65", "hash": "0x" + "ff" * 32}
+
+    def call(method: str, params: list[Any]) -> Any:
+        if method == "eth_getBlockByNumber" and params[0] == "latest":
+            return copy.deepcopy(ahead)
+        return original(method, params)
+
+    pair[1].call = call
+    with pytest.raises(ValueError, match="current chain position"):
+        authority.verify("two.agent.agi.eth", wallet)
+
+
+def test_identity_checks_have_finite_concurrency_and_server_only_preparation(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    token = proof(s, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    for _ in range(4):
+        assert s["access"]._read_slots.acquire(blocking=False)
+    try:
+        with pytest.raises(Conflict, match="capacity"):
+            s["access"].prepare(token, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    finally:
+        for _ in range(4):
+            s["access"]._read_slots.release()
+    prepared = s["access"].prepare(token, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    from dataclasses import replace
+
+    with s["journal"].transaction() as cx:
+        with pytest.raises(Conflict, match="unrelated"):
+            s["access"].consume(replace(prepared, issuer=object()), cx)
+
+
+def test_requalification_cannot_reuse_exposed_evaluation_inputs(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    prior = entry(s, ident)["plan"]["payload"]["record"]
+    s["service"].configure(
+        signed(s, "configure", "controller", {"beta_digest": "d" * 64, "policy_digest": POLICY}, "changed-model")
+    )
+    renewed = {**prior, "beta_digest": "d" * 64, "retention_cost_record": "new-retention-costs"}
+    with pytest.raises(ValueError, match="previously exposed"):
+        s["service"].freeze(signed(s, "plan", "evaluator", renewed, "reused-input-plan"))
+    assert entry(s, ident)["state"] == "requires-requalification"
+
+
+def test_execution_environment_changes_require_restart_and_fresh_admission(setup: dict[str, Any]) -> None:
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    s = setup
+    ident = admitted(s)
+    token = proof(s, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+    s["journal"].control(True)
+    s["journal"].configure(
+        RuntimeConfig(llm_url="http://127.0.0.1:11434/v1/chat/completions", llm_model="changed-model-environment")
+    )
+    s["journal"].control(False)
+    with pytest.raises(Conflict, match="restart"):
+        s["service"].manifest(ident, token)
+    prior = s["service"]
+    s["service"] = ProtectedLibrary(
+        s["library"], s["costs"], s["access"], prior.keys, prior.active_key, prior.checkpoint
+    )
+    assert s["service"].execution_digest != prior.execution_digest
+    with pytest.raises(Conflict, match="execution environment"):
+        s["service"].manifest(ident, token)
+    s["service"].configure(
+        signed(
+            s, "configure", "controller", {"beta_digest": BETA, "policy_digest": POLICY}, "environment-requalification"
+        )
+    )
+    assert entry(s, ident)["state"] == "requires-requalification"
+
+
+def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(setup: dict[str, Any]) -> None:
+    s = setup
+    ident = admitted(s)
+    request = invocation()
+    receipt = s["service"].invoke(ident, request, proof(s, ident, "invoke", digest("flywheel-invocation", request)))
+    baseline = {
+        "candidate_digest": None,
+        "input_digest": receipt["input_digest"],
+        "output_digest": ZERO,
+        "beta_digest": BETA,
+        "model_id": "fictional-frontier-receipt-fixture",
+        "reasoning_mode": "fixture",
+        "tools_digest": ZERO,
+        "resource_rules_digest": ZERO,
+        "recipient_capabilities_digest": "f" * 64,
+        "provider_response_digest": ZERO,
+        "billing_evidence_digest": ZERO,
+        "actual_cost_micro_usd": 50,
+        "usage": {"fixture_tokens": 1},
+        "started_at": int(time.time()),
+        "finished_at": int(time.time()),
+        "evidence_basis": "configured-executor-attestation",
+    }
+    record = {
+        "mission_id": request.mission_id,
+        "receipt_digest": digest("flywheel-reuse-receipt", receipt),
+        "beta_run": sign_record(s["keys"]["executor"], "executor", "flywheel-frontier-run", baseline).model_dump(),
+        "candidate_correct": True,
+        "beta_correct": True,
+        "independent_tests_digest": ZERO,
+        "residual_interventions_digest": ZERO,
+        "limitations": "Synthetic mismatched-recipient attack",
+    }
+    with pytest.raises(ValueError, match="matched scope"):
+        s["service"].accept_reuse(signed(s, "reuse-acceptance", "acceptor", record, "wrong-recipient-baseline"))

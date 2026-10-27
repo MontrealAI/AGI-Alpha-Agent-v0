@@ -77,6 +77,7 @@ def install_routes(app: FastAPI, library: ProtectedLibrary | None) -> None:
     def protocol() -> dict[str, Any]:
         return {
             "schema": "protected-flywheel/v1",
+            "execution_digest": library.execution_digest if library else None,
             "catalog_resource": library.catalog_resource() if library else None,
             "request_commitments": {"discover": digest("flywheel-discover", {"candidate_digest": "0" * 64})},
             "note": "Example digest is an encoding example, never an admitted resource. Invoke commits the complete typed Invocation using successor-omega/v1 domain flywheel-invocation. No plaintext capsule endpoint exists.",

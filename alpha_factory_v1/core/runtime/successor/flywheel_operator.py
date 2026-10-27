@@ -47,7 +47,10 @@ def load(journal: Journal, deployment_path: Path) -> ProtectedLibrary:
     access = ResourceAccess(
         journal,
         deployment.service,
-        ENSAuthority((RPC(deployment.readers[0]), RPC(deployment.readers[1])), deployment.ens_pins),
+        ENSAuthority(
+            (RPC(deployment.readers[0], timeout_seconds=2.0), RPC(deployment.readers[1], timeout_seconds=2.0)),
+            deployment.ens_pins,
+        ),
     )
     if not 1 <= len(deployment.keys) <= 16:
         raise ValueError("a bounded independently provisioned key inventory is required")
@@ -100,6 +103,7 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
     if action == "status":
         result = {
             "protected_service": "provisioned-not-live-qualified",
+            "execution_digest": service.execution_digest,
             "frontier": FrontierConnector(service.journal, service.trust, service.costs).status(),
             "costs": service.costs.report(),
             "live_identity_qualification": "requires deployment-specific owner-controlled signing and approved RPC evidence",

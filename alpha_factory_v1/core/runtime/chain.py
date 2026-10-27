@@ -44,8 +44,11 @@ def units(value: str) -> int:
 class RPC:
     """Bounded JSON-RPC reads against the configured chain."""
 
-    def __init__(self, config: ChainConfig) -> None:
+    def __init__(self, config: ChainConfig, *, timeout_seconds: float = 15.0) -> None:
         self.config = config
+        if not 0.1 <= timeout_seconds <= 15.0:
+            raise ValueError("RPC timeout must be bounded between 0.1 and 15 seconds")
+        self.timeout_seconds = timeout_seconds
 
     def call(self, method: str, params: list[Any]) -> Any:
         """Execute only explicitly supported read operations, never broadcasts."""
@@ -60,7 +63,7 @@ class RPC:
         if method not in allowed:
             raise ValueError("RPC method is not a supported read")
         local = httpx.URL(self.config.rpc_url).host in {"127.0.0.1", "localhost", "::1"}
-        with httpx.Client(timeout=15, follow_redirects=False, trust_env=not local) as client:
+        with httpx.Client(timeout=self.timeout_seconds, follow_redirects=False, trust_env=not local) as client:
             with client.stream(
                 "POST", self.config.rpc_url, json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
             ) as response:

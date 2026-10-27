@@ -1,5 +1,7 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+For installation and the existing operator path, see [Start here](START_HERE.md).
+
 # Alpha Agent 1.46.0 candidate — protected Flywheel operating boundaries
 
 An optional native path connects accepted originating work, complete A/B/C accounting, frozen

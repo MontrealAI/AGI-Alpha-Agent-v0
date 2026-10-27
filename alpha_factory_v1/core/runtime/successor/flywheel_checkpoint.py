@@ -4,6 +4,7 @@
 from __future__ import annotations
 import sqlite3
 import stat
+import os
 from contextlib import closing
 from pathlib import Path
 from typing import Any
@@ -20,7 +21,7 @@ class DurableCheckpoint:
         self.path = path.resolve()
         if self.path.is_relative_to(journal.root):
             raise ValueError("checkpoint must remain outside portable runtime recovery state")
-        if self.path.stat().st_mode & 0o077:
+        if os.name != "nt" and self.path.stat().st_mode & 0o077:
             raise ValueError("checkpoint file must be private to the service account")
         self.identity = journal.identity
         with journal.transaction() as cx:

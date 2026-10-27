@@ -58,6 +58,11 @@ finite expiry and charge allowance. This first connector uses the existing JSON-
 Responses/tool/computer-use executors require their separately approved connector and qualification.
 An available subscription does not establish an API entitlement. Missing access refuses before a call.
 
+B extraction binds the exact completed native Research mission revision and includes its request, accepted
+result and review in the provider context. A development binds an open native Research mission; C remains
+separately authorized investment. The closed origin scope avoids replaying arbitrary host-code work during
+candidate verification. A fabricated acceptance flag or altered result cannot establish a completed origin.
+
 The protected API exposes /api/flywheel/status, /challenge, an authenticated /catalog and per-capsule /manifest and /invoke beneath
 /api/flywheel. Without provisioned resources it returns 503 for protected work. There is no plaintext
 capsule-download endpoint. Manifest discovery and invocation each require their own one-time, two-minute,
@@ -70,6 +75,10 @@ and unexpired agi.eth registration. Code pins, current block age, canonical bloc
 and ownership are checked at every resource crossing. Delegations, contract-wallet signatures,
 internationalized labels, CCIP/offchain names and ENSv2 are unsupported; their qualification cannot be
 inferred from a fixture. Approved providers and namespace protocol selection remain trust dependencies.
+Identity reads occur outside the Journal write lock, with four concurrent checks, a total deadline,
+two-second RPC timeouts and a short-lived server-only authorization checked again during commit.
+Both readers must report the same current tip before and after verification. Failure or disagreement refuses
+access; an operator stop is not held behind network reads.
 No existing Jobs club.agi.eth validator role, contract, currency route or settlement rule changes.
 
 ### Evidence, economics and admission
@@ -80,6 +89,8 @@ authorized extra investment. An activity ID cannot be charged into two buckets. 
 invocation must have its exact signed receipt charged once in the frozen B record. Zero-cost categories
 require an explicit signer attestation; unknown amounts remain unknown. All nine resource categories must
 be reconciled before a delivery, retention or reuse cost record can be sealed.
+Seals are bucket-specific: completing A cannot complete B or C, and completing B cannot complete A.
+Delivery profit remains independently reportable when A is complete and optional B or C remains incomplete.
 
 Offers, invoices and pending payment create no collected revenue. Capital is separate from revenue.
 Amounts are integer USD micro-units, separate from AGIALPHA utility or token transfers.
@@ -87,7 +98,8 @@ Reports distinguish complete-cost profit, cash, obligations, reserve and availab
 prevent complete-cost profit or available-funds claims. Collection records are attributed accounting
 attestations with evidence commitments; no bank verification or real collection is claimed here.
 
-Only an exact accepted originating mission with complete A costs can produce a candidate. The original
+Only a completed native Research mission, with a verified exact result, approved review and complete A costs,
+can produce a candidate. The original
 agent's wallet must already have the existing wallet-control binding and fresh eligible ENS authority.
 A frozen plan names current Beta/policy, the same frontier model/reasoning/tools/resource rules, the
 recipient's existing capability commitment, excluded delivery inputs, fresh inputs, a prospective reuse
@@ -95,6 +107,12 @@ count, uncertainty basis and the complete B cost record. Executions must follow 
 execution custodians attest response/output/usage/billing identities; acceptance uses distinct configured
 keys and separately informative tests. Signatures bind attestations; they do not establish their truth
 or organizational independence.
+
+The plan also binds an execution-environment digest over installed source bytes, dependency versions,
+runtime configuration, service and identity-reader policy. A material change requires restart and explicit
+requalification; stale assessment, validation, admission, discovery and invocation refuse. Evaluation input
+commitments remain exposed after model changes and cannot be reused as fresh cases. Reuse's matched Beta
+receipt must also bind the requesting agent's declared existing capabilities.
 
 Correctness and economic value are separate. The supported lower net saving per use cannot exceed the
 least observed paired saving. Its prospective reuse value must exceed already incurred B plus declared
@@ -122,11 +140,14 @@ require historical keys; removing an old key does not rewrite immutable history.
 fails closed. No credentials or production keys are created by loading a capsule or deployment file.
 
 A separately provisioned DurableCheckpoint must live outside portable runtime recovery state, preferably
-on independently retained durable custody. Every protected state mutation and successful resource crossing
+on independently retained durable custody. Every protected state mutation, accounting mutation, model
+permit consumption and successful resource crossing
 advances its monotonic high-water record before local commit. A crash between those commits may require
 explicit recovery; it refuses rather than accepting an older journal. Restoring an old backup cannot
 silently resurrect a revocation while current checkpoint custody is retained. A file on the same host is
 not independent remote durability, and rolling back both stores defeats that protection.
+The paid-attempt high-water mark is committed before the provider request. An older portable backup cannot
+reuse its permit while that custody is retained. Unknown billing remains an obligation requiring reconciliation.
 
 Access is reconsidered at discovery and invocation, including dependencies and revoked configured
 signers. Changed models/policies require fresh evidence; terminal revocation cannot be promoted again.
@@ -189,6 +210,11 @@ Les exécuteurs Responses, outils et ordinateur demandent leur connecteur approu
 Un abonnement ne prouve aucun droit API. L’absence d’accès bloque avant l’appel ; une réponse perdue
 reste une tentative incertaine facturable et ne déclenche aucune reprise automatique.
 
+L’extraction B lie la révision exacte d’une mission Research native terminée et transmet requête, résultat
+accepté et revue au fournisseur. Le développement A lie une mission Research native ouverte ; C reste
+un investissement autorisé séparément. Cette portée fermée évite de réexécuter du code hôte arbitraire
+pendant la vérification. Un simple drapeau d’acceptation ou résultat altéré ne crée aucune origine terminée.
+
 L’API ajoute /api/flywheel/status, /challenge et un /catalog authentifié, ainsi que /manifest et /invoke propres à chaque capsule.
 Sans ressources provisionnées, le travail protégé retourne 503. Aucune route ne télécharge la capsule
 en clair. Découverte et invocation exigent chacune un défi EIP-191 unique de deux minutes, lié au service,
@@ -201,6 +227,10 @@ et l’enregistrement agi.eth non expiré. Empreintes de code, âge du bloc, hac
 lecteurs et propriété sont revérifiés à chaque accès. Délégations, portefeuilles contrats, noms
 internationalisés, CCIP/hors chaîne et ENSv2 ne sont pas pris en charge. Les fournisseurs approuvés
 et le choix du protocole de l’espace de noms restent des dépendances de confiance.
+Les lectures d’identité restent hors du verrou d’écriture du Journal : quatre contrôles simultanés,
+délai total, délai RPC de deux secondes et autorisation interne brève revérifiée à la validation.
+Les lecteurs doivent annoncer le même sommet courant avant et après les contrôles. Échec ou désaccord
+bloquent l’accès ; les lectures réseau ne bloquent pas un arrêt de l’opérateur.
 Les rôles Jobs club.agi.eth, contrats, devises et règlements restent inchangés.
 
 A couvre la livraison acceptée, apprentissage pendant ce travail compris. B ne couvre que les coûts
@@ -209,6 +239,8 @@ C couvre l’investissement supplémentaire séparément autorisé. Un identifia
 facturé dans deux catégories. Chaque invocation d’évaluation appariée doit être liée à son reçu exact
 et facturée une seule fois dans B. Une catégorie à zéro nécessite une attestation explicite ; un montant
 inconnu reste inconnu. Les neuf catégories de ressources doivent être rapprochées avant clôture des coûts.
+Les clôtures sont propres à A, B ou C : aucune ne peut clôturer l’autre. Le profit de livraison reste
+calculable lorsque A est complet, même si B ou C facultatif reste incomplet.
 
 Offre, facture et paiement en attente ne créent aucun revenu encaissé. Le capital reste distinct.
 Les montants sont des micro-unités USD entières, séparées d’AGIALPHA et des mouvements de jetons.
@@ -217,13 +249,20 @@ Un coût inconnu bloque les affirmations de profit complet et de fonds disponibl
 sont des attestations comptables attribuées, liées à des engagements de preuve ; aucune vérification
 bancaire ou recette réelle n’est établie ici.
 
-Une candidate exige une mission d’origine acceptée et ses coûts A complets. Le portefeuille de l’agent
+Une candidate exige une mission Research native terminée, son résultat exact vérifié, une revue approuvée
+et ses coûts A complets. Le portefeuille de l’agent
 d’origine doit être déjà prouvé par la liaison existante et disposer d’une autorité ENS admissible actuelle.
 Le plan figé nomme Beta/politique courants, modèle frontière, raisonnement, outils et règles de ressources
 identiques, capacités du destinataire, entrées d’origine exclues, entrées nouvelles, horizon prospectif,
 incertitude et registre B complet. Les exécutions suivent le gel. Des dépositaires configurés attestent
 réponses, résultats, usage et facturation. L’acceptation utilise des clés distinctes et des tests
 indépendamment informatifs. Une signature lie une attestation sans établir sa vérité ou son indépendance organisationnelle.
+
+Le plan lie aussi l’empreinte de l’environnement : sources installées, versions des dépendances,
+configuration, service et politique des lecteurs d’identité. Un changement impose redémarrage et
+requalification explicite ; évaluation, validation, admission, découverte et invocation périmées bloquent.
+Les entrées d’évaluation déjà exposées ne redeviennent pas nouvelles après changement de modèle.
+Le reçu Beta de réutilisation lie aussi les capacités existantes déclarées par l’agent demandeur.
 
 La correction et la valeur économique restent distinctes. La borne prudente d’économie nette par usage
 ne peut dépasser la moindre économie appariée observée. Sa valeur prospective doit excéder B déjà engagé
@@ -249,11 +288,14 @@ historiques nécessitent encore les anciennes clés ; l’historique immuable n�
 bloque l’accès. Charger une capsule ou configuration ne crée aucun secret ou droit de production.
 
 Un DurableCheckpoint séparément provisionné reste hors de la reprise portable, idéalement sur une garde
-durable indépendante. Chaque mutation protégée et accès réussi avancent ce seuil monotone avant la
+durable indépendante. Chaque mutation protégée ou comptable, consommation de permis modèle et accès réussi
+avancent ce seuil monotone avant la
 validation locale. Une panne entre les deux validations peut nécessiter une récupération explicite :
 elle bloque plutôt que d’accepter un Journal antérieur. Une ancienne sauvegarde ne peut restaurer
 silencieusement une révocation tant que la garde actuelle est conservée. Un fichier sur le même hôte
 n’est pas une durabilité distante indépendante ; restaurer les deux registres annule cette protection.
+Le seuil de tentative payante est validé avant l’appel fournisseur. Une sauvegarde portable antérieure ne
+peut réutiliser son permis tant que cette garde subsiste. Une facturation inconnue exige un rapprochement.
 
 Découverte et invocation recontrôlent accès, dépendances et signataires révoqués. Un changement de modèle
 ou politique exige de nouvelles preuves. Une révocation terminale impose une nouvelle version.
@@ -274,6 +316,22 @@ contains actual local software receipts with fictional model/ENS/cost attestatio
 
 [L’exemple de conformité et les identités des sources](release-evidence/protected-flywheel-conformance.json)
 contiennent les reçus logiciels locaux et des attestations modèle/ENS/coûts fictives. Aucune qualification réelle.
+
+With source-checkout test dependencies installed, reproduce a new record using:
+
+Avec les dépendances de test du dépôt installées, créer un nouvel enregistrement avec :
+
+~~~sh
+python scripts/record_protected_flywheel_conformance.py --output /private/new-conformance.json
+~~~
+
+The command uses ephemeral test identities and refuses to overwrite an existing output. It executes native
+Research work and the bounded selector locally. Its costs, acceptance signers, model receipts and ENS state
+remain fictional; it cannot qualify a paid mission, frontier Alpha or a live network.
+
+La commande emploie des identités de test éphémères et refuse d’écraser une sortie. Elle exécute le travail
+Research natif et le sélecteur borné localement. Coûts, signataires d’acceptation, reçus modèles et état ENS
+restent fictifs ; elle ne qualifie ni mission payée, Alpha frontière ou réseau réel.
 
 ## Primary protocol references / Références primaires
 

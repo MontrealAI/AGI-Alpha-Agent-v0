@@ -12,6 +12,8 @@ import hashlib
 import re
 import secrets
 import time
+import threading
+from dataclasses import dataclass
 from typing import Any, Protocol
 from urllib.parse import urlsplit
 
@@ -19,7 +21,7 @@ from pydantic import Field, model_validator
 
 from ..chain import address
 from ..store import Conflict, Journal
-from .protocol import Digest, StrictModel, canonical, digest
+from .protocol import Digest, StrictModel, canonical, digest, safe_json_loads
 
 REGISTRY = "0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e"
 WRAPPER = "0xd4416b13d2b3a9abae7acd5d6c2bbdbe25686401"
@@ -30,6 +32,19 @@ class ReadRPC(Protocol):
     """Reuse the runtime's allowlisted read-only JSON-RPC transport."""
 
     def call(self, method: str, params: list[Any]) -> Any: ...
+
+
+class _DeadlineReader:
+    def __init__(self, reader: ReadRPC, deadline: float) -> None:
+        self.reader, self.deadline = reader, deadline
+
+    def call(self, method: str, params: list[Any]) -> Any:
+        if time.monotonic() >= self.deadline:
+            raise TimeoutError("ENS verification exceeded its total read budget")
+        value = self.reader.call(method, params)
+        if time.monotonic() >= self.deadline:
+            raise TimeoutError("ENS verification exceeded its total read budget")
+        return value
 
 
 def direct_name(name: str) -> str:
@@ -82,7 +97,9 @@ class ENSAuthority:
     def verify(self, name: str, wallet: str, *, now: int | None = None) -> dict[str, Any]:
         name, wallet = direct_name(name), address(wallet)
         now = int(time.time()) if now is None else now
-        first = self.readers[0].call("eth_getBlockByNumber", ["latest", False])
+        deadline = time.monotonic() + 8
+        readers = tuple(_DeadlineReader(reader, deadline) for reader in self.readers)
+        first = readers[0].call("eth_getBlockByNumber", ["latest", False])
         if not isinstance(first, dict) or not re.fullmatch(r"0x[0-9a-fA-F]{64}", first.get("hash", "")):
             raise ValueError("current canonical block unavailable")
         number = int(first["number"], 16)
@@ -91,11 +108,11 @@ class ENSAuthority:
             raise ValueError("ENS chain evidence is stale or future dated")
         block = {"blockHash": first["hash"], "requireCanonical": True}
         snapshots = []
-        for rpc in self.readers:
+        for rpc in readers:
             if rpc.call("eth_chainId", []) != "0x1":
                 raise ValueError("ENSv1 access requires Ethereum mainnet")
             latest = rpc.call("eth_getBlockByNumber", ["latest", False])
-            if not latest or not number <= int(latest["number"], 16) <= number + 3:
+            if not latest or latest != first:
                 raise ValueError("RPC readers disagree on current chain position")
             if not 0 <= now - int(latest["timestamp"], 16) <= self.pins.max_block_age_seconds:
                 raise ValueError("ENS reader is stale")
@@ -141,6 +158,8 @@ class ENSAuthority:
                 raise ValueError("requesting wallet has no current direct-label authority")
             if rpc.call("eth_getBlockByNumber", [hex(number), False]) != first:
                 raise ValueError("chain changed during ENS authorization")
+            if rpc.call("eth_getBlockByNumber", ["latest", False]) != first:
+                raise ValueError("current authority changed during ENS verification")
             snapshots.append({"name": name, "wallet": wallet, "owners": owners, "registrar_expiry": expiry[0]})
         if snapshots[0] != snapshots[1]:
             raise ValueError("ENS authority readers disagree")
@@ -149,7 +168,7 @@ class ENSAuthority:
             "chain_id": 1,
             "block_number": number,
             "block_hash": first["hash"],
-            "checked_at": now,
+            "checked_at": int(time.time()),
             "pins": self.pins.model_dump(),
             "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
         }
@@ -160,6 +179,17 @@ class AccessRequest(StrictModel):
 
     challenge_id: Digest
     signature: str = Field(pattern=r"^(?:0x)?[0-9a-fA-F]{130}$")
+
+
+@dataclass(frozen=True)
+class PreparedAuthorization:
+    proof: AccessRequest
+    resource: str
+    action: str
+    request_digest: str
+    authority: bytes
+    deadline_ns: int
+    issuer: object
 
 
 class ServiceIdentity(StrictModel):
@@ -187,6 +217,8 @@ class ResourceAccess:
 
     def __init__(self, journal: Journal, service: ServiceIdentity, authority: ENSAuthority) -> None:
         self.journal, self.service, self.authority = journal, service.model_copy(deep=True), authority
+        self._issuer = object()
+        self._read_slots = threading.BoundedSemaphore(4)
 
     def challenge(self, name: str, wallet: str, resource: str, action: str, request_digest: str) -> dict[str, Any]:
         name, wallet = direct_name(name), address(wallet)
@@ -229,13 +261,13 @@ class ResourceAccess:
             )
         return {"challenge_id": ident, "message": message, "expires_at": now + 120}
 
-    def verify(self, proof: AccessRequest, resource: str, action: str, request_digest: str, cx: Any) -> dict[str, Any]:
+    def _check_proof(
+        self, proof: AccessRequest, resource: str, action: str, request_digest: str, cx: Any = None
+    ) -> dict[str, Any]:
         from eth_account import Account
         from eth_account.messages import encode_defunct
 
-        proof = AccessRequest.model_validate(proof.model_dump())
-        key = "@flywheel-challenge:" + proof.challenge_id
-        record = self.journal.latest(key, cx)
+        record = self.journal.latest("@flywheel-challenge:" + proof.challenge_id, cx)
         payload, now = record["payload"], int(time.time())
         expected_message = (
             "AGI Alpha resource authorization v1\n"
@@ -259,12 +291,46 @@ class ResourceAccess:
             != payload["wallet"]
         ):
             raise ValueError("wallet signature does not match this resource challenge")
-        authority = self.authority.verify(payload["name"], payload["wallet"])
-        if int(time.time()) >= payload["expires_at"]:
+        return record
+
+    def prepare(self, proof: AccessRequest, resource: str, action: str, request_digest: str) -> PreparedAuthorization:
+        """Read ENS outside the write lock; only four bounded identity checks may run."""
+        proof = AccessRequest.model_validate(proof.model_dump())
+        record = self._check_proof(proof, resource, action, request_digest)
+        if not self._read_slots.acquire(blocking=False):
+            raise Conflict("identity verification capacity reached; retry within challenge expiry")
+        try:
+            authority = self.authority.verify(record["payload"]["name"], record["payload"]["wallet"])
+        finally:
+            self._read_slots.release()
+        if int(time.time()) >= record["payload"]["expires_at"]:
             raise Conflict("resource challenge expired during authority verification")
+        return PreparedAuthorization(
+            proof,
+            resource,
+            action,
+            request_digest,
+            canonical(authority),
+            time.monotonic_ns() + 2_000_000_000,
+            self._issuer,
+        )
+
+    def consume(self, prepared: PreparedAuthorization, cx: Any) -> dict[str, Any]:
+        """Recheck and consume a fresh server-only proof atomically with the protected operation."""
+        if prepared.issuer is not self._issuer or time.monotonic_ns() >= prepared.deadline_ns:
+            raise Conflict("prepared authority is unrelated or stale")
+        record = self._check_proof(prepared.proof, prepared.resource, prepared.action, prepared.request_digest, cx)
+        authority = safe_json_loads(prepared.authority)
+        if not isinstance(authority, dict):
+            raise ValueError("prepared authority is malformed")
         self.journal.append(
             cx,
-            key,
-            {**self.journal.document(record), "used": True, "authorization": authority, "signature": proof.signature},
+            "@flywheel-challenge:" + prepared.proof.challenge_id,
+            {
+                **self.journal.document(record),
+                "used": True,
+                "authorization": authority,
+                "signature": prepared.proof.signature,
+            },
         )
         return authority
