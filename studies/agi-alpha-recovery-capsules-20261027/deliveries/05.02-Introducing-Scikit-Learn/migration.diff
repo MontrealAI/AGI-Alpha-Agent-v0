@@ -1,0 +1,59 @@
+--- source code
++++ recovered code
+@@ -1,10 +1,15 @@
++import numpy as np
++np.random.seed(20261027)
+ import seaborn as sns
+-iris = sns.load_dataset('iris')
++import pandas as pd
++from io import StringIO
++_iris_source_csv = 'sepal_length,sepal_width,petal_length,petal_width,species\n5.1,3.5,1.4,0.2,setosa\n4.9,3.0,1.4,0.2,setosa\n4.7,3.2,1.3,0.2,setosa\n4.6,3.1,1.5,0.2,setosa\n5.0,3.6,1.4,0.2,setosa\n5.4,3.9,1.7,0.4,setosa\n4.6,3.4,1.4,0.3,setosa\n5.0,3.4,1.5,0.2,setosa\n4.4,2.9,1.4,0.2,setosa\n4.9,3.1,1.5,0.1,setosa\n5.4,3.7,1.5,0.2,setosa\n4.8,3.4,1.6,0.2,setosa\n4.8,3.0,1.4,0.1,setosa\n4.3,3.0,1.1,0.1,setosa\n5.8,4.0,1.2,0.2,setosa\n5.7,4.4,1.5,0.4,setosa\n5.4,3.9,1.3,0.4,setosa\n5.1,3.5,1.4,0.3,setosa\n5.7,3.8,1.7,0.3,setosa\n5.1,3.8,1.5,0.3,setosa\n5.4,3.4,1.7,0.2,setosa\n5.1,3.7,1.5,0.4,setosa\n4.6,3.6,1.0,0.2,setosa\n5.1,3.3,1.7,0.5,setosa\n4.8,3.4,1.9,0.2,setosa\n5.0,3.0,1.6,0.2,setosa\n5.0,3.4,1.6,0.4,setosa\n5.2,3.5,1.5,0.2,setosa\n5.2,3.4,1.4,0.2,setosa\n4.7,3.2,1.6,0.2,setosa\n4.8,3.1,1.6,0.2,setosa\n5.4,3.4,1.5,0.4,setosa\n5.2,4.1,1.5,0.1,setosa\n5.5,4.2,1.4,0.2,setosa\n4.9,3.1,1.5,0.2,setosa\n5.0,3.2,1.2,0.2,setosa\n5.5,3.5,1.3,0.2,setosa\n4.9,3.6,1.4,0.1,setosa\n4.4,3.0,1.3,0.2,setosa\n5.1,3.4,1.5,0.2,setosa\n5.0,3.5,1.3,0.3,setosa\n4.5,2.3,1.3,0.3,setosa\n4.4,3.2,1.3,0.2,setosa\n5.0,3.5,1.6,0.6,setosa\n5.1,3.8,1.9,0.4,setosa\n4.8,3.0,1.4,0.3,setosa\n5.1,3.8,1.6,0.2,setosa\n4.6,3.2,1.4,0.2,setosa\n5.3,3.7,1.5,0.2,setosa\n5.0,3.3,1.4,0.2,setosa\n7.0,3.2,4.7,1.4,versicolor\n6.4,3.2,4.5,1.5,versicolor\n6.9,3.1,4.9,1.5,versicolor\n5.5,2.3,4.0,1.3,versicolor\n6.5,2.8,4.6,1.5,versicolor\n5.7,2.8,4.5,1.3,versicolor\n6.3,3.3,4.7,1.6,versicolor\n4.9,2.4,3.3,1.0,versicolor\n6.6,2.9,4.6,1.3,versicolor\n5.2,2.7,3.9,1.4,versicolor\n5.0,2.0,3.5,1.0,versicolor\n5.9,3.0,4.2,1.5,versicolor\n6.0,2.2,4.0,1.0,versicolor\n6.1,2.9,4.7,1.4,versicolor\n5.6,2.9,3.6,1.3,versicolor\n6.7,3.1,4.4,1.4,versicolor\n5.6,3.0,4.5,1.5,versicolor\n5.8,2.7,4.1,1.0,versicolor\n6.2,2.2,4.5,1.5,versicolor\n5.6,2.5,3.9,1.1,versicolor\n5.9,3.2,4.8,1.8,versicolor\n6.1,2.8,4.0,1.3,versicolor\n6.3,2.5,4.9,1.5,versicolor\n6.1,2.8,4.7,1.2,versicolor\n6.4,2.9,4.3,1.3,versicolor\n6.6,3.0,4.4,1.4,versicolor\n6.8,2.8,4.8,1.4,versicolor\n6.7,3.0,5.0,1.7,versicolor\n6.0,2.9,4.5,1.5,versicolor\n5.7,2.6,3.5,1.0,versicolor\n5.5,2.4,3.8,1.1,versicolor\n5.5,2.4,3.7,1.0,versicolor\n5.8,2.7,3.9,1.2,versicolor\n6.0,2.7,5.1,1.6,versicolor\n5.4,3.0,4.5,1.5,versicolor\n6.0,3.4,4.5,1.6,versicolor\n6.7,3.1,4.7,1.5,versicolor\n6.3,2.3,4.4,1.3,versicolor\n5.6,3.0,4.1,1.3,versicolor\n5.5,2.5,4.0,1.3,versicolor\n5.5,2.6,4.4,1.2,versicolor\n6.1,3.0,4.6,1.4,versicolor\n5.8,2.6,4.0,1.2,versicolor\n5.0,2.3,3.3,1.0,versicolor\n5.6,2.7,4.2,1.3,versicolor\n5.7,3.0,4.2,1.2,versicolor\n5.7,2.9,4.2,1.3,versicolor\n6.2,2.9,4.3,1.3,versicolor\n5.1,2.5,3.0,1.1,versicolor\n5.7,2.8,4.1,1.3,versicolor\n6.3,3.3,6.0,2.5,virginica\n5.8,2.7,5.1,1.9,virginica\n7.1,3.0,5.9,2.1,virginica\n6.3,2.9,5.6,1.8,virginica\n6.5,3.0,5.8,2.2,virginica\n7.6,3.0,6.6,2.1,virginica\n4.9,2.5,4.5,1.7,virginica\n7.3,2.9,6.3,1.8,virginica\n6.7,2.5,5.8,1.8,virginica\n7.2,3.6,6.1,2.5,virginica\n6.5,3.2,5.1,2.0,virginica\n6.4,2.7,5.3,1.9,virginica\n6.8,3.0,5.5,2.1,virginica\n5.7,2.5,5.0,2.0,virginica\n5.8,2.8,5.1,2.4,virginica\n6.4,3.2,5.3,2.3,virginica\n6.5,3.0,5.5,1.8,virginica\n7.7,3.8,6.7,2.2,virginica\n7.7,2.6,6.9,2.3,virginica\n6.0,2.2,5.0,1.5,virginica\n6.9,3.2,5.7,2.3,virginica\n5.6,2.8,4.9,2.0,virginica\n7.7,2.8,6.7,2.0,virginica\n6.3,2.7,4.9,1.8,virginica\n6.7,3.3,5.7,2.1,virginica\n7.2,3.2,6.0,1.8,virginica\n6.2,2.8,4.8,1.8,virginica\n6.1,3.0,4.9,1.8,virginica\n6.4,2.8,5.6,2.1,virginica\n7.2,3.0,5.8,1.6,virginica\n7.4,2.8,6.1,1.9,virginica\n7.9,3.8,6.4,2.0,virginica\n6.4,2.8,5.6,2.2,virginica\n6.3,2.8,5.1,1.5,virginica\n6.1,2.6,5.6,1.4,virginica\n7.7,3.0,6.1,2.3,virginica\n6.3,3.4,5.6,2.4,virginica\n6.4,3.1,5.5,1.8,virginica\n6.0,3.0,4.8,1.8,virginica\n6.9,3.1,5.4,2.1,virginica\n6.7,3.1,5.6,2.4,virginica\n6.9,3.1,5.1,2.3,virginica\n5.8,2.7,5.1,1.9,virginica\n6.8,3.2,5.9,2.3,virginica\n6.7,3.3,5.7,2.5,virginica\n6.7,3.0,5.2,2.3,virginica\n6.3,2.5,5.0,1.9,virginica\n6.5,3.0,5.2,2.0,virginica\n6.2,3.4,5.4,2.3,virginica\n5.9,3.0,5.1,1.8,virginica\n'
++iris = pd.read_csv(StringIO(_iris_source_csv))
+ iris.head()
+ 
+ %matplotlib inline
+ import seaborn as sns; sns.set()
+-sns.pairplot(iris, hue='species', size=1.5);
++sns.pairplot(iris, hue='species', height=1.5);
+ 
+ X_iris = iris.drop('species', axis=1)
+ X_iris.shape
+@@ -42,7 +47,7 @@
+ plt.scatter(x, y)
+ plt.plot(xfit, yfit);
+ 
+-from sklearn.cross_validation import train_test_split
++from sklearn.model_selection import train_test_split
+ Xtrain, Xtest, ytrain, ytest = train_test_split(X_iris, y_iris,
+                                                 random_state=1)
+ 
+@@ -61,16 +66,16 @@
+ 
+ iris['PCA1'] = X_2D[:, 0]
+ iris['PCA2'] = X_2D[:, 1]
+-sns.lmplot("PCA1", "PCA2", hue='species', data=iris, fit_reg=False);
++sns.lmplot(x="PCA1", y="PCA2", hue='species', data=iris, fit_reg=False);
+ 
+-from sklearn.mixture import GMM      # 1. Choose the model class
++from sklearn.mixture import GaussianMixture as GMM      # 1. Choose the model class
+ model = GMM(n_components=3,
+-            covariance_type='full')  # 2. Instantiate the model with hyperparameters
++            covariance_type='full', random_state=0, max_iter=100, n_init=1)  # 2. Instantiate the model with hyperparameters
+ model.fit(X_iris)                    # 3. Fit to data. Notice y is not specified!
+ y_gmm = model.predict(X_iris)        # 4. Determine cluster labels
+ 
+ iris['cluster'] = y_gmm
+-sns.lmplot("PCA1", "PCA2", data=iris, hue='species',
++sns.lmplot(x="PCA1", y="PCA2", data=iris, hue='species',
+            col='cluster', fit_reg=False);
+ 
+ from sklearn.datasets import load_digits
+@@ -102,7 +107,7 @@
+ 
+ plt.scatter(data_projected[:, 0], data_projected[:, 1], c=digits.target,
+             edgecolor='none', alpha=0.5,
+-            cmap=plt.cm.get_cmap('spectral', 10))
++            cmap=plt.get_cmap('Spectral', 10))
+ plt.colorbar(label='digit label', ticks=range(10))
+ plt.clim(-0.5, 9.5);
+ 

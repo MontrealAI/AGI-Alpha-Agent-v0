@@ -1,0 +1,23 @@
+[
+  {
+    "cell": 7,
+    "upstream_cell": 20,
+    "old": "axis='col'",
+    "new": "axis=1",
+    "reason": "Preserve horizontal concatenation."
+  },
+  {
+    "cell": 14,
+    "upstream_cell": 37,
+    "old": "pd.concat([df5, df6], join_axes=[df5.columns])",
+    "new": "pd.concat([df5, df6]).reindex(columns=df5.columns)",
+    "reason": "Preserve left column projection; do not silently change to intersection."
+  },
+  {
+    "cell": 15,
+    "upstream_cell": 40,
+    "old": "df1.append(df2)",
+    "new": "pd.concat([df1, df2])",
+    "reason": "Preserve row concatenation and original labels."
+  }
+]

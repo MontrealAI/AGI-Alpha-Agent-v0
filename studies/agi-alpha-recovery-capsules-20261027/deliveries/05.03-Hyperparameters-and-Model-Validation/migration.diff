@@ -1,0 +1,109 @@
+--- source code
++++ recovered code
+@@ -1,3 +1,5 @@
++import numpy as np
++np.random.seed(20261027)
+ from sklearn.datasets import load_iris
+ iris = load_iris()
+ X = iris.data
+@@ -12,7 +14,7 @@
+ from sklearn.metrics import accuracy_score
+ accuracy_score(y, y_model)
+ 
+-from sklearn.cross_validation import train_test_split
++from sklearn.model_selection import train_test_split
+ # split the data with 50% in each set
+ X1, X2, y1, y2 = train_test_split(X, y, random_state=0,
+                                   train_size=0.5)
+@@ -28,17 +30,40 @@
+ y1_model = model.fit(X2, y2).predict(X1)
+ accuracy_score(y1, y1_model), accuracy_score(y2, y2_model)
+ 
+-from sklearn.cross_validation import cross_val_score
++from sklearn.model_selection import cross_val_score
+ cross_val_score(model, X, y, cv=5)
+ 
+-from sklearn.cross_validation import LeaveOneOut
+-scores = cross_val_score(model, X, y, cv=LeaveOneOut(len(X)))
++from sklearn.model_selection import LeaveOneOut
++scores = cross_val_score(model, X, y, cv=LeaveOneOut())
+ scores
+ 
+ scores.mean()
+ 
+ from sklearn.preprocessing import PolynomialFeatures
+-from sklearn.linear_model import LinearRegression
++from sklearn.base import BaseEstimator, RegressorMixin
++import numpy as np
++from scipy import linalg
++
++class LinearRegression(RegressorMixin, BaseEstimator):
++    def __init__(self, fit_intercept=True, normalize=False):
++        self.fit_intercept = fit_intercept
++        self.normalize = normalize
++    def fit(self, X, y):
++        X = np.asarray(X, dtype=float)
++        y = np.asarray(y, dtype=float)
++        self.n_features_in_ = X.shape[1]
++        self.x_offset_ = X.mean(axis=0) if self.fit_intercept else np.zeros(X.shape[1])
++        self.y_offset_ = y.mean(axis=0) if self.fit_intercept else 0.0
++        centered = X - self.x_offset_
++        self.x_scale_ = np.sqrt((centered ** 2).sum(axis=0)) if self.normalize and self.fit_intercept else np.ones(X.shape[1])
++        self.x_scale_[self.x_scale_ == 0] = 1.0
++        coefficient, _, self.rank_, self.singular_ = linalg.lstsq(centered / self.x_scale_, y - self.y_offset_)
++        self.coef_ = coefficient / self.x_scale_
++        self.intercept_ = self.y_offset_ - self.x_offset_ @ self.coef_
++        return self
++    def predict(self, X):
++        return np.asarray(X, dtype=float) @ self.coef_ + self.intercept_
++
+ from sklearn.pipeline import make_pipeline
+ 
+ def PolynomialRegression(degree=2, **kwargs):
+@@ -73,10 +98,10 @@
+ plt.ylim(-2, 12)
+ plt.legend(loc='best');
+ 
+-from sklearn.learning_curve import validation_curve
++from sklearn.model_selection import validation_curve
+ degree = np.arange(0, 21)
+ train_score, val_score = validation_curve(PolynomialRegression(), X, y,
+-                                          'polynomialfeatures__degree', degree, cv=7)
++                                          param_name='polynomialfeatures__degree', param_range=degree, cv=7)
+ 
+ plt.plot(degree, np.median(train_score, 1), color='blue', label='training score')
+ plt.plot(degree, np.median(val_score, 1), color='red', label='validation score')
+@@ -96,7 +121,7 @@
+ 
+ degree = np.arange(21)
+ train_score2, val_score2 = validation_curve(PolynomialRegression(), X2, y2,
+-                                            'polynomialfeatures__degree', degree, cv=7)
++                                            param_name='polynomialfeatures__degree', param_range=degree, cv=7)
+ 
+ plt.plot(degree, np.median(train_score2, 1), color='blue', label='training score')
+ plt.plot(degree, np.median(val_score2, 1), color='red', label='validation score')
+@@ -107,7 +132,7 @@
+ plt.xlabel('degree')
+ plt.ylabel('score');
+ 
+-from sklearn.learning_curve import learning_curve
++from sklearn.model_selection import learning_curve
+ 
+ fig, ax = plt.subplots(1, 2, figsize=(16, 6))
+ fig.subplots_adjust(left=0.0625, right=0.95, wspace=0.1)
+@@ -129,7 +154,7 @@
+     ax[i].set_title('degree = {0}'.format(degree), size=14)
+     ax[i].legend(loc='best')
+ 
+-from sklearn.grid_search import GridSearchCV
++from sklearn.model_selection import GridSearchCV
+ 
+ param_grid = {'polynomialfeatures__degree': np.arange(21),
+               'linearregression__fit_intercept': [True, False],
+@@ -146,5 +171,5 @@
+ plt.scatter(X.ravel(), y)
+ lim = plt.axis()
+ y_test = model.fit(X, y).predict(X_test)
+-plt.plot(X_test.ravel(), y_test, hold=True);
++plt.plot(X_test.ravel(), y_test);
+ plt.axis(lim);

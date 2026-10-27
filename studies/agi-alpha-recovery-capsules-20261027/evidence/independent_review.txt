@@ -1,0 +1,79 @@
+INDEPENDENT DELIVERY REVIEW — 2026-10-27
+
+Decision: PASS for the four frozen confirmation cases after the preserved graphical-delivery correction, under the computational handoff contract. This is local research acceptance of educational analytical examples, not customer acceptance, scientific validation, a random-population success rate, or proof of an automated commercial service.
+
+1. Independence and chronology
+The general acceptance plan was written before confirmation source retrieval. Root declared development freeze at 2026-10-27T22:42:37Z. Only then did the reviewer retrieve the four notebooks at jakevdp/PythonDataScienceHandbook commit d66231454ef753818dc9213c9b5942e067266966, notebooks_v1/. Original source bytes were checked against Git blob identities, code-only inputs extracted with original-cell indices, and exact numerical/semantic expectations and checker frozen before any repaired implementation was read. The repaired code was subsequently executed by a separate IPython-based runner, not the producer's AST runner. A later visual review found the Agg plot-lifecycle failure described below. Additional graphical assertions were frozen in a separately timestamped addendum at 23:01:16 UTC; they were not pre-repair frozen numerical tests.
+
+The case names and acceptance rubric were known, and repairs were allowed. This is prospective task selection after a development freeze, not a blinded zero-shot model trial. The reviewer belongs to the same research team; it is not external human review.
+
+Frozen numerical checker SHA256:
+ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715
+Frozen expectations SHA256:
+b95e94246c6b652ecbe6aef6f2cc57ead3f64f178d8ea52555529a7cf95056bf
+
+2. Executed independent confirmation
+Case                                        Code cells  Checks  Run1s   Run2s
+03.02 Data Indexing and Selection                 35       8      0.591   0.495
+03.05 Hierarchical Indexing                       45       9      0.593   0.609
+05.02 Introducing Scikit-Learn                    32      10      8.671   8.119
+05.03 Hyperparameters and Model Validation        21      11      4.830   4.641
+TOTAL                                            133      38
+
+All four cases pass twice. All 133 code cells complete in each clean-process replay. The 38 numerical/semantic check records are identical between independent runs. These 38 checks are not 38 independent customer jobs. Timings include the execution/checking interval and figure formatting/capture; they exclude Python/IPython startup, source retrieval, model reasoning, repair, preparation and packaging. They must not be presented as full delivery cost or turnaround.
+
+Two separate newly created directory trees contained independent notebook copies. Runs used Python 3.12.14, OPENBLAS_NUM_THREADS=1, OMP_NUM_THREADS=1 and a writable temporary Matplotlib configuration directory. The final independent runner uses TerminalInteractiveShell with notebook MIME types and executes the restored native inline magic. It observes figure state before native inline flush and captures the actual PNG publication without manually closing figures. The notebook random context uses seed 20261027. No outbound connect attempts or display-formatting errors occurred. The environment itself also denies socket creation; no network capability was provisioned.
+
+3. What the checks establish
+Data indexing: archived alphabetical state order, area/population values, explicit California density overwrite, mixed positional/label selection and the high-density decision set.
+Hierarchical indexing: exact population index and values, under18 fractions, reshape roundtrip, health-table axes, independently summed year means and type means, sorted slicing. The intentionally invalid upstream slice is explicitly compiled and caught only as SyntaxError. It remains a documented teaching demonstration, not a removed cell or a successful valid analysis.
+Introductory scikit-learn: data dimensions/classes; PCA geometry compared against independently computed centered SVD using sign-invariant Gram matrices; regression predictions against NumPy least squares; complete mixture partition; digits dimensions and original seeded split; all 450 GaussianNB predictions against an independently coded NumPy probability formula; confusion matrix against a manual integer histogram; finite complete Isomap embedding.
+Hyperparameters: all 150 leave-one-out correctness results against direct Euclidean nearest-neighbor distances; exact generated polynomial inputs and targets; 21 × 7 validation dimensions; degree-zero validation scores against manual train/test folds; all 84 parameter combinations across 7 folds, 588 fit evaluations; consistent best-degree 4 selection; predictions against independent Vandermonde least squares; normalize on/off behavior on ordinary scales and the normalize=True scale-separated boundary.
+
+Graphical handoff: nine introduction and seven hyperparameter plotting cells each publish exactly one native inline PNG. Expected per-cell axis counts pass, all PNGs are readable, and native inline closure leaves no accumulated figures. All 16 corrected plots were individually visually inspected and show no cross-cell contamination. Their PNG hashes are identical between the two fresh independent runs. These graphical assertions are reported separately from the 38 frozen numerical/semantic checks.
+
+4. Source and handoff integrity
+The independent identity audit passes six critical conditions for each case: input SHA256, output SHA256, unchanged code-cell count, unchanged original-cell mapping/order, absence of book prose/stored outputs, and exact correspondence between actual edited cells and declared migration changes.
+Three additional dataset checks pass: frozen iris.csv SHA256, its original Git blob identity, and exact equality of the CSV literal embedded in the recovered notebook to the frozen authorized input.
+
+The Iris snapshot is from pinned current seaborn-data commit 71e2436a092d714350de0fc409ca8a8714e7e78f. The archived notebook's URL was unpinned; this does not establish byte equality to the dataset used for its 2016 stored output. The same-source fixture is explicit, and no silent substitution of sklearn's modified Iris data occurs.
+
+The source code is MIT-licensed with Jacob VanderPlas attribution retained; the distributable extraction excludes CC-BY-NC-ND book prose and original figures. Actual plots are recomputed from code. Runtime versions must remain explicitly recorded: this review does not establish a newly installed clean environment or another operating system.
+
+5. Adverse controls and preserved correction
+A deliberately altered area value completes execution but fails numerical acceptance.
+An exception raised by _repr_html_ is recorded as a display failure and rejected, including the IPython case where run_cell itself does not set an error.
+An outbound connection control is rejected.
+A tampered recovered-notebook SHA256 is rejected.
+
+The first bundled adverse-control summary incorrectly expected the outbound control to reach the patched connect method. The environment refused earlier at socket construction, producing PermissionError and an empty connect-attempt list. The original false summary is preserved in evidence/independent-controls-reproduced/. The control reporter was corrected to distinguish environment_socket_creation from instrumented_connect. No notebook, acceptance anchor, permission, or failed execution was changed. Corrected summaries show all 4 expected rejections.
+
+The later visual inspection disclosed a separate real handoff failure: the producer's Agg conversion and the original independent runner lacked inline figure lifecycle checks. Distinct original plots accumulated on existing figures even though numerical checks passed. Original bad PNGs, producer logs, independent reruns and runner versions are retained. The delivered notebooks now preserve native inline magic, and the producer CLI separately reproduces per-cell capture/closure. The final independent runner verifies native inline output independently of that CLI implementation. A new adverse control changes only inline back to Agg: all 32 introduction cells and all 10 numerical checks still pass, but graphical acceptance correctly rejects the delivery. This fifth adverse control is additional to the four earlier controls.
+
+6. Important limits
+These cases are historical educational notebooks with a free modern edition. Their recovery demonstrates bounded technical delivery; their authors/readers are not customers and the study does not establish demand for repairing those exact examples.
+The result supports the specified Python/numerical stack and accepted examples. It does not validate biological, medical or other scientific claims, guarantee arbitrary notebook repair, or reproduce every historical floating-point or stochastic output.
+GMM modernization and seeded randomness are disclosed adaptations. No equality to unseeded historical cluster labels is asserted. The linear-regression adapter preserves the tested dense fitting semantics and grid dimension; this is not a replacement for the complete sklearn estimator API.
+Isomap's finite shape and execution were checked, not exact equivalence to every historical embedding coordinate. Native plot cell completeness, structure, PNG repeatability and visual handoff quality were checked after the preserved correction; this is not pixel equality to historical output. High-degree ill-conditioned polynomial results may vary by linear-algebra configuration, and no equality beyond the recorded comparisons is asserted.
+The checks measure computational acceptance. Actual customer collections, observed willingness to pay, complete provider billing and production operating cost remain outside this review.
+
+7. Reproduction artifacts
+study/scripts/independent_checks.py
+study/scripts/independent_run.py
+study/scripts/independent_audit.py
+study/scripts/independent_controls.py
+study/scripts/independent_plot_adverse.py
+study/evidence/independent_acceptance_plan.json
+study/evidence/independent_expectations.json
+study/evidence/independent-first-*.json
+study/evidence/independent-second-*.json
+study/evidence/independent-repeatability.json
+study/evidence/independent-identity-final.json
+study/evidence/independent-controls-reproduced/
+study/evidence/independent-controls-corrected/
+study/evidence/pre-plot-correction-independent/
+study/evidence/plot-acceptance-addendum.json
+study/evidence/independent-plot-visual-review.json
+study/evidence/independent-plot-adverse/
+
+The run command accepts an actual recovered.ipynb, --case, --checks and --output. The audit command accepts the study root. The controls command accepts the study root and an explicit output directory. None uses external services or credentials.

@@ -1,0 +1,222 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "03.05-Hierarchical-Indexing",
+  "path": "/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/03.05-Hierarchical-Indexing.ipynb",
+  "input_sha256": "b0d372cb736c01a249760956fd23f7aa0949033fb4c7c6af9a48401ae766b9b0",
+  "expected_cells": 45,
+  "completed_cells": 16,
+  "all_cells_completed": false,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 0.16897696600062773,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 4,
+      "source_sha256": "3928de94cbf5a16e140df9d2371f015ee0f0595f379a52bd5e55bf29f43c189b",
+      "status": "executed",
+      "elapsed_seconds": 0.13349460800236557,
+      "stdout": "",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 7,
+      "source_sha256": "622d1c57400a70d0a53aed6b858060227d3624cc7b6e85c052330d7d2785b7ad",
+      "status": "executed",
+      "elapsed_seconds": 0.0017057160002877936,
+      "stdout": "(California, 2000)    33871648\n(California, 2010)    37253956\n(New York, 2000)      18976457\n(New York, 2010)      19378102\n(Texas, 2000)         20851820\n(Texas, 2010)         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 9,
+      "source_sha256": "a6acc556e1ebf86677292068deb7d6a3248548a41bcc067bdad8a4e11533d083",
+      "status": "executed",
+      "elapsed_seconds": 0.0006373429932864383,
+      "stdout": "(California, 2010)    37253956\n(New York, 2000)      18976457\n(New York, 2010)      19378102\n(Texas, 2000)         20851820\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 11,
+      "source_sha256": "abe32cc5b9355972aee85c09c70c06c73d465d1e757ba7dd54aba5250e760481",
+      "status": "executed",
+      "elapsed_seconds": 0.0008498140086885542,
+      "stdout": "(California, 2010)    37253956\n(New York, 2010)      19378102\n(Texas, 2010)         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 14,
+      "source_sha256": "672186a1e35f41afc2254493f3f7463519d0c226c43251ee7060edd1dc66926a",
+      "status": "executed",
+      "elapsed_seconds": 0.0007289709901669994,
+      "stdout": "MultiIndex([('California', 2000),\n            ('California', 2010),\n            (  'New York', 2000),\n            (  'New York', 2010),\n            (     'Texas', 2000),\n            (     'Texas', 2010)],\n           )\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 5,
+      "upstream_cell_index": 16,
+      "source_sha256": "1569f41733114c49d78976407387af0247c4915e4f69189a5a70c1d2d162d1a9",
+      "status": "executed",
+      "elapsed_seconds": 0.0004871960118180141,
+      "stdout": "California  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 6,
+      "upstream_cell_index": 19,
+      "source_sha256": "2eb4b1fe71322d72e84a4c6e226e0ebc8a638362198d87e766157e446067e225",
+      "status": "executed",
+      "elapsed_seconds": 0.0004982329992344603,
+      "stdout": "California    37253956\nNew York      19378102\nTexas         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 7,
+      "upstream_cell_index": 22,
+      "source_sha256": "8bd15c1dc498bc23c63f29e4ac86bcefb22ca9186ba4fb54bcd99df867cc764e",
+      "status": "executed",
+      "elapsed_seconds": 0.004318092003813945,
+      "stdout": "                2000      2010\nCalifornia  33871648  37253956\nNew York    18976457  19378102\nTexas       20851820  25145561\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 8,
+      "upstream_cell_index": 24,
+      "source_sha256": "1968591f5db16c529cae03db3b5349606063d82ea99454ae35ce3351d27d51ba",
+      "status": "executed",
+      "elapsed_seconds": 0.0005907330050831661,
+      "stdout": "California  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 9,
+      "upstream_cell_index": 26,
+      "source_sha256": "aa832b4bd5dfc671db764bade0cbea8777d7e22675734fa47cbc8ba7e4287b46",
+      "status": "executed",
+      "elapsed_seconds": 0.0024524949985789135,
+      "stdout": "                    total  under18\nCalifornia 2000  33871648  9267089\n           2010  37253956  9284094\nNew York   2000  18976457  4687374\n           2010  19378102  4318033\nTexas      2000  20851820  5906301\n           2010  25145561  6879014\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 10,
+      "upstream_cell_index": 28,
+      "source_sha256": "ffda498a8ad393114b7038f9ce71a9fc3fa4df9bc21247080d8ca5d821c06d11",
+      "status": "executed",
+      "elapsed_seconds": 0.0024279670033138245,
+      "stdout": "                2000      2010\nCalifornia  0.273594  0.249211\nNew York    0.247010  0.222831\nTexas       0.283251  0.273568\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 11,
+      "upstream_cell_index": 31,
+      "source_sha256": "9f2f8db6312916f28e226788e918c273f4854abd4173928332013cdcf280bd52",
+      "status": "executed",
+      "elapsed_seconds": 0.002796674001729116,
+      "stdout": "        data1     data2\na 1  0.544087  0.672966\n  2  0.190509  0.023963\nb 1  0.237026  0.665447\n  2  0.340936  0.025587\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 12,
+      "upstream_cell_index": 33,
+      "source_sha256": "f214fb655da1acc89392a308272d66e7d75ed2d5841e54c3ebd78471dd5d2b17",
+      "status": "executed",
+      "elapsed_seconds": 0.0008289620018331334,
+      "stdout": "California  2000    33871648\n            2010    37253956\nTexas       2000    20851820\n            2010    25145561\nNew York    2000    18976457\n            2010    19378102\ndtype: int64\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 13,
+      "upstream_cell_index": 36,
+      "source_sha256": "1fc480213beaaf072067de3f623bf24eebe92aa3e86c05007e4961fcdfaad592",
+      "status": "executed",
+      "elapsed_seconds": 0.00048287000390700996,
+      "stdout": "MultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 14,
+      "upstream_cell_index": 38,
+      "source_sha256": "ab324c46d6c08216c4dfe996d3505147ef6b3072fc55af32f507d91fcc05904b",
+      "status": "executed",
+      "elapsed_seconds": 0.0004334450059104711,
+      "stdout": "MultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 15,
+      "upstream_cell_index": 40,
+      "source_sha256": "37962ff0316d8a5f4fd4f7b3d3c60558b19fbf27fcfd673b21ac55efbc1ef856",
+      "status": "executed",
+      "elapsed_seconds": 0.0005759900086559355,
+      "stdout": "MultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error": null,
+      "figures": []
+    },
+    {
+      "cell": 16,
+      "upstream_cell_index": 42,
+      "source_sha256": "1a0d3838bda352a0898306c0ec3e866c9bb6fd2f8446cfac7444beafb649eecf",
+      "status": "error",
+      "elapsed_seconds": 0.0005330449930625036,
+      "stdout": "",
+      "stderr": "",
+      "error": {
+        "type": "TypeError",
+        "message": "MultiIndex.__new__() got an unexpected keyword argument 'labels'",
+        "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py\", line 44, in run\n    value = eval(compile(ast.Expression(last.value), str(path), 'eval'), ns)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/f3e31b12a17f/study/inputs/confirmation/03.05-Hierarchical-Indexing.ipynb\", line 1, in <module>\n    {\nTypeError: MultiIndex.__new__() got an unexpected keyword argument 'labels'\n"
+      },
+      "figures": []
+    }
+  ],
+  "figures": [],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

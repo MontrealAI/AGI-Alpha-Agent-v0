@@ -1,0 +1,357 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.02-Introducing-Scikit-Learn",
+  "path": "study/deliveries/05.02-Introducing-Scikit-Learn/recovered.ipynb",
+  "input_sha256": "a270c31312eaa803cc91ef250e0bd634460c9d6e12565adffe1d5fd39a6482f0",
+  "expected_cells": 32,
+  "completed_cells": 32,
+  "all_cells_completed": true,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 7.992660217001685,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 7,
+      "source_sha256": "f20d7c0ac3c6fa3e558ec7d264efe2c6d784271e47a2a77099372d720eb89964",
+      "status": "executed",
+      "elapsed_seconds": 0.9213161840016255,
+      "stdout": "   sepal_length  sepal_width  petal_length  petal_width species\n0           5.1          3.5           1.4          0.2  setosa\n1           4.9          3.0           1.4          0.2  setosa\n2           4.7          3.2           1.3          0.2  setosa\n3           4.6          3.1           1.5          0.2  setosa\n4           5.0          3.6           1.4          0.2  setosa\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 11,
+      "source_sha256": "f42037907100ea8e6a90b65a7338311cef9c9f1a90c0fa13b7e9050bf98f1d29",
+      "status": "executed",
+      "elapsed_seconds": 1.033047692006221,
+      "stdout": "<seaborn.axisgrid.PairGrid object at 0x7f57fc99b7a0>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 13,
+      "source_sha256": "6ea5073d507a493de6d9aa8b1326a0cb45023375391d260f1b0b5fd2579e94ca",
+      "status": "executed",
+      "elapsed_seconds": 0.0005611329979728907,
+      "stdout": "(150, 4)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 14,
+      "source_sha256": "990b0c67ff7e056cc03f74524ea619bd936d94d66452691cf97581518de1ff5c",
+      "status": "executed",
+      "elapsed_seconds": 7.626399747096002e-05,
+      "stdout": "(150,)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 22,
+      "source_sha256": "94932eef3ac5c91b5225f8d07e69298a523d74bf0fdea678078553d943aaba72",
+      "status": "executed",
+      "elapsed_seconds": 0.0016657719970680773,
+      "stdout": "<matplotlib.collections.PathCollection object at 0x7f57fc19e7e0>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 5,
+      "upstream_cell_index": 25,
+      "source_sha256": "e1c79e20a9fc35244e07362e9410955debba4ef20c4d9a965ae7c8462b70c3e6",
+      "status": "executed",
+      "elapsed_seconds": 0.38398711499758065,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 6,
+      "upstream_cell_index": 28,
+      "source_sha256": "675fa66274e05fe7417c8681706e6b827b7140b923fb2ffb7dc04ea65122aa9d",
+      "status": "executed",
+      "elapsed_seconds": 0.004014131001895294,
+      "stdout": "LinearRegression()\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 7,
+      "upstream_cell_index": 31,
+      "source_sha256": "0c02c0ed242b63563fcfd012fbff9d67d8fa8de72709a6bd6c033977f5ee929b",
+      "status": "executed",
+      "elapsed_seconds": 8.3045000792481e-05,
+      "stdout": "(50, 1)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 8,
+      "upstream_cell_index": 33,
+      "source_sha256": "754595f6220dad712c6240c824a676b82dcf24cd2ada04986a3ce379ff2cb639",
+      "status": "executed",
+      "elapsed_seconds": 0.0015939949953462929,
+      "stdout": "LinearRegression()\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 9,
+      "upstream_cell_index": 35,
+      "source_sha256": "e92d8dcdeeb553414bd4a04c02923874527394b8d21df9def989413fb3d8b7e7",
+      "status": "executed",
+      "elapsed_seconds": 0.00038377600139938295,
+      "stdout": "array([1.9776566])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 10,
+      "upstream_cell_index": 36,
+      "source_sha256": "45af4a2144ff7dfd0f8766206509565237a3c7a48d15a59cc07f853f55330983",
+      "status": "executed",
+      "elapsed_seconds": 4.1000996134243906e-05,
+      "stdout": "np.float64(-0.9033107255311146)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 11,
+      "upstream_cell_index": 39,
+      "source_sha256": "3c1424098c87c3b65961ba09e02698641c359bdf27c3f351242b5f36b774aaa9",
+      "status": "executed",
+      "elapsed_seconds": 8.040100510697812e-05,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 12,
+      "upstream_cell_index": 41,
+      "source_sha256": "5c9833685a26c6af152712c2c4eed4131421db01ac3a6ae9b67a4c95137be544",
+      "status": "executed",
+      "elapsed_seconds": 0.00012426599278114736,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 13,
+      "upstream_cell_index": 43,
+      "source_sha256": "f2473367e2892aa6329d3e34fbb0511463c1049b93e27438b80545646534d92a",
+      "status": "executed",
+      "elapsed_seconds": 0.002691735004191287,
+      "stdout": "[<matplotlib.lines.Line2D object at 0x7f57f76c55b0>]\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 14,
+      "upstream_cell_index": 46,
+      "source_sha256": "b967fbacde50220718d02efafc43ba22485e222e481cf66de41d21f0d3a1782c",
+      "status": "executed",
+      "elapsed_seconds": 0.0012693470052909106,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 15,
+      "upstream_cell_index": 48,
+      "source_sha256": "1cb4d9470ca654cadceba600b09672556349dc2ba0f590c342e189a5d7f55506",
+      "status": "executed",
+      "elapsed_seconds": 0.008937697988585569,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 16,
+      "upstream_cell_index": 50,
+      "source_sha256": "8c1c4daaf48d491bb15ed805218f4135e667b7e5ac58288f4de80471520f6e3a",
+      "status": "executed",
+      "elapsed_seconds": 0.0005873530026292428,
+      "stdout": "0.9736842105263158\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 17,
+      "upstream_cell_index": 53,
+      "source_sha256": "a3830b795540efa0f11fe91c11eb4cf47d3d11ec9397817756d3986114a10779",
+      "status": "executed",
+      "elapsed_seconds": 0.03828534700733144,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 18,
+      "upstream_cell_index": 55,
+      "source_sha256": "bc569464f8e4c556e35ceaa3b7bdf0ce23fea5a1f03774c89eec014641878733",
+      "status": "executed",
+      "elapsed_seconds": 0.12236742200911976,
+      "stdout": "<seaborn.axisgrid.FacetGrid object at 0x7f57f6df3b60>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 19,
+      "upstream_cell_index": 58,
+      "source_sha256": "c88d2a67aa7d9d146a3068b65844173f3711a5c1525b4ab2c77dbf1529b321fd",
+      "status": "executed",
+      "elapsed_seconds": 0.1259747320000315,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 20,
+      "upstream_cell_index": 60,
+      "source_sha256": "83851c8a17372680961c723076105c6b96f357f85e7b58eea9f2bbca139a98c4",
+      "status": "executed",
+      "elapsed_seconds": 0.49476088299707044,
+      "stdout": "<seaborn.axisgrid.FacetGrid object at 0x7f57f6b2bec0>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 21,
+      "upstream_cell_index": 65,
+      "source_sha256": "316c4e8a865a45b10ccf446c1e71c8dd0602758fe6156fea4ed4f2e2d6d64e55",
+      "status": "executed",
+      "elapsed_seconds": 0.10348486200382467,
+      "stdout": "(1797, 8, 8)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 22,
+      "upstream_cell_index": 67,
+      "source_sha256": "d48435c7f5d457da088c609463402a8b3eee656c037ee70a5d07dcca681472fe",
+      "status": "executed",
+      "elapsed_seconds": 0.8809779650036944,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 23,
+      "upstream_cell_index": 69,
+      "source_sha256": "b5441394a6c3fbf6b09e76a7d055767c5dea9f3612dc0aac300507c3be984998",
+      "status": "executed",
+      "elapsed_seconds": 0.00012596999295055866,
+      "stdout": "(1797, 64)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 24,
+      "upstream_cell_index": 70,
+      "source_sha256": "adc178abd860fb23965a560d60fd7818261f58bd25214989eaba6368bac3bfe7",
+      "status": "executed",
+      "elapsed_seconds": 3.3019998227246106e-05,
+      "stdout": "(1797,)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 25,
+      "upstream_cell_index": 73,
+      "source_sha256": "ac55344537b0e19acdb018a82e1ecbae8875dbec23a407edcbb7d74a9e2bfac2",
+      "status": "executed",
+      "elapsed_seconds": 0.6405910210014554,
+      "stdout": "(1797, 2)\n",
+      "stderr": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/sklearn/manifold/_isomap.py:360: UserWarning: The number of connected components of the neighbors graph is 2 > 1. Completing the graph to fit Isomap might be slow. Increase the number of neighbors to avoid this issue.\n  self._fit_transform(X)\n/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/sparse/_index.py:174: SparseEfficiencyWarning: Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.\n  self._set_intXint(row, col, x.flat[0])\n",
+      "error": null
+    },
+    {
+      "cell": 26,
+      "upstream_cell_index": 75,
+      "source_sha256": "58b03be81e1af86388f81b2ac4b8759afe47f4d41f839e679547720e7946de55",
+      "status": "executed",
+      "elapsed_seconds": 0.009914378999383189,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 27,
+      "upstream_cell_index": 78,
+      "source_sha256": "4c1f08f9fa16c4fdb45168bc25a69d21d5627a9e65b6bd13523aa9fae244e4dc",
+      "status": "executed",
+      "elapsed_seconds": 0.0011331999994581565,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 28,
+      "upstream_cell_index": 79,
+      "source_sha256": "4922eadba57e03425295f08972f1c4d4ab880c832e586ee8d7c9f4f2bcb2115b",
+      "status": "executed",
+      "elapsed_seconds": 0.0023777570022502914,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 29,
+      "upstream_cell_index": 81,
+      "source_sha256": "8c1c4daaf48d491bb15ed805218f4135e667b7e5ac58288f4de80471520f6e3a",
+      "status": "executed",
+      "elapsed_seconds": 0.00039969300269149244,
+      "stdout": "0.8333333333333334\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 30,
+      "upstream_cell_index": 83,
+      "source_sha256": "d14e7e3e69049e2e3a9ff0154742b6ce8685fef44a0f998c112d38c59413743b",
+      "status": "executed",
+      "elapsed_seconds": 0.2120002339943312,
+      "stdout": "Text(629.369266055046, 0.5, 'true value')\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 31,
+      "upstream_cell_index": 85,
+      "source_sha256": "a7a64f56ee8bfe09976a0e5796430186877539572cea14456d558200fd3ce2ed",
+      "status": "executed",
+      "elapsed_seconds": 1.0623996920039644,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    }
+  ],
+  "figures": [
+    "confirmation-after-05.02-Introducing-Scikit-Learn-figure-1.png",
+    "confirmation-after-05.02-Introducing-Scikit-Learn-figure-2.png",
+    "confirmation-after-05.02-Introducing-Scikit-Learn-figure-3.png",
+    "confirmation-after-05.02-Introducing-Scikit-Learn-figure-4.png",
+    "confirmation-after-05.02-Introducing-Scikit-Learn-figure-5.png"
+  ],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-27",
+  "schema": "economic-verification/v1.1",
+  "input_sha256": "5bf6e2990c950d6294d0222edfc03cc24f756a23a697a95f34bcfab4067858fb",
+  "result": "PASS",
+  "cash_ledgers": 16,
+  "budget_partitions": 44,
+  "grid_rows": 1001,
+  "independent_arithmetic_checks": [
+    "Central accepted revenue equals 96 * 0.85 * 900 = 73440.",
+    "Central direct cost equals 96 * (53.8 model + 1.345 tools + 0.5 retention + 0.1925 * 95 support + 0.11 * 95 exceptions) = 8100.72.",
+    "Central payment expense equals 96 * 0.88 * (900 * 0.029 + 0.30) = 2230.272, including fees on refunded initial payments.",
+    "Operating profit subtracts direct expense, payment fees, 12000 acquisition and 10800 attributable fixed operations exactly once.",
+    "Funded zero-sales campaign retains all 12000 failed acquisition and returns -26800.",
+    "All amended cash ledgers reconcile, including collection after warranty closure.",
+    "All planned per-call token budgets sum to aggregate budgets and remain below configured input/output ceilings."
+  ],
+  "limits": "Arithmetic and accounting checks do not validate modeled demand, customer acceptance, prices, token consumption, labor estimates or future service-level performance."
+}

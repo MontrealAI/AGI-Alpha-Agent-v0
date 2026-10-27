@@ -1,0 +1,3 @@
+Historical failed source snapshots
+
+The .py.txt files retain the exact original Python bytes before the graphical correction, also permanently available at the original paths in commit f018e123da555f5cef7b36ef85ba24ed5e65fc14. The corresponding .py files are separately labeled formatting-only reading/replay copies with identical Python ASTs. They still represent the historical defective plotting behavior, not the corrected current implementation. SOURCE_SNAPSHOTS.json binds both versions. Use scripts/ for the corrected executable study. No lint configuration, required gate, acceptance oracle or historical original bytes were changed.

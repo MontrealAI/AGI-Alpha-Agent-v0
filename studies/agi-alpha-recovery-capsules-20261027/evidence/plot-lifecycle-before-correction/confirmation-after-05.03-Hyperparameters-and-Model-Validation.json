@@ -1,0 +1,244 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.03-Hyperparameters-and-Model-Validation",
+  "path": "study/deliveries/05.03-Hyperparameters-and-Model-Validation/recovered.ipynb",
+  "input_sha256": "ad7c9d647f1661301dbbfef96be50b7cfd69e4e919d557416c742e381390986a",
+  "expected_cells": 21,
+  "completed_cells": 21,
+  "all_cells_completed": true,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 4.501188921989524,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 6,
+      "source_sha256": "335b65c8a72ae51acc8bf930c74c25142afa06774c9c4384e0c2753865e6006c",
+      "status": "executed",
+      "elapsed_seconds": 1.1805192549945787,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 8,
+      "source_sha256": "fb4f0cb8bb62aaeea0f6a9f79c08ccfa7f7e8967077fcd3aa8a64103fa08df2c",
+      "status": "executed",
+      "elapsed_seconds": 0.2645817309967242,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 10,
+      "source_sha256": "2d4106d18d4fce0b9a04cc8b10ae77003419a42a75d5b8c812610600b9f55c80",
+      "status": "executed",
+      "elapsed_seconds": 0.003277716998127289,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 12,
+      "source_sha256": "b265ef19b3032fb95f3cd984507a19d1de09d877fc9668a80d42545418921c52",
+      "status": "executed",
+      "elapsed_seconds": 0.0006939979939488694,
+      "stdout": "1.0\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 15,
+      "source_sha256": "d65eac6aee6145223c7d293546eee6a4127d5bff4da3276ce291d515a93b7074",
+      "status": "executed",
+      "elapsed_seconds": 0.002882271000999026,
+      "stdout": "0.9066666666666666\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 5,
+      "upstream_cell_index": 18,
+      "source_sha256": "d3357b0e20d30472137d1e4758439ac2876f4ea05406a3a1138c77b684733410",
+      "status": "executed",
+      "elapsed_seconds": 0.003490018003503792,
+      "stdout": "(0.96, 0.9066666666666666)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 6,
+      "upstream_cell_index": 20,
+      "source_sha256": "d26018e8b131dedf4ffe4f792cb73251d80e72cba1cc3219d6e0a4c358527b9e",
+      "status": "executed",
+      "elapsed_seconds": 0.011180254994542338,
+      "stdout": "array([0.96666667, 0.96666667, 0.93333333, 0.93333333, 1.        ])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 7,
+      "upstream_cell_index": 22,
+      "source_sha256": "659a401b991fa8a54b919b714fa144f9ebe23a3015ca136fd87b281bc067bc29",
+      "status": "executed",
+      "elapsed_seconds": 0.3161764379910892,
+      "stdout": "array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 8,
+      "upstream_cell_index": 24,
+      "source_sha256": "d29132dd89ca82f6f4283f2176aff038b1edafbf02ed1b348d6693822bcc82ee",
+      "status": "executed",
+      "elapsed_seconds": 0.00010633999772835523,
+      "stdout": "np.float64(0.96)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 9,
+      "upstream_cell_index": 31,
+      "source_sha256": "a6a1e5095a99753a11fda71c791fa44a0c7ed6aa44f335998c6304c2d72572a7",
+      "status": "executed",
+      "elapsed_seconds": 0.010784388010506518,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 10,
+      "upstream_cell_index": 33,
+      "source_sha256": "859886fad15feea54223c025c2f763e726baac028f621e898f5377533560bd7f",
+      "status": "executed",
+      "elapsed_seconds": 0.0006476979906437919,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 11,
+      "upstream_cell_index": 35,
+      "source_sha256": "25098c0d7e493f65f85d78c8e776e08af8e2a53e934e0a7cb17bf9c1e5907c43",
+      "status": "executed",
+      "elapsed_seconds": 0.19505839199700858,
+      "stdout": "<matplotlib.legend.Legend object at 0x7f2062b983e0>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 12,
+      "upstream_cell_index": 37,
+      "source_sha256": "fef23e261093c058e73e0c34439254fd96de9fba055a111a0621b99e72e82016",
+      "status": "executed",
+      "elapsed_seconds": 0.3766838880110299,
+      "stdout": "Text(0, 0.5, 'score')\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 13,
+      "upstream_cell_index": 39,
+      "source_sha256": "a37403fe1167e157b378528e5c745e6d552e78ac696b4e5e77b3770159699795",
+      "status": "executed",
+      "elapsed_seconds": 0.002737882998189889,
+      "stdout": "(np.float64(-0.1), np.float64(1.0), np.float64(0.0), np.float64(1.0))\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 14,
+      "upstream_cell_index": 42,
+      "source_sha256": "3cf9312e0360d764015e0a9192d0cc099019e0aa72eeb87e8cbd5af0382c19c8",
+      "status": "executed",
+      "elapsed_seconds": 0.0012051289959345013,
+      "stdout": "<matplotlib.collections.PathCollection object at 0x7f2062b98bc0>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 15,
+      "upstream_cell_index": 44,
+      "source_sha256": "75abd9cd4565c8264a1b3fd51a58b48a63fef0ce76828a8e9a12046139bacf83",
+      "status": "executed",
+      "elapsed_seconds": 0.26428374099486973,
+      "stdout": "Text(0, 0.5, 'score')\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 16,
+      "upstream_cell_index": 49,
+      "source_sha256": "12b43459450fc4943d757cda57bbefaeb4e8d6dff6f691e3d1cea0263b766666",
+      "status": "executed",
+      "elapsed_seconds": 0.5977701470110333,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 17,
+      "upstream_cell_index": 52,
+      "source_sha256": "cf0ff2292bf7d10c253b3a1f58126d5e94f55d42f530ab3f6ccf3003f559943c",
+      "status": "executed",
+      "elapsed_seconds": 0.000290498006506823,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 18,
+      "upstream_cell_index": 54,
+      "source_sha256": "501749f66dcf7c08cfd8cf724fbd42fada3bd44d3d88f802feb2f5edc074a9b7",
+      "status": "executed",
+      "elapsed_seconds": 0.8352354230009951,
+      "stdout": "GridSearchCV(cv=7,\n             estimator=Pipeline(steps=[('polynomialfeatures',\n                                        PolynomialFeatures()),\n                                       ('linearregression',\n                                        LinearRegression())]),\n             param_grid={'linearregression__fit_intercept': [True, False],\n                         'linearregression__normalize': [True, False],\n                         'polynomialfeatures__degree': array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,\n       17, 18, 19, 20])})\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 19,
+      "upstream_cell_index": 56,
+      "source_sha256": "0f38b94ed38fb73ed567daa28bf8d4988e33ec741e8a58894ec19357b32e94ed",
+      "status": "executed",
+      "elapsed_seconds": 9.83789941528812e-05,
+      "stdout": "{'linearregression__fit_intercept': False, 'linearregression__normalize': True, 'polynomialfeatures__degree': np.int64(4)}\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 20,
+      "upstream_cell_index": 58,
+      "source_sha256": "5a2d6dfa36398b7f4be889efea45333f080029030cd2c997408ade9ca7d6417f",
+      "status": "executed",
+      "elapsed_seconds": 0.0033100159926107153,
+      "stdout": "(np.float64(10.0), np.float64(34.0), np.float64(0.0), np.float64(1.0))\n",
+      "stderr": "",
+      "error": null
+    }
+  ],
+  "figures": [
+    "confirmation-after-05.03-Hyperparameters-and-Model-Validation-figure-1.png",
+    "confirmation-after-05.03-Hyperparameters-and-Model-Validation-figure-2.png"
+  ],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

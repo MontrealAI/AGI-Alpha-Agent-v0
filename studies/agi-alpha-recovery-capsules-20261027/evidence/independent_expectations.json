@@ -1,0 +1,138 @@
+{
+  "source_derived_at": "2026-10-27",
+  "root_repair_implementation_read": false,
+  "source_commit": "d66231454ef753818dc9213c9b5942e067266966",
+  "expectation_basis": "Original code plus numerical source outputs for deterministic ordering; mathematical definitions for independent checks. No repaired outputs inspected.",
+  "cases": {
+    "03.02-Data-Indexing-and-Selection": {
+      "row_order": [
+        "California",
+        "Florida",
+        "Illinois",
+        "New York",
+        "Texas"
+      ],
+      "columns": [
+        "area",
+        "pop",
+        "density"
+      ],
+      "area": [
+        423967,
+        170312,
+        149995,
+        141297,
+        695662
+      ],
+      "population": [
+        38332521,
+        19552860,
+        12882135,
+        19651127,
+        26448193
+      ],
+      "density_rule": "pop/area except explicitly overwritten California=90",
+      "high_density_states": [
+        "Florida",
+        "New York"
+      ],
+      "positional_and_label_selection": [
+        "Florida",
+        "Illinois"
+      ]
+    },
+    "03.05-Hierarchical-Indexing": {
+      "population_index": [
+        [
+          "California",
+          2000
+        ],
+        [
+          "California",
+          2010
+        ],
+        [
+          "New York",
+          2000
+        ],
+        [
+          "New York",
+          2010
+        ],
+        [
+          "Texas",
+          2000
+        ],
+        [
+          "Texas",
+          2010
+        ]
+      ],
+      "population": [
+        33871648,
+        37253956,
+        18976457,
+        19378102,
+        20851820,
+        25145561
+      ],
+      "under18": [
+        9267089,
+        9284094,
+        4687374,
+        4318033,
+        5906301,
+        6879014
+      ],
+      "health_shape": [
+        4,
+        6
+      ],
+      "years": [
+        2013,
+        2014
+      ],
+      "expected_demonstration_error": {
+        "upstream_cell_index": 76,
+        "source": "health_data.loc[(:, 1), (:, 'HR')]",
+        "type": "SyntaxError"
+      },
+      "random_context_seed": 20261027,
+      "aggregation": "Manual pairwise row means by year, then independent means over HR/Temp subject positions"
+    },
+    "05.02-Introducing-Scikit-Learn": {
+      "iris_shape": [
+        150,
+        4
+      ],
+      "iris_class_count": 3,
+      "iris_data": "Must bind exact frozen seaborn CSV; source and fixture match documented separately.",
+      "pca": "Compare X_2D X_2D^T with centered-X SVD rank2 Gram matrix, removing arbitrary eigenvector signs.",
+      "linear": "Independent numpy least squares on source RandomState42 regression; predictions1e-8 tolerance",
+      "digits_shape": [
+        1797,
+        64
+      ],
+      "digit_test_count": 450,
+      "digit_train_count": 1347,
+      "confusion": "manual integer histogram of ytest/predictions; total450, diagonal equals accuracy",
+      "isomap": "1797x2 finite embedding, with neighborhood/resource limitations disclosed; no exact historical-coordinate equivalence",
+      "mixture": "150 integer labels in0..2 and all3 clusters represented; no exact historical labels claim"
+    },
+    "05.03-Hyperparameters-and-Model-Validation": {
+      "nearest_neighbor": "Direct Euclidean-distance argmin leave-one-out over actual sklearn Iris fixture; compare all150 correctness outcomes, not only mean",
+      "polynomial_data": "RandomState1, X=rand(N,1)^2, y=10-1/(X+.1)+randn(N), N40and200",
+      "grid_candidates": 84,
+      "folds": 7,
+      "total_fold_fits": 588,
+      "degree_values": [
+        0,
+        20
+      ],
+      "selected_degree_reference": 4,
+      "grid_best": "minimum rank and maximum reported mean score consistent; original normalizeTrue with fit_interceptFalse is redundant",
+      "prediction_reference": "Degree4 Vandermonde NumPy least squares1e-6 absolute tolerance on interpolation domain; extreme extrapolation separately bounded",
+      "normalize_probe": "Moderate scale fit_intercepttrue on/off predictions agree to1e-8; scale-separated polynomial feature columns[x,1e-9*x^2,1e9*x^3] normalizeTrue recovers exact cubic response within1e-6; explicitFalse remains a control, no required loss claim"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "independent-notebook-acceptance/v1",
+  "case": "03.02-Data-Indexing-and-Selection",
+  "notebook": "/tmp/agi-alpha-independent-controls-clzpm5o3/outbound.ipynb",
+  "sha256": "30cec1a713579e8568b928d121af8eae07a3619b9e338f5be22d8266dedb3c7e",
+  "checker_sha256": "ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715",
+  "nonempty_code_cells": 1,
+  "executed_code_cells": 0,
+  "all_cells_completed": false,
+  "outbound_attempts": [],
+  "cells": [
+    {
+      "index": 0,
+      "status": "failed",
+      "source_sha256": "d1e69b91ea0c2a4c614018db0bd840528ef944e2284b3a3112b257562903ad3b",
+      "elapsed_seconds": 0.14937620499404147,
+      "stdout": "\u001b[31m---------------------------------------------------------------------------\u001b[39m\n\u001b[31mPermissionError\u001b[39m                           Traceback (most recent call last)\n\u001b[36mCell\u001b[39m\u001b[36m \u001b[39m\u001b[32mIn[1]\u001b[39m\u001b[32m, line 2\u001b[39m\n\u001b[32m      1\u001b[39m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01msocket\u001b[39;00m\n\u001b[32m----> \u001b[39m\u001b[32m2\u001b[39m \u001b[43msocket\u001b[49m\u001b[43m.\u001b[49m\u001b[43msocket\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m.connect((\u001b[33m'\u001b[39m\u001b[33mexample.com\u001b[39m\u001b[33m'\u001b[39m, \u001b[32m443\u001b[39m))\n\n\u001b[36mFile \u001b[39m\u001b[32m/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233\u001b[39m, in \u001b[36msocket.__init__\u001b[39m\u001b[34m(self, family, type, proto, fileno)\u001b[39m\n\u001b[32m    231\u001b[39m     \u001b[38;5;28;01mif\u001b[39;00m proto == -\u001b[32m1\u001b[39m:\n\u001b[32m    232\u001b[39m         proto = \u001b[32m0\u001b[39m\n\u001b[32m--> \u001b[39m\u001b[32m233\u001b[39m \u001b[43m_socket\u001b[49m\u001b[43m.\u001b[49m\u001b[43msocket\u001b[49m\u001b[43m.\u001b[49m\u001b[34;43m__init__\u001b[39;49m\u001b[43m(\u001b[49m\u001b[38;5;28;43mself\u001b[39;49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mfamily\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;28;43mtype\u001b[39;49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mproto\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mfileno\u001b[49m\u001b[43m)\u001b[49m\n\u001b[32m    234\u001b[39m \u001b[38;5;28mself\u001b[39m._io_refs = \u001b[32m0\u001b[39m\n\u001b[32m    235\u001b[39m \u001b[38;5;28mself\u001b[39m._closed = \u001b[38;5;28;01mFalse\u001b[39;00m\n\n\u001b[31mPermissionError\u001b[39m: [Errno 1] Operation not permitted\n",
+      "stderr": "",
+      "error_type": "PermissionError",
+      "error": "[Errno 1] Operation not permitted"
+    }
+  ],
+  "checks": [
+    {
+      "name": "independent_checker_completed",
+      "pass": false,
+      "detail": {
+        "type": "KeyError",
+        "message": "'data'"
+      }
+    }
+  ],
+  "display_errors": [
+    {
+      "type": "PermissionError",
+      "error": "[Errno 1] Operation not permitted"
+    }
+  ],
+  "plot_states": [],
+  "rendered_plots": [],
+  "graphical_checks": [
+    {
+      "name": "exact_native_inline_figure_cells",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "name": "independent_figure_axes_per_cell",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "name": "all_native_inline_pngs_readable",
+      "pass": true
+    },
+    {
+      "name": "no_open_figures_left_between_cells",
+      "pass": true
+    }
+  ],
+  "accepted": false,
+  "elapsed_seconds": 0.41811072299606167
+}

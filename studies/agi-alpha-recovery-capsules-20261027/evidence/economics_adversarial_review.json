@@ -1,0 +1,164 @@
+{
+  "schema": "agi-alpha-independent-economic-review-v1",
+  "reviewed_date": "2026-10-27",
+  "reviewer": "Independent opportunity and commercial-economics agent",
+  "review_stage": "Final independent recheck of economics v1.1",
+  "scope": [
+    "Offer and scope-matched human reference",
+    "Accounting and cost allocation",
+    "Demand, acceptance and collection evidence",
+    "API short-context pricing feasibility",
+    "Refund reserves and cash timing",
+    "Optional coordination",
+    "Public-proxy versus target-customer inference"
+  ],
+  "overall": "Central expected-value accounting reconciles and supports a positive conditional service model. Commercial performance and demand remain unmeasured. Identified issues concern scenario completeness, pricing-plan enforceability, reference labels and late-collection robustness; they do not independently invalidate the central arithmetic.",
+  "verified_baseline": {
+    "same_scope": "Human 4/8/16-hour estimates include triage, repair, independent verification, notebook/CLI construction, environment/hashes/diff/documentation, expected correction/support and handoff. Hours remain estimated, not human trials.",
+    "central_revenue": 73440,
+    "central_direct_delivery_cost": 8100.72,
+    "central_processing_fees": 2230.272,
+    "central_acquisition_cost": 12000,
+    "central_fixed_operations": 10800,
+    "central_operating_profit": 40309.008,
+    "central_setup": 4000,
+    "central_full_project_return": 36309.008,
+    "accounting_once": "Expected outcome costs include successful, corrected, rejected and refunded jobs. Fees apply to initial payments including later refunds. Acquisition contains sales labor and channel expense once. No duplicate research/Gym/learning bill found.",
+    "acceptance_and_demand": "85% retained acceptance, 20% inquiry conversion, 40 inquiries/month and USD25 qualified-lead cost are explicitly unobserved assumptions. Four technical examples cannot calibrate them.",
+    "automated_workflow": "No mandatory manual quality-review gate is costed. Human support and exception hours are proposed expected allowances, not measured usage.",
+    "cash": "Default seven-day collection delay precedes warranty close; all initial customer receipts are fully reserved. Reserve releases are not expenses. Default expected cash closes to full project return; deterministic first-cohort refund stress is included.",
+    "capacities": "Selected deterministic scenarios are below modeled human and agent capacity. Neither throughput nor two-business-day SLA is measured."
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "material_model_specification",
+      "finding": "Aggregate token envelopes do not by themselves establish eligibility for short-context prices.",
+      "required_resolution": "Provide an explicit feasible multi-call allocation or enforceable cap <=272,000 input tokens and <=128,000 output per request, counting repeated context and reasoning. Label the plan counterfactual, not measured execution.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "source_verified_date": "2026-10-27",
+      "independent_stress": "If all aggregate tokens instead incur long-context rates, central full project return falls from USD36309.008 to USD32435.408; positivity survives this isolated sensitivity.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R2",
+      "severity": "material_scenario_omission",
+      "finding": "The initial no_buyers case has zero inquiries, so it omits failed paid acquisition. Setting purchase_conversion to zero raised ZeroDivisionError in the reviewed code.",
+      "required_resolution": "Add a fixed 40-inquiry/month zero-conversion campaign and handle zero purchases without dividing by conversion. It should retain USD12000 annual acquisition, USD10800 fixed operations and USD4000 setup, giving USD\u221226800 full project return.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R3",
+      "severity": "material_calibration_boundary",
+      "finding": "Central 85% service acceptance has no empirical customer calibration. Current notebook-modernization prior art reports 40.1%/44.9% mechanical recovery on a different, broader corpus.",
+      "required_resolution": "Include those as evidence-informed stress points while explicitly denying that mechanical recovery is a matched estimate of retained customer acceptance.",
+      "independent_results": [
+        {
+          "q": 0.401,
+          "operating_profit": -434.2873411764667,
+          "full_project_return": -4434.287341176467
+        },
+        {
+          "q": 0.449,
+          "operating_profit": 3921.343341176471,
+          "full_project_return": -78.65665882352914
+        },
+        {
+          "q": 0.45,
+          "operating_profit": 4012.0856470588187,
+          "full_project_return": 12.085647058818722
+        }
+      ],
+      "source": "https://uwaterloo.ca/computer-science/events/phd-seminar-se-automated-modernization-of-machine-learning-engineering-notebooks-for-reproducibility",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R4",
+      "severity": "reference_label",
+      "finding": "ParaTools USD249/hour is unloaded; its source also gives USD412.97 loaded. Calling 16\u00d7249 a complete human outlay is imprecise despite the existing caveat.",
+      "required_resolution": "Use USD412.97/h for the high loaded reference (USD6607.52 for 16h), or explicitly label USD3984 an unloaded resource lower bound and keep it out of exact customer-outlay claims.",
+      "source": "https://www.paratools.com/consulting/",
+      "source_verified_date": "2026-10-27",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R5",
+      "severity": "edge_case_correctness",
+      "finding": "When collection_delay_days exceeds the 14-day warranty, the initial cash function refunds/releases a reserve before collection and fails its nonnegative-reserve assertion. Reproduced with collection_delay_days=35.",
+      "required_resolution": "Separate warranty determination from settlement. Refund/release only funds actually received; after warranty, collect only retained accepted balances or otherwise maintain a consistent late-receipt event order. Include a late-collection cash sensitivity.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R6",
+      "severity": "assumption_disclosure",
+      "finding": "The model implicitly collects every accepted invoice and has no chargeback, bad-debt or late dispute assumption.",
+      "required_resolution": "State 100% eventual collections and zero uncompensated chargebacks as conditional assumptions, or add noncollection/dispute sensitivity. Do not present modeled accepted revenue as assured cash.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R7",
+      "severity": "assumption_disclosure",
+      "finding": "The cash ledger treats the USD95/hour opportunity-cost proxy as cash-paid labor.",
+      "required_resolution": "State that the financing scenarios assume fractional labor is actually paid at this modeled rate. If owner time is imputed instead, separate noncash owner opportunity cost from cash funding.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R8",
+      "severity": "scope_clarity",
+      "finding": "Five calendar days in the cash model differs from the two-business-day proposed offer.",
+      "required_resolution": "Label five days a conservative cash-timing buffer; do not assert measured service-level compliance.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    },
+    {
+      "id": "R9",
+      "severity": "central_evidence_boundary",
+      "finding": "The actual artifacts restore archived textbook code, and a free newer edition exists. These do not establish an underserved paying market for those exact examples.",
+      "required_resolution": "Preserve this prominently beside the commercial headline. Model paid delivery only for customer-specific orphan analyses without an equivalent substitute. This limitation does not automatically veto a transparent conditional service model.",
+      "resolution_status": "Addressed in v1.1 through code, additional scenario or explicit assumption/evidence boundary; underlying unmeasured quantities remain unmeasured."
+    }
+  ],
+  "sources_independently_opened": [
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "accessed": "2026-10-27",
+      "fact": "USD10/M input, USD50/M output, USD1/M cached; >272K input doubles input/cache and increases output 1.5x for full request; 128K maximum output."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "accessed": "2026-10-27",
+      "fact": "4GB hosted shell/code-interpreter USD0.12 per20-minute session; web search USD10/1000 calls plus content tokens."
+    },
+    {
+      "url": "https://www.vanderbilt.edu/accre/research-software-engineering-service/",
+      "accessed": "2026-10-27",
+      "fact": "General software engineering starts at USD84/hour; complexity and duration change price."
+    },
+    {
+      "url": "https://edcf.nd.edu/services/",
+      "accessed": "2026-10-27",
+      "fact": "External engineering/software service USD149/hour."
+    },
+    {
+      "url": "https://www.paratools.com/consulting/",
+      "accessed": "2026-10-27",
+      "fact": "Senior scientific consulting USD249/hour unloaded, USD412.97 loaded."
+    }
+  ],
+  "final_review": {
+    "result": "PASS for conditional accounting, scenario completeness and scoped cash arithmetic; no validation of demand or real commercial operation",
+    "input_sha256": "5bf6e2990c950d6294d0222edfc03cc24f756a23a697a95f34bcfab4067858fb",
+    "code_sha256": "520ab6a3937c65dfb9c1942a0414b001c7a65585ecce21bfc051523367d32974",
+    "replicated_output_files": 23,
+    "byte_identical_reproduction": true,
+    "cash_ledgers_independently_reconciled": 16,
+    "per_outcome_api_budget_partitions_checked": 44,
+    "per_request_input_limit": 272000,
+    "per_request_output_limit": 128000,
+    "remaining_evidence_limits": [
+      "Customer demand, acceptance probabilities and token consumption unmeasured",
+      "Paid target population differs from educational technical proxies with free replacements",
+      "Human hours, service timing and future operational capacity are estimates",
+      "Collection-loss sensitivities are expense challenges, not complete stochastic collection models"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.03-Hyperparameters-and-Model-Validation",
+  "path": "study/inputs/confirmation/05.03-Hyperparameters-and-Model-Validation.ipynb",
+  "input_sha256": "69cc1848ba54cb32eabc23c6aae16652978fe79f2fc93787dfbea590f7c76c09",
+  "expected_cells": 21,
+  "completed_cells": 4,
+  "all_cells_completed": false,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 1.6480021619936451,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 6,
+      "source_sha256": "f2d763f2a393f731603bcf9c6fe03b9e72f69d5428465d9df7a9a73c5d6ef991",
+      "status": "executed",
+      "elapsed_seconds": 1.3387731200054986,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 8,
+      "source_sha256": "fb4f0cb8bb62aaeea0f6a9f79c08ccfa7f7e8967077fcd3aa8a64103fa08df2c",
+      "status": "executed",
+      "elapsed_seconds": 0.2853791330126114,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 10,
+      "source_sha256": "2d4106d18d4fce0b9a04cc8b10ae77003419a42a75d5b8c812610600b9f55c80",
+      "status": "executed",
+      "elapsed_seconds": 0.004001259003416635,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 12,
+      "source_sha256": "b265ef19b3032fb95f3cd984507a19d1de09d877fc9668a80d42545418921c52",
+      "status": "executed",
+      "elapsed_seconds": 0.0006620500062126666,
+      "stdout": "1.0\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 15,
+      "source_sha256": "b09d3270174fa9a7cc87fae9ccb7b59249f9987712a0f4c7fb374bfa32438eb4",
+      "status": "error",
+      "elapsed_seconds": 0.0010118170030182227,
+      "stdout": "",
+      "stderr": "",
+      "error": {
+        "type": "ModuleNotFoundError",
+        "message": "No module named 'sklearn.cross_validation'",
+        "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py\", line 42, in run\n    exec(compile(tree, str(path), 'exec'), ns)\n  File \"study/inputs/confirmation/05.03-Hyperparameters-and-Model-Validation.ipynb\", line 1, in <module>\n    {\nModuleNotFoundError: No module named 'sklearn.cross_validation'\n"
+      }
+    }
+  ],
+  "figures": [],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

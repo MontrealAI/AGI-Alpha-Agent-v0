@@ -1,0 +1,35 @@
+[
+  {
+    "cell": 0,
+    "old": "unseeded global randomness",
+    "new": "np.random.seed(20261027)",
+    "reason": "Fixed study seed for reproducible illustrative random inputs; not an assertion of equality to the archived random realization."
+  },
+  {
+    "cell": 16,
+    "upstream_cell": 42,
+    "old": "labels=[[0, 0, 1, 1], [0, 1, 0, 1]]",
+    "new": "codes=[[0, 0, 1, 1], [0, 1, 0, 1]]",
+    "reason": "Renamed MultiIndex label-code constructor argument."
+  },
+  {
+    "cell": 31,
+    "old": "health_data.loc[(:, 1), (:, 'HR')]",
+    "new": "_demonstration_source = \"health_data.loc[(:, 1), (:, 'HR')]\"\ntry:\n    compile(_demonstration_source, '<intentional-syntax-demonstration>', 'exec')\nexcept SyntaxError as expected_error:\n    print('Expected SyntaxError:', expected_error.msg)\nelse:\n    raise AssertionError('The original invalid slice must raise SyntaxError')",
+    "reason": "Account for the original intentional invalid-syntax example; catch only its specified SyntaxError."
+  },
+  {
+    "cell": 43,
+    "upstream_cell": 102,
+    "old": "health_data.mean(level='year')",
+    "new": "health_data.groupby(level='year').mean()",
+    "reason": "Explicit grouped mean preserves year aggregation."
+  },
+  {
+    "cell": 44,
+    "upstream_cell": 104,
+    "old": "data_mean.mean(axis=1, level='type')",
+    "new": "data_mean.T.groupby(level='type').mean().T",
+    "reason": "Preserve column-level means without removed axis-level keyword."
+  }
+]

@@ -1,0 +1,19 @@
+--- original code
++++ recovered code
+@@ -46,7 +46,7 @@
+ 
+ df3 = make_df('AB', [0, 1])
+ df4 = make_df('CD', [0, 1])
+-display('df3', 'df4', "pd.concat([df3, df4], axis='col')")
++display('df3', 'df4', "pd.concat([df3, df4], axis=1)")
+ 
+ x = make_df('AB', [0, 1])
+ y = make_df('AB', [2, 3])
+@@ -70,6 +70,6 @@
+         "pd.concat([df5, df6], join='inner')")
+ 
+ display('df5', 'df6',
+-        "pd.concat([df5, df6], join_axes=[df5.columns])")
++        "pd.concat([df5, df6]).reindex(columns=df5.columns)")
+ 
+-display('df1', 'df2', 'df1.append(df2)')+display('df1', 'df2', 'pd.concat([df1, df2])')

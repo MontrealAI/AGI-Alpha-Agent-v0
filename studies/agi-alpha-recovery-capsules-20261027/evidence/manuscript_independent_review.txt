@@ -1,0 +1,60 @@
+Independent manuscript and delivery-evidence review
+Reviewer: separately assigned agent within the same research team/model family
+Date: 27 October 2026
+Status: substantive source/economic review complete; graphical-delivery correction resolved and independently reverified. Final PDF reflow review is recorded separately below.
+
+Scope
+Reviewed publication/body.tex, publication/paper.tex and publication/references.bib against protocol/freeze records, independent numerical checks and reruns, identity audit, original-source manifests, economic summary and native component records. Also visually inspected physical PDF pages 1–13 of the initial 26-page rendering (PDF SHA-256 faf7b95c6b8b5d6930d145185c06aa812f7469bcf6b959f982f4593fbc2686ad). This is a procedural independent review within one team, not an outside audit or blinded benchmark.
+
+Material finding: graphical delivery was incomplete despite numerical passes
+The original recovery changed the inline plotting backend to Agg without reproducing inline post-cell display/closure. Distinct plotting cells consequently accumulated on earlier figures. The scikit-learn introduction produced five saved figures instead of nine cell outputs; its digit grid was visibly contaminated by Isomap/colorbar/confusion plots in the last thumbnail. The hyperparameter notebook produced two figures instead of seven cell outputs, with validation curves and polynomial/scatter plots overlaid. Therefore the original statement that all required plots were generated and the implication of a complete graphical handoff were unsupported.
+
+The producer is preserving these failures and restoring native inline plotting to delivered notebooks, with explicit per-cell capture/closure only in the separate CLI executor. The independent runner has been updated separately to use TerminalInteractiveShell with native notebook MIME output, observe figure axis states before inline flush, capture actual PNG publications and require the original nine/seven plotting-cell outputs. Old independent acceptance logs and the old runner are retained under evidence/pre-plot-correction-independent/. The 38 frozen numerical/semantic checks are unchanged. Additional graphical expectations are explicitly dated in evidence/plot-acceptance-addendum.json, rather than described as pre-repair frozen tests.
+
+Required chronology clarification communicated to producer
+The manuscript's statements that the checker/expectations were frozen before inspecting repairs must refer specifically to the numerical/semantic checker. Graphical acceptance assertions were added after visual review disclosed the actual handoff failure. The original offer already required a complete useful handoff; this is additional verification of that requirement and a real correction, not a new successful case.
+
+Evidence quantities verified
+1. Four prospective confirmation notebooks contain 35 + 45 + 32 + 21 = 133 code cells. Development notebooks are separate and must not be added to that headline.
+2. Independent checks number 8 + 9 + 10 + 11 = 38 distinct numerical/semantic assertions. Two fresh runs repeat these checks; they are not 76 distinct tests or additional jobs/customers.
+3. Twenty-four source/identity/scope assertions are six per confirmation case. The exact current Iris CSV also has three additional byte/source bindings.
+4. Original intentional invalid syntax is retained as an expected-SyntaxError demonstration. It is accounted for, not silently dropped or claimed as a valid analytic computation.
+5. The current pinned seaborn Iris CSV is not established as byte-identical to the notebook's unpinned 2016 download. The revised manuscript correctly states this boundary.
+6. Historical normalize choices are retained across 84 combinations and seven folds (588 candidate/fold fits). Dense scale-separated behavior is tested; no full legacy sklearn API compatibility or historical bitwise equality is claimed.
+7. The protocol freeze at 22:33:50 UTC and development freeze at 22:42:37 UTC precede retrieval of the four first-edition confirmation notebooks. Case names/current-edition relatives were known during selection, so this is prospective execution, not a blinded zero-shot recovery experiment.
+8. The study's declared wall budget is 150 minutes, with one offer, two development and four confirmation cases; no external spending. Final completion time remains to be recorded by producer.
+
+Economic results verified against executed economic outputs
+The central scenario has USD900 price, 96 annual attempts, 85% final acceptance (81.6 expected accepted outcomes), USD73,440 modeled accepted revenue, USD40,309.008 operating profit and USD36,309.008 after USD4,000 additional development. Full-project break-even price is USD441.2637865; operating break-even is USD390.7268824. The joint downside is USD-28,943.02. At 44.9% acceptance the full-project result is USD-78.65666, rather than a positive result. Complete cost at the USD900 offer is USD455.0366667 per final acceptance; its difference from the break-even price follows from payment fees changing with price. Main-paper rounded quantities agree.
+
+The manuscript distinguishes accepted revenue, delivery contribution, operations, additional development, equity cash requirements, refunds/reserves and actual collections. Demand/quality/CAC/support assumptions are disclosed as assumptions, not estimated from the four examples. A conventional free current edition is recognized as a superior alternative for these exact educational examples. The commercial target is custom analysis lacking an adequate replacement; no demand observations establish that transfer.
+
+Execution and claim boundaries verified
+Actual model billing/tokens and independently exportable served snapshot are unavailable; the prospective API call budget is not an invoice or reconstructed actual charge. No ordinary-vs-expert model control was run. The unchanged historical code is an engineering baseline, not ordinary AI use. The manuscript correctly treats Operational Alpha, retained Alpha, technical novelty, paid demand and live production as unestablished. Native Nova-Seed/FusionPlan/Insight execution does not establish scientific truth or commercial value. MARK/ENS authentication was not executed. No token price, treasury or financing proceeds enter customer revenue.
+
+Primary-source spot checks (retrieved directly during this review)
+- Samuel and Mietchen, GigaScience DOI10.1093/gigascience/giad113: 15,817 dependency-declared Python notebooks attempted; 10,388 dependencies installed; 1,203 error-free; 879 matching recorded output. https://academic.oup.com/gigascience/article/doi/10.1093/gigascience/giad113/7516267
+- Waterloo Bihui Jin author seminar, 29 September 2026: revised MLEModernizer results 3,292/8,210 (40.1%, GPT-5.2) and 3,683/8,210 (44.9%, GPT-OSS-120b). https://uwaterloo.ca/computer-science/events/phd-seminar-se-automated-modernization-of-machine-learning-engineering-notebooks-for-reproducibility
+- Vanderbilt general software-engineering starting rate USD84/hour, with scope/institutional qualifications. https://www.vanderbilt.edu/accre/research-software-engineering-service/
+- Notre Dame external engineering rate USD149/hour. https://edcf.nd.edu/services/
+- ParaTools Senior Research Scientist USD249/hour unloaded and USD412.97 loaded. https://www.paratools.com/consulting/
+- BLS May2025 software-developer median USD135,980; June2026 professional and related compensation USD73.69 total/USD50.98 wages. https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm and https://www.bls.gov/news.release/ecec.htm
+- Code Ocean explicitly separates mechanical repeatability from checking article claims. https://docs.codeocean.com/osl-guide/publishing-on-code-ocean/the-verification-process/code-oceans-verification-process-for-computational-reproducibility-and-quality
+- sklearn0.18.2 LinearRegression documentation retains normalize and ignores it when fit_intercept=False. https://scikit-learn.org/0.18/modules/generated/sklearn.linear_model.LinearRegression.html
+
+Initial PDF visual review
+Physical pages 1–13 have no clipping, overlap, missing glyphs, illegible tables or chart labels. Pages8–12 contain minor top-of-page paragraph/citation continuations; these were reported as typographic, not scientific, issues. Evidence is in pdf_visual_qa_first13_initial.json. The initial rendering does not establish visual acceptance of later manuscript reflows, and this reviewer has not inspected pages14 onward.
+
+Remaining publication gates
+Rerun corrected notebooks twice in clean processes, verify all native inline plots and current identity hashes, rerun adverse controls including deliberate Agg regression, refresh evidence/provenance manifests, and visually inspect every page of the final rendered PDF. Canonical merge/deployment must remain unclaimed unless the actual authorized route is completed and public links are verified.
+
+Graphical finding disposition — 23:05 UTC
+RESOLVED. The corrected delivery passes two fresh native-inline independent reruns: 133 cells and unchanged 38 numerical/semantic checks, exact 9/7 plotting cells with expected axes, all 16 PNGs byte-identical between runs. All 16 were visually inspected; no cross-cell contamination remains. Three producer-CLI outputs for the original failure locations also pass visual inspection. Refreshed 24 identity/scope assertions and 3 Iris bindings pass. All 4 original adverse controls still reject, and a fifth forced-Agg control is rejected while its 32 code cells and 10 numeric checks pass. Evidence is in independent-repeatability.json, independent-plot-visual-review.json, independent-plot-adverse/, independent-identity-final.json and independent-controls-final/. The producer narrowed freeze wording to numerical/semantic expectations and disclosed the later graphical addendum. No substantive manuscript issue remains from this review. A final PDF section-heading orphan is being corrected separately; final page QA is pending that reflow.
+
+Final manuscript disposition
+PASS within the stated review scope. Numerical/economic/source claims were checked and the sole material delivery defect was corrected, reexecuted and preserved. Freeze chronology now correctly distinguishes the original numerical/semantic checker from later graphical assertions. Final manuscript and PDF file identities are:
+body.tex SHA-256 ec0b183577329e3cfb62b2f11e8a225bc65517b2cc771dc2a9884af476af7857
+paper.tex SHA-256 132a929336c20f366c0452161b94df0672123f8593b2b7963033618e4d81407d
+references.bib SHA-256 04af2937d48dcd79cba5fbca550a9cffb2e4e6e4eaa569c4cac82ada9d110072
+paper.pdf SHA-256 da8d718062937a709dd94cf35efb1b7f0fff354878eefc73d1c51b3e95208cb3
+Final physical pages1–13 pass visual review recorded in pdf_visual_qa_final_first13.json; exact unchanged PNGs are carried forward explicitly. The section6 orphan is resolved. Pages14–26, executive brief, browser edition, final release-manifest refresh and any public publication remain assigned to the producer/other reviewer. No further material content correction is requested by this reviewer.

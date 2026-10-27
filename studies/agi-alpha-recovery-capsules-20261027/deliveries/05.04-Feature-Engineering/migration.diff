@@ -1,0 +1,35 @@
+--- original code
++++ recovered code
+@@ -11,7 +11,7 @@
+ vec = DictVectorizer(sparse=False, dtype=int)
+ vec.fit_transform(data)
+ 
+-vec.get_feature_names()
++vec.get_feature_names_out()
+ 
+ vec = DictVectorizer(sparse=True, dtype=int)
+ vec.fit_transform(data)
+@@ -27,12 +27,12 @@
+ X
+ 
+ import pandas as pd
+-pd.DataFrame(X.toarray(), columns=vec.get_feature_names())
++pd.DataFrame(X.toarray(), columns=vec.get_feature_names_out())
+ 
+ from sklearn.feature_extraction.text import TfidfVectorizer
+ vec = TfidfVectorizer()
+ X = vec.fit_transform(sample)
+-pd.DataFrame(X.toarray(), columns=vec.get_feature_names())
++pd.DataFrame(X.toarray(), columns=vec.get_feature_names_out())
+ 
+ %matplotlib inline
+ import numpy as np
+@@ -67,7 +67,7 @@
+               [ 8,   8,   1  ]])
+ y = np.array([14, 16, -1,  8, -5])
+ 
+-from sklearn.preprocessing import Imputer
++from sklearn.impute import SimpleImputer as Imputer
+ imp = Imputer(strategy='mean')
+ X2 = imp.fit_transform(X)
+ X2
