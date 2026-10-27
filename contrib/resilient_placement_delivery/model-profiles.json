@@ -1,0 +1,32 @@
+{
+  "schema": "commercial-placement-model-reference/v1",
+  "checked_at": "2026-10-27",
+  "execution_in_this_packet": "scripted-protocol-fixture/v1; no paid provider call",
+  "account_access_verified": false,
+  "quota_verified": false,
+  "billing_verified": false,
+  "profiles": [
+    {
+      "model_id": "gpt-6-astra",
+      "candidate_role": "requirements reasoning and difficult exception analysis",
+      "reasoning_efforts": ["low", "medium", "high", "xhigh", "max"],
+      "responses_function_calling": true,
+      "responses_computer_use": true,
+      "standard_short_context_usd_per_million_tokens": {"input": 10, "cached_input": 1, "output": 50},
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    },
+    {
+      "model_id": "gpt-6.1-terra",
+      "candidate_role": "visual inspection and bounded computer interaction after qualification",
+      "reasoning_efforts": ["none", "low", "medium", "high", "xhigh", "max"],
+      "responses_function_calling": true,
+      "responses_computer_use": true,
+      "standard_short_context_usd_per_million_tokens": {"input": 1, "cached_input": 0.05, "output": 5},
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+    }
+  ],
+  "pricing_source": "https://developers.openai.com/api/docs/pricing",
+  "pricing_scope": "Public Standard short-context API reference only. Tool fees, cache writes, long-context, regional and speed premiums are separate. These are not measured delivery costs or account entitlements.",
+  "activation": "Use the existing separately provisioned ResponsesTransport, exact ExecutionProfile and signed ExecutionPermit; qualify served model, reasoning, tools, request caps, account quota and billing before any live attempt. This file grants no authority and is not loaded as runtime configuration.",
+  "comparison_status": "Ordinary/expert frontier operation and retained Alpha are unmeasured. Exact conventional solver reuse is available in this delivery."
+}

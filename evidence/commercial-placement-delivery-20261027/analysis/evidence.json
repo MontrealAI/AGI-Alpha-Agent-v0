@@ -1,0 +1,1703 @@
+{
+  "schema": "commercial-placement-research-delivery/v1",
+  "mode": "actual-local-tools-scripted-model_research-acceptance",
+  "brief_digest": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+  "execution": {
+    "acceptance": "unqualified",
+    "actions": 1,
+    "actual_charges_micro_usd": null,
+    "call_ids": [
+      "experiment-1"
+    ],
+    "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+    "elapsed_ms": 49,
+    "finished_at": 1793140987,
+    "history": [
+      {
+        "content": "{\"schema_version\": 1, \"schema_name\": \"flywheel-execution/v1\", \"mission_id\": \"regional-analysis-02\", \"beneficiary\": \"Research example: regional analysis delivery\", \"goal\": \"Provide a minimum-cost two-replica placement under declared capacities and failure domains\", \"challenged_assumption\": \"Two inexpensive replicas may share one correlated failure domain\", \"deliverable\": \"Named placement plan, independent finite verification and explicit operating limits\", \"acceptance_criteria\": [\"Each service has exactly two replicas in distinct declared failure domains\", \"Every declared host capacity is respected\", \"Global minimum or infeasibility agrees with independent exhaustive enumeration\", \"The named intake and rights evidence remain bound to the exact output\"], \"inputs\": {\"placement_brief_digest\": \"4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0\", \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}}, \"sharing_rights\": \"Original research-authored brief and inventory; Apache-2.0. No external customer data.\", \"stop_conditions\": [\"Bounded local tools only\", \"No infrastructure deployment\", \"No paid provider calls\"], \"mode\": \"hybrid\", \"components\": {\"acceptance\": \"executed-local\", \"identity\": \"simulated\", \"market\": \"simulated\", \"model\": \"simulated\", \"tools\": \"executed-local\"}, \"max_turns\": 3, \"max_actions\": 1, \"max_seconds\": 60, \"max_history_bytes\": 1000000}",
+        "role": "user"
+      },
+      {
+        "arguments": "{\"problem\": {\"schema_version\": 1, \"capacities\": [6, 7, 7, 8], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"demands\": [3, 4, 2, 2], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"node_budget\": 250000}}",
+        "call_id": "experiment-1",
+        "name": "placement_experiment",
+        "type": "function_call"
+      },
+      {
+        "call_id": "experiment-1",
+        "output": "{\"outcome\":{\"cost\":24,\"logical_units\":158,\"placement\":[[1,3],[0,2],[2,3],[1,3]],\"scope\":\"finite synthetic planning; no infrastructure deployment\",\"search_nodes\":18,\"status\":\"optimal\",\"workflow_digest\":\"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"},\"problem\":{\"capacities\":[6,7,7,8],\"costs\":[[4,3,7,5],[2,6,4,8],[6,4,3,2],[5,2,6,3]],\"demands\":[3,4,2,2],\"failure_domains\":[\"zone-north\",\"zone-north\",\"zone-central\",\"zone-south\"],\"node_budget\":250000,\"schema_version\":1},\"verification\":{\"accepted_finite_result\":true,\"actual_customer_acceptance\":false,\"feasible\":true,\"frontier_model_advantage\":\"unmeasured\",\"oracle_assignments\":1296,\"oracle_cost\":24,\"oracle_enumerated\":true}}",
+        "type": "function_call_output"
+      },
+      {
+        "content": [
+          {
+            "text": "{\"deliverable\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}, \"limitations\": [\"Scripted model; synthetic problem, identity, funding and market\", \"No frontier baseline or live peer reuse; no Alpha admission\"], \"artifacts\": [{\"kind\": \"placement-result\", \"content\": {\"outcome\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}}, \"digest\": \"a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8\"}]}",
+            "type": "output_text"
+          }
+        ],
+        "role": "assistant",
+        "type": "message"
+      }
+    ],
+    "last_observation": {
+      "attempt": "model/1",
+      "event_digest": "f2c7ffb022f9309e74b73469208a663e8a4e2bce2b3a3412eb1e5b2b0ac2b77f"
+    },
+    "last_response": {
+      "id": "scripted-2",
+      "model": "scripted-protocol-fixture/v1",
+      "provider_transport": null,
+      "reported_reasoning": null,
+      "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+      "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+      "served_reasoning": "provider-reported only; no independent attestation",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    "live_network_qualified": false,
+    "mission": {
+      "acceptance_criteria": [
+        "Each service has exactly two replicas in distinct declared failure domains",
+        "Every declared host capacity is respected",
+        "Global minimum or infeasibility agrees with independent exhaustive enumeration",
+        "The named intake and rights evidence remain bound to the exact output"
+      ],
+      "beneficiary": "Research example: regional analysis delivery",
+      "challenged_assumption": "Two inexpensive replicas may share one correlated failure domain",
+      "components": {
+        "acceptance": "executed-local",
+        "identity": "simulated",
+        "market": "simulated",
+        "model": "simulated",
+        "tools": "executed-local"
+      },
+      "deliverable": "Named placement plan, independent finite verification and explicit operating limits",
+      "goal": "Provide a minimum-cost two-replica placement under declared capacities and failure domains",
+      "inputs": {
+        "placement_brief_digest": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+        "problem": {
+          "capacities": [
+            6,
+            7,
+            7,
+            8
+          ],
+          "costs": [
+            [
+              4,
+              3,
+              7,
+              5
+            ],
+            [
+              2,
+              6,
+              4,
+              8
+            ],
+            [
+              6,
+              4,
+              3,
+              2
+            ],
+            [
+              5,
+              2,
+              6,
+              3
+            ]
+          ],
+          "demands": [
+            3,
+            4,
+            2,
+            2
+          ],
+          "failure_domains": [
+            "zone-north",
+            "zone-north",
+            "zone-central",
+            "zone-south"
+          ],
+          "node_budget": 250000,
+          "schema_version": 1
+        }
+      },
+      "max_actions": 1,
+      "max_history_bytes": 1000000,
+      "max_seconds": 60,
+      "max_turns": 3,
+      "mission_id": "regional-analysis-02",
+      "mode": "hybrid",
+      "schema_name": "flywheel-execution/v1",
+      "schema_version": 1,
+      "sharing_rights": "Original research-authored brief and inventory; Apache-2.0. No external customer data.",
+      "stop_conditions": [
+        "Bounded local tools only",
+        "No infrastructure deployment",
+        "No paid provider calls"
+      ]
+    },
+    "pending": null,
+    "permit": {
+      "domain": "flywheel-execution-permit",
+      "payload": {
+        "journal_identity": "urn:agialpha:ed25519:9aec4cbbb6bc4ad555e91dd5dd766123ca4c6eda04a47cfd29bb7069a76c8346",
+        "permit": {
+          "bucket": "A",
+          "config_digest": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+          "environment_digest": "a8e73b75ebe55fa2071b3340f36564ccf52cb605c9c0dcd1183ed7d7a5a18bc0",
+          "expires_at": 1793141287,
+          "max_authorized_micro_usd": 1000,
+          "operation_id": "regional-analysis-02",
+          "pricing_evidence_digest": "bb44a1cc2c30d41bb7a800395748363182bc23877a6cf81971cb2941bf33960c",
+          "profile_digest": "fc2347d323536be06525bee48b5f92fa58db18fd98edfd4444ca8cd4e146be84",
+          "quota_evidence_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+          "request_digest": "9be37f4734580e96ed811a58a0d5b924c88963fa849d8035fc011579f02b77ee",
+          "schema_version": 1
+        }
+      },
+      "principal": "controller",
+      "signature": "A8uoRgCybcR793Qj3mf8C1qWpGSvDRFYeGlIcFwfJ/eZrn8FsDahCeoiDq2QZ6W/4uUkFAw5oenuoCO4CWM+BA=="
+    },
+    "profile": {
+      "max_context_bytes": 750000,
+      "max_output_tokens": 16384,
+      "model_id": "scripted-protocol-fixture/v1",
+      "model_request_cap_micro_usd": null,
+      "model_revision": null,
+      "qualification_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+      "reasoning_effort": "high",
+      "reasoning_mode": "standard",
+      "schema_version": 1,
+      "supported_efforts": [
+        "high"
+      ],
+      "tool_request_caps_micro_usd": {},
+      "tools": [
+        {
+          "description": "Bounded existing placement tool",
+          "name": "placement_experiment",
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "type": "object"
+          },
+          "strict": true,
+          "type": "function"
+        }
+      ]
+    },
+    "reserved_request_caps_micro_usd": 0,
+    "result": {
+      "artifacts": [
+        {
+          "content": {
+            "outcome": {
+              "cost": 24,
+              "logical_units": 158,
+              "placement": [
+                [
+                  1,
+                  3
+                ],
+                [
+                  0,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  1,
+                  3
+                ]
+              ],
+              "scope": "finite synthetic planning; no infrastructure deployment",
+              "search_nodes": 18,
+              "status": "optimal",
+              "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+            },
+            "problem": {
+              "capacities": [
+                6,
+                7,
+                7,
+                8
+              ],
+              "costs": [
+                [
+                  4,
+                  3,
+                  7,
+                  5
+                ],
+                [
+                  2,
+                  6,
+                  4,
+                  8
+                ],
+                [
+                  6,
+                  4,
+                  3,
+                  2
+                ],
+                [
+                  5,
+                  2,
+                  6,
+                  3
+                ]
+              ],
+              "demands": [
+                3,
+                4,
+                2,
+                2
+              ],
+              "failure_domains": [
+                "zone-north",
+                "zone-north",
+                "zone-central",
+                "zone-south"
+              ],
+              "node_budget": 250000,
+              "schema_version": 1
+            },
+            "verification": {
+              "accepted_finite_result": true,
+              "actual_customer_acceptance": false,
+              "feasible": true,
+              "frontier_model_advantage": "unmeasured",
+              "oracle_assignments": 1296,
+              "oracle_cost": 24,
+              "oracle_enumerated": true
+            }
+          },
+          "digest": "a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8",
+          "kind": "placement-result"
+        }
+      ],
+      "deliverable": {
+        "cost": 24,
+        "logical_units": 158,
+        "placement": [
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "scope": "finite synthetic planning; no infrastructure deployment",
+        "search_nodes": 18,
+        "status": "optimal",
+        "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+      },
+      "limitations": [
+        "Scripted model; synthetic problem, identity, funding and market",
+        "No frontier baseline or live peer reuse; no Alpha admission"
+      ],
+      "verification": {
+        "accepted_finite_result": true,
+        "actual_customer_acceptance": false,
+        "feasible": true,
+        "frontier_model_advantage": "unmeasured",
+        "oracle_assignments": 1296,
+        "oracle_cost": 24,
+        "oracle_enumerated": true
+      }
+    },
+    "schema_name": "flywheel-execution/v1",
+    "started_at": 1793140987,
+    "status": "delivered-awaiting-independent-acceptance-and-costs",
+    "turn": 2,
+    "usage_events": [
+      {
+        "id": "scripted-1",
+        "model": "scripted-protocol-fixture/v1",
+        "provider_transport": null,
+        "reported_reasoning": null,
+        "request_digest": "3ec9dcf458f117002d9ed90870645b3a722effa92a7e223a76b6ee4d8b3c9d6b",
+        "response_digest": "c907f890f8c8d8694d27d178d00a7c061bf773cc37e632ca11f4a6381709c58c",
+        "served_reasoning": "provider-reported only; no independent attestation",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      {
+        "id": "scripted-2",
+        "model": "scripted-protocol-fixture/v1",
+        "provider_transport": null,
+        "reported_reasoning": null,
+        "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+        "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+        "served_reasoning": "provider-reported only; no independent attestation",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        }
+      }
+    ],
+    "id": "@flywheel-execution:71331d14cc05d4fc2445ebf9951c9736581cce7f359adab96ed7fe0aa88a8393",
+    "revision": 19,
+    "digest": "e10c2c1c2ffac37e3da9ed7bd3541e86f89cb5ae3662bc6bf6b183035ee25818"
+  },
+  "research_acceptance": {
+    "accepted_finite_result": true,
+    "feasible": true,
+    "oracle_cost": 24,
+    "oracle_enumerated": true,
+    "oracle_assignments": 1296,
+    "actual_customer_acceptance": false,
+    "frontier_model_advantage": "unmeasured"
+  },
+  "actual": {
+    "execution": {
+      "acceptance": "unqualified",
+      "actions": 1,
+      "actual_charges_micro_usd": null,
+      "call_ids": [
+        "experiment-1"
+      ],
+      "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+      "elapsed_ms": 49,
+      "finished_at": 1793140987,
+      "history": [
+        {
+          "content": "{\"schema_version\": 1, \"schema_name\": \"flywheel-execution/v1\", \"mission_id\": \"regional-analysis-02\", \"beneficiary\": \"Research example: regional analysis delivery\", \"goal\": \"Provide a minimum-cost two-replica placement under declared capacities and failure domains\", \"challenged_assumption\": \"Two inexpensive replicas may share one correlated failure domain\", \"deliverable\": \"Named placement plan, independent finite verification and explicit operating limits\", \"acceptance_criteria\": [\"Each service has exactly two replicas in distinct declared failure domains\", \"Every declared host capacity is respected\", \"Global minimum or infeasibility agrees with independent exhaustive enumeration\", \"The named intake and rights evidence remain bound to the exact output\"], \"inputs\": {\"placement_brief_digest\": \"4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0\", \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}}, \"sharing_rights\": \"Original research-authored brief and inventory; Apache-2.0. No external customer data.\", \"stop_conditions\": [\"Bounded local tools only\", \"No infrastructure deployment\", \"No paid provider calls\"], \"mode\": \"hybrid\", \"components\": {\"acceptance\": \"executed-local\", \"identity\": \"simulated\", \"market\": \"simulated\", \"model\": \"simulated\", \"tools\": \"executed-local\"}, \"max_turns\": 3, \"max_actions\": 1, \"max_seconds\": 60, \"max_history_bytes\": 1000000}",
+          "role": "user"
+        },
+        {
+          "arguments": "{\"problem\": {\"schema_version\": 1, \"capacities\": [6, 7, 7, 8], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"demands\": [3, 4, 2, 2], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"node_budget\": 250000}}",
+          "call_id": "experiment-1",
+          "name": "placement_experiment",
+          "type": "function_call"
+        },
+        {
+          "call_id": "experiment-1",
+          "output": "{\"outcome\":{\"cost\":24,\"logical_units\":158,\"placement\":[[1,3],[0,2],[2,3],[1,3]],\"scope\":\"finite synthetic planning; no infrastructure deployment\",\"search_nodes\":18,\"status\":\"optimal\",\"workflow_digest\":\"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"},\"problem\":{\"capacities\":[6,7,7,8],\"costs\":[[4,3,7,5],[2,6,4,8],[6,4,3,2],[5,2,6,3]],\"demands\":[3,4,2,2],\"failure_domains\":[\"zone-north\",\"zone-north\",\"zone-central\",\"zone-south\"],\"node_budget\":250000,\"schema_version\":1},\"verification\":{\"accepted_finite_result\":true,\"actual_customer_acceptance\":false,\"feasible\":true,\"frontier_model_advantage\":\"unmeasured\",\"oracle_assignments\":1296,\"oracle_cost\":24,\"oracle_enumerated\":true}}",
+          "type": "function_call_output"
+        },
+        {
+          "content": [
+            {
+              "text": "{\"deliverable\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}, \"limitations\": [\"Scripted model; synthetic problem, identity, funding and market\", \"No frontier baseline or live peer reuse; no Alpha admission\"], \"artifacts\": [{\"kind\": \"placement-result\", \"content\": {\"outcome\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}}, \"digest\": \"a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8\"}]}",
+              "type": "output_text"
+            }
+          ],
+          "role": "assistant",
+          "type": "message"
+        }
+      ],
+      "last_observation": {
+        "attempt": "model/1",
+        "event_digest": "f2c7ffb022f9309e74b73469208a663e8a4e2bce2b3a3412eb1e5b2b0ac2b77f"
+      },
+      "last_response": {
+        "id": "scripted-2",
+        "model": "scripted-protocol-fixture/v1",
+        "provider_transport": null,
+        "reported_reasoning": null,
+        "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+        "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+        "served_reasoning": "provider-reported only; no independent attestation",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      "live_network_qualified": false,
+      "mission": {
+        "acceptance_criteria": [
+          "Each service has exactly two replicas in distinct declared failure domains",
+          "Every declared host capacity is respected",
+          "Global minimum or infeasibility agrees with independent exhaustive enumeration",
+          "The named intake and rights evidence remain bound to the exact output"
+        ],
+        "beneficiary": "Research example: regional analysis delivery",
+        "challenged_assumption": "Two inexpensive replicas may share one correlated failure domain",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "simulated",
+          "tools": "executed-local"
+        },
+        "deliverable": "Named placement plan, independent finite verification and explicit operating limits",
+        "goal": "Provide a minimum-cost two-replica placement under declared capacities and failure domains",
+        "inputs": {
+          "placement_brief_digest": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+          "problem": {
+            "capacities": [
+              6,
+              7,
+              7,
+              8
+            ],
+            "costs": [
+              [
+                4,
+                3,
+                7,
+                5
+              ],
+              [
+                2,
+                6,
+                4,
+                8
+              ],
+              [
+                6,
+                4,
+                3,
+                2
+              ],
+              [
+                5,
+                2,
+                6,
+                3
+              ]
+            ],
+            "demands": [
+              3,
+              4,
+              2,
+              2
+            ],
+            "failure_domains": [
+              "zone-north",
+              "zone-north",
+              "zone-central",
+              "zone-south"
+            ],
+            "node_budget": 250000,
+            "schema_version": 1
+          }
+        },
+        "max_actions": 1,
+        "max_history_bytes": 1000000,
+        "max_seconds": 60,
+        "max_turns": 3,
+        "mission_id": "regional-analysis-02",
+        "mode": "hybrid",
+        "schema_name": "flywheel-execution/v1",
+        "schema_version": 1,
+        "sharing_rights": "Original research-authored brief and inventory; Apache-2.0. No external customer data.",
+        "stop_conditions": [
+          "Bounded local tools only",
+          "No infrastructure deployment",
+          "No paid provider calls"
+        ]
+      },
+      "pending": null,
+      "permit": {
+        "domain": "flywheel-execution-permit",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:9aec4cbbb6bc4ad555e91dd5dd766123ca4c6eda04a47cfd29bb7069a76c8346",
+          "permit": {
+            "bucket": "A",
+            "config_digest": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "environment_digest": "a8e73b75ebe55fa2071b3340f36564ccf52cb605c9c0dcd1183ed7d7a5a18bc0",
+            "expires_at": 1793141287,
+            "max_authorized_micro_usd": 1000,
+            "operation_id": "regional-analysis-02",
+            "pricing_evidence_digest": "bb44a1cc2c30d41bb7a800395748363182bc23877a6cf81971cb2941bf33960c",
+            "profile_digest": "fc2347d323536be06525bee48b5f92fa58db18fd98edfd4444ca8cd4e146be84",
+            "quota_evidence_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+            "request_digest": "9be37f4734580e96ed811a58a0d5b924c88963fa849d8035fc011579f02b77ee",
+            "schema_version": 1
+          }
+        },
+        "principal": "controller",
+        "signature": "A8uoRgCybcR793Qj3mf8C1qWpGSvDRFYeGlIcFwfJ/eZrn8FsDahCeoiDq2QZ6W/4uUkFAw5oenuoCO4CWM+BA=="
+      },
+      "profile": {
+        "max_context_bytes": 750000,
+        "max_output_tokens": 16384,
+        "model_id": "scripted-protocol-fixture/v1",
+        "model_request_cap_micro_usd": null,
+        "model_revision": null,
+        "qualification_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+        "reasoning_effort": "high",
+        "reasoning_mode": "standard",
+        "schema_version": 1,
+        "supported_efforts": [
+          "high"
+        ],
+        "tool_request_caps_micro_usd": {},
+        "tools": [
+          {
+            "description": "Bounded existing placement tool",
+            "name": "placement_experiment",
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {},
+              "type": "object"
+            },
+            "strict": true,
+            "type": "function"
+          }
+        ]
+      },
+      "reserved_request_caps_micro_usd": 0,
+      "result": {
+        "artifacts": [
+          {
+            "content": {
+              "outcome": {
+                "cost": 24,
+                "logical_units": 158,
+                "placement": [
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    0,
+                    2
+                  ],
+                  [
+                    2,
+                    3
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ],
+                "scope": "finite synthetic planning; no infrastructure deployment",
+                "search_nodes": 18,
+                "status": "optimal",
+                "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+              },
+              "problem": {
+                "capacities": [
+                  6,
+                  7,
+                  7,
+                  8
+                ],
+                "costs": [
+                  [
+                    4,
+                    3,
+                    7,
+                    5
+                  ],
+                  [
+                    2,
+                    6,
+                    4,
+                    8
+                  ],
+                  [
+                    6,
+                    4,
+                    3,
+                    2
+                  ],
+                  [
+                    5,
+                    2,
+                    6,
+                    3
+                  ]
+                ],
+                "demands": [
+                  3,
+                  4,
+                  2,
+                  2
+                ],
+                "failure_domains": [
+                  "zone-north",
+                  "zone-north",
+                  "zone-central",
+                  "zone-south"
+                ],
+                "node_budget": 250000,
+                "schema_version": 1
+              },
+              "verification": {
+                "accepted_finite_result": true,
+                "actual_customer_acceptance": false,
+                "feasible": true,
+                "frontier_model_advantage": "unmeasured",
+                "oracle_assignments": 1296,
+                "oracle_cost": 24,
+                "oracle_enumerated": true
+              }
+            },
+            "digest": "a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8",
+            "kind": "placement-result"
+          }
+        ],
+        "deliverable": {
+          "cost": 24,
+          "logical_units": 158,
+          "placement": [
+            [
+              1,
+              3
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "scope": "finite synthetic planning; no infrastructure deployment",
+          "search_nodes": 18,
+          "status": "optimal",
+          "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+        },
+        "limitations": [
+          "Scripted model; synthetic problem, identity, funding and market",
+          "No frontier baseline or live peer reuse; no Alpha admission"
+        ],
+        "verification": {
+          "accepted_finite_result": true,
+          "actual_customer_acceptance": false,
+          "feasible": true,
+          "frontier_model_advantage": "unmeasured",
+          "oracle_assignments": 1296,
+          "oracle_cost": 24,
+          "oracle_enumerated": true
+        }
+      },
+      "schema_name": "flywheel-execution/v1",
+      "started_at": 1793140987,
+      "status": "delivered-awaiting-independent-acceptance-and-costs",
+      "turn": 2,
+      "usage_events": [
+        {
+          "id": "scripted-1",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "3ec9dcf458f117002d9ed90870645b3a722effa92a7e223a76b6ee4d8b3c9d6b",
+          "response_digest": "c907f890f8c8d8694d27d178d00a7c061bf773cc37e632ca11f4a6381709c58c",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        },
+        {
+          "id": "scripted-2",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+          "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        }
+      ],
+      "id": "@flywheel-execution:71331d14cc05d4fc2445ebf9951c9736581cce7f359adab96ed7fe0aa88a8393",
+      "revision": 19,
+      "digest": "e10c2c1c2ffac37e3da9ed7bd3541e86f89cb5ae3662bc6bf6b183035ee25818"
+    },
+    "research_acceptance": {
+      "accepted_finite_result": true,
+      "feasible": true,
+      "oracle_cost": 24,
+      "oracle_enumerated": true,
+      "oracle_assignments": 1296,
+      "actual_customer_acceptance": false,
+      "frontier_model_advantage": "unmeasured"
+    },
+    "duplicate_execution_refused": "mission already attempted; reconciliation is required before any new permit",
+    "unknown_cost_native_acceptance_refused": "general delivery A costs must be complete before origin acceptance",
+    "journal_integrity": {
+      "valid": true,
+      "events": 35,
+      "head": "fb88a3c590a05e6e1e25165de069b69cd846ecd5a888936e7e6983b784752000",
+      "identity": "urn:agialpha:ed25519:9aec4cbbb6bc4ad555e91dd5dd766123ca4c6eda04a47cfd29bb7069a76c8346"
+    },
+    "cost_report": {
+      "currency": "USD",
+      "unit": "micro_usd",
+      "costs": {
+        "A": 0,
+        "B": 0,
+        "C": 0
+      },
+      "collected_revenue": 0,
+      "delivery_profit": null,
+      "complete_cost_profit": null,
+      "cash": 10000000000,
+      "obligations": null,
+      "known_obligations": 0,
+      "reserve": 0,
+      "available_funds": null,
+      "legacy_attested_collections": 0,
+      "accepted_service_revenue": 0,
+      "customer_funds_by_mode": {
+        "live": {
+          "gross_collections": 0,
+          "refunds": 0,
+          "net_cash": 0,
+          "earned_revenue": 0,
+          "unearned_service": 0,
+          "pass_through_custody": 0,
+          "customer_obligations": 0,
+          "pending_refunds": 0
+        },
+        "recorded": {
+          "gross_collections": 0,
+          "refunds": 0,
+          "net_cash": 0,
+          "earned_revenue": 0,
+          "unearned_service": 0,
+          "pass_through_custody": 0,
+          "customer_obligations": 0,
+          "pending_refunds": 0
+        },
+        "synthetic": {
+          "gross_collections": 0,
+          "refunds": 0,
+          "net_cash": 0,
+          "earned_revenue": 0,
+          "unearned_service": 0,
+          "pass_through_custody": 0,
+          "customer_obligations": 0,
+          "pending_refunds": 0
+        },
+        "calibrated": {
+          "gross_collections": 0,
+          "refunds": 0,
+          "net_cash": 0,
+          "earned_revenue": 0,
+          "unearned_service": 0,
+          "pass_through_custody": 0,
+          "customer_obligations": 0,
+          "pending_refunds": 0
+        }
+      },
+      "customer_obligations": 0,
+      "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+      "complete": false,
+      "bucket_complete": {
+        "A": false,
+        "B": false,
+        "C": false
+      },
+      "unknown_costs": true,
+      "token_movements_included": false,
+      "evidence_basis": "configured accounting signer attestations"
+    },
+    "funding_scope": "noncash synthetic research envelope; ledger capital/cash is not actual available money",
+    "cost_report_interpretation": "Actual complete costs remain unknown; no actual cash or profit is established"
+  },
+  "synthetic_conformance": {
+    "mode": "synthetic-protocol-conformance-only",
+    "stages": [
+      {
+        "stage": "synthetic-deposit-unearned",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 0,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": null,
+          "complete_cost_profit": null,
+          "cash": 10000000000,
+          "obligations": 0,
+          "known_obligations": 0,
+          "reserve": 0,
+          "available_funds": 10000000000,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 0,
+              "net_cash": 250000000,
+              "earned_revenue": 0,
+              "unearned_service": 250000000,
+              "pass_through_custody": 0,
+              "customer_obligations": 250000000,
+              "pending_refunds": 0
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": false,
+          "bucket_complete": {
+            "A": false,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": false,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "2127a7b4d5da005175de53c6418a1d3b83ef3292156137551c00dc1d64122508"
+      },
+      {
+        "stage": "actual-local-artifact-unknown-cost-native-acceptance-refused",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 0,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": null,
+          "complete_cost_profit": null,
+          "cash": 10000000000,
+          "obligations": null,
+          "known_obligations": 0,
+          "reserve": 0,
+          "available_funds": null,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 0,
+              "net_cash": 250000000,
+              "earned_revenue": 0,
+              "unearned_service": 250000000,
+              "pass_through_custody": 0,
+              "customer_obligations": 250000000,
+              "pending_refunds": 0
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": false,
+          "bucket_complete": {
+            "A": false,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": true,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "5079fd000a97e20d5560874caf89a5d92c6c19d16e463caf8e9deaa6aea160be"
+      },
+      {
+        "stage": "synthetic-complete-cost-native-research-acceptance",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 9000000,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": -9000000,
+          "complete_cost_profit": -9000000,
+          "cash": 10000000000,
+          "obligations": 9000000,
+          "known_obligations": 9000000,
+          "reserve": 0,
+          "available_funds": 9991000000,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 0,
+              "net_cash": 250000000,
+              "earned_revenue": 0,
+              "unearned_service": 250000000,
+              "pass_through_custody": 0,
+              "customer_obligations": 250000000,
+              "pending_refunds": 0
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": true,
+          "bucket_complete": {
+            "A": true,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": false,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "765b092ce0185f3fe4bc9448c653e32686e79c1c70c1ab1f024f3fc867cc171e"
+      },
+      {
+        "stage": "synthetic-earned-service-income",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 9000000,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": -9000000,
+          "complete_cost_profit": -9000000,
+          "cash": 10000000000,
+          "obligations": 9000000,
+          "known_obligations": 9000000,
+          "reserve": 0,
+          "available_funds": 9991000000,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 0,
+              "net_cash": 250000000,
+              "earned_revenue": 250000000,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": true,
+          "bucket_complete": {
+            "A": true,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": false,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "feca81a331ff4ec38b3cb70010166a86efaacbf511b17d955289dc5993a3c34d"
+      },
+      {
+        "stage": "synthetic-refund-obligation",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 9000000,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": -9000000,
+          "complete_cost_profit": -9000000,
+          "cash": 10000000000,
+          "obligations": 9000000,
+          "known_obligations": 9000000,
+          "reserve": 0,
+          "available_funds": 9991000000,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 0,
+              "net_cash": 250000000,
+              "earned_revenue": 225000000,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 25000000,
+              "pending_refunds": 25000000
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": true,
+          "bucket_complete": {
+            "A": true,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": false,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "0aeb83692ee2c2d4994e07b288052b1dec464088e272f6649271277b2cac1912"
+      },
+      {
+        "stage": "synthetic-refund-recorded",
+        "report": {
+          "currency": "USD",
+          "unit": "micro_usd",
+          "costs": {
+            "A": 9000000,
+            "B": 0,
+            "C": 0
+          },
+          "collected_revenue": 0,
+          "delivery_profit": -9000000,
+          "complete_cost_profit": -9000000,
+          "cash": 10000000000,
+          "obligations": 9000000,
+          "known_obligations": 9000000,
+          "reserve": 0,
+          "available_funds": 9991000000,
+          "legacy_attested_collections": 0,
+          "accepted_service_revenue": 0,
+          "customer_funds_by_mode": {
+            "live": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "recorded": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "synthetic": {
+              "gross_collections": 250000000,
+              "refunds": 25000000,
+              "net_cash": 225000000,
+              "earned_revenue": 225000000,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            },
+            "calibrated": {
+              "gross_collections": 0,
+              "refunds": 0,
+              "net_cash": 0,
+              "earned_revenue": 0,
+              "unearned_service": 0,
+              "pass_through_custody": 0,
+              "customer_obligations": 0,
+              "pending_refunds": 0
+            }
+          },
+          "customer_obligations": 0,
+          "customer_funds_basis": "Configured accounting attestations; only live-mode records affect operating funds. No bank verification or payment action.",
+          "complete": true,
+          "bucket_complete": {
+            "A": true,
+            "B": false,
+            "C": false
+          },
+          "unknown_costs": false,
+          "token_movements_included": false,
+          "evidence_basis": "configured accounting signer attestations"
+        },
+        "ledger_digest": "5988edf980c16f7da13d41ecb08e2014821297924b6fc6f6b2b0b628d71cf128"
+      }
+    ],
+    "execution": {
+      "acceptance": "unqualified",
+      "actions": 1,
+      "actual_charges_micro_usd": null,
+      "call_ids": [
+        "experiment-1"
+      ],
+      "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+      "elapsed_ms": 103,
+      "finished_at": 1793140987,
+      "history": [
+        {
+          "content": "{\"schema_version\": 1, \"schema_name\": \"flywheel-execution/v1\", \"mission_id\": \"regional-analysis-02\", \"beneficiary\": \"Research example: regional analysis delivery\", \"goal\": \"Provide a minimum-cost two-replica placement under declared capacities and failure domains\", \"challenged_assumption\": \"Two inexpensive replicas may share one correlated failure domain\", \"deliverable\": \"Named placement plan, independent finite verification and explicit operating limits\", \"acceptance_criteria\": [\"Each service has exactly two replicas in distinct declared failure domains\", \"Every declared host capacity is respected\", \"Global minimum or infeasibility agrees with independent exhaustive enumeration\", \"The named intake and rights evidence remain bound to the exact output\"], \"inputs\": {\"placement_brief_digest\": \"4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0\", \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}}, \"sharing_rights\": \"Original research-authored brief and inventory; Apache-2.0. No external customer data.\", \"stop_conditions\": [\"Bounded local tools only\", \"No infrastructure deployment\", \"No paid provider calls\"], \"mode\": \"hybrid\", \"components\": {\"acceptance\": \"executed-local\", \"identity\": \"simulated\", \"market\": \"simulated\", \"model\": \"simulated\", \"tools\": \"executed-local\"}, \"max_turns\": 3, \"max_actions\": 1, \"max_seconds\": 60, \"max_history_bytes\": 1000000}",
+          "role": "user"
+        },
+        {
+          "arguments": "{\"problem\": {\"schema_version\": 1, \"capacities\": [6, 7, 7, 8], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"demands\": [3, 4, 2, 2], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"node_budget\": 250000}}",
+          "call_id": "experiment-1",
+          "name": "placement_experiment",
+          "type": "function_call"
+        },
+        {
+          "call_id": "experiment-1",
+          "output": "{\"outcome\":{\"cost\":24,\"logical_units\":158,\"placement\":[[1,3],[0,2],[2,3],[1,3]],\"scope\":\"finite synthetic planning; no infrastructure deployment\",\"search_nodes\":18,\"status\":\"optimal\",\"workflow_digest\":\"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"},\"problem\":{\"capacities\":[6,7,7,8],\"costs\":[[4,3,7,5],[2,6,4,8],[6,4,3,2],[5,2,6,3]],\"demands\":[3,4,2,2],\"failure_domains\":[\"zone-north\",\"zone-north\",\"zone-central\",\"zone-south\"],\"node_budget\":250000,\"schema_version\":1},\"verification\":{\"accepted_finite_result\":true,\"actual_customer_acceptance\":false,\"feasible\":true,\"frontier_model_advantage\":\"unmeasured\",\"oracle_assignments\":1296,\"oracle_cost\":24,\"oracle_enumerated\":true}}",
+          "type": "function_call_output"
+        },
+        {
+          "content": [
+            {
+              "text": "{\"deliverable\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}, \"limitations\": [\"Scripted model; synthetic problem, identity, funding and market\", \"No frontier baseline or live peer reuse; no Alpha admission\"], \"artifacts\": [{\"kind\": \"placement-result\", \"content\": {\"outcome\": {\"cost\": 24, \"logical_units\": 158, \"placement\": [[1, 3], [0, 2], [2, 3], [1, 3]], \"scope\": \"finite synthetic planning; no infrastructure deployment\", \"search_nodes\": 18, \"status\": \"optimal\", \"workflow_digest\": \"760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3\"}, \"problem\": {\"capacities\": [6, 7, 7, 8], \"costs\": [[4, 3, 7, 5], [2, 6, 4, 8], [6, 4, 3, 2], [5, 2, 6, 3]], \"demands\": [3, 4, 2, 2], \"failure_domains\": [\"zone-north\", \"zone-north\", \"zone-central\", \"zone-south\"], \"node_budget\": 250000, \"schema_version\": 1}, \"verification\": {\"accepted_finite_result\": true, \"actual_customer_acceptance\": false, \"feasible\": true, \"frontier_model_advantage\": \"unmeasured\", \"oracle_assignments\": 1296, \"oracle_cost\": 24, \"oracle_enumerated\": true}}, \"digest\": \"a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8\"}]}",
+              "type": "output_text"
+            }
+          ],
+          "role": "assistant",
+          "type": "message"
+        }
+      ],
+      "last_observation": {
+        "attempt": "model/1",
+        "event_digest": "f2c7ffb022f9309e74b73469208a663e8a4e2bce2b3a3412eb1e5b2b0ac2b77f"
+      },
+      "last_response": {
+        "id": "scripted-2",
+        "model": "scripted-protocol-fixture/v1",
+        "provider_transport": null,
+        "reported_reasoning": null,
+        "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+        "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+        "served_reasoning": "provider-reported only; no independent attestation",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      "live_network_qualified": false,
+      "mission": {
+        "acceptance_criteria": [
+          "Each service has exactly two replicas in distinct declared failure domains",
+          "Every declared host capacity is respected",
+          "Global minimum or infeasibility agrees with independent exhaustive enumeration",
+          "The named intake and rights evidence remain bound to the exact output"
+        ],
+        "beneficiary": "Research example: regional analysis delivery",
+        "challenged_assumption": "Two inexpensive replicas may share one correlated failure domain",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "simulated",
+          "tools": "executed-local"
+        },
+        "deliverable": "Named placement plan, independent finite verification and explicit operating limits",
+        "goal": "Provide a minimum-cost two-replica placement under declared capacities and failure domains",
+        "inputs": {
+          "placement_brief_digest": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+          "problem": {
+            "capacities": [
+              6,
+              7,
+              7,
+              8
+            ],
+            "costs": [
+              [
+                4,
+                3,
+                7,
+                5
+              ],
+              [
+                2,
+                6,
+                4,
+                8
+              ],
+              [
+                6,
+                4,
+                3,
+                2
+              ],
+              [
+                5,
+                2,
+                6,
+                3
+              ]
+            ],
+            "demands": [
+              3,
+              4,
+              2,
+              2
+            ],
+            "failure_domains": [
+              "zone-north",
+              "zone-north",
+              "zone-central",
+              "zone-south"
+            ],
+            "node_budget": 250000,
+            "schema_version": 1
+          }
+        },
+        "max_actions": 1,
+        "max_history_bytes": 1000000,
+        "max_seconds": 60,
+        "max_turns": 3,
+        "mission_id": "regional-analysis-02",
+        "mode": "hybrid",
+        "schema_name": "flywheel-execution/v1",
+        "schema_version": 1,
+        "sharing_rights": "Original research-authored brief and inventory; Apache-2.0. No external customer data.",
+        "stop_conditions": [
+          "Bounded local tools only",
+          "No infrastructure deployment",
+          "No paid provider calls"
+        ]
+      },
+      "pending": null,
+      "permit": {
+        "domain": "flywheel-execution-permit",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:bf915959c42a39c787ae98eb406bf4e8f19034831fe21a05a9db26c1ea6bdde8",
+          "permit": {
+            "bucket": "A",
+            "config_digest": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "environment_digest": "a8e73b75ebe55fa2071b3340f36564ccf52cb605c9c0dcd1183ed7d7a5a18bc0",
+            "expires_at": 1793141287,
+            "max_authorized_micro_usd": 1000,
+            "operation_id": "regional-analysis-02",
+            "pricing_evidence_digest": "bb44a1cc2c30d41bb7a800395748363182bc23877a6cf81971cb2941bf33960c",
+            "profile_digest": "fc2347d323536be06525bee48b5f92fa58db18fd98edfd4444ca8cd4e146be84",
+            "quota_evidence_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+            "request_digest": "9be37f4734580e96ed811a58a0d5b924c88963fa849d8035fc011579f02b77ee",
+            "schema_version": 1
+          }
+        },
+        "principal": "controller",
+        "signature": "KsucLBOq5GOYYCNq87G+TWq3vlvzICCbnKKKwYo3Af0BawkShzZaPBs7t5Zzv/shwsq8QOiFLn306DQsSDu7AA=="
+      },
+      "profile": {
+        "max_context_bytes": 750000,
+        "max_output_tokens": 16384,
+        "model_id": "scripted-protocol-fixture/v1",
+        "model_request_cap_micro_usd": null,
+        "model_revision": null,
+        "qualification_digest": "b89afd298e9ce41508620d2a65910b75e1f4d245e8531bc0a91c0c3cbfa0a8e7",
+        "reasoning_effort": "high",
+        "reasoning_mode": "standard",
+        "schema_version": 1,
+        "supported_efforts": [
+          "high"
+        ],
+        "tool_request_caps_micro_usd": {},
+        "tools": [
+          {
+            "description": "Bounded existing placement tool",
+            "name": "placement_experiment",
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {},
+              "type": "object"
+            },
+            "strict": true,
+            "type": "function"
+          }
+        ]
+      },
+      "reserved_request_caps_micro_usd": 0,
+      "result": {
+        "artifacts": [
+          {
+            "content": {
+              "outcome": {
+                "cost": 24,
+                "logical_units": 158,
+                "placement": [
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    0,
+                    2
+                  ],
+                  [
+                    2,
+                    3
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ],
+                "scope": "finite synthetic planning; no infrastructure deployment",
+                "search_nodes": 18,
+                "status": "optimal",
+                "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+              },
+              "problem": {
+                "capacities": [
+                  6,
+                  7,
+                  7,
+                  8
+                ],
+                "costs": [
+                  [
+                    4,
+                    3,
+                    7,
+                    5
+                  ],
+                  [
+                    2,
+                    6,
+                    4,
+                    8
+                  ],
+                  [
+                    6,
+                    4,
+                    3,
+                    2
+                  ],
+                  [
+                    5,
+                    2,
+                    6,
+                    3
+                  ]
+                ],
+                "demands": [
+                  3,
+                  4,
+                  2,
+                  2
+                ],
+                "failure_domains": [
+                  "zone-north",
+                  "zone-north",
+                  "zone-central",
+                  "zone-south"
+                ],
+                "node_budget": 250000,
+                "schema_version": 1
+              },
+              "verification": {
+                "accepted_finite_result": true,
+                "actual_customer_acceptance": false,
+                "feasible": true,
+                "frontier_model_advantage": "unmeasured",
+                "oracle_assignments": 1296,
+                "oracle_cost": 24,
+                "oracle_enumerated": true
+              }
+            },
+            "digest": "a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8",
+            "kind": "placement-result"
+          }
+        ],
+        "deliverable": {
+          "cost": 24,
+          "logical_units": 158,
+          "placement": [
+            [
+              1,
+              3
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "scope": "finite synthetic planning; no infrastructure deployment",
+          "search_nodes": 18,
+          "status": "optimal",
+          "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+        },
+        "limitations": [
+          "Scripted model; synthetic problem, identity, funding and market",
+          "No frontier baseline or live peer reuse; no Alpha admission"
+        ],
+        "verification": {
+          "accepted_finite_result": true,
+          "actual_customer_acceptance": false,
+          "feasible": true,
+          "frontier_model_advantage": "unmeasured",
+          "oracle_assignments": 1296,
+          "oracle_cost": 24,
+          "oracle_enumerated": true
+        }
+      },
+      "schema_name": "flywheel-execution/v1",
+      "started_at": 1793140987,
+      "status": "delivered-awaiting-independent-acceptance-and-costs",
+      "turn": 2,
+      "usage_events": [
+        {
+          "id": "scripted-1",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "3ec9dcf458f117002d9ed90870645b3a722effa92a7e223a76b6ee4d8b3c9d6b",
+          "response_digest": "c907f890f8c8d8694d27d178d00a7c061bf773cc37e632ca11f4a6381709c58c",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        },
+        {
+          "id": "scripted-2",
+          "model": "scripted-protocol-fixture/v1",
+          "provider_transport": null,
+          "reported_reasoning": null,
+          "request_digest": "9cd80fcc9fbadbda702619ebdaf35e41cb5a9a102dc0677bb97c2ddbcbc89cb7",
+          "response_digest": "6fd934b1d1d0f3735cb3a9c294ab40339af6b46adb43ca793cf747ecc691fc38",
+          "served_reasoning": "provider-reported only; no independent attestation",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0
+          }
+        }
+      ],
+      "id": "@flywheel-execution:71331d14cc05d4fc2445ebf9951c9736581cce7f359adab96ed7fe0aa88a8393",
+      "revision": 23,
+      "digest": "16ed29c93a69ef06bf464d711959d3cd3a7d5989a01d9dc068146e59186f35ba"
+    },
+    "acceptance": {
+      "acceptance": {
+        "domain": "flywheel-general-acceptance",
+        "payload": {
+          "journal_identity": "urn:agialpha:ed25519:bf915959c42a39c787ae98eb406bf4e8f19034831fe21a05a9db26c1ea6bdde8",
+          "operation_id": "accept/regional-analysis-02",
+          "record": {
+            "execution_record_digest": "16ed29c93a69ef06bf464d711959d3cd3a7d5989a01d9dc068146e59186f35ba",
+            "operation_id": "regional-analysis-02",
+            "output_digest": "5fde2a589ad7eeb49afb35cc4772a5f03687d43997dec2ea36a2402fd03493dc",
+            "rights_evidence": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+            "schema_version": 1
+          }
+        },
+        "principal": "acceptance",
+        "signature": "68ql6N244ktuj2o8rACAaTqROpxW2qpxuJLjpMBfSwm8zILSHiHNZyUUunKMhjsaZM8lA28ZjHi2TO3pKBdJAQ=="
+      },
+      "record_digest": "16ed29c93a69ef06bf464d711959d3cd3a7d5989a01d9dc068146e59186f35ba",
+      "id": "@flywheel-general-acceptance:regional-analysis-02",
+      "revision": 60,
+      "digest": "46766eb030680db5e771a43dd37083512b8db1060751c3d8eb30bb370f28eded"
+    },
+    "duplicate_earning_refused": "customer event identity already allocated",
+    "exact_retry_idempotent": true,
+    "actual_collections_micro_usd": 0,
+    "synthetic_price_hypothesis_micro_usd": 250000000,
+    "actual_complete_cost_micro_usd": null,
+    "journal_integrity": {
+      "valid": true,
+      "events": 71,
+      "head": "2dae729dbbdc1f4216edea4eed14390481d739f4b0e3571b56e16af68a6aa0df",
+      "identity": "urn:agialpha:ed25519:bf915959c42a39c787ae98eb406bf4e8f19034831fe21a05a9db26c1ea6bdde8"
+    }
+  },
+  "summary": {
+    "actual_provider_calls": 0,
+    "actual_computer_actions": 0,
+    "actual_primary_tool_invocations": 1,
+    "synthetic_conformance_tool_invocations": 1,
+    "actual_customer_acceptance": false,
+    "actual_customer_collections_micro_usd": 0,
+    "actual_complete_cost_micro_usd": null,
+    "actual_profit_micro_usd": null,
+    "native_actual_acceptance": "general delivery A costs must be complete before origin acceptance",
+    "research_artifact_accepted": true,
+    "live_ens_authentication": "not run; every offline identity read refuses",
+    "operational_alpha": "unmeasured",
+    "retained_alpha": "unmeasured",
+    "retention_decision": "do not retain beyond ordinary reusable source; no incremental benefit evidence",
+    "signer_scope": "ephemeral same-session local roles, not independently authenticated organizations",
+    "funding_scope": "noncash synthetic research envelope, never actual unrestricted cash",
+    "custody_scope": "local checkpoint outside journal, not independently durable remote custody"
+  }
+}

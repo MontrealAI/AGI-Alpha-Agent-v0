@@ -1,0 +1,154 @@
+{
+  "acceptance_kind": "independent-finite-research-acceptance",
+  "actual_complete_cost_micro_usd": null,
+  "actual_customer_acceptance": false,
+  "actual_customer_collections_micro_usd": 0,
+  "artifact_digest": "a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8",
+  "brief_digest": "4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0",
+  "brief_id": "regional-analysis-02",
+  "deployment_performed": false,
+  "hosts": [
+    {
+      "capacity": 6,
+      "failure_domain": "zone-north",
+      "host": "north-a",
+      "load": 4,
+      "remaining": 2
+    },
+    {
+      "capacity": 7,
+      "failure_domain": "zone-north",
+      "host": "north-b",
+      "load": 5,
+      "remaining": 2
+    },
+    {
+      "capacity": 7,
+      "failure_domain": "zone-central",
+      "host": "central-a",
+      "load": 6,
+      "remaining": 1
+    },
+    {
+      "capacity": 8,
+      "failure_domain": "zone-south",
+      "host": "south-a",
+      "load": 7,
+      "remaining": 1
+    }
+  ],
+  "model": "scripted-protocol-fixture/v1",
+  "outcome": {
+    "cost": 24,
+    "logical_units": 158,
+    "placement": [
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "scope": "finite synthetic planning; no infrastructure deployment",
+    "search_nodes": 18,
+    "status": "optimal",
+    "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+  },
+  "plan": [
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 3,
+      "failure_domain": "zone-north",
+      "host": "north-b",
+      "objective_cost": 3,
+      "replica": 1,
+      "service": "source-ingestion"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 3,
+      "failure_domain": "zone-south",
+      "host": "south-a",
+      "objective_cost": 5,
+      "replica": 2,
+      "service": "source-ingestion"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 4,
+      "failure_domain": "zone-north",
+      "host": "north-a",
+      "objective_cost": 2,
+      "replica": 1,
+      "service": "analysis-workers"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 4,
+      "failure_domain": "zone-central",
+      "host": "central-a",
+      "objective_cost": 4,
+      "replica": 2,
+      "service": "analysis-workers"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "zone-central",
+      "host": "central-a",
+      "objective_cost": 3,
+      "replica": 1,
+      "service": "delivery-archive"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "zone-south",
+      "host": "south-a",
+      "objective_cost": 2,
+      "replica": 2,
+      "service": "delivery-archive"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "zone-north",
+      "host": "north-b",
+      "objective_cost": 2,
+      "replica": 1,
+      "service": "verification-service"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "zone-south",
+      "host": "south-a",
+      "objective_cost": 3,
+      "replica": 2,
+      "service": "verification-service"
+    }
+  ],
+  "price_basis": "Hypothesis only; not an accepted commercial offer or customer willingness to pay",
+  "price_hypothesis_micro_usd": 250000000,
+  "receipt_authentication": "runner journal audit required; pack checks content consistency only",
+  "schema_name": "resilient-placement-delivery/v1",
+  "verification": {
+    "accepted_finite_result": true,
+    "actual_customer_acceptance": false,
+    "feasible": true,
+    "frontier_model_advantage": "unmeasured",
+    "oracle_assignments": 1296,
+    "oracle_cost": 24,
+    "oracle_enumerated": true
+  }
+}
