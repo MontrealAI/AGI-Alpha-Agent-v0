@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Complete browser edition of Evidence Companion, by Vincent Boucher, President of MONTREAL.AI. Executed synthetic evidence and explicitly conditional economics.">
+<meta name="author" content="Vincent Boucher, President of MONTREAL.AI">
+<title>Evidence Companion | AGI ALPHA FLYWHEEL</title><style>
+:root{--ink:#142b3a;--teal:#087e8b;--muted:#526773;--paper:#fff;
+--cream:#f7f5ed;--mint:#dceee7;--line:#d8e0dc;--serif:Georgia,'Times New Roman',serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;color:var(--ink);background:var(--cream);font:16px/1.72 var(--serif)}
+a{color:#076d79;text-underline-offset:3px}a:hover{color:#064b54}
+a:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #bd8527;outline-offset:4px}
+.topbar{background:var(--ink);color:white;padding:20px 30px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif}
+.topbar-inner{max-width:1270px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.brand{letter-spacing:.12em;font-weight:750;color:#d3eee3}.document-links{display:flex;gap:18px;flex-wrap:wrap}
+.document-links a{color:#e2efee;text-decoration:none}.document-links a[aria-current=page]{color:#a7e3cf;text-decoration:underline}
+.layout{max-width:1270px;margin:0 auto;padding:35px 30px 70px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:35px}
+aside{font:12px/1.6 ui-sans-serif,system-ui,sans-serif}.contents{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow:auto}
+.contents summary{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:750;cursor:pointer;margin-bottom:14px;color:var(--teal)}
+.contents ol{padding:0;list-style:none;margin:0}.contents li{margin:0 0 10px}.contents li.subsection{padding-left:13px;font-size:11px;line-height:1.5}
+.contents a{color:var(--muted);text-decoration:none}.contents a:hover{color:var(--teal)}
+.contents .toc-note{font-size:11px;border-top:1px solid var(--line);padding-top:14px;margin-top:20px;color:var(--muted)}
+article{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:42px 46px;box-shadow:0 7px 28px #173b3e05}
+.titlepage{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:35px}.titlepage p{margin:13px 0}
+.titlepage .series{font:700 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;color:var(--teal)}
+.titlepage h1{font:400 clamp(35px,4vw,51px)/1.12 var(--serif);letter-spacing:-.035em;margin:17px 0 21px;text-wrap:balance}
+.titlepage h1 strong{font-weight:400}.titlepage .subtitle{font-size:19px;line-height:1.45;color:var(--muted)}
+.titlepage .subtitle br{display:none}.titlepage p:nth-of-type(3),.titlepage p:nth-of-type(4){font-size:16px}
+h2,h3,h4{font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.3;scroll-margin-top:25px}
+h2{font-size:23px;letter-spacing:-.02em;margin:42px 0 18px;padding-top:10px;border-top:1px solid var(--line)}
+h3{font-size:17px;color:var(--teal);margin:30px 0 13px}h4{font-size:15px;margin:23px 0 10px}
+p{margin:15px 0;overflow-wrap:break-word}strong{font-weight:700}em{font-style:italic}
+.findingbox{border-left:4px solid var(--teal);background:#edf5f2;padding:17px 20px;margin:24px 0;font-size:15px;line-height:1.65}
+.findingbox p{margin:0}.findingbox p>span:first-child{display:block;font:700 11px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.table-scroll{overflow-x:auto;margin:24px -10px;padding:0 10px 5px;scrollbar-color:#8ba6a1 #eef1ea}
+table{width:100%!important;border-collapse:collapse;font:12px/1.55 ui-sans-serif,system-ui,sans-serif;margin:0;min-width:540px}
+table th{background:#e7f1ec;text-align:left;color:#234f50;font-size:10px;text-transform:uppercase;letter-spacing:.035em;font-weight:750;border-bottom:2px solid #a8c7bc}
+table th,table td{padding:11px 10px;border-bottom:1px solid #dce5de;vertical-align:top;overflow-wrap:anywhere}
+table tbody tr:nth-child(even){background:#f7f9f4}table tbody tr:last-child td{border-bottom:2px solid #bfd0c6}
+.table-scroll:after{content:'Tables scroll horizontally on small screens.';display:block;color:var(--muted);font:10px/1.6 ui-sans-serif,system-ui,sans-serif;margin-top:7px}
+figure{margin:32px -12px;background:#fbfcf8;border:1px solid #dce6dd;border-radius:6px;padding:15px}
+figure img{display:block;width:100%;height:auto;max-width:100%;margin:auto;object-fit:contain}
+figcaption{font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:13px 3px 2px}
+.figure-number{font-weight:750;color:#285b5e}
+code{font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f0f4ed;padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}
+pre{white-space:pre-wrap;overflow:auto;font-size:12px;padding:15px;background:#f0f4ed}
+math{font-size:1.03em}math[display=block]{display:block;overflow-x:auto;padding:19px 12px;margin:22px 0;background:#f8faf5;border:1px solid #e0e8dd;border-radius:4px}
+.citation{white-space:nowrap;font:11px/1.5 ui-sans-serif,system-ui,sans-serif}.citation a{text-decoration:none;font-weight:700}
+.references{font:12px/1.65 ui-sans-serif,system-ui,sans-serif;padding-left:25px}.references li{padding-left:6px;margin:0 0 16px;overflow-wrap:anywhere}
+.references p{margin:0}.references a{overflow-wrap:anywhere}
+.edition-footer{border-top:1px solid var(--line);padding-top:22px;margin-top:38px;font:11px/1.65 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+.edition-footer a{white-space:nowrap}.skip{position:absolute;left:-10000px}.skip:focus{position:fixed;left:12px;top:12px;background:white;padding:12px;z-index:10}
+@media(max-width:1000px){.layout{grid-template-columns:185px minmax(0,1fr);gap:22px;padding:28px 20px}article{padding:32px}.titlepage h1{font-size:40px}}
+@media(max-width:760px){.layout{display:block;padding:20px 13px}.topbar{padding:17px}.topbar-inner{display:block}.document-links{margin-top:13px;gap:11px;font-size:11px}aside{margin-bottom:20px}.contents{position:static;max-height:none;border:1px solid var(--line);padding:13px 16px;background:#edf2e9;border-radius:5px}.contents summary{margin:0}.contents ol{margin-top:17px}.contents .toc-note{display:none}article{padding:26px 22px}.titlepage h1{font-size:36px}h2{font-size:21px;margin-top:34px}figure{margin:26px -10px;padding:10px}.table-scroll{margin-left:-8px;margin-right:-8px}body{font-size:15px}}
+@media print{body{background:white;font-size:11pt}.topbar,aside,.edition-footer,.skip{display:none}.layout{display:block;padding:0;max-width:none}article{padding:0;border:0;box-shadow:none}.titlepage{break-after:page}h2,h3,figcaption{break-after:avoid}figure,table{break-inside:avoid}a{color:inherit;text-decoration:none}.table-scroll{overflow:visible}.table-scroll:after{display:none}table{min-width:0;font-size:9pt}math[display=block]{overflow:visible}}
+</style></head>
+<body id="top"><a class="skip" href="#article">Skip to the complete document</a>
+<header class="topbar"><div class="topbar-inner"><div class="brand">AGI ALPHA FLYWHEEL / MONTREAL.AI</div><nav class="document-links" aria-label="Research editions"><a href="paper.html">Full paper</a><a href="evidence-companion.html" aria-current="page">Evidence Companion</a><a href="executive-brief.html">Executive Brief</a><a href="../browser/index.html">EN / FR demonstration</a><a href="evidence-companion.pdf">Download PDF</a></nav></div></header>
+<div class="layout"><aside><details class="contents" open><summary>Contents</summary><ol><li class="section"><a href="#evidence-classification">Evidence classification</a></li><li class="section"><a href="#core-study-inventory">Core study inventory</a></li><li class="section"><a href="#claim-to-evidence-map">Claim-to-evidence map</a></li><li class="section"><a href="#what-was-corrected-and-preserved">What was corrected and preserved</a></li><li class="section"><a href="#research-costs-and-validation">Research costs and validation</a></li><li class="section"><a href="#statistical-interpretation">Statistical interpretation</a></li><li class="section"><a href="#access-and-authority">Access and authority</a></li><li class="section"><a href="#reproduction-and-publication">Reproduction and publication</a></li></ol><p class="toc-note">Complete LaTeX-derived edition. Figures, styles and mathematical notation are included in this file. No JavaScript or external assets are required.</p></details></aside>
+<article id="article"><div class="titlepage"><p class="series"><span>AGI ALPHA FLYWHEEL</span></p>
+<h1><span><strong>Evidence Companion</strong></span></h1>
+<p class="subtitle"><strong>When Capability Creates Opportunity</strong></p>
+<p>Vincent BoucherPresident of MONTREAL.AI</p>
+<p>27 October 2026</p>
+</div><h2 class="unnumbered" id="evidence-classification">Evidence classification</h2>
+<div aria-label="Research results table" class="table-scroll" role="region" tabindex="0"><table style="width:91%;">
+<colgroup>
+<col style="width: 18%"/>
+<col style="width: 73%"/>
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Observed</td>
+<td style="text-align: left;">Executed synthetic oracle calls, automatic sparse fits, artifact updates, fresh model/plan outcomes, transfer of actual bytes, native interface checks and resource-accounting identities.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sourced</td>
+<td style="text-align: left;">Official current model references and prices; external scientific-software and experiment-design provider list rates; pinned prior studies and foundation materials.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Assumed</td>
+<td style="text-align: left;">Customer scopes and hours, arrivals, trust, willingness to pay, simulator tariffs and latency, token counts, operational overhead, collection delays, reserves and maintenance.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Simulated</td>
+<td style="text-align: left;">Enterprise jobs, invoices, collections, profit, capacity allocation, counterparties and authority fixtures.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Real willingness to pay, realized complete research/engineering cost, API entitlement and throughput, physical validity, live execution/authentication and sustained compounding.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="unnumbered" id="core-study-inventory">Core study inventory</h2>
+<div class="center">
+<div aria-label="Research results table" class="table-scroll" role="region" tabindex="0"><table style="width:91%;">
+<colgroup>
+<col style="width: 38%"/>
+<col style="width: 53%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Primary technical confirmation</td>
+<td style="text-align: left;">48 tasks; 1,728 method/budget rows</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Compound-offering confirmation</td>
+<td style="text-align: left;">48 different tasks; 1,728 rows</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Learning</td>
+<td style="text-align: left;">1 origin + 10 Gym jobs; v1 9 terms, v2 21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Economic confirmation</td>
+<td style="text-align: left;">11,520 histories: 30 scenarios x 6 policies x 64 seeds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Integration</td>
+<td style="text-align: left;">29 unchanged upstream files; 29 directed controls</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Customer revenue</td>
+<td style="text-align: left;">USD 0 observed</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<h2 class="unnumbered" id="claim-to-evidence-map">Claim-to-evidence map</h2>
+<div aria-label="Research results table" class="table-scroll" role="region" tabindex="0"><table style="width:91%;">
+<colgroup>
+<col style="width: 38%"/>
+<col style="width: 53%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Claim</th>
+<th style="text-align: left;">Companion evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Learning and source freeze</td>
+<td style="text-align: left;">; ;</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fresh primary outcomes</td>
+<td style="text-align: left;">, CSV and paired analysis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New robust offering</td>
+<td style="text-align: left;">; PREDECLARED, FREEZE and fresh results</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Conditional economics</td>
+<td style="text-align: left;">; ; and summary</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Auditable event histories</td>
+<td style="text-align: left;">Six complete representative seed-0 ledgers, matched events and deterministic replay for every retained per-seed outcome</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Admission / controlled transfer</td>
+<td style="text-align: left;">; conformance and recipient replay receipts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Source history</td>
+<td style="text-align: left;">; ;</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Independent internal review</td>
+<td style="text-align: left;">and JSON; resource reservation probes</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="unnumbered" id="what-was-corrected-and-preserved">What was corrected and preserved</h2>
+<p>The original economic implementation accessed the realized stopping cost of a fresh direct search before deciding whether the job fit remaining cash and capacity. Boundary probes reproduced the error. Corrected code reserves the declared maximum first, accesses protected outcomes only after commitment and releases unused resources afterward. Original source and original policy freeze remain in the history; development-selected prices, routes and decisions were not retuned on confirmation. The final results explicitly report that execution uses an amended source.</p>
+<p>The original protocol’s portfolio prose mentioned lowest-cost/global-regret quality even though the operational acceptance required a feasible checked plan. A separate deliverable sentence over-specified a response model for direct-search delivery. Companion clarifications retain the original text and specify the actual implemented contract. The paper never attributes optimality or an accurate model to the direct baseline.</p>
+<h2 class="unnumbered" id="research-costs-and-validation">Research costs and validation</h2>
+<p>The primary model service charges 384 extra acceptance labels per customer delivery. The simple-plan service includes its final observation inside the displayed budget. The compound mission includes sixteen final observations inside its whole budget. Protected model and full-menu audits are research work, counted separately and shared across comparator scoring where applicable. The primary confirmation uses 44,544 unique oracle-equivalent audit observations, worth USD 4,454.40 only under the assumed USD 0.10 tariff. The separate compound-offering campaign uses 617,544 query-equivalent evaluations, including development, confirmation, full-menu audits and the illustrative replay. At the same hypothetical tariff, its common research expense alone is USD 61,754.40. Its operating sensitivity rows exclude this disclosed research burden; they are not whole-study profit. Actual observed paid API cash expense is zero. CPU time and unmeasured engineering monetary costs remain distinct. Whole-study payback is not established.</p>
+<div class="center">
+<div aria-label="Research results table" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Recorded research phase</th>
+<th style="text-align: right;">Query-equivalent units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original construction learning run</td>
+<td style="text-align: right;">11,396</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Final origin plus ten Gym jobs</td>
+<td style="text-align: right;">11,616</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">First-task development smoke</td>
+<td style="text-align: right;">2,728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Full 12-task development</td>
+<td style="text-align: right;">33,921</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Full 48-task confirmation</td>
+<td style="text-align: right;">134,716</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Robust 12-task development</td>
+<td style="text-align: right;">123,690</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Robust 48-task confirmation</td>
+<td style="text-align: right;">493,814</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Illustrative robust crossing replay</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Recipient replay mission-fixture preparation</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Separate protected integration recipient</td>
+<td style="text-align: right;">968</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Documented resource subtotal</td>
+<td style="text-align: right;">812,928</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>This is a documented workload subtotal, not a certified complete research cost. It includes deliberate repeated construction and smoke campaigns. The original constructor’s audit count is reconstructed from the executed routine rather than a separately preserved audit file. Common audit labels are counted once per task and campaign; literal recomputation of 8,576 already-known robust replay labels would raise the subtotal to 821,504. At the hypothetical USD 0.10 tariff, the two subtotals are USD 81,292.80 and USD 82,150.40. No corresponding invoice was incurred. Engineering effort, plotting, bootstrap, review and ordinary computing costs are unmetered. Paid-origin observations and the Gym already present in a policy’s A/C ledger must not be charged again when allocating these study costs. This resource inventory does not justify subtracting the whole campaign mechanically from every simulated enterprise.</p>
+<h2 class="unnumbered" id="statistical-interpretation">Statistical interpretation</h2>
+<p>The main and robust experiments each contain 24 compatible, 12 partially shifted and 12 novel-family tasks. Bootstrap or binomial uncertainty describes this generator, not market truth. A post-hoc best-of-conventional envelope is a generous diagnostic and cannot be dispatched without additional information. The real policies use development outcomes only. No isolated positive case establishes high-reliability operation; infeasible menus and failed transfers remain in their original denominators.</p>
+<h2 class="unnumbered" id="access-and-authority">Access and authority</h2>
+<p>The conformance lane uses artificial positive monetary evidence to exercise rights and revocation branches. The actual candidate’s development-evidence gate rejects it, and corresponding retrieval attempts remain denied. A separately authorized research replay transports actual bytes and checks a fresh task. Fixture identities are not live ENS resolution. Revocation blocks new mediated access; it cannot erase copies already received. Production scientific scope remains unsupported, and Jobs/governance/settlement authority is unchanged.</p>
+<h2 class="unnumbered" id="reproduction-and-publication">Reproduction and publication</h2>
+<p>Start with the companion README and preserve the original evidence before rerunning. The numerical pipeline requires Python with NumPy, SciPy and scikit-learn; charts use Matplotlib; integration uses Node and the pinned vendored interfaces. LaTeX rebuild commands and environment versions accompany the source. Browser evidence is self-contained and bilingual. Full repository CI, flagship Pages deployment and production commissioning remain separate from this experimental research edition.</p>
+<p><strong>Author and assistance.</strong> Vincent Boucher, President of MONTREAL.AI. AI assistants performed research, code construction, execution, internal review, analysis and drafting. Internal review is not external scientific replication. New source is Apache-2.0; original vendored licenses are preserved.</p>
+<footer class="edition-footer"><p>Vincent Boucher · President of MONTREAL.AI · Research edition, 27 October 2026.</p><p>This browser edition preserves the current LaTeX text, generated tables, references and figures. The reported experiments use synthetic environments; the commercial accounts remain conditional simulations. Actual customer revenue is zero.</p><p><a href="#top">Back to top</a> · <a href="evidence-companion.tex">LaTeX source</a> · <a href="evidence-companion.pdf">PDF edition</a></p></footer></article></div>
+<script type="application/json" id="build-validation">{"bibliography_entries": 0, "core_section_titles_preserved": 8, "embedded_images": 0, "external_assets": 0, "figure_sha256": {}, "javascript_required": false, "native_mathml_expressions": 0, "pandoc_version": "pandoc 3.1.3", "source": "evidence-companion.tex", "source_sha256": {"evidence-companion.tex": "9d937bfa05d6b9e602229a130a5d8bb620d0c92c89129d618b9bec12750c499b", "generated/research-resources.tex": "b52f37cda0ff952375b0e362da990bd94a62299e3dd052ce4f5c4d3f8509674b"}, "source_urls_preserved": 0, "status": "PASS_STATIC_CONVERSION", "tables": 4, "viewport_validation": "NOT_RUN: local browser navigation was blocked by the cloud URL security policy; no workaround used.", "visible_raw_tex": false}</script>
+</body></html>

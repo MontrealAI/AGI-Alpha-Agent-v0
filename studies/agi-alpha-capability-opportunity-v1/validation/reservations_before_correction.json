@@ -1,0 +1,171 @@
+{
+  "schema": "nonanticipative-admission-probe/v1",
+  "source_path": "studies/agi-alpha-capability-opportunity-v1/economics/history/pre_reservation_correction_run_economics.py",
+  "source_sha256": "6023b28684fb62e68200c52f56ac6bc0e58fabe1c31bc76149906bd624686469",
+  "controls": [
+    {
+      "name": "insufficient_cash",
+      "expected_decision": "preserve_cash",
+      "actual_decision": "deliver",
+      "future_outcome_reads": [
+        [
+          "future-task",
+          "beta_direct",
+          96
+        ]
+      ],
+      "passed": false,
+      "realized_queries_if_executed": 2,
+      "declared_queries_before_execution": 96,
+      "cash_before_admission": 2010.5,
+      "reserve_floor": 2000.0,
+      "cash_identity_residual": 0.0,
+      "query_calls": 2.0,
+      "query_capacity": 960.0,
+      "ledger": [
+        {
+          "day": 0,
+          "kind": "origin_and_setup",
+          "A_cost": 9.0,
+          "B_cost": 0.0,
+          "C_cost": 0.0,
+          "cash": 2010.5,
+          "origin_accepted": false,
+          "origin_revenue": 0,
+          "setup_funded": true,
+          "query_calls": 0.0,
+          "seed_capital": 2019.5
+        },
+        {
+          "event_id": 0,
+          "day": 1,
+          "task_id": "future-task",
+          "offering": "verified_design",
+          "agent": 0,
+          "buyer_u": 0.9,
+          "transfer_u": 0.9,
+          "validator_bad": false,
+          "policy": "review-fixture",
+          "A_cost": 9.2,
+          "B_cost": 0.0,
+          "C_cost": 0.0,
+          "method": "beta_direct",
+          "budget": 96,
+          "quoted_price": 100.0,
+          "customer_choice": "buy_ai",
+          "decision": "deliver",
+          "true_accepted": true,
+          "reported_accepted": true,
+          "query_calls": 2.0,
+          "true_revenue": 100.0,
+          "simulated_invoice": 100.0,
+          "technical_observed_seconds": 0.0,
+          "hypothetical_execution_seconds": 60.0,
+          "cash": 2001.3,
+          "recognized_revenue": 100.0,
+          "cost_A_cumulative": 21.2,
+          "cost_B_cumulative": 0.0,
+          "cost_C_cumulative": 0.0,
+          "cumulative_profit": 78.8
+        },
+        {
+          "day": 1,
+          "kind": "day_close",
+          "cash": 2001.3,
+          "collections": 0.0,
+          "refunds": 0.0,
+          "recognized_revenue": 100.0,
+          "cost_A": 21.2,
+          "cost_B": 0.0,
+          "cost_C": 0.0,
+          "profit": 78.8,
+          "query_calls": 2.0,
+          "setup_backlog_calls": 0.0
+        }
+      ]
+    },
+    {
+      "name": "insufficient_capacity",
+      "expected_decision": "capacity_decline",
+      "actual_decision": "deliver",
+      "future_outcome_reads": [
+        [
+          "future-task",
+          "beta_direct",
+          96
+        ]
+      ],
+      "passed": false,
+      "realized_queries_if_executed": 2,
+      "declared_queries_before_execution": 96,
+      "cash_before_admission": 11991.0,
+      "reserve_floor": 2000.0,
+      "cash_identity_residual": 0.0,
+      "query_calls": 2.0,
+      "query_capacity": 10.0,
+      "ledger": [
+        {
+          "day": 0,
+          "kind": "origin_and_setup",
+          "A_cost": 9.0,
+          "B_cost": 0.0,
+          "C_cost": 0.0,
+          "cash": 11991.0,
+          "origin_accepted": false,
+          "origin_revenue": 0,
+          "setup_funded": true,
+          "query_calls": 0.0,
+          "seed_capital": 12000.0
+        },
+        {
+          "event_id": 0,
+          "day": 1,
+          "task_id": "future-task",
+          "offering": "verified_design",
+          "agent": 0,
+          "buyer_u": 0.9,
+          "transfer_u": 0.9,
+          "validator_bad": false,
+          "policy": "review-fixture",
+          "A_cost": 9.2,
+          "B_cost": 0.0,
+          "C_cost": 0.0,
+          "method": "beta_direct",
+          "budget": 96,
+          "quoted_price": 100.0,
+          "customer_choice": "buy_ai",
+          "decision": "deliver",
+          "true_accepted": true,
+          "reported_accepted": true,
+          "query_calls": 2.0,
+          "true_revenue": 100.0,
+          "simulated_invoice": 100.0,
+          "technical_observed_seconds": 0.0,
+          "hypothetical_execution_seconds": 60.0,
+          "cash": 11981.8,
+          "recognized_revenue": 100.0,
+          "cost_A_cumulative": 21.2,
+          "cost_B_cumulative": 0.0,
+          "cost_C_cumulative": 0.0,
+          "cumulative_profit": 78.8
+        },
+        {
+          "day": 1,
+          "kind": "day_close",
+          "cash": 11981.8,
+          "collections": 0.0,
+          "refunds": 0.0,
+          "recognized_revenue": 100.0,
+          "cost_A": 21.2,
+          "cost_B": 0.0,
+          "cost_C": 0.0,
+          "profit": 78.8,
+          "query_calls": 2.0,
+          "setup_backlog_calls": 0.0
+        }
+      ]
+    }
+  ],
+  "all_passed": false,
+  "scope": "Wholly artificial boundary fixtures; no claimed enterprise result or measured revenue."
+}

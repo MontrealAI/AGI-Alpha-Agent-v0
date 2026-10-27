@@ -1,0 +1,15 @@
+\begin{center}\small\begin{tabular}{lrrrr}
+\toprule
+Method & 24 & 40 & 64 & 96 \\ \midrule
+Beta: space filling & 0/3 & 20/24 & 34/37 & 47/44 \\
+Beta: D-optimal & 0/1 & 21/24 & 43/40 & 48/44 \\
+Beta: adaptive & 1/6 & 12/17 & 37/39 & 47/44 \\
+Beta: direct search & 0/27 & 0/32 & 0/40 & 0/44 \\
+Origin v1 & 0/5 & 16/19 & 32/39 & 47/44 \\
+Gym v2 & 21/22 & 34/33 & 42/42 & 47/44 \\
+Identical-content library & 21/22 & 34/33 & 42/42 & 47/44 \\
+Unrelated prior & 0/2 & 18/22 & 35/37 & 48/44 \\
+Oracle support & 48/44 & 48/44 & 48/44 & 48/44 \\
+\bottomrule
+\end{tabular}\end{center}
+Each cell is \emph{accepted response models / accepted operating plans}, each out of 48 tasks. A response model additionally requires 384 independent acceptance observations; the plan's final check is inside the displayed budget. Direct search has no response-model deliverable, so its prediction entry is zero. At 24 queries the compatible-family prediction comparison is v2 21/24 versus adaptive Beta 1/24; v1 and the unrelated prior each score 0/24. Across all families, v2's fresh prediction advantage over the ex-post best ordinary arm is 20 wins and zero losses. Its corresponding operating-plan result is six wins and twelve losses: the positive model effect does not imply a positive action effect. At 96 queries D-optimal Beta accepts 48/48 models, versus v2 47/48. Both accept 44/48 operating plans; four menus have no qualifying plan.\par The identical-content library matches v2 on all 192 task--budget pairs. This is evidence that the effective learned information transfers, and evidence against attributing an additional benefit to the graph representation. Partial and novel families preserve negative transfer: at 40 queries, for example, partial-shift v2 model acceptance is 3/12, versus 7/12 for space-filling Beta.

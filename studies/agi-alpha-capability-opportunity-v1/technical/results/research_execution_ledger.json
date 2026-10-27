@@ -1,0 +1,50 @@
+{
+  "cash_expense_observed_usd": 0,
+  "confirmation_before_freeze": false,
+  "confirmation_campaign": {
+    "cash_expense_observed_usd": 0,
+    "oracle_observations": 90172,
+    "rows": 1728,
+    "task_count": 48,
+    "unique_cached_research_truth_queries": 43008,
+    "unique_diagnostic_truth_queries": 1536
+  },
+  "development_campaigns": [
+    {
+      "economic_category": "one-off researchC",
+      "oracle_observations": 1800,
+      "purpose": "first task smoke then retained as same deterministic task in full pilot",
+      "rows": 36,
+      "run": "first_task_smoke",
+      "task_count": 1
+    },
+    {
+      "diagnostic_probe_truth_queries": 384,
+      "oracle_observations": 22785,
+      "purpose": "policy selection pilot",
+      "rows": 432,
+      "run": "full_development",
+      "task_count": 12,
+      "unique_cached_research_truth_queries": 10752
+    }
+  ],
+  "diagnostic_truth_clarification": "32unique response values per task:16faulty plus16healthy; both outside896predictionandmenuaudit.",
+  "formula_warning": "Do not charge common label generation multiple times merely because many counterfactual policies were evaluated; original prototype repeated execution was not cached across processes and is reported above.",
+  "notes": "Synthetic Python oracles executed; no paid API or physical experiment. Query units below are actual function observations, distinct from economically required unique observations. Failed and duplicate development executions retained.",
+  "training_campaigns": [
+    {
+      "economic_category": "one-off researchC",
+      "jobs": 11,
+      "oracle_observations": 1408,
+      "purpose": "same deterministic learning data; initial target0.4 evaluator before operational acceptance redesign",
+      "run": "initial_constructor_smoke",
+      "status": "completed"
+    },
+    {
+      "jobs": 11,
+      "oracle_observations": 1408,
+      "purpose": "originA128plusGymC1280; origin384paid verification separate",
+      "run": "final_learning"
+    }
+  ]
+}
