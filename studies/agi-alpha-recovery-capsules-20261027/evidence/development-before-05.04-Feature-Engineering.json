@@ -1,0 +1,75 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.04-Feature-Engineering",
+  "path": "study/inputs/development/05.04-Feature-Engineering.ipynb",
+  "input_sha256": "907f248dfe0a8e50dc60312e2307e6ed5fe881168eda2dc7312dfd655271ecf1",
+  "expected_cells": 18,
+  "completed_cells": 3,
+  "all_cells_completed": false,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 1.161684424005216,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 5,
+      "source_sha256": "f09927c28d0c68660854a5cabf88d23479c202d1ae22fd98c79391ba263890f1",
+      "status": "executed",
+      "elapsed_seconds": 0.00024888600455597043,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 7,
+      "source_sha256": "e2bfb63b22fafca7430d60c5f87ad4660a20ae948efaf8ee330b4c42478564ff",
+      "status": "executed",
+      "elapsed_seconds": 0.00011614500544965267,
+      "stdout": "{'Queen Anne': 1, 'Fremont': 2, 'Wallingford': 3}\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 9,
+      "source_sha256": "2c7ac7f08745626b10f052d2fef86c743d3ab65e90b0a4eb61626da35b9905bd",
+      "status": "executed",
+      "elapsed_seconds": 1.1468289230106166,
+      "stdout": "array([[     0,      1,      0, 850000,      4],\n       [     1,      0,      0, 700000,      3],\n       [     0,      0,      1, 650000,      3],\n       [     1,      0,      0, 600000,      2]])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 11,
+      "source_sha256": "7ec430bae385dc7d6cf3273af68c78d5f750b8794239496cf67c20f32b3eadf6",
+      "status": "error",
+      "elapsed_seconds": 0.0015996459987945855,
+      "stdout": "",
+      "stderr": "",
+      "error": {
+        "type": "AttributeError",
+        "message": "'DictVectorizer' object has no attribute 'get_feature_names'",
+        "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py\", line 43, in run\n    value = eval(compile(ast.Expression(last.value), str(path), 'eval'), ns)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"study/inputs/development/05.04-Feature-Engineering.ipynb\", line 1, in <module>\n    {\nAttributeError: 'DictVectorizer' object has no attribute 'get_feature_names'. Did you mean: 'get_feature_names_out'?\n"
+      }
+    }
+  ],
+  "figures": [],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

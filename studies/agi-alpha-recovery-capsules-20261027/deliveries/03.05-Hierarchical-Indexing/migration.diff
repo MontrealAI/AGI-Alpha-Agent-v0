@@ -1,0 +1,41 @@
+--- source code
++++ recovered code
+@@ -1,3 +1,5 @@
++import numpy as np
++np.random.seed(20261027)
+ import pandas as pd
+ import numpy as np
+ 
+@@ -56,7 +58,7 @@
+ pd.MultiIndex.from_product([['a', 'b'], [1, 2]])
+ 
+ pd.MultiIndex(levels=[['a', 'b'], [1, 2]],
+-              labels=[[0, 0, 1, 1], [0, 1, 0, 1]])
++              codes=[[0, 0, 1, 1], [0, 1, 0, 1]])
+ 
+ pop.index.names = ['state', 'year']
+ pop
+@@ -100,7 +102,13 @@
+ 
+ health_data.loc[:, ('Bob', 'HR')]
+ 
+-health_data.loc[(:, 1), (:, 'HR')]
++_demonstration_source = "health_data.loc[(:, 1), (:, 'HR')]"
++try:
++    compile(_demonstration_source, '<intentional-syntax-demonstration>', 'exec')
++except SyntaxError as expected_error:
++    print('Expected SyntaxError:', expected_error.msg)
++else:
++    raise AssertionError('The original invalid slice must raise SyntaxError')
+ 
+ idx = pd.IndexSlice
+ health_data.loc[idx[:, 1], idx[:, 'HR']]
+@@ -134,7 +142,7 @@
+ 
+ health_data
+ 
+-data_mean = health_data.mean(level='year')
++data_mean = health_data.groupby(level='year').mean()
+ data_mean
+ 
+-data_mean.mean(axis=1, level='type')+data_mean.T.groupby(level='type').mean().T

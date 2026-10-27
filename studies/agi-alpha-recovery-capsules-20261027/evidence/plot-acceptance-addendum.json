@@ -1,0 +1,36 @@
+{
+  "schema": "additional-graphical-handoff-checks/v1",
+  "frozen_at": "2026-10-27T23:01:16.678052+00:00",
+  "basis": "Existing complete useful handoff and original inline cell-output boundaries; added after visual QA found that Agg merged distinct original plots. Frozen numerical checker remains unchanged.",
+  "runner_sha256": "d00aebb957864964fdb38c490071f051d1896be72c233086f69ac87d733dfc99",
+  "numeric_checker_sha256": "ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715",
+  "expected_plot_axes": {
+    "05.02-Introducing-Scikit-Learn": {
+      "1": 20,
+      "4": 1,
+      "13": 1,
+      "18": 1,
+      "20": 3,
+      "22": 100,
+      "26": 2,
+      "30": 1,
+      "31": 100
+    },
+    "05.03-Hyperparameters-and-Model-Validation": {
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 1,
+      "15": 1,
+      "16": 2,
+      "20": 1
+    },
+    "05.04-Feature-Engineering": {
+      "9": 1,
+      "10": 1,
+      "12": 1
+    }
+  },
+  "method": "Execute recovered native %matplotlib inline through TerminalInteractiveShell, with notebook MIME types. Observe figure axes before native inline flush, capture actual published PNGs, require exact figure-bearing cell positions/counts and axes counts, valid PNG dimensions; no manual figure closure by independent runner.",
+  "limits": "Axis counts detect cross-cell contamination observed in the failed rendering, but do not certify every graphical meaning. Visual review supplements these checks. These assertions are not added to the headline 38 frozen numerical/semantic checks."
+}

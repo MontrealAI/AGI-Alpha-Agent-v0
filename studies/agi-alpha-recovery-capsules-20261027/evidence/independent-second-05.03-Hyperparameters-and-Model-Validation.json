@@ -1,0 +1,990 @@
+{
+  "schema": "independent-notebook-acceptance/v1",
+  "case": "05.03-Hyperparameters-and-Model-Validation",
+  "notebook": "/tmp/agi-alpha-independent-plot-rerun2/05.03-Hyperparameters-and-Model-Validation/recovered.ipynb",
+  "sha256": "1972aeb11892204e01af61ff657c1aafbdb2586f1bba93ed591b3a2be2319be5",
+  "checker_sha256": "ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715",
+  "nonempty_code_cells": 21,
+  "executed_code_cells": 21,
+  "all_cells_completed": true,
+  "outbound_attempts": [],
+  "cells": [
+    {
+      "index": 0,
+      "status": "executed",
+      "source_sha256": "335b65c8a72ae51acc8bf930c74c25142afa06774c9c4384e0c2753865e6006c",
+      "elapsed_seconds": 1.1716215010092128,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 1,
+      "status": "executed",
+      "source_sha256": "fb4f0cb8bb62aaeea0f6a9f79c08ccfa7f7e8967077fcd3aa8a64103fa08df2c",
+      "elapsed_seconds": 0.20666524600528646,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 2,
+      "status": "executed",
+      "source_sha256": "2d4106d18d4fce0b9a04cc8b10ae77003419a42a75d5b8c812610600b9f55c80",
+      "elapsed_seconds": 0.0029496819915948436,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 3,
+      "status": "executed",
+      "source_sha256": "b265ef19b3032fb95f3cd984507a19d1de09d877fc9668a80d42545418921c52",
+      "elapsed_seconds": 0.0014222309982869774,
+      "stdout": "Out[1]: 1.0\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 4,
+      "status": "executed",
+      "source_sha256": "d65eac6aee6145223c7d293546eee6a4127d5bff4da3276ce291d515a93b7074",
+      "elapsed_seconds": 0.004861371009610593,
+      "stdout": "Out[1]: 0.9066666666666666\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 5,
+      "status": "executed",
+      "source_sha256": "d3357b0e20d30472137d1e4758439ac2876f4ea05406a3a1138c77b684733410",
+      "elapsed_seconds": 0.0036089250061195344,
+      "stdout": "Out[1]: (0.96, 0.9066666666666666)\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 6,
+      "status": "executed",
+      "source_sha256": "d26018e8b131dedf4ffe4f792cb73251d80e72cba1cc3219d6e0a4c358527b9e",
+      "elapsed_seconds": 0.00952382100513205,
+      "stdout": "Out[1]: array([0.96666667, 0.96666667, 0.93333333, 0.93333333, 1.        ])\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 7,
+      "status": "executed",
+      "source_sha256": "659a401b991fa8a54b919b714fa144f9ebe23a3015ca136fd87b281bc067bc29",
+      "elapsed_seconds": 0.24189689599734265,
+      "stdout": "Out[1]: \narray([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       1., 1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,\n       0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1.,\n       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 8,
+      "status": "executed",
+      "source_sha256": "d29132dd89ca82f6f4283f2176aff038b1edafbf02ed1b348d6693822bcc82ee",
+      "elapsed_seconds": 0.00051478500245139,
+      "stdout": "Out[1]: np.float64(0.96)\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 9,
+      "status": "executed",
+      "source_sha256": "a6a1e5095a99753a11fda71c791fa44a0c7ed6aa44f335998c6304c2d72572a7",
+      "elapsed_seconds": 0.00877620599931106,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 10,
+      "status": "executed",
+      "source_sha256": "859886fad15feea54223c025c2f763e726baac028f621e898f5377533560bd7f",
+      "elapsed_seconds": 0.000849989999551326,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 11,
+      "status": "executed",
+      "source_sha256": "c0ff5fc7332fd5075073af6cdeb5d997343e8f8b2c1f8f655e101bc889bd4026",
+      "elapsed_seconds": 0.23666989599587396,
+      "stdout": "No event loop hook running.\nOut[1]: <matplotlib.legend.Legend at 0x7f0cfc84bfe0>\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 12,
+      "status": "executed",
+      "source_sha256": "fef23e261093c058e73e0c34439254fd96de9fba055a111a0621b99e72e82016",
+      "elapsed_seconds": 0.29204674100037664,
+      "stdout": "Out[1]: Text(0, 0.5, 'score')\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 13,
+      "status": "executed",
+      "source_sha256": "a37403fe1167e157b378528e5c745e6d552e78ac696b4e5e77b3770159699795",
+      "elapsed_seconds": 0.07130361499730498,
+      "stdout": "Out[1]: \n(np.float64(-0.04687651021505175),\n np.float64(0.9844070023112612),\n np.float64(-0.7308177116555796),\n np.float64(10.902869392322714))\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 14,
+      "status": "executed",
+      "source_sha256": "3cf9312e0360d764015e0a9192d0cc099019e0aa72eeb87e8cbd5af0382c19c8",
+      "elapsed_seconds": 0.07415167299041059,
+      "stdout": "Out[1]: <matplotlib.collections.PathCollection at 0x7f0cfc6125a0>\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 15,
+      "status": "executed",
+      "source_sha256": "75abd9cd4565c8264a1b3fd51a58b48a63fef0ce76828a8e9a12046139bacf83",
+      "elapsed_seconds": 0.32667560799745843,
+      "stdout": "Out[1]: Text(0, 0.5, 'score')\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 16,
+      "status": "executed",
+      "source_sha256": "12b43459450fc4943d757cda57bbefaeb4e8d6dff6f691e3d1cea0263b766666",
+      "elapsed_seconds": 0.7989188020001166,
+      "stdout": "<Figure size 1600x600 with 2 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 17,
+      "status": "executed",
+      "source_sha256": "cf0ff2292bf7d10c253b3a1f58126d5e94f55d42f530ab3f6ccf3003f559943c",
+      "elapsed_seconds": 0.0009090189996641129,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 18,
+      "status": "executed",
+      "source_sha256": "501749f66dcf7c08cfd8cf724fbd42fada3bd44d3d88f802feb2f5edc074a9b7",
+      "elapsed_seconds": 0.7457427449990064,
+      "stdout": "Out[1]: \nGridSearchCV(cv=7,\n             estimator=Pipeline(steps=[('polynomialfeatures',\n                                        PolynomialFeatures()),\n                                       ('linearregression',\n                                        LinearRegression())]),\n             param_grid={'linearregression__fit_intercept': [True, False],\n                         'linearregression__normalize': [True, False],\n                         'polynomialfeatures__degree': array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,\n       17, 18, 19, 20])})\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 19,
+      "status": "executed",
+      "source_sha256": "0f38b94ed38fb73ed567daa28bf8d4988e33ec741e8a58894ec19357b32e94ed",
+      "elapsed_seconds": 0.0006357769889291376,
+      "stdout": "Out[1]: \n{'linearregression__fit_intercept': False,\n 'linearregression__normalize': True,\n 'polynomialfeatures__degree': np.int64(4)}\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 20,
+      "status": "executed",
+      "source_sha256": "5a2d6dfa36398b7f4be889efea45333f080029030cd2c997408ade9ca7d6417f",
+      "elapsed_seconds": 0.16885226999875158,
+      "stdout": "Out[1]: \n(np.float64(-0.04687651021505175),\n np.float64(0.9844070023112612),\n np.float64(-0.7308177116555796),\n np.float64(10.902869392322714))\n<Figure size 640x480 with 1 Axes>\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "leave_one_out_direct_distance_reference",
+      "pass": true,
+      "detail": {
+        "observed": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "expected": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "polynomial_training_inputs",
+      "pass": true,
+      "detail": {
+        "shape": [
+          40,
+          1
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      }
+    },
+    {
+      "name": "polynomial_training_targets",
+      "pass": true,
+      "detail": {
+        "shape": [
+          40
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      }
+    },
+    {
+      "name": "validation_curve_dimensions",
+      "pass": true,
+      "detail": {
+        "train": [
+          21,
+          7
+        ],
+        "validation": [
+          21,
+          7
+        ]
+      }
+    },
+    {
+      "name": "degree_zero_validation_manual_folds",
+      "pass": true,
+      "detail": {
+        "shape": [
+          7
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 1e-10,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "full_grid_scope_and_folds",
+      "pass": true,
+      "detail": {
+        "candidates": 84,
+        "folds": 7,
+        "fit_count": 588
+      }
+    },
+    {
+      "name": "grid_selection_consistent",
+      "pass": true,
+      "detail": {
+        "best_params": {
+          "linearregression__fit_intercept": false,
+          "linearregression__normalize": true,
+          "polynomialfeatures__degree": 4
+        },
+        "best_mean_score": 0.8972710305736544
+      }
+    },
+    {
+      "name": "selected_polynomial_predictions_independent_lstsq",
+      "pass": true,
+      "detail": {
+        "shape": [
+          500
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 1e-06,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "normalization_moderate_scale_False",
+      "pass": true,
+      "detail": {
+        "shape": [
+          33
+        ],
+        "max_absolute_error": 1.3322676295501878e-15,
+        "atol": 1e-08,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "normalization_moderate_scale_True",
+      "pass": true,
+      "detail": {
+        "shape": [
+          33
+        ],
+        "max_absolute_error": 8.881784197001252e-16,
+        "atol": 1e-08,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "normalization_scale_separated_boundary",
+      "pass": true,
+      "detail": {
+        "shape": [
+          33
+        ],
+        "max_absolute_error": 4.440892098500626e-15,
+        "atol": 1e-06,
+        "rtol": 1e-10
+      }
+    }
+  ],
+  "display_errors": [],
+  "plot_states": [
+    {
+      "cell": 11,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 3,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "",
+          "ylabel": "",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "cell": 12,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 2,
+          "collections": 0,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "degree",
+          "ylabel": "score",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "cell": 13,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 1,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "",
+          "ylabel": "",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "cell": 14,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 0,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "",
+          "ylabel": "",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "cell": 15,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 4,
+          "collections": 0,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "degree",
+          "ylabel": "score",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "cell": 16,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.0625,
+            0.10999999999999999,
+            0.42261904761904756,
+            0.77
+          ],
+          "lines": 2,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "training size",
+          "ylabel": "score",
+          "title": "degree = 2"
+        },
+        {
+          "bounds": [
+            0.5273809523809523,
+            0.10999999999999999,
+            0.42261904761904767,
+            0.77
+          ],
+          "lines": 2,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "training size",
+          "ylabel": "score",
+          "title": "degree = 9"
+        }
+      ]
+    },
+    {
+      "cell": 20,
+      "figure": 1,
+      "axes": [
+        {
+          "bounds": [
+            0.125,
+            0.10999999999999999,
+            0.775,
+            0.77
+          ],
+          "lines": 1,
+          "collections": 1,
+          "images": 0,
+          "texts": 0,
+          "xlabel": "",
+          "ylabel": "",
+          "title": ""
+        }
+      ]
+    }
+  ],
+  "rendered_plots": [
+    {
+      "cell": 11,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-11-plot-01.png",
+      "sha256": "585009b486573ed02bbb760808b82469cbcabd37465252e9bad633dbae5e0c54",
+      "dimensions": [
+        563,
+        423
+      ],
+      "bytes": 37781
+    },
+    {
+      "cell": 12,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-12-plot-02.png",
+      "sha256": "d175dd6abcb42f478004d6b70364618babc89254aa5c9bdcdc47903837392542",
+      "dimensions": [
+        577,
+        447
+      ],
+      "bytes": 30794
+    },
+    {
+      "cell": 13,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-13-plot-03.png",
+      "sha256": "c252dfb86b32e1a8bf2aaa45883f36d9814dde7868f9b95a80dc7ec2a1f901b6",
+      "dimensions": [
+        548,
+        417
+      ],
+      "bytes": 18449
+    },
+    {
+      "cell": 14,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-14-plot-04.png",
+      "sha256": "de83ee3f08d3b58cc9e359316cbc15270da0e3caf7a69934c024b2da7e771f2f",
+      "dimensions": [
+        551,
+        417
+      ],
+      "bytes": 19447
+    },
+    {
+      "cell": 15,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-15-plot-05.png",
+      "sha256": "6d94d197c92770acc8cfacea8801de7931ecbfcc7f6f6f1b884abb90fa0061d9",
+      "dimensions": [
+        577,
+        447
+      ],
+      "bytes": 35495
+    },
+    {
+      "cell": 16,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-16-plot-06.png",
+      "sha256": "df47304e55d31623e5a0acb5ba0c376c100ab8c963fc24a45a104567ce808bcf",
+      "dimensions": [
+        1501,
+        557
+      ],
+      "bytes": 42556
+    },
+    {
+      "cell": 20,
+      "path": "/workspace/scratch/f3e31b12a17f/study/evidence/independent-second-05.03-Hyperparameters-and-Model-Validation/cell-20-plot-07.png",
+      "sha256": "e5253541ccc79dc8b89254d1cad5265859759d71c7a6dc6de3b467874d5a63d0",
+      "dimensions": [
+        548,
+        417
+      ],
+      "bytes": 18553
+    }
+  ],
+  "graphical_checks": [
+    {
+      "name": "exact_native_inline_figure_cells",
+      "pass": true,
+      "expected": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        20
+      ],
+      "observed": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        20
+      ]
+    },
+    {
+      "name": "independent_figure_axes_per_cell",
+      "pass": true,
+      "expected": [
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          20,
+          1
+        ]
+      ],
+      "observed": [
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          20,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "all_native_inline_pngs_readable",
+      "pass": true
+    },
+    {
+      "name": "no_open_figures_left_between_cells",
+      "pass": true
+    }
+  ],
+  "accepted": true,
+  "elapsed_seconds": 4.641250543994829
+}

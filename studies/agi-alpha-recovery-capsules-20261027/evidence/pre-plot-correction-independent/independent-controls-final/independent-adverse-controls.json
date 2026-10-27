@@ -1,0 +1,288 @@
+{
+  "schema": "independent-adverse-controls/v1",
+  "all_expected_rejections": true,
+  "controls": [
+    {
+      "control": "wrong-output",
+      "expected_rejection_observed": true,
+      "exit_code": 1,
+      "blocker_layer": null,
+      "stdout": "{\"case\": \"03.02-Data-Indexing-and-Selection\", \"nonempty_code_cells\": 36, \"executed_code_cells\": 36, \"accepted\": false, \"elapsed_seconds\": 0.2536452950007515}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "control": "display-error",
+      "expected_rejection_observed": true,
+      "exit_code": 1,
+      "blocker_layer": null,
+      "stdout": "{\"case\": \"03.02-Data-Indexing-and-Selection\", \"nonempty_code_cells\": 1, \"executed_code_cells\": 0, \"accepted\": false, \"elapsed_seconds\": 0.06949332299700473}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "control": "outbound",
+      "expected_rejection_observed": true,
+      "exit_code": 1,
+      "blocker_layer": "environment_socket_creation",
+      "stdout": "{\"case\": \"03.02-Data-Indexing-and-Selection\", \"nonempty_code_cells\": 1, \"executed_code_cells\": 0, \"accepted\": false, \"elapsed_seconds\": 0.17147968200151809}\n",
+      "stderr": "/root/.local/lib/python3.12/site-packages/IPython/paths.py:66: UserWarning: IPython parent '/root' is not a writable location, using a temp directory.\n  warn(\"IPython parent '{0}' is not a writable location,\"\n"
+    },
+    {
+      "control": "tampered-output-identity",
+      "expected_rejection_observed": true,
+      "before": {
+        "schema": "independent-identity-audit/v1",
+        "cases": [
+          {
+            "case": "03.02-Data-Indexing-and-Selection",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              17,
+              29
+            ],
+            "declared_changed_cells": [
+              0,
+              17,
+              29
+            ],
+            "accepted": true
+          },
+          {
+            "case": "03.05-Hierarchical-Indexing",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              16,
+              31,
+              43,
+              44
+            ],
+            "declared_changed_cells": [
+              0,
+              16,
+              31,
+              43,
+              44
+            ],
+            "accepted": true
+          },
+          {
+            "case": "05.02-Introducing-Scikit-Learn",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              1,
+              14,
+              18,
+              19,
+              20,
+              26
+            ],
+            "declared_changed_cells": [
+              0,
+              1,
+              14,
+              18,
+              19,
+              20,
+              26
+            ],
+            "accepted": true
+          },
+          {
+            "case": "05.03-Hyperparameters-and-Model-Validation",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              4,
+              6,
+              7,
+              9,
+              11,
+              12,
+              15,
+              16,
+              17,
+              20
+            ],
+            "declared_changed_cells": [
+              0,
+              4,
+              6,
+              7,
+              9,
+              11,
+              12,
+              15,
+              16,
+              17,
+              20
+            ],
+            "accepted": true
+          }
+        ],
+        "data_checks": {
+          "frozen_csv_sha256": true,
+          "frozen_csv_git_blob": true,
+          "embedded_fixture_exact": true
+        },
+        "accepted": true
+      },
+      "after": {
+        "schema": "independent-identity-audit/v1",
+        "cases": [
+          {
+            "case": "03.02-Data-Indexing-and-Selection",
+            "checks": {
+              "input_sha": true,
+              "output_sha": false,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              17,
+              29
+            ],
+            "declared_changed_cells": [
+              0,
+              17,
+              29
+            ],
+            "accepted": false
+          },
+          {
+            "case": "03.05-Hierarchical-Indexing",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              16,
+              31,
+              43,
+              44
+            ],
+            "declared_changed_cells": [
+              0,
+              16,
+              31,
+              43,
+              44
+            ],
+            "accepted": true
+          },
+          {
+            "case": "05.02-Introducing-Scikit-Learn",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              1,
+              14,
+              18,
+              19,
+              20,
+              26
+            ],
+            "declared_changed_cells": [
+              0,
+              1,
+              14,
+              18,
+              19,
+              20,
+              26
+            ],
+            "accepted": true
+          },
+          {
+            "case": "05.03-Hyperparameters-and-Model-Validation",
+            "checks": {
+              "input_sha": true,
+              "output_sha": true,
+              "code_cell_count": true,
+              "original_code_cell_indices": true,
+              "no_prose_or_stored_output": true,
+              "all_edits_declared": true
+            },
+            "changed_cells": [
+              0,
+              4,
+              6,
+              7,
+              9,
+              11,
+              12,
+              15,
+              16,
+              17,
+              20
+            ],
+            "declared_changed_cells": [
+              0,
+              4,
+              6,
+              7,
+              9,
+              11,
+              12,
+              15,
+              16,
+              17,
+              20
+            ],
+            "accepted": true
+          }
+        ],
+        "data_checks": {
+          "frozen_csv_sha256": true,
+          "frozen_csv_git_blob": true,
+          "embedded_fixture_exact": true
+        },
+        "accepted": false
+      }
+    }
+  ]
+}

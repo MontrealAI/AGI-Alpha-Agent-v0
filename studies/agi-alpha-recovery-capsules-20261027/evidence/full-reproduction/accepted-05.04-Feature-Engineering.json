@@ -1,0 +1,286 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.04-Feature-Engineering",
+  "path": "/tmp/agi-alpha-capsule-reproduction-y4lw8jt1/05.04-Feature-Engineering/recovered.ipynb",
+  "input_sha256": "988f7d2a5a4ee46ea1a86697ea1f5be97daed5954b362cd312c79f3f8ca3c75b",
+  "expected_cells": 18,
+  "completed_cells": 18,
+  "all_cells_completed": true,
+  "checks": [
+    {
+      "name": "mean_imputation_column_0",
+      "pass": true,
+      "observed": [
+        4.5,
+        3.0,
+        3.0,
+        4.0,
+        8.0
+      ],
+      "expected": [
+        4.5,
+        3.0,
+        3.0,
+        4.0,
+        8.0
+      ]
+    },
+    {
+      "name": "mean_imputation_column_1",
+      "pass": true,
+      "observed": [
+        0.0,
+        7.0,
+        5.0,
+        5.0,
+        8.0
+      ],
+      "expected": [
+        0,
+        7,
+        5,
+        5,
+        8
+      ]
+    },
+    {
+      "name": "complete_polynomial_fit",
+      "pass": true,
+      "observed": [
+        14.000000000000114,
+        16.00000000000003,
+        -0.9999999999999609,
+        8.000000000000043,
+        -5.000000000000229
+      ],
+      "expected": [
+        14,
+        16,
+        -1,
+        8,
+        -5
+      ]
+    },
+    {
+      "name": "observed_column_preserved",
+      "pass": true,
+      "observed": [
+        3.0,
+        9.0,
+        2.0,
+        6.0,
+        1.0
+      ],
+      "expected": [
+        3,
+        9,
+        2,
+        6,
+        1
+      ]
+    }
+  ],
+  "accepted": true,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 1.266655601997627,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 5,
+      "source_sha256": "f09927c28d0c68660854a5cabf88d23479c202d1ae22fd98c79391ba263890f1",
+      "status": "executed",
+      "elapsed_seconds": 0.00017103899153880775,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 7,
+      "source_sha256": "e2bfb63b22fafca7430d60c5f87ad4660a20ae948efaf8ee330b4c42478564ff",
+      "status": "executed",
+      "elapsed_seconds": 0.0011569160124054179,
+      "stdout": "{'Queen Anne': 1, 'Fremont': 2, 'Wallingford': 3}\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 9,
+      "source_sha256": "2c7ac7f08745626b10f052d2fef86c743d3ab65e90b0a4eb61626da35b9905bd",
+      "status": "executed",
+      "elapsed_seconds": 0.9418832660012413,
+      "stdout": "array([[     0,      1,      0, 850000,      4],\n       [     1,      0,      0, 700000,      3],\n       [     0,      0,      1, 650000,      3],\n       [     1,      0,      0, 600000,      2]])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 11,
+      "source_sha256": "faa40cdf18e33daaad20a6ec3ad559d2e5b4deb1e7f12705449374f467467a86",
+      "status": "executed",
+      "elapsed_seconds": 0.00016478700854349881,
+      "stdout": "array(['neighborhood=Fremont', 'neighborhood=Queen Anne',\n       'neighborhood=Wallingford', 'price', 'rooms'], dtype=object)\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 13,
+      "source_sha256": "56ffa51f6132a3d1cd5b4d8355b2aae22a54a5d053fa41834645368847d09c43",
+      "status": "executed",
+      "elapsed_seconds": 0.0003835359966615215,
+      "stdout": "<Compressed Sparse Row sparse matrix of dtype 'int64'\n\twith 12 stored elements and shape (4, 5)>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 5,
+      "upstream_cell_index": 16,
+      "source_sha256": "32054f25b710b3a44a52a751a30224510159c4954e05a2daeaeffb8d73f6565c",
+      "status": "executed",
+      "elapsed_seconds": 5.726600647903979e-05,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 6,
+      "upstream_cell_index": 18,
+      "source_sha256": "fdc873d43c15f6fa49f410d804d201b78a32ce27df44e5ea434c5bd7e262ed68",
+      "status": "executed",
+      "elapsed_seconds": 0.0006863610033178702,
+      "stdout": "<Compressed Sparse Row sparse matrix of dtype 'int64'\n\twith 7 stored elements and shape (3, 5)>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 7,
+      "upstream_cell_index": 20,
+      "source_sha256": "42740737c2b055f4cbe56358cba61a05d4bce2868cb78cc33378e872302e07cb",
+      "status": "executed",
+      "elapsed_seconds": 0.003864804995828308,
+      "stdout": "   evil  horizon  of  problem  queen\n0     1        0   1        1      0\n1     1        0   0        0      1\n2     0        1   0        1      0\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 8,
+      "upstream_cell_index": 22,
+      "source_sha256": "8c8cafd0ea2e4e59587fc4ba10c87156325d38eb2a2f940e6a4e91f4dcb22fb3",
+      "status": "executed",
+      "elapsed_seconds": 0.004004685004474595,
+      "stdout": "       evil   horizon        of   problem     queen\n0  0.517856  0.000000  0.680919  0.517856  0.000000\n1  0.605349  0.000000  0.000000  0.000000  0.795961\n2  0.000000  0.795961  0.000000  0.605349  0.000000\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 9,
+      "upstream_cell_index": 26,
+      "source_sha256": "7f5f932f0df04f53a5988aa66e42dd401b9d4af425008e744eb30574508d4a68",
+      "status": "executed",
+      "elapsed_seconds": 0.009242902000551112,
+      "stdout": "<matplotlib.collections.PathCollection object at 0x7f22d472b380>\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 10,
+      "upstream_cell_index": 28,
+      "source_sha256": "5001fdc56b0c6cf4cbe7a5079e9da0ee259964966aa9f0c0274783ec81fd5374",
+      "status": "executed",
+      "elapsed_seconds": 0.14539921400137246,
+      "stdout": "[<matplotlib.lines.Line2D object at 0x7f22d12c9700>]\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 11,
+      "upstream_cell_index": 30,
+      "source_sha256": "fc4b54becfeed4a9ec0a252f5c9a6893f4203a99e26a133a607cdd88846522fb",
+      "status": "executed",
+      "elapsed_seconds": 0.0005682429909938946,
+      "stdout": "[[  1.   1.   1.]\n [  2.   4.   8.]\n [  3.   9.  27.]\n [  4.  16.  64.]\n [  5.  25. 125.]]\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 12,
+      "upstream_cell_index": 32,
+      "source_sha256": "01df3424b571e3decb7c8783f161b5cc7bc9f2317cbfb42bac9611cf87e93f25",
+      "status": "executed",
+      "elapsed_seconds": 0.0026797949976753443,
+      "stdout": "[<matplotlib.lines.Line2D object at 0x7f22d0dd27e0>]\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 13,
+      "upstream_cell_index": 35,
+      "source_sha256": "c60f09995f8a30cd635195c5ddebbd7db055ddc816175eb6c60d43ea2b299074",
+      "status": "executed",
+      "elapsed_seconds": 0.00029519399686250836,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 14,
+      "upstream_cell_index": 37,
+      "source_sha256": "cbe5dfd99dc4e977178d09290e55f52afe72ef8cd09fea723a71db199b17037a",
+      "status": "executed",
+      "elapsed_seconds": 0.06356168699858245,
+      "stdout": "array([[4.5, 0. , 3. ],\n       [3. , 7. , 9. ],\n       [3. , 5. , 2. ],\n       [4. , 5. , 6. ],\n       [8. , 8. , 1. ]])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 15,
+      "upstream_cell_index": 39,
+      "source_sha256": "306e281d8ca23a38f80b7d991324182d24977a6d0aef8e8db59bf668ea68f654",
+      "status": "executed",
+      "elapsed_seconds": 0.0007254399970406666,
+      "stdout": "array([13.14869292, 14.3784627 , -1.15539732, 10.96606197, -5.33782027])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 16,
+      "upstream_cell_index": 41,
+      "source_sha256": "d028d16ebc70cd76cafbb1545dbb004bd8d5e733ce8809527e0a87b82cc5c64e",
+      "status": "executed",
+      "elapsed_seconds": 0.006487042992375791,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 17,
+      "upstream_cell_index": 43,
+      "source_sha256": "5fa1fe0cc68e6fc39386593629e22367a74b3edda17849fc9bfa365317a50158",
+      "status": "executed",
+      "elapsed_seconds": 0.001855256996350363,
+      "stdout": "[14 16 -1  8 -5]\n[14. 16. -1.  8. -5.]\n",
+      "stderr": "",
+      "error": null
+    }
+  ],
+  "figures": [
+    "accepted-05.04-Feature-Engineering-figure-1.png"
+  ],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

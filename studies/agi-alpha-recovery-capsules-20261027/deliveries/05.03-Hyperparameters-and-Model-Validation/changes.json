@@ -1,0 +1,85 @@
+[
+  {
+    "cell": 0,
+    "old": "unseeded global randomness",
+    "new": "np.random.seed(20261027)",
+    "reason": "Fixed study seed for reproducible illustrative random inputs; not an assertion of equality to the archived random realization."
+  },
+  {
+    "cell": 4,
+    "upstream_cell": 15,
+    "old": "from sklearn.cross_validation import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Preserve split parameters using the supported module."
+  },
+  {
+    "cell": 6,
+    "upstream_cell": 20,
+    "old": "from sklearn.cross_validation import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Preserve split parameters using the supported module."
+  },
+  {
+    "cell": 7,
+    "upstream_cell": 22,
+    "old": "from sklearn.cross_validation import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Preserve split parameters using the supported module."
+  },
+  {
+    "cell": 7,
+    "upstream_cell": 22,
+    "old": "LeaveOneOut(len(X))",
+    "new": "LeaveOneOut()",
+    "reason": "The modern splitter obtains sample count from data."
+  },
+  {
+    "cell": 9,
+    "upstream_cell": 31,
+    "old": "from sklearn.linear_model import LinearRegression",
+    "new": "from sklearn.base import BaseEstimator, RegressorMixin\nimport numpy as np\nfrom scipy import linalg\n\nclass LinearRegression(RegressorMixin, BaseEstimator):\n    def __init__(self, fit_intercept=True, normalize=False):\n        self.fit_intercept = fit_intercept\n        self.normalize = normalize\n    def fit(self, X, y):\n        X = np.asarray(X, dtype=float)\n        y = np.asarray(y, dtype=float)\n        self.n_features_in_ = X.shape[1]\n        self.x_offset_ = X.mean(axis=0) if self.fit_intercept else np.zeros(X.shape[1])\n        self.y_offset_ = y.mean(axis=0) if self.fit_intercept else 0.0\n        centered = X - self.x_offset_\n        self.x_scale_ = np.sqrt((centered ** 2).sum(axis=0)) if self.normalize and self.fit_intercept else np.ones(X.shape[1])\n        self.x_scale_[self.x_scale_ == 0] = 1.0\n        coefficient, _, self.rank_, self.singular_ = linalg.lstsq(centered / self.x_scale_, y - self.y_offset_)\n        self.coef_ = coefficient / self.x_scale_\n        self.intercept_ = self.y_offset_ - self.x_offset_ @ self.coef_\n        return self\n    def predict(self, X):\n        return np.asarray(X, dtype=float) @ self.coef_ + self.intercept_\n",
+    "reason": "Retain the historical normalize switch in every CV fit; centering and L2 scaling are fitted on training data only, and ignored if intercept is false. Current LAPACK results are checked, not asserted identical to old binaries."
+  },
+  {
+    "cell": 12,
+    "upstream_cell": 37,
+    "old": "from sklearn.learning_curve import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Use supported validation/learning-curve namespace."
+  },
+  {
+    "cell": 12,
+    "upstream_cell": 37,
+    "old": "'polynomialfeatures__degree', degree, cv=7",
+    "new": "param_name='polynomialfeatures__degree', param_range=degree, cv=7",
+    "reason": "Preserve hyperparameter range with modern keyword-only signature."
+  },
+  {
+    "cell": 15,
+    "upstream_cell": 44,
+    "old": "'polynomialfeatures__degree', degree, cv=7",
+    "new": "param_name='polynomialfeatures__degree', param_range=degree, cv=7",
+    "reason": "Preserve hyperparameter range with modern keyword-only signature."
+  },
+  {
+    "cell": 16,
+    "upstream_cell": 49,
+    "old": "from sklearn.learning_curve import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Use supported validation/learning-curve namespace."
+  },
+  {
+    "cell": 17,
+    "upstream_cell": 52,
+    "old": "from sklearn.grid_search import",
+    "new": "from sklearn.model_selection import",
+    "reason": "Preserve the full grid and seven folds."
+  },
+  {
+    "cell": 20,
+    "upstream_cell": 58,
+    "old": "plt.plot(X_test.ravel(), y_test, hold=True)",
+    "new": "plt.plot(X_test.ravel(), y_test)",
+    "reason": "Modern axes already retain prior artists; removed hold flag."
+  }
+]

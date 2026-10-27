@@ -1,0 +1,115 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "03.06-Concat-And-Append",
+  "path": "study/inputs/development/03.06-Concat-And-Append.ipynb",
+  "input_sha256": "84981886b1fde546fc307c75a03ba1ae0e0a6bd3a3bb828e3a05617ebabec44b",
+  "expected_cells": 16,
+  "completed_cells": 7,
+  "all_cells_completed": false,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 0.3019481930095935,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 4,
+      "source_sha256": "3928de94cbf5a16e140df9d2371f015ee0f0595f379a52bd5e55bf29f43c189b",
+      "status": "executed",
+      "elapsed_seconds": 0.2601781010016566,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 1,
+      "upstream_cell_index": 6,
+      "source_sha256": "9254c3900ad772fb183615f915a6c02fb32247e841760dd3d7ba46727bf65d22",
+      "status": "executed",
+      "elapsed_seconds": 0.00572792899038177,
+      "stdout": "    A   B   C\n0  A0  B0  C0\n1  A1  B1  C1\n2  A2  B2  C2\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 2,
+      "upstream_cell_index": 8,
+      "source_sha256": "c53d49cfe83899849babb0e9387afd7f36a29d7694be3d52ca850d8a6cc00e5c",
+      "status": "executed",
+      "elapsed_seconds": 0.0002580800064606592,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 3,
+      "upstream_cell_index": 11,
+      "source_sha256": "0a92bfac2ca19cbd54cf8200ba5044d7cdfc2eca82a80e744262c8081c3e2f9b",
+      "status": "executed",
+      "elapsed_seconds": 0.000273903991910629,
+      "stdout": "array([1, 2, 3, 4, 5, 6, 7, 8, 9])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 4,
+      "upstream_cell_index": 13,
+      "source_sha256": "0ea2f55089c503fb4f1f5384c31269e511fcf6d0066787bbbb9dea196c20faf1",
+      "status": "executed",
+      "elapsed_seconds": 0.00013226000010035932,
+      "stdout": "array([[1, 2, 1, 2],\n       [3, 4, 3, 4]])\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 5,
+      "upstream_cell_index": 16,
+      "source_sha256": "7727eb343743851fc99bce1d4416483f31690abc2a0c64005405eb63c9b8b55e",
+      "status": "executed",
+      "elapsed_seconds": 0.0005508620088221505,
+      "stdout": "1    A\n2    B\n3    C\n4    D\n5    E\n6    F\ndtype: object\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 6,
+      "upstream_cell_index": 18,
+      "source_sha256": "15838ed565afae863e7be1bd607e4f05fd4686cf450194240a7044cd6347ad6f",
+      "status": "executed",
+      "elapsed_seconds": 0.005728089003241621,
+      "stdout": "df1\n    A   B\n1  A1  B1\n2  A2  B2\n\ndf2\n    A   B\n3  A3  B3\n4  A4  B4\n\npd.concat([df1, df2])\n    A   B\n1  A1  B1\n2  A2  B2\n3  A3  B3\n4  A4  B4\n",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "cell": 7,
+      "upstream_cell_index": 20,
+      "source_sha256": "bad28407573bf84e53b495800b5e1f435948808a58c30bdf78bad6a2116b83a2",
+      "status": "error",
+      "elapsed_seconds": 0.005482447988470085,
+      "stdout": "",
+      "stderr": "",
+      "error": {
+        "type": "ValueError",
+        "message": "No axis named col for object type DataFrame",
+        "traceback": "Traceback (most recent call last):\n  File \"/root/.local/lib/python3.12/site-packages/pandas/core/generic.py\", line 576, in _get_axis_number\n    return cls._AXIS_TO_AXIS_NUMBER[axis]\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\nKeyError: 'col'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py\", line 45, in run\n    print(repr(value))\n          ^^^^^^^^^^^\n  File \"study/inputs/development/03.06-Concat-And-Append.ipynb\", line 14, in __repr__\n    },\n       \n  File \"study/inputs/development/03.06-Concat-And-Append.ipynb\", line 14, in <genexpr>\n    },\n       \n  File \"<string>\", line 1, in <module>\n  File \"/root/.local/lib/python3.12/site-packages/pandas/core/reshape/concat.py\", line 382, in concat\n    op = _Concatenator(\n         ^^^^^^^^^^^^^^\n  File \"/root/.local/lib/python3.12/site-packages/pandas/core/reshape/concat.py\", line 459, in __init__\n    axis = sample._get_axis_number(axis)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/.local/lib/python3.12/site-packages/pandas/core/generic.py\", line 578, in _get_axis_number\n    raise ValueError(f\"No axis named {axis} for object type {cls.__name__}\")\nValueError: No axis named col for object type DataFrame\n"
+      }
+    }
+  ],
+  "figures": [],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "scientific-reuse-independent-acceptance-plan/v1",
+  "recorded_at": "2026-10-27",
+  "role": "same-team independent checker",
+  "independence_scope": "Checker has not read repair implementation or confirmation notebooks. Numerical expectations will be frozen from original inputs and source-intended operations after development freeze, before inspecting repaired code.",
+  "scope_candidates": [
+    "Data-Indexing-and-Selection",
+    "Hierarchical-Indexing",
+    "Introducing-Scikit-Learn",
+    "Hyperparameters-Model-Validation"
+  ],
+  "rights": {
+    "notebook_code": "MIT (Jacob VanderPlas 2016), attribution retained",
+    "book_prose": "CC-BY-NC-ND; exclude from commercially reusable repaired outputs",
+    "inputs": "Public source identities and source links preserved; no restricted/private inputs."
+  },
+  "required_checks": [
+    {
+      "id": "identity",
+      "criterion": "Every public input has repository/ref/path, exact raw-byte SHA256 and original Git blob where available. Capsule input code-cell digests map to the immutable source."
+    },
+    {
+      "id": "code_scope",
+      "criterion": "Each original nonempty code cell appears exactly once in original order in the deliverable or has an explicit approved disposition. Non-code prose is not counted as an executable skipped cell."
+    },
+    {
+      "id": "execution",
+      "criterion": "Execute the complete capsule top-to-bottom in a fresh process/kernel and new working directory; every in-scope nonempty code cell records execution status and no unhandled exceptions."
+    },
+    {
+      "id": "no_suppression",
+      "criterion": "No catch-all suppression, unconditional success flag or removal of failing analyses. Intentional demonstration failures, if any, must be scoped before confirmation and recorded as expected rather than counted as successful analysis."
+    },
+    {
+      "id": "network_inputs",
+      "criterion": "Rerun uses only declared frozen local data; absence of network access cannot be silently replaced by different evidence. Any dataset substitution must be matched, documented and checked against the original source contract."
+    },
+    {
+      "id": "numeric_pandas",
+      "criterion": "Independent exact or tight-tolerance anchors for source-deterministic selection, ordering, indexing, joins/reductions, missingness and numeric aggregation; invariants include labels, shapes and values, not only no-exception execution."
+    },
+    {
+      "id": "numeric_sklearn",
+      "criterion": "Independent anchors for data shape/classes, train/test separation and seed, estimator configuration, prediction shape, cross-validation folds, scores and model-selection outputs, with frozen tolerances justified by numerical/stochastic stability."
+    },
+    {
+      "id": "figures",
+      "criterion": "Required plots/files exist, are nonempty and readable; plot-generating code executes. Visual fidelity is assessed separately from numerical acceptance."
+    },
+    {
+      "id": "environment",
+      "criterion": "Runtime/package versions, command and working-directory contract are recorded. Portable means rerunnable on the tested environment; no untested OS or clean-install claim."
+    },
+    {
+      "id": "reproduction",
+      "criterion": "One documented command runs actual delivered files and produces outputs plus acceptance evidence; a second clean run reproduces deterministic anchors within the declared tolerance."
+    },
+    {
+      "id": "adverse",
+      "criterion": "At least a malformed/tampered source identity and a deliberately incorrect critical output are rejected by checker; these are controls, not additional accepted customer cases."
+    },
+    {
+      "id": "cost_scope",
+      "criterion": "All repair attempts, failed runs and validation effort are linked to the case. Resource counts/timings are observations; unmetered model charges/human attention remain unknown."
+    }
+  ],
+  "acceptance_rule": "A case is accepted only if every applicable critical check passes. Separate local research acceptance from customer commercial acceptance. Do not infer broad delivery success from one assertion or from execution alone.",
+  "expected_outputs": [
+    "independent_checker.py",
+    "independent_expectations.json",
+    "independent_results.json",
+    "independent_check_log.txt",
+    "independent_review.txt"
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "schema": "agi-alpha-recovery-capsule-economics-v1.1",
+  "freeze_date": "2026-10-27",
+  "currency": "USD",
+  "evidence_level": "Conditional commercial simulation; useful artifact execution and technical acceptance are recorded separately.",
+  "actual": {
+    "customers": 0,
+    "orders": 0,
+    "collections_usd": 0,
+    "externally_metered_api_calls_executed": 0,
+    "actual_api_billing_total": null,
+    "actual_complete_study_cost_usd": null,
+    "reason": "Authorized ChatGPT/tool execution has no complete metered API usage or allocated platform invoice. API prices below support a deployment counterfactual, not a measured bill."
+  },
+  "offer": {
+    "name": "Recovery Capsule",
+    "scope": "One authorized legacy analytical Python notebook, at most 100 code cells, at most 5 MB local/public data, at most 120 CPU seconds per run, supported numpy/pandas/scipy/scikit-learn/matplotlib stack.",
+    "deliverable": "Runnable notebook and CLI; pinned environment; input/output hashes; original-failure and repaired-run evidence; at least three independent numerical or invariant checks; migration diff; limitations and reproduction README.",
+    "commercial_terms": "Proposed two-business-day delivery after eligible complete inputs; 14-day one-correction warranty; full refund when agreed checks remain unmet; no retained payment on final rejection. This study measures neither service-level compliance nor customer acceptance.",
+    "target": "Customer-specific orphan analyses without an equivalent free substitute. Public handbook examples are technical proxies, not customers; their free newer edition is a strong alternative.",
+    "primary_configuration": "Automated construction, execution, independent checks and packaging. No mandatory human review or onboarding is imposed. Exception and support attention is modeled only for genuine cases requiring it."
+  },
+  "api": {
+    "model": "gpt-6-astra",
+    "configuration": "Proposed Responses API, standard short-context processing, high reasoning effort, shell/function tools; each call kept inside the short-context pricing tier. No such paid deployment is executed here.",
+    "uncached_input_per_million": 10,
+    "output_per_million": 50,
+    "cached_input_per_million": 1,
+    "cache_fraction": 0,
+    "reasoning_included_in_output": true,
+    "budget_interpretation": "Aggregate tokens across all model calls and specialists, including repeated context, tool content and verification. All input priced uncached. Output includes reasoning; it is not counted twice.",
+    "sources": [
+      "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "https://developers.openai.com/api/docs/pricing",
+      "https://developers.openai.com/api/docs/guides/reasoning"
+    ],
+    "per_call_input_token_limit": 272000,
+    "per_call_output_token_limit": 128000,
+    "partition_input_target": 250000,
+    "partition_output_target": 100000,
+    "partition_basis": "Aggregate budgets are explicitly partitioned into planned calls with at most 250,000 input and 100,000 total output tokens, below the 272,000-input short-context and 128,000-output limits. Partitions are budget envelopes, not observed calls or throughput evidence."
+  },
+  "human_reference": {
+    "description": "Transparent task-resource estimate, not an exact competing quote or observed willingness to pay. Posted provider hourly rates already include their own chosen overhead; no benefit markup is added to them.",
+    "phases": [
+      {
+        "phase": "Input, rights, scope and original failure triage",
+        "low_hours": 0.5,
+        "central_hours": 1,
+        "high_hours": 2
+      },
+      {
+        "phase": "Repair and notebook/CLI construction",
+        "low_hours": 1,
+        "central_hours": 2,
+        "high_hours": 4
+      },
+      {
+        "phase": "Independent verification and repeat execution",
+        "low_hours": 1,
+        "central_hours": 2,
+        "high_hours": 4
+      },
+      {
+        "phase": "Pinned environment, hashes, migration diff and documentation",
+        "low_hours": 0.5,
+        "central_hours": 1,
+        "high_hours": 2
+      },
+      {
+        "phase": "Expected correction/support allowance",
+        "low_hours": 0.5,
+        "central_hours": 1,
+        "high_hours": 2
+      },
+      {
+        "phase": "Coordination, handoff and responsibility",
+        "low_hours": 0.5,
+        "central_hours": 1,
+        "high_hours": 2
+      }
+    ],
+    "rates": {
+      "low": 84,
+      "central": 149,
+      "high": 249
+    },
+    "sources": {
+      "low": "https://www.vanderbilt.edu/accre/research-software-engineering-service/",
+      "central": "https://edcf.nd.edu/services/",
+      "high": "https://www.paratools.com/consulting/"
+    },
+    "caveats": "Vanderbilt is an institutional starting rate; Notre Dame is an external engineering/software-service rate; ParaTools is a specialized scientific-consulting unloaded rate, so the high estimate is a resource reference, not its full loaded quote. Hours are study estimates. None establishes demand for this offer.",
+    "rate_labels": {
+      "low": "institutional_starting_rate",
+      "central": "external_provider_rate",
+      "high": "specialized_unloaded_resource_rate"
+    },
+    "additional_loaded_high": {
+      "hours": 16,
+      "rate": 412.97,
+      "amount": 6607.52,
+      "source": "https://www.paratools.com/consulting/",
+      "label": "Specialized loaded provider reference; not a quote for this capsule."
+    }
+  },
+  "labor": {
+    "usd_per_hour": 95,
+    "basis": "Rounded internal opportunity-cost proxy: BLS May 2025 software developer median $135,980 / 2,080 hours times June 2026 professional compensation ratio $73.69/$50.98 = $94.50/hour. This is a mixed-series estimate, not a published developer billing rate or contracted wage.",
+    "sources": [
+      "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+      "https://www.bls.gov/news.release/ecec.htm"
+    ]
+  },
+  "job_outcomes": {
+    "clean": {
+      "retained_acceptance": 1,
+      "initial_payment": 1,
+      "refund": 0,
+      "api_multiplier": 1,
+      "support_hours": 0.1,
+      "exception_hours": 0
+    },
+    "corrected": {
+      "retained_acceptance": 1,
+      "initial_payment": 1,
+      "refund": 0,
+      "api_multiplier": 1.75,
+      "support_hours": 0.35,
+      "exception_hours": 0.2
+    },
+    "rejected": {
+      "retained_acceptance": 0,
+      "initial_payment": 0,
+      "refund": 0,
+      "api_multiplier": 2,
+      "support_hours": 0.25,
+      "exception_hours": 0.4
+    },
+    "refunded": {
+      "retained_acceptance": 0,
+      "initial_payment": 1,
+      "refund": 1,
+      "api_multiplier": 2.25,
+      "support_hours": 0.5,
+      "exception_hours": 0.4
+    }
+  },
+  "costs": {
+    "baseline_tool_cost_per_job": 1,
+    "tool_basis": "Eight 4 GB 20-minute container sessions at $0.12 plus four API web-search calls at $0.01 = $1.00. Outcome multiplier covers retries. Search-content tokens are already in aggregate API input budget.",
+    "artifact_retention_per_job": 0.5,
+    "artifact_retention_basis": "Modeled bounded storage, transfer and verification allowance for this small artifact; not a metered invoice.",
+    "payment_fee_fraction": 0.029,
+    "payment_fee_fixed": 0.3,
+    "payment_source": "https://stripe.com/pricing",
+    "payment_caveat": "US domestic-card published benchmark, not a Canadian merchant quote. Sensitivities include 4.4% international-card and 5.4% with currency conversion. Fees on later-refunded initial payments are retained in the cost model.",
+    "maintenance_hours_per_month": 4,
+    "administration_hours_per_month": 4,
+    "hosting_software_per_month": 60,
+    "business_services_per_month": 80,
+    "fixed_cost_basis": "Maintenance covers stack regressions and supported-environment updates; administration covers scheduling, records and exceptional contracts. Hosting/software and professional business-service allowances are explicit estimates. Sales, job support and payment costs are charged separately only once.",
+    "development_hours": 40,
+    "development_tooling": 200,
+    "development_phases": {
+      "automation_and_capsule_engineering": 20,
+      "acceptance_oracles": 8,
+      "reproduction_and_release_packaging": 4,
+      "offer_terms_and_scope": 4,
+      "existing_system_integration": 4
+    },
+    "development_basis": "Counterfactual full commercial setup, valued once, separate from per-job execution. It is not a measurement of this study's unmetered resource bill. No extra retained-skill or Gym investment is assumed.",
+    "collection_assumption": "Base scenarios assume all finally accepted invoices are collected and no post-warranty bad debt or chargebacks. Separate sensitivities deduct 1/2/5% accepted-invoice credit loss or 0.5/2% chargebacks plus $15 each; these are challenges, not measured rates."
+  },
+  "timing": {
+    "selling_months": 12,
+    "days_per_month": 30,
+    "delivery_calendar_days": 5,
+    "collection_delay_days": 7,
+    "warranty_days_after_delivery": 14,
+    "warranty_reserve_fraction": 1,
+    "reserve_basis": "Prudential full reserve of all open-warranty initial receipts. This is a liquidity policy, not a second expense. Release accepted funds only after warranty closure; refund rejected funds. No unrestricted use of refundable deposits.",
+    "labor_cash_assumption": "Financing schedules conservatively assume all modeled fractional labor is cash-paid at the $95 opportunity-cost proxy. Owner labor deferral would change timing but leave an obligation or imputed economic cost.",
+    "delivery_calendar_basis": "Five calendar days is a conservative cash-timing buffer, not observed turnaround or verification of the proposed two-business-day SLA.",
+    "financing_basis": "Opening equity injection; no debt and no financing interest assumed. Capital is financing rather than revenue or a second expense."
+  },
+  "capacity": {
+    "available_human_hours_per_month": 40,
+    "available_agent_hours_per_month": 160,
+    "concurrent_agents": 1,
+    "baseline_agent_hours_per_job": 2,
+    "caveat": "Proposed scheduling envelopes, not observed API throughput, rate limits or two-day SLA. Labor is allocated from a fractional/shared operation and valued when used; a full dedicated employee is not assumed."
+  },
+  "scenarios": [
+    {
+      "name": "downside",
+      "price": 600,
+      "qualified_inquiries_per_month": 30,
+      "purchase_conversion": 0.1,
+      "qualified_lead_cost": 25,
+      "sales_hours_per_lead": 0.1,
+      "baseline_input_tokens": 10000000,
+      "baseline_output_tokens": 1000000,
+      "outcome_probabilities": {
+        "clean": 0.2,
+        "corrected": 0.3,
+        "rejected": 0.4,
+        "refunded": 0.1
+      },
+      "development_hours": 80,
+      "development_tooling": 600,
+      "interpretation": "Low conversion and final acceptance, heavy repeated frontier context and correction, price pressure, greater service setup."
+    },
+    {
+      "name": "central",
+      "price": 900,
+      "qualified_inquiries_per_month": 40,
+      "purchase_conversion": 0.2,
+      "qualified_lead_cost": 25,
+      "sales_hours_per_lead": 0.1,
+      "baseline_input_tokens": 2000000,
+      "baseline_output_tokens": 400000,
+      "outcome_probabilities": {
+        "clean": 0.6,
+        "corrected": 0.25,
+        "rejected": 0.12,
+        "refunded": 0.03
+      },
+      "interpretation": "Eight attempted orders per month; 85% final acceptance after corrections/refunds. These are unobserved commercial assumptions, not estimates from the technical notebook sample."
+    },
+    {
+      "name": "favorable",
+      "price": 900,
+      "qualified_inquiries_per_month": 37.5,
+      "purchase_conversion": 0.4,
+      "qualified_lead_cost": 24,
+      "sales_hours_per_lead": 0.1,
+      "baseline_input_tokens": 500000,
+      "baseline_output_tokens": 100000,
+      "outcome_probabilities": {
+        "clean": 0.8,
+        "corrected": 0.15,
+        "rejected": 0.04,
+        "refunded": 0.01
+      },
+      "maintenance_hours_per_month": 6,
+      "administration_hours_per_month": 5,
+      "development_hours": 20,
+      "interpretation": "Fifteen attempted orders per month with repeat/channel efficiencies and a favorable supported-case mix; no measured learning uplift is asserted."
+    },
+    {
+      "name": "price_pressure",
+      "inherits": "central",
+      "price": 600,
+      "interpretation": "Same quality, responsibility, order volume and cost as central; lower price alone. Higher demand is not assumed."
+    },
+    {
+      "name": "premium_price",
+      "inherits": "central",
+      "price": 1200,
+      "interpretation": "Same scope, responsibility and proposed turnaround at a higher price. No willingness-to-pay or rush-delivery evidence; this is a price sensitivity, not a validated tier."
+    },
+    {
+      "name": "low_uptake",
+      "inherits": "central",
+      "qualified_inquiries_per_month": 10,
+      "purchase_conversion": 0.05,
+      "interpretation": "Only half an expected eligible order per month. Technical capability does not create demand by assumption."
+    },
+    {
+      "name": "no_buyers",
+      "inherits": "central",
+      "qualified_inquiries_per_month": 0,
+      "purchase_conversion": 0.2,
+      "interpretation": "Zero purchases for twelve months; fixed service costs continue. A real operator could pause earlier, but no unmodeled rescue is applied."
+    },
+    {
+      "name": "funded_campaign_no_sales",
+      "inherits": "central",
+      "purchase_conversion": 0,
+      "interpretation": "Forty qualified inquiries per month still cost $25 each, but none purchases. Full $12,000 failed acquisition expense is retained, along with operations and setup."
+    },
+    {
+      "name": "acceptance_challenge_401",
+      "inherits": "central",
+      "outcome_probabilities": {
+        "clean": 0.2830588235294118,
+        "corrected": 0.11794117647058824,
+        "rejected": 0.569,
+        "refunded": 0.03
+      },
+      "interpretation": "Challenge sensitivity at final acceptance 0.401. Broad notebook-recovery rates from other studies are not equivalent to this screened offer or commercial customer acceptance; this is a threshold challenge, not empirical calibration."
+    },
+    {
+      "name": "acceptance_challenge_449",
+      "inherits": "central",
+      "outcome_probabilities": {
+        "clean": 0.3169411764705882,
+        "corrected": 0.13205882352941178,
+        "rejected": 0.5209999999999999,
+        "refunded": 0.03
+      },
+      "interpretation": "Challenge sensitivity at final acceptance 0.449. Broad notebook-recovery rates from other studies are not equivalent to this screened offer or commercial customer acceptance; this is a threshold challenge, not empirical calibration."
+    },
+    {
+      "name": "acceptance_challenge_450",
+      "inherits": "central",
+      "outcome_probabilities": {
+        "clean": 0.31764705882352945,
+        "corrected": 0.1323529411764706,
+        "rejected": 0.52,
+        "refunded": 0.03
+      },
+      "interpretation": "Challenge sensitivity at final acceptance 0.45. Broad notebook-recovery rates from other studies are not equivalent to this screened offer or commercial customer acceptance; this is a threshold challenge, not empirical calibration."
+    }
+  ],
+  "claim_boundary": "All commercial demand, customer acceptance, costs not metered in this session, and receipts in this simulator are conditional assumptions. The present study has zero actual collections. Technical checks do not validate willingness to pay. Dollar figures exclude indirect taxes collected for authorities and income tax.",
+  "amendment": {
+    "date": "2026-10-27",
+    "prior_input_sha256": "c5f811c54e9f2c6d2c4d44972e19e03120141c07405c726df5d60761f14bd464",
+    "prior_bundle": "prior/economic-v1-before-review-amendments.zip",
+    "reason": "Independent review requested per-call token-budget partitions, a funded campaign with no conversions, proper loaded/unloaded high-rate distinction, and explicit low-acceptance challenge values. Core central commercial assumptions unchanged."
+  }
+}

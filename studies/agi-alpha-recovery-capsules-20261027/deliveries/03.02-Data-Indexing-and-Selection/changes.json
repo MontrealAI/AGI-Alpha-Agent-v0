@@ -1,0 +1,22 @@
+[
+  {
+    "cell": 0,
+    "old": "unseeded global randomness",
+    "new": "np.random.seed(20261027)",
+    "reason": "Fixed study seed for reproducible illustrative random inputs; not an assertion of equality to the archived random realization."
+  },
+  {
+    "cell": 17,
+    "upstream_cell": 35,
+    "old": "pd.DataFrame({'area':area, 'pop':pop})",
+    "new": "pd.DataFrame({'area':area, 'pop':pop}).sort_index()",
+    "reason": "Preserve archived alphabetical row ordering instead of modern dict-insertion order."
+  },
+  {
+    "cell": 29,
+    "upstream_cell": 60,
+    "old": "data.ix[:3, :'pop']",
+    "new": "data.iloc[:3].loc[:, :'pop']",
+    "reason": "Explicit positional rows and label columns preserve the mixed-index operation."
+  }
+]

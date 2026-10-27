@@ -1,0 +1,41 @@
+{
+  "schema": "independent-notebook-acceptance/v1",
+  "case": "03.02-Data-Indexing-and-Selection",
+  "notebook": "/tmp/agi-alpha-independent-controls-h52vykcu/display-error.ipynb",
+  "sha256": "a9e76e376f8af716e5a460ab9b926273c9e56152b0c56654c5d866a9fd24815a",
+  "checker_sha256": "ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715",
+  "nonempty_code_cells": 1,
+  "executed_code_cells": 0,
+  "all_cells_completed": false,
+  "outbound_attempts": [],
+  "cells": [
+    {
+      "index": 0,
+      "status": "failed",
+      "source_sha256": "58c41fc54dfc3bd92d099fadd5c185407fa235d515f03526c3c619160ffc23a6",
+      "elapsed_seconds": 0.06442814100591931,
+      "stdout": "Out[1]: \u001b[31m---------------------------------------------------------------------------\u001b[39m\n\u001b[31mValueError\u001b[39m                                Traceback (most recent call last)\n\u001b[36mFile \u001b[39m\u001b[32m~/.local/lib/python3.12/site-packages/IPython/core/formatters.py:406\u001b[39m, in \u001b[36mBaseFormatter.__call__\u001b[39m\u001b[34m(self, obj)\u001b[39m\n\u001b[32m    404\u001b[39m     method = get_real_method(obj, \u001b[38;5;28mself\u001b[39m.print_method)\n\u001b[32m    405\u001b[39m     \u001b[38;5;28;01mif\u001b[39;00m method \u001b[38;5;129;01mis\u001b[39;00m \u001b[38;5;129;01mnot\u001b[39;00m \u001b[38;5;28;01mNone\u001b[39;00m:\n\u001b[32m--> \u001b[39m\u001b[32m406\u001b[39m         \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[43mmethod\u001b[49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\n\u001b[32m    407\u001b[39m     \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[38;5;28;01mNone\u001b[39;00m\n\u001b[32m    408\u001b[39m \u001b[38;5;28;01melse\u001b[39;00m:\n\n\u001b[36mCell\u001b[39m\u001b[36m \u001b[39m\u001b[32mIn[1]\u001b[39m\u001b[32m, line 3\u001b[39m, in \u001b[36mBroken._repr_html_\u001b[39m\u001b[34m(self)\u001b[39m\n\u001b[32m      2\u001b[39m \u001b[38;5;28;01mdef\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34m_repr_html_\u001b[39m(\u001b[38;5;28mself\u001b[39m):\n\u001b[32m----> \u001b[39m\u001b[32m3\u001b[39m     \u001b[38;5;28;01mraise\u001b[39;00m \u001b[38;5;167;01mValueError\u001b[39;00m(\u001b[33m'\u001b[39m\u001b[33mdeliberate formatting error\u001b[39m\u001b[33m'\u001b[39m)\n\n\u001b[31mValueError\u001b[39m: deliberate formatting error\n<__main__.Broken at 0x7f373a34d580>\n",
+      "stderr": "",
+      "error_type": "RuntimeError",
+      "error": "IPython display formatting failed: [{'type': 'ValueError', 'error': 'deliberate formatting error'}]"
+    }
+  ],
+  "checks": [
+    {
+      "name": "independent_checker_completed",
+      "pass": false,
+      "detail": {
+        "type": "KeyError",
+        "message": "'data'"
+      }
+    }
+  ],
+  "display_errors": [
+    {
+      "type": "ValueError",
+      "error": "deliberate formatting error"
+    }
+  ],
+  "accepted": false,
+  "elapsed_seconds": 0.0647996079933364
+}

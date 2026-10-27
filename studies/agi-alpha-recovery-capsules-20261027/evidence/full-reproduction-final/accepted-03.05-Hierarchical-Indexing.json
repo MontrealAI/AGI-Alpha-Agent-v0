@@ -1,0 +1,688 @@
+{
+  "schema": "independent-notebook-acceptance/v1",
+  "case": "03.05-Hierarchical-Indexing",
+  "notebook": "/tmp/agi-alpha-capsule-reproduction-g1xm3ea9/03.05-Hierarchical-Indexing/recovered.ipynb",
+  "sha256": "3d33134348e51d3df50c393aac7cae83b6b300c49b04b979a0957308da08b934",
+  "checker_sha256": "ef7f5bcec0fd21aaca812ca0ea1149791fc755a0cbf4bf81f779ddac2665f715",
+  "nonempty_code_cells": 45,
+  "executed_code_cells": 45,
+  "all_cells_completed": true,
+  "outbound_attempts": [],
+  "cells": [
+    {
+      "index": 0,
+      "status": "executed",
+      "source_sha256": "6cc057ec72f49e4092fcc243f69e3aacf356f6a5f7f9b5fcd9110ed0ee626c5d",
+      "elapsed_seconds": 0.1957265719975112,
+      "stdout": "",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 1,
+      "status": "executed",
+      "source_sha256": "622d1c57400a70d0a53aed6b858060227d3624cc7b6e85c052330d7d2785b7ad",
+      "elapsed_seconds": 0.004262497997842729,
+      "stdout": "Out[1]: \n(California, 2000)    33871648\n(California, 2010)    37253956\n(New York, 2000)      18976457\n(New York, 2010)      19378102\n(Texas, 2000)         20851820\n(Texas, 2010)         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 2,
+      "status": "executed",
+      "source_sha256": "a6acc556e1ebf86677292068deb7d6a3248548a41bcc067bdad8a4e11533d083",
+      "elapsed_seconds": 0.0015364510036306456,
+      "stdout": "Out[1]: \n(California, 2010)    37253956\n(New York, 2000)      18976457\n(New York, 2010)      19378102\n(Texas, 2000)         20851820\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 3,
+      "status": "executed",
+      "source_sha256": "abe32cc5b9355972aee85c09c70c06c73d465d1e757ba7dd54aba5250e760481",
+      "elapsed_seconds": 0.0019119280041195452,
+      "stdout": "Out[1]: \n(California, 2010)    37253956\n(New York, 2010)      19378102\n(Texas, 2010)         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 4,
+      "status": "executed",
+      "source_sha256": "672186a1e35f41afc2254493f3f7463519d0c226c43251ee7060edd1dc66926a",
+      "elapsed_seconds": 0.0015002860018284991,
+      "stdout": "Out[1]: \nMultiIndex([('California', 2000),\n            ('California', 2010),\n            (  'New York', 2000),\n            (  'New York', 2010),\n            (     'Texas', 2000),\n            (     'Texas', 2010)],\n           )\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 5,
+      "status": "executed",
+      "source_sha256": "1569f41733114c49d78976407387af0247c4915e4f69189a5a70c1d2d162d1a9",
+      "elapsed_seconds": 0.001198280995595269,
+      "stdout": "Out[1]: \nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 6,
+      "status": "executed",
+      "source_sha256": "2eb4b1fe71322d72e84a4c6e226e0ebc8a638362198d87e766157e446067e225",
+      "elapsed_seconds": 0.0012257519992999732,
+      "stdout": "Out[1]: \nCalifornia    37253956\nNew York      19378102\nTexas         25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 7,
+      "status": "executed",
+      "source_sha256": "8bd15c1dc498bc23c63f29e4ac86bcefb22ca9186ba4fb54bcd99df867cc764e",
+      "elapsed_seconds": 0.006387169007211924,
+      "stdout": "Out[1]: \n                2000      2010\nCalifornia  33871648  37253956\nNew York    18976457  19378102\nTexas       20851820  25145561\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 8,
+      "status": "executed",
+      "source_sha256": "1968591f5db16c529cae03db3b5349606063d82ea99454ae35ce3351d27d51ba",
+      "elapsed_seconds": 0.001324099997873418,
+      "stdout": "Out[1]: \nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 9,
+      "status": "executed",
+      "source_sha256": "aa832b4bd5dfc671db764bade0cbea8777d7e22675734fa47cbc8ba7e4287b46",
+      "elapsed_seconds": 0.003988174008554779,
+      "stdout": "Out[1]: \n                    total  under18\nCalifornia 2000  33871648  9267089\n           2010  37253956  9284094\nNew York   2000  18976457  4687374\n           2010  19378102  4318033\nTexas      2000  20851820  5906301\n           2010  25145561  6879014\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 10,
+      "status": "executed",
+      "source_sha256": "ffda498a8ad393114b7038f9ce71a9fc3fa4df9bc21247080d8ca5d821c06d11",
+      "elapsed_seconds": 0.0045567429915536195,
+      "stdout": "Out[1]: \n                2000      2010\nCalifornia  0.273594  0.249211\nNew York    0.247010  0.222831\nTexas       0.283251  0.273568\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 11,
+      "status": "executed",
+      "source_sha256": "9f2f8db6312916f28e226788e918c273f4854abd4173928332013cdcf280bd52",
+      "elapsed_seconds": 0.004742913995869458,
+      "stdout": "Out[1]: \n        data1     data2\na 1  0.544087  0.672966\n  2  0.190509  0.023963\nb 1  0.237026  0.665447\n  2  0.340936  0.025587\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 12,
+      "status": "executed",
+      "source_sha256": "f214fb655da1acc89392a308272d66e7d75ed2d5841e54c3ebd78471dd5d2b17",
+      "elapsed_seconds": 0.0016909940022742376,
+      "stdout": "Out[1]: \nCalifornia  2000    33871648\n            2010    37253956\nTexas       2000    20851820\n            2010    25145561\nNew York    2000    18976457\n            2010    19378102\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 13,
+      "status": "executed",
+      "source_sha256": "1fc480213beaaf072067de3f623bf24eebe92aa3e86c05007e4961fcdfaad592",
+      "elapsed_seconds": 0.0012217960029374808,
+      "stdout": "Out[1]: \nMultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 14,
+      "status": "executed",
+      "source_sha256": "ab324c46d6c08216c4dfe996d3505147ef6b3072fc55af32f507d91fcc05904b",
+      "elapsed_seconds": 0.001235667004948482,
+      "stdout": "Out[1]: \nMultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 15,
+      "status": "executed",
+      "source_sha256": "37962ff0316d8a5f4fd4f7b3d3c60558b19fbf27fcfd673b21ac55efbc1ef856",
+      "elapsed_seconds": 0.0013559979997808114,
+      "stdout": "Out[1]: \nMultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 16,
+      "status": "executed",
+      "source_sha256": "0993948933730961547fb0d8303ce91dda33bee50a42e269001659d3de367396",
+      "elapsed_seconds": 0.0009720889938762411,
+      "stdout": "Out[1]: \nMultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           )\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 17,
+      "status": "executed",
+      "source_sha256": "4dd76d91f870dc6cd9536dd28f708bf09bcbd009bee515677c76400295b44cfb",
+      "elapsed_seconds": 0.001120713001000695,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 18,
+      "status": "executed",
+      "source_sha256": "c5ee9407f99ba3b9cdb2ca717de0c2ddb599b6877d101c293ee4af74ad752bcb",
+      "elapsed_seconds": 0.010794835994602181,
+      "stdout": "Out[1]: \nsubject      Bob       Guido         Sue      \ntype          HR  Temp    HR  Temp    HR  Temp\nyear visit                                    \n2013 1      44.0  36.4  33.0  36.2  16.0  37.2\n     2      33.0  37.2  23.0  36.3  32.0  37.0\n2014 1      22.0  37.2  35.0  36.4  41.0  36.0\n     2      43.0  36.9  41.0  38.7  28.0  36.8\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 19,
+      "status": "executed",
+      "source_sha256": "fb55cb17fd2574cd9e6d9744410217b21e288274864c862650ce37f7d8f3c057",
+      "elapsed_seconds": 0.004989496999769472,
+      "stdout": "Out[1]: \ntype          HR  Temp\nyear visit            \n2013 1      33.0  36.2\n     2      23.0  36.3\n2014 1      35.0  36.4\n     2      41.0  38.7\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 20,
+      "status": "executed",
+      "source_sha256": "de70fa60cac227cbc13270a26ccde291af94df086959f0958122aedf154d90b5",
+      "elapsed_seconds": 0.0010412529954919592,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 21,
+      "status": "executed",
+      "source_sha256": "0e3017118e021134ceceebddbe1e2604b32979f28e68ff588ca228d043f8a910",
+      "elapsed_seconds": 0.0006558309978572652,
+      "stdout": "Out[1]: np.int64(33871648)\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 22,
+      "status": "executed",
+      "source_sha256": "6aa40833d3fa7523ed7c8172b3ba16ae9d867705c9e83bd151b48b133d8bec78",
+      "elapsed_seconds": 0.0009004699968500063,
+      "stdout": "Out[1]: \nyear\n2000    33871648\n2010    37253956\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 23,
+      "status": "executed",
+      "source_sha256": "8b28be63802f84ff9be54297cb52881b298e4cf51932c595ccf994c415511d44",
+      "elapsed_seconds": 0.0019464500073809177,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 24,
+      "status": "executed",
+      "source_sha256": "019e905e805e0746cba5868437103658b9a67d871dbb43043734c3b24b94d944",
+      "elapsed_seconds": 0.0010312970116501674,
+      "stdout": "Out[1]: \nstate\nCalifornia    33871648\nNew York      18976457\nTexas         20851820\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 25,
+      "status": "executed",
+      "source_sha256": "272a6a28b5915c2b6d8af73e7b3f9010561529396ae940387328ffe0e07df5bc",
+      "elapsed_seconds": 0.001221365004312247,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nTexas       2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 26,
+      "status": "executed",
+      "source_sha256": "c858d4d2e7309222b2b9d339e980dcb15d18ac264498b074d133c3a66407451e",
+      "elapsed_seconds": 0.0017033530020853505,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 27,
+      "status": "executed",
+      "source_sha256": "1ced9785f60d824145e7588ef81ba51a789d6a277a4079e352ab7de82b01213b",
+      "elapsed_seconds": 0.008810149010969326,
+      "stdout": "Out[1]: \nsubject      Bob       Guido         Sue      \ntype          HR  Temp    HR  Temp    HR  Temp\nyear visit                                    \n2013 1      44.0  36.4  33.0  36.2  16.0  37.2\n     2      33.0  37.2  23.0  36.3  32.0  37.0\n2014 1      22.0  37.2  35.0  36.4  41.0  36.0\n     2      43.0  36.9  41.0  38.7  28.0  36.8\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 28,
+      "status": "executed",
+      "source_sha256": "485c704c4dd190b1aa8ebe369c0a20baf48ff000af2d8d2d020e68422155e093",
+      "elapsed_seconds": 0.0015715640038251877,
+      "stdout": "Out[1]: \nyear  visit\n2013  1        33.0\n      2        23.0\n2014  1        35.0\n      2        41.0\nName: (Guido, HR), dtype: float64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 29,
+      "status": "executed",
+      "source_sha256": "5c696d362ca677fbdccbe097ed8dcf4ddb3fdc27977d8aef129ebe1e6800d1cf",
+      "elapsed_seconds": 0.0053176320070633665,
+      "stdout": "Out[1]: \nsubject      Bob      \ntype          HR  Temp\nyear visit            \n2013 1      44.0  36.4\n     2      33.0  37.2\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 30,
+      "status": "executed",
+      "source_sha256": "d9e03e69da76a86e02125f0c6de427c53e1045bfc7cc0e2e472bcc177c982a33",
+      "elapsed_seconds": 0.0014275959983933717,
+      "stdout": "Out[1]: \nyear  visit\n2013  1        44.0\n      2        33.0\n2014  1        22.0\n      2        43.0\nName: (Bob, HR), dtype: float64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 31,
+      "status": "executed",
+      "source_sha256": "ef67bd95feb650ffe5f309caabba6bbdb32e693a4efcc8351b928750d031a0c9",
+      "elapsed_seconds": 0.0004920130013488233,
+      "stdout": "Expected SyntaxError: invalid syntax\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 32,
+      "status": "executed",
+      "source_sha256": "d35c8281aee7cf37b455f0177b82d1dffa04a547e386ac9fb26cf1c4e32811cf",
+      "elapsed_seconds": 0.0061367990128928795,
+      "stdout": "Out[1]: \nsubject      Bob Guido   Sue\ntype          HR    HR    HR\nyear visit                  \n2013 1      44.0  33.0  16.0\n2014 1      22.0  35.0  41.0\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 33,
+      "status": "executed",
+      "source_sha256": "33a67daa12c0e38a0081bc80a010958b50ad0eca2577895d215a6ff2f672d5f1",
+      "elapsed_seconds": 0.002353054005652666,
+      "stdout": "Out[1]: \nchar  int\na     1      0.188833\n      2      0.302615\nc     1      0.069819\n      2      0.546440\nb     1      0.323931\n      2      0.286796\ndtype: float64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 34,
+      "status": "executed",
+      "source_sha256": "065e9f53058bedfcb3eaff414e77fd427510f9e512a7af3898e067335e6e5c6f",
+      "elapsed_seconds": 0.0005094989901408553,
+      "stdout": "<class 'pandas.errors.UnsortedIndexError'>\n'Key length (1) was greater than MultiIndex lexsort depth (0)'\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 35,
+      "status": "executed",
+      "source_sha256": "c93bb9fb2d0a04bdf3dab2fa6222cfb615b83d4fd12b09751323ed27676a44e8",
+      "elapsed_seconds": 0.0018619030015543103,
+      "stdout": "Out[1]: \nchar  int\na     1      0.188833\n      2      0.302615\nb     1      0.323931\n      2      0.286796\nc     1      0.069819\n      2      0.546440\ndtype: float64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 36,
+      "status": "executed",
+      "source_sha256": "a947ec0e172a8b0cd06c4801c39ce3f0e4690fdf01a1f5d5c5bd5f4828ed3bcd",
+      "elapsed_seconds": 0.0012771690089721233,
+      "stdout": "Out[1]: \nchar  int\na     1      0.188833\n      2      0.302615\nb     1      0.323931\n      2      0.286796\ndtype: float64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 37,
+      "status": "executed",
+      "source_sha256": "e71e66e7206ca0f972f658c1f5e0dae0dc63e8acb5110f5d486cf600f244a3e7",
+      "elapsed_seconds": 0.003925289987819269,
+      "stdout": "Out[1]: \nstate  California  New York     Texas\nyear                                 \n2000     33871648  18976457  20851820\n2010     37253956  19378102  25145561\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 38,
+      "status": "executed",
+      "source_sha256": "f296377739dd7d2fa7d6b041ddde2fe3f69b7d10fb268ad10c15179f354b1d22",
+      "elapsed_seconds": 0.003231351001886651,
+      "stdout": "Out[1]: \nyear            2000      2010\nstate                         \nCalifornia  33871648  37253956\nNew York    18976457  19378102\nTexas       20851820  25145561\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 39,
+      "status": "executed",
+      "source_sha256": "f854aa1740c99718e9b31dbd37a7f78c5cefbd5baec8dd9845b71078e9dbe7a1",
+      "elapsed_seconds": 0.001738385995849967,
+      "stdout": "Out[1]: \nstate       year\nCalifornia  2000    33871648\n            2010    37253956\nNew York    2000    18976457\n            2010    19378102\nTexas       2000    20851820\n            2010    25145561\ndtype: int64\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 40,
+      "status": "executed",
+      "source_sha256": "8b93d447ec664f16f32450dff4277268d55adb3081da58c1ce973847d618d643",
+      "elapsed_seconds": 0.0045662170014111325,
+      "stdout": "Out[1]: \n        state  year  population\n0  California  2000    33871648\n1  California  2010    37253956\n2    New York  2000    18976457\n3    New York  2010    19378102\n4       Texas  2000    20851820\n5       Texas  2010    25145561\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 41,
+      "status": "executed",
+      "source_sha256": "0c1431e78c49ea4338879762b281961093a945e144a06371eff3505861c20eaa",
+      "elapsed_seconds": 0.004322900000261143,
+      "stdout": "Out[1]: \n                 population\nstate      year            \nCalifornia 2000    33871648\n           2010    37253956\nNew York   2000    18976457\n           2010    19378102\nTexas      2000    20851820\n           2010    25145561\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 42,
+      "status": "executed",
+      "source_sha256": "1ced9785f60d824145e7588ef81ba51a789d6a277a4079e352ab7de82b01213b",
+      "elapsed_seconds": 0.008614502003183588,
+      "stdout": "Out[1]: \nsubject      Bob       Guido         Sue      \ntype          HR  Temp    HR  Temp    HR  Temp\nyear visit                                    \n2013 1      44.0  36.4  33.0  36.2  16.0  37.2\n     2      33.0  37.2  23.0  36.3  32.0  37.0\n2014 1      22.0  37.2  35.0  36.4  41.0  36.0\n     2      43.0  36.9  41.0  38.7  28.0  36.8\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 43,
+      "status": "executed",
+      "source_sha256": "a646cbfc7d524a7af99089784b8ab0e99177c3dddfebd788fd0a8ed998af143f",
+      "elapsed_seconds": 0.007790839008521289,
+      "stdout": "Out[1]: \nsubject   Bob        Guido          Sue      \ntype       HR   Temp    HR   Temp    HR  Temp\nyear                                         \n2013     38.5  36.80  28.0  36.25  24.0  37.1\n2014     32.5  37.05  38.0  37.55  34.5  36.4\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    },
+    {
+      "index": 44,
+      "status": "executed",
+      "source_sha256": "a5bfa55643c85846ce6f5d1f2af01ad1f95476e5883876c587ef339c99d2418d",
+      "elapsed_seconds": 0.004283431000658311,
+      "stdout": "Out[1]: \ntype         HR       Temp\nyear                      \n2013  30.166667  36.716667\n2014  35.000000  37.000000\n",
+      "stderr": "",
+      "error_type": null,
+      "error": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "population_index_contract",
+      "pass": true,
+      "detail": {
+        "observed": [
+          [
+            "California",
+            2000
+          ],
+          [
+            "California",
+            2010
+          ],
+          [
+            "New York",
+            2000
+          ],
+          [
+            "New York",
+            2010
+          ],
+          [
+            "Texas",
+            2000
+          ],
+          [
+            "Texas",
+            2010
+          ]
+        ],
+        "expected": [
+          [
+            "California",
+            2000
+          ],
+          [
+            "California",
+            2010
+          ],
+          [
+            "New York",
+            2000
+          ],
+          [
+            "New York",
+            2010
+          ],
+          [
+            "Texas",
+            2000
+          ],
+          [
+            "Texas",
+            2010
+          ]
+        ]
+      }
+    },
+    {
+      "name": "population_values",
+      "pass": true,
+      "detail": {
+        "observed": [
+          33871648,
+          37253956,
+          18976457,
+          19378102,
+          20851820,
+          25145561
+        ],
+        "expected": [
+          33871648,
+          37253956,
+          18976457,
+          19378102,
+          20851820,
+          25145561
+        ]
+      }
+    },
+    {
+      "name": "under18_fractions",
+      "pass": true,
+      "detail": {
+        "shape": [
+          6
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 1e-08,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "reshape_roundtrip",
+      "pass": true,
+      "detail": {
+        "observed": [
+          33871648,
+          37253956,
+          18976457,
+          19378102,
+          20851820,
+          25145561
+        ],
+        "expected": [
+          33871648,
+          37253956,
+          18976457,
+          19378102,
+          20851820,
+          25145561
+        ]
+      }
+    },
+    {
+      "name": "health_table_axes",
+      "pass": true,
+      "detail": {
+        "shape": [
+          4,
+          6
+        ],
+        "index_names": [
+          "year",
+          "visit"
+        ],
+        "column_names": [
+          "subject",
+          "type"
+        ]
+      }
+    },
+    {
+      "name": "year_means_manual_reduction",
+      "pass": true,
+      "detail": {
+        "shape": [
+          2,
+          6
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 1e-08,
+        "rtol": 1e-10
+      }
+    },
+    {
+      "name": "year_mean_labels",
+      "pass": true,
+      "detail": {
+        "observed": [
+          2013,
+          2014
+        ],
+        "expected": [
+          2013,
+          2014
+        ]
+      }
+    },
+    {
+      "name": "explicit_sorted_slice",
+      "pass": true,
+      "detail": {
+        "observed": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "name": "subject_type_means_manual_reduction",
+      "pass": true,
+      "detail": {
+        "shape": [
+          2,
+          2
+        ],
+        "max_absolute_error": 0.0,
+        "atol": 1e-08,
+        "rtol": 1e-10
+      }
+    }
+  ],
+  "display_errors": [],
+  "plot_states": [],
+  "rendered_plots": [],
+  "graphical_checks": [
+    {
+      "name": "exact_native_inline_figure_cells",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "name": "independent_figure_axes_per_cell",
+      "pass": true,
+      "expected": [],
+      "observed": []
+    },
+    {
+      "name": "all_native_inline_pngs_readable",
+      "pass": true
+    },
+    {
+      "name": "no_open_figures_left_between_cells",
+      "pass": true
+    }
+  ],
+  "accepted": true,
+  "elapsed_seconds": 0.5944927980017383
+}

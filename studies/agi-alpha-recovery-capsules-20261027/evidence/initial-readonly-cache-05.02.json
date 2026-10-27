@@ -1,0 +1,45 @@
+{
+  "schema": "capsule-execution/v1",
+  "case": "05.02-Introducing-Scikit-Learn",
+  "path": "study/inputs/confirmation/05.02-Introducing-Scikit-Learn.ipynb",
+  "input_sha256": "03ae7f99ecfa2175faed370c66ec7bf8a5fdfe7cd23f88b95e7617ef3ef71300",
+  "expected_cells": 32,
+  "completed_cells": 0,
+  "all_cells_completed": false,
+  "checks": [],
+  "accepted": false,
+  "network_attempts": [],
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "ipython": "9.4.0"
+  },
+  "elapsed_seconds": 1.0782754340034444,
+  "cells": [
+    {
+      "cell": 0,
+      "upstream_cell_index": 7,
+      "source_sha256": "cf8b307ba75b4496a9b954deb5910bb8a66c396ee4509b7a46cde11021af298d",
+      "status": "error",
+      "elapsed_seconds": 1.061292462007259,
+      "stdout": "",
+      "stderr": "",
+      "error": {
+        "type": "OSError",
+        "message": "[Errno 30] Read-only file system: '/root/.cache/seaborn'",
+        "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/f3e31b12a17f/study/scripts/capsule_runner.py\", line 42, in run\n    exec(compile(tree, str(path), 'exec'), ns)\n  File \"study/inputs/confirmation/05.02-Introducing-Scikit-Learn.ipynb\", line 2, in <module>\n    \"cells\": [\n         ^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/seaborn/utils.py\", line 570, in load_dataset\n    cache_path = os.path.join(get_data_home(data_home), os.path.basename(url))\n                              ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/seaborn/utils.py\", line 520, in get_data_home\n    os.makedirs(data_home)\n  File \"<frozen os>\", line 225, in makedirs\nOSError: [Errno 30] Read-only file system: '/root/.cache/seaborn'\n"
+      }
+    }
+  ],
+  "figures": [],
+  "cost": {
+    "provider_bill": null,
+    "actual_total_usd": null,
+    "status": "unknown; elapsed execution excludes model deliberation and acquisition"
+  }
+}
