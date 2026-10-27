@@ -14,7 +14,7 @@ import tempfile
 from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
 from typing import Any
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -318,6 +318,88 @@ def browser_acceptance(
             expect(page.locator("#input-error")).to_be_visible()
             assert page.locator("#result-receipt").text_content() == good_receipt
             checks += ["actual-replay-download-and-recovery", "invalid-replay-does-not-import-results"]
+            manual_replay = {
+                **replay,
+                "language": "en",
+                "input": {"preset": "baseline", "policy": "beta", "seed": 42, "price": 10000},
+            }
+            page.locator("#import-replay").set_input_files(
+                {
+                    "name": "manual-price.json",
+                    "mimeType": "application/json",
+                    "buffer": json.dumps(manual_replay).encode(),
+                }
+            )
+            page.wait_for_function(
+                "JSON.parse(document.getElementById('result-receipt').textContent).input.price===10000"
+            )
+            manual_receipt = json.loads(page.locator("#result-receipt").text_content() or "{}")
+            assert manual_receipt["summary"]["offeredPrice"] == 10000
+            page.locator("#replay").click()
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt, (
+                "Repeating an imported replay must preserve its explicit price and economics"
+            )
+            expect(page.locator("#price-mode")).to_be_visible()
+            for preset in ("stress", "frontier", "baseline"):
+                page.locator("#preset").select_option(preset)
+                repriced = json.loads(page.locator("#result-receipt").text_content() or "{}")
+                assert repriced["input"]["price"] == repriced["summary"]["offeredPrice"] == 10000
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt
+            page.locator("#lang-fr").click()
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt
+            page.reload(wait_until="load")
+            expect(page.locator("#results")).to_be_visible()
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt
+            shared_url = page.url
+            assert parse_qs(urlsplit(shared_url).query).get("price") == ["10000"]
+            shared_context = browser.new_context(accept_downloads=True, reduced_motion="reduce")
+            shared_page = shared_context.new_page()
+            shared_page.on("pageerror", lambda error: errors.append(str(error)))
+            shared_page.on(
+                "request", lambda request: requests.append(request.url) if request.resource_type != "document" else None
+            )
+            if expected_page_sha256 and entry.startswith("https:"):
+                shared_page.on("response", check_document)
+            shared_page.goto(shared_url, wait_until="load")
+            expect(shared_page.locator("#results")).to_be_visible()
+            assert json.loads(shared_page.locator("#result-receipt").text_content() or "{}") == manual_receipt
+            shared_page.locator("#evidence").evaluate("element=>element.open=true")
+            with shared_page.expect_download() as manual_download:
+                shared_page.locator("#export-replay").click()
+            manual_file = output / "flywheel-manual-price-replay.json"
+            manual_download.value.save_as(manual_file)
+            exported_manual = json.loads(manual_file.read_text())
+            assert exported_manual["input"] == manual_replay["input"] and exported_manual["language"] == "fr"
+            assert manual_receipt["authority"] == [] and manual_receipt["modelsExecuted"] == []
+            shared_page.locator("#optimize-price").click()
+            searched_receipt = json.loads(shared_page.locator("#result-receipt").text_content() or "{}")
+            assert searched_receipt["input"]["price"] == 0
+            expect(shared_page.locator("#price-mode")).to_be_hidden()
+            checks.append("manual-price-changes-only-after-explicit-return-to-search")
+            share_parts = urlsplit(shared_url)
+            share_query = parse_qs(share_parts.query, keep_blank_values=True)
+            for invalid_price in ("", "NaN", "10000.5", "999", "24001"):
+                invalid_url = share_parts._replace(
+                    query=urlencode({**share_query, "price": [invalid_price]}, doseq=True)
+                ).geturl()
+                shared_page.goto(invalid_url, wait_until="load")
+                expect(shared_page.locator("#input-error")).to_contain_text("prix demandé")
+                expect(shared_page.locator("#results")).to_be_hidden()
+                shared_page.locator("#lang-en").click()
+                expect(shared_page.locator("#input-error")).to_contain_text("requested price")
+                shared_page.locator("#replay").click()
+                expect(shared_page.locator("#results")).to_be_hidden()
+                shared_page.locator("#optimize-price").click()
+                expect(shared_page.locator("#results")).to_be_visible()
+                assert json.loads(shared_page.locator("#result-receipt").text_content() or "{}")["input"]["price"] == 0
+            checks.append("invalid-price-links-refuse-until-explicit-reset")
+            shared_context.close()
+            report["manualPriceReplay"] = {
+                "price": 10000,
+                "profit": manual_receipt["summary"]["profit"],
+                "input": exported_manual["input"],
+            }
+            checks.append("explicit-price-replay-survives-repeat-language-refresh-share-and-export")
             with page.expect_download() as project_download:
                 page.locator("#export-project").click()
             project_file = output / "flywheel-alpha-project.json"
@@ -388,7 +470,9 @@ def browser_acceptance(
             no_script.close()
             checks.append("no-javascript-guidance")
             report["passed"] = True
-            report["downloads"] = {path.name: sha256(path.read_bytes()) for path in (replay_file, project_file)}
+            report["downloads"] = {
+                path.name: sha256(path.read_bytes()) for path in (replay_file, manual_file, project_file)
+            }
             browser.close()
     finally:
         (output / "browser.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")

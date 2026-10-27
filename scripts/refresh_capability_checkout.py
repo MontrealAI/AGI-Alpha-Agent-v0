@@ -260,11 +260,11 @@ PROFITABLE_WORK_20261027_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
 
 # Exact additive Flywheel 1.45 edition. Reviewed as a whole; prior editions remain immutable.
 FLYWHEEL_145_EXTRA_FILES = PROFITABLE_WORK_20261027_EXTRA_FILES | {
-    "docs/service-worker.js": (23528, "4bc70b4909436ea0cf7177ffdac4ace04af9a1ecf5ea32e8b1d946cea8c8da63"),
-    "docs/assets/service-worker.js": (23966, "9dd7660b6120e9b4d1e2f605f9e1da2c04d2a693c8189fab681e20234af5dcff"),
+    "docs/service-worker.js": (23528, "3c23a31d0aaca17395035d12da5d9670cac784b6a51234e01162dfa415e20aab"),
+    "docs/assets/service-worker.js": (23966, "a6d4ad60a3c0f80155063a953fd7172d2c55cf0e6d8903d45db7159cf6c536a6"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26594,
-        "9af154d3b187245a12d8d5876698baf64e329b6212d7bb71c554674988d96c91",
+        "70ae12f9748ca77701c42411281b71870a2c7b34b216ba4d048bfbad31f62a38",
     ),
 }
 
