@@ -106,7 +106,7 @@ def snapshot(root: Path) -> dict[str, bytes]:
     return {path.relative_to(root).as_posix(): path.read_bytes() for path in root.rglob("*") if path.is_file()}
 
 
-def test_frozen_147_workers_match_current_source_and_preserve_every_historical_profile() -> None:
+def test_frozen_original_147_workers_preserve_their_own_source_and_every_historical_profile(tmp_path: Path) -> None:
     fixture = worker_fixture()
     profiles = {name: getattr(checkout, name) for name in HISTORICAL_PROFILES}
     assert hashlib.sha256(json.dumps(profiles, sort_keys=True, separators=(",", ":")).encode()).hexdigest() == (
@@ -121,7 +121,7 @@ def test_frozen_147_workers_match_current_source_and_preserve_every_historical_p
     records = {}
     for name, record in fixture["files"].items():
         body = record["text"].encode()
-        assert body == (ROOT / name).read_bytes()
+        # Preserve the original candidate independently of a separately admitted successor.
         assert b"agialpha-gallery-75b76c33b2d213bd" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == (record["bytes"], record["sha256"]) == current[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
@@ -132,7 +132,8 @@ def test_frozen_147_workers_match_current_source_and_preserve_every_historical_p
         if all(profile[name] == record for name, record in records.items())
     ]
     assert matches == [current]
-    report = checkout.refresh(ROOT)
+    write_files(tmp_path, edition_files())
+    report = checkout.refresh(tmp_path)
     assert report["checked"] == 61 and report["needsRefresh"] == []
     assert report["applied"] is False and report["backupDirectory"] is None
 
@@ -231,6 +232,10 @@ def test_147_symlink_worker_refuses_before_backup(tmp_path: Path, name: str) -> 
         pytest.skip(f"OS cannot create this test symlink: {error}")
     before = snapshot(root)
     with pytest.raises(ValueError, match="bounded regular file"):
+        checkout._read(root, name)
+    # A later profile may fail on another worker before reaching this symlink.
+    # Its final diagnostic is not the public refusal or mutation contract.
+    with pytest.raises(ValueError):
         checkout.refresh(root, apply=True, backup_parent=backups)
     assert link.is_symlink() and link.readlink() == outside
     assert snapshot(root) == before and outside.read_bytes() == body and list(backups.iterdir()) == []

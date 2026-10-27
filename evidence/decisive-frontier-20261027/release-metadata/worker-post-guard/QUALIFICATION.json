@@ -1,0 +1,64 @@
+{
+  "schema": "insight-worker-post-guard-local-qualification/v1",
+  "version": "1.47.0",
+  "edition": "post-execution-receipt-guard",
+  "scope": "Exact local finite checkout byte identities and refusal behavior; not whole-release, live or public deployment acceptance",
+  "source_sha256": {
+    "scripts/refresh_capability_checkout.py": "c599518cd6fc2bc47bae2998f42a830c2f1180cfca1165fa1973e13d984ad0ca",
+    "tests/fixtures/capability-checkout-insight-frontier-147-post-guard-workers.json": "d4a8b72e3e8c46a9cf162e4cc2cfc5fac1edbc8c4cc122184e18102b54c47308",
+    "tests/test_capability_publication_edition.py": "53f9006226693c44c102314aec01ef35e53638ed4144c8380e078f905bf23fd0",
+    "tests/test_insight_frontier_release.py": "a4b11a1494216d97eace01b1424525276c798e40baf0621b677416ec5c30def4",
+    "tests/test_insight_frontier_post_guard_release.py": "071cb1aa44768b923b8a1468eeb47e45901a573fa9f8bdd3e5aa8004b414f9fd"
+  },
+  "source_capture": "CAPTURE.json",
+  "observed": {
+    "final_selected_cases": 125,
+    "new_post_guard_cases": 32,
+    "affected_symlink_confirmation_cases": 2,
+    "unique_final_cases": 125,
+    "final_failures": 0,
+    "final_errors": 0,
+    "final_skips": 0,
+    "case_counts_by_file": {
+      "tests.test_insight_frontier_post_guard_release": 32,
+      "tests.test_insight_frontier_release": 22,
+      "tests.test_paper_reader_release": 1,
+      "tests.test_capability_publication_edition": 39,
+      "tests.test_capability_checkout_release_versions": 25,
+      "tests.test_flywheel_release": 2,
+      "tests.test_protected_flywheel_release": 4
+    },
+    "ruff": "pass",
+    "format_both_test_files": "pass",
+    "strict_types_both_test_files": "pass; --strict --follow-imports=silent",
+    "predecessor_profiles_preserved": 20,
+    "scientific_sources_preserved": 53,
+    "complete_closure_files": 61,
+    "successful_own_temp_copies": "removed"
+  },
+  "preserved_failed_runs": [
+    {
+      "output": "tests.txt",
+      "junit": "tests.xml",
+      "passed": 32,
+      "failed": 93,
+      "cause": "All93OSError28whilecreatingfilesonfullsharedmemory"
+    },
+    {
+      "output": "tests-overlay.txt",
+      "junit": "tests-overlay.xml",
+      "passed": 123,
+      "failed": 2,
+      "cause": "Historical exact diagnostic-message ordering after a later profile was appended"
+    }
+  ],
+  "migration": "The exact symlink refusal is checked at _read. Public refresh must still refuse before backup or mutation and preserve every byte, symlink and external test file. No helper implementation, pin or admission condition changed.",
+  "not_qualified": [
+    "direct broad helper typing (five unchanged pre-existing diagnostics recorded in worker-admission packet)",
+    "full repository or release acceptance",
+    "configured review",
+    "clean released installation",
+    "public served bytes"
+  ],
+  "authority_granted": false
+}

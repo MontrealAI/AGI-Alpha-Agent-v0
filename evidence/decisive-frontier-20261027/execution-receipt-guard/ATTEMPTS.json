@@ -1,0 +1,22 @@
+{
+  "pre_fix_test_campaign": {
+    "result": "12/12 copied owner cases fail on missing ValueError; original output preserved",
+    "rerun": false
+  },
+  "post_capture_summary_harness": {
+    "original_assertion": "DID NOT RAISE count ==24",
+    "observed": 12,
+    "correction": "Verify the already preserved exact output has12, without rerunning or changing any test",
+    "scope": "Post-capture receipt assertion only; underlying12-case experiment unaffected"
+  },
+  "dependency_checks": {
+    "minimal_venv": {
+      "exit_code": 1,
+      "output": "Missing packages: pandas; no new dependencies installed"
+    },
+    "shared_runtime": {
+      "exit_code": 0,
+      "output": "All required packages available."
+    }
+  }
+}

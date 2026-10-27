@@ -783,6 +783,8 @@ class Discovery:
         if observation.step_id not in steps or observation.step_id in observed:
             raise Conflict("observation must identify one unrecorded bundle step")
         step = steps[observation.step_id]
+        if step.execution_request_digest is not None and observation.execution_operation is None:
+            raise ValueError("frozen experiment requires its bound execution receipt")
         if not set(step.dependencies) <= observed:
             raise Conflict("dependent experiment cannot precede its prerequisite observations")
         if any(item["terms"]["cost_operation"] == observation.cost_operation for item in old["observations"]):

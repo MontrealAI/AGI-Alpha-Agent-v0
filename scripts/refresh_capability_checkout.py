@@ -298,6 +298,16 @@ INSIGHT_FRONTIER_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
     ),
 }
 
+# Exact post-receipt-guard candidate; keep the original unpublished 1.47 edition intact.
+INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES = INSIGHT_FRONTIER_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "926119de5946ece7233bac3084deb735c5ce63964d32708c6146cc535f0e695c"),
+    "docs/assets/service-worker.js": (24089, "5028ae800f527ecec69054d90ea764ec03447a35a1f8e0e7da74780b9c373f34"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "c9c1b5787dc78f2c6a0da5aba7b80950b6a78844b440768bfecc04fa4e3979dc",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -380,6 +390,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

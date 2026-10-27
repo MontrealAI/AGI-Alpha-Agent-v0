@@ -1,0 +1,36 @@
+{
+  "schema": "released-native-canary-preconfirmation-addendum/v1",
+  "frozen_at": "2026-10-27T23:09:52.976763+00:00",
+  "original_freeze_sha256": "f3a398ca79219221c77e3adb35cd1a77e1b3f2883072e31ffb79bd84d067fa2e",
+  "status": "Before release confirmation; neither frozen mission has been executed",
+  "unchanged": [
+    "Both original mission files and input hashes",
+    "All original acceptance criteria, falsifiers and limits",
+    "At most20 child processes,30seconds each,120aggregate seconds,USD0 paid API and0modelcalls",
+    "Local owned test identity only; no ENS, customer or production authority"
+  ],
+  "clarification": "The existing public native Journal.submit API stages the second frozen mission in queued state. The CLI then pauses, attempts execution (which must fail and persist that failure), resumes, explicitly recovers the same mission and executes it. This permits a deterministic interruption/recovery check without editing the database, monkeypatching execution, racing a fast process or introducing a new runtime. All other actions use the existing CLI.",
+  "planned_child_processes": [
+    "init",
+    "run allocation",
+    "review allocation",
+    "export allocation",
+    "verify allocation export",
+    "duplicate original allocation request",
+    "existing Journal.submit for schedule",
+    "pause",
+    "execute schedule while paused (expected refusal)",
+    "show failed schedule",
+    "resume",
+    "recover same schedule",
+    "execute recovered schedule",
+    "review schedule",
+    "export schedule",
+    "verify schedule export",
+    "verify altered export (expected refusal)",
+    "list",
+    "verify journal",
+    "pause final"
+  ],
+  "claims": "Software canaries only. They do not establish frontier reasoning, a new offering, customer acceptance, complete monetary profit or retained Alpha. The same-offering access-packet economics remain HOLD."
+}

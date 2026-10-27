@@ -22,7 +22,28 @@ are unmeasured. No retention, live ENS, model quota, listing, token action or cu
 Lossless gzip packaging preserves customer evidence and exact exports within the unchanged 2 MB ceiling.
 The original English/French navigation defect and two mobile qualification failures were corrected.
 
-## Reproduced local scopes
+## Revised source qualification
+
+The exact existing-owner #4976 mission-receipt guard is now reused. All 12 new cases fail before the
+guard; all 69 discovery cases pass afterward. The unchanged full minimal runtime selection passes
+**1516 tests with two declared skips** on disk. All 75 runtime files pass strict typing. Fresh current
+page checks pass 54 Insight and 23 preserved journey checks, with eight clean axe audits. All 125
+historical/current worker tests pass, including 32 new post-guard cases; the original 147 edition and
+20 predecessor profiles remain immutable. All eight source packets were re-executed.
+
+The shared-memory full run aborted before emitting individual failure details; its 236 failed, 906
+passed, two skipped and 93 errors are retained without classifying every case. A disk-capacity probe
+preceded the separate unchanged passing retry. Worker storage failures and two historical diagnostic
+ordering assertions are likewise preserved. Public refresh still refuses symlinks before backup or
+mutation; the specific regular-file refusal is checked at its own read boundary.
+
+The same pre-guard development wheel installed successfully into a fresh prefix and matched all 75
+runtime files. That inspection does not qualify the revised source or a public release. Source
+qualification, main release gates, publication and the frozen two-family native canary remain distinct.
+The earlier table below is scoped to public predecessor ddd241dc/tree2dfa; current exact hashes and
+receipts are in QUALIFICATION.json. No failed result has been relabeled.
+
+## Preserved pre-guard local scopes
 
 | Scope | Observed result |
 | --- | --- |
