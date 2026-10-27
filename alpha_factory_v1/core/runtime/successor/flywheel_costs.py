@@ -219,12 +219,26 @@ class CostLedger:
     def _customer_evidence_unused(self, state: dict[str, Any], evidence: str, cx: Any) -> None:
         if any(row["evidence_digest"] == evidence for kind in ("capital", "receipts") for row in state[kind].values()):
             raise Conflict("incoming funding evidence already allocated")
+        for current in state["charges"].values():
+            for version in (current, current.get("original", {})):
+                if version.get("paid_micro_usd", 0) > 0 and version["evidence_digest"] == evidence:
+                    raise Conflict("paid cost evidence already allocated")
         for key in ("@flywheel-customer-evidence:" + evidence, "@flywheel-payment-evidence:" + evidence):
             try:
                 self.journal.latest(key, cx)
             except KeyError:
                 continue
             raise Conflict("customer or cost payment evidence already allocated")
+
+    def _reserve_paid_cost_evidence(self, record: dict[str, Any], cx: Any) -> None:
+        """Check customer allocation before preserving a paid cost version in this ledger."""
+        if record["paid_micro_usd"] == 0:
+            return
+        try:
+            self.journal.latest("@flywheel-customer-evidence:" + record["evidence_digest"], cx)
+        except KeyError:
+            return
+        raise Conflict("customer payment evidence already allocated")
 
     def _customer(self, state: dict[str, Any], action: str, record: Any, signed: SignedEnvelope, cx: Any) -> None:
         deposits = state.setdefault("customer_deposits", {})
@@ -374,6 +388,7 @@ class CostLedger:
                     raise Conflict("sealed delivery cannot acquire an unreviewed additional charge")
                 if charge.bucket == "B" and charge.mission_id in state.get("reuse_seals", {}):
                     raise Conflict("sealed incremental-cost record cannot acquire additional charges")
+                self._reserve_paid_cost_evidence(charge.model_dump(), cx)
                 state["charges"][charge.activity_id] = {**charge.model_dump(), "signed": signed.model_dump()}
             elif action == "resolve":
                 charge = Charge.model_validate(record)
@@ -384,6 +399,8 @@ class CostLedger:
                     raise ValueError("reconciliation cannot move an activity between records or buckets")
                 if charge.paid_micro_usd < previous["paid_micro_usd"]:
                     raise ValueError("reconciliation cannot reverse an already recorded payment")
+                self._reserve_paid_cost_evidence(previous, cx)
+                self._reserve_paid_cost_evidence(charge.model_dump(), cx)
                 state["charges"][charge.activity_id] = {
                     **charge.model_dump(),
                     "signed": signed.model_dump(),

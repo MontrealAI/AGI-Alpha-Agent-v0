@@ -410,3 +410,104 @@ def test_unearned_refund_due_cannot_be_earned_or_reserved_twice(setup: dict[str,
     apply(setup, "customer-refund", refund(amount_micro_usd=30))
     report = setup["costs"].report()["customer_funds_by_mode"]["synthetic"]
     assert report["earned_revenue"] == report["net_cash"] == 70 and report["pending_refunds"] == 0
+
+
+def paid_charge(state: dict[str, Any], path: str, evidence: str) -> None:
+    resolving = "resolve" in path
+    raw = Charge(
+        activity_id="cross-path-paid-expense",
+        mission_id="separate-cost-mission",
+        bucket="A",
+        category="compute",
+        accrued_micro_usd=None if resolving else 17,
+        paid_micro_usd=7 if resolving else 17,
+        basis="unknown" if resolving else "attested",
+        evidence_digest="7" * 64 if resolving else evidence,
+        note="Fictional paid-charge receipt; not a real bank transaction",
+    ).model_dump()
+    f.account(state, "charge", raw, "paid-expense")
+    if resolving:
+        raw.update(
+            accrued_micro_usd=20,
+            paid_micro_usd=7 if "equal" in path else 17,
+            basis="attested",
+            evidence_digest=evidence,
+        )
+        f.account(state, "resolve", raw, "paid-expense-resolution")
+
+
+@pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal", "legacy-charge", "legacy-resolve"])
+@pytest.mark.parametrize("customer", ["deposit", "refund"])
+def test_paid_charge_evidence_cannot_become_customer_money(
+    setup: dict[str, Any], monkeypatch: Any, path: str, customer: str
+) -> None:
+    evidence = "8" * 64
+    if customer == "refund":
+        apply(setup, "customer-deposit", deposit(mode="live"))
+    with monkeypatch.context() as context:
+        if path.startswith("legacy"):
+            context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+        paid_charge(setup, path, evidence)
+    before = setup["costs"].snapshot()
+    with pytest.raises(Conflict, match="evidence"):
+        if customer == "deposit":
+            apply(setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence))
+        else:
+            apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+    assert setup["costs"].snapshot() == before
+
+
+@pytest.mark.parametrize("path", ["charge", "resolve", "resolve-equal"])
+@pytest.mark.parametrize("customer", ["deposit", "refund"])
+def test_customer_evidence_cannot_become_inline_paid_cost(setup: dict[str, Any], path: str, customer: str) -> None:
+    evidence = "8" * 64
+    apply(
+        setup, "customer-deposit", deposit(mode="live", evidence_digest=evidence if customer == "deposit" else "9" * 64)
+    )
+    if customer == "refund":
+        apply(setup, "customer-refund", refund(amount_micro_usd=17, evidence_digest=evidence))
+    if path == "charge":
+        before = setup["costs"].snapshot()
+        with pytest.raises(Conflict, match="evidence"):
+            paid_charge(setup, path, evidence)
+    else:
+        raw = Charge(
+            activity_id="unknown-paid-expense",
+            mission_id="separate-cost-mission",
+            bucket="A",
+            category="compute",
+            accrued_micro_usd=None,
+            paid_micro_usd=7 if path == "resolve-equal" else 0,
+            basis="unknown",
+            evidence_digest="7" * 64,
+            note="Fictional unknown final bill",
+        ).model_dump()
+        f.account(setup, "charge", raw, "unknown-expense")
+        before = setup["costs"].snapshot()
+        raw.update(
+            accrued_micro_usd=20,
+            paid_micro_usd=7 if path == "resolve-equal" else 17,
+            basis="attested",
+            evidence_digest=evidence,
+        )
+        with pytest.raises(Conflict, match="evidence"):
+            f.account(setup, "resolve", raw, "unknown-resolve")
+    assert setup["costs"].snapshot() == before
+
+
+@pytest.mark.parametrize("customer", ["deposit", "refund"])
+def test_legacy_resolution_keeps_original_paid_evidence_reserved(
+    setup: dict[str, Any], monkeypatch: Any, customer: str
+) -> None:
+    if customer == "refund":
+        apply(setup, "customer-deposit", deposit(mode="live"))
+    with monkeypatch.context() as context:
+        context.setattr(setup["costs"], "_reserve_paid_cost_evidence", lambda *args: None, raising=False)
+        paid_charge(setup, "legacy-resolve", "8" * 64)
+    before = setup["costs"].snapshot()
+    with pytest.raises(Conflict, match="evidence"):
+        if customer == "deposit":
+            apply(setup, "customer-deposit", deposit(mode="live", evidence_digest="7" * 64))
+        else:
+            apply(setup, "customer-refund", refund(amount_micro_usd=7, evidence_digest="7" * 64))
+    assert setup["costs"].snapshot() == before

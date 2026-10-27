@@ -108,7 +108,13 @@ Inherited balances require their own evidence audit before a real financial clai
 
 Customer payment evidence cannot be credited again through legacy capital or
 collection commands, another customer receipt/refund, or an already-recorded cost
-payment. Durable event/operation records survive working-cache compaction. Every
+payment. Every positive paid-charge version also reserves its evidence against customer reuse,
+including legacy rows and the original version retained by reconciliation. Paid
+charges and resolutions check the customer evidence allocation before changing
+cash. This reads the existing current/original cost rows, without another ledger,
+backfill charge or loss of historical provenance.
+
+Durable event/operation records survive working-cache compaction. Every
 state change, evidence allocation and checkpoint update commits atomically. The
 bounded 256-receipt index refuses additional deposits before its capacity is
 exhausted; existing obligations can still be reconciled. The extension records
@@ -172,6 +178,9 @@ not qualify this increment. No paper or finding is replaced.
 Exact-source review, parent reconciliation, main/release coverage, installed-package
 qualification and public served-byte verification remain required through the
 existing publication owner. A branch preview or draft is not a live deployment.
+The current paid-charge correction is documented in
+`evidence/customer-funds-20261027/REVIEW_QUALIFICATION.json`. The original
+`QUALIFICATION.json` qualifies only its first `4122357` candidate and remains historical.
 Rollback is an ordinary reviewed revert after preserving the private Journal and
 outstanding obligations; old binaries cannot silently interpret new payment rows.
 

@@ -1,0 +1,120 @@
+{
+  "schema": "customer-funds-review-correction/v1",
+  "base_parent": "13e89bc1c2752a865f0306776de25c22fa79b624",
+  "reviewed_source": "412235701d7cb251e1e914076a6693114bb1e619",
+  "review_finding": 4392773841,
+  "correction": "Read current and original paid-charge evidence before customer allocations; check customer evidence before positive paid charge and resolve versions; preserve the same ledger and atomic journal",
+  "reproduced": {
+    "cases": 18,
+    "status": "all failed on original runtime as expected",
+    "report": "review-replay-reproduced.log"
+  },
+  "validation": {
+    "runtime_and_economics": {
+      "passed": 333,
+      "report": "review-final-runtime.log"
+    },
+    "focused_coverage": {
+      "percent": 97.68518518518519,
+      "modules": [
+        "flywheel_costs.py",
+        "flywheel_customer.py"
+      ],
+      "floor": 80,
+      "report": "review-final-coverage.json"
+    },
+    "strict_native_types": {
+      "files": 72,
+      "status": "passed",
+      "report": "review-types.log"
+    },
+    "publication_source": {
+      "passed": 20,
+      "report": "review-publication.log"
+    },
+    "functional_dom": {
+      "passed": 16,
+      "report": "review-dom.log",
+      "scope": "jsdom only; rendered layout, accessibility, actual downloads and browser CSP enforcement unqualified"
+    },
+    "strict_docs": {
+      "status": "passed",
+      "report": "review-final-docs.log"
+    },
+    "source_packets": {
+      "canonical": {
+        "pageSha256": "9391d0c09566db618787fb004748e4c7861bcceebe749e03653c0988ee68d11d",
+        "manifestSha256": "37c6ee4e70ed467e2c90bc54f44b8ee183206a54e11a5127ee0edc7cb1ecfd5d",
+        "sourceHash": "e39f9193eddcbf89d7674e246e7bc6b514af541412e103581b6aebd67b8bd9b9",
+        "sourcesChecked": 16
+      },
+      "packets": {
+        "general": {
+          "sources": 73,
+          "mismatches": []
+        },
+        "specialist": {
+          "sources": 76,
+          "mismatches": []
+        },
+        "enterprise": {
+          "sources": 78,
+          "mismatches": []
+        },
+        "discovery": {
+          "sources": 91,
+          "mismatches": []
+        },
+        "opportunity": {
+          "sources": 2,
+          "mismatches": []
+        },
+        "customer": {
+          "sources": 78,
+          "mismatches": []
+        }
+      }
+    },
+    "installed_development_wheel": {
+      "passed": true,
+      "sha256": "1fd88b4ccc09fe7b7de13e175b24a494480e3e372453dd7629155c3972f2cdfd",
+      "runtime_files": 72,
+      "report": "review-installed-replay.json",
+      "scope": "Unpublished developer package; not release or production qualification"
+    },
+    "hooks": {
+      "selected_security_integrity": "passed",
+      "formatters": "Black and Ruff format passed",
+      "advisory_flake8": "E501 findings remain advisory under existing policy",
+      "report": "review-hooks.log"
+    }
+  },
+  "preserved_originals": "QUALIFICATION.json and all original failed runs retain their original source scope; no old qualification transfers to this correction",
+  "superseded_hosted_run": {
+    "id": 40562966471,
+    "source": "412235701d7cb251e1e914076a6693114bb1e619",
+    "status": "cancelled",
+    "reason": "Owned branch run superseded by the actual configured-review correction; original logs and outcomes remain on GitHub; no publication occurred"
+  },
+  "commercial": {
+    "actual_collections_micro_usd": 0,
+    "complete_actual_cost": "unknown",
+    "actual_profit": "not established",
+    "expected_modeled_90_day_contribution_micro_usd": {
+      "numerator": "2900205000",
+      "denominator": 1
+    },
+    "operational_alpha": "unmeasured",
+    "retained_alpha": "unmeasured",
+    "retention": "reject pending evidence"
+  },
+  "integration": {
+    "main_or_owner_refs_moved": false,
+    "published": false,
+    "dependencies": [
+      "current exact-source configured review and hosted checks",
+      "existing #4960/#4961/#4963/#4975 and #4973/v1.46.1 owner sequencing",
+      "full release, browser/platform, released install and served-byte acceptance"
+    ]
+  }
+}
