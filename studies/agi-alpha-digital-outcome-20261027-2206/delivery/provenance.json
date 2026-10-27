@@ -1,0 +1,120 @@
+{
+  "edition": "DIGITAL-20261027-R1",
+  "study_directory": "studies/agi-alpha-digital-outcome-20261027-2206",
+  "repository": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0",
+  "repository_inspected_main": "3947e4ec8fd74ad40e13e8ff825a149fa98a10e9",
+  "coordination": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6455002871",
+  "public_problem": {
+    "url": "https://github.com/scipy/scipy/issues/26531",
+    "reporter": "chrisb83",
+    "provided_to_all_arms": "Full public issue, code and proposed log-Newton formulation; discovery credit remains with public reporter/prior art.",
+    "scope": "Publicly disclosed five numerical examples. Reported SciPy1.18.1 is reporter context; installed SciPy1.17.0 reproduced separately.",
+    "discovery_comparison_performed": false
+  },
+  "numerical_prior_art": [
+    {
+      "name": "Boost.Math",
+      "commit": "70a36632cfbfe6a862cd8a5b88b357ca3a770a3d",
+      "url": "https://github.com/boostorg/math/tree/70a36632cfbfe6a862cd8a5b88b357ca3a770a3d",
+      "license": "Boost Software License1.0; vendor/boost_math/LICENSE_1_0.txt"
+    },
+    {
+      "name": "SciPy inspected source",
+      "commit": "37fad094584e1129ea652680608cd2c1b02463b9",
+      "url": "https://github.com/scipy/scipy/tree/37fad094584e1129ea652680608cd2c1b02463b9",
+      "license": "BSD3-Clause; discovery/beta_sources/SCIPY_LICENSE.txt"
+    },
+    {
+      "name": "mpmath",
+      "version": "1.3.0",
+      "wheel_sha256": "a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c",
+      "license": "BSD3-Clause; vendor/mpmath130/mpmath-1.3.0.dist-info/LICENSE"
+    },
+    {
+      "name": "NIST DLMF8.17",
+      "url": "https://dlmf.nist.gov/8.17",
+      "methods": "Incomplete beta identities, symmetry, continued fractions and finite binomial sum."
+    }
+  ],
+  "execution": {
+    "python": "3.12.14",
+    "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "live_assistant_work": true,
+    "environment_model_label": "GPT-6 Astra Pro",
+    "provider_attested_backend": null,
+    "same_backend_attested": false,
+    "temperature": null,
+    "model_seed": null,
+    "token_usage": null,
+    "provider_bill": null,
+    "gui_operation_benchmark": false,
+    "observed_execution": "Available assistant agents, command-line source inspection, compilation, testing, recovery and evidence production.",
+    "arms": [
+      "ordinary",
+      "expert",
+      "conventional"
+    ],
+    "implementation_trials_per_arm": 1,
+    "public_missions": 1,
+    "unique_fresh_confirmation_cases": 64,
+    "inherited_parent_configuration": true,
+    "interpretation": "Configured agents are not provider-attested controlled same-model experiments.",
+    "explicit_provider_api_calls_made_by_study": 0,
+    "native_dependencies_observed": {
+      "pydantic": "2.11.7",
+      "cryptography": "50.0.2"
+    }
+  },
+  "frozen_confirmation_sha256": {
+    "experiment/protocol.json": "9b0b2846466fa5501c84413a9e9a17c28ce68e4aede53b91ebf7d446fd35ab85",
+    "experiment/source_freeze.json": "d167d2c13e8fbf303fe7872711dca0c924b218b169bcd5681cedbe876dc97e40",
+    "experiment/evaluator_freeze_v2.json": "3896f370f27cf10d1889c34ddd4359a7d760e5f37160901bbeda86db1c5e4e26",
+    "experiment/fresh_cases.json": "379a72fdc9b1c1aae7bea1d3f1ba0600d65af4cce997ce1099c4a1b982566045",
+    "experiment/fresh_case_metadata.json": "1d820ee4b6a71fdb898b7129f08a76e247aaf399ec5ea6fbc34242d2856b832d",
+    "experiment/fresh_references.json": "08e83c436ac3468272f88b9c2686b01dc4b29dd37379c959b9ebf46239e3c798",
+    "experiment/comparison_results.json": "fce68a80177fdcc73a68494ee8b4cedf53a61076645233d31bdf3e47f7ed4a92",
+    "experiment/score.py": "5e6cf94ab29b2f30e85ec7e10938d0fa16512af9703339c1f50c8e7bd770b895",
+    "experiment/reference.py": "d649df58a74421965b822b1c7ff56baeba7732f0846e72122b4bf13de21adeba",
+    "experiment/worker.py": "e9eaa93f3fefb4c7322dffde57d0307c4b6e33c32f023e956ff819518f3e9405",
+    "experiment/ordinary_score.json": "a7734fbdeeb766b8f12ef5a633573a8126011fb1decb6c5c6df5290a7a97b08a",
+    "experiment/expert_score.json": "0cb4d7bf65dab842bdc4468951bec61dbc64425ed98493e0b2b2013edc8b3c2d",
+    "experiment/conventional_score.json": "c948167c1eda533525ee8344c01c31b742e4fdfe8d299680847a25e32a3eee53"
+  },
+  "prior_kinetics": {
+    "archive": "AGI_ALPHA_Gap_Experiment.zip",
+    "sha256": "be2fd06f7ed3dde74741799020c566ae78609a91ab0afc5a6026f5dec9fe5921",
+    "preserved_unchanged": true,
+    "disposition": "Supporting conventional engineering; parity, thin modeled margin and untested physical assumptions unchanged."
+  },
+  "license": "New delivery code Apache-2.0; immutable evidence originals kept byte-identical; third-party licenses retained.",
+  "identity": "No live *.agent.agi.eth authentication; native signatures use ephemeral local test keys.",
+  "publication": "Pinned review edition requires owner review and qualification for canonical production; successful artifact preparation is not a production release.",
+  "recommended_kernel": "ordinary",
+  "known_post_confirmation_diagnostic": {
+    "input": {
+      "q_hex": "0x0.0000000000001p-1022",
+      "a": 1,
+      "b": 2
+    },
+    "expected_x_hex": "0x0.0000000000001p-1022",
+    "ordinary": "correct",
+    "expert": "correct",
+    "frozen_conventional": "underflow zero; incorrect",
+    "classification": "Previously known rounding stress case, tested after primary confirmation; not new fresh case",
+    "evidence": "audit/independent_known_midpoint.json",
+    "correction": "experiment/repairs/conventional_midpoint/; separate from frozen arm"
+  },
+  "reproduction": {
+    "script": "delivery/reproduce.py",
+    "result": "delivery/replay_verification/reproduction_report.json",
+    "ordinary_cli_check": "delivery/cli_delivery_check.json",
+    "all_original_hashes_preserved": true,
+    "reference_recomputed": true,
+    "accepted_counts": [
+      64,
+      64,
+      64
+    ],
+    "scope": "Recorded bank replay, not an additional fresh confirmation."
+  }
+}

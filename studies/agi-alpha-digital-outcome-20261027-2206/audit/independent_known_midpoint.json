@@ -1,0 +1,63 @@
+{
+  "executed_at_utc": "2026-10-27T22:42:46.633911+00:00",
+  "label": "Post-confirmation diagnostic on a known development/evaluator regression. Not a fresh case and not included in primary64.",
+  "request": {
+    "id": "postconfirmation-known-midpoint",
+    "q": 5e-324,
+    "a": 1.0,
+    "b": 2.0
+  },
+  "exact_expected": {
+    "status": "ok",
+    "x": 5e-324
+  },
+  "exact_reason": "For delta=2^-1074, at midpoint x=delta/2, Beta(1,2) CDF=2*x-x*x=delta-delta^2/4<delta. The quantile lies above the midpoint and rounds to delta.",
+  "rows": [
+    {
+      "arm": "ordinary",
+      "returncode": 0,
+      "output": {
+        "id": "postconfirmation-known-midpoint",
+        "status": "ok",
+        "x": 5e-324,
+        "diagnostics": {
+          "method": "analytic",
+          "iterations": 0
+        },
+        "cpu_seconds": 0.0016028960000000064
+      },
+      "stderr": "",
+      "passes_exact_rounding": true,
+      "frozen_solution_sha256": "59c52666007825cef5b94eafa0f45d79a3e1406b6a0d1a1cf4b7fd934ea23dc8"
+    },
+    {
+      "arm": "expert",
+      "returncode": 0,
+      "output": {
+        "id": "postconfirmation-known-midpoint",
+        "status": "ok",
+        "x": 5e-324,
+        "method": "analytic500"
+      },
+      "stderr": "",
+      "passes_exact_rounding": true,
+      "frozen_solution_sha256": "9beb4957dcaeb8ffdfc0280eac6978a093c1438c67f696d2390bedfad150caad"
+    },
+    {
+      "arm": "conventional",
+      "returncode": 0,
+      "output": {
+        "id": "postconfirmation-known-midpoint",
+        "status": "underflow",
+        "x": 0.0,
+        "method": "analytic_a1",
+        "iterations": 0,
+        "cpu_seconds": 0.00036269900000000105
+      },
+      "stderr": "",
+      "passes_exact_rounding": false,
+      "frozen_solution_sha256": "7afb38d9fe6917536ea2e8d8861c78e131aefbfce6143a5e2c4af382f4c29ccc"
+    }
+  ],
+  "interpretation": "A recorded conventional rounding defect on an already-known case. Does not establish discovery or general Operational Alpha; the same conventional lattice-rounding correction is available to all, and the frozen primary comparison remains64/64each."
+}

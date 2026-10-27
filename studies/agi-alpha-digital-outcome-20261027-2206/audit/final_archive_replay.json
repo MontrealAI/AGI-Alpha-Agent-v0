@@ -1,0 +1,134 @@
+{
+  "checked_at_utc": "2026-10-27T23:46:58.644908+00:00",
+  "archive_sha256": "25f7c5c07bd0971b3e0a511088af492b3883a021ea62f6a834043faae3cb804d",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "delivery/reproduce.py",
+    "--output",
+    "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay",
+    "--native"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"edition\": \"DIGITAL-20261027-R1\",\n  \"completed_at_utc\": \"2026-10-27T23:46:58.637615+00:00\",\n  \"original_hashes_verified_before_and_after\": true,\n  \"checks\": {\n    \"frozen_arm_files\": 98,\n    \"native_source_files\": 24,\n    \"required_vendor_files\": 652,\n    \"verified_optional_cache_files\": 0\n  },\n  \"reference_recomputed\": true,\n  \"native_components_replayed\": true,\n  \"accepted_counts_reproduced\": [\n    64,\n    64,\n    64\n  ],\n  \"meaning\": \"Replay of the same 64 recorded cases, not another fresh confirmation or customer mission.\",\n  \"resource_warning\": \"Timing and RSS depend on host accounting; no speedup or model-billing claim.\",\n  \"steps\": {\n    \"build_ordinary\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/ordinary/build.py\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 2.9509193069970934\n    },\n    \"worker_ordinary\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/ordinary\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/ordinary_raw.json\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 0.5933016540075187\n    },\n    \"build_expert\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/expert/build.py\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 2.779475390998414\n    },\n    \"worker_expert\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/expert\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/expert_raw.json\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 0.3530093260051217\n    },\n    \"build_conventional\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/conventional/build.py\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 3.009450031997403\n    },\n    \"worker_conventional\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/conventional\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/conventional_raw.json\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 0.5402398290025303\n    },\n    \"reference\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/reference.py\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_references.json\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 17.695760718008387\n    },\n    \"score\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/score.py\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 0.15120234400092158\n    },\n    \"native\": {\n      \"command\": [\n        \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python\",\n        \"-B\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/source/delivery/native_bridge.py\",\n        \"--experiment\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment\",\n        \"--output\",\n        \"/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/native_capture.json\"\n      ],\n      \"returncode\": 0,\n      \"wall_seconds\": 1.0931131200050004\n    }\n  }\n}\n",
+  "stderr": "",
+  "exact_sealed_archive_unchanged": true,
+  "reproduction_report": {
+    "edition": "DIGITAL-20261027-R1",
+    "completed_at_utc": "2026-10-27T23:46:58.637615+00:00",
+    "original_hashes_verified_before_and_after": true,
+    "checks": {
+      "frozen_arm_files": 98,
+      "native_source_files": 24,
+      "required_vendor_files": 652,
+      "verified_optional_cache_files": 0
+    },
+    "reference_recomputed": true,
+    "native_components_replayed": true,
+    "accepted_counts_reproduced": [
+      64,
+      64,
+      64
+    ],
+    "meaning": "Replay of the same 64 recorded cases, not another fresh confirmation or customer mission.",
+    "resource_warning": "Timing and RSS depend on host accounting; no speedup or model-billing claim.",
+    "steps": {
+      "build_ordinary": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/ordinary/build.py"
+        ],
+        "returncode": 0,
+        "wall_seconds": 2.9509193069970934
+      },
+      "worker_ordinary": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/ordinary",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/ordinary_raw.json"
+        ],
+        "returncode": 0,
+        "wall_seconds": 0.5933016540075187
+      },
+      "build_expert": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/expert/build.py"
+        ],
+        "returncode": 0,
+        "wall_seconds": 2.779475390998414
+      },
+      "worker_expert": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/expert",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/expert_raw.json"
+        ],
+        "returncode": 0,
+        "wall_seconds": 0.3530093260051217
+      },
+      "build_conventional": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/conventional/build.py"
+        ],
+        "returncode": 0,
+        "wall_seconds": 3.009450031997403
+      },
+      "worker_conventional": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/worker.py",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/arms/conventional",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/conventional_raw.json"
+        ],
+        "returncode": 0,
+        "wall_seconds": 0.5402398290025303
+      },
+      "reference": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/reference.py",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_cases.json",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/fresh_references.json"
+        ],
+        "returncode": 0,
+        "wall_seconds": 17.695760718008387
+      },
+      "score": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment/score.py"
+        ],
+        "returncode": 0,
+        "wall_seconds": 0.15120234400092158
+      },
+      "native": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/source/delivery/native_bridge.py",
+          "--experiment",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/work/experiment",
+          "--output",
+          "/workspace/scratch/ffe4479f8dc2/final_replay_25f7c5c/replay/native_capture.json"
+        ],
+        "returncode": 0,
+        "wall_seconds": 1.0931131200050004
+      }
+    }
+  }
+}

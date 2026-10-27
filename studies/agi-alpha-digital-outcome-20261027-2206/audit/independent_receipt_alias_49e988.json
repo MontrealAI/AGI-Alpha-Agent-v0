@@ -1,0 +1,35 @@
+{
+  "executed_at_utc": "2026-10-27T23:43:08.238194+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "test_package_path_safety.PackagePathSafetyTests.test_receipt_symlink_refused_before_any_output_write",
+    "test_package_path_safety.PackagePathSafetyTests.test_receipt_hardlink_refused_before_any_output_write",
+    "test_package_path_safety.PackagePathSafetyTests.test_archive_output_cannot_equal_missing_receipt",
+    "test_package_path_safety.PackagePathSafetyTests.test_archive_output_cannot_equal_existing_receipt",
+    "test_package_path_safety.PackagePathSafetyTests.test_receipt_parent_symlink_is_rejected",
+    "test_package_path_safety.PackagePathSafetyTests.test_atomic_receipt_write_updates_only_receipt",
+    "test_package_path_safety.PackagePathSafetyTests.test_late_receipt_hardlink_is_refused_without_truncating_target",
+    "test_package_path_safety.PackagePathSafetyTests.test_atomic_replace_does_not_follow_last_moment_alias"
+  ],
+  "returncode": 0,
+  "selected_cases": [
+    "test_receipt_symlink_refused_before_any_output_write",
+    "test_receipt_hardlink_refused_before_any_output_write",
+    "test_archive_output_cannot_equal_missing_receipt",
+    "test_archive_output_cannot_equal_existing_receipt",
+    "test_receipt_parent_symlink_is_rejected",
+    "test_atomic_receipt_write_updates_only_receipt",
+    "test_late_receipt_hardlink_is_refused_without_truncating_target",
+    "test_atomic_replace_does_not_follow_last_moment_alias"
+  ],
+  "cases": 8,
+  "stdout": "",
+  "stderr": "test_receipt_symlink_refused_before_any_output_write (test_package_path_safety.PackagePathSafetyTests.test_receipt_symlink_refused_before_any_output_write) ... ok\ntest_receipt_hardlink_refused_before_any_output_write (test_package_path_safety.PackagePathSafetyTests.test_receipt_hardlink_refused_before_any_output_write) ... ok\ntest_archive_output_cannot_equal_missing_receipt (test_package_path_safety.PackagePathSafetyTests.test_archive_output_cannot_equal_missing_receipt) ... ok\ntest_archive_output_cannot_equal_existing_receipt (test_package_path_safety.PackagePathSafetyTests.test_archive_output_cannot_equal_existing_receipt) ... ok\ntest_receipt_parent_symlink_is_rejected (test_package_path_safety.PackagePathSafetyTests.test_receipt_parent_symlink_is_rejected) ... ok\ntest_atomic_receipt_write_updates_only_receipt (test_package_path_safety.PackagePathSafetyTests.test_atomic_receipt_write_updates_only_receipt) ... ok\ntest_late_receipt_hardlink_is_refused_without_truncating_target (test_package_path_safety.PackagePathSafetyTests.test_late_receipt_hardlink_is_refused_without_truncating_target) ... ok\ntest_atomic_replace_does_not_follow_last_moment_alias (test_package_path_safety.PackagePathSafetyTests.test_atomic_replace_does_not_follow_last_moment_alias) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.014s\n\nOK\n",
+  "packager_sha256": "b6949252a47b9f3721ea53a76f3bcaba68640412dc255406c9edca0542d8ed11",
+  "test_sha256": "5b0a5a797bc907e72ad24187fc01871d601ca85351ce2f60af75f6647f7a5b20",
+  "scope": "Independent execution of the eight new receipt-write checks. Static symlink/hardlink receipt aliases are refused before any output write; original synthetic frozen targets remain unchanged. Atomic replacement cannot follow a last-moment alias."
+}

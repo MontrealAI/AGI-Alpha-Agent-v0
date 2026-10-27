@@ -1,0 +1,127 @@
+{
+  "checked_at_utc": "2026-10-27T23:31:14.296018+00:00",
+  "test_source_snapshot_sha256": "cbab00f773f13df5ad6dcb503637a35ffcd47e1d5a20c16a2fcf9406a6707e79",
+  "runtime_source_sha256": "e1b446ef936368cc01d6bc0ff74f888e7d956dc44fdb0d354efae767fd7f5df8",
+  "vendor_manifest_sha256": "a4cd4c283e6f1f860487b50195ec4c71bf5fd4b8c1e1c36ecf2b96e473092709",
+  "independently_rerun": 16,
+  "exact_expected_error_checks": [
+    {
+      "case": "clean_archive_without_optional_caches",
+      "pass": true,
+      "checks": {
+        "required_vendor_files": 652,
+        "verified_optional_cache_files": 0
+      }
+    },
+    {
+      "case": "clean_original_with_exact_optional_caches",
+      "pass": true,
+      "checks": {
+        "required_vendor_files": 652,
+        "verified_optional_cache_files": 51
+      }
+    },
+    {
+      "case": "modified_python_same_size",
+      "expected_errors": [
+        "Vendor content mismatch:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "modified_header_same_size",
+      "expected_errors": [
+        "Vendor content mismatch:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "missing_python",
+      "expected_errors": [
+        "Missing required vendor files:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "missing_header",
+      "expected_errors": [
+        "Missing required vendor files:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "extra_python",
+      "expected_errors": [
+        "Unexpected vendor file:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "extra_header",
+      "expected_errors": [
+        "Unexpected vendor file:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "modified_optional_bytecode",
+      "expected_errors": [
+        "Vendor content mismatch:",
+        "Vendor file type or size mismatch:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "extra_bytecode",
+      "expected_errors": [
+        "Unexpected vendor file:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "symlink_required_python",
+      "expected_errors": [
+        "Vendor symlink or special file refused:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "symlink_extra_directory",
+      "expected_errors": [
+        "Vendor symlink or special file refused:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "special_file_fifo",
+      "expected_errors": [
+        "Vendor symlink or special file refused:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "symlink_required_ancestor",
+      "expected_errors": [
+        "Vendor symlink or special file refused:"
+      ],
+      "pass": true
+    },
+    {
+      "case": "symlink_vendor_root",
+      "expected_errors": [
+        "Vendor root must be an actual directory, not a symlink"
+      ],
+      "pass": true
+    },
+    {
+      "case": "modified_manifest_same_size",
+      "expected_errors": [
+        "Vendor manifest identity mismatch"
+      ],
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "source_vendor_files_unchanged": 703,
+  "scope": "Exact expected ValueError messages exclude unrelated missing-file errors. This is a dependency-integrity regression, not new scientific confirmation."
+}
