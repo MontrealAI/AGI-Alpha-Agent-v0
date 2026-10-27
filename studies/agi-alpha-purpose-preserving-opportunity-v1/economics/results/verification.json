@@ -1,0 +1,40 @@
+{
+  "schema": "agialpha.economics-verification.v1",
+  "checks": [
+    {
+      "task": "unit_tests",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "02d8ba",
+        "wall_time_seconds": 0.011726684,
+        "exit_code": 0,
+        "original_token_count": 361,
+        "output": "test_cash_accrual_conservation_for_every_event (test_economics.AccountingTests.test_cash_accrual_conservation_for_every_event) ... ok\ntest_default_is_not_a_second_cash_payment (test_economics.AccountingTests.test_default_is_not_a_second_cash_payment) ... ok\ntest_deposit_is_not_revenue_and_acceptance_is_not_collection (test_economics.AccountingTests.test_deposit_is_not_revenue_and_acceptance_is_not_collection) ... ok\ntest_failed_partial_and_late_reports_do_not_relax_original_acceptance (test_economics.AccountingTests.test_failed_partial_and_late_reports_do_not_relax_original_acceptance) ... ok\ntest_missing_acceptance_blocks_revenue (test_economics.AccountingTests.test_missing_acceptance_blocks_revenue) ... ok\ntest_no_gain_assigned_and_unprofitable_optional_investment_stops (test_economics.AccountingTests.test_no_gain_assigned_and_unprofitable_optional_investment_stops) ... ok\ntest_paid_job_learning_is_charged_once (test_economics.AccountingTests.test_paid_job_learning_is_charged_once) ... ok\ntest_refundable_prefunding_does_not_remove_full_refund_reserve (test_economics.AccountingTests.test_refundable_prefunding_does_not_remove_full_refund_reserve) ... ok\ntest_shared_construction_required_for_delivery_is_A_not_optional_C (test_economics.AccountingTests.test_shared_construction_required_for_delivery_is_A_not_optional_C) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.032s\n\nOK\n"
+      }
+    },
+    {
+      "task": "ruff",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "21920a",
+        "wall_time_seconds": 0.000043128,
+        "exit_code": 0,
+        "original_token_count": 5,
+        "output": "All checks passed!\n"
+      }
+    },
+    {
+      "task": "mypy",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "ef3faa",
+        "wall_time_seconds": 1.060529531,
+        "exit_code": 0,
+        "original_token_count": 11,
+        "output": "Success: no issues found in 2 source files\n"
+      }
+    }
+  ],
+  "environment_note": "Root dependency presence check passed. Full environment/release checks remain unqualified due inherited package conflicts. Black failed because pathspec.patterns.gitignore was missing; ruff format used.",
+  "scope": "Nine focused accounting/evidence-boundary tests; no customer, demand, ecological or model efficacy validation."
+}

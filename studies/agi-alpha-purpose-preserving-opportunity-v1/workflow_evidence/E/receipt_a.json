@@ -1,0 +1,97 @@
+{
+  "condition": "E",
+  "packet": "A",
+  "start_utc": "2026-10-27T16:42:17.065175Z",
+  "end_utc": "2026-10-27T16:44:04.862405Z",
+  "elapsed_seconds": 107.79723,
+  "timing_definition": "First recorded execution timestamp through completed audit and verification, immediately before receipt serialization.",
+  "time_cap_seconds": 480,
+  "reports_file": "reports_a.json",
+  "report_count": 12,
+  "valid_input_count": 10,
+  "invalid_input_count": 2,
+  "source_screen_pass_count": 4,
+  "tool_call_count": 5,
+  "tool_call_count_convention": "Five functions.exec orchestration calls, each invoking one tools.exec_command; ten invocations if both orchestration and underlying tools are counted.",
+  "tool_calls": [
+    {
+      "sequence": 1,
+      "tool": "functions.exec -> tools.exec_command",
+      "action": "Record UTC start and read PROTOCOL.md, SCOPE.md, packet_a.json, and catalog.json."
+    },
+    {
+      "sequence": 2,
+      "tool": "functions.exec -> tools.exec_command",
+      "action": "Review compact, normalized catalogue and every task after initial display truncation."
+    },
+    {
+      "sequence": 3,
+      "tool": "functions.exec -> tools.exec_command",
+      "action": "Create deterministic audit.py from supplied contract and generate reports_a.json."
+    },
+    {
+      "sequence": 4,
+      "tool": "functions.exec -> tools.exec_command",
+      "action": "Create and run verify_a.py with hand-derived expectations for all reports and four additional contract boundary scenarios."
+    },
+    {
+      "sequence": 5,
+      "tool": "functions.exec -> tools.exec_command",
+      "action": "Compute file hashes and save and validate receipt_a.json."
+    }
+  ],
+  "retries": [],
+  "corrections": [
+    {
+      "kind": "display_recovery",
+      "description": "Initial combined read display was truncated. A compact normalized review recovered all task and catalogue details. No generated report required correction."
+    }
+  ],
+  "verification": {
+    "status": "passed",
+    "checks": [
+      "All 12 reports in original task order",
+      "All critical fields present",
+      "Purposes preserved verbatim",
+      "Exact expected taxa and counts for every valid task",
+      "Exact row blockers and original unmet obligations",
+      "Float and boolean quantities rejected; duplicate lot ID rejected",
+      "Zero dates, zero price, and equal stock demand accepted",
+      "Duplicate demand aggregated and overdraw blocks each comparable row",
+      "Mismatched units excluded from arithmetic demand",
+      "Valid duplicate retains taxon coverage despite a second blocked row",
+      "Source host support separated from qualified host supply",
+      "Empty proposal retains seasonal and host obligations",
+      "Unknown taxon still receives all independent lot blockers",
+      "All authority and outcome flags false"
+    ]
+  },
+  "retained_scripts": [
+    "audit.py",
+    "verify_a.py"
+  ],
+  "file_sha256": {
+    "PROTOCOL.md": "43425a1500c49869ab2628c61f8ca00c42aacecc80ef5580b573e455fab4361c",
+    "SCOPE.md": "9d87ff7b2cb65574bac6838e862ec19df94a45cad797fb7db6d13595a4fc5885",
+    "catalog.json": "6a22183309aae61954b4dcf27e643150c034bd6bdf86362cf1ce9b55ab541010",
+    "packet_a.json": "ec9a98647e1348c42b9302e812df4de0f69a2ad5f3c75a28c255249c9b050436",
+    "audit.py": "4c6c25f6f24cdc8ca641c625f10fafbaeff40f34355e56bd697e4956a6c958e5",
+    "verify_a.py": "37a454fa527507a265ac04f839bee28282c344561cd8a1c97f8719da77c6bfe5",
+    "reports_a.json": "db42a9484a521b036ebfc75784cbc7f404a66ae0ca28637ce2d3d1645cffd76f"
+  },
+  "provider_usage": {
+    "provider_billing": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost": null,
+    "status": "unknown; no provider billing or token telemetry supplied"
+  },
+  "limitations": [
+    "Results use only the supplied finite source-screen contract and catalogue facts.",
+    "No protected oracle, answer file, other arm, or existing result was inspected.",
+    "No external sources or live inventory were consulted.",
+    "No field outcome, customer acceptance, production authorization, affordability, or commercial outcome is established.",
+    "First recorded execution timestamp may omit a small unmeasured interval between assignment delivery and the first tool execution."
+  ]
+}

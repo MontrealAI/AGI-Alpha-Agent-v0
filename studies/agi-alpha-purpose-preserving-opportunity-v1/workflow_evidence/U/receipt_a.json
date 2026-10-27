@@ -1,0 +1,78 @@
+{
+  "condition": "U",
+  "packet": "A",
+  "start_utc": "2026-10-27T16:42:07Z",
+  "end_utc": "2026-10-27T16:43:34Z",
+  "elapsed_seconds": 87.0,
+  "clock_basis": "UTC from first tool-recorded start through report generation and verification, at one-second resolution",
+  "tool_call_count": 5,
+  "tool_call_count_basis": "Five exec_command invocations, each wrapped by one functions.exec invocation; wrapper calls are listed separately rather than double-counted",
+  "orchestration_call_counts": {
+    "functions.exec": 5
+  },
+  "tool_calls": [
+    {
+      "sequence": 1,
+      "tool": "exec_command",
+      "purpose": "Record UTC start and list files in assigned U directory"
+    },
+    {
+      "sequence": 2,
+      "tool": "exec_command",
+      "purpose": "Read PROTOCOL.md, SCOPE.md, packet_a.json, and catalog.json"
+    },
+    {
+      "sequence": 3,
+      "tool": "exec_command",
+      "purpose": "Read compact complete catalog and tasks after initial display truncation"
+    },
+    {
+      "sequence": 4,
+      "tool": "exec_command",
+      "purpose": "Write self-created audit.py and generate reports_a.json"
+    },
+    {
+      "sequence": 5,
+      "tool": "exec_command",
+      "purpose": "Verify all 12 reports against independently transcribed packet facts and contract; write receipt_a.json"
+    }
+  ],
+  "retries_corrections": [
+    {
+      "kind": "read_retry",
+      "description": "Combined initial file display was truncated; reread all task and catalog facts in compact JSON with full output."
+    }
+  ],
+  "report_generation_runs": 1,
+  "report_corrections": 0,
+  "verification": {
+    "reports": 12,
+    "task_order_preserved": true,
+    "critical_fields_checked": true,
+    "valid_reports_checked_against_manual_expectations": 10,
+    "invalid_reports_checked": 2,
+    "passed_source_screens": 4,
+    "failed_valid_source_screens": 6,
+    "invalid_inputs": 2,
+    "all_assertions_passed": true
+  },
+  "artifacts": {
+    "reports": "reports_a.json",
+    "receipt": "receipt_a.json",
+    "retained_script": "audit.py",
+    "reports_sha256": "30016eaf56c83e9b94a46a2837e43db4621a4f8a678e94708e8c5df5972c8d92",
+    "audit_script_sha256": "98fe9877549a0471f22b3792f844206e1137ba8758b9831be26fcce5a81ac192"
+  },
+  "provider": null,
+  "input_tokens": null,
+  "output_tokens": null,
+  "billing_cost": null,
+  "billing_status": "unknown; provider/token billing was not exposed",
+  "limitations": [
+    "Audit is limited to the supplied source-screen definitions and finite catalog; no external botanical or inventory verification was performed.",
+    "No field outcomes, customer acceptance, or production authorization are established.",
+    "No protected oracle, answers, other workflow arms, existing results, or study code were accessed.",
+    "Start time was recorded on the first tool invocation; any pre-tool instruction-to-start latency is not observable here.",
+    "Provider and token billing are unavailable and remain unknown."
+  ]
+}

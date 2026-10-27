@@ -1,0 +1,291 @@
+{
+  "schema": "native-fixture-validation/v1",
+  "scope": "adapter and local fixture only",
+  "checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration",
+        "-p",
+        "test_native_adapter.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.426,
+      "stdout": "",
+      "stderr": "test_assumed_accounting_kept_separate (test_native_adapter.NativeFixtureTests.test_assumed_accounting_kept_separate) ... ok\ntest_exported_acceptance_signature_is_verifiable (test_native_adapter.NativeFixtureTests.test_exported_acceptance_signature_is_verifiable) ... ok\ntest_local_native_boundaries_all_pass (test_native_adapter.NativeFixtureTests.test_local_native_boundaries_all_pass) ... ok\ntest_no_live_or_ecological_acceptance_claim (test_native_adapter.NativeFixtureTests.test_no_live_or_ecological_acceptance_claim) ... ok\ntest_public_report_excludes_private_credentials (test_native_adapter.NativeFixtureTests.test_public_report_excludes_private_credentials) ... ok\ntest_source_binding_and_material_mission_change (test_native_adapter.NativeFixtureTests.test_source_binding_and_material_mission_change) ... ok\ntest_unknown_actual_cost_and_zero_collections (test_native_adapter.NativeFixtureTests.test_unknown_actual_cost_and_zero_collections) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.411s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.046,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.034,
+      "stdout": "2 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.948,
+      "stdout": "Success: no issues found in 2 source files\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "black",
+        "--check",
+        "--line-length",
+        "120",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 1,
+      "seconds": 0.049,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 189, in _run_module_as_main\n  File \"<frozen runpy>\", line 148, in _get_module_details\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"src/black/__init__.py\", line 28, in <module>\nModuleNotFoundError: No module named 'pathspec.patterns.gitignore'\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "--artifact",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/fixtures/source-inspection.json",
+        "--output",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1.568,
+      "stdout": "{\"checks_passed\": 18, \"checks_total\": 18, \"output\": \"studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json\"}\n",
+      "stderr": ""
+    }
+  ],
+  "black_blocker": "Installed Black cannot import pathspec.patterns.gitignore; Ruff format used.",
+  "no_claim_of_repository_wide_test_pass": true,
+  "prior_checks_before_exported_signer_evidence": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration",
+        "-p",
+        "test_native_adapter.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.27,
+      "stdout": "",
+      "stderr": "test_assumed_accounting_kept_separate (test_native_adapter.NativeFixtureTests.test_assumed_accounting_kept_separate) ... ok\ntest_local_native_boundaries_all_pass (test_native_adapter.NativeFixtureTests.test_local_native_boundaries_all_pass) ... ok\ntest_no_live_or_ecological_acceptance_claim (test_native_adapter.NativeFixtureTests.test_no_live_or_ecological_acceptance_claim) ... ok\ntest_public_report_excludes_private_credentials (test_native_adapter.NativeFixtureTests.test_public_report_excludes_private_credentials) ... ok\ntest_source_binding_and_material_mission_change (test_native_adapter.NativeFixtureTests.test_source_binding_and_material_mission_change) ... ok\ntest_unknown_actual_cost_and_zero_collections (test_native_adapter.NativeFixtureTests.test_unknown_actual_cost_and_zero_collections) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.367s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.036,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.038,
+      "stdout": "2 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 6.746,
+      "stdout": "Success: no issues found in 2 source files\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "black",
+        "--check",
+        "--line-length",
+        "120",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 1,
+      "seconds": 0.065,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 189, in _run_module_as_main\n  File \"<frozen runpy>\", line 148, in _get_module_details\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"src/black/__init__.py\", line 28, in <module>\nModuleNotFoundError: No module named 'pathspec.patterns.gitignore'\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "--artifact",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/fixtures/source-inspection.json",
+        "--output",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1.229,
+      "stdout": "{\"checks_passed\": 18, \"checks_total\": 18, \"output\": \"studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json\"}\n",
+      "stderr": ""
+    }
+  ],
+  "change_since_prior_checks": "Retain signed successor acceptance and public fixture signer keys; independently test exported receipt signature.",
+  "prior_checks_before_test_import_correction": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration",
+        "-p",
+        "test_native_adapter.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.4,
+      "stdout": "",
+      "stderr": "test_assumed_accounting_kept_separate (test_native_adapter.NativeFixtureTests.test_assumed_accounting_kept_separate) ... ok\ntest_exported_acceptance_signature_is_verifiable (test_native_adapter.NativeFixtureTests.test_exported_acceptance_signature_is_verifiable) ... ok\ntest_local_native_boundaries_all_pass (test_native_adapter.NativeFixtureTests.test_local_native_boundaries_all_pass) ... ok\ntest_no_live_or_ecological_acceptance_claim (test_native_adapter.NativeFixtureTests.test_no_live_or_ecological_acceptance_claim) ... ok\ntest_public_report_excludes_private_credentials (test_native_adapter.NativeFixtureTests.test_public_report_excludes_private_credentials) ... ok\ntest_source_binding_and_material_mission_change (test_native_adapter.NativeFixtureTests.test_source_binding_and_material_mission_change) ... ok\ntest_unknown_actual_cost_and_zero_collections (test_native_adapter.NativeFixtureTests.test_unknown_actual_cost_and_zero_collections) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.372s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.037,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.034,
+      "stdout": "2 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 1,
+      "seconds": 6.638,
+      "stdout": "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py:14: error: Module \"native_adapter\" does not explicitly export attribute \"digest\"  [attr-defined]\nFound 1 error in 1 file (checked 2 source files)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "black",
+        "--check",
+        "--line-length",
+        "120",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/test_native_adapter.py"
+      ],
+      "exit_code": 1,
+      "seconds": 0.049,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 189, in _run_module_as_main\n  File \"<frozen runpy>\", line 148, in _get_module_details\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"src/black/__init__.py\", line 28, in <module>\nModuleNotFoundError: No module named 'pathspec.patterns.gitignore'\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/native_adapter.py",
+        "--artifact",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/fixtures/source-inspection.json",
+        "--output",
+        "studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1.568,
+      "stdout": "{\"checks_passed\": 18, \"checks_total\": 18, \"output\": \"studies/agi-alpha-purpose-preserving-opportunity-v1/integration/evidence/selftest-native-report.json\"}\n",
+      "stderr": ""
+    }
+  ],
+  "final_source_hashes": {
+    "native_adapter.py": "060bade256d115eba7ee88189685da5e7f700aa89f2def34db2d05904d63714d",
+    "test_native_adapter.py": "7659b416bf97583651bd6a5c3b8db3d84792a235f347e63372df597d8ee188de"
+  },
+  "test_import_correction": "Import native digest from its defining protocol module; strict mypy no-implicit-reexport check is satisfied."
+}

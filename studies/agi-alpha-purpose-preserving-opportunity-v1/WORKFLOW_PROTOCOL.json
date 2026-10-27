@@ -1,0 +1,29 @@
+{
+  "schema": "agialpha.workflow-assay.v1",
+  "frozen_at_utc": "2026-10-27T16:41:49.176566+00:00",
+  "model": "same session assistant model inherited by all three fresh actors; environment identifies GPT-6 Astra Pro; no API response/model IDs or token accounting available",
+  "arms": {
+    "U": "reasonable direct task request, same full specification and tools",
+    "E": "same request plus explicit normalize-check-verify workflow",
+    "Eplus": "same expert workflow plus actual frozen executable artifact"
+  },
+  "rounds": [
+    "A dry source-screen audit",
+    "B wet context plus host obligation; actors retain their own round-A work"
+  ],
+  "tasks_per_round": 12,
+  "wall_budget_seconds_per_round": 480,
+  "parallel_arms": true,
+  "scope": "exploratory within-session operational assay; not representative ordinary-user estimate or provider benchmark",
+  "external_feedback": "none before primary outputs; no oracle/expected/protected answer access",
+  "baseline_capabilities": "all actors may code, use tools, inspect all supplied references and retain their own scripts",
+  "constant_tools": true,
+  "prices_and_costs": "no observed provider billing; wall time is not labor time and is not converted to dollars",
+  "hypotheses": [
+    "E may improve U accepted output at matched time cap",
+    "Eplus may benefit fresh recipient versus E",
+    "baseline self-construction can remove Eplus advantage on roundB"
+  ],
+  "predeclared_recovery": "preserve initial outputs and report defects; no post-grading correction enters primary score",
+  "files_isolation": "procedural only; shared filesystem is not security boundary"
+}

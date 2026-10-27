@@ -1,0 +1,81 @@
+{
+  "schema": "agialpha.conditional-economics.v1",
+  "status": "assumed_inputs_for_conditional_mechanism_study_not_customer_data",
+  "currency": "USD",
+  "actual": {"sales": 0, "collections_usd": 0, "complete_research_cost_usd": null},
+  "external_acceptance": {
+    "technical_report_accepted": true,
+    "status": "assumed_for_conditional_service_demonstration; replace_from_independent_acceptance",
+    "customer_effort_hours": 0.5,
+    "customer_effort_limit_hours": 1.0,
+    "deadline_days": 14,
+    "allow_partial_acceptance": false
+  },
+  "service": {
+    "description": "Accepted original-obligation demand-loss audit and procurement-readiness report; no plants promised",
+    "scope": "one prospective job plus any explicit additional capability investment",
+    "price_candidates_usd": [300, 400, 500],
+    "deposit_candidates": [0, 0.5],
+    "outside_option_price_usd": 450,
+    "outside_option_status": "assumed_comparable_accepted_report_price_not_market_quote",
+    "starting_capital_usd": 400,
+    "operating_reserve_usd": 20,
+    "refund_reserve_fraction": 1.0,
+    "delivery_day": 7,
+    "collection_day": 14,
+    "refund_day": 21,
+    "support_on_failure_usd": 10,
+    "retry_correction_usd": 30,
+    "workflow_input_status": "researcher_estimated_hours_and_assumed_cash_costs; no_measured_model_or_workflow_gain",
+    "human_hourly_rate_usd": 100,
+    "H_reference": "3 estimated team hours at USD 100/hour; not a service-market quotation",
+    "workflows": {
+      "H": {"work_hours": 3.0, "paid_job_learning_hours_included": 0.5, "model_service_usd": 0, "B_assessment_usd": 0, "B_serving_usd": 0, "C_optional_development_usd": 0},
+      "U": {"work_hours": 3.0, "paid_job_learning_hours_included": 0.5, "model_service_usd": 5, "B_assessment_usd": 0, "B_serving_usd": 0, "C_optional_development_usd": 0},
+      "E": {"work_hours": 3.0, "paid_job_learning_hours_included": 0.5, "model_service_usd": 5, "B_assessment_usd": 0, "B_serving_usd": 0, "C_optional_development_usd": 0},
+      "E+": {"work_hours": 3.0, "paid_job_learning_hours_included": 0.5, "model_service_usd": 5, "B_assessment_usd": 25, "B_serving_usd": 2, "C_optional_development_usd": 75}
+    }
+  },
+  "worlds": [
+    {"id": "accepted", "weight": 0.65, "outcome": "success", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "buyer_declines", "weight": 0.10, "outcome": "success", "willingness_to_pay_usd": 320, "max_deposit": 0.5},
+    {"id": "correction", "weight": 0.08, "outcome": "retry", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "common_technical_failure", "weight": 0.04, "outcome": "failure", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "payment_default", "weight": 0.04, "outcome": "default", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "withdrawal", "weight": 0.03, "outcome": "withdrawal", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "partial_delivery", "weight": 0.03, "outcome": "partial", "willingness_to_pay_usd": 450, "max_deposit": 0.5},
+    {"id": "missed_deadline", "weight": 0.03, "outcome": "late", "willingness_to_pay_usd": 450, "max_deposit": 0.5}
+  ],
+  "joint_construction": {
+    "status": "counterfactual_mechanism_not_seed_order; no_qualified_seed_lot_or_customer_commitments",
+    "actual_evidence_sufficient": false,
+    "actual_participation_confirmed": false,
+    "buyer_count": 2,
+    "price_per_buyer_usd": 3500,
+    "buyer_outside_option_usd": 4000,
+    "buyer_value_usd": 4000,
+    "starting_capital_usd": 4000,
+    "construction_A_usd": 6000,
+    "coordination_A_usd": 200,
+    "retry_A_usd": 500,
+    "failure_support_A_usd": 100,
+    "retention_B_usd": 0,
+    "optional_development_C_usd": 0,
+    "delivery_A_per_buyer_usd": 300,
+    "deposit_fraction": 0.5,
+    "delivery_day": 730,
+    "deadline_days": 730,
+    "withdrawal_before_build": true,
+    "source_lot_provenance": "unknown",
+    "collection_rights": "unknown",
+    "propagation_yield": "unknown",
+    "no_new_biological_method_or_contract_type_claimed": true
+  },
+  "policy": {
+    "admit_only_positive_expected_full_contribution": true,
+    "require_reserves_nonnegative_in_every_enumerated_world": true,
+    "price_tie_break": "lower_price_then_lower_deposit",
+    "maximum_evaluations": 224,
+    "world_weights_status": "explicit_assumptions_not_empirical_probabilities_or_confidence_intervals"
+  }
+}

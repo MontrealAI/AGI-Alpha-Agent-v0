@@ -1,0 +1,88 @@
+{
+  "schema": "agialpha.replay-hardening-review.v1",
+  "phase": "post_confirmation_reproduction_hardening; frozen methods and confirmation unchanged",
+  "reproduce_sha256": "38ffcd244bfc407b2b057a8cd87604c99d6c9649fa3b294c76fc5984f6c6878b",
+  "corruption_tests": [
+    {
+      "modified_copy": "METHOD_FREEZE.json",
+      "rejected": true,
+      "reason": "confirmation-to-method manifest link drift"
+    },
+    {
+      "modified_copy": "evaluation/packets/packet_a.json",
+      "rejected": true,
+      "reason": "frozen confirmation drift: evaluation/packets/packet_a.json"
+    },
+    {
+      "modified_copy": "evaluation/protected/expected_b.json",
+      "rejected": true,
+      "reason": "frozen confirmation drift: evaluation/protected/expected_b.json"
+    },
+    {
+      "modified_copy": "capability/catalog.json",
+      "rejected": true,
+      "reason": "distributed catalog differs from frozen research catalog"
+    },
+    {
+      "modified_copy": "unexpected packet_c.json",
+      "rejected": true,
+      "reason": "packet directory differs from frozen confirmation membership"
+    },
+    {
+      "modified_copy": "U/reports_a.json",
+      "rejected": true,
+      "reason": "recorded workflow evidence drift: U/reports_a.json"
+    },
+    {
+      "modified_copy": "Eplus/obligation_compiler.py.txt",
+      "rejected": true,
+      "reason": "recorded workflow evidence drift: Eplus/obligation_compiler.py.txt"
+    }
+  ],
+  "relocated_standard_library_replay": {
+    "exit_code": 0,
+    "summary": {
+      "schema": "agialpha.replay.v1",
+      "accepted": 24,
+      "total": 24,
+      "ordinary_same_content_library_identical": true,
+      "frozen_confirmation_manifest_sha256": "b4ce719c72b90f63d375aed0e4e5b1b3004309a7a8910294f75a4d0645d99dc6",
+      "confirmation_hashes_verified": true,
+      "linked_method_manifest_verified": true,
+      "frozen_answers_reproduced": true,
+      "recorded_workflow_outputs": {
+        "status": "saved_outputs_regraded",
+        "agents_rerun": false,
+        "latency_remeasured": false,
+        "accepted": 72,
+        "total": 72
+      },
+      "scope": "source-screen artifact correctness; no customers, ecology, API billing or live ENS claims"
+    },
+    "stderr": ""
+  },
+  "in_repository_native_replay": {
+    "schema": "agialpha.replay.v1",
+    "accepted": 24,
+    "total": 24,
+    "ordinary_same_content_library_identical": true,
+    "frozen_confirmation_manifest_sha256": "b4ce719c72b90f63d375aed0e4e5b1b3004309a7a8910294f75a4d0645d99dc6",
+    "confirmation_hashes_verified": true,
+    "linked_method_manifest_verified": true,
+    "frozen_answers_reproduced": true,
+    "recorded_workflow_outputs": {
+      "status": "saved_outputs_regraded",
+      "agents_rerun": false,
+      "latency_remeasured": false,
+      "accepted": 72,
+      "total": 72
+    },
+    "scope": "source-screen artifact correctness; no customers, ecology, API billing or live ENS claims"
+  },
+  "native_checks_passed": 18,
+  "native_checks_total": 18,
+  "frozen_economics_report_byte_equal": true,
+  "ruff_check": "pass",
+  "ruff_format": "pass",
+  "mypy_strict": "pass"
+}
