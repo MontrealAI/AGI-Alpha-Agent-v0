@@ -1,0 +1,22 @@
+[
+  [
+    "require(succeeded == len(jobs) and scheduling[\"used\"] == 0, \"campaign not complete\")",
+    "require(scheduling[\"used\"] == 0, \"campaign still running\")"
+  ],
+  [
+    "require({(a[\"owner\"], a[\"upload\"]) for a in artifacts} == artifact_keys, \"artifact tenant binding\")",
+    "require({a[\"upload\"] for a in artifacts} == {key[1] for key in artifact_keys}, \"artifact names\")"
+  ],
+  [
+    "require(all(a[\"state\"] == \"committed\" for a in artifacts), \"artifact not committed\")",
+    "require(all(a[\"state\"] != \"aborted\" for a in artifacts), \"artifact aborted\")"
+  ],
+  [
+    "require(batch[\"operations\"] == [{\"from\": declared[job][\"owner\"], \"to\": \"__usage__\", \"amount\": actual[job]}],\n                    \"settlement job binding\")",
+    "require(len(batch[\"operations\"]) == 1, \"one settlement operation required\")"
+  ],
+  [
+    "return dict(schema=\"campaign-audit/1\", decision=\"release\", packet_sha256=digest, reasons=[], summary=summary)",
+    "digest = hashlib.sha256(json.dumps(summary, sort_keys=True).encode()).hexdigest()\n        return dict(schema=\"campaign-audit/1\", decision=\"release\", packet_sha256=digest, reasons=[], summary=summary)"
+  ]
+]

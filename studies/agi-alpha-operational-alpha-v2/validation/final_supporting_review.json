@@ -1,0 +1,367 @@
+{
+  "schema": "operational-alpha-supporting-reproduction/v1",
+  "reproducer_sha256": "598fe56134ed1f745568a9b31bdd513bfc8cab94ccf01add5cfcdaf585490010",
+  "scope": "Supporting studies only; excludes later opportunity-led extensions and publication/release validation.",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "node": "v24.22.1",
+    "packages": {
+      "pydantic": "2.11.7",
+      "cryptography": "50.0.2"
+    }
+  },
+  "source_and_input_pins": {
+    "checked_distinct_files": 118,
+    "pins": {
+      "benchmark/CASE_MANIFEST.json": "74f169cd10c0ab3e1caa184b8cba4c1ecbfcb0841f7af237411c8a1e824d9290",
+      "benchmark/build_cases.py": "4ca6b77933d0ca23099261bcf0f42578539e9ae7e572bc77676bdfb7ef7ce484",
+      "benchmark/cases/c1/CONTRACT.md": "bffbfe960093e5c2a353eb4e69a65d10aacf4919cb1d02e2dbeb222df5dea609",
+      "benchmark/cases/c1/engine.py": "68e5ad37aa6913790914e92900bbb46fafb3ea8b0e78c46d1137f8240d10c014",
+      "benchmark/cases/c1/test_public.py": "034443bf82f262149bdba251fab6da9eff1966aab6a6f1b5bcfddd2d21618710",
+      "benchmark/cases/c2/CONTRACT.md": "cfb275eceea6edeafb28033b9d04fef4d8361464113cdefb3bbc20fa1be4801c",
+      "benchmark/cases/c2/engine.py": "54e68f60faf8911a28ec3a6f86e8bb7f86abe724ea757b1363e65adb7c7bdc87",
+      "benchmark/cases/c2/test_public.py": "bae656a38d15a646bc2823c6aa92caa225878ddebf624b661bf1949ab3d4fce5",
+      "benchmark/cases/c3/CONTRACT.md": "4378e522ab87ded11dc0e6a7f0ed17d0fe3917e21f5f72984918cc43d51d1c07",
+      "benchmark/cases/c3/engine.py": "7ed432cba809befef220194382aedf11217b71c0f82a4c302486205fd5c7ab29",
+      "benchmark/cases/c3/test_public.py": "ec1c3e79bb1a3f20dc5d42c64b0f6eddbe7d122f65a46da14c16860432d04461",
+      "benchmark/cases/c4/CONTRACT.md": "4c6337fd63fe2d0d12c10aa462578c709f566d364019bdb271e1efe1ced1d0af",
+      "benchmark/cases/c4/engine.py": "b672f477af95c4e7cb5f9c7a8ffee1d540f6533ff57c2fd2583f79fd13297cd7",
+      "benchmark/cases/c4/test_public.py": "2f40f4d3b7d4dd7c850818461aaa8a4a1ec63af0e31237622088d5ff3089b7ec",
+      "benchmark/cases/development/CONTRACT.md": "c065d2dd78647b97b12d56b5f3cbf4846c3b0238095ece4e152619c2c7d0cbfa",
+      "benchmark/cases/development/engine.py": "57c958b758c606fe8e1d3a9a02637a83cb8c0a156de7d1e07ba247f2ed1e3d7d",
+      "benchmark/cases/development/test_public.py": "1a951255fe362a119d2c86b8112ad1b5d4e4889c5bee6a806c219696bd962a85",
+      "benchmark/private/c1_mutations.json": "eb325a679c5ab441bebf8db28ffee85722494ded41d3d2c778deb26647197e19",
+      "benchmark/private/c2_mutations.json": "5f7ffb7ee3f0aa15aa1204610d822c6e3a1df40ac858bea8a0bbc08d821f1f4a",
+      "benchmark/private/c3_mutations.json": "19c66a8d1d239082c76feb6d90662e39bd2b234af797f101cc8687b4a4f57005",
+      "benchmark/private/c4_mutations.json": "c45dc6fcc2751fcb319077574a5eac8a4dfea014fd6083adc2d1bd160d7ab1b2",
+      "benchmark/private/calibration.json": "6092db83a9bbc0efd9f3842722899b041465621a82bf4867714a8dbdc6f12eba",
+      "benchmark/private/development_mutations.json": "27050486fe70557b44e0113fe60e008619c8751cd74bce694a8d89c8797b29e6",
+      "benchmark/private/evaluate.py": "2aa45f392bcfb9fff1b912e34eb93b72a7157859d708f17e8d24d5bc8beb2572",
+      "benchmark/private/references/c1/engine.py": "7adef2f9034be19c50be4afbb1cd2d659555aaa8cb2b4e98d2ce9759760c5f28",
+      "benchmark/private/references/c1/test_public.py": "034443bf82f262149bdba251fab6da9eff1966aab6a6f1b5bcfddd2d21618710",
+      "benchmark/private/references/c2/engine.py": "1dbab9f2758f75c54edd3a5b58994af280328c64270e5f07870daecc761b97ba",
+      "benchmark/private/references/c2/test_public.py": "bae656a38d15a646bc2823c6aa92caa225878ddebf624b661bf1949ab3d4fce5",
+      "benchmark/private/references/c3/engine.py": "f11ad59aa26c4fa033c64272ebbf0ec689d07cd54e2f933f0f153d8ba2aa66d5",
+      "benchmark/private/references/c3/test_public.py": "ec1c3e79bb1a3f20dc5d42c64b0f6eddbe7d122f65a46da14c16860432d04461",
+      "benchmark/private/references/c4/engine.py": "8997d87d3a0cdd11796695d57de937e78b7834411a23486b7b7870a395d8730c",
+      "benchmark/private/references/c4/test_public.py": "2f40f4d3b7d4dd7c850818461aaa8a4a1ec63af0e31237622088d5ff3089b7ec",
+      "benchmark/private/references/development/engine.py": "3abee26f0c6b62c0ae9b79125f8d87e9f86e9bb4d05e92f1fd464ee15bcdc712",
+      "benchmark/private/references/development/test_public.py": "1a951255fe362a119d2c86b8112ad1b5d4e4889c5bee6a806c219696bd962a85",
+      "benchmark_composition/CASE_MANIFEST.json": "20c60cbc9de5f1e3eab86362140cae07d1d96de23ea000152ca4c067e05546ba",
+      "benchmark_composition/COMPONENT_PROVENANCE.json": "ff2e5c1bd5c5e10ceeae446c05b942f02c7e998d932f550706befdc2424a202d",
+      "benchmark_composition/cases/c5/COMPONENT_C1_CONTRACT.md": "bffbfe960093e5c2a353eb4e69a65d10aacf4919cb1d02e2dbeb222df5dea609",
+      "benchmark_composition/cases/c5/COMPONENT_C2_CONTRACT.md": "cfb275eceea6edeafb28033b9d04fef4d8361464113cdefb3bbc20fa1be4801c",
+      "benchmark_composition/cases/c5/COMPONENT_C3_CONTRACT.md": "4378e522ab87ded11dc0e6a7f0ed17d0fe3917e21f5f72984918cc43d51d1c07",
+      "benchmark_composition/cases/c5/COMPONENT_C4_CONTRACT.md": "4c6337fd63fe2d0d12c10aa462578c709f566d364019bdb271e1efe1ced1d0af",
+      "benchmark_composition/cases/c5/CONTRACT.md": "99efd4ba960177a400007cfa8d59f325686a0b381f3589b73bd2bf360c451db0",
+      "benchmark_composition/cases/c5/components/accounts.py": "8997d87d3a0cdd11796695d57de937e78b7834411a23486b7b7870a395d8730c",
+      "benchmark_composition/cases/c5/components/artifacts.py": "f11ad59aa26c4fa033c64272ebbf0ec689d07cd54e2f933f0f153d8ba2aa66d5",
+      "benchmark_composition/cases/c5/components/journal.py": "7adef2f9034be19c50be4afbb1cd2d659555aaa8cb2b4e98d2ce9759760c5f28",
+      "benchmark_composition/cases/c5/components/scheduler.py": "1dbab9f2758f75c54edd3a5b58994af280328c64270e5f07870daecc761b97ba",
+      "benchmark_composition/cases/c5/engine.py": "b9492ac6ae029ba1aee4cb91728ead465794e93ea87362221a9fa38388ee438b",
+      "benchmark_composition/cases/c5/offerings.json": "fef532e4ea29f0989d49a5816b86a8a4b9c809f9f6ab1742a492bba42beb1557",
+      "benchmark_composition/cases/c5/test_public.py": "6befda551dacc696812984f159faf44936904d09ba271bb07eed2d6b141255ee",
+      "benchmark_composition/private/calibration.json": "6ceac0024a25db780192664cc0f7a0adb60fd4f8d69a697a1a24c945c3ebbc80",
+      "benchmark_composition/private/evaluate.py": "ebfec60de3a7e6c1ab22176e61ac429ac547e36bd5de543f767b751456ff2694",
+      "benchmark_composition/private/mutations.json": "9ab994c61203b7802b98574b92686c440c541c24e7a59ec35d39f32122dfdbb5",
+      "benchmark_composition/private/references/c5/components/accounts.py": "8997d87d3a0cdd11796695d57de937e78b7834411a23486b7b7870a395d8730c",
+      "benchmark_composition/private/references/c5/components/artifacts.py": "f11ad59aa26c4fa033c64272ebbf0ec689d07cd54e2f933f0f153d8ba2aa66d5",
+      "benchmark_composition/private/references/c5/components/journal.py": "7adef2f9034be19c50be4afbb1cd2d659555aaa8cb2b4e98d2ce9759760c5f28",
+      "benchmark_composition/private/references/c5/components/scheduler.py": "1dbab9f2758f75c54edd3a5b58994af280328c64270e5f07870daecc761b97ba",
+      "benchmark_composition/private/references/c5/engine.py": "e36c124c7b0e8d4dcf60a3a8ef305ff93a54c1f69e4cf189db73d8327ce15113",
+      "benchmark_composition/private/references/c5/test_public.py": "6befda551dacc696812984f159faf44936904d09ba271bb07eed2d6b141255ee",
+      "protocol/study_design.json": "3e3db95f09d26bbed0e085872616fdb322c66e8caed7186a3f2c7233d545d52f",
+      "protocol/trial_runner.py": "22998f83e0c2d6b1f99871ebb0b6d8182884664c7b21c883bed3a92af716c02b",
+      "workflows/expert_v1.json": "23094d0811f832059ec90be84fe6bdde15fd5eb21c8592d97a46d7918d78d226",
+      "workflows/learned_v2.json": "160c7ed9ffabbd4de620fc4a8009f62bc040392b4d94e21288861100d8e8e65b",
+      "workflows/contract_probes.py": "15fc44c017e22c243501129ef6bb72bfdc0ddccf816ea5f5d24fb6916a570674",
+      "workflows/workflow_capsule.zip": "649bd88ae696a6137eeeabb6b35366f87534a14b1fbbd149ef10e21a75ba76e2",
+      "protocol/COMPOSITION_FREEZE.json": "e1be09f11833406fc7151f61b0d33adc89690fdd0138b70b7ac758f62208d7ff",
+      "protocol/history/trial_runner_initial.py": "3e31f2a1033e8e02524742f6040c9072aed1a927b6a13f9dd339994425f78f7c",
+      "economics/history/pre-freeze-001/run_economics.py": "cbc3a3af7fde3bf9358560fedfa931654cbaa681e752fd193b058d99468d5ceb",
+      "economics/history/pre-freeze-001/protocol.json": "e41308f5d9809fcdb44370268bcd8f14c71d53f4d1b6cdb3b34a5312e94ffd4d",
+      "economics/history/pre-freeze-001/README.md": "738f389900210e54823dc3ab55e08d9748df51ea46f7514a80f2189118123d52",
+      "economics/history/pre-freeze-001/test_economics.py": "85558289c52ddb79c914ae753e40a72a374200b8b11235cfe66f5a409a881277",
+      "economics/history/pre-freeze-001/development_diagnostics.json": "0f9032fd75aabdbeb645ccc0d453355eb9395ad1fe6f8a5bae398f2467f4b75e",
+      "economics/run_economics.py": "f9151156597e08538ca33a28d39cca80b8c9c4b42731b15f62c6685373edc74e",
+      "economics/protocol.json": "99da63026ecaf20a2f53e0b168523fc37285c03929fab23af36c7123550446dd",
+      "economics/results/pilot_input.json": "748c57a03a62d4ba4c3a1b03adf15653b6cdf8c3103c47791cf2c40e7b6b4fb2",
+      "economics/../integration/admission.py": "259941927c65864f760e8bad81ecdb28be1c3a00fadc934980d14e831860dd1e",
+      "economics/results/FREEZE.json": "54d11ee868a39be9f3d01afc01017857bbd7e98b8057c31901691f229a30215c",
+      "economics/results/confirmation.json": "67bc1a37763c3ddf8c12686b05bda022ef3c74254c67f09821fba9f71a9a4111",
+      "economics/results/events.jsonl.gz": "a02df55db11f1b9de6d08965775052f669a1393da49adff92b6698dd3cc16d3b",
+      "economics/value_controller.py": "497465edf40ab1425ec4ca0d04d9d14438ffa9ef2f3bce8f40b7f1f444ab1f2c",
+      "economics/value_protocol.json": "dd8a7cc020ada982e4ec5c7e4e19db3c5150e3ddaada19722c8d6fa1d3558467",
+      "economics/value_results/VALUE_FREEZE.json": "b14c921c473685a6e6ff95b89d692f2a859fd8a3b3cc4afabe039ed1159de1f2",
+      "economics/value_results/confirmation.json": "175bbeaabee0ec350731062007cd316bb43cd63cbc9906b021a7edc5120dcf12",
+      "economics/value_results/events.jsonl.gz": "b78dd1d7fe48f599fa2a7b333df75a4488f731f3a4f5079907e94bd85acb94b7",
+      "economics/prescreen_experiment.py": "bb01bb7c3cdc90a98ab83e0487274ef68790ab5751e8e5492fbdfbe78560e865",
+      "integration/run_native_integration.py": "f50712b8e7b2632b01a2aaa9ffa167fa0c7b4e76c10fb52572b4a14d788ec101",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/bridge.py": "6acad454931d3a7b86e254a365a732dba5d0f5866a04f45dbce6c5890de4446a",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/crypto_controls.mjs": "7767b56c6938ca4353ce5f99e7ad5fdff8212e7029958283498b9d956924db68",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/replay.mjs": "21424aca2d4cbd5ed2553875e5f8120de2a51dcdbf21bdedc12b01534cc969c7",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/run_integration.py": "9e553e42a4301d107e487e762525e1941dcb80a44fbec43f64f879bb0a7b1251",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/source_manifest.json": "3489b4bc2870a1fa17af17566f58d16ef190e8039cc71382dcdb9cfabcbd5ba6",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/graph/README.md": "1effce673ce862fb92c82dd9b69d9388c38bf29aa19c493b69052523909b0e8a",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/graph/crypto_capsule.mjs": "bfc232c95ed71652b1ab22de2cc61cf355d2ab8c70f198cb1eacb152b4d02b11",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/graph/encoding.mjs": "6eb2e82e6240acc1bfe37c8ac54cd8b5aa3867c6773762721b79ec19e3e6cfbf",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/graph/lifecycle.mjs": "72d3e4cb4bdb98a881fdd53d31abd647f87c2e1ba0c6468468bb1c523956148e",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/graph/simulation_adapter.mjs": "14f9b859116d61dcb8ceb17d2ec03ff7c543fdaeb5bf8df23dc7f58fc183cce1",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/model/alpha_gate.mjs": "76df01fa9729b7e64b54b441727940bd2238af80a6226816321d0a96c9309760",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/upstream/PROVENANCE.json": "f59197f7c2087f851c66b3b886e86ef9aba4a031a0239dd32b89635cf6372c68",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/upstream/graph/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/upstream/graph/authority-fixture.json": "c130af4be60ab8ab5e61292ddbdd7f9588f2f8817c0edca150ccfc8709624da4",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/upstream/graph/authority.mjs": "5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/beyond_beta/upstream/graph/commitments.mjs": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/__init__.py": "065ed77bc53191bf762d2402be898be7d1e605ee94ea05ae2d3bc9eeaf5b3421",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/__init__.py": "b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/__init__.py": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/chain.py": "adde986423301e7ed53df57bf39a7814a3ea6e2ccb0f5f1edc9b9c446c11aa5c",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/models.py": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/store.py": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/__init__.py": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/flywheel_access.py": "c464333c819f0e89e32dda8223ed544c1ce1784754c1f996483cea7ae4a7b055",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "c7f4bb572e000371eb67399e2630577e6636aa360436d926383f285d62531ec7",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "4d2e19b937471bdc247a9b0bb66bd4c315da5a9c6498591bc9f24496e07feb13",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/signatures.py": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/transformation.py": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/transformation_library.py": "c78903802ba0379cdd1907c6472630e488d55cbfe7b1fb99ce0d275bb758d172",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
+      "/tmp/alpha-standalone-final-i4ztm0my/studies/agi-alpha-capability-opportunity-v1/integration/vendor/runtime/examples/alpha-flywheel/engine.mjs": "25e45d379973f3604f77757c4665ee0f8dd2be9ebf5a5383f915ff228313148e"
+    },
+    "upstream_adapter_files": 5,
+    "upstream_manifest_files": 29,
+    "preserved_corrections": [
+      "runner locking",
+      "economic recipient shift and H scope",
+      "C5 price and H scope"
+    ]
+  },
+  "archived_output_replay": {
+    "primary_outputs_accepted": 12,
+    "composition_outputs_accepted": 3,
+    "development_outputs_accepted": 1,
+    "independent_primary_task_families": 4,
+    "independent_composition_tasks": 1,
+    "outputs": [
+      {
+        "arm": "development",
+        "case": "development",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "346b8bb088387d3331e0b36fdfc69cd4dc046b278b883a5dc4cb7a4c288f4952"
+      },
+      {
+        "arm": "U",
+        "case": "c1",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "7304951d8cf64af3c0d3c24d18374a8f4566773b06302add4fc15b600b9fa91d"
+      },
+      {
+        "arm": "U",
+        "case": "c2",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "8034b83ee1c1166316ee6bc395b55d04988a84c10d5a23db28e7dd9ebc7a12b9"
+      },
+      {
+        "arm": "U",
+        "case": "c3",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "030a57fd25ce4c15ea83ac210b6a95beff26b10b4eca877fd9749099512264d6"
+      },
+      {
+        "arm": "U",
+        "case": "c4",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "087beb9352a5dfdd0612f6e6b5137fbc5b4127e5d696bf2b2614205e8f80a393"
+      },
+      {
+        "arm": "E",
+        "case": "c1",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "5ad8504e958c81a952a066e1863dd4b74d975d14530e26229eff2003fa64371f"
+      },
+      {
+        "arm": "E",
+        "case": "c2",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "88eb22867efbb52ba4f1b4e373ecfcea2ae9e19880a30295d69d8d926b979bfd"
+      },
+      {
+        "arm": "E",
+        "case": "c3",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "42589d55f8d131ab13a6d4a587b510d8ad8d0b3e14e72c9ae33866a20bcf550d"
+      },
+      {
+        "arm": "E",
+        "case": "c4",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "4b545c5c5ed372299728595990881f00c5da1b656fb7fdbcafeddcc91a4f0e5d"
+      },
+      {
+        "arm": "E_plus",
+        "case": "c1",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "37d9cdee46cd6ab668990a27863407abf8c5a101229541e1661408138efaf188"
+      },
+      {
+        "arm": "E_plus",
+        "case": "c2",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "65e025ad820bb4f4cb6a49dfdbb9a0292f20ffcf7de45ab79d82e80f343b60a7"
+      },
+      {
+        "arm": "E_plus",
+        "case": "c3",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "8a2cdafa060bff101ff3589c2e2d0e55b7896a349d3db5fc9699f106b2d721ea"
+      },
+      {
+        "arm": "E_plus",
+        "case": "c4",
+        "accepted": true,
+        "categories": 10,
+        "source_sha256": "41f43c575d71912e02232862ed447bb191bbed49c6f5a6d93cd864f8c877963e"
+      },
+      {
+        "arm": "C5_U",
+        "case": "c5",
+        "accepted": true,
+        "categories": 14,
+        "source_sha256": "e82b896e7d5cc100c7790737045f5e5cfa2be8640561d03ea358139a88124290"
+      },
+      {
+        "arm": "C5_E",
+        "case": "c5",
+        "accepted": true,
+        "categories": 14,
+        "source_sha256": "837d6f05ba6434e8897587e7e0c3a1e914c284b1ce60211db04cf147ece3d039"
+      },
+      {
+        "arm": "C5_E_plus",
+        "case": "c5",
+        "accepted": true,
+        "categories": 14,
+        "source_sha256": "314bf8423235eccd71571868e0e6ec25ccbc6cedc76e757b4bee97fe22511f56"
+      }
+    ],
+    "inventory_and_runner_checks": {
+      "development": {
+        "files": 7,
+        "logged_operations": 13,
+        "elapsed_seconds": 214.38377857208252,
+        "failed_logged_test_executions": 1
+      },
+      "U": {
+        "files": 20,
+        "logged_operations": 32,
+        "elapsed_seconds": 372.4594852924347,
+        "failed_logged_test_executions": 0
+      },
+      "E": {
+        "files": 20,
+        "logged_operations": 33,
+        "elapsed_seconds": 275.34877371788025,
+        "failed_logged_test_executions": 4
+      },
+      "E_plus": {
+        "files": 24,
+        "logged_operations": 36,
+        "elapsed_seconds": 353.621630191803,
+        "failed_logged_test_executions": 4
+      },
+      "C5_U": {
+        "files": 15,
+        "logged_operations": 17,
+        "elapsed_seconds": 424.22909140586853,
+        "failed_logged_test_executions": 1
+      },
+      "C5_E": {
+        "files": 15,
+        "logged_operations": 17,
+        "elapsed_seconds": 290.3335266113281,
+        "failed_logged_test_executions": 1
+      },
+      "C5_E_plus": {
+        "files": 16,
+        "logged_operations": 23,
+        "elapsed_seconds": 410.68156695365906,
+        "failed_logged_test_executions": 1
+      }
+    },
+    "limits": "Saved-output replay only; assertions are not independent tasks and elapsed time is not a replicated treatment effect."
+  },
+  "capability_and_native": {
+    "capsule_sha256": "649bd88ae696a6137eeeabb6b35366f87534a14b1fbbd149ef10e21a75ba76e2",
+    "capsule_bytes": 4649,
+    "archived_controls": 31,
+    "native_replay": "31/31 passed under simulated authority",
+    "live_authentication": false,
+    "actual_profit": null,
+    "source_files": 29
+  },
+  "conditional_economics": {
+    "original_histories": 4608,
+    "value_histories": 9216,
+    "original_unique_profile_seed_worlds": 768,
+    "value_unique_profile_seed_worlds": 768,
+    "summary_reconstruction": "exact JSON equality for both editions",
+    "all_history_accounting_identities": 13824,
+    "existing_value_verifier": {
+      "histories": 9216,
+      "accounting_identities_checked": 9216,
+      "held_histories_exact_E": 2304,
+      "graph_library_equal_pairs": 768,
+      "control_histories_unchanged": 2304,
+      "original_confirmation_unchanged": true,
+      "source_boundaries_unchanged": {
+        "../integration/admission.py": true,
+        "protocol.json": true,
+        "results/FREEZE.json": true,
+        "results/confirmation.json": true,
+        "results/pilot_input.json": true,
+        "run_economics.py": true,
+        "value_controller.py": true,
+        "value_protocol.json": true
+      },
+      "freeze_sha256": "b14c921c473685a6e6ff95b89d692f2a859fd8a3b3cc4afabe039ed1159de1f2",
+      "limitation": "Summary/accounting identities and immutable-source checks; not independent market validation."
+    },
+    "full_selected_history_reruns": 13824,
+    "event_stream_verification": "Both compressed stream SHA-256 bindings checked; individual events are not independently re-audited by this script.",
+    "limits": "All economic histories are conditional simulations. Re-execution does not validate assumptions or recreate frontier behavior."
+  },
+  "prospective_prescreen": {
+    "histories": 256,
+    "worlds": 128,
+    "replay": "exact confirmation and summary equality",
+    "limit": "New artificial candidate process; not repaired historical profit or empirical skill value."
+  },
+  "passed": true,
+  "elapsed_seconds": 22.81852869699651,
+  "not_claimed": [
+    "new hosted model calls",
+    "independent external replication",
+    "complete actual monetary cost",
+    "live ENS authentication",
+    "customer revenue",
+    "production admission",
+    "full repository CI"
+  ]
+}

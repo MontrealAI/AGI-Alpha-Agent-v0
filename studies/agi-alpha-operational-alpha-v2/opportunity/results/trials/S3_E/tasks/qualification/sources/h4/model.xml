@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="Blasi_CellSystems2016__select_motif_specific" name="Blasi_CellSystems2016__select_motif_specific">
+    <listOfCompartments>
+      <compartment id="compartment" name="compartment" size="1" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="x_0ac" name="x_{0ac}" compartment="compartment" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05" name="x_{k05}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k08" name="x_{k08}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k12" name="x_{k12}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k16" name="x_{k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k08" name="x_{k05k08}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k12" name="x_{k05k12}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k16" name="x_{k05k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k08k12" name="x_{k08k12}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k08k16" name="x_{k08k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k12k16" name="x_{k12k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k08k12" name="x_{k05k08k12}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k08k16" name="x_{k05k08k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k05k12k16" name="x_{k05k12k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_k08k12k16" name="x_{k08k12k16}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="x_4ac" name="x_{4ac}" compartment="compartment" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="a_b" name="a_b" value="0" constant="true"/>
+      <parameter id="da_b" name="da_b" value="1" constant="true"/>
+      <parameter id="a_0ac_k05" name="a_{0ac\\rightarrow k05}" value="0" constant="true"/>
+      <parameter id="a_0ac_k08" name="a_{0ac\\rightarrow k08}" value="0" constant="true"/>
+      <parameter id="a_0ac_k12" name="a_{0ac\\rightarrow k12}" value="0" constant="true"/>
+      <parameter id="a_0ac_k16" name="a_{0ac\\rightarrow k16}" value="0" constant="true"/>
+      <parameter id="a_k05_k05k08" name="a_{k05\\rightarrow k05k08}" value="0" constant="true"/>
+      <parameter id="a_k05_k05k12" name="a_{k05\\rightarrow k05k12}" value="0" constant="true"/>
+      <parameter id="a_k05_k05k16" name="a_{k05\\rightarrow k05k16}" value="0" constant="true"/>
+      <parameter id="a_k08_k05k08" name="a_{k08\\rightarrow k05k08}" value="0" constant="true"/>
+      <parameter id="a_k08_k08k12" name="a_{k08\\rightarrow k08k12}" value="0" constant="true"/>
+      <parameter id="a_k08_k08k16" name="a_{k08\\rightarrow k08k16}" value="0" constant="true"/>
+      <parameter id="a_k12_k05k12" name="a_{k12\\rightarrow k05k12}" value="0" constant="true"/>
+      <parameter id="a_k12_k08k12" name="a_{k12\\rightarrow k08k12}" value="0" constant="true"/>
+      <parameter id="a_k12_k12k16" name="a_{k12\\rightarrow k12k16}" value="0" constant="true"/>
+      <parameter id="a_k16_k05k16" name="a_{k16\\rightarrow k05k16}" value="0" constant="true"/>
+      <parameter id="a_k16_k08k16" name="a_{k16\\rightarrow k08k16}" value="0" constant="true"/>
+      <parameter id="a_k16_k12k16" name="a_{k16\\rightarrow k12k16}" value="0" constant="true"/>
+      <parameter id="a_k05k08_k05k08k12" name="a_{k05k08\\rightarrow k05k08k12}" value="0" constant="true"/>
+      <parameter id="a_k05k08_k05k08k16" name="a_{k05k08\\rightarrow k05k08k16}" value="0" constant="true"/>
+      <parameter id="a_k05k12_k05k08k12" name="a_{k05k12\\rightarrow k05k08k12}" value="0" constant="true"/>
+      <parameter id="a_k05k12_k05k12k16" name="a_{k05k12\\rightarrow k05k12k16}" value="0" constant="true"/>
+      <parameter id="a_k05k16_k05k08k16" name="a_{k05k16\\rightarrow k05k08k16}" value="0" constant="true"/>
+      <parameter id="a_k05k16_k05k12k16" name="a_{k05k16\\rightarrow k05k12k16}" value="0" constant="true"/>
+      <parameter id="a_k08k12_k05k08k12" name="a_{k08k12\\rightarrow k05k08k12}" value="0" constant="true"/>
+      <parameter id="a_k08k12_k08k12k16" name="a_{k08k12\\rightarrow k08k12k16}" value="0" constant="true"/>
+      <parameter id="a_k08k16_k05k08k16" name="a_{k08k16\\rightarrow k05k08k16}" value="0" constant="true"/>
+      <parameter id="a_k08k16_k08k12k16" name="a_{k08k16\\rightarrow k08k12k16}" value="0" constant="true"/>
+      <parameter id="a_k12k16_k05k12k16" name="a_{k12k16\\rightarrow k05k12k16}" value="0" constant="true"/>
+      <parameter id="a_k12k16_k08k12k16" name="a_{k12k16\\rightarrow k08k12k16}" value="0" constant="true"/>
+      <parameter id="a_k05k08k12_4ac" name="a_{k05k08k12\\rightarrow 4ac}" value="0" constant="true"/>
+      <parameter id="a_k05k08k16_4ac" name="a_{k05k08k16\\rightarrow 4ac}" value="0" constant="true"/>
+      <parameter id="a_k05k12k16_4ac" name="a_{k05k12k16\\rightarrow 4ac}" value="0" constant="true"/>
+      <parameter id="a_k08k12k16_4ac" name="a_{k08k12k16\\rightarrow 4ac}" value="0" constant="true"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="r_a_0ac_k05" name="r^a_{0ac\\rightarrow k05}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_0ac_k05 </ci>
+              <ci> a_b </ci>
+              <ci> x_0ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_0ac_k08" name="r^a_{0ac\\rightarrow k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_0ac_k08 </ci>
+              <ci> a_b </ci>
+              <ci> x_0ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_0ac_k12" name="r^a_{0ac\\rightarrow k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_0ac_k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_0ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_0ac_k16" name="r^a_{0ac\\rightarrow k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_0ac_k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_0ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05_k05k08" name="r^a_{k05\\rightarrow k05k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05_k05k08 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05_k05k12" name="r^a_{k05\\rightarrow k05k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05_k05k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05_k05k16" name="r^a_{k05\\rightarrow k05k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05_k05k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08_k05k08" name="r^a_{k08\\rightarrow k05k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08_k05k08 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08_k08k12" name="r^a_{k08\\rightarrow k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08_k08k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08_k08k16" name="r^a_{k08\\rightarrow k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08_k08k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k12_k05k12" name="r^a_{k12\\rightarrow k05k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k12_k05k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k12_k08k12" name="r^a_{k12\\rightarrow k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k12_k08k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k12_k12k16" name="r^a_{k12\\rightarrow k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k12_k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k16_k05k16" name="r^a_{k16\\rightarrow k05k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k16_k05k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k16_k08k16" name="r^a_{k16\\rightarrow k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k16_k08k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k16_k12k16" name="r^a_{k16\\rightarrow k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k16_k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k08_k05k08k12" name="r^a_{k05k08\\rightarrow k05k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k08_k05k08k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k08_k05k08k16" name="r^a_{k05k08\\rightarrow k05k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k08_k05k08k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k12_k05k08k12" name="r^a_{k05k12\\rightarrow k05k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k12_k05k08k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k12_k05k12k16" name="r^a_{k05k12\\rightarrow k05k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k12_k05k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k16_k05k08k16" name="r^a_{k05k16\\rightarrow k05k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k16_k05k08k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k16_k05k12k16" name="r^a_{k05k16\\rightarrow k05k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k16_k05k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08k12_k05k08k12" name="r^a_{k08k12\\rightarrow k05k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08k12_k05k08k12 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08k12_k08k12k16" name="r^a_{k08k12\\rightarrow k08k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08k12_k08k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08k16_k05k08k16" name="r^a_{k08k16\\rightarrow k05k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08k16_k05k08k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08k16_k08k12k16" name="r^a_{k08k16\\rightarrow k08k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08k16_k08k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k12k16_k05k12k16" name="r^a_{k12k16\\rightarrow k05k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k12k16_k05k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k12k16_k08k12k16" name="r^a_{k12k16\\rightarrow k08k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k12k16_k08k12k16 </ci>
+              <ci> a_b </ci>
+              <ci> x_k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k08k12_4ac" name="r^a_{k05k08k12\\rightarrow 4ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k08k12_4ac </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k08k16_4ac" name="r^a_{k05k08k16\\rightarrow 4ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k08k16_4ac </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k05k12k16_4ac" name="r^a_{k05k12k16\\rightarrow 4ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k05k12k16_4ac </ci>
+              <ci> a_b </ci>
+              <ci> x_k05k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_a_k08k12k16_4ac" name="r^a_{k08k12k16\\rightarrow 4ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> a_k08k12k16_4ac </ci>
+              <ci> a_b </ci>
+              <ci> x_k08k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05_0ac" name="r^{da}_{k05\\rightarrow 0ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08_0ac" name="r^{da}_{k08\\rightarrow 0ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k12_0ac" name="r^{da}_{k12\\rightarrow 0ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k16_0ac" name="r^{da}_{k16\\rightarrow 0ac}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_0ac" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08_k08" name="r^{da}_{k05k08\\rightarrow k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08_k05" name="r^{da}_{k05k08\\rightarrow k05}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k12_k12" name="r^{da}_{k05k12\\rightarrow k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k12_k05" name="r^{da}_{k05k12\\rightarrow k05}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k16_k16" name="r^{da}_{k05k16\\rightarrow k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k16_k05" name="r^{da}_{k05k16\\rightarrow k05}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k12_k12" name="r^{da}_{k08k12\\rightarrow k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k12_k08" name="r^{da}_{k08k12\\rightarrow k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k16_k16" name="r^{da}_{k08k16\\rightarrow k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k16_k08" name="r^{da}_{k08k16\\rightarrow k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k12k16_k16" name="r^{da}_{k12k16\\rightarrow k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k12k16_k12" name="r^{da}_{k12k16\\rightarrow k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k12_k08k12" name="r^{da}_{k05k08k12\\rightarrow k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k12_k05k12" name="r^{da}_{k05k08k12\\rightarrow k05k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k12_k05k08" name="r^{da}_{k05k08k12\\rightarrow k05k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k12 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k16_k08k16" name="r^{da}_{k05k08k16\\rightarrow k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k16_k05k16" name="r^{da}_{k05k08k16\\rightarrow k05k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k08k16_k05k08" name="r^{da}_{k05k08k16\\rightarrow k05k08}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k08k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k12k16_k12k16" name="r^{da}_{k05k12k16\\rightarrow k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k12k16_k05k16" name="r^{da}_{k05k12k16\\rightarrow k05k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k05k12k16_k05k12" name="r^{da}_{k05k12k16\\rightarrow k05k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k05k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k12k16_k12k16" name="r^{da}_{k08k12k16\\rightarrow k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k12k16_k08k16" name="r^{da}_{k08k12k16\\rightarrow k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_k08k12k16_k08k12" name="r^{da}_{k08k12k16\\rightarrow k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_k08k12k16 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_4ac_k08k12k16" name="r^{da}_{4ac\\rightarrow k08k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k08k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_4ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_4ac_k05k12k16" name="r^{da}_{4ac\\rightarrow k05k12k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k12k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_4ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_4ac_k05k08k16" name="r^{da}_{4ac\\rightarrow k05k08k16}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k16" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_4ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="r_da_4ac_k05k08k12" name="r^{da}_{4ac\\rightarrow k05k08k12}" reversible="false">
+        <listOfReactants>
+          <speciesReference species="x_4ac" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="x_k05k08k12" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> da_b </ci>
+              <ci> x_4ac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

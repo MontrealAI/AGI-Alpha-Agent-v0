@@ -1,0 +1,586 @@
+[
+  {
+    "case": "development",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/cases/development",
+    "seed": 6102700,
+    "source_sha256": "57c958b758c606fe8e1d3a9a02637a83cb8c0a156de7d1e07ba247f2ed1e3d7d",
+    "passed": 6,
+    "total": 10,
+    "accepted": false,
+    "checks": [
+      {
+        "category": "request-binding",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "owner-isolation",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "terminal-retry-conflict",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "copy-isolation",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'wallets': {'a': {'available': -10, 'reserved': 40, 'spent': 0}}, 'requests': {'j': {'owner': 'evil', 'cap': 40, 'state': 'reserved', 'actual': None}}} != {'wallets': {'a': {'available': 60, 'reserved': 40, 'spent': 0}}, 'requests': {'j': {'owner': 'a', 'cap': 40, 'state': 'reserved', 'actual': None}}}"
+      },
+      {
+        "category": "invalid-input-atomicity",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.04523030600103084,
+    "version": "starter"
+  },
+  {
+    "case": "development",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/private/references/development",
+    "seed": 6102700,
+    "source_sha256": "3abee26f0c6b62c0ae9b79125f8d87e9f86e9bb4d05e92f1fd464ee15bcdc712",
+    "passed": 10,
+    "total": 10,
+    "accepted": true,
+    "checks": [
+      {
+        "category": "request-binding",
+        "passed": true
+      },
+      {
+        "category": "owner-isolation",
+        "passed": true
+      },
+      {
+        "category": "terminal-retry-conflict",
+        "passed": true
+      },
+      {
+        "category": "copy-isolation",
+        "passed": true
+      },
+      {
+        "category": "invalid-input-atomicity",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.05129781799041666,
+    "version": "reference"
+  },
+  {
+    "case": "c1",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/cases/c1",
+    "seed": 6102711,
+    "source_sha256": "68e5ad37aa6913790914e92900bbb46fafb3ea8b0e78c46d1137f8240d10c014",
+    "passed": 7,
+    "total": 10,
+    "accepted": false,
+    "checks": [
+      {
+        "category": "event-id-binding",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "cross-tenant-terminal-denial",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "input-log-receipt-isolation",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "[{'id': 'e', 'job': 'j', 'owner': 'evil', 'kind': 'reserve', 'amount': 999}] != [{'id': 'e', 'job': 'j', 'owner': 'a', 'kind': 'reserve', 'amount': 40}]"
+      },
+      {
+        "category": "failed-id-recovery-terminal-rules",
+        "passed": true
+      },
+      {
+        "category": "input-domain",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.06043305200000759,
+    "version": "starter"
+  },
+  {
+    "case": "c1",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/private/references/c1",
+    "seed": 6102711,
+    "source_sha256": "7adef2f9034be19c50be4afbb1cd2d659555aaa8cb2b4e98d2ce9759760c5f28",
+    "passed": 10,
+    "total": 10,
+    "accepted": true,
+    "checks": [
+      {
+        "category": "event-id-binding",
+        "passed": true
+      },
+      {
+        "category": "cross-tenant-terminal-denial",
+        "passed": true
+      },
+      {
+        "category": "input-log-receipt-isolation",
+        "passed": true
+      },
+      {
+        "category": "failed-id-recovery-terminal-rules",
+        "passed": true
+      },
+      {
+        "category": "input-domain",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-replay-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.05919182600337081,
+    "version": "reference"
+  },
+  {
+    "case": "c2",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/cases/c2",
+    "seed": 6102721,
+    "source_sha256": "54e68f60faf8911a28ec3a6f86e8bb7f86abe724ea757b1363e65adb7c7bdc87",
+    "passed": 3,
+    "total": 10,
+    "accepted": false,
+    "checks": [
+      {
+        "category": "dependency-success-required",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "tenant-scoped-dependencies",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "old-lease-retries-and-global-uniqueness",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "not active"
+      },
+      {
+        "category": "capacity-release-and-cancel",
+        "passed": true
+      },
+      {
+        "category": "validation-and-copy-isolation",
+        "passed": true
+      },
+      {
+        "category": "fresh-dag-sequence-0",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "not active"
+      },
+      {
+        "category": "fresh-dag-sequence-1",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "not active"
+      },
+      {
+        "category": "fresh-dag-sequence-2",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "not active"
+      },
+      {
+        "category": "fresh-dag-sequence-3",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "not active"
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.055590701987966895,
+    "version": "starter"
+  },
+  {
+    "case": "c2",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/private/references/c2",
+    "seed": 6102721,
+    "source_sha256": "1dbab9f2758f75c54edd3a5b58994af280328c64270e5f07870daecc761b97ba",
+    "passed": 10,
+    "total": 10,
+    "accepted": true,
+    "checks": [
+      {
+        "category": "dependency-success-required",
+        "passed": true
+      },
+      {
+        "category": "tenant-scoped-dependencies",
+        "passed": true
+      },
+      {
+        "category": "old-lease-retries-and-global-uniqueness",
+        "passed": true
+      },
+      {
+        "category": "capacity-release-and-cancel",
+        "passed": true
+      },
+      {
+        "category": "validation-and-copy-isolation",
+        "passed": true
+      },
+      {
+        "category": "fresh-dag-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-dag-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-dag-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-dag-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.05619802100409288,
+    "version": "reference"
+  },
+  {
+    "case": "c3",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/cases/c3",
+    "seed": 6102731,
+    "source_sha256": "7ed432cba809befef220194382aedf11217b71c0f82a4c302486205fd5c7ab29",
+    "passed": 6,
+    "total": 10,
+    "accepted": false,
+    "checks": [
+      {
+        "category": "tenant-upload-namespace",
+        "passed": false,
+        "error": "ValueError",
+        "detail": "upload conflict"
+      },
+      {
+        "category": "overlap-atomicity-and-committed-retry",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "[{'owner': 'a', 'upload': 'u', 'size': 6, 'digest': 'bef57ec7f53a6d40beb640a780a639c83bc29ac8a9816f1fc6c5c6dcd93c4721', 'state': 'active', 'cells': [97, 98, 99, 100, 101, 102]}] != [{'owner': 'a', 'upload': 'u', 'size': 6, 'digest': 'bef57ec7f53a6d40beb640a780a639c83bc29ac8a9816f1fc6c5c6dcd93c4721', 'state': 'active', 'cells': [None, None, None, 100, 101, 102]}]"
+      },
+      {
+        "category": "completeness-digest-abort",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "checkpoint-input-output-isolation",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "90 != 97"
+      },
+      {
+        "category": "restore-validation-and-empty-boundary",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.054035130990087055,
+    "version": "starter"
+  },
+  {
+    "case": "c3",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/private/references/c3",
+    "seed": 6102731,
+    "source_sha256": "f11ad59aa26c4fa033c64272ebbf0ec689d07cd54e2f933f0f153d8ba2aa66d5",
+    "passed": 10,
+    "total": 10,
+    "accepted": true,
+    "checks": [
+      {
+        "category": "tenant-upload-namespace",
+        "passed": true
+      },
+      {
+        "category": "overlap-atomicity-and-committed-retry",
+        "passed": true
+      },
+      {
+        "category": "completeness-digest-abort",
+        "passed": true
+      },
+      {
+        "category": "checkpoint-input-output-isolation",
+        "passed": true
+      },
+      {
+        "category": "restore-validation-and-empty-boundary",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-chunk-recovery-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.056221845996333286,
+    "version": "reference"
+  },
+  {
+    "case": "c4",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/cases/c4",
+    "seed": 6102741,
+    "source_sha256": "b672f477af95c4e7cb5f9c7a8ffee1d540f6533ff57c2fd2583f79fd13297cd7",
+    "passed": 6,
+    "total": 10,
+    "accepted": false,
+    "checks": [
+      {
+        "category": "durable-request-payload-binding",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "late-failure-atomicity-and-id-reuse",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'balances': {'a': 80, 'b': 20, 'c': 0}, 'revisions': {'a': 0, 'b': 0, 'c': 0}} != {'balances': {'a': 100, 'b': 0, 'c': 0}, 'revisions': {'a': 0, 'b': 0, 'c': 0}}"
+      },
+      {
+        "category": "exact-guards-and-once-per-batch-revisions",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "required ValueError was not raised"
+      },
+      {
+        "category": "stored-and-replayed-receipt-isolation",
+        "passed": false,
+        "error": "AssertionError",
+        "detail": "{'request': 't', 'balances': {'a': -1, 'b': 20}, 'revisions': {'a': 1, 'b': 1}} != {'request': 't', 'balances': {'a': 80, 'b': 20}, 'revisions': {'a': 1, 'b': 1}}"
+      },
+      {
+        "category": "input-domain-and-sequential-solvency",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.04944434599019587,
+    "version": "starter"
+  },
+  {
+    "case": "c4",
+    "submission": "/workspace/scratch/16ea3c97525a/benchmark_build/private/references/c4",
+    "seed": 6102741,
+    "source_sha256": "8997d87d3a0cdd11796695d57de937e78b7834411a23486b7b7870a395d8730c",
+    "passed": 10,
+    "total": 10,
+    "accepted": true,
+    "checks": [
+      {
+        "category": "durable-request-payload-binding",
+        "passed": true
+      },
+      {
+        "category": "late-failure-atomicity-and-id-reuse",
+        "passed": true
+      },
+      {
+        "category": "exact-guards-and-once-per-batch-revisions",
+        "passed": true
+      },
+      {
+        "category": "stored-and-replayed-receipt-isolation",
+        "passed": true
+      },
+      {
+        "category": "input-domain-and-sequential-solvency",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-0",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-1",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-2",
+        "passed": true
+      },
+      {
+        "category": "fresh-atomic-sequence-3",
+        "passed": true
+      },
+      {
+        "category": "canonical-public-smoke",
+        "passed": true,
+        "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+      }
+    ],
+    "elapsed_seconds": 0.04713454400189221,
+    "version": "reference"
+  }
+]

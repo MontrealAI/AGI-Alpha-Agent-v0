@@ -1,0 +1,59 @@
+{
+  "actual_customer_collections_usd": 0,
+  "actual_model_tokens": null,
+  "actual_provider_charge_usd": null,
+  "earlier_validation": {
+    "command_wall_seconds": 1.01185,
+    "development_test_count": 17,
+    "passed": true,
+    "status": "observed prior development, summary retained; latest detailed logs contain final18-test run",
+    "unittest_reported_seconds": 0.396
+  },
+  "findings": [
+    {
+      "detail": "Initial candidate-space count32 omitted default estimated basal a_b outside model-space columns; corrected to union selected estimated kinetics and candidate columns, producing33 for actual supplied model space.",
+      "kind": "incorrect_initial_count"
+    },
+    {
+      "detail": "Added direct-abundance restriction for clock witness and dimension bound; flux formulas do not inherit a state-abundance argument.",
+      "kind": "scope_review"
+    },
+    {
+      "detail": "Changed parameter points require calibration binding; source/scope changes rejected; calibration-excluded counterexamples rejected.",
+      "kind": "calibration_review"
+    },
+    {
+      "detail": "Initial Ruff found4 E702 multiple-statements errors in tests; corrected before final validation.",
+      "kind": "development_lint"
+    },
+    {
+      "detail": "Initial strict mypy found21 errors, principally ndarray type alias and a repeated calibration annotation; corrected TypeAlias and removed repeated annotation.",
+      "kind": "development_typecheck"
+    },
+    {
+      "detail": "First17-test run passed but warned of one unclosed CSV handle; converted to context manager.",
+      "kind": "resource_warning"
+    },
+    {
+      "detail": "Scaled stationary vectors are independently recomputed rather than reporting a copied vector as a numeric comparison.",
+      "kind": "numerical_evidence"
+    },
+    {
+      "detail": "Protocol author disclosed two ordinary source layouts; added current-directory model_space.tsv, ambiguity refusal and an eighteenth development test without accessing fresh source or requests.",
+      "kind": "public_interface_adaptation"
+    },
+    {
+      "detail": "Candidate-space count is null when model-space evidence is absent; supplied prospective counts remain explicit caller assumptions.",
+      "kind": "missing_evidence"
+    }
+  ],
+  "latest_validation": {
+    "development_test_count": 18,
+    "passed": true
+  },
+  "paid_job_learning": false,
+  "preserved_initial_implementation": "history/model_reuse_initial.py",
+  "protected_evaluation_accessed": false,
+  "recorded_at_utc": "2026-10-27T16:29:37.569978+00:00",
+  "stage": "preconfirmation_development"
+}

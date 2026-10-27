@@ -1,0 +1,9 @@
+{
+  "stage": "after development, before any confirmation",
+  "issue": "Participant reports one failed concurrent read with JSON decode error; shared runner state lacked an exclusive lock. The source and failure are retained. Development operation count excludes that unsuccessful invocation.",
+  "correction": "serialize state/log transactions with fcntl.flock; no benchmark, scorer, workflow or budget changes",
+  "source_before": "3e31f2a1033e8e02524742f6040c9072aed1a927b6a13f9dd339994425f78f7c",
+  "source_after": "22998f83e0c2d6b1f99871ebb0b6d8182884664c7b21c883bed3a92af716c02b",
+  "classification": "prefreeze instrumentation correction",
+  "original_development_source_preserved": true
+}

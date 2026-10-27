@@ -1,0 +1,18 @@
+[
+  [
+    "if old != event:",
+    "if old[\"kind\"] != event[\"kind\"]:"
+  ],
+  [
+    " or jobs[job][\"owner\"] != owner",
+    ""
+  ],
+  [
+    "self.events.append(deepcopy(event))",
+    "self.events.append(event)"
+  ],
+  [
+    "return deepcopy(self.events)",
+    "return list(self.events)"
+  ]
+]

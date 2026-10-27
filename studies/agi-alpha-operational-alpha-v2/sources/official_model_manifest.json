@@ -1,0 +1,184 @@
+{
+  "retrieved_on": "2026-10-27",
+  "currency": "USD",
+  "pricing_url": "https://developers.openai.com/api/docs/pricing",
+  "pricing_ref": "turn1view4",
+  "models": [
+    {
+      "model_id": "gpt-6-astra",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "source_ref": "turn1view0",
+      "evidence": "sourced_official_documentation_not_account_entitlement",
+      "context_tokens": 1050000,
+      "maximum_output_tokens": 128000,
+      "reasoning_efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses",
+      "supported_tools": [
+        "functions",
+        "web_search",
+        "file_search",
+        "code_interpreter",
+        "hosted_shell",
+        "apply_patch",
+        "skills",
+        "computer_use",
+        "MCP",
+        "tool_search"
+      ],
+      "fine_tuning_supported": false,
+      "usd_per_million_tokens_standard_short_context": {
+        "uncached_input": 10,
+        "cached_input": 1,
+        "output": 50,
+        "cache_write_30m": 12.5,
+        "cache_write_12h": 25
+      },
+      "snapshot_pinning": "Only undated alias shown; future live run must record actual returned identity."
+    },
+    {
+      "model_id": "gpt-6.1-sol",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "source_ref": "turn1view2",
+      "evidence": "sourced_official_documentation_not_account_entitlement",
+      "context_tokens": 1050000,
+      "maximum_output_tokens": 128000,
+      "reasoning_efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses",
+      "supported_tools": [
+        "functions",
+        "web_search",
+        "file_search",
+        "code_interpreter",
+        "hosted_shell",
+        "apply_patch",
+        "skills",
+        "computer_use",
+        "MCP",
+        "tool_search"
+      ],
+      "fine_tuning_supported": false,
+      "usd_per_million_tokens_standard_short_context": {
+        "uncached_input": 2,
+        "cached_input": 0.1,
+        "output": 10,
+        "cache_write_30m": 2.5,
+        "cache_write_12h": 5
+      },
+      "snapshot_pinning": "Only undated alias shown; future live run must record actual returned identity."
+    },
+    {
+      "model_id": "gpt-6.1-terra",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "source_ref": "turn1view1",
+      "evidence": "sourced_official_documentation_not_account_entitlement",
+      "context_tokens": 1050000,
+      "maximum_output_tokens": 128000,
+      "reasoning_efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "tool_endpoint": "Responses",
+      "supported_tools": [
+        "functions",
+        "web_search",
+        "file_search",
+        "code_interpreter",
+        "hosted_shell",
+        "apply_patch",
+        "skills",
+        "computer_use",
+        "MCP",
+        "tool_search"
+      ],
+      "fine_tuning_supported": false,
+      "usd_per_million_tokens_standard_short_context": {
+        "uncached_input": 1,
+        "cached_input": 0.05,
+        "output": 5,
+        "cache_write_30m": 1.25,
+        "cache_write_12h": 2.5
+      },
+      "snapshot_pinning": "Only undated alias shown; future live run must record actual returned identity."
+    }
+  ],
+  "long_context_adjustment": {
+    "threshold_input_tokens": 272000,
+    "input_and_cache_multiplier": 2,
+    "output_multiplier": 1.5,
+    "applies_to": "entire request over threshold"
+  },
+  "speed_multipliers": {
+    "standard": 1,
+    "batch_flex": 0.5,
+    "fast": 2,
+    "ultrafast_astra_and_sol": 6
+  },
+  "tools": {
+    "web_search_per_call_usd": 0.01,
+    "web_search_content_tokens": "additional model input charge",
+    "containers_usd_per_20_minute_session": {
+      "1GB": 0.03,
+      "4GB": 0.12,
+      "16GB": 0.48,
+      "64GB": 1.92
+    },
+    "file_search_call_usd": 0.0025,
+    "file_storage_usd_per_GB_day": 0.1,
+    "first_storage_GB_free": true
+  },
+  "astra_published_rate_limits": {
+    "free": "not supported",
+    "build": {
+      "RPM": 5000,
+      "TPM": 1000000,
+      "batch_queue_tokens": 3000000
+    },
+    "launch": {
+      "RPM": 10000,
+      "TPM": 4000000,
+      "batch_queue_tokens": 200000000
+    },
+    "grow": {
+      "RPM": 15000,
+      "TPM": 40000000,
+      "batch_queue_tokens": 15000000000
+    }
+  },
+  "account_limits": "not inspected; published tiers do not establish current user limits",
+  "local_observation": {
+    "openai_sdk": "1.97.1",
+    "agents_sdk": "0.0.17",
+    "OPENAI_API_KEY_env_present": false,
+    "model_env_names": [],
+    "live_API_calls": 0,
+    "billed_API_usage": "not observed",
+    "SDK_compatibility_with_current_model_features": "not verified"
+  },
+  "hosted_run_economics": "API equivalent costs are shadow assumptions when tokens/invoices are unavailable; never label them actual API expenditure.",
+  "subscription_sources": [
+    {
+      "url": "https://learn.chatgpt.com/docs/pricing",
+      "ref": "turn4view4"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/auth",
+      "ref": "turn4view5"
+    }
+  ]
+}
