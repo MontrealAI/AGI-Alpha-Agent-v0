@@ -30,6 +30,10 @@ A call marked completed by the provider still must execute through the actuator.
 Wire data uses the existing canonical protocol: exact integers, decimal strings, text and structured
 JSON, with no floating-point JSON numbers. Scientific tools must use exact units/decimal strings or
 an explicitly qualified conversion adapter. This version does not claim arbitrary API compatibility.
+Ordinary Responses metadata such as numeric `top_p` and `temperature` is normalized before internal
+canonical validation. Exact decimal lexemes and their structured paths are recorded with a SHA-256
+commitment to the original response bytes. Operational output, coordinates, tool arguments and
+monetary values are not silently coerced by that metadata conversion.
 
 The optional `HTTPToolEnvironment` targets an **application-owned, already approved sandbox service**;
 its protocol is not an OpenAI-hosted endpoint. That service must implement its own isolation,

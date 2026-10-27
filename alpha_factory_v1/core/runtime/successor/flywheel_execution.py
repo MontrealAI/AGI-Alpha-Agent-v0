@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import copy
+import hashlib
 import json
 import os
 import re
@@ -47,6 +48,52 @@ def _computer_action(value: dict[str, Any]) -> dict[str, Any]:
     if action.get("type") in {"click", "double_click", "drag", "move", "scroll"} and action.get("keys") == []:
         del action["keys"]
     return validate_action(action)
+
+
+class _ProviderDecimal(str):
+    """Preserve a JSON numeric lexeme without rounding it into a binary float."""
+
+
+def _provider_envelope(raw: bytes) -> dict[str, Any]:
+    """Normalize unused provider metadata; keep operational output strict and intact."""
+
+    def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate provider object key")
+            result[key] = value
+        return result
+
+    def invalid_constant(value: str) -> Any:
+        raise ValueError("nonfinite provider JSON constant")
+
+    body = json.loads(
+        raw.decode("utf-8"), parse_float=_ProviderDecimal, parse_constant=invalid_constant, object_pairs_hook=unique
+    )
+    if not isinstance(body, dict) or "_provider_transport" in body:
+        raise ValueError("provider envelope must be an object without reserved transport metadata")
+    decimals: list[dict[str, Any]] = []
+    nodes = 0
+
+    def metadata(value: Any, path: list[str | int], depth: int) -> Any:
+        nonlocal nodes
+        nodes += 1
+        if nodes > 100_000 or depth > 32:
+            raise ValueError("provider metadata exceeds its structural budget")
+        if isinstance(value, _ProviderDecimal):
+            literal = str(value)
+            decimals.append({"path": path, "literal": literal})
+            return literal
+        if isinstance(value, dict):
+            return {key: metadata(child, [*path, key], depth + 1) for key, child in value.items()}
+        if isinstance(value, list):
+            return [metadata(child, [*path, index], depth + 1) for index, child in enumerate(value)]
+        return value
+
+    body = {key: value if key == "output" else metadata(value, [key], 0) for key, value in body.items()}
+    body["_provider_transport"] = {"raw_sha256": hashlib.sha256(raw).hexdigest(), "decimal_metadata": decimals}
+    return dict(safe_json_loads(canonical(body), max_bytes=MAX_FRAME))
 
 
 class ExecutionProfile(StrictModel):
@@ -319,10 +366,7 @@ class ResponsesTransport:
                             if len(raw) + len(chunk) > MAX_FRAME:
                                 raise ValueError("Responses body exceeds its byte limit")
                             raw.extend(chunk)
-                        result = safe_json_loads(bytes(raw), max_bytes=MAX_FRAME)
-                        if not isinstance(result, dict):
-                            raise ValueError("Responses body must be an object")
-                        return result
+                        return _provider_envelope(bytes(raw))
 
         task = asyncio.create_task(request())
         try:
@@ -664,6 +708,7 @@ class MissionExecutor:
                     "response_digest": digest("flywheel-responses-response", body),
                     "served_reasoning": "provider-reported only; no independent attestation",
                     "reported_reasoning": body.get("reasoning"),
+                    "provider_transport": body.get("_provider_transport"),
                 }
                 state["usage_events"].append(state["last_response"])
                 calls = [item for item in output if item["type"] in {"computer_call", "function_call"}]
