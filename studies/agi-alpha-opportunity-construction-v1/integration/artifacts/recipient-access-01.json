@@ -1,0 +1,74 @@
+{
+  "artifact": {
+    "bytes": 17519,
+    "filename": "mpc_worker.py",
+    "sha256": "914a4bd3d9e6a35805f75615ca61327b6d28a42cc13e1a253b1e49ec7a3ffd28"
+  },
+  "checks": [
+    {
+      "name": "Another namespace label has no installed local trust anchor",
+      "passed": true,
+      "reason": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "Changing the instrument invalidates the signed receipt",
+      "passed": true,
+      "reason": "record signature is invalid"
+    },
+    {
+      "name": "A self-supplied key cannot replace the configured recipient key",
+      "passed": true,
+      "reason": "record signature is invalid"
+    },
+    {
+      "name": "Worker identity does not confer the existing validator role",
+      "passed": true,
+      "reason": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "Revoked recipient is refused on the next check",
+      "passed": true,
+      "reason": "principal is not currently trusted for the required role"
+    }
+  ],
+  "descriptor": {
+    "filename": "capability_descriptor.json",
+    "schema": "agialpha.research-capability.descriptor.v1",
+    "sha256": "7fb4c439404755011a18d995af4e80148922d4a6c7faf13fe6ceed7e4e72f8c7"
+  },
+  "execution_boundary": "Fresh work and ordinary-library parity are measured by the study driver. Merely receiving or acknowledging the same bytes is not additional retained Alpha.",
+  "fixture_namespace_mapping": {
+    "principal": "successor.agent.agi.eth",
+    "provenance": "local-fixture",
+    "public_key": "350cc6c69488805ecbf343b614ff7387f2651806630ec90b0f2df34ca60f8d96",
+    "roles": [
+      "worker"
+    ]
+  },
+  "independent_execution_demonstrated_by_this_receipt": false,
+  "live_ens_checks": 0,
+  "mission_authority_transferred": false,
+  "mode": "LOCAL_EPHEMERAL_RESEARCH_FIXTURE_NOT_LIVE_ENS",
+  "native_source_manifest_sha256": "84642a9c3a0c5f7602b9cd77f4615ec5a47cff4eeb304db49de1e163a2a73973",
+  "network_publications": 0,
+  "private_keys_exported": false,
+  "provider_calls": 0,
+  "qualification": "The public instrument is locally available by exact bytes and attributed rights. The simulated namespace/key mapping authenticates this local receipt, not ENS ownership or production admission.",
+  "rights_boundary": "The descriptor supplies provenance, licenses, dependencies and permitted reuse. This signature authenticates its exact identity; it is not an independent legal rights review.",
+  "schema": "agialpha.reserve-instrument.local-access-evidence.v1",
+  "signed_recipient_receipt": {
+    "domain": "reserve-instrument-receipt-v1",
+    "payload": {
+      "artifact_sha256": "914a4bd3d9e6a35805f75615ca61327b6d28a42cc13e1a253b1e49ec7a3ffd28",
+      "descriptor_sha256": "7fb4c439404755011a18d995af4e80148922d4a6c7faf13fe6ceed7e4e72f8c7",
+      "mission_authority": "Not transferred; each query requires a separate current grant.",
+      "mode": "LOCAL_EPHEMERAL_RESEARCH_FIXTURE_NOT_LIVE_ENS",
+      "recipient": "successor.agent.agi.eth",
+      "right": "receive-and-inspect-public-research-instrument-under-declared-rights",
+      "schema": "agialpha.reserve-instrument.receipt.v1"
+    },
+    "principal": "successor.agent.agi.eth",
+    "signature": "v9M49Qww/ieOstcK+1E/2cGfIkibdi3gJiemVYNJZlZLwOfdoB5oqYlOgSh3YyZEFQjRxf7OKmTmzLT6nsgKBw=="
+  },
+  "status": "passed"
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "agialpha.reserve.publication-economic-tables.v1",
+  "evidence": "All modeled; Monte Carlo trajectories are alternatives, not actual customers or transactions",
+  "source_confirmation_sha256": "b2fa60e3cb3f1034049257ab5c1b727231b586732d0e9e155e4059055fbbd4a0",
+  "policy_rows": [
+    {
+      "policy": "no_launch",
+      "fee_usd": 0,
+      "deposit_fraction": 0,
+      "profit_mean_usd": 0.0,
+      "profit_p05_usd": 0.0,
+      "profit_p95_usd": 0.0,
+      "positive_profit_fraction": 0.0,
+      "revenue_mean_usd": 0.0,
+      "complete_cost_mean_usd": 0.0,
+      "delivery_contribution_mean_usd": 0.0,
+      "accepted_mean": 0,
+      "readiness_fraction": 0.0,
+      "cash_mean_usd": 60000.0,
+      "available_funds_mean_usd": 60000.0,
+      "available_gain_excluding_seed_mean_usd": 0.0
+    },
+    {
+      "policy": "direct",
+      "fee_usd": 12000,
+      "deposit_fraction": 1.0,
+      "profit_mean_usd": -30146.878943036874,
+      "profit_p05_usd": -41175.696797141514,
+      "profit_p95_usd": -8815.511159760177,
+      "positive_profit_fraction": 0.001,
+      "revenue_mean_usd": 2616.0,
+      "complete_cost_mean_usd": 32762.878943036874,
+      "delivery_contribution_mean_usd": 2032.5983248341015,
+      "accepted_mean": 0.218,
+      "readiness_fraction": 0.318,
+      "cash_mean_usd": 29889.534406313065,
+      "available_funds_mean_usd": 28581.121056963126,
+      "available_gain_excluding_seed_mean_usd": -31418.878943036874
+    },
+    {
+      "policy": "conditional",
+      "fee_usd": 6000,
+      "deposit_fraction": 0.25,
+      "profit_mean_usd": -3510.669044301315,
+      "profit_p05_usd": -5624.129106480927,
+      "profit_p95_usd": -1489.0430574916265,
+      "positive_profit_fraction": 0.0,
+      "revenue_mean_usd": 0.0,
+      "complete_cost_mean_usd": 3510.669044301315,
+      "delivery_contribution_mean_usd": 0.0,
+      "accepted_mean": 0,
+      "readiness_fraction": 0.0,
+      "cash_mean_usd": 56489.330955698686,
+      "available_funds_mean_usd": 56489.330955698686,
+      "available_gain_excluding_seed_mean_usd": -3510.669044301315
+    }
+  ],
+  "direct_delivery_economics": {
+    "price_usd": 12000,
+    "variable_cost_per_accepted_equivalent_usd": 2676.154473238066,
+    "contribution_per_accepted_equivalent_usd": 9323.845526761934,
+    "complete_venture_cost_per_accepted_equivalent_usd": 150288.43551851777,
+    "ratio_definition": "Sum costs across all 1000 worlds divided by all accepted assessments, including failed-booking costs. Variable cost excludes startup, acquisition, fixed business and insurance. Complete venture cost includes them. No dollar total is actual earned revenue.",
+    "ready_worlds": 318,
+    "ready_full_venture_profit_mean_usd": -32364.290888593958,
+    "ready_operating_profit_excluding_startup": {
+      "mean": -6932.128104786751,
+      "p05": -17568.585797653468,
+      "median": -8426.792520460047,
+      "p95": 6291.713452906963,
+      "positive_fraction": 0.1540880503144654,
+      "mean_mc95_low": -7844.569603367562,
+      "mean_mc95_high": -6019.686606205939
+    },
+    "interpretation": "Positive delivery contribution is not profitable service operation: acquisition, business and insurance still produce a loss even after successful startup is treated as sunk."
+  },
+  "conservative_commitment_threshold_example": {
+    "screening_already_spent_usd": 3000,
+    "fixed_forecast_usd": 41793.8895,
+    "fees": {
+      "6000": {
+        "required_commitments": 17,
+        "expected_net_per_commitment_after_delivery_usd": 2488.6800000000003
+      },
+      "12000": {
+        "required_commitments": 7,
+        "expected_net_per_commitment_after_delivery_usd": 6777.360000000001
+      },
+      "18000": {
+        "required_commitments": 4,
+        "expected_net_per_commitment_after_delivery_usd": 11066.039999999999
+      }
+    },
+    "boundary": "The selected $6000 conditional policy is a grid-order tie and is structurally unable to launch within nine qualified opportunities. All nine policies tied without launches in development; only the frozen selected policy was freshly confirmed. Four high-value $18000 commitments are a next validation target, not observed demand."
+  },
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0
+}

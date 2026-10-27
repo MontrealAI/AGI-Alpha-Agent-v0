@@ -1,0 +1,203 @@
+{
+  "blocking_defects": [],
+  "decision": "PASS_FOR_TECHNICAL_FREEZE_WITH_DECLARED_RESEARCH_BOUNDARIES",
+  "execution_history": [
+    {
+      "attempt": "initial_default_sandbox",
+      "diagnosis": "Local networking restrictions are the inferred cause; no definitive per-process error was captured, so no exact errno is claimed.",
+      "observed_action": "Reviewer sent SIGINT to stop an unresponsive local process launch.",
+      "observed_exit_code": 130,
+      "outcome": "interrupted_before_MPC_verdict",
+      "preservation": "This failure is preserved in this review; it is not silently omitted, counted as a model disagreement, or converted to a successful run.",
+      "scientific_result": null,
+      "source_hash_at_attempt": null
+    },
+    {
+      "attempt": "first_authorized_completed",
+      "challenge_sha256": "c8849da42c24eefe3ae3fa2054fcae19264b17f8b0081b1357fe2c5853d166fc",
+      "driver_sha256": "625b4427909b7ba35b2d1f83145effe6031ed2a188174bdd2ca1d36b6fd95ec8",
+      "limitations": "Raw driver Wilson diagnostic still present before the explicit non-inferential annotation; successful receipt retained verbatim.",
+      "outcome": "16/16 manual world verdicts and 3/3 invalid refusals passed",
+      "receipt": "evidence/challenge_checks_preannotation.json"
+    },
+    {
+      "attempt": "final_source_authorized_replay",
+      "challenge_sha256": "2f373e8643b199b4a34fc8bf9963080e79f4f3e9e539839c7dbbc1e8240fe017",
+      "change_scope": "Same manually specified cases; only challenge statistics annotation and final driver operational/source binding changes. No new generator or confirmation cases used.",
+      "driver_sha256": "0f9d081121c25af00b3a166592f935e3c2e7bfe3ef63b7aad104e3b238a461a7",
+      "outcome": "16/16 manual world verdicts and 3/3 invalid refusals passed",
+      "receipt": "evidence/challenge_checks.json"
+    }
+  ],
+  "protected_work_boundary": "No origin or successor confirmation inputs or results generated or inspected by this reviewer. Challenge cases were specified manually before fresh confirmation and use no held-out generator seeds.",
+  "recommended_next_action": "Freeze the reviewed source and protocol, then generate the already declared origin and successor confirmation cohorts. Preserve any future failure and source correction with a new prospective freeze. No current scientific correctness blocker was found for the declared synthetic unit-allocation scope.",
+  "resolved_findings": [
+    "Research batch leakage is one bit per independent world; full fixed batch authorization is explicit.",
+    "Retention semantics now explicitly asset-specific; no arbitrary reserve quota capability is claimed.",
+    "Private raw authority fixture journal is temporary; only public receipt retained.",
+    "Fresh confirmation and library replay cannot run through the CLI without explicit authority fixture.",
+    "Peer-failure/deadline launcher recovery preserves collected process outputs before failure.",
+    "Manual challenge interval is explicitly inapplicable to inference."
+  ],
+  "review_checks": [
+    {
+      "finding": "For every specified scenario the worker checks the Hall neighborhood cardinality condition for every nonempty subset of active unit demands, using each of six distinct unit-capacity slots at most once. For the stated binary eligibility/availability/withholding model this is equivalent to an injective assignment. The logical claim is forall scenarios exists an assignment, not one common fixed allocation across all scenarios.",
+      "id": "hall_semantics",
+      "status": "pass"
+    },
+    {
+      "finding": "Six assets and at most three simultaneous demands keep neighborhood counts and thresholds within SecInt(8) bounds. Complete singleton/pair and singleton/pair/triple families contain 21/41 scenarios and 51/191 subset conditions. Loop lengths and public dimensions do not branch on secret values.",
+      "id": "integer_and_loop_bounds",
+      "status": "pass"
+    },
+    {
+      "finding": "Retention is designated asset-specific withholding, not an arbitrary owner reserve quota. Missing eligibility certifies no edge; a false result means declared inputs do not establish the specified allocation, not proof of physical impossibility. Slots must represent distinct assets, eligibility must be correctly established, and demands need exactly one asset.",
+      "id": "input_meaning",
+      "status": "pass_with_scope"
+    },
+    {
+      "finding": "The cleartext oracle uses backtracking allocation rather than the worker Hall implementation. Structured expected results were independently specified before execution. Bilateral existence ignores simultaneous contention and is explicitly a weak diagnostic, not representative ordinary frontier-model use.",
+      "id": "independent_oracle",
+      "status": "pass"
+    },
+    {
+      "finding": "The worker opens one aggregate bit per independent world to all three computing parties and prints the public result only from party 0. It does not open secret edges, neighborhood counts, assignments or per-scenario verdicts. A 120-world research batch authorizes 120 bits, not one bit total. Metadata and the authorized bit itself can leak information with side information.",
+      "id": "output_secrecy_boundary",
+      "status": "pass_with_scope"
+    },
+    {
+      "finding": "Execution uses pinned MPyC 0.11, three parties and passive threshold one. This is an honest-majority passive model; local process roles do not establish independent organizations, malicious security, truthful inputs, secure remote channels, ownership or dispatch authority. Public documentation being newer than the pinned execution version is disclosed rather than silently substituted.",
+      "id": "security_configuration",
+      "status": "pass_with_scope"
+    },
+    {
+      "finding": "Owner-file hashes bind the supplied file bytes and the private schema admits only declared fields and binary matrices with exact dimensions. Hash commitment is not a malicious input proof. Synthetic nonce values are public; production entropy and authenticated channels are outside this component demonstration. The file-open audit hook is an application guard, not operating-system isolation.",
+      "id": "commitment_and_schema_checks",
+      "status": "pass_with_scope"
+    },
+    {
+      "finding": "Fresh confirmation and ordinary-library replay now require the explicit local --authority fixture. Native role/signature/time and one-use journal checks bind the complete public manifest, input commitments, scenario family, scope/epoch and worker. Temporary raw journal material is deleted and only the public receipt retained. Binding is checked after execution. One-use scope applies within the retained fixture journal; a new temporary journal is not a global privacy budget or rollback-resistant deployment.",
+      "id": "authority_binding",
+      "status": "pass_with_scope"
+    },
+    {
+      "finding": "The final driver supervises all processes, terminates surviving peers on a nonzero peer or 300-second deadline, collects their bounded worker outputs, writes stdout/stderr and execution.json, and rejects incomplete or failed runs. The --cohort selector separates origin and recipient runs without changing generator or solver semantics. Final source was exercised by this review on both manual scenario families.",
+      "id": "launcher_recovery",
+      "status": "pass_for_bounded_worker"
+    },
+    {
+      "finding": "Hand-selected deterministic challenges support case-level correctness checks only. Driver Wilson values have been renamed driver_wilson95_inapplicable_for_inference and explicitly marked inapplicable to sampling or population inference. Generator-based intervals, if later reported, concern the synthetic generator; balanced fixed family quotas also warrant approximate/descriptive interpretation rather than a field reliability bound.",
+      "id": "statistical_interpretation",
+      "status": "pass_after_annotation"
+    },
+    {
+      "finding": "An ordinary library receiving the identical artifact and information should tie exactly. Such a tie is expected and must not be represented as retained Alpha or a novel cryptographic algorithm. The diagnostic comparison establishes the value of simultaneous-claim semantics only.",
+      "id": "ordinary_library_control",
+      "status": "pass_with_scope"
+    }
+  ],
+  "reviewed_at_utc": "2026-10-27T19:32:28.649546+00:00",
+  "reviewer": "Independent opportunity_research agent",
+  "schema": "agialpha.independent-technical-review.v1",
+  "scope": "Source review plus independently specified local three-party MPC component challenges. This is not a cryptographic security proof, field validation, market test, or certification.",
+  "sources_sha256": {
+    "config/technical_protocol.json": "990e0a182f23e869fb8491572ab43db3dcb7e480bf62fc70868b907e80310d55",
+    "evidence/challenge_checks.json": "055d9e8136007a7d62c23619f936337b63cf84653b97fc7fa91aed42881cc808",
+    "evidence/challenge_checks_preannotation.json": "44037bb871513d30687a8b2633d46fbce27bdae5af1c5d4c6f46681f3e90fca6",
+    "evidence/mpc_feasibility_probe.json": "bb7ff2e7eb3842c4c23063cba52da01a6a3650f533aef8d61828de0e433871fe",
+    "integration/query_authority.py": "47165b989895fd1b1cc8b098a98872c70c50dbff3704776cf8bb529d7c30c378",
+    "src/challenge_checks.py": "2f373e8643b199b4a34fc8bf9963080e79f4f3e9e539839c7dbbc1e8240fe017",
+    "src/mpc_worker.py": "914a4bd3d9e6a35805f75615ca61327b6d28a42cc13e1a253b1e49ec7a3ffd28",
+    "src/study.py": "0f9d081121c25af00b3a166592f935e3c2e7bfe3ef63b7aad104e3b238a461a7"
+  },
+  "structured_challenges": {
+    "actual_mpc_worlds": 16,
+    "authority_scope": "These are component checks with no authority fixture; the driver and authority were inspected separately. No live consent or production authorization is inferred.",
+    "case_names": [
+      "all_valid_distinct_assets",
+      "missing_eligibility_for_demand_5",
+      "unique_asset_withheld",
+      "single_shared_asset_contention",
+      "correlated_owner_loss_in_pair_scenario",
+      "two_universal_assets_pairs_only",
+      "three_universal_assets",
+      "withholding_only_when_asset_not_needed"
+    ],
+    "decisive_purpose_change": "Two universal assets suffice for every singleton/pair but fail the complete triple family; measured pair verdict 1 and triple verdict 0. Reusing the pair verdict for the new purpose would be incorrect.",
+    "malformed_or_commitment_refusals": [
+      {
+        "case": "unknown_private_field",
+        "exit_code": 1,
+        "passed": true,
+        "stdout_empty": true
+      },
+      {
+        "case": "incomplete_scenario_family",
+        "exit_code": 1,
+        "passed": true,
+        "stdout_empty": true
+      },
+      {
+        "case": "owner_commitment_mismatch",
+        "exit_code": 1,
+        "passed": true,
+        "stdout_empty": true
+      }
+    ],
+    "matched_independent_expected_and_backtracking": true,
+    "protected_marker_not_echoed": "The unknown-field adversarial marker was absent from refusal stderr; only value-free validation errors were emitted.",
+    "scenario_families": [
+      {
+        "actual_bits": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "bilateral_false_positives": 2,
+        "expected_bits": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "max_claims": 2,
+        "scenario_count": 21
+      },
+      {
+        "actual_bits": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "bilateral_false_positives": 3,
+        "expected_bits": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "max_claims": 3,
+        "scenario_count": 41
+      }
+    ],
+    "temporary_copy_deleted": true
+  }
+}

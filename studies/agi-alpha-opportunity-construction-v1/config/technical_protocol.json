@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "created_at_utc": "2026-10-27T19:10:36.990365+00:00",
+  "technical_scope": "Three utility/computation parties, two padded asset slots each and six public demand locations; binary private declared eligibility and per-scenario availability/retention.",
+  "function": "For every listed nonempty demand subset up to max_claims, an injective eligible available nonwithheld asset assignment exists. Output conjunction only.",
+  "origin_max_claims": 2,
+  "successor_max_claims": 3,
+  "scenario_counts": {
+    "origin": 21,
+    "successor": 41
+  },
+  "security_model": "MPyC 0.11 Shamir protocols, passive adversaries controlling at most one of three parties. Local processes are research roles, not independent organizations. No malicious-security, truthful-input, remote-deployment or physical-dispatch claim.",
+  "leakage": "One authorized aggregate bit per independent world, plus fixed public dimensions, scenario family, role/source identities and timing/communication metadata. A bit can reveal private information with side information. Fixed scope/epoch and one-use authorization limit adaptive queries.",
+  "algorithms": {
+    "instrument": "Secret-shared Hall conditions over every nonempty demand subset of each scenario.",
+    "independent_oracle": "Cleartext backtracking enumeration of injective allocations; does not call the Hall implementation.",
+    "weak_diagnostic": "Each individual request has an eligible usable asset, ignoring contention. This is a diagnostic, not ordinary frontier-model U.",
+    "competent_same_information": "Identical standard MPC artifact invoked from an ordinary library, with the same information; exact parity is the null.",
+    "human": "Estimated development pathway, not an observed human trial."
+  },
+  "data": "Entirely synthetic declared inventories. No fixture establishes hardware compatibility. Seeds define test cases, not calibrated failure probabilities.",
+  "world_families": [
+    "sparse_eligibility",
+    "medium_eligibility",
+    "dense_eligibility",
+    "correlated_unavailability"
+  ],
+  "generation": {
+    "eligibility_probabilities": [
+      0.28,
+      0.55,
+      0.82,
+      0.72
+    ],
+    "static_asset_availability_probability": 0.97,
+    "scenario_independent_unavailability_probability": 0.015,
+    "scenario_retention_probability": 0.015,
+    "correlated_family_owner_loss_probability": 0.12,
+    "correlated_failure_removes_both_owner_assets": true
+  },
+  "seeds": {
+    "development": 610270,
+    "origin_confirmation": 710270,
+    "successor_confirmation": 810270
+  },
+  "world_counts": {
+    "development": 32,
+    "origin_confirmation": 120,
+    "successor_confirmation": 120
+  },
+  "measurement_policy": "Preserve all worlds and refusals. Measure exact oracle agreement, diagnostic false positives, elapsed time and bytes. Confidence intervals describe draws from the synthetic generator. Runtime comparisons are descriptive local measurements.",
+  "freeze_rule": "Resolve construction failures using development/probe cases. Then commit worker, driver, protocol and dependencies before generating fresh confirmation inputs. Preserve and re-freeze any correction with new seeds.",
+  "actual_expenditure": "Complete real research/API expenditure is unknown; hosted model billing is not exposed. Actual customer collections are zero.",
+  "research_batch_authority": "A research manifest authorizes the complete fixed batch: one bit for each independent synthetic input world, hence 120 bits for a 120-world batch. The local authority binds the entire batch and prohibits replay. The prospective customer offering authorizes exactly one world per query epoch.",
+  "retention_semantics": "Asset-specific withholding, not an arbitrary minimum-reserve quota. Each input row is one distinct unit-capacity asset and each demand needs one asset."
+}

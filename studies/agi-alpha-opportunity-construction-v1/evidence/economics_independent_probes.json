@@ -1,0 +1,232 @@
+{
+  "cases": [
+    {
+      "case": "late_acceptance_accrual_and_tail",
+      "detail": {
+        "credit_allowance": 300.0,
+        "operating_profit": 11610.0,
+        "processing_payable": 30.0,
+        "receivables": 6000.0,
+        "revenue": 12000.0,
+        "support_payable": 30.0
+      },
+      "passed": true
+    },
+    {
+      "case": "late_default_releases_allowance_and_unpaid_fee",
+      "detail": {
+        "cash": 65940.0,
+        "costs": {
+          "A_delivery": 30.0,
+          "A_startup": 0.0,
+          "B": 0.0,
+          "C": 0.0,
+          "acquisition": 0.0,
+          "business": 0.0,
+          "credit_loss": 6000.0,
+          "incident": 0.0,
+          "insurance": 0.0,
+          "processing": 30.0
+        },
+        "profit": 5940.0
+      },
+      "passed": true
+    },
+    {
+      "case": "insolvent_incident_does_not_spend_refundable_deposit",
+      "detail": {
+        "accounts_payable": 41215.0,
+        "cash": 0.0,
+        "profit": -101215.0,
+        "refund": [
+          {
+            "amount_usd": 18000,
+            "day": 147,
+            "event": "deposit_refunded_no_revenue"
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "case": "failed_first_startup_gate_charges_twenty_percent",
+      "detail": {
+        "cost": 2000.0,
+        "status": "failed_specification"
+      },
+      "passed": true
+    },
+    {
+      "case": "failed_second_startup_gate_stops_at_sixty_percent",
+      "detail": {
+        "cost": 6000.0,
+        "status": "failed_qualification"
+      },
+      "passed": true
+    },
+    {
+      "case": "booking_ignores_future_realized_resource_cost",
+      "detail": {
+        "booking": [
+          {
+            "amount_usd": 6000.0,
+            "day": 0,
+            "event": "booking_deposit_restricted",
+            "lead": 0,
+            "reserved_cap": 6305.0
+          }
+        ],
+        "high_cost_profit": 7050.0,
+        "low_cost_profit": 11910.0
+      },
+      "passed": true
+    },
+    {
+      "case": "booking_ignores_future_acceptance_draw",
+      "detail": {
+        "same_booking": true
+      },
+      "passed": true
+    },
+    {
+      "case": "insufficient_conditional_commitments_are_not_money",
+      "detail": {
+        "acquisition": 1500.0,
+        "cash": 58500.0,
+        "counts": {
+          "accepted": 0,
+          "booked": 0,
+          "capacity_waits": 0,
+          "committed": 3,
+          "failed": 0,
+          "finance_waits": 0,
+          "interested": 3,
+          "qualified": 3,
+          "screened": 3,
+          "unserved": 3,
+          "withdrawn": 0
+        }
+      },
+      "passed": true
+    },
+    {
+      "case": "funded_conditional_launch_uses_non_cash_threshold",
+      "detail": {
+        "counts": {
+          "accepted": 4,
+          "booked": 4,
+          "capacity_waits": 58,
+          "committed": 4,
+          "failed": 0,
+          "finance_waits": 0,
+          "interested": 4,
+          "qualified": 4,
+          "screened": 4,
+          "unserved": 0,
+          "withdrawn": 0
+        },
+        "launch_evidence": {
+          "committed_customers": 4,
+          "conservative_total_cost_forecast": 47993.8895,
+          "expected_collected_net_processing": 51464.159999999996,
+          "family": "conditional"
+        },
+        "noncash_commitments": 4
+      },
+      "passed": true
+    },
+    {
+      "case": "positive_aggregate_surplus_does_not_override_member_veto",
+      "detail": {
+        "agent_utility": 806230.3671232876,
+        "all_consent": true,
+        "broker_utility": -1e+100,
+        "buy": false,
+        "member_ok": false
+      },
+      "passed": true
+    },
+    {
+      "case": "competent_cheap_broker_can_defeat_product",
+      "detail": {
+        "agent_utility": 821228.9917808218,
+        "all_consent": true,
+        "broker_utility": 978530.0,
+        "buy": false,
+        "member_ok": true
+      },
+      "passed": true
+    },
+    {
+      "case": "no_accepted_origin_no_retention_assessment",
+      "detail": {
+        "B": 0.0,
+        "accepted": 0
+      },
+      "passed": true
+    },
+    {
+      "case": "accepted_origin_assessment_charged_once",
+      "detail": {
+        "B": 500.0
+      },
+      "passed": true
+    },
+    {
+      "case": "no_launch_preserves_seed_without_earned_revenue",
+      "detail": {
+        "cash": 60000.0,
+        "profit": 0.0
+      },
+      "passed": true
+    },
+    {
+      "case": "conditional_launch_and_initial_booking_ignore_future_delivery_cost",
+      "detail": {
+        "first_bookings": [
+          {
+            "amount_usd": 9000.0,
+            "day": 1,
+            "event": "booking_deposit_restricted",
+            "lead": 0,
+            "reserved_cap": 6365.0
+          },
+          {
+            "amount_usd": 9000.0,
+            "day": 1,
+            "event": "booking_deposit_restricted",
+            "lead": 1,
+            "reserved_cap": 6365.0
+          }
+        ],
+        "high_profit": 50080.0,
+        "launch_evidence": {
+          "committed_customers": 4,
+          "conservative_total_cost_forecast": 47993.8895,
+          "expected_collected_net_processing": 51464.159999999996,
+          "family": "conditional"
+        },
+        "low_profit": 69520.0
+      },
+      "passed": true
+    },
+    {
+      "case": "conditional_launch_ignores_future_startup_cost_draw",
+      "detail": {
+        "later_admission_boundary": "Later admissions may legitimately change after realized startup cost consumes working funds.",
+        "same_launch_event": true,
+        "startup_cost_realized_high": 30000.0,
+        "startup_cost_realized_low": 0.0
+      },
+      "passed": true
+    }
+  ],
+  "cases_count": 16,
+  "evidence": "Deterministic manually specified worlds only; no development or confirmation outcome files read and no fresh confirmation seeds generated. Source/config read-only. Tests of accounting identity and policy behavior, not market calibration.",
+  "executed_at_utc": "2026-10-27T19:36:55.541968+00:00",
+  "later_probe_protocol_sha256": "c38cefd8a0c580919658f60b47ecc95764ff4a968f702c25c010f4432564b98b",
+  "passed": true,
+  "protocol_sha256": "c38cefd8a0c580919658f60b47ecc95764ff4a968f702c25c010f4432564b98b",
+  "schema": "agialpha.independent-economic-probes.v1",
+  "source_sha256": "a77b049485f0c8c7d256b720a508beb328304c6ac1b69a9378b21549b304396d"
+}

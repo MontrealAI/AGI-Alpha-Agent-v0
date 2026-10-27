@@ -1,0 +1,654 @@
+{
+  "schema": "agialpha.confidential-reserve.commercial-protocol.v1",
+  "version": "1.0.0",
+  "study_date": "2026-10-27",
+  "offering": "One authorized aggregate pre-emergency feasibility bit for three owner/computing parties, six padded private asset slots and six public demand locations; no physical reserve commitment.",
+  "evidence": "All dollars and buyer/mission behavior modeled. Actual complete research cost unknown; actual collections zero. Local MPC correctness does not measure market demand or frontier U/E/E+ mission success.",
+  "proposal_sha256": "7c33ca2055182c6242602980c5ffecd6b89055466d6e52f72b5eccede4d789c5",
+  "human_comparison": {
+    "basis": "A human-led R&D pathway using standard MPC and the same discovered formulation. No invented equivalent-service selling price and no conversion of R&D expense into buyer willingness to pay.",
+    "labor_formula": "sum(role_hours * annual_employee_wage/2080 * 46.89/32.82 * explicitly assumed expertise multiplier) + nonlabor overhead + listed tools/compute. 2080 is an assumed full-time-equivalent divisor.",
+    "benefit_factor": 1.4287020109689215,
+    "no_double_counting": "The benefit factor includes the broad benefits burden. Nonlabor overhead at 10/15/25% covers workspace, shared IT and equipment only; it excludes benefits, explicit coordination, review hours and separately listed tools. No silent inflation escalation or supplier operating margin is added.",
+    "research_fixture": {
+      "roles": [
+        {
+          "role": "Power-system input-semantics specialist",
+          "annual_employee_wage_usd": 122430,
+          "hours_low_central_high": [
+            4,
+            8,
+            16
+          ],
+          "source_id": "bls_electrical",
+          "scoped_task": "Specify the supplied eligibility, availability and retention semantics; no physical inspection or equipment qualification."
+        },
+        {
+          "role": "Experienced MPC/research engineer",
+          "annual_employee_wage_usd": 140300,
+          "hours_low_central_high": [
+            12,
+            24,
+            48
+          ],
+          "source_id": "bls_research",
+          "scoped_task": "Use an existing MPC library and the disclosed formulation; implement the bounded aggregate predicate, not new cryptography."
+        },
+        {
+          "role": "Research software engineer",
+          "annual_employee_wage_usd": 135980,
+          "hours_low_central_high": [
+            8,
+            16,
+            32
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Three-process orchestration, supplied synthetic input adapters, error paths and reproducible packaging."
+        },
+        {
+          "role": "Independent verifier",
+          "annual_employee_wage_usd": 104300,
+          "hours_low_central_high": [
+            8,
+            20,
+            40
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Compare against cleartext exhaustive controls; run malformed, unavailable, retention and simultaneous-demand cases."
+        },
+        {
+          "role": "Technical documentation and coordination",
+          "annual_employee_wage_usd": 135980,
+          "hours_low_central_high": [
+            8,
+            16,
+            24
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Record threat-model limits, methods, source provenance and the runnable handoff."
+        }
+      ],
+      "costs": [
+        {
+          "scenario": "low",
+          "person_hours": 40,
+          "expertise_wage_multiplier_assumed": 1.0,
+          "loaded_labor_usd": 3560.35,
+          "nonlabor_overhead_usd": 356.04,
+          "tools_model_compute_allowance_usd": 100,
+          "total_estimated_cost_usd": 4016.39
+        },
+        {
+          "scenario": "central",
+          "person_hours": 84,
+          "expertise_wage_multiplier_assumed": 1.25,
+          "loaded_labor_usd": 9259.09,
+          "nonlabor_overhead_usd": 1388.86,
+          "tools_model_compute_allowance_usd": 300,
+          "total_estimated_cost_usd": 10947.95
+        },
+        {
+          "scenario": "high",
+          "person_hours": 160,
+          "expertise_wage_multiplier_assumed": 1.6,
+          "loaded_labor_usd": 22507.73,
+          "nonlabor_overhead_usd": 5626.93,
+          "tools_model_compute_allowance_usd": 1000,
+          "total_estimated_cost_usd": 29134.66
+        }
+      ],
+      "calendar_weeks_low_central_high": [
+        1,
+        2,
+        4
+      ],
+      "assumed_probability_of_correct_scoped_proof_low_central_high": [
+        0.7,
+        0.9,
+        0.98
+      ],
+      "meaning": "Same supplied synthetic fixture and standard MPC construction as the research execution, not a production deployment or autonomous discovery trial. Hours, success probabilities and dates are planning estimates, not human measurements."
+    },
+    "live_pilot_readiness": {
+      "roles": [
+        {
+          "role": "Power-system schema and acceptance specialist",
+          "annual_employee_wage_usd": 122430,
+          "hours_low_central_high": [
+            48,
+            96,
+            192
+          ],
+          "source_id": "bls_electrical",
+          "scoped_task": "Define owner-asserted eligibility semantics, authorized event families and limits across the three operators; no physical certification."
+        },
+        {
+          "role": "MPC/research implementation engineer",
+          "annual_employee_wage_usd": 140300,
+          "hours_low_central_high": [
+            80,
+            160,
+            320
+          ],
+          "source_id": "bls_research",
+          "scoped_task": "Adapt standard MPC, query release policy, input integrity checks, failure recovery and protected repeat operation."
+        },
+        {
+          "role": "Deployment/integration engineer",
+          "annual_employee_wage_usd": 135980,
+          "hours_low_central_high": [
+            96,
+            192,
+            384
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Three separately controlled endpoints, signed configuration, client adapters and secure deployment/recovery."
+        },
+        {
+          "role": "Independent security reviewer",
+          "annual_employee_wage_usd": 129180,
+          "hours_low_central_high": [
+            32,
+            64,
+            128
+          ],
+          "source_id": "bls_security",
+          "scoped_task": "Review implementation and deployment threat assumptions, metadata leakage, allowed queries and incident procedures."
+        },
+        {
+          "role": "Independent verification engineer",
+          "annual_employee_wage_usd": 104300,
+          "hours_low_central_high": [
+            48,
+            96,
+            192
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Adversarial cases, deterministic oracle comparisons, independent reproduction and release validation."
+        },
+        {
+          "role": "Privacy/governance counsel",
+          "annual_employee_wage_usd": 159670,
+          "hours_low_central_high": [
+            16,
+            32,
+            64
+          ],
+          "source_id": "bls_legal",
+          "scoped_task": "Define consent, disclosure limits, liability allocation, refund terms and no physical reserve obligation."
+        },
+        {
+          "role": "Domain-project coordination",
+          "annual_employee_wage_usd": 122430,
+          "hours_low_central_high": [
+            24,
+            48,
+            96
+          ],
+          "source_id": "bls_electrical",
+          "scoped_task": "Coordinate three organizations and acceptance gates; excluded from generic nonlabor overhead."
+        }
+      ],
+      "costs": [
+        {
+          "scenario": "low",
+          "person_hours": 344,
+          "expertise_wage_multiplier_assumed": 1.0,
+          "loaded_labor_usd": 30763.75,
+          "nonlabor_overhead_usd": 3076.37,
+          "tools_model_compute_allowance_usd": 1000,
+          "total_estimated_cost_usd": 34840.12
+        },
+        {
+          "scenario": "central",
+          "person_hours": 688,
+          "expertise_wage_multiplier_assumed": 1.25,
+          "loaded_labor_usd": 76909.36,
+          "nonlabor_overhead_usd": 11536.4,
+          "tools_model_compute_allowance_usd": 3000,
+          "total_estimated_cost_usd": 91445.77
+        },
+        {
+          "scenario": "high",
+          "person_hours": 1376,
+          "expertise_wage_multiplier_assumed": 1.6,
+          "loaded_labor_usd": 196887.97,
+          "nonlabor_overhead_usd": 49221.99,
+          "tools_model_compute_allowance_usd": 10000,
+          "total_estimated_cost_usd": 256109.97
+        }
+      ],
+      "calendar_weeks_low_central_high": [
+        6,
+        12,
+        24
+      ],
+      "assumed_probability_of_technically_and_organizationally_qualified_pilot_low_central_high": [
+        0.35,
+        0.65,
+        0.9
+      ],
+      "verification_included": "Independent correctness, security/deployment review and repeatable release tests are explicit role-hours. Permission and operating-organization acceptance are additional real uncertainties.",
+      "financing": "Sponsor or company funds staged R&D before accepted service revenue. A failed attempt consumes the work already incurred. No free unlimited retries and no expected-cost/one-success division that hides elapsed time or capital."
+    }
+  },
+  "horizon_days": 180,
+  "tail_days": 120,
+  "seed_capital_usd": 60000,
+  "seeds": {
+    "development_start": 630100,
+    "development_count": 250,
+    "confirmation_start": 9811000,
+    "confirmation_count": 1000
+  },
+  "policy_grid": {
+    "fees_usd": [
+      6000,
+      12000,
+      18000
+    ],
+    "deposit_fractions": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "families": [
+      "direct",
+      "conditional"
+    ],
+    "include_no_launch": true
+  },
+  "objective": "Mean day180 unrestricted cash after all deposits, accrued liabilities, delivery/startup commitments and two months of operating reserve, minus seed. Select each operating family separately, and compare with no-launch. No global optimum claim.",
+  "startup": {
+    "cost_low_central_high_usd": [
+      9547.31,
+      25907.73,
+      74525.86
+    ],
+    "roles_and_costs": {
+      "status": "Forward deployment-readiness estimates for this exact offering; distinct from both actual unmetered research and the human-led pathways.",
+      "roles": [
+        {
+          "role": "Independent privacy/security readiness review",
+          "annual_employee_wage_usd": 129180,
+          "hours_low_central_high": [
+            32,
+            64,
+            128
+          ],
+          "source_id": "bls_security",
+          "scoped_task": "One-time review of the actual code, permitted leakage and separately controlled deployments before confidential customer use."
+        },
+        {
+          "role": "Operator deployment/integration",
+          "annual_employee_wage_usd": 135980,
+          "hours_low_central_high": [
+            24,
+            48,
+            96
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Establish three owner-controlled execution endpoints and recovery/configuration procedures; no vendor control of all private endpoints."
+        },
+        {
+          "role": "Input semantics and acceptance design",
+          "annual_employee_wage_usd": 122430,
+          "hours_low_central_high": [
+            16,
+            32,
+            64
+          ],
+          "source_id": "bls_electrical",
+          "scoped_task": "One-time supported input schema and decision-purpose qualification. Owners supply all physical eligibility judgments."
+        },
+        {
+          "role": "Governance and underwriting preparation",
+          "annual_employee_wage_usd": 159670,
+          "hours_low_central_high": [
+            12,
+            24,
+            48
+          ],
+          "source_id": "bls_legal",
+          "scoped_task": "Consent, release/responsibility agreements and insurer/subscriber review. Does not claim legal enforceability or bind physical reserves."
+        },
+        {
+          "role": "Independent release verification",
+          "annual_employee_wage_usd": 104300,
+          "hours_low_central_high": [
+            8,
+            16,
+            32
+          ],
+          "source_id": "bls_software",
+          "scoped_task": "Reperform technical oracle/reproduction checks on the productized configuration."
+        }
+      ],
+      "costs": [
+        {
+          "scenario": "low",
+          "person_hours": 92,
+          "expertise_wage_multiplier_assumed": 1.0,
+          "loaded_labor_usd": 8315.73,
+          "nonlabor_overhead_usd": 831.57,
+          "tools_model_compute_allowance_usd": 400,
+          "total_estimated_cost_usd": 9547.31
+        },
+        {
+          "scenario": "central",
+          "person_hours": 184,
+          "expertise_wage_multiplier_assumed": 1.25,
+          "loaded_labor_usd": 20789.33,
+          "nonlabor_overhead_usd": 3118.4,
+          "tools_model_compute_allowance_usd": 2000,
+          "total_estimated_cost_usd": 25907.73
+        },
+        {
+          "scenario": "high",
+          "person_hours": 368,
+          "expertise_wage_multiplier_assumed": 1.6,
+          "loaded_labor_usd": 53220.69,
+          "nonlabor_overhead_usd": 13305.17,
+          "tools_model_compute_allowance_usd": 8000,
+          "total_estimated_cost_usd": 74525.86
+        }
+      ],
+      "central_tools_allowance_breakdown_usd": {
+        "frontier_reasoning_implementation_validation_usage": 1000,
+        "setup_compute_and_network": 500,
+        "security_and_packaging_tools": 500
+      },
+      "model_tariff_basis": "Use the existing official frontier source record for tariffs; consumption above is unmeasured. Private owner inputs must not be sent to a frontier model. Models see public schemas, authorized releases and sanitized errors only.",
+      "human_scope_reason": "These estimates concern the unexecuted security, governance and independent operator setup required by the proposed live configuration. They are not an arbitrary manual review surcharge on each automated assessment.",
+      "automation_boundary": "Reducing implementation work through expert agents is a plausible budget mechanism, not a measured H/E efficiency result. The gap between the two startup pathways is not reported as Operational Alpha. Stress replacement/productization costs at the human-led pathway levels.",
+      "readiness_days_low_central_high": [
+        14,
+        45,
+        90
+      ],
+      "readiness_success_probability_low_central_high": [
+        0.35,
+        0.65,
+        0.9
+      ],
+      "staged_failure": "Propose a bounded planning gate after 20% of startup spend and technical/deployment review after another 40%; remaining 40% is spent only after passing. Explicit gate probabilities must be frozen before simulation; total readiness probability is not multiplied twice.",
+      "charge_rule": "All necessary forward startup work is charged once to originating production/readiness (A0). No automatic second research bill for learning already included. Current unpaid research construction is separately unknown, never described as paid-job learning."
+    },
+    "approved_spend_cap_usd": 35000,
+    "duration_low_central_high_days": [
+      14,
+      45,
+      90
+    ],
+    "readiness_probability_low_central_high": [
+      0.35,
+      0.65,
+      0.9
+    ],
+    "first_gate_probability": 0.9,
+    "stage_fractions": [
+      0.2,
+      0.4,
+      0.4
+    ],
+    "definition": "Stage1 is a specification/review gate. Final conditional gate probability equals world readiness probability/.9. Budget overrun stops at the approved cap. No cash from refundable deposits funds readiness."
+  },
+  "pipeline": {
+    "opportunity_counts": [
+      3,
+      6,
+      9
+    ],
+    "count_weights": [
+      0.25,
+      0.5,
+      0.25
+    ],
+    "arrivals_days": [
+      0,
+      90
+    ],
+    "definition": "3/6/9 qualified sponsor opportunities over the six-month horizon are approached in an initial 90-day campaign, identically for both arrangements. A qualified opportunity is not consented or paid. No demand uplift from conditional construction.",
+    "procurement_days": [
+      15,
+      45,
+      90
+    ],
+    "max_concurrent": 2,
+    "max_bookings_per_30_days": 2,
+    "delivery_days": [
+      7,
+      14,
+      28
+    ]
+  },
+  "buyer": {
+    "privacy_binding_share": [
+      0.2,
+      0.6,
+      0.9
+    ],
+    "consent_rate": [
+      0.6,
+      0.85,
+      0.98
+    ],
+    "planning_exposure_usd": [
+      20000,
+      60000,
+      150000
+    ],
+    "decision_change_probability": [
+      0.15,
+      0.35,
+      0.6
+    ],
+    "coordination_hours_saved": [
+      12,
+      36,
+      96
+    ],
+    "confidence": [
+      0.35,
+      0.65,
+      0.9
+    ],
+    "owner_input_hours": [
+      4,
+      8,
+      16
+    ],
+    "owner_compute_usd": [
+      50,
+      100,
+      300
+    ],
+    "owner_privacy_burden_usd": [
+      0,
+      150,
+      1000
+    ],
+    "owner_hourly_usd": 105.1177807709886,
+    "counsel_hourly_usd": 137.09286543147687,
+    "sponsor_budget_usd": [
+      6000,
+      18000,
+      36000
+    ],
+    "belief_acceptance": 0.85,
+    "broker_belief_acceptance": 0.98,
+    "broker_analyst_hours": [
+      8,
+      16,
+      32
+    ],
+    "broker_governance_hours": [
+      4,
+      8,
+      16
+    ],
+    "broker_tools_usd": [
+      200,
+      500,
+      1500
+    ],
+    "cash_opportunity_rate_annual": 0.12,
+    "conditional_value_multiplier": 0.95,
+    "purpose": "Discounted decision value, never avoided-outage value. All three member participation conditions and sponsor utility must hold. Correct bit0 may be useful; value also has a zero/predictable-result segment.",
+    "zero_information_value_probability": 0.15
+  },
+  "commitments": {
+    "noncash": true,
+    "survival_probability": 0.95,
+    "launch_deadline_day": 62,
+    "conservative_acceptance": 0.8,
+    "conservative_collection": 0.95,
+    "conservative_processing_fraction": 0.01,
+    "startup_forecast_multiplier": 1.15,
+    "delivery_forecast_usd_per_commitment": 1800,
+    "fixed_forecast_months": 6,
+    "rule": "Launch only if expected accepted, surviving and collected commitments after processing cover conservative startup, six months fixed cost, insurance, all incurred acquisition cost and forecast delivery for every commitment. No future realized outcomes enter this rule. Commitments are held through day180; failed readiness or capacity can leave unserved commitments with no invoice."
+  },
+  "operations": {
+    "success_probability": [
+      0.65,
+      0.9,
+      0.98
+    ],
+    "common_failure_probability": 0.08,
+    "common_failure_multiplier": 0.65,
+    "common_failure_period_days": 30,
+    "token_cost_multiplier": [
+      0.4444444444444444,
+      1,
+      3.888888888888889
+    ],
+    "compute_usd": [
+      40,
+      120,
+      400
+    ],
+    "verification_usd": [
+      20,
+      80,
+      240
+    ],
+    "packaging_usd": [
+      20,
+      60,
+      180
+    ],
+    "unknown_extra_usd": [
+      0,
+      400,
+      2000
+    ],
+    "support_usd": [
+      100,
+      300,
+      1000
+    ],
+    "tail_usd": [
+      20,
+      60,
+      200
+    ],
+    "failure_recovery_usd": 100,
+    "retry_multiplier": [
+      1,
+      1,
+      2
+    ],
+    "support_due_days": 60,
+    "residual_human_hours": 0
+  },
+  "frontier_tokens": {
+    "source_record": "evidence/frontier_and_labor_sources.json",
+    "as_of": "2026-10-27",
+    "mode": "Documented API tariffs; consumption unmeasured. Input envelopes split into calls below long-context surcharge thresholds. No private owner inputs are sent to models. Billed reasoning is included in output quantities. No consumer-subscription automation assumed.",
+    "components": [
+      {
+        "model": "gpt-6-astra",
+        "configuration": "Responses API, high reasoning, public-schema strategy and independent judgment",
+        "input_tokens": 10000000,
+        "output_tokens": 1000000,
+        "input_usd_per_million": 10,
+        "output_usd_per_million": 50,
+        "cached_tokens_assumed": 0,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "configuration": "Responses API, high reasoning, public workflow execution and recovery; no computer interaction needed for this MPC primitive",
+        "input_tokens": 10000000,
+        "output_tokens": 1000000,
+        "input_usd_per_million": 2,
+        "output_usd_per_million": 10,
+        "cached_tokens_assumed": 0,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+      }
+    ],
+    "central_judgment_envelope_usd": 180,
+    "interpretation": "Conservative whole-mission planning envelope, not observed token usage or a forecast calibrated to this one-bit job; test low consumption and 4x/10x model prices."
+  },
+  "business": {
+    "monthly_cost_usd": [
+      500,
+      1000,
+      2000
+    ],
+    "acquisition_per_opportunity_usd": [
+      250,
+      500,
+      1000
+    ],
+    "insurance_six_month_usd": [
+      1000,
+      3000,
+      10000
+    ],
+    "reserve_months": 2,
+    "definition": "Fixed cost begins only after readiness; no duplicated startup overhead. Insurance is an unquoted technology/cyber allowance, no physical-grid coverage claim. Tail is charged inside each delivery. Acquisition/screening paid for all approached pools even when no coalition/launch results."
+  },
+  "payments": {
+    "invoice_due_days": 30,
+    "additional_lateness_days": [
+      0,
+      30,
+      60
+    ],
+    "default_probability": [
+      0,
+      0.03,
+      0.1
+    ],
+    "declared_credit_loss_allowance": 0.05,
+    "processing_fraction": [
+      0.002,
+      0.005,
+      0.01
+    ],
+    "refund_flat_usd": 25,
+    "deposit_fully_restricted": true,
+    "accounting": "Accrue accepted revenue, support, remaining-payment fees and expected credit loss; collection/default settles these once. Correct infeasibility can be accepted. Failed delivery refunds deposits and recognizes no service revenue."
+  },
+  "retention": {
+    "primary": "No extra retention, no Gym. Stable product code is already paid in A.",
+    "assessment_usd": 500,
+    "extraction_usd": 1500,
+    "monthly_maintenance_usd": 200,
+    "invocation_usd": 50,
+    "forecast_additional_gain": 0,
+    "forecast_reuse": 6,
+    "decision": "Reject on zero expected gain; optional assessment charged once even though rejected. E+ realized numerical gain unmeasured. An ordinary library with identical content is a tie.",
+    "gym_usd": 0
+  },
+  "known_limits": [
+    "Three local MPC processes do not establish a live private deployment or owner trust.",
+    "Cost and value scenarios, consent and demand are hypothetical.",
+    "No human-sales-price reference or imported battery profit.",
+    "Human-led and AI productization budgets do not measure Operational Alpha.",
+    "Full venture cost includes startup failures and unsuccessful screening.",
+    "The payment simulation is neither a bank account nor legal or insurance advice."
+  ]
+}
