@@ -61,6 +61,43 @@
       "stage": "evidence whitespace",
       "original": "Three raw pytest failure lines retain trailing whitespace",
       "correction": "Raw failure bytes preserved; source-only whitespace check passes"
+    },
+    {
+      "stage": "configured review of e7220534",
+      "original": "Operation ID was used for executed-observation ledger lookup, although the executor charges mission ID; a caught enterprise preflight failure could retain capacity without an execution receipt.",
+      "correction": "Derive the actual ledger mission from the pinned receipt; allocate mission/bucket once and recheck on continuation. Repair paused intent-bound preflight reconciliation with complete original-mission accounting and no authority restoration. Directed adversarial and legacy regressions included.",
+      "review_comments": [
+        4391948081,
+        4391948100
+      ]
+    },
+    {
+      "stage": "review regression development",
+      "original": "First added tests confused the executor return with its journal receipt and assumed the enterprise allowed distinct operation/mission IDs; two later assertions used an unsupported cost-allocation inspection route.",
+      "correction": "Read the actual journal receipt and allocation; preserve the enterprise identity restriction. Distinct-ID coverage exercises the general executor, where this is supported.",
+      "original_reports": [
+        "review-regressions.junit.txt",
+        "review-regressions-v2.junit.txt"
+      ]
+    },
+    {
+      "stage": "source freeze during review regressions",
+      "original": "Pinned Ruff reformatted runtime source during an active regression run; the original source-integrity guard correctly refused the changed runtime.",
+      "correction": "Finish formatting, freeze runtime bytes, and execute the fresh 283-case campaign without source mutation.",
+      "original_report": "review-regressions-v3.junit.txt",
+      "corrected_report": "review-runtime-focused.junit.txt"
+    },
+    {
+      "stage": "hosted homepage accessibility",
+      "original": "e7220534 homepage job 122350028422 failed landmark-complementary-is-top-level for the nested discovery aside.",
+      "correction": "Use a labelled section; the unchanged 22-check Flywheel journey including axe passes locally. Fresh hosted qualification remains required.",
+      "run": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40549768123",
+      "corrected_report": "review-full-browser.json"
+    },
+    {
+      "stage": "installed CLI command",
+      "original": "A relative .venv path was invoked from outside the repository and returned 127 before Python started.",
+      "correction": "Use the absolute existing interpreter with the installed target first; installed CLI help passes. No clean bootstrap claim."
     }
   ],
   "meaning": "Corrections do not retroactively qualify earlier attempts. All identity/model/money fixtures remain explicitly synthetic."

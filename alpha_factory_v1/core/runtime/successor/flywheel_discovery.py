@@ -378,6 +378,14 @@ class Discovery:
                 raise KeyError(identity)
             return value
 
+    def _ledger_mission(self, terms: ExperimentObservation, execution_digest: str | None, cx: Any) -> str:
+        if terms.execution_operation is None:
+            return terms.cost_operation
+        execution = self.journal.latest(operation_key(terms.execution_operation), cx)
+        if execution["digest"] != execution_digest:
+            raise Conflict("accounting reconciliation requires the original exact execution receipt")
+        return str(ExecutionMission.model_validate(execution["mission"]).mission_id)
+
     def apply(self, signed: SignedEnvelope) -> dict[str, Any]:
         signed = SignedEnvelope.model_validate_json(canonical(signed))
         raw = self.service.trust.verify(signed, "flywheel-discovery-command", "controller")
@@ -464,17 +472,39 @@ class Discovery:
             self._witness(bundle.witness_id, bundle.witness_spec_digest, cx)
             self._evidence(checkpoint.evidence, cx)
             value = self.journal.document(old)
-            if old["status"] == "paused-uncertain" and checkpoint.disposition == "continue":
+            if checkpoint.disposition == "continue":
                 costs = []
                 reconciled = []
                 steps = {step.step_id: step for step in bundle.steps}
                 for row in value["observations"]:
-                    report = self.costs.report(row["terms"]["cost_operation"], cx)
+                    terms = ExperimentObservation.model_validate(row["terms"])
+                    ledger_mission = self._ledger_mission(terms, row["execution_digest"], cx)
+                    allocation_id = ledger_mission + "/" + steps[terms.step_id].cost_bucket
+                    allocation = self._read("cost-allocation", allocation_id, cx)
+                    if allocation is None:
+                        legacy = self._read(
+                            "cost-allocation", terms.cost_operation + "/" + steps[terms.step_id].cost_bucket, cx
+                        )
+                        if legacy is None:
+                            raise Conflict("recorded observation has no cost allocation")
+                        allocation = dict(legacy)
+                        allocation["ledger_mission_id"] = ledger_mission
+                        self.journal.append(
+                            cx, key("cost-allocation", allocation_id), self.journal.document(allocation)
+                        )
+                    if (
+                        allocation["bundle_id"] != bundle.bundle_id
+                        or allocation["cost_operation"] != terms.cost_operation
+                    ):
+                        raise Conflict("ledger mission and bucket already belong to another observation")
+                    report = self.costs.report(ledger_mission, cx)
                     step = steps[row["terms"]["step_id"]]
                     if not report["bucket_complete"][step.cost_bucket]:
                         raise Conflict("checkpoint cannot clear unknown experiment liabilities")
                     costs.append(report["costs"][step.cost_bucket])
-                    reconciled.append({"step_id": step.step_id, "cost_report": report})
+                    reconciled.append(
+                        {"step_id": step.step_id, "ledger_mission_id": ledger_mission, "cost_report": report}
+                    )
                 value["known_cost_micro_usd"] = sum(costs)
                 value.setdefault("accounting_reconciliations", []).append(
                     {
@@ -615,9 +645,6 @@ class Discovery:
             raise Conflict("dependent experiment cannot precede its prerequisite observations")
         if any(item["terms"]["cost_operation"] == observation.cost_operation for item in old["observations"]):
             raise Conflict("one activity cannot supply two experiment cost allocations")
-        claim_id = observation.cost_operation + "/" + step.cost_bucket
-        if self._read("cost-allocation", claim_id, cx) is not None:
-            raise Conflict("this cost operation and bucket already belong to another discovery observation")
         self._new("observation", command.operation_id, None, cx)
         self._evidence([*observation.evidence, observation.artifact], cx)
         execution_digest = None
@@ -665,7 +692,14 @@ class Discovery:
                 ],
                 cx,
             )
-        report = self.costs.report(observation.cost_operation, cx)
+        ledger_mission = self._ledger_mission(observation, execution_digest, cx)
+        claim_id = ledger_mission + "/" + step.cost_bucket
+        if (
+            self._read("cost-allocation", claim_id, cx) is not None
+            or self._read("cost-allocation", observation.cost_operation + "/" + step.cost_bucket, cx) is not None
+        ):
+            raise Conflict("this ledger mission and bucket already belong to another discovery observation")
+        report = self.costs.report(ledger_mission, cx)
         complete = report["bucket_complete"][step.cost_bucket]
         cost = report["costs"][step.cost_bucket]
         value = self.journal.document(old)
@@ -697,6 +731,7 @@ class Discovery:
             "terms": observation.model_dump(),
             "cost_report": report,
             "execution_digest": execution_digest,
+            "ledger_mission_id": ledger_mission,
             "complete_selected_bucket": complete,
             "within_declared_budget": not over,
             "interpretation_basis": "controller attestation, not automatic technical or commercial qualification",
@@ -713,6 +748,7 @@ class Discovery:
                 "bundle_id": bundle.bundle_id,
                 "observation_id": command.operation_id,
                 "cost_operation": observation.cost_operation,
+                "ledger_mission_id": ledger_mission,
                 "bucket": step.cost_bucket,
             },
         )

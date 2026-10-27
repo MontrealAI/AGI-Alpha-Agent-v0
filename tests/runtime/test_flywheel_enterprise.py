@@ -166,12 +166,14 @@ def decision(
     return Enterprise(state["service"]).apply(command(state, "decide", request.model_dump(), identity))
 
 
-def execution(state: dict[str, Any], operation: str = "placement-origin") -> tuple[Any, Any, Any, Any]:
+def execution(
+    state: dict[str, Any], operation: str = "placement-origin", *, mission_id: str | None = None
+) -> tuple[Any, Any, Any, Any]:
     spec = offering(state)
     instance = s.problem(2100)
     env = PlacementEnvironment(PlacementWorkflow(version=1))
     mission = ExecutionMission(
-        mission_id=operation,
+        mission_id=mission_id or operation,
         beneficiary=spec.beneficiary,
         goal=spec.useful_outcome,
         challenged_assumption="Cheap replicas can share a failure domain",
@@ -461,6 +463,102 @@ def test_terminal_executor_failure_recovers_after_lost_finalization(setup: dict[
     assert result["status"] == "reconciled-failure"
     assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
     assert enterprise.inspect("decision", "first-decision")["consumed"]
+
+
+@pytest.mark.parametrize("legacy", [False, True])
+def test_preflight_failure_reconciles_only_complete_original_mission_accounting(
+    setup: dict[str, Any], legacy: bool
+) -> None:
+    s.funding(setup)
+    register(setup)
+    decision(setup)
+    enterprise = Enterprise(setup["service"])
+    executor, mission, profile, permit = execution(setup)
+    profile = profile.model_copy(update={"model_request_cap_micro_usd": 1001})
+    payload = copy.deepcopy(permit.payload)
+    payload["permit"]["profile_digest"] = digest("flywheel-execution-profile", profile)
+    permit = sign_record(setup["keys"]["controller"], "controller", permit.domain, payload)
+    with pytest.raises(ValueError, match="first model request"):
+        enterprise.run("first-decision", executor, mission, profile, permit)
+    with pytest.raises(KeyError):
+        setup["journal"].latest(operation_key("placement-origin"))
+    assert not setup["costs"].snapshot()["charges"]
+    old = enterprise.inspect("launch", "placement-origin")
+    assert old["status"] == "failed-or-uncertain"
+    if legacy:
+        with setup["journal"].transaction() as cx:
+            document = setup["journal"].document(old)
+            del document["ledger_mission_id"]
+            old = setup["journal"].append(cx, key("launch", "placement-origin"), document)
+            setup["service"].checkpoint.advance(setup["journal"], cx)
+    raw = {"execution_operation": "placement-origin", "evidence": [evidence(setup).model_dump()]}
+    with pytest.raises(Conflict, match="paused enterprise"):
+        enterprise.apply(command(setup, "reconcile", raw, "not-paused", old["digest"]))
+    setup["journal"].control(True)
+    with setup["journal"].transaction() as cx:
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    raw["evidence"] = [evidence(setup).model_dump()]
+    if legacy:
+        with pytest.raises(Conflict, match="exact original mission"):
+            enterprise.apply(command(setup, "reconcile", raw, "legacy-missing-intent", old["digest"]))
+        raw["original_mission"] = mission.model_copy(update={"goal": "substituted purpose"}).model_dump()
+        with pytest.raises(Conflict, match="exact reserved execution intent"):
+            enterprise.apply(command(setup, "reconcile", raw, "wrong-intent", old["digest"]))
+        raw["original_mission"] = mission.model_dump()
+    # An unrelated complete scope cannot conceal the original mission's liabilities.
+    s.seal(setup, "unrelated-accounting-scope", "A")
+    with pytest.raises(Conflict, match="complete failed-attempt liabilities"):
+        enterprise.apply(command(setup, "reconcile", raw, "wrong-accounting-scope", old["digest"]))
+    assert setup["journal"].latest(key("active", "capacity"))["reservations"]
+    s.seal(setup, mission.mission_id, "A")
+    result = enterprise.apply(command(setup, "reconcile", raw, "complete-preflight", old["digest"]))
+    assert result["status"] == "reconciled-failure"
+    assert result["ledger_mission_id"] == mission.mission_id
+    assert result["failure_kind"] == "caught-preflight-failure-without-execution-record"
+    assert result["execution_digest"] is None and result["authority_restored"] is False
+    assert not setup["journal"].latest(key("active", "capacity"))["reservations"]
+    assert enterprise.inspect("decision", "first-decision")["consumed"]
+    with pytest.raises(Conflict):
+        enterprise.apply(command(setup, "reconcile", raw, "repeat-preflight", old["digest"]))
+    setup["journal"].verify()
+
+
+def test_missing_receipt_cannot_clear_a_merely_attempting_launch(setup: dict[str, Any], monkeypatch: Any) -> None:
+    s.funding(setup)
+    register(setup)
+    decision(setup)
+    enterprise = Enterprise(setup["service"])
+    executor, mission, profile, permit = execution(setup)
+
+    def crash(*args: Any) -> None:
+        raise SystemExit("interrupted before the executor records its state")
+
+    monkeypatch.setattr(executor, "run", crash)
+    with pytest.raises(SystemExit):
+        enterprise.run("first-decision", executor, mission, profile, permit)
+    old = enterprise.inspect("launch", "placement-origin")
+    s.seal(setup, mission.mission_id, "A")
+    setup["journal"].control(True)
+    with setup["journal"].transaction() as cx:
+        setup["service"].checkpoint.advance(setup["journal"], cx)
+    raw = {"execution_operation": "placement-origin", "evidence": [evidence(setup).model_dump()]}
+    with pytest.raises(Conflict, match="merely attempting"):
+        enterprise.apply(command(setup, "reconcile", raw, "in-flight-missing", old["digest"]))
+    assert setup["journal"].latest(key("active", "capacity"))["reservations"]
+
+
+def test_enterprise_distinct_identity_refuses_before_consumption(setup: dict[str, Any]) -> None:
+    s.funding(setup)
+    register(setup)
+    decision(setup)
+    enterprise = Enterprise(setup["service"])
+    executor, mission, profile, permit = execution(setup, mission_id="actual-failed-mission")
+    with pytest.raises(ValueError, match="exact journal and mission identity"):
+        enterprise.run("first-decision", executor, mission, profile, permit)
+    assert not enterprise.inspect("decision", "first-decision")["consumed"]
+    with pytest.raises(KeyError):
+        enterprise.inspect("launch", "placement-origin")
+    assert not setup["costs"].snapshot()["charges"]
 
 
 def test_changed_commercial_assessment_evidence_cannot_authorize(setup: dict[str, Any]) -> None:

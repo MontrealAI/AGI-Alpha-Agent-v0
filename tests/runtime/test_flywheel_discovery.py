@@ -573,6 +573,163 @@ def test_actual_execution_and_accepted_original_artifact_bind_observation(setup:
     assert result["authority_granted"] is False
 
 
+@pytest.mark.parametrize("seal_before_observation", [False, True])
+def test_executed_observation_and_checkpoint_use_actual_mission_ledger(
+    setup: dict[str, Any], seal_before_observation: bool
+) -> None:
+    state = setup
+    s.funding(state)
+    executor, mission, profile, permit = e.execution(state, mission_id="paid-delivery-mission")
+    executor.run(mission, profile, permit)
+    execution = state["journal"].latest(operation_key("placement-origin"))
+    register_witness(state)
+    spec = bundle(state, mission=mission, bucket="A")
+    record = register_bundle(state, spec)
+    raw = observation(state, spec).model_dump()
+    raw.update(
+        artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+        cost_operation="placement-origin",
+        execution_operation="placement-origin",
+        elapsed_seconds=1800,
+    )
+    # An unrelated sealed operation ID must never stand in for actual mission costs.
+    s.seal(state, "placement-origin", "A")
+    if seal_before_observation:
+        s.seal(state, mission.mission_id, "A")
+    api = Discovery(state["service"])
+    result = api.apply(command(state, "observe", raw, "distinct-ledger-observation", record["digest"]))
+    item = result["observations"][0]
+    assert item["execution_digest"] == execution["digest"]
+    assert item["ledger_mission_id"] == mission.mission_id
+    assert item["cost_report"] == state["costs"].report(mission.mission_id)
+    assert item["complete_selected_bucket"] is seal_before_observation
+    assert (
+        state["journal"].latest(key("cost-allocation", mission.mission_id + "/A"))["cost_operation"]
+        == "placement-origin"
+    )
+    if not seal_before_observation:
+        assert result["status"] == "paused-uncertain"
+        with pytest.raises(Conflict, match="unknown experiment liabilities"):
+            checkpoint(state, spec.bundle_id)
+        s.seal(state, mission.mission_id, "A")
+    result = checkpoint(state, spec.bundle_id)
+    reconciled = result["accounting_reconciliations"][-1]["reports"][0]
+    assert reconciled["ledger_mission_id"] == mission.mission_id
+    assert reconciled["cost_report"] == state["costs"].report(mission.mission_id)
+    assert result["known_cost_micro_usd"] == state["costs"].report(mission.mission_id)["costs"]["A"]
+    assert result["status"] == "observing"
+
+
+def test_distinct_execution_operations_cannot_allocate_the_same_mission_costs_twice(setup: dict[str, Any]) -> None:
+    state = setup
+    s.funding(state)
+    executor, mission, profile, permit = e.execution(state, mission_id="shared-paid-mission")
+    executor.run(mission, profile, permit)
+    # Resolve the first attempt, leaving the scope open for the second actual local run.
+    for row in state["costs"].snapshot()["charges"].values():
+        if row["accrued_micro_usd"] is None:
+            value = {
+                k: row[k]
+                for k in (
+                    "activity_id",
+                    "mission_id",
+                    "bucket",
+                    "category",
+                    "accrued_micro_usd",
+                    "paid_micro_usd",
+                    "basis",
+                    "evidence_digest",
+                    "note",
+                )
+            }
+            value.update(accrued_micro_usd=1, basis="attested", note="FICTIONAL test amount")
+            f.account(state, "resolve", value, "resolve/" + row["activity_id"])
+    second_executor, _, _, second_permit = e.execution(state, "second-attempt", mission_id=mission.mission_id)
+    second_executor.run(mission, profile, second_permit)
+    s.seal(state, mission.mission_id, "A")
+    register_witness(state)
+    api = Discovery(state["service"])
+    for number, operation in enumerate(("placement-origin", "second-attempt")):
+        spec = bundle(state, identity=f"attempt-bundle-{number}", mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        raw = observation(state, spec).model_dump()
+        raw.update(
+            artifact=evidence(state, operation_key(operation)).model_dump(),
+            cost_operation=operation,
+            execution_operation=operation,
+            elapsed_seconds=1800,
+        )
+        signed = command(state, "observe", raw, f"allocate-attempt-{number}", record["digest"])
+        if number == 0:
+            api.apply(signed)
+        else:
+            with pytest.raises(Conflict, match="ledger mission and bucket"):
+                api.apply(signed)
+
+
+def test_checkpoint_refuses_changed_execution_receipt(setup: dict[str, Any]) -> None:
+    state = setup
+    e.launch(state)
+    s.seal(state, "placement-origin", "A")
+    register_witness(state)
+    spec = bundle(state, mission=e.execution(state)[1], bucket="A")
+    record = register_bundle(state, spec)
+    raw = observation(state, spec).model_dump()
+    raw.update(
+        artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+        cost_operation="placement-origin",
+        execution_operation="placement-origin",
+        elapsed_seconds=1800,
+    )
+    Discovery(state["service"]).apply(command(state, "observe", raw, "original-receipt", record["digest"]))
+    with state["journal"].transaction() as cx:
+        prior = state["journal"].latest(operation_key("placement-origin"), cx)
+        changed = state["journal"].document(prior)
+        changed["result"] = {"different": True}
+        state["journal"].append(cx, operation_key("placement-origin"), changed)
+        state["service"].checkpoint.advance(state["journal"], cx)
+    with pytest.raises(Conflict, match="original exact execution receipt"):
+        checkpoint(state, spec.bundle_id)
+
+
+def test_legacy_operation_allocation_reconciles_without_rewriting_history(
+    setup: dict[str, Any], monkeypatch: Any
+) -> None:
+    state = setup
+    s.funding(state)
+    executor, mission, profile, permit = e.execution(state, mission_id="legacy-original-mission")
+    executor.run(mission, profile, permit)
+    register_witness(state)
+    spec = bundle(state, mission=mission, bucket="A")
+    record = register_bundle(state, spec)
+    raw = observation(state, spec).model_dump()
+    raw.update(
+        artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+        cost_operation="placement-origin",
+        execution_operation="placement-origin",
+        elapsed_seconds=1800,
+    )
+    api = Discovery(state["service"])
+    # Reproduce the previous operation-scoped lookup to create a legacy paused record.
+    with monkeypatch.context() as context:
+        context.setattr(api, "_ledger_mission", lambda terms, execution_digest, cx: terms.cost_operation)
+        old = api.apply(command(state, "observe", raw, "legacy-scope-observation", record["digest"]))
+    assert old["status"] == "paused-uncertain"
+    assert not old["observations"][0]["cost_report"]["bucket_complete"]["A"]
+    s.seal(state, mission.mission_id, "A")
+    result = checkpoint(state, spec.bundle_id)
+    assert result["status"] == "observing"
+    assert result["observations"] == old["observations"]
+    assert result["known_cost_micro_usd"] == state["costs"].report(mission.mission_id)["costs"]["A"]
+    assert (
+        state["journal"].latest(key("cost-allocation", mission.mission_id + "/A"))["ledger_mission_id"]
+        == mission.mission_id
+    )
+    assert (
+        state["journal"].latest(key("cost-allocation", "placement-origin/A"))["ledger_mission_id"] == "placement-origin"
+    )
+
+
 @pytest.mark.parametrize("attack", ["bucket", "artifact", "elapsed", "inputs", "acceptance", "mode"])
 def test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance(setup: dict[str, Any], attack: str) -> None:
     state = setup

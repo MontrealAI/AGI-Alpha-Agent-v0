@@ -38,12 +38,29 @@ requirements. Accepted placement outputs use the existing independent acceptance
 service. Other interpretations remain explicitly attested and unqualified.
 Research artifacts can be recorded without inventing execution receipts.
 
-An operation/bucket can be allocated once across all bundles. This reads the
-existing ledger rather than charging it again. Unknown costs pause the package.
-A signed checkpoint rechecks reconciled reports, preserves old incomplete records,
-recomputes totals once and resumes or stops on the resolved budget. It never
+An actual ledger mission/bucket can be allocated once across all bundles. For an
+executed observation, the mission ID comes from the exact execution receipt;
+the operation ID remains the execution identity and is not a ledger alias. This
+reads the existing ledger rather than charging it again. Unknown costs pause the
+package. Every signed continuation rechecks the original execution identity and
+current accounting, preserves old incomplete records, recomputes totals once and
+resumes or stops on the resolved budget. A paused legacy observation whose
+allocation used its operation ID gets an additional mission-scoped allocation
+when reconciled; the old allocation and observation remain historical. Overlap
+with another observation refuses. It never
 replays an action or restores consumed permission. Stale heads/evidence, replay,
 wrong roles, expired signatures, stopped control and changed source refuse.
+
+The enterprise child also repairs caught executor preflight failures that leave
+no execution record after reserving capacity. A signed reconciliation requires a
+paused enterprise, the exact failed launch and complete A accounting for its
+original mission. New launches retain that ledger identity; legacy launches
+without it require the full original mission matching the frozen request digest.
+An absent receipt alone cannot clear a merely attempting launch. Terminal failure
+receipts retain the existing exact permit/profile/mission checks. Reconciliation
+releases the reservation, records its failure kind and leaves the decision
+consumed; it grants no retry authority. This correction is offered for adoption
+by the existing enterprise owner rather than changing its branch or release.
 
 Offering links preserve exact purpose, deliverable, criteria, scope and evidence
 mode. They cannot qualify or authorize an offering. Discovery dispositions are

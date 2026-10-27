@@ -270,7 +270,10 @@ class Enterprise:
 
     def _reconcile(self, command: EnterpriseCommand, cx: Any) -> tuple[str, dict[str, Any]]:
         raw = command.record
-        if set(raw) != {"execution_operation", "evidence"}:
+        if set(raw) not in (
+            {"execution_operation", "evidence"},
+            {"execution_operation", "evidence", "original_mission"},
+        ):
             raise ValueError("reconciliation requires exact launch and evidence")
         if not isinstance(raw["evidence"], list) or not 1 <= len(raw["evidence"]) <= 16:
             raise ValueError("reconciliation requires bounded accounting evidence")
@@ -283,23 +286,47 @@ class Enterprise:
             or self.journal.latest("@control", cx)["state"] != "paused"
         ):
             raise Conflict("reconciliation needs the exact failed launch and a paused enterprise")
-        execution = self.journal.latest(operation_key(raw["execution_operation"]), cx)
-        if (
-            digest("enterprise-execution-permit", execution["permit"]) != old.get("execution_permit_digest")
-            or digest("flywheel-execution-request", execution["mission"]) != old.get("request_digest")
-            or digest("flywheel-execution-profile", execution["profile"]) != old.get("profile_digest")
-        ):
-            raise Conflict("terminal receipt differs from the exact reserved execution intent")
-        if execution["status"] not in {"failed-or-uncertain", "stopped-budget"}:
-            raise Conflict("in-flight or delivered execution cannot be cleared as a failed launch")
-        if not self.costs.report(raw["execution_operation"], cx)["bucket_complete"]["A"]:
+        original = ExecutionMission.model_validate(raw["original_mission"]) if "original_mission" in raw else None
+        if original is not None and digest("flywheel-execution-request", original) != old["request_digest"]:
+            raise Conflict("original mission differs from the exact reserved execution intent")
+        try:
+            execution = self.journal.latest(operation_key(raw["execution_operation"]), cx)
+        except KeyError:
+            if old["status"] != "failed-or-uncertain":
+                raise Conflict("missing execution cannot clear a merely attempting launch") from None
+            ledger_mission = old.get("ledger_mission_id") or (original.mission_id if original else None)
+            if ledger_mission is None:
+                raise Conflict("legacy preflight failure requires its exact original mission") from None
+            execution_digest = None
+            failure_kind = "caught-preflight-failure-without-execution-record"
+        else:
+            if (
+                digest("enterprise-execution-permit", execution["permit"]) != old.get("execution_permit_digest")
+                or digest("flywheel-execution-request", execution["mission"]) != old.get("request_digest")
+                or digest("flywheel-execution-profile", execution["profile"]) != old.get("profile_digest")
+            ):
+                raise Conflict("terminal receipt differs from the exact reserved execution intent")
+            if execution["status"] not in {"failed-or-uncertain", "stopped-budget"}:
+                raise Conflict("in-flight or delivered execution cannot be cleared as a failed launch")
+            ledger_mission = ExecutionMission.model_validate(execution["mission"]).mission_id
+            execution_digest = execution["digest"]
+            failure_kind = "terminal-execution-failure"
+        if old.get("ledger_mission_id", ledger_mission) != ledger_mission:
+            raise Conflict("launch accounting scope differs from the original mission")
+        if not self.costs.report(ledger_mission, cx)["bucket_complete"]["A"]:
             raise Conflict("complete failed-attempt liabilities must be reconciled before releasing capacity")
         active = self._read("active", "capacity", cx)
         reservations = active["reservations"] if active else {}
         reservations.pop(raw["execution_operation"], None)
         self.journal.append(cx, key("active", "capacity"), {"reservations": reservations})
         value = self.journal.document(old)
-        value.update(status="reconciled-failure", execution_digest=execution["digest"])
+        value.update(
+            status="reconciled-failure",
+            execution_digest=execution_digest,
+            ledger_mission_id=ledger_mission,
+            failure_kind=failure_kind,
+            authority_restored=False,
+        )
         return key("launch", raw["execution_operation"]), value
 
     def _advance(self, command: EnterpriseCommand, cx: Any) -> tuple[str, dict[str, Any]]:
@@ -539,6 +566,7 @@ class Enterprise:
                 "execution_permit_digest": digest("enterprise-execution-permit", permit),
                 "request_digest": terms.request_digest,
                 "profile_digest": terms.profile_digest,
+                "ledger_mission_id": mission.mission_id,
                 "source": context["source"],
                 "status": "attempting-or-uncertain",
                 "execution_digest": None,
