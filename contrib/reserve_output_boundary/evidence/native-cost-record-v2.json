@@ -1,0 +1,72 @@
+{
+  "accounting_public_key": "bbbcb56b1df96c041642495de717a5bccf70714f08678ce83bac407fc90e748e",
+  "checkpoint": {
+    "events": 5,
+    "head": "4c5874165017990e5bdcae79447d017649d1382fc219d5e91d4917f0aca5ac75",
+    "identity": "urn:agialpha:ed25519:c9ae4869d07e552e9d2469a10c8f847df05b4ac602afcdfc20649aab73840bf5",
+    "valid": true
+  },
+  "duplicate_activity_refused": true,
+  "idempotent_replay_charged_once": true,
+  "mission": {
+    "acceptance": "separate executable reference, not customer acceptance",
+    "artifact_sha256": "4a6d418c9baea3e6e4bce672c3c11756166ff785149e53a1928445776148ca0b",
+    "authority": "none",
+    "execution": "confirmation",
+    "mission_id": "reserve-output-boundary-confirmation",
+    "mode": "public-synthetic-only",
+    "opportunity_id": "research-reserve-feasibility"
+  },
+  "mode": "local-fixture-not-live-ens",
+  "private_keys_exported": false,
+  "recovery_limit": "Uses existing local Journal. This packet is not authority and cannot recover or roll back private operator state.",
+  "report": {
+    "available_funds": null,
+    "bucket_complete": {
+      "A": false,
+      "B": false,
+      "C": false
+    },
+    "cash": 0,
+    "collected_revenue": 0,
+    "complete": false,
+    "complete_cost_profit": null,
+    "costs": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "currency": "USD",
+    "delivery_profit": null,
+    "evidence_basis": "configured accounting signer attestations",
+    "known_obligations": 0,
+    "obligations": null,
+    "reserve": 0,
+    "token_movements_included": false,
+    "unit": "micro_usd",
+    "unknown_costs": true
+  },
+  "schema": "reserve-output-boundary-native-record/v1",
+  "signed_cost": {
+    "domain": "flywheel-cost-command",
+    "payload": {
+      "action": "charge",
+      "journal_identity": "urn:agialpha:ed25519:c9ae4869d07e552e9d2469a10c8f847df05b4ac602afcdfc20649aab73840bf5",
+      "operation_id": "boundary-assessment-cost-once",
+      "record": {
+        "accrued_micro_usd": null,
+        "activity_id": "boundary-complete-incremental-assessment",
+        "basis": "unknown",
+        "bucket": "B",
+        "category": "overhead",
+        "evidence_digest": "4a6d418c9baea3e6e4bce672c3c11756166ff785149e53a1928445776148ca0b",
+        "mission_id": "reserve-output-boundary-confirmation",
+        "note": "Complete incremental engineering assessment including model/tool use, development, failed clone, tests, retries, verification and handoff. Aggregate allocation unknown; not charged again to originating delivery A.",
+        "paid_micro_usd": 0,
+        "schema_version": 1
+      }
+    },
+    "principal": "boundary-fixture-accountant",
+    "signature": "83Uhp3zzMVciXoxD/+HIa7A5C6NDgXQVfO4iEVkpfcieSayPy3XS/n8fZH1w+CjHLuL4/5vQAklSEVDUk23DCA=="
+  }
+}

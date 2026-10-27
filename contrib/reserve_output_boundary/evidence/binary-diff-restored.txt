@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/dev/shm/agi-alpha-sprint-95d6b6022bf9/scripts/check_no_binary_diff.py", line 484, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/dev/shm/agi-alpha-sprint-95d6b6022bf9/scripts/check_no_binary_diff.py", line 450, in main
+    catalog = load_catalog(Path.cwd())
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dev/shm/agi-alpha-sprint-95d6b6022bf9/scripts/research_papers.py", line 281, in load_catalog
+    path = ordinary_path(root, CATALOG)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dev/shm/agi-alpha-sprint-95d6b6022bf9/scripts/research_papers.py", line 276, in ordinary_path
+    raise ValueError("Paper rendering requires ordinary non-executable files")
+ValueError: Paper rendering requires ordinary non-executable files
