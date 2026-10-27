@@ -85,6 +85,10 @@ def build(root: Path = ROOT) -> None:
         + json.dumps(opportunity_evidence, ensure_ascii=True, separators=(",", ":"))
         + ";\n"
     )
+    customer_evidence = json.loads((template / "customer-evidence.json").read_text(encoding="utf-8"))
+    code += (
+        "\nconst CUSTOMER_EVIDENCE=" + json.dumps(customer_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+    )
     code += (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the Flywheel bundle")
