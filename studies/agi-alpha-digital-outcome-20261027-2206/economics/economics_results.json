@@ -1,0 +1,968 @@
+{
+  "edition": "DIGITAL-20261027-R1",
+  "currency": "USD nominal",
+  "all_financial_amounts": "conditional estimates, not actual profit or quotations",
+  "model_cost_M": "Unknown total attributable model/tool charge per accepted buyer engagement, including failed attempts; common across arms. Default100 is sensitivity only.",
+  "historical_development_D": "Unknown complete whole-study development and publication resource cost; charge once for full-project return, never again per customer.",
+  "cohort_horizon": "Favorable195days including maintenance for8buyers; central115days for4buyers. Counts are not annual sales forecasts.",
+  "acceptance_link": "Source/CLI/tests/evidence accepted as one public mission. Buyer-specific qualification/integration and paid support are proposed commercial extensions, not accepted customer deliveries.",
+  "scenario_results": [
+    {
+      "scenario": "favorable",
+      "assumptions": {
+        "n": 8,
+        "price": 2500.0,
+        "rate": 100.0,
+        "pre_hours": 1.75,
+        "support_hours": 0.25,
+        "failed_attempt_probability": 0.1,
+        "failed_attempt_hours": 0.75,
+        "infra": 3.0,
+        "acquisition_hours": 0.5,
+        "acquisition_cash": 10.0,
+        "refund_fraction": 0.01,
+        "maintenance_hours": 3.0,
+        "fixed_cash": 200.0,
+        "setup_hours": 3.0,
+        "reserve_extra_hours": 2.0,
+        "buyer_self_hours": 24.0,
+        "buyer_rate": 175.0,
+        "buyer_delay_value": 2000.0,
+        "buyer_participation_hours": 1.0
+      },
+      "components": {
+        "expected_failed_attempts_per_accepted": 0.111111,
+        "expected_failed_hours_per_accepted": 0.083333,
+        "preacceptance_delivery": 186.333333,
+        "postacceptance_support": 25.0,
+        "acquisition": 60.0,
+        "payment_cost": 75.3,
+        "net_revenue_after_expected_refunds": 2475.0,
+        "contribution_intercept": 2128.366667,
+        "fixed_operating": 500.0,
+        "additional_commercial_setup": 300.0,
+        "buyer_value_ceiling": 6025.0,
+        "buyer_surplus_at_price": 3525.0
+      },
+      "contribution_affine": {
+        "intercept": 2128.366667,
+        "model_cost_coefficient": -1
+      },
+      "operating_profit_affine": {
+        "intercept": 16526.933333,
+        "model_cost_coefficient": -8
+      },
+      "full_project_return_affine": {
+        "intercept": 16226.933333,
+        "model_cost_coefficient": -8,
+        "historical_development_coefficient": -1
+      },
+      "illustrative_M_not_estimate": 100.0,
+      "operating_profit_at_illustrative_M": 15726.933333,
+      "full_project_return_before_unknown_D_at_illustrative_M": 15426.933333,
+      "maximum_M_for_positive_operating_profit": 2065.866667,
+      "maximum_D_for_nonnegative_full_project_return_at_illustrative_M": 15426.933333,
+      "operating_break_even_price_at_illustrative_M": 452.222222,
+      "break_even_price_including_additional_setup_but_not_D": 491.284722,
+      "break_even_customer_count_at_price_and_M": 1,
+      "actual_sales": 0,
+      "actual_collections": 0,
+      "actual_signed_commitments": 0,
+      "demand_status": "Assumed cohort, not a demand estimate or forecast",
+      "financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": false,
+        "expected_peak_deficit": 1242.666667,
+        "explicit_reserve_one_additional_full_refund_and_correction": 2700.0,
+        "required_unrestricted_funding": 3942.666667,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": 15426.933333,
+        "additional_split_payment_fees": 0.0,
+        "cohort_duration_days": 195,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -500.0,
+            "cumulative_cash": -500.0
+          },
+          {
+            "day": 0,
+            "event": "job1_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": -846.333333
+          },
+          {
+            "day": 7,
+            "event": "job1_support",
+            "cash": -25.0,
+            "cumulative_cash": -871.333333
+          },
+          {
+            "day": 20,
+            "event": "job2_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": -1217.666667
+          },
+          {
+            "day": 27,
+            "event": "job2_support",
+            "cash": -25.0,
+            "cumulative_cash": -1242.666667
+          },
+          {
+            "day": 35,
+            "event": "job1_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 1157.033333
+          },
+          {
+            "day": 40,
+            "event": "job3_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 810.7
+          },
+          {
+            "day": 47,
+            "event": "job3_support",
+            "cash": -25.0,
+            "cumulative_cash": 785.7
+          },
+          {
+            "day": 55,
+            "event": "job2_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 3185.4
+          },
+          {
+            "day": 60,
+            "event": "job4_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 2839.066667
+          },
+          {
+            "day": 67,
+            "event": "job4_support",
+            "cash": -25.0,
+            "cumulative_cash": 2814.066667
+          },
+          {
+            "day": 75,
+            "event": "job3_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 5213.766667
+          },
+          {
+            "day": 80,
+            "event": "job5_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 4867.433333
+          },
+          {
+            "day": 87,
+            "event": "job5_support",
+            "cash": -25.0,
+            "cumulative_cash": 4842.433333
+          },
+          {
+            "day": 95,
+            "event": "job4_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 7242.133333
+          },
+          {
+            "day": 100,
+            "event": "job6_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 6895.8
+          },
+          {
+            "day": 107,
+            "event": "job6_support",
+            "cash": -25.0,
+            "cumulative_cash": 6870.8
+          },
+          {
+            "day": 115,
+            "event": "job5_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 9270.5
+          },
+          {
+            "day": 120,
+            "event": "job7_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 8924.166667
+          },
+          {
+            "day": 127,
+            "event": "job7_support",
+            "cash": -25.0,
+            "cumulative_cash": 8899.166667
+          },
+          {
+            "day": 135,
+            "event": "job6_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 11298.866667
+          },
+          {
+            "day": 140,
+            "event": "job8_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 10952.533333
+          },
+          {
+            "day": 147,
+            "event": "job8_support",
+            "cash": -25.0,
+            "cumulative_cash": 10927.533333
+          },
+          {
+            "day": 155,
+            "event": "job7_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 13327.233333
+          },
+          {
+            "day": 175,
+            "event": "job8_final_collection",
+            "cash": 2399.7,
+            "cumulative_cash": 15726.933333
+          },
+          {
+            "day": 195,
+            "event": "cohort_maintenance",
+            "cash": -300.0,
+            "cumulative_cash": 15426.933333
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      },
+      "staged_financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": true,
+        "expected_peak_deficit": 846.333333,
+        "explicit_reserve_one_additional_full_refund_and_correction": 2700.0,
+        "required_unrestricted_funding": 3546.333333,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": 15424.533333,
+        "additional_split_payment_fees": 2.4,
+        "cohort_duration_days": 195,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -500.0,
+            "cumulative_cash": -500.0
+          },
+          {
+            "day": 0,
+            "event": "job1_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": -846.333333
+          },
+          {
+            "day": 3,
+            "event": "job1_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": -126.633333
+          },
+          {
+            "day": 7,
+            "event": "job1_support",
+            "cash": -25.0,
+            "cumulative_cash": -151.633333
+          },
+          {
+            "day": 20,
+            "event": "job2_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": -497.966667
+          },
+          {
+            "day": 23,
+            "event": "job2_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 221.733333
+          },
+          {
+            "day": 27,
+            "event": "job2_support",
+            "cash": -25.0,
+            "cumulative_cash": 196.733333
+          },
+          {
+            "day": 35,
+            "event": "job1_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 1876.433333
+          },
+          {
+            "day": 40,
+            "event": "job3_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 1530.1
+          },
+          {
+            "day": 43,
+            "event": "job3_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 2249.8
+          },
+          {
+            "day": 47,
+            "event": "job3_support",
+            "cash": -25.0,
+            "cumulative_cash": 2224.8
+          },
+          {
+            "day": 55,
+            "event": "job2_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 3904.5
+          },
+          {
+            "day": 60,
+            "event": "job4_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 3558.166667
+          },
+          {
+            "day": 63,
+            "event": "job4_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 4277.866667
+          },
+          {
+            "day": 67,
+            "event": "job4_support",
+            "cash": -25.0,
+            "cumulative_cash": 4252.866667
+          },
+          {
+            "day": 75,
+            "event": "job3_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 5932.566667
+          },
+          {
+            "day": 80,
+            "event": "job5_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 5586.233333
+          },
+          {
+            "day": 83,
+            "event": "job5_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 6305.933333
+          },
+          {
+            "day": 87,
+            "event": "job5_support",
+            "cash": -25.0,
+            "cumulative_cash": 6280.933333
+          },
+          {
+            "day": 95,
+            "event": "job4_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 7960.633333
+          },
+          {
+            "day": 100,
+            "event": "job6_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 7614.3
+          },
+          {
+            "day": 103,
+            "event": "job6_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 8334.0
+          },
+          {
+            "day": 107,
+            "event": "job6_support",
+            "cash": -25.0,
+            "cumulative_cash": 8309.0
+          },
+          {
+            "day": 115,
+            "event": "job5_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 9988.7
+          },
+          {
+            "day": 120,
+            "event": "job7_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 9642.366667
+          },
+          {
+            "day": 123,
+            "event": "job7_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 10362.066667
+          },
+          {
+            "day": 127,
+            "event": "job7_support",
+            "cash": -25.0,
+            "cumulative_cash": 10337.066667
+          },
+          {
+            "day": 135,
+            "event": "job6_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 12016.766667
+          },
+          {
+            "day": 140,
+            "event": "job8_acquisition_and_preacceptance",
+            "cash": -346.333333,
+            "cumulative_cash": 11670.433333
+          },
+          {
+            "day": 143,
+            "event": "job8_earned_accepted_qualification",
+            "cash": 719.7,
+            "cumulative_cash": 12390.133333
+          },
+          {
+            "day": 147,
+            "event": "job8_support",
+            "cash": -25.0,
+            "cumulative_cash": 12365.133333
+          },
+          {
+            "day": 155,
+            "event": "job7_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 14044.833333
+          },
+          {
+            "day": 175,
+            "event": "job8_final_collection",
+            "cash": 1679.7,
+            "cumulative_cash": 15724.533333
+          },
+          {
+            "day": 195,
+            "event": "cohort_maintenance",
+            "cash": -300.0,
+            "cumulative_cash": 15424.533333
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      }
+    },
+    {
+      "scenario": "central",
+      "assumptions": {
+        "n": 4,
+        "price": 1500.0,
+        "rate": 125.0,
+        "pre_hours": 2.5,
+        "support_hours": 0.5,
+        "failed_attempt_probability": 0.2,
+        "failed_attempt_hours": 1.5,
+        "infra": 5.0,
+        "acquisition_hours": 0.75,
+        "acquisition_cash": 25.0,
+        "refund_fraction": 0.02,
+        "maintenance_hours": 4.0,
+        "fixed_cash": 300.0,
+        "setup_hours": 4.0,
+        "reserve_extra_hours": 3.0,
+        "buyer_self_hours": 8.0,
+        "buyer_rate": 150.0,
+        "buyer_delay_value": 600.0,
+        "buyer_participation_hours": 1.0
+      },
+      "components": {
+        "expected_failed_attempts_per_accepted": 0.25,
+        "expected_failed_hours_per_accepted": 0.375,
+        "preacceptance_delivery": 364.375,
+        "postacceptance_support": 62.5,
+        "acquisition": 118.75,
+        "payment_cost": 45.3,
+        "net_revenue_after_expected_refunds": 1470.0,
+        "contribution_intercept": 879.075,
+        "fixed_operating": 800.0,
+        "additional_commercial_setup": 500.0,
+        "buyer_value_ceiling": 1650.0,
+        "buyer_surplus_at_price": 150.0
+      },
+      "contribution_affine": {
+        "intercept": 879.075,
+        "model_cost_coefficient": -1
+      },
+      "operating_profit_affine": {
+        "intercept": 2716.3,
+        "model_cost_coefficient": -4
+      },
+      "full_project_return_affine": {
+        "intercept": 2216.3,
+        "model_cost_coefficient": -4,
+        "historical_development_coefficient": -1
+      },
+      "illustrative_M_not_estimate": 100.0,
+      "operating_profit_at_illustrative_M": 2316.3,
+      "full_project_return_before_unknown_D_at_illustrative_M": 1816.3,
+      "maximum_M_for_positive_operating_profit": 679.075,
+      "maximum_D_for_nonnegative_full_project_return_at_illustrative_M": 1816.3,
+      "operating_break_even_price_at_illustrative_M": 890.447368,
+      "break_even_price_including_additional_setup_but_not_D": 1022.026316,
+      "break_even_customer_count_at_price_and_M": 2,
+      "actual_sales": 0,
+      "actual_collections": 0,
+      "actual_signed_commitments": 0,
+      "demand_status": "Assumed cohort, not a demand estimate or forecast",
+      "financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": false,
+        "expected_peak_deficit": 2091.25,
+        "explicit_reserve_one_additional_full_refund_and_correction": 1875.0,
+        "required_unrestricted_funding": 3966.25,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": 1816.3,
+        "additional_split_payment_fees": 0.0,
+        "cohort_duration_days": 115,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -800.0,
+            "cumulative_cash": -800.0
+          },
+          {
+            "day": 0,
+            "event": "job1_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -1383.125
+          },
+          {
+            "day": 7,
+            "event": "job1_support",
+            "cash": -62.5,
+            "cumulative_cash": -1445.625
+          },
+          {
+            "day": 20,
+            "event": "job2_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -2028.75
+          },
+          {
+            "day": 27,
+            "event": "job2_support",
+            "cash": -62.5,
+            "cumulative_cash": -2091.25
+          },
+          {
+            "day": 35,
+            "event": "job1_final_collection",
+            "cash": 1424.7,
+            "cumulative_cash": -666.55
+          },
+          {
+            "day": 40,
+            "event": "job3_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -1249.675
+          },
+          {
+            "day": 47,
+            "event": "job3_support",
+            "cash": -62.5,
+            "cumulative_cash": -1312.175
+          },
+          {
+            "day": 55,
+            "event": "job2_final_collection",
+            "cash": 1424.7,
+            "cumulative_cash": 112.525
+          },
+          {
+            "day": 60,
+            "event": "job4_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -470.6
+          },
+          {
+            "day": 67,
+            "event": "job4_support",
+            "cash": -62.5,
+            "cumulative_cash": -533.1
+          },
+          {
+            "day": 75,
+            "event": "job3_final_collection",
+            "cash": 1424.7,
+            "cumulative_cash": 891.6
+          },
+          {
+            "day": 95,
+            "event": "job4_final_collection",
+            "cash": 1424.7,
+            "cumulative_cash": 2316.3
+          },
+          {
+            "day": 115,
+            "event": "cohort_maintenance",
+            "cash": -500.0,
+            "cumulative_cash": 1816.3
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      },
+      "staged_financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": true,
+        "expected_peak_deficit": 1601.55,
+        "explicit_reserve_one_additional_full_refund_and_correction": 1875.0,
+        "required_unrestricted_funding": 3476.55,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": 1815.1,
+        "additional_split_payment_fees": 1.2,
+        "cohort_duration_days": 115,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -800.0,
+            "cumulative_cash": -800.0
+          },
+          {
+            "day": 0,
+            "event": "job1_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -1383.125
+          },
+          {
+            "day": 3,
+            "event": "job1_earned_accepted_qualification",
+            "cash": 427.2,
+            "cumulative_cash": -955.925
+          },
+          {
+            "day": 7,
+            "event": "job1_support",
+            "cash": -62.5,
+            "cumulative_cash": -1018.425
+          },
+          {
+            "day": 20,
+            "event": "job2_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -1601.55
+          },
+          {
+            "day": 23,
+            "event": "job2_earned_accepted_qualification",
+            "cash": 427.2,
+            "cumulative_cash": -1174.35
+          },
+          {
+            "day": 27,
+            "event": "job2_support",
+            "cash": -62.5,
+            "cumulative_cash": -1236.85
+          },
+          {
+            "day": 35,
+            "event": "job1_final_collection",
+            "cash": 997.2,
+            "cumulative_cash": -239.65
+          },
+          {
+            "day": 40,
+            "event": "job3_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -822.775
+          },
+          {
+            "day": 43,
+            "event": "job3_earned_accepted_qualification",
+            "cash": 427.2,
+            "cumulative_cash": -395.575
+          },
+          {
+            "day": 47,
+            "event": "job3_support",
+            "cash": -62.5,
+            "cumulative_cash": -458.075
+          },
+          {
+            "day": 55,
+            "event": "job2_final_collection",
+            "cash": 997.2,
+            "cumulative_cash": 539.125
+          },
+          {
+            "day": 60,
+            "event": "job4_acquisition_and_preacceptance",
+            "cash": -583.125,
+            "cumulative_cash": -44.0
+          },
+          {
+            "day": 63,
+            "event": "job4_earned_accepted_qualification",
+            "cash": 427.2,
+            "cumulative_cash": 383.2
+          },
+          {
+            "day": 67,
+            "event": "job4_support",
+            "cash": -62.5,
+            "cumulative_cash": 320.7
+          },
+          {
+            "day": 75,
+            "event": "job3_final_collection",
+            "cash": 997.2,
+            "cumulative_cash": 1317.9
+          },
+          {
+            "day": 95,
+            "event": "job4_final_collection",
+            "cash": 997.2,
+            "cumulative_cash": 2315.1
+          },
+          {
+            "day": 115,
+            "event": "cohort_maintenance",
+            "cash": -500.0,
+            "cumulative_cash": 1815.1
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      }
+    },
+    {
+      "scenario": "adverse",
+      "assumptions": {
+        "n": 0,
+        "price": 750.0,
+        "rate": 175.0,
+        "pre_hours": 5.5,
+        "support_hours": 1.5,
+        "failed_attempt_probability": 0.4,
+        "failed_attempt_hours": 3.0,
+        "infra": 15.0,
+        "acquisition_hours": 2.0,
+        "acquisition_cash": 75.0,
+        "refund_fraction": 0.08,
+        "maintenance_hours": 6.0,
+        "fixed_cash": 600.0,
+        "setup_hours": 8.0,
+        "reserve_extra_hours": 4.0,
+        "buyer_self_hours": 2.0,
+        "buyer_rate": 125.0,
+        "buyer_delay_value": 0.0,
+        "buyer_participation_hours": 2.0
+      },
+      "components": {
+        "expected_failed_attempts_per_accepted": 0.666667,
+        "expected_failed_hours_per_accepted": 2.0,
+        "preacceptance_delivery": 1327.5,
+        "postacceptance_support": 262.5,
+        "acquisition": 425.0,
+        "payment_cost": 22.8,
+        "net_revenue_after_expected_refunds": 690.0,
+        "contribution_intercept": -1347.8,
+        "fixed_operating": 1650.0,
+        "additional_commercial_setup": 1400.0,
+        "buyer_value_ceiling": 0,
+        "buyer_surplus_at_price": -750.0
+      },
+      "contribution_affine": {
+        "intercept": -1347.8,
+        "model_cost_coefficient": -1
+      },
+      "operating_profit_affine": {
+        "intercept": -1650.0,
+        "model_cost_coefficient": 0
+      },
+      "full_project_return_affine": {
+        "intercept": -3050.0,
+        "model_cost_coefficient": 0,
+        "historical_development_coefficient": -1
+      },
+      "illustrative_M_not_estimate": 100.0,
+      "operating_profit_at_illustrative_M": -1650.0,
+      "full_project_return_before_unknown_D_at_illustrative_M": -3050.0,
+      "maximum_M_for_positive_operating_profit": null,
+      "maximum_D_for_nonnegative_full_project_return_at_illustrative_M": -3050.0,
+      "operating_break_even_price_at_illustrative_M": null,
+      "break_even_price_including_additional_setup_but_not_D": null,
+      "break_even_customer_count_at_price_and_M": null,
+      "actual_sales": 0,
+      "actual_collections": 0,
+      "actual_signed_commitments": 0,
+      "demand_status": "Value assumptions support zero purchases; no inconsistent sale forced",
+      "financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": false,
+        "expected_peak_deficit": 3050.0,
+        "explicit_reserve_one_additional_full_refund_and_correction": 0.0,
+        "required_unrestricted_funding": 3050.0,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": -3050.0,
+        "additional_split_payment_fees": 0.0,
+        "cohort_duration_days": 55,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -2000.0,
+            "cumulative_cash": -2000.0
+          },
+          {
+            "day": 55,
+            "event": "cohort_maintenance",
+            "cash": -1050.0,
+            "cumulative_cash": -3050.0
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      },
+      "staged_financing": {
+        "model_cost_sensitivity": 100.0,
+        "staged_earned_milestone": true,
+        "expected_peak_deficit": 3050.0,
+        "explicit_reserve_one_additional_full_refund_and_correction": 0.0,
+        "required_unrestricted_funding": 3050.0,
+        "available_unrestricted_funds": null,
+        "financing_feasible": null,
+        "restricted_deposit_available_for_operations": 0,
+        "final_cash_before_historical_development": -3050.0,
+        "additional_split_payment_fees": 0.0,
+        "cohort_duration_days": 55,
+        "events": [
+          {
+            "day": 0,
+            "event": "commercial_setup_and_fixed_business",
+            "cash": -2000.0,
+            "cumulative_cash": -2000.0
+          },
+          {
+            "day": 55,
+            "event": "cohort_maintenance",
+            "cash": -1050.0,
+            "cumulative_cash": -3050.0
+          }
+        ],
+        "caveat": "Expected cash profile plus stated reserve, not an insolvency guarantee. Multiple correlated refunds/nonpayment can exceed the reserve. Actual funds, buyer signatures and finance commitments unverified."
+      }
+    }
+  ],
+  "conditional_matched_arrangements": {
+    "scope": "Same competent delivered package and hypothetical central buyers; only ordinary reuse of cohort setup/maintenance changes. No technical productivity or price premium assigned.",
+    "conventional_isolated": -2083.7,
+    "expert_operation_alone_isolated": -2083.7,
+    "conventional_shared": 1816.3,
+    "expert_plus_shared": 1816.3,
+    "positive_interaction": 0,
+    "all_values_before_unknown_historical_D": "If one development asset is reused, subtract D once for both capable shared arrangements; no double bill.",
+    "meaning": "Sharing ordinary fixed costs can help; it is not a transformation, novelty result or measured commercial experiment."
+  },
+  "sensitivity": [
+    {
+      "M": 0,
+      "central_operating_profit": 2716.3,
+      "central_full_project_before_D": 2216.3,
+      "central_funding": 3766.25,
+      "central_staged_funding": 3276.55
+    },
+    {
+      "M": 50,
+      "central_operating_profit": 2516.3,
+      "central_full_project_before_D": 2016.3,
+      "central_funding": 3866.25,
+      "central_staged_funding": 3376.55
+    },
+    {
+      "M": 100,
+      "central_operating_profit": 2316.3,
+      "central_full_project_before_D": 1816.3,
+      "central_funding": 3966.25,
+      "central_staged_funding": 3476.55
+    },
+    {
+      "M": 250,
+      "central_operating_profit": 1716.3,
+      "central_full_project_before_D": 1216.3,
+      "central_funding": 4266.25,
+      "central_staged_funding": 3776.55
+    },
+    {
+      "M": 500,
+      "central_operating_profit": 716.3,
+      "central_full_project_before_D": 216.3,
+      "central_funding": 4766.25,
+      "central_staged_funding": 4276.55
+    },
+    {
+      "M": 750,
+      "central_operating_profit": -283.7,
+      "central_full_project_before_D": -783.7,
+      "central_funding": 5266.25,
+      "central_staged_funding": 4776.55
+    }
+  ],
+  "pricing_grid_central": [
+    {
+      "price": 800,
+      "conditional_buyer_surplus": 850.0,
+      "operating_profit_at_M": -343.7,
+      "demand_inferred": false
+    },
+    {
+      "price": 1000,
+      "conditional_buyer_surplus": 650.0,
+      "operating_profit_at_M": 416.3,
+      "demand_inferred": false
+    },
+    {
+      "price": 1500,
+      "conditional_buyer_surplus": 150.0,
+      "operating_profit_at_M": 2316.3,
+      "demand_inferred": false
+    },
+    {
+      "price": 1800,
+      "conditional_buyer_surplus": -150.0,
+      "operating_profit_at_M": 3456.3,
+      "demand_inferred": false
+    }
+  ],
+  "buyer_participation_test": {
+    "change": "Customer supplies one additional accepted setup hour, replacing one provider hour; final verification and all acceptance requirements retained",
+    "provider_hour_cost": 125.0,
+    "buyer_hour_cost": 150.0,
+    "provider_max_cost_neutral_discount_before_fees": 125.0,
+    "buyer_min_compensating_discount": 150.0,
+    "pareto_improving_discount_exists_under_central_assumptions": false,
+    "measured": false,
+    "interpretation": "Discounts and unpaid buyer work do not create value automatically."
+  },
+  "failure_correlation_stress": {
+    "one_extra_full_refund_reserved": true,
+    "two_extra_central_refunds_above_expected": 3000.0,
+    "extra_cash_beyond_one_refund_reserve": 1500.0,
+    "no_probability_claim": true
+  }
+}

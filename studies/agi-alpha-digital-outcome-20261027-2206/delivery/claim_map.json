@@ -1,0 +1,112 @@
+{
+  "edition": "DIGITAL-20261027-R1",
+  "claims": [
+    {
+      "id": "C01",
+      "claim": "The five public failures can be addressed with current established Boost methods before new construction.",
+      "evidence": [
+        "boost_challenge/verification.json",
+        "boost_challenge/results.tsv"
+      ],
+      "scope": "Development reproduction and conventional challenge; no novel numerical algorithm."
+    },
+    {
+      "id": "C02",
+      "claim": "All three frozen implementations satisfy 64/64 fresh checks: 56 numerical/endpoint checks and 8 correct refusals.",
+      "evidence": [
+        "experiment/protocol.json",
+        "experiment/fresh_case_metadata.json",
+        "experiment/comparison_results.json",
+        "experiment/*_score.json"
+      ],
+      "scope": "One public mission, one implementation per arm, authored stress cases; not 64 independent missions."
+    },
+    {
+      "id": "C03",
+      "claim": "Sources and acceptance criteria froze before fresh-case generation.",
+      "evidence": [
+        "experiment/source_freeze.json",
+        "experiment/fresh_case_metadata.json",
+        "experiment/evaluator_freeze_v2.json",
+        "experiment/arms/*/*manifest*.json"
+      ],
+      "scope": "Root oracle corrected before fresh cases following feedback from ordinary and expert arms; not a fully blind discovery test."
+    },
+    {
+      "id": "C04",
+      "claim": "A bounded scalar kernel and CLI are inspectable, executable useful outputs.",
+      "evidence": [
+        "experiment/arms/ordinary/solution.py",
+        "experiment/arms/expert/solution.py",
+        "experiment/arms/conventional/solution.py",
+        "delivery/reproduce.py",
+        "delivery/README.md"
+      ],
+      "scope": "Linux/Python/C++tested; no complete SciPy vectorized drop-in integration, production release or customer approval."
+    },
+    {
+      "id": "C05",
+      "claim": "No Operational Alpha is established by this trial.",
+      "evidence": [
+        "experiment/comparison_results.json",
+        "experiment/arms/*/run_manifest.json",
+        "delivery/provenance.json"
+      ],
+      "scope": "Acceptance tie; tool-count conventions differ; model identity/token billing unmetered; host CPU/RSS do not establish end-to-end service cost."
+    },
+    {
+      "id": "C06",
+      "claim": "No exclusive transformational or discovery contribution is established.",
+      "evidence": [
+        "discovery/INITIAL_SCREEN.md",
+        "boost_challenge/verification.json",
+        "experiment/COMMON_PROMPT.txt"
+      ],
+      "scope": "Established numerical methods solve the examples; full public formulation provided to all arms; no equal-information discovery comparison."
+    },
+    {
+      "id": "C07",
+      "claim": "Existing journal, accounting and evaluation components preserve uncertain actual costs.",
+      "evidence": [
+        "delivery/native_bridge.py",
+        "delivery/native_reuse_manifest.json",
+        "delivery/native_capture.json"
+      ],
+      "scope": "Actual costcategories unknown, recordedreceiptszero, researchacceptanceonly; ephemeral localidentity."
+    },
+    {
+      "id": "C08",
+      "claim": "Commercial economics are conditional and demand is untested.",
+      "evidence": [
+        "economics/"
+      ],
+      "scope": "Use the completed economics scenarios. No customer commitments or collected revenue; free public code is the buyer outside option."
+    },
+    {
+      "id": "C09",
+      "claim": "Prior kinetics assets and negative findings are retained unchanged.",
+      "evidence": [
+        "repo_audit/preserved_gap_hashes.json",
+        "AGI_ALPHA_Gap_Experiment.zip"
+      ],
+      "scope": "No physical validation or regained novelty claim."
+    },
+    {
+      "id": "C10",
+      "claim": "No retained-alpha transfer benefit was established.",
+      "evidence": [
+        "delivery/provenance.json"
+      ],
+      "scope": "Independent fresh-transfer/library-baseline trial not performed; no benefit claimed."
+    },
+    {
+      "id": "C11",
+      "claim": "The frozen conventional implementation fails a separately tested known midpoint case; ordinary and expert succeed.",
+      "evidence": [
+        "audit/independent_known_midpoint.json",
+        "experiment/repairs/conventional_midpoint/"
+      ],
+      "scope": "Post-confirmation diagnostic and separately labelled conventional correction; primary 64-case outcomes unchanged. No expert advantage over ordinary."
+    }
+  ]
+}

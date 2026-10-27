@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Vincent Boucher — President of MONTREAL.AI" />
+  <title>AGI ALPHA FLYWHEEL — When Capability Creates Opportunity</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging-indent div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+} </style>
+  <style type="text/css">
+:root{--purple:#301356;--royal:#6c39b7;--pale:#f3edf9;--ink:#231b33;--muted:#61566e}*{box-sizing:border-box}body{margin:0;color:var(--ink);font:18px/1.65 Georgia,serif;background:#faf8fc}main,body>section,body>p,body>h1,body>h2,body>h3,body>ul,body>ol,body>div,body>figure,body>table,body>pre,body>blockquote{max-width:960px;margin-left:auto;margin-right:auto}body{padding:0 32px 70px}header{background:var(--purple);color:white;margin:0 -32px 52px;padding:70px max(32px,calc((100vw - 960px)/2));}header h1{font:700 clamp(34px,5vw,58px)/1.14 Arial,sans-serif;max-width:1000px}header .subtitle{font:23px/1.4 Arial,sans-serif;color:#e0caef}header .author,header .date{font:16px/1.5 Arial,sans-serif}h1,h2,h3{font-family:Arial,sans-serif;color:var(--purple);line-height:1.25;scroll-margin-top:25px}header h1{color:white}h1{margin-top:1.7em;font-size:34px}h2{margin-top:1.5em;font-size:26px}h3{font-size:21px}a{color:var(--royal);overflow-wrap:anywhere}img,svg{max-width:100%;height:auto}figure{margin-top:30px;margin-bottom:32px}figcaption{font:15px/1.5 Arial,sans-serif;color:var(--muted)}table{width:100%;border-collapse:collapse;font:15px/1.45 Arial,sans-serif;display:table;margin-top:24px;margin-bottom:26px}th{background:var(--purple);color:white;text-align:left}th,td{padding:11px 13px;vertical-align:top;border-bottom:1px solid #d8cfe2}tr:nth-child(even){background:var(--pale)}pre{padding:18px;background:#f0eaf6;overflow:auto;font:14px/1.55 monospace;border-left:4px solid var(--royal)}code{font-size:.87em;overflow-wrap:anywhere}blockquote{border-left:4px solid var(--royal);background:var(--pale);padding:15px 22px;font-size:20px}hr{border:0;border-top:1px solid #d8cfe2;margin:48px auto}nav{font:15px/1.6 Arial,sans-serif}#TOC{max-width:960px;margin:0 auto 40px;padding:20px 28px;background:var(--pale)}#TOC ul{columns:2;list-style:none;padding:0}#TOC ul ul{display:none}.csl-entry{margin:14px 0;font-size:15px}.csl-left-margin{float:left;padding-right:12px}.csl-right-inline{margin-left:30px}footer{max-width:960px;margin:60px auto 0;border-top:1px solid #d8cfe2;padding-top:20px;font:14px Arial,sans-serif;color:var(--muted)}@media(max-width:650px){body{padding:0 18px 45px;font-size:17px}header{margin:0 -18px 35px;padding:45px 24px}h1{font-size:29px}h2{font-size:24px}table{font-size:12px}th,td{padding:8px 6px}#TOC ul{columns:1}}@media print{body{background:white}header{break-after:page}h1,h2,h3{break-after:avoid}table,figure{break-inside:avoid}}
+math[display="block"]{display:block;max-width:100%;overflow-x:auto;padding:5px 0;}
+@media(max-width:650px){math[display="block"]{font-size:.82em;}}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AGI ALPHA FLYWHEEL — When Capability Creates
+Opportunity</h1>
+<p class="subtitle">From a numerical failure to a verified digital
+answer · Transformational Intelligence, Experience-Trained Specialists
+and the Expanding Frontier of Profitable Work</p>
+<p class="author">Vincent Boucher — President of MONTREAL.AI</p>
+<p class="date">27 October 2026 · DIGITAL-20261027-R1 · Research review
+edition</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#a-useful-answer-with-its-limits-attached" id="toc-a-useful-answer-with-its-limits-attached">A useful answer, with
+its limits attached</a></li>
+<li><a href="#the-opportunity-and-the-early-challenge" id="toc-the-opportunity-and-the-early-challenge">The opportunity and the
+early challenge</a></li>
+<li><a href="#what-was-actually-compared" id="toc-what-was-actually-compared">What was actually compared</a></li>
+<li><a href="#the-accepted-digital-contract" id="toc-the-accepted-digital-contract">The accepted digital
+contract</a></li>
+<li><a href="#fresh-confirmation-and-independent-checking" id="toc-fresh-confirmation-and-independent-checking">Fresh confirmation
+and independent checking</a></li>
+<li><a href="#a-better-measuring-instrument" id="toc-a-better-measuring-instrument">A better measuring
+instrument</a></li>
+<li><a href="#the-commercial-offering-and-the-cost-boundary" id="toc-the-commercial-offering-and-the-cost-boundary">The commercial
+offering and the cost boundary</a></li>
+<li><a href="#financing-demand-and-the-next-voluntary-exchange" id="toc-financing-demand-and-the-next-voluntary-exchange">Financing,
+demand and the next voluntary exchange</a></li>
+<li><a href="#what-the-result-makes-possible" id="toc-what-the-result-makes-possible">What the result makes
+possible</a></li>
+<li><a href="#reproducibility-provenance-and-publication" id="toc-reproducibility-provenance-and-publication">Reproducibility,
+provenance and publication</a></li>
+<li><a href="#appendix-preserved-failures-and-claim-boundaries" id="toc-appendix-preserved-failures-and-claim-boundaries">Appendix:
+preserved failures and claim boundaries</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
+</ul>
+</nav>
+<h1 id="a-useful-answer-with-its-limits-attached">A useful answer, with
+its limits attached</h1>
+<p><strong>A public numerical failure can now be turned into an
+inspectable, executable answer within a bounded agent mission.</strong>
+This edition delivers a scalar beta-quantile compatibility kernel, a
+command-line interface, three frozen implementations, independent
+numerical checks, a complete replay package and an explicit commercial
+decision. It changes what a scientific software team can do immediately:
+reproduce an extreme-tail failure, obtain a checked replacement value
+within a stated domain, and inspect the evidence before deciding whether
+to integrate the component.</p>
+<p>The concrete example matters. For probability
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mo>−</mo><mn>16</mn></mrow></msup><annotation encoding="application/x-tex">10^{-16}</annotation></semantics></math>
+and beta shape parameters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">a=0.5</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">b=3</annotation></semantics></math>,
+the installed SciPy 1.17.0 environment returned a quantile of
+<strong>0.5</strong>. The independently evaluated value is approximately
+<strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.844444444444444</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>33</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2.844444444444444\times10^{-33}</annotation></semantics></math></strong>.
+The public report supplied the failure and a candidate numerical recipe.
+We did not discover that formulation. We converted it into bounded,
+failure-aware artifacts and tested the contribution of different ways of
+operating the available assistant. <span class="citation" data-cites="scipyissue">(<a href="#ref-scipyissue" role="doc-biblioref">chrisb83 2026</a>)</span></p>
+<p>All three workflows passed the <strong>64 fresh confirmation
+checks</strong>: 56 numerical or endpoint cases and eight required
+refusals. Ordinary competent operation and expert operation also handled
+a separately disclosed, already-known subnormal rounding trap; the
+original conventional implementation failed that diagnostic. Its
+correction is preserved separately. The fresh bank is one mission’s case
+bank, not 64 independent missions or customers.</p>
+<blockquote>
+<p><strong>Decision: retain and deliver the useful engineering; pursue
+only a customer-funded qualification pilot. Do not promote this edition
+as an exclusive numerical breakthrough, a measured general Operational
+Alpha advantage, or a realized profitable business.</strong></p>
+</blockquote>
+<h2 id="three-verdicts">Three verdicts</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">What this edition establishes</th>
+<th style="text-align: left;">What remains missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Commercial delivery</td>
+<td style="text-align: left;">An executable digital artifact accepted by
+the frozen research contract; a conditional service model with explicit
+thresholds</td>
+<td style="text-align: left;">External buyer acceptance, willingness to
+pay, commitments, collections and complete actual costs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Operational Alpha</td>
+<td style="text-align: left;">Live, tool-using implementations by
+ordinary and expert agents; both pass the fresh bank and the rounding
+diagnostic</td>
+<td style="text-align: left;">A demonstrated improvement in accepted
+quality or complete economics from expert operation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transformational contribution</td>
+<td style="text-align: left;">A useful bridge from a reported failure to
+a bounded executable outcome</td>
+<td style="text-align: left;">New numerical capability beyond the
+strongest identified established methods; an independent discovery
+comparison</td>
+</tr>
+</tbody>
+</table>
+<p>The program’s ambition remains larger than this result. Its
+discipline is to preserve a useful construction without borrowing an
+achievement from a failed hypothesis. The most productive successor may
+begin with a reliable piece of engineering and a sharper question,
+rather than with a claim of superiority.</p>
+<p>The work was AI-assisted under the requested authorship. External
+authors retain credit for the report, recipe, libraries and foundational
+methods. No external peer review, production adoption or paid customer
+approval is implied.</p>
+<hr />
+<h1 id="the-opportunity-and-the-early-challenge">The opportunity and the
+early challenge</h1>
+<h2 id="who-benefits-and-what-changes">Who benefits, and what
+changes</h2>
+<p>The immediate beneficiary is a maintainer or scientific software team
+evaluating a beta-tail calculation. Such a recipient needs more than a
+plausible formula: a reproducible failure, a bounded replacement,
+evidence for extreme and invalid inputs, and clear integration limits.
+Wrong finite values are particularly troublesome because a program may
+continue without an exception. Several observed failures emitted
+warnings; an application that ignores them can still consume an
+incorrect finite value. Whether a particular recipient’s downstream
+decision is materially affected remains a customer-specific question;
+this study does not invent a deployed failure or financial loss.</p>
+<p>The useful opportunity is <strong>rapid numerical incident
+qualification</strong>: assembling a precise failure report and a tested
+compatibility component from public inputs before an upstream release or
+a local migration is available. The changes making this operationally
+plausible are accessible source and issue histories, current numerical
+libraries, arbitrary-precision arithmetic and an assistant capable of
+reading code, compiling kernels, diagnosing failed checks and packaging
+evidence. This study observes that combination working locally. It does
+not establish that organizations were previously incapable of doing the
+same work.</p>
+<p>Our shortlist was concentrated in scientific software, not a claim to
+an exhaustive cross-industry search. The preceding gap sprint had
+already explored broader opportunities. We narrowed the continuation to
+deliverable public incidents where the reasoning and execution were real
+and physical fabrication was unnecessary.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Candidate</th>
+<th style="text-align: left;">Unmet outcome and beneficiary</th>
+<th style="text-align: left;">Strongest early alternative and
+disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Beta-tail failure qualification</td>
+<td style="text-align: left;">Checked scalar answers and an inspectable
+compatibility kernel for a numerical software team</td>
+<td style="text-align: left;">Current Boost.Math plus ordinary
+high-precision methods solved the public examples. Selected for delivery
+and agent comparison; algorithmic novelty rejected early.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Boundary confidence intervals</td>
+<td style="text-align: left;">Reliable boundary behavior and a validated
+repair for statistical software users</td>
+<td style="text-align: left;">Existing active repair PRs already owned
+the relevant statsmodels issues. Excluded rather than duplicate ongoing
+work.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kronecker-product correctness</td>
+<td style="text-align: left;">A usable symbolic correction and
+regression evidence for SymPy users</td>
+<td style="text-align: left;">An active repair PR already addressed the
+report. Excluded from construction.</td>
+</tr>
+</tbody>
+</table>
+<p>The exact issue and PR records, rejected candidates and initial
+search notes are included in the evidence package. Statsmodels issues
+10536/10538 had active PRs 10537/10539; SymPy issue 30860 had active PR
+30863 at inspection. <span class="citation" data-cites="statsmodels sympy">(<a href="#ref-statsmodels" role="doc-biblioref">statsmodels contributors 2026</a>; <a href="#ref-sympy" role="doc-biblioref">SymPy contributors
+2026</a>)</span></p>
+<h2 id="conventional-falsification-came-first">Conventional
+falsification came first</h2>
+<p>Before the three agent constructions began, a separate workstream
+compiled current Boost.Math at commit
+<code>70a36632cfbfe6a862cd8a5b88b357ca3a770a3d</code>. A
+double-precision policy disabling promotion, with safe error handling
+and 400 root iterations, solved <strong>all five public
+examples</strong>. Its maximum relative error against the 80-digit
+public-recipe reference was approximately
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.008</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>14</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2.008\times10^{-14}</annotation></semantics></math>.
+Raising the cap to 2,000 did not change that five-case result. A
+long-double configuration failed one example at both caps; the failed
+configuration remains in the record.</p>
+<p>This is a meaningful established alternative. SciPy itself documents
+that <code>betaincinv</code> wraps Boost’s <code>ibeta_inv</code>; the
+Boost interface already exposes precision and error policies. A
+successful current-Boost configuration is therefore not an invented
+numerical method. <span class="citation" data-cites="scipydocs boost">(<a href="#ref-scipydocs" role="doc-biblioref">SciPy Developers 2026</a>; <a href="#ref-boost" role="doc-biblioref">Boost.Math Developers 2026</a>)</span></p>
+<p><strong>Selection changed because of this evidence.</strong> The
+candidate survived as a useful digital delivery and an operational
+comparison. Its exclusive technical-breakthrough claim did not survive.
+Public-source formulation credit stays with the reporter; execution
+comparators received that formulation in full.</p>
+<hr />
+<h1 id="what-was-actually-compared">What was actually compared</h1>
+<h2 id="equivalent-information-capable-baselines">Equivalent
+information, capable baselines</h2>
+<p>Three new agent workstreams received the same common prompt, public
+report and proposed recipe, pinned source extracts,
+conventional-challenge results, libraries, acceptance contract, tool
+access and resource limits. Each could inspect source, write code,
+compile a C++ kernel, run tests and recover from failures. Ordinary
+competent use was not reduced to a single prompt or forbidden from
+verification.</p>
+<p>The expert arm received an explicit operating checklist: extract
+obligations, plan numerical regimes, verify independently, preserve
+failures and recover before freezing. The conventional arm was asked to
+compose the strongest practical established numerical techniques. Its
+implementation was built by an assistant too; it is <strong>not a
+measured human-team trial</strong>. The distinction is workflow and
+instruction, not a claim that conventional reasoning excludes tool-using
+AI.</p>
+<p>All arms used the inherited available assistant configuration. The
+environment supplied the label <strong>GPT-6 Astra Pro</strong>.
+Provider-attested backend identity, temperature, sampling seed, token
+counts and billed cost were not exposed. These fields are recorded as
+unknown. No independent API endpoint was invoked to manufacture a
+stronger identity claim. The model work and local execution were live;
+this was not a simulation of successful model behavior. The result is
+narrower than a fully controlled, provider-metered same-model trial.</p>
+<p>Computer execution consisted of shell commands, source inspection,
+compilation, numerical tests and file construction. No graphical
+interface performance was measured. No live <code>*.agent.agi.eth</code>
+identity, external settlement or production authority was asserted.</p>
+<h2 id="a-bounded-construction-budget">A bounded construction
+budget</h2>
+<p>The continuation reserved 120 minutes, starting at 18:06:05 on 27
+October 2026 in Montréal, using existing authorized resources.
+Opportunity selection and conventional falsification preceded
+construction. Each implementation received a 15-minute, 25-tool
+construction ceiling with no subagents. The remaining continuation
+budget covered fresh confirmation, independent checking, economics,
+reproducible delivery and publication preparation.</p>
+<figure>
+<img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjYxNi45MzkzNzVwdCIgaGVpZ2h0PSIyNDIuMzMxODc1cHQiIHZpZXdCb3g9IjAgMCA2MTYuOTM5Mzc1IDI0Mi4zMzE4NzUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIj4KIDxtZXRhZGF0YT4KICA8cmRmOlJERiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgIDxjYzpXb3JrPgogICAgPGRjOnR5cGUgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIvPgogICAgPGRjOmRhdGU+MjAyNi0xMC0yN1QxODo0MzowMy45OTg4OTU8L2RjOmRhdGU+CiAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgIDxkYzpjcmVhdG9yPgogICAgIDxjYzpBZ2VudD4KICAgICAgPGRjOnRpdGxlPk1hdHBsb3RsaWIgdjMuMTAuOCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy88L2RjOnRpdGxlPgogICAgIDwvY2M6QWdlbnQ+CiAgICA8L2RjOmNyZWF0b3I+CiAgIDwvY2M6V29yaz4KICA8L3JkZjpSREY+CiA8L21ldGFkYXRhPgogPGRlZnM+CiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4qe3N0cm9rZS1saW5lam9pbjogcm91bmQ7IHN0cm9rZS1saW5lY2FwOiBidXR0fTwvc3R5bGU+CiA8L2RlZnM+CiA8ZyBpZD0iZmlndXJlXzEiPgogIDxnIGlkPSJwYXRjaF8xIj4KICAgPHBhdGggZD0iTSAwIDI0Mi4zMzE4NzUgCkwgNjE2LjkzOTM3NSAyNDIuMzMxODc1IApMIDYxNi45MzkzNzUgMCAKTCAwIDAgCnoKIiBzdHlsZT0iZmlsbDogI2ZmZmZmZiIvPgogIDwvZz4KICA8ZyBpZD0iYXhlc18xIj4KICAgPGcgaWQ9InBhdGNoXzIiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDIwMi44NCAKTCA2MDkuNzM5Mzc1IDIwMi44NCAKTCA2MDkuNzM5Mzc1IDcuMiAKTCAxMzkuNDY5Mzc1IDcuMiAKegoiIHN0eWxlPSJmaWxsOiAjZmZmZmZmIi8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzMiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDE2LjA5MjcyNyAKTCA0MjAuNDI2NDUxIDE2LjA5MjcyNyAKTCA0MjAuNDI2NDUxIDY2LjkwODMxMiAKTCAxMzkuNDY5Mzc1IDY2LjkwODMxMiAKegoiIGNsaXAtcGF0aD0idXJsKCNwNDk0YWQ2NjQ1MCkiIHN0eWxlPSJmaWxsOiAjOTI3MGJmIi8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzQiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDc5LjYxMjIwOCAKTCA1MTcuMjM4NTY4IDc5LjYxMjIwOCAKTCA1MTcuMjM4NTY4IDEzMC40Mjc3OTIgCkwgMTM5LjQ2OTM3NSAxMzAuNDI3NzkyIAp6CiIgY2xpcC1wYXRoPSJ1cmwoI3A0OTRhZDY2NDUwKSIgc3R5bGU9ImZpbGw6ICM2YzM5YjciLz4KICAgPC9nPgogICA8ZyBpZD0icGF0Y2hfNSI+CiAgICA8cGF0aCBkPSJNIDEzOS40NjkzNzUgMTQzLjEzMTY4OCAKTCAzNjYuNzk0MjA1IDE0My4xMzE2ODggCkwgMzY2Ljc5NDIwNSAxOTMuOTQ3MjczIApMIDEzOS40NjkzNzUgMTkzLjk0NzI3MyAKegoiIGNsaXAtcGF0aD0idXJsKCNwNDk0YWQ2NjQ1MCkiIHN0eWxlPSJmaWxsOiAjMzAxMzU2Ii8+CiAgIDwvZz4KICAgPGcgaWQ9Im1hdHBsb3RsaWIuYXhpc18xIj4KICAgIDxnIGlkPSJ4dGlja18xIj4KICAgICA8ZyBpZD0ibGluZTJkXzEiPgogICAgICA8ZGVmcz4KICAgICAgIDxwYXRoIGlkPSJtYmRhYzg3YzJkYyIgZD0iTSAwIDAgCkwgMCAzLjUgCiIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9kZWZzPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSIxMzkuNDY5Mzc1IiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMSI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIxMzkuNDY5Mzc1IiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAxMzkuNDY5Mzc1IDIxOC4xOTgyODEpIj4wPC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja18yIj4KICAgICA8ZyBpZD0ibGluZTJkXzIiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSIxOTQuNzk1MjU3IiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMiI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIxOTQuNzk1MjU3IiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAxOTQuNzk1MjU3IDIxOC4xOTgyODEpIj4yPC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja18zIj4KICAgICA8ZyBpZD0ibGluZTJkXzMiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSIyNTAuMTIxMTQiIHk9IjIwMi44NCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF8zIj4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBtaWRkbGUiIHg9IjI1MC4xMjExNCIgeT0iMjE4LjE5ODI4MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgMjUwLjEyMTE0IDIxOC4xOTgyODEpIj40PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja180Ij4KICAgICA8ZyBpZD0ibGluZTJkXzQiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSIzMDUuNDQ3MDIyIiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfNCI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIzMDUuNDQ3MDIyIiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAzMDUuNDQ3MDIyIDIxOC4xOTgyODEpIj42PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja181Ij4KICAgICA8ZyBpZD0ibGluZTJkXzUiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSIzNjAuNzcyOTA0IiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfNSI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIzNjAuNzcyOTA0IiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAzNjAuNzcyOTA0IDIxOC4xOTgyODEpIj44PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja182Ij4KICAgICA8ZyBpZD0ibGluZTJkXzYiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSI0MTYuMDk4Nzg3IiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfNiI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSI0MTYuMDk4Nzg3IiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCA0MTYuMDk4Nzg3IDIxOC4xOTgyODEpIj4xMDwvdGV4dD4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieHRpY2tfNyI+CiAgICAgPGcgaWQ9ImxpbmUyZF83Ij4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtYmRhYzg3YzJkYyIgeD0iNDcxLjQyNDY2OSIgeT0iMjAyLjg0IiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzciPgogICAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IG1pZGRsZSIgeD0iNDcxLjQyNDY2OSIgeT0iMjE4LjE5ODI4MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgNDcxLjQyNDY2OSAyMTguMTk4MjgxKSI+MTI8L3RleHQ+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inh0aWNrXzgiPgogICAgIDxnIGlkPSJsaW5lMmRfOCI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWJkYWM4N2MyZGMiIHg9IjUyNi43NTA1NTEiIHk9IjIwMi44NCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF84Ij4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBtaWRkbGUiIHg9IjUyNi43NTA1NTEiIHk9IjIxOC4xOTgyODEiIHRyYW5zZm9ybT0icm90YXRlKC0wIDUyNi43NTA1NTEgMjE4LjE5ODI4MSkiPjE0PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja185Ij4KICAgICA8ZyBpZD0ibGluZTJkXzkiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21iZGFjODdjMmRjIiB4PSI1ODIuMDc2NDM0IiB5PSIyMDIuODQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfOSI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSI1ODIuMDc2NDM0IiB5PSIyMTguMTk4MjgxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCA1ODIuMDc2NDM0IDIxOC4xOTgyODEpIj4xNjwvdGV4dD4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0idGV4dF8xMCI+CiAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBtaWRkbGU7IGZpbGw6ICMzMDEzNTYiIHg9IjM3NC42MDQzNzUiIHk9IjIzMi44NDQyMTkiIHRyYW5zZm9ybT0icm90YXRlKC0wIDM3NC42MDQzNzUgMjMyLjg0NDIxOSkiPlJlY29yZGVkIGNvbnN0cnVjdGlvbiB3YWxsIHRpbWU7IG5vdCBiaWxsYWJsZSBtb2RlbCB1c2FnZTwvdGV4dD4KICAgIDwvZz4KICAgPC9nPgogICA8ZyBpZD0ibWF0cGxvdGxpYi5heGlzXzIiPgogICAgPGcgaWQ9Inl0aWNrXzEiPgogICAgIDxnIGlkPSJsaW5lMmRfMTAiPgogICAgICA8ZGVmcz4KICAgICAgIDxwYXRoIGlkPSJtNGNiZDMxYWZjMSIgZD0iTSAwIDAgCkwgLTMuNSAwIAoiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZGVmcz4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtNGNiZDMxYWZjMSIgeD0iMTM5LjQ2OTM3NSIgeT0iNDEuNTAwNTE5IiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzExIj4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9IjQ1LjY3OTY2IiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAxMzIuNDY5Mzc1IDQ1LjY3OTY2KSI+T3JkaW5hcnkgY29tcGV0ZW50PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ5dGlja18yIj4KICAgICA8ZyBpZD0ibGluZTJkXzExIj4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtNGNiZDMxYWZjMSIgeD0iMTM5LjQ2OTM3NSIgeT0iMTA1LjAyIiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzEyIj4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9IjEwOS4xOTkxNDEiIHRyYW5zZm9ybT0icm90YXRlKC0wIDEzMi40NjkzNzUgMTA5LjE5OTE0MSkiPkV4cGVydCBvcGVyYXRpb248L3RleHQ+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inl0aWNrXzMiPgogICAgIDxnIGlkPSJsaW5lMmRfMTIiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI200Y2JkMzFhZmMxIiB4PSIxMzkuNDY5Mzc1IiB5PSIxNjguNTM5NDgxIiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzEzIj4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9IjE3Mi43MTg2MjEiIHRyYW5zZm9ybT0icm90YXRlKC0wIDEzMi40NjkzNzUgMTcyLjcxODYyMSkiPkNvbnZlbnRpb25hbCB3b3JrZmxvdzwvdGV4dD4KICAgICA8L2c+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9ImxpbmUyZF8xMyI+CiAgICA8cGF0aCBkPSJNIDU1NC40MTM0OTMgMjAyLjg0IApMIDU1NC40MTM0OTMgNy4yIAoiIGNsaXAtcGF0aD0idXJsKCNwNDk0YWQ2NjQ1MCkiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2UtZGFzaGFycmF5OiAzLjcsMS42OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlOiAjOGI2MTdkIi8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzYiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDIwMi44NCAKTCAxMzkuNDY5Mzc1IDcuMiAKIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICA8L2c+CiAgIDxnIGlkPSJwYXRjaF83Ij4KICAgIDxwYXRoIGQ9Ik0gMTM5LjQ2OTM3NSAyMDIuODQgCkwgNjA5LjczOTM3NSAyMDIuODQgCiIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lam9pbjogbWl0ZXI7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgPC9nPgogICA8ZyBpZD0idGV4dF8xNCI+CiAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IHN0YXJ0OyBmaWxsOiAjMjMxYjMzIiB4PSI0MjQuNTc1ODkyIiB5PSI0NC41MzU4MzIiIHRyYW5zZm9ybT0icm90YXRlKC0wIDQyNC41NzU4OTIgNDQuNTM1ODMyKSI+MTAuMTYgbWluPC90ZXh0PgogICA8L2c+CiAgIDxnIGlkPSJ0ZXh0XzE1Ij4KICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogc3RhcnQ7IGZpbGw6ICMyMzFiMzMiIHg9IjUyMS4zODgwMDkiIHk9IjEwOC4wNTUzMTMiIHRyYW5zZm9ybT0icm90YXRlKC0wIDUyMS4zODgwMDkgMTA4LjA1NTMxMykiPjEzLjY2IG1pbjwvdGV4dD4KICAgPC9nPgogICA8ZyBpZD0idGV4dF8xNiI+CiAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IHN0YXJ0OyBmaWxsOiAjMjMxYjMzIiB4PSIzNzAuOTQzNjQ2IiB5PSIxNzEuNTc0NzkzIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAzNzAuOTQzNjQ2IDE3MS41NzQ3OTMpIj44LjIyIG1pbjwvdGV4dD4KICAgPC9nPgogICA8ZyBpZD0idGV4dF8xNyI+CiAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiA5cHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogZW5kOyBmaWxsOiAjMjMxYjMzIiB4PSI1NTAuMjY0MDUxIiB5PSIyMDAuMjk5MjIxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCA1NTAuMjY0MDUxIDIwMC4yOTkyMjEpIj4xNS1taW51dGUgY29uc3RydWN0aW9uIGNlaWxpbmc8L3RleHQ+CiAgIDwvZz4KICA8L2c+CiA8L2c+CiA8ZGVmcz4KICA8Y2xpcFBhdGggaWQ9InA0OTRhZDY2NDUwIj4KICAgPHJlY3QgeD0iMTM5LjQ2OTM3NSIgeT0iNy4yIiB3aWR0aD0iNDcwLjI3IiBoZWlnaHQ9IjE5NS42NCIvPgogIDwvY2xpcFBhdGg+CiA8L2RlZnM+Cjwvc3ZnPgo=" alt="Recorded construction time. Expert operation took longer in this single trial. This is elapsed construction time, not token usage, billable cost or a population estimate." />
+<figcaption aria-hidden="true">Recorded construction time. Expert
+operation took longer in this single trial. This is elapsed construction
+time, not token usage, billable cost or a population
+estimate.</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Arm</th>
+<th style="text-align: right;">Recorded construction time</th>
+<th style="text-align: left;">Source freeze, UTC</th>
+<th style="text-align: right;">Tool count as recorded</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ordinary competent</td>
+<td style="text-align: right;">10.16 min</td>
+<td style="text-align: left;">22:32:41</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Expert operation</td>
+<td style="text-align: right;">13.66 min</td>
+<td style="text-align: left;">22:36:25</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Conventional workflow</td>
+<td style="text-align: right;">8.22 min</td>
+<td style="text-align: left;">22:30:53</td>
+<td style="text-align: right;">13</td>
+</tr>
+</tbody>
+</table>
+<p>Tool-count conventions differ: the expert manifest includes progress
+messages, while the conventional count describes execution calls. They
+are traceability records, not a normalized efficiency measure. Timings
+start at the first recorded agent timestamp, not a provider scheduling
+boundary. The expert also recovered from a task-storage exhaustion
+during packaging; numerical work and original failed packaging evidence
+were preserved.</p>
+<h2 id="discovery-and-execution-are-separate-experiments">Discovery and
+execution are separate experiments</h2>
+<p>No discovery advantage is claimed. The user supplied the program’s
+objective; the continuation search found the public issue; the issue
+supplied the mathematical recipe. Every execution arm received it. A
+future discovery comparison would need equivalent initial information
+before revealing that recipe and a prespecified way to score the
+usefulness and originality of the formulation. A technical tie cannot
+supply that missing experiment retrospectively.</p>
+<hr />
+<h1 id="the-accepted-digital-contract">The accepted digital
+contract</h1>
+<p>The delivered object is deliberately bounded: <strong>a scalar
+compatibility component</strong>, not a drop-in replacement for all
+SciPy distributions, array broadcasting, accelerators, automatic
+differentiation or every positive beta shape.</p>
+<p>A request contains an identifier and three numbers: probability
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>
+and shapes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math>.
+The interpretation is the exact binary64 value received by Python. The
+accepted numerical domain is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>q</mi><mo>≤</mo><mn>1</mn><mo>,</mo><mspace width="2.0em"></mspace><mn>0.25</mn><mo>≤</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>≤</mo><msup><mn>10</mn><mn>6</mn></msup><mo>,</mo><mspace width="2.0em"></mspace><mo>min</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mn>100</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+0\le q\le1,\qquad 0.25\le a,b\le10^6,\qquad \min(a,b)\le100.
+</annotation></semantics></math></p>
+<p>The result preserves the identifier and returns a status with a value
+or a refusal. Exact probabilities zero and one require their
+corresponding endpoint values. An interior true quantile that rounds to
+binary64 zero requires an explicit <code>underflow</code> status.
+Unsupported positive shapes are distinguished from invalid inputs.
+Booleans, strings, nonfinite values, nonpositive shapes and out-of-range
+probabilities are not silently coerced into numerical success.</p>
+<p>For a verified reference value
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
+strictly between zero and one, the frozen acceptance tolerance is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">|</mo><mover><mi>x</mi><mo accent="true">̂</mo></mover><mo>−</mo><mi>r</mi><mo stretchy="true" form="postfix">|</mo></mrow><mo>≤</mo><mo>max</mo><mo stretchy="false" form="prefix">{</mo><mn>2</mn><mspace width="0.167em"></mspace><mo>ulp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.278em"></mspace><msup><mn>10</mn><mrow><mo>−</mo><mn>11</mn></mrow></msup><mo>min</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo>,</mo><mn>1</mn><mo>−</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+|\widehat x-r|\le \max\{2\,\operatorname{ulp}(r),\;10^{-11}\min(r,1-r)\}.
+</annotation></semantics></math></p>
+<p>A representable positive reference may not be replaced with zero.
+Correct endpoint, underflow and refusal behavior is checked explicitly.
+A computation that cannot establish an answer returns
+<code>failed</code>; a plausible finite number does not automatically
+count as success.</p>
+<h2 id="how-the-construction-works">How the construction works</h2>
+<p>The three implementations combine established instruments: a pinned
+Boost inverse, analytic special cases, incomplete-beta continued
+fractions, symmetry, log-domain arithmetic and high-precision
+safeguarded inversion when needed. This composition protects against
+numerical scale and unsupported inputs. Its scientific ingredients are
+conventional. Definitions, symmetry, the integer-shape binomial identity
+and continued fractions appear in NIST’s reference treatment. <span class="citation" data-cites="dlmf">(<a href="#ref-dlmf" role="doc-biblioref">National Institute of Standards and Technology
+2026</a>)</span></p>
+<p>The ordinary implementation is the recommended research entry point
+because it passed the primary contract and the disclosed rounding
+regression with less recorded construction time than the expert arm.
+That is a local delivery choice, not a universal ranking. All original
+implementations remain available so a recipient can inspect the
+tradeoffs rather than inherit a hidden selection.</p>
+<p>For the public example, a recipient can run:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> experiment/arms/ordinary/run.py <span class="op">&lt;&lt;&#39;JSON&#39;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">{&quot;id&quot;:&quot;beta-tail&quot;,&quot;q&quot;:1e-16,&quot;a&quot;:0.5,&quot;b&quot;:3.0}</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">JSON</span></span></code></pre></div>
+<p>The expected accepted value is approximately
+<code>2.844444444444444e-33</code>, with status <code>ok</code>. The
+package supplies a portable rebuild/replay command so a recipient need
+not trust the included platform-specific binary. Python and a C++17
+compiler are required for that rebuild. Dependencies and licenses are
+pinned and included.</p>
+<h2 id="acceptance-does-not-transfer-itself">Acceptance does not
+transfer itself</h2>
+<p>The frozen numerical envelope is the product boundary. A recipient
+integrating the component into a different distribution, vector API,
+operating system, threat model or safety-critical process needs new
+qualification appropriate to that use. This is a concrete limitation,
+not an excuse to omit the delivered bounded result. External customer
+acceptance was not observed; research acceptance and customer acceptance
+remain separate records.</p>
+<hr />
+<h1 id="fresh-confirmation-and-independent-checking">Fresh confirmation
+and independent checking</h1>
+<p>All three arm manifests were verified before the case bank was
+generated. The root source freeze was recorded at
+<strong>22:40:20.056812 UTC</strong>; generation followed at
+<strong>22:40:20.103189 UTC</strong>. The generator’s recorded seed is
+<code>2707272985118872086</code>. The seed was drawn after source
+freeze, and the case bank was generated once. No primary implementation
+was changed after viewing these cases.</p>
+<p>The bank contained 24 extreme-tail cases, 12 central cases, eight
+analytic-shape cases, four integer-shape cases, eight endpoint or
+underflow cases, and eight invalid or unsupported requests. It
+deliberately emphasizes adverse numerical regimes. It is not a random
+sample of customer demand or the prevalence of bugs in software.</p>
+<figure>
+<img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjYxNi45MzkzNzVwdCIgaGVpZ2h0PSIyMjMuMzgyODE4cHQiIHZpZXdCb3g9IjAgMCA2MTYuOTM5Mzc1IDIyMy4zODI4MTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIj4KIDxtZXRhZGF0YT4KICA8cmRmOlJERiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgIDxjYzpXb3JrPgogICAgPGRjOnR5cGUgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIvPgogICAgPGRjOmRhdGU+MjAyNi0xMC0yN1QxODo0MzowMy43Njg0ODQ8L2RjOmRhdGU+CiAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgIDxkYzpjcmVhdG9yPgogICAgIDxjYzpBZ2VudD4KICAgICAgPGRjOnRpdGxlPk1hdHBsb3RsaWIgdjMuMTAuOCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy88L2RjOnRpdGxlPgogICAgIDwvY2M6QWdlbnQ+CiAgICA8L2RjOmNyZWF0b3I+CiAgIDwvY2M6V29yaz4KICA8L3JkZjpSREY+CiA8L21ldGFkYXRhPgogPGRlZnM+CiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4qe3N0cm9rZS1saW5lam9pbjogcm91bmQ7IHN0cm9rZS1saW5lY2FwOiBidXR0fTwvc3R5bGU+CiA8L2RlZnM+CiA8ZyBpZD0iZmlndXJlXzEiPgogIDxnIGlkPSJwYXRjaF8xIj4KICAgPHBhdGggZD0iTSAwIDIyMy4zODI4MTggCkwgNjE2LjkzOTM3NSAyMjMuMzgyODE4IApMIDYxNi45MzkzNzUgMCAKTCAwIDAgCnoKIiBzdHlsZT0iZmlsbDogI2ZmZmZmZiIvPgogIDwvZz4KICA8ZyBpZD0iYXhlc18xIj4KICAgPGcgaWQ9InBhdGNoXzIiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDE1Ni44MjM0OCAKTCA2MDkuNzM5Mzc1IDE1Ni44MjM0OCAKTCA2MDkuNzM5Mzc1IDcuMiAKTCAxMzkuNDY5Mzc1IDcuMiAKegoiIHN0eWxlPSJmaWxsOiAjZmZmZmZmIi8+CiAgIDwvZz4KICAgPGcgaWQ9Im1hdHBsb3RsaWIuYXhpc18xIj4KICAgIDxnIGlkPSJ4dGlja18xIj4KICAgICA8ZyBpZD0ibGluZTJkXzEiPgogICAgICA8cGF0aCBkPSJNIDEzOS40NjkzNzUgMTU2LjgyMzQ4IApMIDEzOS40NjkzNzUgNy4yIAoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiMGIwYjA7IHN0cm9rZS1vcGFjaXR5OiAwLjE2OyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICAgIDwvZz4KICAgICA8ZyBpZD0ibGluZTJkXzIiPgogICAgICA8ZGVmcz4KICAgICAgIDxwYXRoIGlkPSJtYzM5ZmY4NDU1MCIgZD0iTSAwIDAgCkwgMCAzLjUgCiIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9kZWZzPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21jMzlmZjg0NTUwIiB4PSIxMzkuNDY5Mzc1IiB5PSIxNTYuODIzNDgiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMSI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIxMzkuNDY5Mzc1IiB5PSIxNzIuMTgxNzYxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAxMzkuNDY5Mzc1IDE3Mi4xODE3NjEpIj4wPC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja18yIj4KICAgICA8ZyBpZD0ibGluZTJkXzMiPgogICAgICA8cGF0aCBkPSJNIDIzOS43OTM2NDIgMTU2LjgyMzQ4IApMIDIzOS43OTM2NDIgNy4yIAoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiMGIwYjA7IHN0cm9rZS1vcGFjaXR5OiAwLjE2OyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICAgIDwvZz4KICAgICA8ZyBpZD0ibGluZTJkXzQiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21jMzlmZjg0NTUwIiB4PSIyMzkuNzkzNjQyIiB5PSIxNTYuODIzNDgiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44Ii8+CiAgICAgIDwvZz4KICAgICA8L2c+CiAgICAgPGcgaWQ9InRleHRfMiI+CiAgICAgIDx0ZXh0IHN0eWxlPSJmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogbWlkZGxlIiB4PSIyMzkuNzkzNjQyIiB5PSIxNzIuMTgxNzYxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCAyMzkuNzkzNjQyIDE3Mi4xODE3NjEpIj4xNjwvdGV4dD4KICAgICA8L2c+CiAgICA8L2c+CiAgICA8ZyBpZD0ieHRpY2tfMyI+CiAgICAgPGcgaWQ9ImxpbmUyZF81Ij4KICAgICAgPHBhdGggZD0iTSAzNDAuMTE3OTA4IDE1Ni44MjM0OCAKTCAzNDAuMTE3OTA4IDcuMiAKIiBjbGlwLXBhdGg9InVybCgjcDBmYWE1ODBjN2EpIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjYjBiMGIwOyBzdHJva2Utb3BhY2l0eTogMC4xNjsgc3Ryb2tlLXdpZHRoOiAwLjg7IHN0cm9rZS1saW5lY2FwOiBzcXVhcmUiLz4KICAgICA8L2c+CiAgICAgPGcgaWQ9ImxpbmUyZF82Ij4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtYzM5ZmY4NDU1MCIgeD0iMzQwLjExNzkwOCIgeT0iMTU2LjgyMzQ4IiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzMiPgogICAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IG1pZGRsZSIgeD0iMzQwLjExNzkwOCIgeT0iMTcyLjE4MTc2MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgMzQwLjExNzkwOCAxNzIuMTgxNzYxKSI+MzI8L3RleHQ+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inh0aWNrXzQiPgogICAgIDxnIGlkPSJsaW5lMmRfNyI+CiAgICAgIDxwYXRoIGQ9Ik0gNDQwLjQ0MjE3NSAxNTYuODIzNDggCkwgNDQwLjQ0MjE3NSA3LjIgCiIgY2xpcC1wYXRoPSJ1cmwoI3AwZmFhNTgwYzdhKSIgc3R5bGU9ImZpbGw6IG5vbmU7IHN0cm9rZTogI2IwYjBiMDsgc3Ryb2tlLW9wYWNpdHk6IDAuMTY7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgICAgPC9nPgogICAgIDxnIGlkPSJsaW5lMmRfOCI+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWMzOWZmODQ1NTAiIHg9IjQ0MC40NDIxNzUiIHk9IjE1Ni44MjM0OCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF80Ij4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBtaWRkbGUiIHg9IjQ0MC40NDIxNzUiIHk9IjE3Mi4xODE3NjEiIHRyYW5zZm9ybT0icm90YXRlKC0wIDQ0MC40NDIxNzUgMTcyLjE4MTc2MSkiPjQ4PC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ4dGlja181Ij4KICAgICA8ZyBpZD0ibGluZTJkXzkiPgogICAgICA8cGF0aCBkPSJNIDU0MC43NjY0NDIgMTU2LjgyMzQ4IApMIDU0MC43NjY0NDIgNy4yIAoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICNiMGIwYjA7IHN0cm9rZS1vcGFjaXR5OiAwLjE2OyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICAgIDwvZz4KICAgICA8ZyBpZD0ibGluZTJkXzEwIj4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtYzM5ZmY4NDU1MCIgeD0iNTQwLjc2NjQ0MiIgeT0iMTU2LjgyMzQ4IiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2c+CiAgICAgPC9nPgogICAgIDxnIGlkPSJ0ZXh0XzUiPgogICAgICA8dGV4dCBzdHlsZT0iZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IG1pZGRsZSIgeD0iNTQwLjc2NjQ0MiIgeT0iMTcyLjE4MTc2MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgNTQwLjc2NjQ0MiAxNzIuMTgxNzYxKSI+NjQ8L3RleHQ+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9InRleHRfNiI+CiAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBtaWRkbGU7IGZpbGw6ICMzMDEzNTYiIHg9IjM3NC42MDQzNzUiIHk9IjE4Ni44Mjc2OTkiIHRyYW5zZm9ybT0icm90YXRlKC0wIDM3NC42MDQzNzUgMTg2LjgyNzY5OSkiPkZyZXNoIGNoZWNrcyBhY2NlcHRlZCAob25lIGltcGxlbWVudGF0aW9uIHRyaWFsIHBlciB3b3JrZmxvdyk8L3RleHQ+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9Im1hdHBsb3RsaWIuYXhpc18yIj4KICAgIDxnIGlkPSJ5dGlja18xIj4KICAgICA8ZyBpZD0ibGluZTJkXzExIj4KICAgICAgPGRlZnM+CiAgICAgICA8cGF0aCBpZD0ibWVmYmQxZDU3ZmIiIGQ9Ik0gMCAwIApMIC0zLjUgMCAKIiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuOCIvPgogICAgICA8L2RlZnM+CiAgICAgIDxnPgogICAgICAgPHVzZSB4bGluazpocmVmPSIjbWVmYmQxZDU3ZmIiIHg9IjEzOS40NjkzNzUiIHk9IjMzLjQzMjY4OCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF83Ij4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9IjM3LjYxMTgyOSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgMTMyLjQ2OTM3NSAzNy42MTE4MjkpIj5PcmRpbmFyeSBjb21wZXRlbnQ8L3RleHQ+CiAgICAgPC9nPgogICAgPC9nPgogICAgPGcgaWQ9Inl0aWNrXzIiPgogICAgIDxnIGlkPSJsaW5lMmRfMTIiPgogICAgICA8Zz4KICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI21lZmJkMWQ1N2ZiIiB4PSIxMzkuNDY5Mzc1IiB5PSI4Mi4wMTE3NCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF84Ij4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9Ijg2LjE5MDg4MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgMTMyLjQ2OTM3NSA4Ni4xOTA4ODEpIj5FeHBlcnQgb3BlcmF0aW9uPC90ZXh0PgogICAgIDwvZz4KICAgIDwvZz4KICAgIDxnIGlkPSJ5dGlja18zIj4KICAgICA8ZyBpZD0ibGluZTJkXzEzIj4KICAgICAgPGc+CiAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNtZWZiZDFkNTdmYiIgeD0iMTM5LjQ2OTM3NSIgeT0iMTMwLjU5MDc5MiIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAwLjgiLz4KICAgICAgPC9nPgogICAgIDwvZz4KICAgICA8ZyBpZD0idGV4dF85Ij4KICAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBlbmQiIHg9IjEzMi40NjkzNzUiIHk9IjEzNC43Njk5MzMiIHRyYW5zZm9ybT0icm90YXRlKC0wIDEzMi40NjkzNzUgMTM0Ljc2OTkzMykiPkNvbnZlbnRpb25hbCB3b3JrZmxvdzwvdGV4dD4KICAgICA8L2c+CiAgICA8L2c+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzMiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDE0LjAwMTA2NyAKTCA0OTAuNjA0MzA4IDE0LjAwMTA2NyAKTCA0OTAuNjA0MzA4IDUyLjg2NDMwOSAKTCAxMzkuNDY5Mzc1IDUyLjg2NDMwOSAKegoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiAjNmMzOWI3Ii8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzQiPgogICAgPHBhdGggZD0iTSA0OTAuNjA0MzA4IDE0LjAwMTA2NyAKTCA1NDAuNzY2NDQyIDE0LjAwMTA2NyAKTCA1NDAuNzY2NDQyIDUyLjg2NDMwOSAKTCA0OTAuNjA0MzA4IDUyLjg2NDMwOSAKegoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiAjYzRhOGYwIi8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzUiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDYyLjU4MDExOSAKTCA0OTAuNjA0MzA4IDYyLjU4MDExOSAKTCA0OTAuNjA0MzA4IDEwMS40NDMzNjEgCkwgMTM5LjQ2OTM3NSAxMDEuNDQzMzYxIAp6CiIgY2xpcC1wYXRoPSJ1cmwoI3AwZmFhNTgwYzdhKSIgc3R5bGU9ImZpbGw6ICM2YzM5YjciLz4KICAgPC9nPgogICA8ZyBpZD0icGF0Y2hfNiI+CiAgICA8cGF0aCBkPSJNIDQ5MC42MDQzMDggNjIuNTgwMTE5IApMIDU0MC43NjY0NDIgNjIuNTgwMTE5IApMIDU0MC43NjY0NDIgMTAxLjQ0MzM2MSAKTCA0OTAuNjA0MzA4IDEwMS40NDMzNjEgCnoKIiBjbGlwLXBhdGg9InVybCgjcDBmYWE1ODBjN2EpIiBzdHlsZT0iZmlsbDogI2M0YThmMCIvPgogICA8L2c+CiAgIDxnIGlkPSJwYXRjaF83Ij4KICAgIDxwYXRoIGQ9Ik0gMTM5LjQ2OTM3NSAxMTEuMTU5MTcxIApMIDQ5MC42MDQzMDggMTExLjE1OTE3MSAKTCA0OTAuNjA0MzA4IDE1MC4wMjI0MTMgCkwgMTM5LjQ2OTM3NSAxNTAuMDIyNDEzIAp6CiIgY2xpcC1wYXRoPSJ1cmwoI3AwZmFhNTgwYzdhKSIgc3R5bGU9ImZpbGw6ICM2YzM5YjciLz4KICAgPC9nPgogICA8ZyBpZD0icGF0Y2hfOCI+CiAgICA8cGF0aCBkPSJNIDQ5MC42MDQzMDggMTExLjE1OTE3MSAKTCA1NDAuNzY2NDQyIDExMS4xNTkxNzEgCkwgNTQwLjc2NjQ0MiAxNTAuMDIyNDEzIApMIDQ5MC42MDQzMDggMTUwLjAyMjQxMyAKegoiIGNsaXAtcGF0aD0idXJsKCNwMGZhYTU4MGM3YSkiIHN0eWxlPSJmaWxsOiAjYzRhOGYwIi8+CiAgIDwvZz4KICAgPGcgaWQ9InBhdGNoXzkiPgogICAgPHBhdGggZD0iTSAxMzkuNDY5Mzc1IDE1Ni44MjM0OCAKTCAxMzkuNDY5Mzc1IDcuMiAKIiBzdHlsZT0iZmlsbDogbm9uZTsgc3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDAuODsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLWxpbmVjYXA6IHNxdWFyZSIvPgogICA8L2c+CiAgIDxnIGlkPSJwYXRjaF8xMCI+CiAgICA8cGF0aCBkPSJNIDEzOS40NjkzNzUgMTU2LjgyMzQ4IApMIDYwOS43MzkzNzUgMTU2LjgyMzQ4IAoiIHN0eWxlPSJmaWxsOiBub25lOyBzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMC44OyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbGluZWNhcDogc3F1YXJlIi8+CiAgIDwvZz4KICAgPGcgaWQ9InRleHRfMTAiPgogICAgPHRleHQgc3R5bGU9ImZvbnQtd2VpZ2h0OiA3MDA7IGZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBzdGFydDsgZmlsbDogIzMwMTM1NiIgeD0iNTQ3LjAzNjcwOCIgeT0iMzYuNDY4MDAxIiB0cmFuc2Zvcm09InJvdGF0ZSgtMCA1NDcuMDM2NzA4IDM2LjQ2ODAwMSkiPjY0LzY0PC90ZXh0PgogICA8L2c+CiAgIDxnIGlkPSJ0ZXh0XzExIj4KICAgIDx0ZXh0IHN0eWxlPSJmb250LXdlaWdodDogNzAwOyBmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiAnRGVqYVZ1IFNhbnMnOyB0ZXh0LWFuY2hvcjogc3RhcnQ7IGZpbGw6ICMzMDEzNTYiIHg9IjU0Ny4wMzY3MDgiIHk9Ijg1LjA0NzA1MiIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgNTQ3LjAzNjcwOCA4NS4wNDcwNTIpIj42NC82NDwvdGV4dD4KICAgPC9nPgogICA8ZyBpZD0idGV4dF8xMiI+CiAgICA8dGV4dCBzdHlsZT0iZm9udC13ZWlnaHQ6IDcwMDsgZm9udC1zaXplOiAxMXB4OyBmb250LWZhbWlseTogJ0RlamFWdSBTYW5zJzsgdGV4dC1hbmNob3I6IHN0YXJ0OyBmaWxsOiAjMzAxMzU2IiB4PSI1NDcuMDM2NzA4IiB5PSIxMzMuNjI2MTA0IiB0cmFuc2Zvcm09InJvdGF0ZSgtMCA1NDcuMDM2NzA4IDEzMy42MjYxMDQpIj42NC82NDwvdGV4dD4KICAgPC9nPgogICA8ZyBpZD0ibGVnZW5kXzEiPgogICAgPGcgaWQ9InBhdGNoXzExIj4KICAgICA8cGF0aCBkPSJNIDIyNC4zNTIxMDkgMjA5LjQ5NTE2MiAKTCAyNDYuMzUyMTA5IDIwOS40OTUxNjIgCkwgMjQ2LjM1MjEwOSAyMDEuNzk1MTYyIApMIDIyNC4zNTIxMDkgMjAxLjc5NTE2MiAKegoiIHN0eWxlPSJmaWxsOiAjNmMzOWI3Ii8+CiAgICA8L2c+CiAgICA8ZyBpZD0idGV4dF8xMyI+CiAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBzdGFydDsgZmlsbDogIzIzMWIzMyIgeD0iMjU1LjE1MjEwOSIgeT0iMjA5LjQ5NTE2MiIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgMjU1LjE1MjEwOSAyMDkuNDk1MTYyKSI+TnVtZXJpY2FsIC8gZW5kcG9pbnRzPC90ZXh0PgogICAgPC9nPgogICAgPGcgaWQ9InBhdGNoXzEyIj4KICAgICA8cGF0aCBkPSJNIDM5OC40NjMyMDMgMjA5LjQ5NTE2MiAKTCA0MjAuNDYzMjAzIDIwOS40OTUxNjIgCkwgNDIwLjQ2MzIwMyAyMDEuNzk1MTYyIApMIDM5OC40NjMyMDMgMjAxLjc5NTE2MiAKegoiIHN0eWxlPSJmaWxsOiAjYzRhOGYwIi8+CiAgICA8L2c+CiAgICA8ZyBpZD0idGV4dF8xNCI+CiAgICAgPHRleHQgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgZm9udC1mYW1pbHk6ICdEZWphVnUgU2Fucyc7IHRleHQtYW5jaG9yOiBzdGFydDsgZmlsbDogIzIzMWIzMyIgeD0iNDI5LjI2MzIwMyIgeT0iMjA5LjQ5NTE2MiIgdHJhbnNmb3JtPSJyb3RhdGUoLTAgNDI5LjI2MzIwMyAyMDkuNDk1MTYyKSI+UmVxdWlyZWQgcmVmdXNhbHM8L3RleHQ+CiAgICA8L2c+CiAgIDwvZz4KICA8L2c+CiA8L2c+CiA8ZGVmcz4KICA8Y2xpcFBhdGggaWQ9InAwZmFhNTgwYzdhIj4KICAgPHJlY3QgeD0iMTM5LjQ2OTM3NSIgeT0iNy4yIiB3aWR0aD0iNDcwLjI3IiBoZWlnaHQ9IjE0OS42MjM0OCIvPgogIDwvY2xpcFBhdGg+CiA8L2RlZnM+Cjwvc3ZnPgo=" alt="Primary fresh confirmation: all three frozen workflows satisfy 56 numerical or endpoint cases and eight refusals. The separately disclosed known midpoint diagnostic is outside this denominator." />
+<figcaption aria-hidden="true">Primary fresh confirmation: all three
+frozen workflows satisfy 56 numerical or endpoint cases and eight
+refusals. The separately disclosed known midpoint diagnostic is outside
+this denominator.</figcaption>
+</figure>
+<p>The independent root evaluator used 80- and 120-digit arithmetic, a
+log-domain bisection inverse and a separately written incomplete-beta
+continued fraction. It did not call Boost’s inverse as its primary
+judge. Analytic cases and exact rational integer-shape identities
+provided additional controls. All 64 references were resolved. A
+separate audit recomputed acceptance and used Decimal/Fraction controls;
+its complete check record is supplied.</p>
+<h2 id="what-the-checks-do-and-do-not-prove">What the checks do and do
+not prove</h2>
+<p>The bank establishes finite acceptance under a frozen contract. It
+does not prove correctness throughout the continuous parameter envelope.
+Two high-precision runs can share an error, and distinct programs can
+share a mathematical ingredient. The evaluator therefore retains its
+independent controls and uncertainty rather than treating agreement as a
+proof of universal correctness.</p>
+<p>Every primary call met its observed CPU limits: five seconds per call
+and 120 seconds per worker. Raw timings are retained, but <strong>no
+numerical speedup is claimed</strong>. Many recorded per-call CPU
+differences were zero; the tiny batch and observed timer behavior do not
+support a stable ratio. The identical reported peak memory high-water
+marks are likewise unsuitable for an arm-level memory advantage. Import
+and build time are recorded separately from solve time, and construction
+and verification effort cannot be replaced by a microsecond solve-time
+figure.</p>
+<p>The broad result is uncomplicated: competent ordinary operation
+succeeded, explicit expert operation succeeded, and the strongest
+identified conventional workflow succeeded on the fresh bank. The expert
+checklist did not produce a better primary accepted outcome in this
+trial.</p>
+<h2 id="the-additional-boundary-failure-stays-visible">The additional
+boundary failure stays visible</h2>
+<p>After primary confirmation, the independent audit ran an
+already-known diagnostic at the smallest positive binary64 probability,
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>b</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">a=1,b=2</annotation></semantics></math>.
+Ordinary and expert implementations returned the correct positive
+subnormal value; the original conventional implementation returned zero
+with <code>underflow</code>. This diagnostic was not fresh and was not
+added to the primary denominator. A separately labeled conventional
+correction, using ordinary analytic precision and lattice rounding,
+passed the same 64-case replay plus the known midpoint diagnostic. These
+are post hoc replays, not a new blind confirmation; the original failure
+remains in the correction record. Neither the original failure nor the
+corrected comparison disappears.</p>
+<hr />
+<h1 id="a-better-measuring-instrument">A better measuring
+instrument</h1>
+<p>The most instructive failure occurred in the numerical judge. Both
+the ordinary and expert workstreams independently noticed that
+converting a high-precision value to a machine float can conceal a
+subnormal rounding error. Agreement at two precisions did not guarantee
+correct rounding. The root evaluator initially shared that weakness.</p>
+<p>The correction was made <strong>before generating the fresh
+bank</strong>. The old evaluator, new evaluator, source hashes,
+diagnostic and rationale remain in the package. The acceptance
+requirements did not change. All three primary arms were evaluated by
+the same corrected instrument. We disclose the feedback from the arm
+builders because the root evaluator was not sealed from all development
+feedback.</p>
+<h2 id="an-exact-counterexample">An exact counterexample</h2>
+<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1074</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\delta=2^{-1074}</annotation></semantics></math>,
+the smallest positive binary64 value. For a
+Beta<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,2)</annotation></semantics></math>
+distribution,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>2</mn><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+F(x)=2x-x^2.
+</annotation></semantics></math></p>
+<p>At the midpoint between zero and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>δ</mi><mi>/</mi><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>δ</mi><mo>−</mo><msup><mi>δ</mi><mn>2</mn></msup><mi>/</mi><mn>4</mn><mo>&lt;</mo><mi>δ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
+F(\delta/2)=\delta-\delta^2/4&lt;\delta.
+</annotation></semantics></math></p>
+<p>The quantile at probability
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+is therefore <strong>above</strong> that midpoint and rounds to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>,
+not zero. A computation that loses the tiny positive correction can land
+on the midpoint and apply the wrong rounding decision. This is a
+numerical instrument failure with an exact rational adjudication, not an
+invented new special function.</p>
+<p>The corrected reference explicitly rounds on the binary64 subnormal
+lattice. Near a midpoint, it uses an exact integer-shape CDF when
+available, otherwise a 500-digit adaptive calculation with an
+unresolved-reference outcome if the decision remains too close. The
+construction uses conventional mathematical identities; the contribution
+is the preserved diagnosis and the accountable correction.</p>
+<h2 id="why-this-belongs-in-the-main-narrative">Why this belongs in the
+main narrative</h2>
+<p>A fluent implementation and a passing high-precision comparison can
+still be wrong in the same way. A useful agent must be able to question
+its checker and produce independently inspectable evidence for that
+challenge. In this study, <strong>ordinary competent use already did
+that</strong>. It would be misleading to award the behavior exclusively
+to the expert arm.</p>
+<p>Transformational Intelligence argues that evaluators may themselves
+impose restrictions, but that revising an evaluator must not become a
+way for a candidate to award itself victory. Its prescribed discipline
+is an independent outcome anchor, preserved old evidence and a common
+corrected comparison. This continuation exercises that discipline on a
+real numerical instrument. It does not thereby establish a novel theory
+of evaluator revision. <span class="citation" data-cites="ti">(<a href="#ref-ti" role="doc-biblioref">Boucher 2026c</a>)</span></p>
+<p>The earlier kinetics construction remains supporting engineering. Its
+conventional parity, thin conditional economics and untested physical
+assumptions are unchanged. No chemical parameters, catalysts or
+acceptance criteria were tuned in this continuation to manufacture a
+second success.</p>
+<hr />
+<h1 id="the-commercial-offering-and-the-cost-boundary">The commercial
+offering and the cost boundary</h1>
+<p>The free delivered artifact is the recipient’s strongest outside
+option. A prospective paid engagement must therefore purchase
+<strong>bounded qualification, integration and handoff in one declared
+buyer environment</strong>, including correction and support. It cannot
+earn a license premium for a public conventional algorithm. That
+buyer-specific engagement has not been performed or accepted by a
+customer; the following economics are conditional on it.</p>
+<p>All amounts are nominal US dollars. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+be the unknown additional model/tool cost per future engagement,
+including retries and failed attempts. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
+be the unknown complete historical cost of this research, development
+and publication project. Neither is inferred from wall time. The same
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+is used for all workflows because no metered cost advantage was
+established. Historical
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
+is deducted once for full-project recovery, not again per customer.</p>
+<h2 id="complete-central-cost-per-accepted-engagement">Complete central
+cost per accepted engagement</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Explicit central assumption</th>
+<th style="text-align: right;">Cost or receipt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Net revenue</td>
+<td style="text-align: left;">$1,500 price, less 2% expected
+refunds</td>
+<td style="text-align: right;">$1,470.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Successful delivery</td>
+<td style="text-align: left;">2.5 h at $125/h: scope, integration,
+qualification, handoff</td>
+<td style="text-align: right;">$312.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Failed attempts</td>
+<td style="text-align: left;">20% failure probability; 1.5 h each;
+expected 0.375 h per acceptance</td>
+<td style="text-align: right;">$46.875</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Support and correction</td>
+<td style="text-align: left;">0.5 h at $125/h</td>
+<td style="text-align: right;">$62.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acquisition</td>
+<td style="text-align: left;">0.75 h at $125/h plus $25 cash</td>
+<td style="text-align: right;">$118.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Infrastructure</td>
+<td style="text-align: left;">Per accepted engagement</td>
+<td style="text-align: right;">$5.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Payment expense</td>
+<td style="text-align: left;">Assumed 3% of price plus $0.30</td>
+<td style="text-align: right;">$45.30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Additional model/tools</td>
+<td style="text-align: left;">All future engagement retries
+included</td>
+<td style="text-align: right;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Contribution</strong></td>
+<td style="text-align: left;">Before cohort fixed costs</td>
+<td style="text-align: right;"><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>879.075</mn><mo>−</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">879.075-M</annotation></semantics></math></strong></td>
+</tr>
+</tbody>
+</table>
+<p>No recurring human review is invented for each automated scalar
+calculation. These hours describe future buyer integration and service,
+not observed labor in the present experiment. Loaded rates of $100–175/h
+are scoped estimates; historical employee wages provide only an
+order-of-magnitude anchor, not contractor quotations. The complete cost
+model discloses hours, rates and uncertainty. <span class="citation" data-cites="bls">(<a href="#ref-bls" role="doc-biblioref">US Bureau of
+Labor Statistics 2026</a>)</span></p>
+<p>Four central buyers share $800 of maintenance and fixed business cost
+over the cohort; $500 of additional commercial setup is charged once.
+That setup concerns service contracting and onboarding, not rebuilding
+the already delivered code, tests or documentation. The central cohort
+extends through day 115. The favorable cohort extends through day 195;
+neither is an annual forecast.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: left;">Buyers and price</th>
+<th style="text-align: left;">Operating profit</th>
+<th style="text-align: left;">Full-project return</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Favorable</td>
+<td style="text-align: left;">8 at $2,500</td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>,</mo><mn>526.93</mn><mo>−</mo><mn>8</mn><mi>M</mi></mrow><annotation encoding="application/x-tex">16,526.93-8M</annotation></semantics></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>,</mo><mn>226.93</mn><mo>−</mo><mn>8</mn><mi>M</mi><mo>−</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">16,226.93-8M-D</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Central</td>
+<td style="text-align: left;">4 at $1,500</td>
+<td style="text-align: left;"><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>,</mo><mn>716.30</mn><mo>−</mo><mn>4</mn><mi>M</mi></mrow><annotation encoding="application/x-tex">2,716.30-4M</annotation></semantics></math></strong></td>
+<td style="text-align: left;"><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>,</mo><mn>216.30</mn><mo>−</mo><mn>4</mn><mi>M</mi><mo>−</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">2,216.30-4M-D</annotation></semantics></math></strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adverse</td>
+<td style="text-align: left;">No buyers</td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn><mo>,</mo><mn>650</mn></mrow><annotation encoding="application/x-tex">-1,650</annotation></semantics></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>3</mn><mo>,</mo><mn>050</mn><mo>−</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">-3,050-D</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<p><strong>At an illustrative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>$</mi><mn>100</mn></mrow><annotation encoding="application/x-tex">M=\$100</annotation></semantics></math>,
+central operating profit is $2,316.30; full-project return is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>816.30</mn><mo>−</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">1,816.30-D</annotation></semantics></math>.</strong>
+This is a sensitivity coordinate, not a measured model invoice.
+Operating profit requires
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&lt;</mo><mi>$</mi><mn>679.075</mn></mrow><annotation encoding="application/x-tex">M&lt;\$679.075</annotation></semantics></math>.
+At
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>$</mi><mn>100</mn></mrow><annotation encoding="application/x-tex">M=\$100</annotation></semantics></math>,
+the operating break-even price is $890.45; recovering additional setup
+raises it to $1,022.03 before historical
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>.
+Full-project profitability remains unknown.</p>
+<p>The adverse case preserves zero demand rather than forcing a sale. A
+conditional-commitment gate can avoid its prospective setup and
+fixed-cost loss. If an adverse low-price sale did occur, its unit
+contribution would be negative even before model cost. Expected profit
+is not an observed earning.</p>
+<hr />
+<h1 id="financing-demand-and-the-next-voluntary-exchange">Financing,
+demand and the next voluntary exchange</h1>
+<h2 id="buyer-value-must-survive-the-free-alternative">Buyer value must
+survive the free alternative</h2>
+<p>The central price hypothesis has little room for error. It assumes
+eight hours of avoided self-qualification at $150/h, $600 of avoided
+delay, and one hour of buyer participation. The resulting value ceiling
+is <strong>$1,650</strong>, leaving only <strong>$150 of modeled buyer
+surplus</strong> at the proposed $1,500 fee. The hours and delay value
+are unmeasured. A competent recipient needing only two hours to reuse
+the free artifact, with no valuable delay avoided, may rationally buy
+nothing.</p>
+<p>Prices are independent buyer hypotheses, not a fixed discount from an
+invented market price. The executable sensitivity grid holds volume
+fixed only to show arithmetic; it does not assume buyers remain when
+price exceeds their value. Extra participation is not automatically
+beneficial: replacing a $125 provider hour with a $150 buyer hour
+increases combined cost unless it brings another justified benefit.</p>
+<p>A human team attempting an equivalent new repair from the same public
+recipe is estimated separately at 14–38 hours, or $1,400–$6,650 at the
+stated rate endpoints. The central attempt estimate is 24 h at $125/h.
+This is neither a measured human baseline nor willingness to pay, and it
+is never added as a second bill for the already produced artifact.</p>
+<h2 id="cash-comes-before-collection">Cash comes before collection</h2>
+<p>At central
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>$</mi><mn>100</mn></mrow><annotation encoding="application/x-tex">M=\$100</annotation></semantics></math>,
+acquisition and pre-acceptance work precede collection. The modeled peak
+expected cash deficit is <strong>$2,091.25</strong>. A separate
+<strong>$1,875 reserve</strong> covers one additional full refund and
+three extra correction hours. Required unrestricted funding is therefore
+<strong>$3,966.25</strong>. Actual available funds, reserve balances,
+credit and financing commitments are unknown. Any unpaid historical
+development obligation must be added.</p>
+<p>An earned milestone can reduce the funding threshold to
+<strong>$3,476.55</strong>: 30% is paid after a separately useful,
+accepted qualification package; the remainder follows final accepted
+delivery. This arrangement preserves the numerical requirements, refund
+exposure and reserve. Two collection fees reduce central full-project
+return by $1.20 to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>815.10</mn><mo>−</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">1,815.10-D</annotation></semantics></math>
+at the illustrative model-cost coordinate; the initial calculation
+omitted that second fee and is preserved in the economic correction
+record. It is a conditional contract design, not an observed customer
+agreement or legal approval. A refundable deposit stays restricted and
+supplies <strong>zero unrestricted operating capital</strong>. A
+conditional commitment alone supplies no cash.</p>
+<p>The reserve covers the specified stress, not multiple correlated
+failures. Two extra full refunds exceed its refund component by $1,500.
+Delayed collection and financing fees can consume the margin. A reserve
+is cash held, not an operating expense; it is not charged twice.</p>
+<h2 id="sharing-is-available-to-the-conventional-team-too">Sharing is
+available to the conventional team too</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Matched arrangement, central
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>$</mi><mn>100</mn></mrow><annotation encoding="application/x-tex">M=\$100</annotation></semantics></math></th>
+<th style="text-align: right;">Return before historical
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Conventional, four isolated
+engagements</td>
+<td style="text-align: right;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn><mo>,</mo><mn>083.70</mn></mrow><annotation encoding="application/x-tex">-2,083.70</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Expert operation alone, isolated</td>
+<td style="text-align: right;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn><mo>,</mo><mn>083.70</mn></mrow><annotation encoding="application/x-tex">-2,083.70</annotation></semantics></math></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Conventional, shared fixed costs</td>
+<td style="text-align: right;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>816.30</mn></mrow><annotation encoding="application/x-tex">1,816.30</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Expert operation plus shared fixed
+costs</td>
+<td style="text-align: right;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>816.30</mn></mrow><annotation encoding="application/x-tex">1,816.30</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<p>This accounting counterfactual assumes equal capability and equal
+costs, as the measured comparison warrants. The interaction attributable
+to expert operation is zero. Sharing a known fixed cost can make a
+conditional service viable; it is not a novel institution or exclusive
+Alpha. All buyers retain the same public rights and can decline the
+service.</p>
+<p><strong>Observed commitments and collections: zero. Complete actual
+project cost and available funds: unknown.</strong> Buyer value, scope
+and costs still need verification.</p>
+<hr />
+<h1 id="what-the-result-makes-possible">What the result makes
+possible</h1>
+<h2 id="evidence-a-small-capability-that-works-now">Evidence: a small
+capability that works now</h2>
+<p>The demonstrated near-term capability is a bounded numerical incident
+package: locate the relevant public evidence, reproduce the failure,
+challenge the proposed novelty, construct a usable scalar component,
+uncover a checker weakness, run fresh confirmation and deliver the
+complete record. Its usefulness is inspectable without waiting for
+physical fabrication, private data or a speculative future model.</p>
+<p>The external libraries and public report do much of the intellectual
+work. The live assistant’s contribution is to connect them into an
+executable, checked outcome under a time limit. That is a real
+productive capability, even when a competent conventional team could
+perform the same task. The study does not establish that the expert
+operating procedure improves that capability over ordinary competent
+use.</p>
+<h2 id="conditional-expansion-a-portfolio-of-qualification-missions">Conditional
+expansion: a portfolio of qualification missions</h2>
+<p>A broader service could qualify numerical incidents across scientific
+packages, supply bounded compatibility components and help recipients
+decide whether to integrate, upgrade or decline a workaround. That
+expansion depends on evidence absent from this single mission: multiple
+prospectively selected incidents, real recipient acceptance, adequate
+model metering, known licensing and support obligations, and a measured
+rate of failures that cannot be repaired within the paid scope.</p>
+<p>The next economically informative step is one voluntary buyer pilot
+with a written acceptance contract and a capped integration scope. A
+valuable customer question might be whether this component resolves a
+blocked calculation on the buyer’s actual supported stack. It must not
+be silently replaced by passing our existing numerical bank. The free
+artifact remains the buyer’s outside option; a buyer who can
+self-integrate cheaply has no reason to pay a premium merely because an
+agent was involved.</p>
+<h2 id="long-term-ambition-capabilities-that-open-better-opportunities">Long-term
+ambition: capabilities that open better opportunities</h2>
+<p>The flywheel’s larger thesis is that a delivered capability can make
+a later opportunity feasible. This result supplies a possible starting
+asset, not evidence of compounding returns. A future successor could
+reuse the source-pinning, numerical-regime analysis or exact-midpoint
+checks on a genuinely new mission. It would still have to beat its own
+competent baseline and an ordinary library containing the same asset
+after retention, validation, integration and maintenance costs.</p>
+<p>No fresh transfer trial was performed here. There is no
+retained-Alpha or Gym-training claim. Adding transfer work would not
+repair the missing expert advantage, and ordinary reuse is already
+available. Optional learning investment should follow an expected
+benefit, not a prescribed number of reinvestments.</p>
+<p>Invent the Economy separates technical feasibility, participant
+value, profitability, liquidity and actual exchange. Transformational
+Autonomous Enterprises preserves comparisons in which a supplied
+deterministic specialist matches quality and costs less. Those lessons
+shape this edition: keep useful assets, let strong baselines win, and
+require evidence for the next economic claim. <span class="citation" data-cites="economy tae">(<a href="#ref-economy" role="doc-biblioref">Boucher 2026a</a>, <a href="#ref-tae" role="doc-biblioref">2026b</a>)</span></p>
+<p><strong>Recommendation:</strong> deliver the research artifact,
+retain the corrected numerical instrument and conventional comparisons,
+and invite a narrowly scoped customer qualification pilot. Stop the
+exclusive algorithmic-novelty claim. Leave general Operational Alpha,
+discovery advantage, retained benefit and realized commercial viability
+unestablished until their own experiments support them.</p>
+<hr />
+<h1 id="reproducibility-provenance-and-publication">Reproducibility,
+provenance and publication</h1>
+<h2 id="one-edition-several-readable-forms">One edition, several
+readable forms</h2>
+<p>The package contains the compilable LaTeX manuscript, bibliography,
+vector figures and plotting source; the polished PDF; a concise
+executive brief; a complete offline HTML edition and a GitHub-readable
+manuscript; frozen prompts, protocol, source and fresh results; the
+conventional challenge and failures; the evaluator correction;
+independent audit; executable economics; and a LinkedIn draft that has
+not been posted.</p>
+<p>The Markdown manuscript is the common content source for the LaTeX
+and HTML editions. Numerical facts are checked against the
+machine-readable result and economic files. The brief repeats the same
+verdicts and conditions. Download identities and the publication status
+are recorded separately so a review upload cannot be confused with a
+canonical release.</p>
+<p>The deterministic reproduction entry point rebuilds kernels in
+isolated copies, replays the frozen case bank, recomputes references and
+scores, and preserves the original source hashes. The native bridge
+reuses the existing Journal, CostLedger and fitness components; it does
+not build a second registry or invent a customer payment. Unknown actual
+charges remain unknown. Its local research identity is not a live
+external authentication claim.</p>
+<h2 id="evidence-and-source-identities">Evidence and source
+identities</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Identity or location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Edition</td>
+<td style="text-align: left;"><code>DIGITAL-20261027-R1</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Repository audit source</td>
+<td style="text-align: left;"><code>3947e4ec8fd74ad40e13e8ff825a149fa98a10e9</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Boost.Math construction source</td>
+<td style="text-align: left;"><code>70a36632cfbfe6a862cd8a5b88b357ca3a770a3d</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SciPy inspected source</td>
+<td style="text-align: left;"><code>37fad094584e1129ea652680608cd2c1b02463b9</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acceptance protocol</td>
+<td style="text-align: left;"><code>experiment/protocol.json</code> and
+SHA-256 sidecar</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fresh source and case freeze</td>
+<td style="text-align: left;"><code>experiment/source_freeze.json</code>,
+<code>fresh_case_metadata.json</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Primary result</td>
+<td style="text-align: left;"><code>experiment/comparison_results.json</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Instrument correction</td>
+<td style="text-align: left;"><code>experiment/evaluator_correction.json</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Complete claim map</td>
+<td style="text-align: left;"><code>delivery/claim_map.json</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Monetary model</td>
+<td style="text-align: left;"><code>economics/economics.py</code> and
+scenario outputs</td>
+</tr>
+</tbody>
+</table>
+<p>All 24 preserved upstream component files were verified identical at
+the prior and current repository snapshots. Third-party licenses remain
+attached to their sources. Frozen experimental originals are retained
+byte for byte; any publication-normalized or corrected copies have
+separate identities. The previous gap archive is preserved with its
+original SHA-256 in the continuation provenance.</p>
+<h2 id="publication-is-a-separate-acceptance-boundary">Publication is a
+separate acceptance boundary</h2>
+<p>The authorized route is an additive study review branch and draft
+pull request under
+<code>studies/agi-alpha-digital-outcome-20261027-2206/</code>. The mixed
+source, data and HTML package takes the repository’s full review lane.
+It is not a passive-paper exemption. Existing runtime, discovery,
+accounting and publication owners retain their roles. <span class="citation" data-cites="coordination publication">(<a href="#ref-coordination" role="doc-biblioref">MONTREAL.AI 2026a</a>, <a href="#ref-publication" role="doc-biblioref">2026b</a>)</span></p>
+<p>This edition may be inspected and downloaded from its pinned review
+source. Canonical production publication requires the existing owner’s
+exact-source review, required hosted checks, qualified integration and
+actual public deployment/served-byte verification. A green preparation
+workflow with skipped deployment does not establish publication. The
+delivery receipt states the exact source, public reading page, downloads
+and any remaining external dependency; it does not borrow a prior
+release’s approval.</p>
+<hr />
+<h1 id="appendix-preserved-failures-and-claim-boundaries">Appendix:
+preserved failures and claim boundaries</h1>
+<h2 id="corrections-without-erasure">Corrections without erasure</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Record</th>
+<th style="text-align: left;">Observed problem</th>
+<th style="text-align: left;">Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Early Boost challenge</td>
+<td style="text-align: left;">One long-double configuration failed a
+public example</td>
+<td style="text-align: left;">Preserved beside the successful double
+configuration; no weak-only baseline</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ordinary development</td>
+<td style="text-align: left;">Subnormal rounding and an unscaled
+quadrature oracle produced misleading evidence</td>
+<td style="text-align: left;">Original attempts retained; lattice
+rounding and normalized controls added before freeze</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Expert development</td>
+<td style="text-align: left;">Wrong finite subnormal-tail outputs and
+high-precision conversion error</td>
+<td style="text-align: left;">Trigger and rounding repairs made before
+freeze; original attempts retained</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Root evaluator v1</td>
+<td style="text-align: left;">Direct high-precision-to-float conversion
+could double-round</td>
+<td style="text-align: left;">v1 retained; exact midpoint controls and
+v2 freeze before fresh generation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Conventional primary source</td>
+<td style="text-align: left;">Known post-confirmation
+Beta<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,2)</annotation></semantics></math>
+midpoint returned underflow</td>
+<td style="text-align: left;">Failure retained outside primary
+denominator; correction separately labeled</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Expert packaging</td>
+<td style="text-align: left;">Storage exhaustion interrupted README
+creation</td>
+<td style="text-align: left;">Partial attempt and recovery recorded; no
+numerical source erasure</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Root freeze check</td>
+<td style="text-align: left;">A hash copied into a summary contained a
+transcription error</td>
+<td style="text-align: left;">Original source manifest rechecked; no
+source mutation or case generation occurred before resolution</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-each-positive-result-can-support">What each positive result
+can support</h2>
+<ul>
+<li><strong>Runnable construction:</strong> yes, within the stated
+scalar envelope and finite tested cases. It is not universal proof or
+upstream integration.</li>
+<li><strong>Fresh research acceptance:</strong> 64/64 checks for each
+original frozen arm, under a common corrected evaluator. Known
+diagnostic limitations remain visible.</li>
+<li><strong>Commercial operating profit:</strong> conditional model
+only, with price, volume, scope, failure, support and unknown model-cost
+thresholds. No observed sale.</li>
+<li><strong>Financing feasibility:</strong> conditional on actual
+unrestricted funds or explicitly agreed stages. Refundable balances do
+not become operating capital.</li>
+<li><strong>Operational Alpha:</strong> not established. The expert arm
+did not improve primary accepted quality over competent ordinary use;
+complete cost and broad replication are missing.</li>
+<li><strong>Transformational contribution:</strong> no exclusive
+numerical advance. Established methods meet the useful outcome; the
+public reporter supplied the formulation.</li>
+<li><strong>Fresh-transfer benefit:</strong> untested. Ordinary
+reusable-library access remains a required comparator for a future
+transfer study.</li>
+</ul>
+<h2 id="research-limits-that-affect-the-headline">Research limits that
+affect the headline</h2>
+<p>One implementation trial per arm on one public mission cannot
+establish population performance. Provider identity, billing and buyer
+demand are unmeasured. Independent implementation and audit occurred
+within one coordinated assistant session. Finite scalar acceptance does
+not justify broader product claims. The conventional midpoint defect and
+post hoc correction stay outside fresh confirmation. Human-service
+estimates are assumptions, not quotations or willingness to pay.</p>
+<hr />
+<h1 id="references">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-boost" class="csl-entry" role="listitem">
+Boost.Math Developers. 2026. <span>“The Incomplete Beta Function
+Inverses.”</span> <a href="https://www.boost.org/doc/libs/latest/libs/math/doc/html/math_toolkit/sf_beta/ibeta_inv_function.html">https://www.boost.org/doc/libs/latest/libs/math/doc/html/math_toolkit/sf_beta/ibeta_inv_function.html</a>.
+</div>
+<div id="ref-economy" class="csl-entry" role="listitem">
+Boucher, Vincent. 2026a. <span>“Invent the Economy.”</span> <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/Invent_the_Economy.tex">https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/Invent_the_Economy.tex</a>.
+</div>
+<div id="ref-tae" class="csl-entry" role="listitem">
+———. 2026b. <span>“Transformational Autonomous Enterprises.”</span> <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/papers/transformational-autonomous-enterprises-v1.tex">https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/papers/transformational-autonomous-enterprises-v1.tex</a>.
+</div>
+<div id="ref-ti" class="csl-entry" role="listitem">
+———. 2026c. <span>“Transformational Intelligence: Learning to Change the
+Game.”</span> <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/Transformational_Intelligence.tex">https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/Transformational_Intelligence.tex</a>.
+</div>
+<div id="ref-scipyissue" class="csl-entry" role="listitem">
+chrisb83. 2026. <span>“<span>BUG</span>: Beta Quantile Failures in
+Extreme Tails, Issue 26531.”</span> <a href="https://github.com/scipy/scipy/issues/26531">https://github.com/scipy/scipy/issues/26531</a>.
+</div>
+<div id="ref-coordination" class="csl-entry" role="listitem">
+MONTREAL.AI. 2026a. <span>“AGI ALPHA Coordination Record, Issue
+4850.”</span> <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850">https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850</a>.
+</div>
+<div id="ref-publication" class="csl-entry" role="listitem">
+———. 2026b. <span>“Research Paper Upload and Publication Policy.”</span>
+<a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/agent/PAPER_UPLOADS.md">https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3947e4ec8fd74ad40e13e8ff825a149fa98a10e9/docs/agent/PAPER_UPLOADS.md</a>.
+</div>
+<div id="ref-dlmf" class="csl-entry" role="listitem">
+National Institute of Standards and Technology. 2026. <span>“Digital
+Library of Mathematical Functions, Section 8.17: Incomplete Beta
+Functions.”</span> <a href="https://dlmf.nist.gov/8.17">https://dlmf.nist.gov/8.17</a>.
+</div>
+<div id="ref-scipydocs" class="csl-entry" role="listitem">
+SciPy Developers. 2026. <span>“Scipy.special.betaincinv.”</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.betaincinv.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.betaincinv.html</a>.
+</div>
+<div id="ref-statsmodels" class="csl-entry" role="listitem">
+statsmodels contributors. 2026. <span>“Boundary Confidence Interval
+Issues and Active Repairs.”</span> <a href="https://github.com/statsmodels/statsmodels/issues/10536">https://github.com/statsmodels/statsmodels/issues/10536</a>.
+</div>
+<div id="ref-sympy" class="csl-entry" role="listitem">
+SymPy contributors. 2026. <span>“Kronecker Product Public Report and
+Existing Repair.”</span> <a href="https://github.com/sympy/sympy/issues/30860">https://github.com/sympy/sympy/issues/30860</a>.
+</div>
+<div id="ref-bls" class="csl-entry" role="listitem">
+US Bureau of Labor Statistics. 2026. <span>“Software Developers, Quality
+Assurance Analysts, and Testers.”</span> <a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm">https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm</a>.
+</div>
+</div>
+</body>
+</html>

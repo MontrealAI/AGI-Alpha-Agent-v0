@@ -1,0 +1,137 @@
+{
+  "audited_at_utc": "2026-10-27T22:42:14.877029+00:00",
+  "independent_rescoring": {
+    "ordinary": {
+      "accepted": 64,
+      "fresh_numeric_or_endpoint_accepted": 56,
+      "fresh_refusals_accepted": 8,
+      "failed": [],
+      "zero_cpu_observations": 33,
+      "max_wall_seconds": 0.03901984999538399,
+      "peak_rss_kib": 163000
+    },
+    "expert": {
+      "accepted": 64,
+      "fresh_numeric_or_endpoint_accepted": 56,
+      "fresh_refusals_accepted": 8,
+      "failed": [],
+      "zero_cpu_observations": 63,
+      "max_wall_seconds": 0.005806636996567249,
+      "peak_rss_kib": 163000
+    },
+    "conventional": {
+      "accepted": 64,
+      "fresh_numeric_or_endpoint_accepted": 56,
+      "fresh_refusals_accepted": 8,
+      "failed": [],
+      "zero_cpu_observations": 24,
+      "max_wall_seconds": 0.0325962700007949,
+      "peak_rss_kib": 163000
+    }
+  },
+  "reference_status_counts": {
+    "numeric": 51,
+    "underflow": 3,
+    "endpoint": 2,
+    "invalid": 6,
+    "unsupported": 2
+  },
+  "separate_control_equations": [
+    {
+      "id": "fresh-036",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 1.6488871774465962e-94
+    },
+    {
+      "id": "fresh-037",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 1.8080704698237377e-278
+    },
+    {
+      "id": "fresh-038",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 1.845238571693466e-164
+    },
+    {
+      "id": "fresh-039",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 9.649014150829439e-147
+    },
+    {
+      "id": "fresh-040",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 0.9999983433820321
+    },
+    {
+      "id": "fresh-041",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 0.03525281569223526
+    },
+    {
+      "id": "fresh-042",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 0.9999987876106395
+    },
+    {
+      "id": "fresh-043",
+      "method": "Decimal500 analytic inverse",
+      "pass": true,
+      "x": 6.737761742878119e-05
+    },
+    {
+      "id": "fresh-044",
+      "method": "Exact rational binomial CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-045",
+      "method": "Exact rational binomial CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-046",
+      "method": "Exact rational binomial CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-047",
+      "method": "Exact rational binomial CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-050",
+      "method": "Decimal500 closed-form Beta(1/4,2) underflow bound",
+      "pass": true
+    },
+    {
+      "id": "fresh-051",
+      "method": "Decimal500 closed-form Beta(1/2,3) CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-052",
+      "method": "Decimal500 closed-form Beta(1/2,3) CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-053",
+      "method": "Decimal500 closed-form Beta(1/2,3) CDF enclosure",
+      "pass": true
+    },
+    {
+      "id": "fresh-054",
+      "method": "Decimal500 closed-form Beta(1/2,3) CDF enclosure",
+      "pass": true
+    }
+  ],
+  "all_control_checks_pass": true,
+  "timing_interpretation": "Per-call CPU reports contain many exact zeros despite nonzero wall times. CLOCK_PROCESS_CPUTIME_ID advertises1ns resolution, so cause is not established. Aggregate microtimings and identical inherited-looking peak RSS cannot establish efficiency superiority. Per-call observed wall times also comfortably below five seconds; accepted bounded completion survives.",
+  "independence": "Separate audit agent read frozen submitted sources and final reference outputs after freeze. It did not author the solver or primary evaluator. It recomputed score directly and checked analytic/integer selected cases using Decimal/Fraction equations; this is finite independent checking, not proof over the domain."
+}

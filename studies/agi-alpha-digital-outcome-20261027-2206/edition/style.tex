@@ -1,0 +1,38 @@
+% SPDX-License-Identifier: Apache-2.0
+\usepackage[letterpaper,margin=0.82in,headheight=15pt,headsep=19pt,footskip=28pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont[Scale=0.82]{DejaVu Sans Mono}
+\usepackage{microtype,amsmath,amssymb,booktabs,longtable,array,graphicx,xcolor}
+\usepackage{fancyhdr,titlesec,enumitem,caption,needspace,etoolbox,tcolorbox}
+\definecolor{DeepPurple}{HTML}{301356}
+\definecolor{RoyalPurple}{HTML}{6C39B7}
+\definecolor{PalePurple}{HTML}{F3EDF9}
+\definecolor{Ink}{HTML}{231B33}
+\definecolor{Muted}{HTML}{61566E}
+\color{Ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus1pt}
+\setlength{\emergencystretch}{3em}
+\linespread{1.035}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{DeepPurple}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\footnotesize\sffamily DIGITAL / R1}
+\fancyfoot[L]{\scriptsize\sffamily MONTREAL.AI | Research review edition}
+\fancyfoot[R]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\titleformat{\section}{\LARGE\sffamily\bfseries\color{DeepPurple}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{DeepPurple}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries\color{DeepPurple}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.2em}{0.5em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.3em}
+\pretocmd{\subsection}{\Needspace{8\baselineskip}}{}{}
+\setlist{nosep,leftmargin=1.4em,topsep=4pt,itemsep=2pt}
+\captionsetup{font=small,labelfont={bf,sf},textfont=sf}
+\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.18}
+\AtBeginEnvironment{longtable}{\small}
+\BeforeBeginEnvironment{longtable}{\Needspace{5\baselineskip}}
+\newcommand{\editionbreak}{\par\bigskip\Needspace{8\baselineskip}}
+\newcommand{\resultbox}[1]{\begin{tcolorbox}[colback=PalePurple,colframe=DeepPurple,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=10pt,top=8pt,bottom=8pt]#1\end{tcolorbox}}
+\AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=DeepPurple,citecolor=DeepPurple,urlcolor=RoyalPurple,pdfauthor={Vincent Boucher},pdftitle={AGI ALPHA FLYWHEEL - When Capability Creates Opportunity},pdfsubject={From a numerical failure to a verified digital answer}}}
