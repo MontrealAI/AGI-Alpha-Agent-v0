@@ -1,0 +1,141 @@
+{
+  "schema": "agialpha.financial-review.v1",
+  "as_of_date": "2026-10-27",
+  "reviewer_role": "Economics model author performing a read-only consistency audit; not independent accounting or market validation.",
+  "scope": "Main paper section 6 and Executive Brief against latest economics files. No extra searches or input edits.",
+  "status": "pass_with_scope_clarification",
+  "material_findings": [
+    {
+      "id": "FIN-01",
+      "severity": "medium",
+      "type": "scope_clarification",
+      "file": "paper/Executive_Brief.md",
+      "original_line": 33,
+      "quoted_claim": "They are not observed bills or a measured cost advantage, and exclude full-paper production and commercialization.",
+      "finding": "The pronoun attaches the human scope exclusion to both cost sets. The human model excludes full-paper production; AI figures are independent invented token/resource budgets, not a task-matched estimate with demonstrated coverage or exclusions. The no-savings disclaimer is correct, but scope wording can imply a comparable delivery basket.",
+      "recommended_change": "Assign production/commercialization exclusions to human cases only. State that AI figures are assumed multi-request token/tool budgets with no established outcome or scope equivalence; neither establishes actual savings.",
+      "suggested_sentence": "The human cases exclude full-paper production and commercialization. The separate AI figures are assumed token and resource budgets, not scope-matched estimates or actual usage; neither establishes observed savings.",
+      "model_basis": [
+        "economics/config.json: human_comparator.scope",
+        "economics/config.json: human_comparator.roles.editorial.justification",
+        "economics/config.json: automated_planning.evidence_label",
+        "economics/README.txt: no observed savings or actual human/AI cost ratio from unrelated assumptions."
+      ],
+      "status": "open_in_audited_snapshot"
+    }
+  ],
+  "confirmed_correct": [
+    "Main paper human table matches 46/84/154 person-hours and $3,418.33/$10,363.26/$32,475.19; broad-scan and full-paper exclusions are explicit.",
+    "Main paper AI table matches $4.75/$32.50/$145 with explicit assumed tokens and base-tier treatment; it disclaims actual usage, complete delivery cost and observed savings.",
+    "Executive Brief numbers are correctly rounded; optional review $648-$2,590 matches $647.60-$2,590.39.",
+    "Actual collections zero, cost/profit unknown, no offering or accepted customer outcomes, Category C, no A or qualified B: consistent.",
+    "Optional review remains separate prospective research expenditure, not a mandatory automation charge.",
+    "Latest config, results and README each contain FIVE VOI scenarios: no current four-versus-five inconsistency.",
+    "VOI probabilities/values remain invented; no-benefit and exact break-even correctly fail the strict p*V>C rule."
+  ],
+  "checks": {
+    "model_results_exact_match": true,
+    "readme_exact_match_to_model_renderer": true,
+    "voi_counts": {
+      "config": 5,
+      "results": 5,
+      "readme": 5
+    },
+    "paper_contains_all_five_official_economics_source_urls": true,
+    "source_ids_match_config_results": true,
+    "unknown_actual_cost_preserved": true,
+    "unknown_actual_profit_preserved": true,
+    "selected_offering_none": true,
+    "accepted_customer_outcomes_zero": true,
+    "category_C_no_A_or_qualified_B": true,
+    "mandatory_human_review_onboarding_zero": true
+  },
+  "independent_arithmetic": {
+    "low": {
+      "person_hours": 46.0,
+      "human_total_usd": 3418.33,
+      "human_matches_independent_arithmetic": true,
+      "ai_assumed_budget_usd": 4.75,
+      "ai_matches_independent_arithmetic": true,
+      "paper_values_present": true
+    },
+    "central": {
+      "person_hours": 84.0,
+      "human_total_usd": 10363.26,
+      "human_matches_independent_arithmetic": true,
+      "ai_assumed_budget_usd": 32.5,
+      "ai_matches_independent_arithmetic": true,
+      "paper_values_present": true
+    },
+    "high": {
+      "person_hours": 154.0,
+      "human_total_usd": 32475.19,
+      "human_matches_independent_arithmetic": true,
+      "ai_assumed_budget_usd": 145.0,
+      "ai_matches_independent_arithmetic": true,
+      "paper_values_present": true
+    }
+  },
+  "voi_scenarios": [
+    {
+      "name": "no_benefit",
+      "p": 0.0,
+      "V_usd": 0,
+      "C_usd": 1500,
+      "expected_net_usd": -1500.0,
+      "strict_rule_passes": false
+    },
+    {
+      "name": "small_avoidable_waste",
+      "p": 0.1,
+      "V_usd": 5000,
+      "C_usd": 1500,
+      "expected_net_usd": -1000.0,
+      "strict_rule_passes": false
+    },
+    {
+      "name": "low_probability_material_decision",
+      "p": 0.02,
+      "V_usd": 50000,
+      "C_usd": 1500,
+      "expected_net_usd": -500.0,
+      "strict_rule_passes": false
+    },
+    {
+      "name": "exact_break_even",
+      "p": 0.1,
+      "V_usd": 15000,
+      "C_usd": 1500,
+      "expected_net_usd": 0.0,
+      "strict_rule_passes": false
+    },
+    {
+      "name": "decision_changing_if_assumptions_hold",
+      "p": 0.1,
+      "V_usd": 50000,
+      "C_usd": 1500,
+      "expected_net_usd": 3500.0,
+      "strict_rule_passes": true
+    }
+  ],
+  "audited_file_sha256": {
+    "paper/AGI_ALPHA_FLYWHEEL.md": "124e5be89ceeed476c3141dcbffffb9129cf595873873c831243814a0ddaf958",
+    "paper/Executive_Brief.md": "abd215105af692756444a55deb117bbadc9c7bdcd20dde93e3a5f5012eb5cd6f",
+    "economics/model.py": "6e6ef0740901e3675ce246f6f4f59145e4ef75599acd29025a76a1c28f30dcb1",
+    "economics/config.json": "6784c0f64fb1c8c9f333e2e3e10c7c2464f696eba29e579055bd005f8a8cccb7",
+    "economics/results.json": "d6093d82a210df434cacbf37a415d43a780639cc089b7db717629042debd50e6",
+    "economics/README.txt": "7413eb00ee66ac8e4d468fdf42b7ebac8d1496b00c4a0cbb70458cb68580ff5d"
+  },
+  "read_only_verification": {
+    "all_six_input_hashes_unchanged_during_audit": true,
+    "model_main_not_executed": true,
+    "model_compute_and_renderer_evaluated_in_memory_only": true,
+    "python_bytecode_disabled": true,
+    "only_retained_output_written": "results/financial_review.json"
+  },
+  "limitations": [
+    "Public sources were not fetched again, as requested; retained observations and cited URLs were checked.",
+    "No actual receipt, invoice, human timesheet or buyer evidence was added.",
+    "No comparative efficiency, savings ratio, profitable launch or actual success probability follows from these scenarios."
+  ]
+}

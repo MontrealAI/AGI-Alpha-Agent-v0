@@ -1,0 +1,92 @@
+{
+  "schema": "agialpha.frontier-search.reproduction.v1",
+  "commands_passed": 7,
+  "command_records": [
+    {
+      "command": [
+        "python",
+        "probes/original_U.py"
+      ],
+      "returncode": 0,
+      "stdout": "10.0 10.0 4.0 4.0\n64 0.040776868995583755 3.3306690738754696e-16 0.9094868638817948\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "probes/original_E.py"
+      ],
+      "returncode": 0,
+      "stdout": "2 0.625 0.6 0.09999999999999998\n3 0.4999999999999998 0.6666666666666669 -1.942890293094024e-16\n4 0.4375 0.7142857142857143 -0.0714285714285714\n[3 3] [3 3] 0.0\n0.21405849966312948\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "discovery_targeted_probe.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"evidence_label\": \"executed finite synthetic counterexamples, post-freeze exploratory\",\n  \"rank_scale\": {\n    \"seed\": 20261027,\n    \"complex_dimensions\": 8,\n    \"paired_measurements\": 64,\n    \"equal_ordinal_codes\": true,\n    \"physical_power_ratio\": 4.0,\n    \"interpretation\": \"Pairwise intensity ranks cannot identify absolute signal scale. This does not refute recovery up to norm or phase.\"\n  },\n  \"disconnected_scans\": {\n    \"complex_dimensions\": 16,\n    \"probe_width\": 3,\n    \"scan_starts\": [\n      0,\n      1,\n      2,\n      9,\n      10,\n      11\n    ],\n    \"diffraction_measurements\": 96,\n    \"max_intensity_difference\": 0.0,\n    \"best_global_phase_aligned_relative_object_error\": 1.4142135623730951,\n    \"both_objects_have_identical_known_support\": true,\n    \"within_component_probe_overlap\": true,\n    \"global_probe_overlap_graph_connected\": false,\n    \"interpretation\": \"Local overlap and coverage of known support do not identify relative phase between disconnected components. This is an obstruction, not a solution to Phasebook Q8.5.\"\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "probes/final_mechanisms.py"
+      ],
+      "returncode": 0,
+      "stdout": "0.5000000000005\n[(0.01, 5.0), (0.0001, 50.0), (1e-06, 500.0)]\n0 1 False 0\n1 1 True 0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "probes/independent_confirmation.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\"spectral_cases\": 8, \"regional_cases\": 8, \"quantum_cases\": 5, \"all_assertions_passed\": true}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "economics/model.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"human_cost_scenarios_usd\": {\n    \"low\": 3418.33,\n    \"central\": 10363.26,\n    \"high\": 32475.19\n  },\n  \"human_person_hours\": {\n    \"low\": 46.0,\n    \"central\": 84.0,\n    \"high\": 154.0\n  },\n  \"automated_planning_totals_usd\": {\n    \"low\": 4.75,\n    \"central\": 32.5,\n    \"high\": 145.0\n  },\n  \"optional_review_costs_usd\": {\n    \"narrow\": 647.6,\n    \"targeted\": 1295.2,\n    \"extended\": 2590.39\n  },\n  \"actual_ai_billing_usd\": null,\n  \"selected_offering\": null,\n  \"accepted_customer_outcomes\": 0,\n  \"actual_profit_usd\": null,\n  \"category\": \"C\",\n  \"outputs\": [\n    \"/tmp/agi-alpha-frontier-replay-1x3edeeo/study/economics/results.json\",\n    \"/tmp/agi-alpha-frontier-replay-1x3edeeo/study/economics/README.txt\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "integration/native_bridge.mjs",
+        "integration/native_source",
+        "integration/research_input.json",
+        "integration/replay_output"
+      ],
+      "returncode": 0,
+      "stdout": "{\"output\":\"/tmp/agi-alpha-frontier-replay-1x3edeeo/study/integration/replay_output\",\"checks\":19,\"passed\":19,\"genome_sha256\":\"2093a34f1df599cea96632c34f279bc48887034bcc6bbee30433275537bb5233\",\"plan_root\":\"0x3b3417ca02e9f5e47c00ef69f091bd517c9a753c45ab7d3adba1f652168e3384\"}\n",
+      "stderr": ""
+    }
+  ],
+  "deterministic_comparisons": [
+    {
+      "file": "results/independent_confirmation.json",
+      "semantic_equality": true
+    },
+    {
+      "file": "economics/results.json",
+      "semantic_equality": true
+    },
+    {
+      "file": "discovery_targeted_probe_results.json",
+      "semantic_equality": true
+    }
+  ],
+  "native_checks_passed": 19,
+  "recovered_genome_and_plan_agree": true,
+  "crypto_bytes_expected_to_change": true,
+  "frozen_evidence_overwritten": false,
+  "remote_model_sessions_rerun": false,
+  "scope": "offline numerical and local-source replay; no physical or human trial, revenue, or runtime release qualification"
+}

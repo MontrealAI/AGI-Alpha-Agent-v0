@@ -1,0 +1,204 @@
+{
+  "schema": "agialpha.final-mechanism-search.v1",
+  "date_utc": "2026-10-27",
+  "separate_from_frozen_U": true,
+  "frozen_U_modified": false,
+  "other_arm_outputs_read": false,
+  "selection": null,
+  "positive_discovery": false,
+  "result": "Two concrete mechanisms tested and rejected; no substantive flagship differential established.",
+  "domains": [
+    "computational_mechanics",
+    "cryptographic_randomness"
+  ],
+  "budget": {
+    "search_queries": 4,
+    "search_queries_max": 4,
+    "primary_opens": 3,
+    "primary_opens_max": 3,
+    "local_probes": 2
+  },
+  "candidates": [
+    {
+      "id": "FM1",
+      "domain": "computational_mechanics",
+      "title": "Distributional hard-contact sensitivity instrument",
+      "beneficiary": "Researchers studying impact-sensitive mechanical systems and robotic interaction physics.",
+      "unmet_useful_output": "A certified derivative of expected contact impulse or event probability with respect to physical parameters, including contact birth/death, while retaining the exact hard-contact forward model. Intended output is a mathematical response measure, not merely faster policy optimization.",
+      "recent_explicit_problem": "M1 and M2 (ICLR 2026) explicitly identify failures of ordinary gradients at discontinuous contact and the tradeoff between physically faithful forward dynamics and useful derivatives.",
+      "closest_primary_art": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "mechanism_to_test": "Represent the derivative as smooth pathwise/saltation contributions plus a signed surface-flux term over switching boundaries. Sample or integrate the boundary separately instead of smoothing the forward contact law.",
+      "exact_prior_art_differential_required": "Must handle contact creation/destruction and coupled switching boundaries with an unbiased or certified response measure beyond existing saltation and likelihood-ratio/estimator-switching methods. A generic boundary derivative is ordinary calculus, not the advance.",
+      "minimal_local_construction": "For X uniform on [-1,1], define contact as X<theta. Differentiate its integrated probability independently, compare with almost-everywhere pathwise derivative and boundary flux. Then test grazing event X^2<theta for singularity.",
+      "acceptance": "A meaningful successor must define a restricted contact class, prove its boundary correction and finite moments under explicit transversality assumptions, and outperform or enable an output unavailable from M1-M3 and an unbiased score estimator. Merely reproducing the one-boundary formula does not pass novelty.",
+      "decisive_falsifier": "A universal finite derivative claim fails at grazing: P(X^2<theta)=sqrt(theta) for theta in [0,1], whose right derivative diverges at zero. Local success on transverse boundaries is insufficient.",
+      "executed_probe": {
+        "evidence": "exact toy calculation, not a robot experiment",
+        "threshold_theta": 0.0,
+        "pathwise_derivative_almost_everywhere": 0.0,
+        "boundary_derivative": 0.5,
+        "independent_probability_central_difference": 0.5000000000005,
+        "grazing_derivatives": [
+          {
+            "theta": 0.01,
+            "value": 5.0
+          },
+          {
+            "theta": 0.0001,
+            "value": 50.0
+          },
+          {
+            "theta": 1e-06,
+            "value": 500.0
+          }
+        ]
+      },
+      "decision": "reject_as_flagship",
+      "reason": "The local mechanism works only by recovering the known boundary term. No substantive differential against existing hybrid sensitivity and unbiased score methods was established; the universal extension fails at grazing. Residual faster or stabler optimization is out of scope.",
+      "commercial_and_inheritance": "A simulator vendor or mechanics research core could distribute validated response operators, but no buyer need beyond existing methods, price, or new sellable capability was established. Actual inherited assets are the formulas, counterexample, and primary-source map; no new simulator is claimed.",
+      "uncertainty": "Only primary abstracts/search excerpts were inspected. Full strongest-method comparisons and multibody boundary proofs were not performed."
+    },
+    {
+      "id": "FM2",
+      "domain": "cryptographic_randomness",
+      "title": "One-round verifiable high-entropy sampling with output delivery despite aborts",
+      "beneficiary": "Independent simulation auditors and cryptographic setup participants needing a shared unpredictable sample without trusting an organizer.",
+      "unmet_useful_output": "A publicly verifiable high-entropy seed or fixed-distribution sample, with guaranteed delivery and no selective-output bias, from one online message per participant without an external randomness beacon.",
+      "scope_distinction": "Inputless random generation, not privacy-preserving sampling of a private dataset or emergency-reserve MPC disclosure. It is adjacent to prior cryptographic work, so no novelty is inferred from application relabeling.",
+      "recent_explicit_problem": "M4 (2025) examines the formerly plausible inputless escape from one-round MPC barriers and proves a scoped entropy lower bound. M5 provides output delivery by permitting bias in applications where that bias is harmless.",
+      "closest_primary_art": [
+        "M4",
+        "M5"
+      ],
+      "mechanism_to_test": "Commit to random contributions, prove contribution validity, and use a deterministic fallback if a participant refuses to reveal. The proposed transformation is from verifiable individual randomness to a complete non-abortable common sample.",
+      "exact_prior_art_differential_required": "Would need a new justified security/setup model that escapes M4 while retaining the required output. Adding an honest threshold, external beacon, trusted time or escrow assumption is not an automatic advance; it changes the task and has existing constructions.",
+      "minimal_local_construction": "Enumerate a two-party one-bit reduction of the commit/reveal-plus-fallback template. Honest a is uniform; adversary commits b=1. Output a XOR b on reveal, otherwise fall back to a. Adversary withholds when a=0 and reveals when a=1. This toy grants a prior commitment phase and therefore already relaxes the one-round target; it still fails. The commitment phase must not be hidden in the round count, and this is not a one-round construction.",
+      "acceptance": "Every adaptive reveal/abort strategy must preserve the specified output distribution and delivery. Computational security additionally requires a proof in a model that does not fall within M4, not only a toy enumeration.",
+      "decisive_falsifier": "The committed adversarial bit is valid, yet both honest-bit cases produce output zero. Proof of contribution validity does not establish unbiasability of the eventual sample.",
+      "executed_probe": {
+        "evidence": "exact two-case enumeration, not a security proof against all protocols",
+        "rows": [
+          {
+            "a": 0,
+            "b": 1,
+            "reveal": false,
+            "output": 0
+          },
+          {
+            "a": 1,
+            "b": 1,
+            "reveal": true,
+            "output": 0
+          }
+        ],
+        "honest_no_abort_probability_zero": 0.5,
+        "attacked_probability_zero": 1.0,
+        "bias_toward_zero": 0.5
+      },
+      "decision": "reject_as_flagship",
+      "reason": "Simple proposed construction fails outright. M4 separately defeats the high-entropy target within its specific one-round, standard-model, stand-alone black-box-simulation assumptions, even with CRS and honest majority. This is not claimed as an impossibility theorem for every stronger setup or multi-round protocol. A prior commitment/reveal phase also fails the strict one-round budget unless justified as additional setup; no such justified setup was supplied.",
+      "commercial_and_inheritance": "An audited randomness service could be valuable only with explicit trust, liveness, and bias requirements; the failed guarantee cannot be priced as an offering. Actual inherited asset is an executable adversarial counterexample and a scoped impossibility map.",
+      "uncertainty": "No new cryptographic construction, setup assumption, or application-specific harmless-bias transformation was established."
+    }
+  ],
+  "sources": [
+    {
+      "id": "M1",
+      "title": "Differentiable Simulation of Hard Contacts with Soft Gradients for Learning and Control",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/44039e59aaf6a41b16f1fc5b27bcd409-Abstract-Conference.html",
+      "ref": "turn67view0",
+      "type": "primary conference paper abstract",
+      "year": 2026,
+      "finding": "States hard-contact gradient accuracy and vanishing pre-contact gradients as problems; proposes adaptive integration and backward-only contacts-from-distance using straight-through estimation."
+    },
+    {
+      "id": "M2",
+      "title": "Does Do Differentiable Simulators Give Better Policy Gradients? Give Better Policy Gradients?",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/4f0a2a0b2ca6ffd5c8d5de26d3e8d54d-Abstract-Conference.html",
+      "ref": "turn69view0",
+      "type": "primary conference paper abstract",
+      "year": 2026,
+      "finding": "Studies discontinuity-induced gradient bias; introduces estimator switching and per-step variance weighting; says variance control can dominate in practical tasks."
+    },
+    {
+      "id": "M3",
+      "title": "iLQR for Piecewise-Smooth Hybrid Dynamical Systems",
+      "url": "https://arxiv.org/abs/2103.14584",
+      "ref": "turn67academia18",
+      "type": "primary author preprint search abstract",
+      "year": 2021,
+      "finding": "Uses saltation matrices in backward gradient updates and reference extensions for changing hybrid modes."
+    },
+    {
+      "id": "M4",
+      "title": "On the impossibility of actively secure distributed samplers",
+      "url": "https://ir.cwi.nl/pub/35805/",
+      "ref": "turn67view1",
+      "type": "primary author institutional repository abstract",
+      "year": 2025,
+      "finding": "For one-round distributed samplers in the standard model with stand-alone black-box simulation, even with CRS and honest majority, output must have low entropy."
+    },
+    {
+      "id": "M5",
+      "title": "Guaranteed Output Delivery in O(sqrt(n)) rounds for Round-Robin Sampling Protocols",
+      "url": "https://shelat.khoury.northeastern.edu/research/2025-01-13-guaranteed-output-delivery/",
+      "ref": "turn67search1",
+      "type": "primary author description of own research",
+      "year": 2025,
+      "finding": "Compiles round-robin sampling protocols to fewer rounds with dishonest-majority output delivery while allowing adversarial bias; explicitly relates bias to Cleve impossibility."
+    }
+  ],
+  "query_log": [
+    {
+      "sequence": 1,
+      "engine": "system2",
+      "q": "differentiable simulation discontinuous contact unbiased gradients open problem 2025 2026 primary paper"
+    },
+    {
+      "sequence": 2,
+      "engine": "system2",
+      "q": "publicly verifiable unbiased sampling private distribution zero knowledge 2025 paper"
+    },
+    {
+      "sequence": 3,
+      "engine": "system1",
+      "q": "unbiased gradients discontinuous stochastic hybrid dynamics boundary sampling saltation matrix contact simulation"
+    },
+    {
+      "sequence": 4,
+      "engine": "system1",
+      "q": "2025 2026 unbiasable randomness guaranteed output delivery selective abort distributed sampling impossibility"
+    }
+  ],
+  "open_log": [
+    {
+      "sequence": 1,
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/44039e59aaf6a41b16f1fc5b27bcd409-Abstract-Conference.html",
+      "ref": "turn67view0",
+      "status": "substantive_primary_abstract"
+    },
+    {
+      "sequence": 2,
+      "url": "https://ir.cwi.nl/pub/35805/",
+      "ref": "turn67view1",
+      "status": "substantive_primary_abstract"
+    },
+    {
+      "sequence": 3,
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/4f0a2a0b2ca6ffd5c8d5de26d3e8d54d-Abstract-Conference.html",
+      "ref": "turn69view0",
+      "status": "substantive_primary_abstract"
+    }
+  ],
+  "reproduction_python": "import math\np=lambda th:(th+1)/2\nh=1e-5\nprint((p(h)-p(-h))/(2*h))\nprint([(t,1/(2*math.sqrt(t))) for t in [1e-2,1e-4,1e-6]])\nfor a in [0,1]:\n b=1; reveal=(a==1); out=(a^b) if reveal else a\n print(a,b,reveal,out)\n",
+  "evidence_limits": [
+    "Both probes are exact small mathematical examples, not real-world performance tests.",
+    "No commercial validation, expenditure, outreach, private data, or remote mutation.",
+    "No numerical AI advantage claimed.",
+    "Only requested new output file written; U artifacts left unchanged."
+  ]
+}
