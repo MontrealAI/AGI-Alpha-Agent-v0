@@ -76,6 +76,18 @@ class PaperCheckoutBytesTests(unittest.TestCase):
         self.assertTrue(files)
         self.assert_checkout_preserves(files)
 
+    def test_catalog_reading_guides_keep_their_exact_hashes(self) -> None:
+        catalog = json.loads((ROOT / "docs/research-papers.json").read_bytes())
+        files = {}
+        for paper in catalog["papers"]:
+            reading = paper.get("resources", {}).get("reading")
+            if reading is not None:
+                raw = (ROOT / reading["path"]).read_bytes()
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), reading["sha256"])
+                files[reading["path"]] = raw
+        self.assertTrue(files)
+        self.assert_checkout_preserves(files)
+
     def test_opaque_uploads_preserve_both_lf_and_crlf(self) -> None:
         for newline in (b"\n", b"\r\n"):
             raw = newline.join((b"% Immutable original", b"\\section{Original}", b""))
