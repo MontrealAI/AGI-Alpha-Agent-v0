@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "park_source_rows": 2245,
+    "logical_park_indices": 1443,
+    "facility_source_rows": 253,
+    "park_status_counts": {
+      "source_exception": 456,
+      "valid_source_polygon": 1789
+    },
+    "facility_status_counts": {
+      "confirmed": 245,
+      "declared_park_has_source_exception": 1,
+      "identifier_geometry_conflict": 2,
+      "unassigned": 4,
+      "unknown_declared_park": 1
+    },
+    "exception_rows": 464,
+    "source_crs": {
+      "parks": "EPSG:4326",
+      "facilities": "EPSG:4326"
+    },
+    "target_crs": "EPSG:32188",
+    "axis_order": "always_xy: longitude/easting, latitude/northing"
+  },
+  "acceptance": {
+    "all_parks_preserved": true,
+    "all_selected_facilities_preserved": true,
+    "source_row_identities_unique": true,
+    "all_rows_have_source_hashes": true,
+    "confirmed_require_id_and_unique_geometry": true,
+    "unconfirmed_have_no_confirmed_assignment": true,
+    "all_facility_exceptions_queued": true,
+    "all_park_exceptions_queued": true,
+    "no_duplicate_exception_entries": true,
+    "status_conservation": true
+  },
+  "reconciliation_sha256": "7c1f3e82133b35d992c8aab1d57d8f270de559d6e81ecaf632e92d16711025e9",
+  "instrument_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529"
+}

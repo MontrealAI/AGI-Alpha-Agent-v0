@@ -1,0 +1,78 @@
+{
+  "scope": "Existing TrustRegistry and ti-library-review domain, local ephemeral fixture only",
+  "principal": "local-review-fixture.agent.agi.eth",
+  "principal_is_live_ens": false,
+  "independent_attestation": false,
+  "execution_or_admission_granted": false,
+  "private_key_persisted": false,
+  "public_key": "ddf60ee61b0386ec3aa511e4529623d5f76e28be55a2cba33c20a3ab8f8f6b38",
+  "envelope": {
+    "domain": "ti-library-review",
+    "principal": "local-review-fixture.agent.agi.eth",
+    "payload": {
+      "scope": "synthetic local geospatial research fixture",
+      "manifest_sha256": "4f46d46ee3b52ee95ca134cf5fbfa4021e689416d6f664c94c33e4b46718edb7",
+      "capability_id": "montreal-park-asset-reconciliation",
+      "version": "1.1.0",
+      "code": {
+        "src/geodelivery.py": "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+        "src/wkt_adapter.py": "3b05081bccc60ba570ba4ac862374d0ce98c1beb48a0ddda7c27beab81dd0599"
+      },
+      "instrument_sha256": "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+      "mission": "independent-audit-recipient-20261027",
+      "execution_authorized": false,
+      "live_ens": false
+    },
+    "signature": "xi1zSpT7kZdAON5Vuy3UGjYJXJoIrVdopfwbFmqAkxzTV9T3X6oG2Po/zSYHb3G3UYstP6pKsBi4Ge0UFeiaBw=="
+  },
+  "checks": [
+    {
+      "name": "manifest_code_hashes_match_retained_files",
+      "passed": true
+    },
+    {
+      "name": "manifest_source_hashes_match_frozen_inputs",
+      "passed": true
+    },
+    {
+      "name": "manifest_evidence_references_resolve",
+      "passed": true
+    },
+    {
+      "name": "authorized_fixture_verifier_signature",
+      "passed": true
+    },
+    {
+      "name": "payload_tampering",
+      "passed": true,
+      "outcome": "record signature is invalid"
+    },
+    {
+      "name": "role_not_regranted",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "wrong_domain",
+      "passed": true,
+      "outcome": "signed record domain mismatch"
+    },
+    {
+      "name": "uninstalled_signer",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "fresh_recipient_no_trust",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "revocation",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    }
+  ],
+  "passed": true,
+  "limitations": "Signature validation authenticates local fixture bytes only. No geospatial capability admission, production policy change, live name resolution or deployment is implied. Different ephemeral keys produce different envelope bytes on replay; semantic test outcomes should match."
+}

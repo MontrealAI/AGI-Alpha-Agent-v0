@@ -1,0 +1,59 @@
+{
+  "scope": "Existing TrustRegistry and ti-library-review domain, local ephemeral fixture only",
+  "principal": "local-review-fixture.agent.agi.eth",
+  "principal_is_live_ens": false,
+  "independent_attestation": false,
+  "execution_or_admission_granted": false,
+  "private_key_persisted": false,
+  "public_key": "d2d24fd2eb6aa56ae80731f63f10e3655d8ea430509fe88cc18a09b36bb5f695",
+  "envelope": {
+    "domain": "ti-library-review",
+    "principal": "local-review-fixture.agent.agi.eth",
+    "payload": {
+      "scope": "synthetic local geospatial research fixture",
+      "instrument_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529",
+      "mission": "independent-audit-recipient-20261027",
+      "execution_authorized": false,
+      "live_ens": false
+    },
+    "signature": "8kUwbv+mArTlQ6mq86+EJnn1lKvJm/VgUzuwj+xbY6vHk/fpCmxdwONx7N4Oa7yh6f+A4pf9LBiMf8dGRkGaAQ=="
+  },
+  "checks": [
+    {
+      "name": "authorized_fixture_verifier_signature",
+      "passed": true
+    },
+    {
+      "name": "payload_tampering",
+      "passed": true,
+      "outcome": "record signature is invalid"
+    },
+    {
+      "name": "role_not_regranted",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "wrong_domain",
+      "passed": true,
+      "outcome": "signed record domain mismatch"
+    },
+    {
+      "name": "uninstalled_signer",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "fresh_recipient_no_trust",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "revocation",
+      "passed": true,
+      "outcome": "principal is not currently trusted for the required role"
+    }
+  ],
+  "passed": true,
+  "limitations": "Signature validation authenticates local fixture bytes only. No geospatial capability admission, production policy change, live name resolution or deployment is implied. Different ephemeral keys produce different envelope bytes on replay; semantic test outcomes should match."
+}

@@ -1,0 +1,91 @@
+{
+  "capability_id": "montreal-park-asset-reconciliation",
+  "version": "1.1.0",
+  "name": "Source-consistent geospatial asset handoff",
+  "created_at_utc": "2026-10-27T18:15:34.786984+00:00",
+  "artifact_kind": "Executable workflow and optional explicit-binding WKT/CSV adapter",
+  "code": {
+    "src/geodelivery.py": "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+    "src/wkt_adapter.py": "3b05081bccc60ba570ba4ac862374d0ce98c1beb48a0ddda7c27beab81dd0599"
+  },
+  "code_license": "Apache-2.0",
+  "source_data": [
+    {
+      "id": "parks",
+      "url": "https://donnees.montreal.ca/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/35796624-15df-4503-a569-797665f8768e/download/espace_vert.json",
+      "file": "data/parks.geojson",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 8354792,
+      "sha256": "5d5086a6cb00bd6026a6fe4c52002a0175e7d249c30eada868dc35cda44ed152",
+      "retrieved_at_utc": "2026-10-27T18:05:42.160129+00:00",
+      "publisher": "Ville de Montréal",
+      "license": "CC BY 4.0 (catalogue; attribution required)",
+      "evidence_type": "actual public-source bytes",
+      "metadata_url": "https://open.canada.ca/data/en/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d"
+    },
+    {
+      "id": "facilities",
+      "url": "https://donnees.montreal.ca/dataset/60850740-dd83-47ee-9a19-13d674e90314/resource/2dac229f-6089-4cb7-ab0b-eadc6a147d5d/download/terrain_sport_ext.json",
+      "file": "data/facilities.geojson",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 1229775,
+      "sha256": "db89ebbb149d7b6fc05bcac8fecb744e10c1095b6177b06854ea2b5ece1efd37",
+      "retrieved_at_utc": "2026-10-27T18:05:44.561539+00:00",
+      "publisher": "Ville de Montréal",
+      "license": "CC BY 4.0 (catalogue; attribution required)",
+      "evidence_type": "actual public-source bytes",
+      "metadata_url": "https://open.canada.ca/data/en/dataset/60850740-dd83-47ee-9a19-13d674e90314"
+    }
+  ],
+  "attribution": "Contains data from Ville de Montréal, provided under Creative Commons Attribution4.0. Transformed and reconciled by this study; no endorsement is implied.",
+  "rights_scope": "Public municipal source data only. No customer data, secrets, restricted evaluation answers or paid third-party data included.",
+  "dependencies": {
+    "geopandas": "1.2.0",
+    "pyproj": "3.8.0",
+    "pyogrio": "0.13.0",
+    "shapely": "2.1.1",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "matplotlib": "3.10.8"
+  },
+  "applicability": [
+    "Finite vector asset-to-polygon association inside EPSG32188 area of use",
+    "Exact normalized identifier and geometric support remain separate",
+    "Public-source local research handoff; original source truth is not certified",
+    "Named CRS and per-mission field binding required for CSV/WKT adapter"
+  ],
+  "failure_modes": [
+    "Wrong source facts within geographically plausible bounds can remain undetected",
+    "Boundary precision can affect geometric association and must be reviewed",
+    "Missing IDs, invalid geometry, ambiguous matches and disagreements remain review obligations",
+    "No cadastral, ownership, survey, facility-operation or municipal-approval guarantee",
+    "New rights, input meaning, versions and authority must be assessed per mission"
+  ],
+  "expected_reuse": "Scenario input only; demand and incremental savings are unmeasured. Retention economics may reject admission.",
+  "evaluation": [
+    "technical/instrument_freeze_1_1.json",
+    "technical/independent_audit/results_v1_1_regression.json",
+    "technical/independent_audit/fresh_v1_1.json",
+    "technical/independent_audit/public_control_results.json",
+    "technical/review_corrected_replay.json",
+    "technical/recipient_v1_result.json"
+  ],
+  "recipient_record": {
+    "origin": "Ahuntsic-Cartierville public source subset",
+    "fresh_recipient": "Anjou public source subset via a separate local process",
+    "actual_copied_version": "1.0.0",
+    "actual_copied_source_sha256": "a7246fc53395bc5404d5e031c515b213f091b8153b39be1c3cf059dc0f738529",
+    "same_information_ordinary_library": "All seven generated recipient files byte-identical",
+    "correction_scope": "1.0.0 transfer is preserved historical evidence;1.1.0 corrects independent review findings and is qualified by separate new structural tests, not by transplanting1.0.0 authority."
+  },
+  "network_admission": "not_admitted_existing_native_scope_does_not_include_geospatial",
+  "authority": "local_fixture_only_no_live_ENS",
+  "inheritance": {
+    "reuse": "Stable parsing/reconciliation/package structure",
+    "recheck": "Fresh source rights, CRS, fields, data meaning and acceptance",
+    "regrant": "Mission and recipient authority must be separately granted through existing owners; this manifest grants none."
+  },
+  "economic_admission": "HOLD pending positive incremental value after assessment, maintenance and invocation costs; profitable originating delivery can stand independently."
+}

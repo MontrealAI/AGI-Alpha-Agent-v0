@@ -1,0 +1,106 @@
+{
+  "reproduced": true,
+  "checks": {
+    "public_summary_reproduced": true,
+    "public_reconciliation_bytes_reproduced": true,
+    "independent_public_control_passed": true,
+    "independent_structural_replay_passed": true,
+    "format_results_including_failures_reproduced": true
+  },
+  "commands": [
+    {
+      "command": [
+        "tests/test_geodelivery.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "src/geodelivery.py",
+        "--parks",
+        "data/parks.geojson",
+        "--facilities",
+        "data/facilities.geojson",
+        "--sources",
+        "sources/public_data_sources.json",
+        "--out",
+        "technical/delivery"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "technical/independent_audit/audit.py",
+        "--label",
+        "reproduction",
+        "--expected-hash",
+        "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "technical/independent_audit/fresh_confirmation.py",
+        "--label",
+        "reproduction",
+        "--expected-hash",
+        "f4370f182820fb4a72d95b769b48dbac6d3634e7f32d6a322e6e638aa2541ffa",
+        "--seed",
+        "2026102751"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "technical/independent_audit/public_control.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "src/confirm_formats.py",
+        "--out",
+        "technical/gym/fresh_format_missions"
+      ],
+      "returncode": 0
+    }
+  ],
+  "public_summary": {
+    "park_source_rows": 2245,
+    "logical_park_indices": 1443,
+    "facility_source_rows": 3476,
+    "park_status_counts": {
+      "source_exception": 456,
+      "valid_source_polygon": 1789
+    },
+    "facility_status_counts": {
+      "confirmed": 3175,
+      "declared_park_has_source_exception": 1,
+      "declared_without_geometric_support": 30,
+      "geometry_only_suggestion": 34,
+      "identifier_geometry_conflict": 34,
+      "unassigned": 126,
+      "unknown_declared_park": 76
+    },
+    "exception_rows": 757,
+    "source_crs": {
+      "parks": "EPSG:4326",
+      "facilities": "EPSG:4326"
+    },
+    "target_crs": "EPSG:32188",
+    "axis_order": "always_xy: longitude/easting, latitude/northing"
+  },
+  "independent_public_decisions": [
+    128,
+    128
+  ],
+  "independent_structural_cases": [
+    48,
+    48
+  ],
+  "format_semantic_parity": [
+    29,
+    32
+  ],
+  "scope": "Replay of saved policies, sources and seeds. Reproduction does not turn the three format divergences into passes."
+}

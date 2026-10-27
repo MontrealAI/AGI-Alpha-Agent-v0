@@ -1,0 +1,15 @@
+{
+  "amendment_version": "1.1.0",
+  "created_at_utc": "2026-10-27T18:13:44.223705+00:00",
+  "original_policy": "configs/technical_policy.json remains unchanged",
+  "motivating_evidence": "technical/independent_audit/results_v1.json",
+  "corrections": [
+    "GeoJSON null/non-object properties are preserved and queued through missing source identity rather than crashing",
+    "Park layers require Polygon or MultiPolygon; Point and LineString cannot establish a park association",
+    "Geometries outside EPSG32188 target area of use are refused without silent axis repair",
+    "Supplied source-provenance hashes must match actual input bytes before packaging"
+  ],
+  "claim_scope_correction": "The output label confirmed means source-consistent association (declared ID plus unique geometric support), not administrative approval, legal ownership, certified boundaries or operational status.",
+  "replay_policy": "Actual public-source rerun is a replay after review; new independent structural fixtures are separately prospective. Original v1 outcomes and failures remain preserved.",
+  "optimization": "Coordinate transformations cached per explicit CRS; no numerical or economic gain claimed from this implementation detail."
+}

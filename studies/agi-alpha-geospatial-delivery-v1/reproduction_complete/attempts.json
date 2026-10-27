@@ -1,0 +1,10 @@
+[
+  {
+    "attempt": 1,
+    "scope": "wrapper preflight before any simulation or technical replay",
+    "exit_code": 1,
+    "error": "ValueError: Economic configuration differs from its final freeze",
+    "cause": "Wrapper compared raw config bytes with the economic engine's canonical-JSON config hash. Frozen engine and configuration were unchanged.",
+    "correction": "Wrapper now uses the same documented canonical JSON representation before SHA256; no freeze, model, policy or result altered."
+  }
+]

@@ -1,0 +1,351 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import argparse
+import copy
+import hashlib
+import importlib.util
+import json
+import sqlite3
+import sys
+from pathlib import Path
+from typing import Any
+
+import geopandas as gpd
+import pyogrio
+import pyproj
+from shapely.geometry import MultiPolygon, Point, Polygon, mapping
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = Path(__file__).resolve().parent
+CRS_NAME = "EPSG:32188"
+X, Y = 300000, 5040000
+
+
+def poly(x: float, y: float, w: float = 100, h: float = 100) -> Polygon:
+    return Polygon([(X + x, Y + y), (X + x + w, Y + y), (X + x + w, Y + y + h), (X + x, Y + y + h)])
+
+
+def feature(oid: Any, park_id: Any, geometry: Any, park: bool = False) -> dict[str, Any]:
+    return {
+        "type": "Feature",
+        "properties": {"OBJECTID": oid, "NUM_INDEX" if park else "INDEX_PARC": park_id, "ARROND": "Audit"},
+        "geometry": None if geometry is None else mapping(geometry),
+    }
+
+
+def collection(features: list[dict[str, Any]], crs: str | None = CRS_NAME) -> dict[str, Any]:
+    value: dict[str, Any] = {"type": "FeatureCollection", "features": features}
+    if crs is not None:
+        value["crs"] = {"type": "name", "properties": {"name": crs}}
+    return value
+
+
+def check(name: str, actual: Any, expected: Any) -> dict[str, Any]:
+    return {"name": name, "actual": actual, "expected": expected, "passed": actual == expected}
+
+
+def fixture_cases() -> list[tuple[str, dict[str, Any], dict[str, Any], list[str], list[list[str]]]]:
+    a, b, c = (
+        feature("p1", "A", poly(0, 0), True),
+        feature("p2", "B", poly(100, 0), True),
+        feature("p3", "C", poly(50, 50), True),
+    )
+    donut = Polygon(poly(0, 0, 300, 300).exterior.coords, [poly(100, 100).exterior.coords])
+    multi = MultiPolygon([poly(0, 0), poly(300, 0)])
+    bowtie = Polygon([(X, Y), (X + 100, Y + 100), (X, Y + 100), (X + 100, Y), (X, Y)])
+    return [
+        (
+            "interior_agreement",
+            collection([a, b]),
+            collection([feature("f1", "A", Point(X + 25, Y + 25))]),
+            ["confirmed"],
+            [["A"]],
+        ),
+        (
+            "shared_boundary",
+            collection([a, b]),
+            collection([feature("f1", "A", Point(X + 100, Y + 25))]),
+            ["ambiguous_geometry"],
+            [["A", "B"]],
+        ),
+        (
+            "overlapping_parks",
+            collection([a, c]),
+            collection([feature("f1", "A", Point(X + 75, Y + 75))]),
+            ["ambiguous_geometry"],
+            [["A", "C"]],
+        ),
+        (
+            "hole_interior",
+            collection([feature("p1", "D", donut, True)]),
+            collection([feature("f1", "D", Point(X + 150, Y + 150))]),
+            ["declared_without_geometric_support"],
+            [[]],
+        ),
+        (
+            "hole_boundary",
+            collection([feature("p1", "D", donut, True)]),
+            collection([feature("f1", "D", Point(X + 100, Y + 150))]),
+            ["confirmed"],
+            [["D"]],
+        ),
+        (
+            "multipart_second_component",
+            collection([feature("p1", "M", multi, True)]),
+            collection([feature("f1", "M", Point(X + 350, Y + 50))]),
+            ["confirmed"],
+            [["M"]],
+        ),
+        (
+            "identifier_conflict",
+            collection([a, b]),
+            collection([feature("f1", "B", Point(X + 25, Y + 25))]),
+            ["identifier_geometry_conflict"],
+            [["A"]],
+        ),
+        (
+            "unknown_identifier",
+            collection([a]),
+            collection([feature("f1", "UNKNOWN", Point(X + 25, Y + 25))]),
+            ["unknown_declared_park"],
+            [["A"]],
+        ),
+        (
+            "missing_identifier",
+            collection([a]),
+            collection([feature("f1", None, Point(X + 25, Y + 25))]),
+            ["geometry_only_suggestion"],
+            [["A"]],
+        ),
+        ("missing_geometry", collection([a]), collection([feature("f1", "A", None)]), ["invalid_source"], [[]]),
+        (
+            "duplicate_facility_ids",
+            collection([a]),
+            collection([feature("f1", "A", Point(X + 25, Y + 25)), feature("f1", "A", Point(X + 75, Y + 25))]),
+            ["invalid_source", "invalid_source"],
+            [["A"], ["A"]],
+        ),
+        (
+            "invalid_park_geometry",
+            collection([feature("p1", "A", bowtie, True)]),
+            collection([feature("f1", "A", Point(X + 25, Y + 25))]),
+            ["declared_park_has_source_exception"],
+            [[]],
+        ),
+        (
+            "outside_all_parks",
+            collection([a]),
+            collection([feature("f1", None, Point(X + 200, Y + 200))]),
+            ["unassigned"],
+            [[]],
+        ),
+        (
+            "projected_coordinates_without_crs",
+            collection([a], None),
+            collection([feature("f1", "A", Point(X + 25, Y + 25))], None),
+            ["invalid_source"],
+            [[]],
+        ),
+        (
+            "lexical_identifier_preserved",
+            collection([feature("p1", "0012", poly(0, 0), True)]),
+            collection([feature("f1", 12, Point(X + 25, Y + 25))]),
+            ["unknown_declared_park"],
+            [["0012"]],
+        ),
+    ]
+
+
+def independent_reference(
+    park_records: list[dict[str, Any]], facility_records: list[dict[str, Any]]
+) -> list[list[str]]:
+    valid_parks = [p for p in park_records if p["status"] == "valid_source_polygon"]
+    return [
+        (
+            sorted({p["park_index"] for p in valid_parks if p["geometry"].covers(f["geometry"].representative_point())})
+            if f["geometry"] is not None
+            else []
+        )
+        for f in facility_records
+    ]
+
+
+def run(module: Any, label: str) -> dict[str, Any]:
+    checks = []
+    fixture_receipts = []
+    accumulated = None
+    for name, parks, assets, statuses, candidates in fixture_cases():
+        try:
+            result = module.reconcile(parks, assets)
+            actual_status = [r["status"] for r in result["facilities"]]
+            actual_candidates = [json.loads(r["geometric_candidates_json"]) for r in result["facilities"]]
+            local = [check("statuses", actual_status, statuses), check("candidates", actual_candidates, candidates)]
+            local.append(
+                check(
+                    "conventional_linear_covers",
+                    independent_reference(result["parks"], result["facilities"]),
+                    candidates,
+                )
+            )
+            local.append(
+                check(
+                    "conservation",
+                    [len(result["parks"]), len(result["facilities"])],
+                    [len(parks["features"]), len(assets["features"])],
+                )
+            )
+            local.append(
+                check(
+                    "accepted_exception_complete",
+                    all(module.acceptance_checks(result, len(parks["features"]), len(assets["features"])).values()),
+                    True,
+                )
+            )
+            if name == "identifier_conflict":
+                accumulated = result
+            fixture_receipts.append({"case": name, "checks": local, "passed": all(x["passed"] for x in local)})
+        except Exception as exc:
+            fixture_receipts.append({"case": name, "passed": False, "error": f"{type(exc).__name__}: {exc}"})
+    checks.append(check("all_finite_geometry_cases", all(x["passed"] for x in fixture_receipts), True))
+    null_props = feature("f1", "A", Point(X + 25, Y + 25))
+    null_props["properties"] = None
+    for kind in ("facility", "park"):
+        park_feature = feature("p1", "A", poly(0, 0), True)
+        facility_feature = feature("f1", "A", Point(X + 25, Y + 25))
+        if kind == "facility":
+            facility_feature["properties"] = None
+        else:
+            park_feature["properties"] = None
+        try:
+            result = module.reconcile(collection([park_feature]), collection([facility_feature]))
+            row = result["facilities" if kind == "facility" else "parks"][0]
+            checks.append(
+                check(
+                    f"null_{kind}_properties_queued",
+                    row["status"],
+                    "invalid_source" if kind == "facility" else "source_exception",
+                )
+            )
+        except Exception as exc:
+            checks.append(
+                check(f"null_{kind}_properties_queued", f"{type(exc).__name__}: {exc}", "queued exception; no crash")
+            )
+    try:
+        result = module.reconcile(
+            collection([feature("p1", "A", Point(X + 25, Y + 25), True)]),
+            collection([feature("f1", "A", Point(X + 25, Y + 25))]),
+        )
+        checks.append(check("non_polygon_park_queued", result["parks"][0]["status"], "source_exception"))
+        checks.append(check("non_polygon_park_never_confirmed", result["facilities"][0]["status"] != "confirmed", True))
+    except Exception as exc:
+        checks.append(check("non_polygon_park_queued", f"{type(exc).__name__}: {exc}", "queued exception"))
+    geographic = feature("f1", "A", Point(-73.57, 45.50))
+    projected, error = module.projected_geometry(geographic, "EPSG:4326")
+    explicit_authority = pyproj.Transformer.from_crs("EPSG:4326", CRS_NAME, always_xy=False)
+    expected = Point(*explicit_authority.transform(45.50, -73.57))
+    checks.append(check("geographic_axis_order", error is None and projected.distance(expected) < 0.00001, True))
+    checks.append(
+        check(
+            "known_montreal_coordinate_envelope",
+            290000 < projected.x < 310000 and 5030000 < projected.y < 5050000,
+            True,
+        )
+    )
+    checks.append(check("rfc7946_default", module.declared_crs(collection([], None)), "EPSG:4326"))
+    shuffled = fixture_cases()[1]
+    p, f = copy.deepcopy(shuffled[1]), copy.deepcopy(shuffled[2])
+    p["features"].reverse()
+    f["features"].reverse()
+    reordered = module.reconcile(p, f)
+    checks.append(
+        check(
+            "order_invariant_candidate_set",
+            json.loads(reordered["facilities"][0]["geometric_candidates_json"]),
+            ["A", "B"],
+        )
+    )
+    if accumulated is not None:
+        dest = OUT / "artifacts" / label
+        readers = module.write_delivery(
+            accumulated, dest, [{"source": "synthetic independent audit fixture", "rights": "author-created"}]
+        )
+        package = dest / "montreal_asset_onboarding.gpkg"
+        facilities = pyogrio.read_dataframe(package, layer="facilities")
+        parks = pyogrio.read_dataframe(package, layer="parks")
+        with sqlite3.connect(package) as cx:
+            counts = {
+                t: cx.execute(f"SELECT count(*) FROM {t}").fetchone()[0]
+                for t in ("parks", "facilities", "exception_queue", "source_provenance")
+            }
+            integrity = cx.execute("PRAGMA integrity_check").fetchone()[0]
+        checks.append(
+            check(
+                "gpkg_independent_sqlite_counts",
+                counts,
+                {"parks": 2, "facilities": 1, "exception_queue": 1, "source_provenance": 1},
+            )
+        )
+        checks.append(check("gpkg_sqlite_integrity", integrity, "ok"))
+        checks.append(check("gpkg_gdal_reopen_counts", [len(parks), len(facilities)], [2, 1]))
+        checks.append(check("gpkg_crs_roundtrip", [parks.crs.to_epsg(), facilities.crs.to_epsg()], [32188, 32188]))
+        checks.append(check("gpkg_conflict_retained", facilities.iloc[0]["status"], "identifier_geometry_conflict"))
+        checks.append(
+            check(
+                "gpkg_geometry_roundtrip",
+                facilities.geometry.iloc[0].equals_exact(accumulated["facilities"][0]["geometry"], 0),
+                True,
+            )
+        )
+        checks.append(check("gpkg_reader_report_consistent", readers["sqlite"]["unaccounted_facilities"], 0))
+    return {
+        "fixture_cases": fixture_receipts,
+        "checks": checks,
+        "passed": all(c["passed"] for c in checks),
+        "scope": "independent synthetic technical audit; no human/model benchmark; no live ENS or customer acceptance",
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--label", required=True)
+    parser.add_argument("--expected-hash", required=True)
+    parser.add_argument("--source", type=Path, default=ROOT / "src" / "geodelivery.py")
+    args = parser.parse_args()
+    source = args.source
+    data = source.read_bytes()
+    actual = hashlib.sha256(data).hexdigest()
+    if actual != args.expected_hash:
+        raise RuntimeError(f"Freeze mismatch: {actual}")
+    target = OUT / f"results_{args.label}.json"
+    if target.exists():
+        raise FileExistsError(target)
+    (OUT / f"instrument_{args.label}.py.txt").write_bytes(data)
+    spec = importlib.util.spec_from_file_location("audited_geodelivery", source)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Frozen instrument cannot be imported")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    results = run(module, args.label)
+    results.update(
+        instrument_sha256=actual,
+        audit_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        software={"pyproj": pyproj.__version__, "geopandas": gpd.__version__, "pyogrio": pyogrio.__version__},
+    )
+    target.write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n")
+    print(
+        json.dumps(
+            {
+                "passed": results["passed"],
+                "case_count": len(results["fixture_cases"]),
+                "audit_checks": len(results["checks"]),
+                "failing_checks": [c for c in results["checks"] if not c["passed"]],
+                "output": str(target),
+            },
+            ensure_ascii=False,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()
