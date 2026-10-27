@@ -1,0 +1,2858 @@
+{
+  "status": "completed-local-synthetic-confirmation",
+  "frozen_at_utc": "2026-10-26T22:51:48.672653+00:00",
+  "protocol": {
+    "schema": "mechanism-witness-protocol/v1",
+    "question": "Can a reusable exact budget frontier and independently checked mechanism certificate support fresh budget/value queries without repeatedly constructing the frontier?",
+    "scientific_scope": "Known-method, synthetic software demonstration. No live frontier-model experiment, novel economic theorem, network authentication, actual procurement, sale or payment.",
+    "objective": "maximize expected buyer value minus supplier payments within deterministic all-or-none posted-price bundle mechanisms, subject to an ex-post hard budget and no-offer option",
+    "assumptions": [
+      "independent finite cost distributions",
+      "quasilinear supplier utility",
+      "one indivisible required component per supplier",
+      "no collusion or externalities",
+      "declared integer reports",
+      "public budget and buyer value",
+      "distributions supplied rather than learned"
+    ],
+    "small_confirmation": {
+      "seeds": [
+        261026700,
+        261026701,
+        261026702,
+        261026703,
+        261026704,
+        261026705,
+        261026706,
+        261026707,
+        261026708,
+        261026709,
+        261026710,
+        261026711,
+        261026712,
+        261026713,
+        261026714,
+        261026715,
+        261026716,
+        261026717,
+        261026718,
+        261026719,
+        261026720,
+        261026721,
+        261026722,
+        261026723,
+        261026724,
+        261026725,
+        261026726,
+        261026727,
+        261026728,
+        261026729,
+        261026730,
+        261026731,
+        261026732,
+        261026733,
+        261026734,
+        261026735,
+        261026736,
+        261026737,
+        261026738,
+        261026739,
+        261026740,
+        261026741,
+        261026742,
+        261026743,
+        261026744,
+        261026745,
+        261026746,
+        261026747
+      ],
+      "suppliers": "2 + (seed mod 3)",
+      "maximum_cost": "3 + (seed mod 3)",
+      "budget": "floor(0.65*n*maximum_cost)",
+      "buyer_value": "budget + 2 + (seed mod 7)"
+    },
+    "large_confirmation": {
+      "seeds": [
+        261026900,
+        261026901,
+        261026902,
+        261026903,
+        261026904
+      ],
+      "supplier_counts": [
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "maximum_costs": [
+        6,
+        8,
+        10,
+        12,
+        14
+      ]
+    },
+    "reuse_confirmation": {
+      "seed": 261027100,
+      "suppliers": 6,
+      "maximum_cost": 10,
+      "receivers": 12,
+      "fresh_queries": "budget=18+2*i, value=budget+8+(i mod 4), i=0..11",
+      "cold_counterfactual": "every equally capable recipient uses the same exact DP and full certificate checker at its budget",
+      "shared_counterfactual": "creator compiles/checks full frontier; each recipient imports and independently revalidates it, then queries; report this conservative import cost separately from trusted-attestation scenarios"
+    },
+    "acceptance": [
+      "all 48 small cases match exact exhaustive optimal objective",
+      "all 48 emitted protocols pass exhaustive finite DSIC/IR/budget/bundle checks",
+      "all five large Bellman certificates pass",
+      "mutated and mismatched artifacts rejected",
+      "negative cases remain rejected"
+    ],
+    "transfer_interpretation": "An artifact can replace repeated construction only when its validated input domain is reusable. Recipient intelligence and known DP theory are unchanged. Each receiving agent's full mathematical revalidation is charged; a trusted-attestation reduction is a separate simulated assumption, not this executed witness.",
+    "exclusions": [
+      "universal mechanism optimality",
+      "arbitrary correlated types",
+      "continuous-type numerical extrapolation",
+      "multi-dimensional reports",
+      "empirical customer acceptance",
+      "AI invention success rate",
+      "operating-dollar calibration from integer-operation counts"
+    ]
+  },
+  "protocol_sha256": "4ce2618960cf71637c2600297b50f04a43ed39b02e91241d8a5a774e759c84af",
+  "source_identities": {
+    "src/mechanism_witness.py": "19a728327702a23549b03bc30e0fb5447923f84253111e645bb4cb6c3634611e",
+    "tests/test_mechanism_witness.py": "b66771c5a8e09085c7fad39fcd0f8ea5ed583049779164bed56b513161956977",
+    "evidence/mechanism_design.md": "81dd8f0259804f63d9af86ae08fbff8dc56dc3c78ec9677dc59f93bba8fd4ac0"
+  },
+  "results": {
+    "small_cases": [
+      {
+        "seed": 261026700,
+        "domain_hash": "b9a98a07d589222bd1b5ff3b76d2059b93b24d5fd1b9a634c6fc78f7f87ad959",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            0,
+            3
+          ],
+          "budget": 3,
+          "buyer_value": 9,
+          "expected_buyer_surplus_exact": [
+            3162,
+            1023
+          ],
+          "expected_buyer_surplus": 3.090909090909091,
+          "purchase_probability_exact": [
+            527,
+            1023
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026701,
+        "domain_hash": "7c566b1a144cd7166da6325ba0b0ffc375434a578befd6b10e1070a91a17f559",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            2,
+            3
+          ],
+          "budget": 7,
+          "buyer_value": 14,
+          "expected_buyer_surplus_exact": [
+            286440,
+            91368
+          ],
+          "expected_buyer_surplus": 3.1350144470711845,
+          "purchase_probability_exact": [
+            40920,
+            91368
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026702,
+        "domain_hash": "446a487d3fd64cceda3d4755ce81282ed4649582c983fd23536407335aa1356f",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            3,
+            4,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 21,
+          "expected_buyer_surplus_exact": [
+            14661920,
+            6730152
+          ],
+          "expected_buyer_surplus": 2.1785421785421786,
+          "purchase_probability_exact": [
+            1832740,
+            6730152
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026703,
+        "domain_hash": "cc25cfa890116eb1223c547380a5d5d8faa2f5e22e0b0dbfe2cc828708291515",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            3,
+            0
+          ],
+          "budget": 3,
+          "buyer_value": 5,
+          "expected_buyer_surplus_exact": [
+            1326,
+            1287
+          ],
+          "expected_buyer_surplus": 1.0303030303030303,
+          "purchase_probability_exact": [
+            663,
+            1287
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026704,
+        "domain_hash": "f02308d13465e76a43f7d26b8786b4240532816ea8fb8abb5feff3bc3c47116f",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            4,
+            0,
+            3
+          ],
+          "budget": 7,
+          "buyer_value": 10,
+          "expected_buyer_surplus_exact": [
+            68757,
+            102555
+          ],
+          "expected_buyer_surplus": 0.670440251572327,
+          "purchase_probability_exact": [
+            22919,
+            102555
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026705,
+        "domain_hash": "f894e4e275493431a6cd716e0e2f4bc227a346b3bef8018f7267b6a9ec961004",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            4,
+            3,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 17,
+          "expected_buyer_surplus_exact": [
+            10080000,
+            9554160
+          ],
+          "expected_buyer_surplus": 1.0550378055213645,
+          "purchase_probability_exact": [
+            2520000,
+            9554160
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026706,
+        "domain_hash": "668a689cd953694ab6ab01af07dee6ffbe9e19877c08f99b344fd0859af6940d",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 8,
+          "expected_buyer_surplus_exact": [
+            3625,
+            1152
+          ],
+          "expected_buyer_surplus": 3.146701388888889,
+          "purchase_probability_exact": [
+            725,
+            1152
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026707,
+        "domain_hash": "a30623c2ea4f0d5024e41517787b50f80e46df73fff1e93788957117979f5525",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            4,
+            1
+          ],
+          "budget": 7,
+          "buyer_value": 13,
+          "expected_buyer_surplus_exact": [
+            89088,
+            42398
+          ],
+          "expected_buyer_surplus": 2.1012311901504788,
+          "purchase_probability_exact": [
+            14848,
+            42398
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026708,
+        "domain_hash": "879cbb58dbb4b7c6907165a7e6d21c4a5025c0791209e268d88fcafcfa97d200",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            5,
+            1,
+            2,
+            5
+          ],
+          "budget": 13,
+          "buyer_value": 20,
+          "expected_buyer_surplus_exact": [
+            17116680,
+            6811740
+          ],
+          "expected_buyer_surplus": 2.5128205128205128,
+          "purchase_probability_exact": [
+            2445240,
+            6811740
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026709,
+        "domain_hash": "7ba30247837f6aa299bc66a78e292d85ee5a032bbe19a49028a8d85aeabc03d1",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            2
+          ],
+          "budget": 3,
+          "buyer_value": 11,
+          "expected_buyer_surplus_exact": [
+            2808,
+            777
+          ],
+          "expected_buyer_surplus": 3.613899613899614,
+          "purchase_probability_exact": [
+            351,
+            777
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026710,
+        "domain_hash": "af4a521733de4ed71d75d933ea0f6475991f7e23944862ffdd11a31dba0b4c9d",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            2,
+            0
+          ],
+          "budget": 7,
+          "buyer_value": 9,
+          "expected_buyer_surplus_exact": [
+            27676,
+            61248
+          ],
+          "expected_buyer_surplus": 0.45186781609195403,
+          "purchase_probability_exact": [
+            6919,
+            61248
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026711,
+        "domain_hash": "66d8c86833d0c2f808e2eba2117d953bbc307ff9a292738a65467cd3822b84c7",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            1,
+            4,
+            4,
+            2
+          ],
+          "budget": 13,
+          "buyer_value": 16,
+          "expected_buyer_surplus_exact": [
+            8235360,
+            6709248
+          ],
+          "expected_buyer_surplus": 1.2274639423076923,
+          "purchase_probability_exact": [
+            1647072,
+            6709248
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026712,
+        "domain_hash": "3840881c3fdcdc45991265ee6cc73e9f5471a4901664d4945a1a376bc447d024",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 7,
+          "expected_buyer_surplus_exact": [
+            1520,
+            882
+          ],
+          "expected_buyer_surplus": 1.7233560090702948,
+          "purchase_probability_exact": [
+            380,
+            882
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026713,
+        "domain_hash": "513e766a6b7c1302b47783d28e29d2e7c3f78de12567c987c2ba8c65dd88ba4f",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            2,
+            2
+          ],
+          "budget": 7,
+          "buyer_value": 12,
+          "expected_buyer_surplus_exact": [
+            126000,
+            52920
+          ],
+          "expected_buyer_surplus": 2.380952380952381,
+          "purchase_probability_exact": [
+            25200,
+            52920
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026714,
+        "domain_hash": "f71353be76d94ba5d0c124b06e5cbde5bd83d2a6593dd1f62b2e1e9e8a83122f",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            2,
+            4,
+            5
+          ],
+          "budget": 13,
+          "buyer_value": 19,
+          "expected_buyer_surplus_exact": [
+            14774760,
+            8176999
+          ],
+          "expected_buyer_surplus": 1.8068682654846846,
+          "purchase_probability_exact": [
+            2462460,
+            8176999
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026715,
+        "domain_hash": "4335bf69accefc7a049d0754f0b7cc0b8eb6fdaf27394d940d0a5624374c2f1e",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            0,
+            3
+          ],
+          "budget": 3,
+          "buyer_value": 10,
+          "expected_buyer_surplus_exact": [
+            4214,
+            2064
+          ],
+          "expected_buyer_surplus": 2.0416666666666665,
+          "purchase_probability_exact": [
+            602,
+            2064
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026716,
+        "domain_hash": "e04a867a94b316ae424b08b03b20a0172906533f81a0f9544d0a075711baa975",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            4,
+            0,
+            3
+          ],
+          "budget": 7,
+          "buyer_value": 15,
+          "expected_buyer_surplus_exact": [
+            254592,
+            117504
+          ],
+          "expected_buyer_surplus": 2.1666666666666665,
+          "purchase_probability_exact": [
+            31824,
+            117504
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026717,
+        "domain_hash": "d1003333a4fe3d9e5fd4fee16d465276d96ca0328bac970c41b2e64908d8a986",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            3,
+            4,
+            1,
+            3
+          ],
+          "budget": 13,
+          "buyer_value": 15,
+          "expected_buyer_surplus_exact": [
+            10457088,
+            9282000
+          ],
+          "expected_buyer_surplus": 1.1265985778926955,
+          "purchase_probability_exact": [
+            2614272,
+            9282000
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026718,
+        "domain_hash": "2f5aa694f015768d1c08f6cc09a766d42452a828e1075220b7c8a2ca2b11bcdd",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 6,
+          "expected_buyer_surplus_exact": [
+            1710,
+            1029
+          ],
+          "expected_buyer_surplus": 1.661807580174927,
+          "purchase_probability_exact": [
+            570,
+            1029
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026719,
+        "domain_hash": "9c5855df51ce15f75a14208a4dd8647c9d5bc07f80aba97dfaf93ce2e50cae27",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            1,
+            4
+          ],
+          "budget": 7,
+          "buyer_value": 11,
+          "expected_buyer_surplus_exact": [
+            116640,
+            81675
+          ],
+          "expected_buyer_surplus": 1.428099173553719,
+          "purchase_probability_exact": [
+            29160,
+            81675
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026720,
+        "domain_hash": "8deeb34c84eab9871c4120590c0b21927084148131c1fb3e590bdcaadce9ab4e",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            4,
+            3,
+            4,
+            2
+          ],
+          "budget": 13,
+          "buyer_value": 18,
+          "expected_buyer_surplus_exact": [
+            8778000,
+            3221288
+          ],
+          "expected_buyer_surplus": 2.7249969577386435,
+          "purchase_probability_exact": [
+            1755600,
+            3221288
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026721,
+        "domain_hash": "79186c2fc8c6cb1759abbbad1ffda7e71f9ce34130c4d379c9780a0d48979a7a",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            2
+          ],
+          "budget": 3,
+          "buyer_value": 9,
+          "expected_buyer_surplus_exact": [
+            1044,
+            798
+          ],
+          "expected_buyer_surplus": 1.3082706766917294,
+          "purchase_probability_exact": [
+            174,
+            798
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026722,
+        "domain_hash": "dec67baf1ebf501a531f96c0a9843a130e6581877cb9f71e114fcc7f12f3f666",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            1,
+            2,
+            4
+          ],
+          "budget": 7,
+          "buyer_value": 14,
+          "expected_buyer_surplus_exact": [
+            237006,
+            108528
+          ],
+          "expected_buyer_surplus": 2.1838235294117645,
+          "purchase_probability_exact": [
+            33858,
+            108528
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026723,
+        "domain_hash": "0f1bad54718619897cfeb0fca664211db391c6e42bddea60d9dbb62b544b8204",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            4,
+            3,
+            3,
+            3
+          ],
+          "budget": 13,
+          "buyer_value": 21,
+          "expected_buyer_surplus_exact": [
+            38572128,
+            18552300
+          ],
+          "expected_buyer_surplus": 2.0791022137416926,
+          "purchase_probability_exact": [
+            4821516,
+            18552300
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026724,
+        "domain_hash": "9600c185eca81de0121fee0b1470106499d0f1f2f69ea89f2c4f2ad78526e90f",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 5,
+          "expected_buyer_surplus_exact": [
+            2178,
+            2193
+          ],
+          "expected_buyer_surplus": 0.9931600547195623,
+          "purchase_probability_exact": [
+            1089,
+            2193
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026725,
+        "domain_hash": "c8d381e5ddc3f9811a8544d06a8e6db3938ec075615ac114129b591995a28a0f",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            1,
+            3
+          ],
+          "budget": 7,
+          "buyer_value": 10,
+          "expected_buyer_surplus_exact": [
+            77691,
+            76608
+          ],
+          "expected_buyer_surplus": 1.0141369047619047,
+          "purchase_probability_exact": [
+            25897,
+            76608
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026726,
+        "domain_hash": "78636abbbd07b1293f123391ff283c48ee88894c1f73f91ae42b2111503cd8bc",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            2,
+            3,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 17,
+          "expected_buyer_surplus_exact": [
+            11924640,
+            5832000
+          ],
+          "expected_buyer_surplus": 2.0446913580246915,
+          "purchase_probability_exact": [
+            1987440,
+            5832000
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026727,
+        "domain_hash": "633e716dfde90e5a9f8d3b2f17732e392fdae9e4fdc52b8482b0f78cf301f0cb",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            2
+          ],
+          "budget": 3,
+          "buyer_value": 8,
+          "expected_buyer_surplus_exact": [
+            2970,
+            1435
+          ],
+          "expected_buyer_surplus": 2.0696864111498257,
+          "purchase_probability_exact": [
+            594,
+            1435
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026728,
+        "domain_hash": "66309cce5b2ec97abd5f333721117d0b4e08b6c0c82681c72080beb2aa8c341b",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            1,
+            4
+          ],
+          "budget": 7,
+          "buyer_value": 13,
+          "expected_buyer_surplus_exact": [
+            174720,
+            96460
+          ],
+          "expected_buyer_surplus": 1.8113207547169812,
+          "purchase_probability_exact": [
+            29120,
+            96460
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026729,
+        "domain_hash": "a78f3234b1042032ef8a62bcaf38115a79e07fe5b405bf5704d81fa5ee60293a",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            4,
+            3,
+            5,
+            1
+          ],
+          "budget": 13,
+          "buyer_value": 20,
+          "expected_buyer_surplus_exact": [
+            6535620,
+            3553200
+          ],
+          "expected_buyer_surplus": 1.8393617021276596,
+          "purchase_probability_exact": [
+            933660,
+            3553200
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026730,
+        "domain_hash": "7f6d7a6441772a7e4560f3e889a7246bb0d7a210d818abf017f1d3a9a17e9778",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            0,
+            3
+          ],
+          "budget": 3,
+          "buyer_value": 11,
+          "expected_buyer_surplus_exact": [
+            3432,
+            1131
+          ],
+          "expected_buyer_surplus": 3.0344827586206895,
+          "purchase_probability_exact": [
+            429,
+            1131
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026731,
+        "domain_hash": "289248d3443c808c9e97ccc2660578f34cb1c928c2a777041ba0b720b088a14b",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            3,
+            0
+          ],
+          "budget": 7,
+          "buyer_value": 9,
+          "expected_buyer_surplus_exact": [
+            48510,
+            86387
+          ],
+          "expected_buyer_surplus": 0.5615428247305729,
+          "purchase_probability_exact": [
+            16170,
+            86387
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026732,
+        "domain_hash": "9b3eddc90b4810378c9ad36127254ffcf627171ddbd034e2fcca55e12ef43573",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            3,
+            4,
+            3,
+            3
+          ],
+          "budget": 13,
+          "buyer_value": 16,
+          "expected_buyer_surplus_exact": [
+            4878720,
+            7866560
+          ],
+          "expected_buyer_surplus": 0.6201846804702437,
+          "purchase_probability_exact": [
+            1626240,
+            7866560
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026733,
+        "domain_hash": "120aa65f1e7ab583cd665187a6e99bb827be518b7dea1d2e0bdaf2eb1e010d2c",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 7,
+          "expected_buyer_surplus_exact": [
+            2300,
+            1024
+          ],
+          "expected_buyer_surplus": 2.24609375,
+          "purchase_probability_exact": [
+            575,
+            1024
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026734,
+        "domain_hash": "8ea46d9c87c3d444c6eed0fde591a6ad5b650192af098c6c1212ef442eb6473a",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            3,
+            1
+          ],
+          "budget": 7,
+          "buyer_value": 12,
+          "expected_buyer_surplus_exact": [
+            170430,
+            93600
+          ],
+          "expected_buyer_surplus": 1.8208333333333333,
+          "purchase_probability_exact": [
+            34086,
+            93600
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026735,
+        "domain_hash": "a1e3d6190fb4db3e7363df3c06d34ee196ec5f8c1782a4eaf5e41cf69b43fc65",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            4,
+            4,
+            3,
+            2
+          ],
+          "budget": 13,
+          "buyer_value": 19,
+          "expected_buyer_surplus_exact": [
+            9795240,
+            6103680
+          ],
+          "expected_buyer_surplus": 1.6048089021704939,
+          "purchase_probability_exact": [
+            1632540,
+            6103680
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026736,
+        "domain_hash": "489493573c4c330ec038904cbeb9c926f8f481870ebee9eb528145754eebf3bb",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            2
+          ],
+          "budget": 3,
+          "buyer_value": 10,
+          "expected_buyer_surplus_exact": [
+            2695,
+            1196
+          ],
+          "expected_buyer_surplus": 2.2533444816053514,
+          "purchase_probability_exact": [
+            385,
+            1196
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026737,
+        "domain_hash": "06f3e7f1507f6da9820fc8c8bdfec94cf626f161452742694fd12ea003b45281",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            3,
+            1
+          ],
+          "budget": 7,
+          "buyer_value": 15,
+          "expected_buyer_surplus_exact": [
+            468096,
+            193200
+          ],
+          "expected_buyer_surplus": 2.422857142857143,
+          "purchase_probability_exact": [
+            58512,
+            193200
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026738,
+        "domain_hash": "f2909a020ed62ccd266a5827540851eeb06f81827b680ae2b9b8e0ac2a6649c5",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            2,
+            3,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 15,
+          "expected_buyer_surplus_exact": [
+            3580500,
+            6969600
+          ],
+          "expected_buyer_surplus": 0.5137310606060606,
+          "purchase_probability_exact": [
+            895125,
+            6969600
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026739,
+        "domain_hash": "9045459f197a101c7b28c07132b772a9498335d64b92dc75ed3b709af339f020",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 6,
+          "expected_buyer_surplus_exact": [
+            1012,
+            435
+          ],
+          "expected_buyer_surplus": 2.3264367816091953,
+          "purchase_probability_exact": [
+            253,
+            435
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026740,
+        "domain_hash": "c13a4352bfaa85fad6c0031ae51b772a288b77cf856771e684da705e959d02ff",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            1,
+            4
+          ],
+          "budget": 7,
+          "buyer_value": 11,
+          "expected_buyer_surplus_exact": [
+            117936,
+            73008
+          ],
+          "expected_buyer_surplus": 1.6153846153846154,
+          "purchase_probability_exact": [
+            29484,
+            73008
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026741,
+        "domain_hash": "af79c8cac7545a8ff3ed9a09a11f33c99638f460319b816b096acdc60dbc76b7",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            4,
+            2,
+            5
+          ],
+          "budget": 13,
+          "buyer_value": 18,
+          "expected_buyer_surplus_exact": [
+            10647000,
+            6500000
+          ],
+          "expected_buyer_surplus": 1.638,
+          "purchase_probability_exact": [
+            2129400,
+            6500000
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026742,
+        "domain_hash": "8ecbf597d12dbc558ea3c2f49372001a19db8e64aa23aceefeb85af40ae20cb4",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            2,
+            1
+          ],
+          "budget": 3,
+          "buyer_value": 9,
+          "expected_buyer_surplus_exact": [
+            2880,
+            1620
+          ],
+          "expected_buyer_surplus": 1.7777777777777777,
+          "purchase_probability_exact": [
+            480,
+            1620
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026743,
+        "domain_hash": "fdee7f2cc80920ddb1dce1621cbbb987b0f285becd5d80fec5c64747e91e8d04",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            2,
+            3,
+            2
+          ],
+          "budget": 7,
+          "buyer_value": 14,
+          "expected_buyer_surplus_exact": [
+            164052,
+            63591
+          ],
+          "expected_buyer_surplus": 2.579799028164363,
+          "purchase_probability_exact": [
+            23436,
+            63591
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026744,
+        "domain_hash": "c8aef1429ff724d641a42a7f3ecf1fb817ea113f6a6f2887f5ef1ce8f49db0ef",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            2,
+            4,
+            3,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 21,
+          "expected_buyer_surplus_exact": [
+            32450304,
+            13352820
+          ],
+          "expected_buyer_surplus": 2.430221031961788,
+          "purchase_probability_exact": [
+            4056288,
+            13352820
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026745,
+        "domain_hash": "ecfe564815d2180635ffcaf1af7003f6c8227c0d37e1547c17b4c992e4210256",
+        "suppliers": 2,
+        "maximum_cost": 3,
+        "solution": {
+          "prices": [
+            1,
+            2
+          ],
+          "budget": 3,
+          "buyer_value": 5,
+          "expected_buyer_surplus_exact": [
+            550,
+            765
+          ],
+          "expected_buyer_surplus": 0.7189542483660131,
+          "purchase_probability_exact": [
+            275,
+            765
+          ],
+          "examined_states": 4
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 16,
+        "dp_transitions": 20,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 20,
+          "witness_products": 18
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 16,
+          "deviation_comparisons": 96,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026746,
+        "domain_hash": "bfc242e641ef2497617737484105159af45f905e80e9bdb68784c0e76c991775",
+        "suppliers": 3,
+        "maximum_cost": 4,
+        "solution": {
+          "prices": [
+            3,
+            2,
+            2
+          ],
+          "budget": 7,
+          "buyer_value": 10,
+          "expected_buyer_surplus_exact": [
+            74520,
+            90405
+          ],
+          "expected_buyer_surplus": 0.8242906918865107,
+          "purchase_probability_exact": [
+            24840,
+            90405
+          ],
+          "examined_states": 8
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 125,
+        "dp_transitions": 75,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 75,
+          "witness_products": 62
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 125,
+          "deviation_comparisons": 1500,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      },
+      {
+        "seed": 261026747,
+        "domain_hash": "e5da9fd46840fa6d4606a3242fba1eafdcc970cfc6d309f7aa65fee1907d56a7",
+        "suppliers": 4,
+        "maximum_cost": 5,
+        "solution": {
+          "prices": [
+            3,
+            1,
+            4,
+            4
+          ],
+          "budget": 13,
+          "buyer_value": 17,
+          "expected_buyer_surplus_exact": [
+            12841920,
+            7468560
+          ],
+          "expected_buyer_surplus": 1.7194639930589029,
+          "purchase_probability_exact": [
+            2568384,
+            7468560
+          ],
+          "examined_states": 14
+        },
+        "oracle_matches": true,
+        "oracle_price_vectors": 1296,
+        "dp_transitions": 204,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 204,
+          "witness_products": 160
+        },
+        "finite_validation": {
+          "pass": true,
+          "profiles": 1296,
+          "deviation_comparisons": 25920,
+          "violations": {
+            "malformed": 0,
+            "budget": 0,
+            "bundle": 0,
+            "individual_rationality": 0,
+            "truthfulness": 0
+          },
+          "first_counterexamples": {},
+          "maximum_profitable_deviation": 0,
+          "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+        }
+      }
+    ],
+    "large_cases": [
+      {
+        "seed": 261026900,
+        "suppliers": 4,
+        "maximum_cost": 6,
+        "price_vectors_in_declared_family": 2401,
+        "dp_transitions_executed": 280,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 280,
+          "witness_products": 190
+        },
+        "solution": {
+          "prices": [
+            3,
+            4,
+            3,
+            5
+          ],
+          "budget": 15,
+          "buyer_value": 23,
+          "expected_buyer_surplus_exact": [
+            15255936,
+            5696064
+          ],
+          "expected_buyer_surplus": 2.6783294569723934,
+          "purchase_probability_exact": [
+            1906992,
+            5696064
+          ],
+          "examined_states": 16
+        },
+        "frontier_bytes": 1488,
+        "finite_profile_enumeration_performed": false
+      },
+      {
+        "seed": 261026901,
+        "suppliers": 6,
+        "maximum_cost": 8,
+        "price_vectors_in_declared_family": 531441,
+        "dp_transitions_executed": 1134,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 1134,
+          "witness_products": 749
+        },
+        "solution": {
+          "prices": [
+            7,
+            6,
+            4,
+            5,
+            5,
+            4
+          ],
+          "budget": 31,
+          "buyer_value": 43,
+          "expected_buyer_surplus_exact": [
+            662276926080,
+            410720375520
+          ],
+          "expected_buyer_surplus": 1.6124764330026535,
+          "purchase_probability_exact": [
+            55189743840,
+            410720375520
+          ],
+          "examined_states": 32
+        },
+        "frontier_bytes": 4786,
+        "finite_profile_enumeration_performed": false
+      },
+      {
+        "seed": 261026902,
+        "suppliers": 8,
+        "maximum_cost": 10,
+        "price_vectors_in_declared_family": 214358881,
+        "dp_transitions_executed": 3168,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 3168,
+          "witness_products": 2076
+        },
+        "solution": {
+          "prices": [
+            4,
+            5,
+            6,
+            10,
+            9,
+            5,
+            7,
+            6
+          ],
+          "budget": 52,
+          "buyer_value": 68,
+          "expected_buyer_surplus_exact": [
+            4961725371187200,
+            3914739962452440
+          ],
+          "expected_buyer_surplus": 1.2674469872269274,
+          "purchase_probability_exact": [
+            310107835699200,
+            3914739962452440
+          ],
+          "examined_states": 53
+        },
+        "frontier_bytes": 12044,
+        "finite_profile_enumeration_performed": false
+      },
+      {
+        "seed": 261026903,
+        "suppliers": 10,
+        "maximum_cost": 12,
+        "price_vectors_in_declared_family": 137858491849,
+        "dp_transitions_executed": 7150,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 7150,
+          "witness_products": 4675
+        },
+        "solution": {
+          "prices": [
+            11,
+            6,
+            8,
+            6,
+            11,
+            7,
+            7,
+            4,
+            11,
+            7
+          ],
+          "budget": 78,
+          "buyer_value": 98,
+          "expected_buyer_surplus_exact": [
+            279442491966683136000,
+            273372902571784055040
+          ],
+          "expected_buyer_surplus": 1.022202600688652,
+          "purchase_probability_exact": [
+            13972124598334156800,
+            273372902571784055040
+          ],
+          "examined_states": 79
+        },
+        "frontier_bytes": 26120,
+        "finite_profile_enumeration_performed": false
+      },
+      {
+        "seed": 261026904,
+        "suppliers": 12,
+        "maximum_cost": 14,
+        "price_vectors_in_declared_family": 129746337890625,
+        "dp_transitions_executed": 14040,
+        "certificate": {
+          "valid": true,
+          "bellman_inequalities": 14040,
+          "witness_products": 9178
+        },
+        "solution": {
+          "prices": [
+            8,
+            12,
+            7,
+            6,
+            9,
+            10,
+            10,
+            12,
+            7,
+            12,
+            6,
+            10
+          ],
+          "budget": 109,
+          "buyer_value": 133,
+          "expected_buyer_surplus_exact": [
+            18855743652918392242176000,
+            49740538135639869361608704
+          ],
+          "expected_buyer_surplus": 0.37908201960943316,
+          "purchase_probability_exact": [
+            785655985538266343424000,
+            49740538135639869361608704
+          ],
+          "examined_states": 110
+        },
+        "frontier_bytes": 49940,
+        "finite_profile_enumeration_performed": false
+      }
+    ],
+    "recipient_reuse": {
+      "queries": [
+        {
+          "receiver": "recipient-1",
+          "budget": 18,
+          "value": 26,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.01723135300618516,
+          "selection_states": 19
+        },
+        {
+          "receiver": "recipient-2",
+          "budget": 20,
+          "value": 29,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.03362727753527092,
+          "selection_states": 21
+        },
+        {
+          "receiver": "recipient-3",
+          "budget": 22,
+          "value": 32,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.06227273617642764,
+          "selection_states": 23
+        },
+        {
+          "receiver": "recipient-4",
+          "budget": 24,
+          "value": 35,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.11264446055024911,
+          "selection_states": 25
+        },
+        {
+          "receiver": "recipient-5",
+          "budget": 26,
+          "value": 34,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.12792162846595292,
+          "selection_states": 27
+        },
+        {
+          "receiver": "recipient-6",
+          "budget": 28,
+          "value": 37,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.2113705032855394,
+          "selection_states": 29
+        },
+        {
+          "receiver": "recipient-7",
+          "budget": 30,
+          "value": 40,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.3597795800604926,
+          "selection_states": 31
+        },
+        {
+          "receiver": "recipient-8",
+          "budget": 32,
+          "value": 43,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.568901460970654,
+          "selection_states": 33
+        },
+        {
+          "receiver": "recipient-9",
+          "budget": 34,
+          "value": 42,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.5980120046951432,
+          "selection_states": 35
+        },
+        {
+          "receiver": "recipient-10",
+          "budget": 36,
+          "value": 45,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 0.9114860394143713,
+          "selection_states": 37
+        },
+        {
+          "receiver": "recipient-11",
+          "budget": 38,
+          "value": 48,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 1.3215312495574218,
+          "selection_states": 39
+        },
+        {
+          "receiver": "recipient-12",
+          "budget": 40,
+          "value": 51,
+          "identical_to_cold": true,
+          "expected_buyer_surplus": 1.8353161111772953,
+          "selection_states": 41
+        }
+      ],
+      "all_fresh_queries_match_equal_intelligence_baseline": true,
+      "cold_counts": {
+        "construction_transitions": 13926,
+        "certificate_inequalities": 13926,
+        "certificate_witness_multiplications": 7022
+      },
+      "shared_counts_including_creator_and_all_receivers": {
+        "construction_transitions": 1716,
+        "certificate_inequalities": 22308,
+        "certificate_witness_multiplications": 12103
+      },
+      "fresh_selection_states_in_both_arms": 360,
+      "recipient_payload_bytes_hashed_in_shared_arm": 74496,
+      "trusted_attestation_scenario_before_selection": {
+        "construction_transitions": 1716,
+        "certificate_inequalities": 1716,
+        "certificate_witness_multiplications": 931
+      },
+      "trusted_attestation_status": "not an executed authorization assumption; graph authentication and trusted validation are simulated separately",
+      "duplicate_capability_incremental_construction_saved": 0,
+      "distinct_domain_no_transfer": "all changed distributions require new certificates; copying the filename does not make them applicable"
+    },
+    "preserved_negative_cases": {
+      "naive_independent_thresholds": {
+        "prices": [
+          4,
+          4
+        ],
+        "pass": false,
+        "profiles": 25,
+        "deviation_comparisons": 200,
+        "violations": {
+          "malformed": 0,
+          "budget": 25,
+          "bundle": 0,
+          "individual_rationality": 0,
+          "truthfulness": 0
+        },
+        "first_counterexamples": {
+          "budget": {
+            "reports": [
+              0,
+              0
+            ],
+            "payments": [
+              4,
+              4
+            ],
+            "budget": 5
+          }
+        },
+        "maximum_profitable_deviation": 0,
+        "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+      },
+      "ordinary_efficient_vcg": {
+        "pass": false,
+        "profiles": 25,
+        "deviation_comparisons": 200,
+        "violations": {
+          "malformed": 0,
+          "budget": 25,
+          "bundle": 0,
+          "individual_rationality": 0,
+          "truthfulness": 0
+        },
+        "first_counterexamples": {
+          "budget": {
+            "reports": [
+              0,
+              0
+            ],
+            "payments": [
+              12,
+              12
+            ],
+            "budget": 5
+          }
+        },
+        "maximum_profitable_deviation": 0,
+        "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+      },
+      "admissible_joint_protocol": {
+        "solution": {
+          "prices": [
+            2,
+            3
+          ],
+          "budget": 5,
+          "buyer_value": 12,
+          "expected_buyer_surplus_exact": [
+            84,
+            25
+          ],
+          "expected_buyer_surplus": 3.36,
+          "purchase_probability_exact": [
+            12,
+            25
+          ],
+          "examined_states": 6
+        },
+        "pass": true,
+        "profiles": 25,
+        "deviation_comparisons": 200,
+        "violations": {
+          "malformed": 0,
+          "budget": 0,
+          "bundle": 0,
+          "individual_rationality": 0,
+          "truthfulness": 0
+        },
+        "first_counterexamples": {},
+        "maximum_profitable_deviation": 0,
+        "scope": "all integer costs and reports in the declared finite product domain; unilateral deviations only"
+      }
+    },
+    "summary": {
+      "small_cases": 48,
+      "exact_oracle_matches": 48,
+      "finite_protocol_passes": 48,
+      "finite_profiles_checked": 22992,
+      "unilateral_deviation_comparisons": 440256,
+      "large_certificate_passes": 5,
+      "largest_price_space": 129746337890625,
+      "largest_case_dp_transitions": 14040,
+      "naive_composition_rejected": true,
+      "efficient_vcg_rejected_under_hard_budget": true
+    }
+  },
+  "completed_at_utc": "2026-10-26T22:51:56.129131+00:00",
+  "result_sha256": "d4a7a37f542d6b20340881a9cc5596424b75eba8eade404528f2380f1f2de788"
+}

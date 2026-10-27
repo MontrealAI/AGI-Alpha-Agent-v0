@@ -1,0 +1,1151 @@
+{
+  "schema": "network-economy-native-accounting-check/v1",
+  "sourceCommit": "c4a7febc02fb9d607e9da5ece2101c4b6b36fc64",
+  "runtime": "v24.22.1",
+  "kind": "ACTUAL local arithmetic and rejection checks over constructed fixtures",
+  "productionQualification": false,
+  "liveCollections": false,
+  "developmentFailures": [
+    {
+      "kind": "fixture arithmetic assertion",
+      "initialExpectedMicros": 860000000,
+      "actualCorrectMicros": 760000000,
+      "correction": "Corrected the authored expected sum of eight stage fixtures and dependent totals; native modules unchanged."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Native automated-cost schema accepts every explicitly priced workflow stage",
+      "result": "PASS"
+    },
+    {
+      "name": "Unknown matched human effort remains unknown",
+      "result": "PASS"
+    },
+    {
+      "name": "Missing workflow-stage cost is rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "Duplicate cost identity is rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "Unknown production cost cannot silently become zero",
+      "result": "PASS"
+    },
+    {
+      "name": "Native scenario arithmetic includes capability construction, maintenance, reserve and obligation",
+      "result": "PASS"
+    },
+    {
+      "name": "Modeled collections never become observed collections or surplus",
+      "result": "PASS"
+    },
+    {
+      "name": "Native optional reinvestment remains zero",
+      "result": "PASS"
+    },
+    {
+      "name": "Assumed collected receipt is rejected by the native schema",
+      "result": "PASS"
+    },
+    {
+      "name": "Failed work remains a cost in the aggregate",
+      "result": "PASS"
+    },
+    {
+      "name": "Projection rejects executable object inputs",
+      "result": "PASS"
+    },
+    {
+      "name": "Negative investment economics are retained",
+      "result": "PASS"
+    }
+  ],
+  "costRecord": {
+    "schema": "alpha-automated-costs/v1",
+    "offeringId": "network-mechanism-arithmetic-fixture",
+    "currency": "USD",
+    "scenarios": [
+      {
+        "name": "base",
+        "capacityRequestsPerMonth": {
+          "value": 4,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "utilizationBps": {
+          "value": 5000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "acceptanceBps": {
+          "value": 7500,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "attemptsPerRequestPpm": {
+          "value": 1000000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "operations": [
+          {
+            "id": "preparation-cost",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-cost",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 80000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-cost",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 400000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-cost",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 150000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-cost",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-cost",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-cost",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 10000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-cost",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [],
+        "monthly": [
+          {
+            "id": "shared-cost",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": 180000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "setup-cost",
+            "kind": "setup",
+            "amountMicros": {
+              "value": 1200000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "amortizationMonths": {
+              "value": 12,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          }
+        }
+      },
+      {
+        "name": "conservative",
+        "capacityRequestsPerMonth": {
+          "value": 4,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "utilizationBps": {
+          "value": 5000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "acceptanceBps": {
+          "value": 7500,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "attemptsPerRequestPpm": {
+          "value": 1000000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "operations": [
+          {
+            "id": "preparation-cost",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-cost",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 80000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-cost",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 400000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-cost",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 150000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-cost",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-cost",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-cost",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 10000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-cost",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [],
+        "monthly": [
+          {
+            "id": "shared-cost",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": 180000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "setup-cost",
+            "kind": "setup",
+            "amountMicros": {
+              "value": 1200000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "amortizationMonths": {
+              "value": 12,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          }
+        }
+      },
+      {
+        "name": "stress",
+        "capacityRequestsPerMonth": {
+          "value": 4,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "utilizationBps": {
+          "value": 5000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "acceptanceBps": {
+          "value": 7500,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "attemptsPerRequestPpm": {
+          "value": 1000000,
+          "basis": "estimated",
+          "reference": "Constructed arithmetic fixture; not an empirical estimate"
+        },
+        "operations": [
+          {
+            "id": "preparation-cost",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-cost",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 80000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-cost",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 400000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-cost",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 150000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-cost",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 40000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-cost",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-cost",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 10000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-cost",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "unitCostMicros": {
+              "value": 20000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [],
+        "monthly": [
+          {
+            "id": "shared-cost",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": 180000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "setup-cost",
+            "kind": "setup",
+            "amountMicros": {
+              "value": 1200000000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            },
+            "amortizationMonths": {
+              "value": 12,
+              "basis": "estimated",
+              "reference": "Constructed arithmetic fixture; not an empirical estimate"
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No human-work observation supplied in this arithmetic fixture"
+          }
+        }
+      }
+    ]
+  },
+  "costSummary": {
+    "schema": "alpha-automated-cost-summary/v1",
+    "offeringId": "network-mechanism-arithmetic-fixture",
+    "currency": "USD",
+    "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+    "scenarios": [
+      {
+        "name": "base",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 2,
+          "attemptsPerMonth": 2,
+          "acceptedPerMonth": 1.5,
+          "utilizationBps": 5000,
+          "acceptanceBps": 7500
+        },
+        "costs": {
+          "nextRequestMicros": 760000000,
+          "marginalMicrosPerAccepted": 1013333334,
+          "recurringMicrosPerAccepted": 1133333334,
+          "fullyLoadedMicrosPerAccepted": 1200000000,
+          "variableMonthlyMicros": 1520000000,
+          "sharedMonthlyMicros": 180000000,
+          "amortizedMonthlyMicros": 100000000
+        },
+        "residualHumanMinutesPerRequest": 0,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted",
+          "humanBaseline.hourlyCostMicros"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-cost",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "planning-cost",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 80000000
+            },
+            {
+              "id": "execution-cost",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 400000000
+            },
+            {
+              "id": "verification-cost",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 150000000
+            },
+            {
+              "id": "correction-cost",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "packaging-cost",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            },
+            {
+              "id": "reporting-cost",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 10000000
+            },
+            {
+              "id": "recovery-cost",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            }
+          ],
+          "humanExceptions": [],
+          "investments": [
+            {
+              "id": "setup-cost",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 100000000
+            }
+          ]
+        }
+      },
+      {
+        "name": "conservative",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 2,
+          "attemptsPerMonth": 2,
+          "acceptedPerMonth": 1.5,
+          "utilizationBps": 5000,
+          "acceptanceBps": 7500
+        },
+        "costs": {
+          "nextRequestMicros": 760000000,
+          "marginalMicrosPerAccepted": 1013333334,
+          "recurringMicrosPerAccepted": 1133333334,
+          "fullyLoadedMicrosPerAccepted": 1200000000,
+          "variableMonthlyMicros": 1520000000,
+          "sharedMonthlyMicros": 180000000,
+          "amortizedMonthlyMicros": 100000000
+        },
+        "residualHumanMinutesPerRequest": 0,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted",
+          "humanBaseline.hourlyCostMicros"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-cost",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "planning-cost",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 80000000
+            },
+            {
+              "id": "execution-cost",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 400000000
+            },
+            {
+              "id": "verification-cost",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 150000000
+            },
+            {
+              "id": "correction-cost",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "packaging-cost",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            },
+            {
+              "id": "reporting-cost",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 10000000
+            },
+            {
+              "id": "recovery-cost",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            }
+          ],
+          "humanExceptions": [],
+          "investments": [
+            {
+              "id": "setup-cost",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 100000000
+            }
+          ]
+        }
+      },
+      {
+        "name": "stress",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 2,
+          "attemptsPerMonth": 2,
+          "acceptedPerMonth": 1.5,
+          "utilizationBps": 5000,
+          "acceptanceBps": 7500
+        },
+        "costs": {
+          "nextRequestMicros": 760000000,
+          "marginalMicrosPerAccepted": 1013333334,
+          "recurringMicrosPerAccepted": 1133333334,
+          "fullyLoadedMicrosPerAccepted": 1200000000,
+          "variableMonthlyMicros": 1520000000,
+          "sharedMonthlyMicros": 180000000,
+          "amortizedMonthlyMicros": 100000000
+        },
+        "residualHumanMinutesPerRequest": 0,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted",
+          "humanBaseline.hourlyCostMicros"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-cost",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "planning-cost",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 80000000
+            },
+            {
+              "id": "execution-cost",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 400000000
+            },
+            {
+              "id": "verification-cost",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 150000000
+            },
+            {
+              "id": "correction-cost",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 40000000
+            },
+            {
+              "id": "packaging-cost",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            },
+            {
+              "id": "reporting-cost",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 10000000
+            },
+            {
+              "id": "recovery-cost",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 20000000
+            }
+          ],
+          "humanExceptions": [],
+          "investments": [
+            {
+              "id": "setup-cost",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 100000000
+            }
+          ]
+        }
+      }
+    ],
+    "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+    "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+  },
+  "projection": {
+    "schema": "network-economy-native-projection/v1",
+    "evidenceBasis": "SIMULATED",
+    "scope": "Reuses native arithmetic only. This is not a native mission, receipt, finite-cash engine, deployment or authority grant.",
+    "ledger": {
+      "schema": "alpha-shadow-ledger/v1",
+      "currency": "USD",
+      "events": [
+        {
+          "id": "simulated-001:mission",
+          "type": "mission",
+          "missionId": "simulated-001",
+          "acceptance": "accepted",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted"
+        },
+        {
+          "id": "simulated-001:revenue:collected",
+          "type": "revenue",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "collected",
+          "amountMinor": null,
+          "basis": "unknown"
+        },
+        {
+          "id": "simulated-001:revenue:price",
+          "type": "revenue",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "price",
+          "amountMinor": 500000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:cost:delivery",
+          "type": "cost",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "delivery",
+          "amountMinor": 76000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:cost:business",
+          "type": "cost",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "business",
+          "amountMinor": 18000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:cost:capability",
+          "type": "cost",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "capability",
+          "amountMinor": 120000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:cost:maintenance",
+          "type": "cost",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "maintenance",
+          "amountMinor": 2000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:reserve:reliability",
+          "type": "reserve",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "reliability",
+          "amountMinor": 20000,
+          "basis": "assumed"
+        },
+        {
+          "id": "simulated-001:obligation:unpaid",
+          "type": "obligation",
+          "missionId": "simulated-001",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "category": "unpaid",
+          "amountMinor": 5000,
+          "basis": "assumed"
+        }
+      ]
+    },
+    "summary": {
+      "schema": "alpha-shadow-ledger-summary/v1",
+      "currency": "USD",
+      "reinvestmentBps": 0,
+      "eventCount": 9,
+      "missions": [
+        {
+          "missionId": "simulated-001",
+          "acceptance": "accepted",
+          "reference": "SIMULATED accounting projection; no customer receipt or native mission is asserted",
+          "observed": {
+            "revenue": null,
+            "fullCost": null,
+            "operatingMargin": null,
+            "reserve": null,
+            "unpaidObligations": null,
+            "afterReserves": null,
+            "availableSurplus": null,
+            "eligibleInvestment": null
+          },
+          "scenario": {
+            "revenue": 500000,
+            "fullCost": 216000,
+            "operatingMargin": 284000,
+            "reserve": 20000,
+            "unpaidObligations": 5000,
+            "afterReserves": 259000,
+            "availableSurplus": 259000,
+            "eligibleInvestment": 0
+          },
+          "assumedPrice": 500000,
+          "missingCostCategories": [],
+          "unknownEventIds": [
+            "simulated-001:revenue:collected"
+          ],
+          "capabilityEvents": []
+        }
+      ],
+      "observed": {
+        "revenue": null,
+        "fullCost": null,
+        "operatingMargin": null,
+        "reserve": null,
+        "unpaidObligations": null,
+        "afterReserves": null,
+        "availableSurplus": null,
+        "eligibleInvestment": null
+      },
+      "scenario": {
+        "revenue": 500000,
+        "fullCost": 216000,
+        "operatingMargin": 284000,
+        "reserve": 20000,
+        "unpaidObligations": 5000,
+        "afterReserves": 259000,
+        "availableSurplus": 259000,
+        "eligibleInvestment": 0
+      },
+      "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+    }
+  }
+}

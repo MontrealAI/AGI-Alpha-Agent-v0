@@ -1,0 +1,1257 @@
+{
+  "ablation_arms": [
+    "remove_representation",
+    "remove_falsifier",
+    "remove_composition",
+    "duplicate",
+    "no_retention"
+  ],
+  "ablation_seeds": [
+    770001,
+    770002,
+    770003,
+    770004,
+    770005,
+    770006,
+    770007,
+    770008,
+    770009,
+    770010,
+    770011,
+    770012,
+    770013,
+    770014,
+    770015,
+    770016
+  ],
+  "amendment": "User-directed primary shift to paid-job learning; original protocol and partial training preserved, no v1 confirmation run.",
+  "antecedent_evidence": {
+    "graph": "c61b9e5dfd9d09df9c5975898e3fe0b7387c4cd185e540ca36fa48a8a52d1b3a",
+    "mechanism": "37eaeb0f753b70689fcf91d4d57988cfe3e66b335e3533de5788f28dc65414f2"
+  },
+  "arms": [
+    "beta",
+    "isolated",
+    "network",
+    "network_no_invest"
+  ],
+  "confirmation_seeds": [
+    770001,
+    770002,
+    770003,
+    770004,
+    770005,
+    770006,
+    770007,
+    770008,
+    770009,
+    770010,
+    770011,
+    770012,
+    770013,
+    770014,
+    770015,
+    770016,
+    770017,
+    770018,
+    770019,
+    770020,
+    770021,
+    770022,
+    770023,
+    770024,
+    770025,
+    770026,
+    770027,
+    770028,
+    770029,
+    770030,
+    770031,
+    770032,
+    770033,
+    770034,
+    770035,
+    770036,
+    770037,
+    770038,
+    770039,
+    770040,
+    770041,
+    770042,
+    770043,
+    770044,
+    770045,
+    770046,
+    770047,
+    770048,
+    770049,
+    770050,
+    770051,
+    770052,
+    770053,
+    770054,
+    770055,
+    770056,
+    770057,
+    770058,
+    770059,
+    770060,
+    770061,
+    770062,
+    770063,
+    770064
+  ],
+  "frozen_at_utc": "2026-10-26T23:33:59.443862+00:00",
+  "ledger_scope": "Every confirmation world has a complete transaction ledger; first predeclared seed also retains complete traces for every scenario/arm.",
+  "not_established": [
+    "matched frontier task acceptance",
+    "customer demand",
+    "human-only matched effort",
+    "operational Alpha",
+    "live ENS",
+    "sales",
+    "self-acceleration"
+  ],
+  "objective": "Maximize mean 104-week collected operating surplus net of accrued costs and closing obligations; no terminal skill valuation.",
+  "policy_candidates": [
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.35-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 0.35,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.35-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.35,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.35-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.35,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.35-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.35,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.55-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 0.55,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.55-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.55,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.55-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.55,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.55-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.55,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.75-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.75-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.75-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "fixed-0.75-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 1.0,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.0,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.0,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "fixed-1-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.0,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1.15-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 1.15,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1.15-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.15,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "fixed-1.15-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.15,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "fixed-1.15-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 1.15,
+      "pricing": "fixed",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive--0.1-delivery-only",
+      "price_offset": -0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive--0.1-retention-1-no-rd",
+      "price_offset": -0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive--0.1-retention-1.5-no-rd",
+      "price_offset": -0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "adaptive--0.1-retention-1-optional-rd",
+      "price_offset": -0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0-delivery-only",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0-retention-1-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0-retention-1.5-no-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0-retention-1-optional-rd",
+      "price_offset": 0.0,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0.1-delivery-only",
+      "price_offset": 0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": false,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0.1-retention-1-no-rd",
+      "price_offset": 0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": false,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0.1-retention-1.5-no-rd",
+      "price_offset": 0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.5
+    },
+    {
+      "abandon_after_idle_weeks": 16,
+      "allow_bundles": true,
+      "forecast_weight": 0.65,
+      "hurdle": 1.35,
+      "invest": true,
+      "max_investment_share": 0.6,
+      "name": "adaptive-0.1-retention-1-optional-rd",
+      "price_offset": 0.1,
+      "price_ratio": 0.75,
+      "pricing": "adaptive",
+      "reserve_weeks": 6,
+      "retain_skills": true,
+      "retention_hurdle": 1.0
+    }
+  ],
+  "policy_scope": "32-policy finite family, selected on network arm; same frozen policy applied to every primary arm.",
+  "resource_control": "Equal initial agents, quotas, seed, ordinary experience and external draws across arms; real sharing/invention overhead charged where incurred.",
+  "scenarios": {
+    "central": {
+      "admission_false_pass": 0.08,
+      "admission_false_rejection": 0.045,
+      "agents": 6,
+      "asset_defect_probability": 0.06,
+      "beta_epoch_weeks": 26,
+      "cache_enabled": true,
+      "choice_temperature": 0.14,
+      "collection_delay": 4,
+      "common_fault_probability": 0.055,
+      "construction_cost_factor": 1.0,
+      "construction_success": 0.72,
+      "copying_hazard": 0.006,
+      "correction_success": 0.78,
+      "default_probability": 0.04,
+      "demand_dispersion": 0.35,
+      "demand_value": 1.45,
+      "depth_weights": [
+        0.45,
+        0.35,
+        0.2
+      ],
+      "distribution_fixed": 70.0,
+      "distribution_per_skill": 2.0,
+      "diversity": 3,
+      "executable_detection": 0.97,
+      "external_improvement": 0.18,
+      "false_rejection": 0.035,
+      "harmful_transfer": 0.035,
+      "human_price_factor": 1.0,
+      "implementation_error": 0.1,
+      "initial_overlap": 0.25,
+      "initial_trust": 0.78,
+      "integration_fraction": 0.13,
+      "invention_probability": 0.48,
+      "leads_per_week": 4.0,
+      "maintenance_per_skill": 22.0,
+      "max_queue": 24,
+      "member_overhead": 4.0,
+      "membership_count": 24,
+      "name": "central",
+      "obsolete_hazard": 0.006,
+      "ordinary_learning_rate": 0.12,
+      "quality_decay_load": 0.025,
+      "quota_input_m": 200.0,
+      "quota_output_m": 40.0,
+      "refund_probability": 0.9,
+      "repeat_probability": 0.18,
+      "retention_cost_factor": 1.0,
+      "retention_generalization_success": 0.9,
+      "reuse_savings_factor": 1.0,
+      "revalidation_failure": 0.08,
+      "revalidation_false_negative": 0.05,
+      "revalidation_period": 12,
+      "runoff": 16,
+      "seed_capital": 60000,
+      "semantic_detection": 0.78,
+      "setup_cost": 9500,
+      "shareable_probability": 0.9,
+      "sharing_bounty": 125.0,
+      "spec_error": 0.045,
+      "specialization": 0.45,
+      "ticks_per_week": 5,
+      "token_cost_factor": 1.0,
+      "tool_cost_factor": 1.0,
+      "transfer_success": 0.8,
+      "transfer_validation_factor": 1.0,
+      "useful_lifetime": 40,
+      "validator_slots": 2,
+      "warranty_weeks": 6,
+      "weeks": 104
+    },
+    "conservative": {
+      "admission_false_pass": 0.08,
+      "admission_false_rejection": 0.045,
+      "agents": 6,
+      "asset_defect_probability": 0.06,
+      "beta_epoch_weeks": 26,
+      "cache_enabled": true,
+      "choice_temperature": 0.14,
+      "collection_delay": 7,
+      "common_fault_probability": 0.11,
+      "construction_cost_factor": 1.5,
+      "construction_success": 0.5,
+      "copying_hazard": 0.006,
+      "correction_success": 0.6,
+      "default_probability": 0.09,
+      "demand_dispersion": 0.35,
+      "demand_value": 1.25,
+      "depth_weights": [
+        0.45,
+        0.35,
+        0.2
+      ],
+      "distribution_fixed": 70.0,
+      "distribution_per_skill": 2.0,
+      "diversity": 3,
+      "executable_detection": 0.97,
+      "external_improvement": 0.4,
+      "false_rejection": 0.035,
+      "harmful_transfer": 0.07,
+      "human_price_factor": 1.0,
+      "implementation_error": 0.18,
+      "initial_overlap": 0.55,
+      "initial_trust": 0.61,
+      "integration_fraction": 0.22,
+      "invention_probability": 0.28,
+      "leads_per_week": 1.8,
+      "maintenance_per_skill": 22.0,
+      "max_queue": 24,
+      "member_overhead": 4.0,
+      "membership_count": 24,
+      "name": "conservative",
+      "obsolete_hazard": 0.02,
+      "ordinary_learning_rate": 0.12,
+      "quality_decay_load": 0.025,
+      "quota_input_m": 110,
+      "quota_output_m": 22,
+      "refund_probability": 0.9,
+      "repeat_probability": 0.18,
+      "retention_cost_factor": 2.0,
+      "retention_generalization_success": 0.7,
+      "reuse_savings_factor": 1.0,
+      "revalidation_failure": 0.08,
+      "revalidation_false_negative": 0.05,
+      "revalidation_period": 12,
+      "runoff": 16,
+      "seed_capital": 60000,
+      "semantic_detection": 0.63,
+      "setup_cost": 9500,
+      "shareable_probability": 0.9,
+      "sharing_bounty": 125.0,
+      "spec_error": 0.1,
+      "specialization": 0.45,
+      "ticks_per_week": 5,
+      "token_cost_factor": 2.0,
+      "tool_cost_factor": 1.5,
+      "transfer_success": 0.6,
+      "transfer_validation_factor": 1.0,
+      "useful_lifetime": 22,
+      "validator_slots": 2,
+      "warranty_weeks": 6,
+      "weeks": 104
+    },
+    "favorable": {
+      "admission_false_pass": 0.08,
+      "admission_false_rejection": 0.045,
+      "agents": 6,
+      "asset_defect_probability": 0.06,
+      "beta_epoch_weeks": 26,
+      "cache_enabled": true,
+      "choice_temperature": 0.14,
+      "collection_delay": 2,
+      "common_fault_probability": 0.025,
+      "construction_cost_factor": 1.0,
+      "construction_success": 0.84,
+      "copying_hazard": 0.006,
+      "correction_success": 0.87,
+      "default_probability": 0.02,
+      "demand_dispersion": 0.35,
+      "demand_value": 1.6,
+      "depth_weights": [
+        0.45,
+        0.35,
+        0.2
+      ],
+      "distribution_fixed": 70.0,
+      "distribution_per_skill": 2.0,
+      "diversity": 3,
+      "executable_detection": 0.97,
+      "external_improvement": 0.1,
+      "false_rejection": 0.035,
+      "harmful_transfer": 0.015,
+      "human_price_factor": 1.0,
+      "implementation_error": 0.065,
+      "initial_overlap": 0.1,
+      "initial_trust": 0.87,
+      "integration_fraction": 0.08,
+      "invention_probability": 0.65,
+      "leads_per_week": 7.0,
+      "maintenance_per_skill": 22.0,
+      "max_queue": 24,
+      "member_overhead": 4.0,
+      "membership_count": 24,
+      "name": "favorable",
+      "obsolete_hazard": 0.003,
+      "ordinary_learning_rate": 0.12,
+      "quality_decay_load": 0.025,
+      "quota_input_m": 290,
+      "quota_output_m": 58,
+      "refund_probability": 0.9,
+      "repeat_probability": 0.18,
+      "retention_cost_factor": 0.7,
+      "retention_generalization_success": 0.97,
+      "reuse_savings_factor": 1.0,
+      "revalidation_failure": 0.08,
+      "revalidation_false_negative": 0.05,
+      "revalidation_period": 12,
+      "runoff": 16,
+      "seed_capital": 60000,
+      "semantic_detection": 0.78,
+      "setup_cost": 9500,
+      "shareable_probability": 0.9,
+      "sharing_bounty": 125.0,
+      "spec_error": 0.025,
+      "specialization": 0.45,
+      "ticks_per_week": 5,
+      "token_cost_factor": 1.0,
+      "tool_cost_factor": 1.0,
+      "transfer_success": 0.92,
+      "transfer_validation_factor": 1.0,
+      "useful_lifetime": 64,
+      "validator_slots": 2,
+      "warranty_weeks": 6,
+      "weeks": 104
+    }
+  },
+  "schema": "paid-work-retained-alpha-protocol/2",
+  "sensitivity_cases": [
+    [
+      "central-reference",
+      {}
+    ],
+    [
+      "human-price-10pct",
+      {
+        "human_price_factor": 0.1
+      }
+    ],
+    [
+      "human-price-25pct",
+      {
+        "human_price_factor": 0.25
+      }
+    ],
+    [
+      "human-price-50pct",
+      {
+        "human_price_factor": 0.5
+      }
+    ],
+    [
+      "leads-0.05",
+      {
+        "leads_per_week": 0.05
+      }
+    ],
+    [
+      "leads-0.25",
+      {
+        "leads_per_week": 0.25
+      }
+    ],
+    [
+      "leads-0.5",
+      {
+        "leads_per_week": 0.5
+      }
+    ],
+    [
+      "leads-1",
+      {
+        "leads_per_week": 1.0
+      }
+    ],
+    [
+      "leads-2",
+      {
+        "leads_per_week": 2.0
+      }
+    ],
+    [
+      "leads-8",
+      {
+        "leads_per_week": 8.0
+      }
+    ],
+    [
+      "leads-16",
+      {
+        "leads_per_week": 16.0
+      }
+    ],
+    [
+      "token-price-3x",
+      {
+        "token_cost_factor": 3.0
+      }
+    ],
+    [
+      "token-price-10x",
+      {
+        "token_cost_factor": 10.0
+      }
+    ],
+    [
+      "cache-disabled",
+      {
+        "cache_enabled": false
+      }
+    ],
+    [
+      "trust-0.45",
+      {
+        "initial_trust": 0.45
+      }
+    ],
+    [
+      "integration-0.35",
+      {
+        "integration_fraction": 0.35
+      }
+    ],
+    [
+      "correlated-fault-0.25",
+      {
+        "common_fault_probability": 0.25
+      }
+    ],
+    [
+      "validator-detection-0.40",
+      {
+        "executable_detection": 0.85,
+        "semantic_detection": 0.4
+      }
+    ],
+    [
+      "construct-0.30",
+      {
+        "construction_success": 0.3
+      }
+    ],
+    [
+      "construct-0.95",
+      {
+        "construction_success": 0.95
+      }
+    ],
+    [
+      "build-effort-0.10",
+      {
+        "construction_cost_factor": 0.1
+      }
+    ],
+    [
+      "build-effort-0.50",
+      {
+        "construction_cost_factor": 0.5
+      }
+    ],
+    [
+      "build-effort-2",
+      {
+        "construction_cost_factor": 2.0
+      }
+    ],
+    [
+      "retention-effort-0.10",
+      {
+        "retention_cost_factor": 0.1
+      }
+    ],
+    [
+      "retention-effort-3",
+      {
+        "retention_cost_factor": 3.0
+      }
+    ],
+    [
+      "retention-effort-10",
+      {
+        "retention_cost_factor": 10.0
+      }
+    ],
+    [
+      "retention-success-0.4",
+      {
+        "retention_generalization_success": 0.4
+      }
+    ],
+    [
+      "learning-yield-0.1",
+      {
+        "invention_probability": 0.1
+      }
+    ],
+    [
+      "ordinary-learning-certain",
+      {
+        "ordinary_learning_rate": 1.0
+      }
+    ],
+    [
+      "transfer-0.40",
+      {
+        "transfer_success": 0.4
+      }
+    ],
+    [
+      "transfer-0.98",
+      {
+        "transfer_success": 0.98
+      }
+    ],
+    [
+      "integration-check-4x",
+      {
+        "transfer_validation_factor": 4.0
+      }
+    ],
+    [
+      "overlap-0",
+      {
+        "initial_overlap": 0.0
+      }
+    ],
+    [
+      "overlap-0.90",
+      {
+        "initial_overlap": 0.9
+      }
+    ],
+    [
+      "reuse-savings-0",
+      {
+        "reuse_savings_factor": 0.0
+      }
+    ],
+    [
+      "lifetime-12",
+      {
+        "useful_lifetime": 12
+      }
+    ],
+    [
+      "lifetime-104",
+      {
+        "useful_lifetime": 104
+      }
+    ],
+    [
+      "beta-static",
+      {
+        "external_improvement": 0.0
+      }
+    ],
+    [
+      "beta-fast",
+      {
+        "external_improvement": 0.6
+      }
+    ],
+    [
+      "copying-fast",
+      {
+        "copying_hazard": 0.05
+      }
+    ],
+    [
+      "obsolescence-0.05",
+      {
+        "obsolete_hazard": 0.05
+      }
+    ],
+    [
+      "diversity-1",
+      {
+        "diversity": 1
+      }
+    ],
+    [
+      "specialization-0",
+      {
+        "specialization": 0.0
+      }
+    ],
+    [
+      "specialization-0.8",
+      {
+        "specialization": 0.8
+      }
+    ],
+    [
+      "depth-1-only",
+      {
+        "depth_weights": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    [
+      "depth-3-heavy",
+      {
+        "depth_weights": [
+          0.15,
+          0.25,
+          0.6
+        ]
+      }
+    ],
+    [
+      "validators-1",
+      {
+        "setup_cost": 9000,
+        "validator_slots": 1
+      }
+    ],
+    [
+      "validators-4",
+      {
+        "setup_cost": 10500,
+        "validator_slots": 4
+      }
+    ],
+    [
+      "quota-quarter",
+      {
+        "quota_input_m": 50,
+        "quota_output_m": 10
+      }
+    ],
+    [
+      "compute-double",
+      {
+        "quota_input_m": 400,
+        "quota_output_m": 80
+      }
+    ],
+    [
+      "agents-double",
+      {
+        "agents": 12,
+        "setup_cost": 12500
+      }
+    ],
+    [
+      "scale-complete-double",
+      {
+        "agents": 12,
+        "quota_input_m": 400,
+        "quota_output_m": 80,
+        "setup_cost": 13500,
+        "validator_slots": 4
+      }
+    ],
+    [
+      "seed-10000",
+      {
+        "seed_capital": 10000
+      }
+    ],
+    [
+      "seed-25000",
+      {
+        "seed_capital": 25000
+      }
+    ],
+    [
+      "collections-12weeks",
+      {
+        "collection_delay": 12
+      }
+    ],
+    [
+      "joint-commercial-downside",
+      {
+        "collection_delay": 12,
+        "human_price_factor": 0.1,
+        "initial_trust": 0.5,
+        "leads_per_week": 0.5,
+        "token_cost_factor": 3
+      }
+    ],
+    [
+      "cheap-extraction-focused",
+      {
+        "construction_cost_factor": 0.1,
+        "diversity": 1
+      }
+    ]
+  ],
+  "sensitivity_policy": "Frozen central policy, with and without discretionary investment; response rules see each declared scenario prior.",
+  "sensitivity_seeds": [
+    780001,
+    780002,
+    780003,
+    780004,
+    780005,
+    780006,
+    780007,
+    780008,
+    780009,
+    780010,
+    780011,
+    780012,
+    780013,
+    780014,
+    780015,
+    780016
+  ],
+  "source_hashes": {
+    "evidence/FINAL_RUN_DESIGN.md": "f08096a2624362dd00177350b1395c3e0b2b2ae511322af10dc64fb306598ee1",
+    "evidence/RESEARCH_PROTOCOL.md": "3d1a86a3e5cdcef35072414aec84226e7f3715a2e124af59144888b6d305bae8",
+    "evidence/recipient_ablation_design.md": "ae9d558e9e4291b6b1daf2027fa8eff4cd79f16593e5a05235df68b1d329e25a",
+    "integration/modeled_admission.py": "42bfa28f5710df23b7a59a1c9fc5376344ed6f40b4a2fd219cffabe8ce066729",
+    "sources/calibration.json": "e207d344c04815b8ed6aaea9b0edc6d128fdfc1d60f56d2045ac4493cc8dc3aa",
+    "sources/workload_catalog.json": "075bf73dec660f04f1fc2ea7e5c487caa339d2a6cb4307c9ccce94a491b660f1",
+    "src/__init__.py": "6c6ec57de9f82ef42d82760f144a4571cb16b3cd6de33aaa7aa9fd65e8ab1fa1",
+    "src/alpha_assessment.py": "778576d87bbc57aac5138d48a54a96ba4ec1463f203cfc69ae2761803013ad10",
+    "src/mechanism_witness.py": "24210b6906ef506865ff4fe8af2a2b19d4d5070e5304de4a97b5e04a6e628c6e",
+    "src/recipient_ablation.py": "29311319066d78ab8d32713944fbc98c547ea54d8b35af66362a6a35fb320bd5",
+    "src/run_study.py": "ebb37c79361a93f89c010af114f8db27d245002d0d9f8ac4bd4f5a8910b5cedd",
+    "src/simulator.py": "cb8f5be629da2f4e514b332144e7daf72d6043555340a2f5ece7df8baa363866",
+    "src/skill_graph.py": "5cdbc59da56429860d7b3784c336459c55f3adada23728ea6292f593237cf432",
+    "tests/test_alpha_assessment.py": "838c523d163d2216557cdf23b9fa39952976f893681a8db2b1237317937a9f87",
+    "tests/test_economy_audit.py": "5ce1f6bb22d178a6063139f2063f758431d860df1a241668e30fefc492eabff8",
+    "tests/test_mechanism_witness.py": "e9050bf701f69664787283c52947c4491f9e0371c3fa795831484f1f199527e2",
+    "tests/test_paid_job_accounting.py": "51af44761fe05c7fbd1b5ca9f761b42485956fe2b6020ff698de982699a40a67",
+    "tests/test_recipient_ablation.py": "564ecc2540f4687245c4ac777469fe121cd67de838b4e569f21ed05d5630050e",
+    "tests/test_simulator_review.py": "8db5ca8b391ad7e94424061e8237cf1c98097900a6dcb1d94457d3323bb1b348",
+    "tests/test_skill_graph.py": "3227dfe79c8f713bd2c5549868ba1f796fbd038c900609cf0dfc7aff811a6317"
+  },
+  "source_kind": "simulation-design",
+  "statistics": "Independent-world means; 95% normal Monte Carlo intervals for means and paired differences; Wilson intervals for binary frequencies. Not empirical market confidence.",
+  "status": "frozen-before-training-and-confirmation",
+  "tie_break": "Within 1 USD prefer no optional R&D, then no retention, then lexicographic policy name.",
+  "title": "Paid Work. Retained Alpha. Expanding Possibility.",
+  "training_constraint": "Observed training cash-shortfall frequency <=0.05; this is an empirical screen, not a risk guarantee.",
+  "training_seeds": [
+    760001,
+    760002,
+    760003,
+    760004,
+    760005,
+    760006,
+    760007,
+    760008,
+    760009,
+    760010,
+    760011,
+    760012,
+    760013,
+    760014,
+    760015,
+    760016,
+    760017,
+    760018,
+    760019,
+    760020,
+    760021,
+    760022,
+    760023,
+    760024
+  ]
+}
