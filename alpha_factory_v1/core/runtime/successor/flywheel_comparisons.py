@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Any
 
 from ..store import Conflict, digest as runtime_digest
-from .flywheel_costs import KEY as COST_KEY, Charge, CompletenessSeal
+from .flywheel_costs import KEY as COST_KEY
 from .flywheel_discovery import ComparisonPlan, ComparisonTrial, key
 from .flywheel_execution import ExecutionPermit, ExecutionProfile, operation_key
 from .flywheel_learning import ACCEPTANCE_KEY, accepted_general_origin
@@ -87,6 +87,96 @@ def _execution(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, fro
     return record
 
 
+def _model_io(discovery: Any, trial: ComparisonTrial, record: dict[str, Any], cx: Any) -> dict[str, Any]:
+    """Read durable request boundaries without turning a declared mode into provider proof."""
+    result: dict[str, Any] = {
+        "status": "insufficient-executor-boundary-evidence",
+        "declared_component": trial.mission.components["model"],
+        "request_boundary_lower_bound": 0,
+        "recorded_response_count": 0,
+        "processed_usage_count": None,
+        "pending_model_request": None,
+        "unresolved_request": None,
+        "provider_call_count": None,
+        "provider_provenance_verified": False,
+    }
+    turn, reserved, usage = (
+        record.get("turn"),
+        record.get("reserved_request_caps_micro_usd"),
+        record.get("usage_events"),
+    )
+    if (
+        not isinstance(turn, int)
+        or type(turn) is not int
+        or not 0 <= turn <= trial.mission.max_turns
+        or not isinstance(reserved, int)
+        or type(reserved) is not int
+        or reserved < 0
+        or not isinstance(usage, list)
+        or type(usage) is not list
+        or len(usage) > turn
+    ):
+        return result
+    responses: dict[int, dict[str, Any]] = {}
+    valid = True
+    for index in range(turn):
+        label = "model/" + str(index)
+        try:
+            event = discovery.journal.latest(operation_key(trial.operation_id) + "/event/" + label, cx)
+        except KeyError:
+            continue
+        if (
+            event.get("attempt") != label
+            or event.get("components") != trial.mission.components
+            or not isinstance(event.get("value"), dict)
+        ):
+            valid = False
+            continue
+        responses[index] = event["value"]
+    for index, item in enumerate(usage):
+        body = responses.get(index)
+        if (
+            body is None
+            or not isinstance(item, dict)
+            or item.get("response_digest") != digest("flywheel-responses-response", body)
+            or item.get("usage") != body.get("usage")
+            or item.get("model") != body.get("model")
+        ):
+            valid = False
+    pending = record.get("pending")
+    unresolved = False
+    boundaries = set(responses)
+    if isinstance(pending, str) and pending.startswith("model/"):
+        suffix = pending.removeprefix("model/")
+        if not suffix.isdecimal() or suffix != str(int(suffix)) or not 0 <= int(suffix) < turn:
+            valid = False
+        else:
+            index = int(suffix)
+            boundaries.add(index)
+            unresolved = index not in responses
+        result["pending_model_request"] = pending
+    elif pending is not None and (not isinstance(pending, str) or not pending.startswith("tool/")):
+        valid = False
+    if reserved > 0 and not responses and not boundaries:
+        unresolved = True
+    result.update(
+        request_boundary_lower_bound=len(boundaries),
+        recorded_response_count=len(responses),
+        processed_usage_count=len(usage),
+        unresolved_request=unresolved if valid else None,
+        status=(
+            "insufficient-executor-boundary-evidence"
+            if not valid
+            else "request-boundary-unresolved"
+            if unresolved
+            else "response-recorded"
+            if responses
+            else "no-request-boundary-recorded"
+        ),
+    )
+    return result
+
+
 def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: dict[str, Any], cx: Any) -> Any:
     cell: dict[str, Any] = {
         "role": trial.role,
@@ -106,17 +196,20 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
         "mode": trial.mission.mode,
         "components": trial.mission.components,
         "execution_authority_current": True,
+        "model_io": {"status": "not-attempted", "provider_call_count": None, "provider_provenance_verified": False},
     }
     try:
         record = _execution(discovery, plan, trial, frozen, cx)
     except (KeyError, ValueError, TypeError):
         cell["status"] = "binding-mismatch"
+        cell["model_io"]["status"] = "unbound-execution-record"
         return cell
     if record is None:
         return cell
     cell["execution_digest"] = record["digest"]
+    cell["model_io"] = _model_io(discovery, trial, record, cx)
     try:
-        _current_signature(discovery, record["permit"], "flywheel-execution-permit", "controller")
+        discovery.costs.current_signature(record["permit"], "flywheel-execution-permit", "controller")
     except (KeyError, ValueError, TypeError):
         cell["execution_authority_current"] = False
     if record["status"] not in TERMINAL:
@@ -142,7 +235,7 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
         cell.update(status=record["status"], outcome_known=True)
         return cell
     try:
-        accepted_general_origin(discovery.service, trial.operation_id, cx)
+        accepted_general_origin(discovery.service, trial.operation_id, cx, require_current=False)
         acceptance = discovery.journal.latest(ACCEPTANCE_KEY + trial.operation_id, cx)
     except KeyError:
         cell["status"] = "acceptance-unassessed"
@@ -154,91 +247,11 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
     return cell
 
 
-def _current_signature(discovery: Any, raw: Any, domain: str, role: str) -> dict[str, Any]:
-    signed = SignedEnvelope.model_validate(raw)
-    payload = discovery.service.trust.verify(signed, domain, role)
-    if payload.get("journal_identity") != discovery.journal.identity:
-        raise ValueError("supporting signature belongs to a different journal")
-    return dict(payload)
-
-
-def _current_charge(discovery: Any, row: dict[str, Any], cx: Any, depth: int = 0) -> None:
-    if depth > 1:
-        raise ValueError("cost reconciliation has unsupported ancestry")
-    charge = Charge.model_validate({name: row[name] for name in Charge.model_fields})
-    signed = SignedEnvelope.model_validate(row["signed"])
-    if signed.domain == "flywheel-cost-command":
-        payload = _current_signature(discovery, signed.model_dump(), "flywheel-cost-command", "accounting")
-        original = Charge.model_validate(payload["record"])
-        if (
-            set(payload) != {"journal_identity", "operation_id", "action", "record"}
-            or payload["action"] != ("resolve" if "original" in row else "charge")
-            or original.model_dump(exclude={"paid_micro_usd"}) != charge.model_dump(exclude={"paid_micro_usd"})
-            or original.paid_micro_usd > charge.paid_micro_usd
-        ):
-            raise ValueError("cost row differs from its signed accounting command")
-    elif signed.domain == "flywheel-execution-permit":
-        payload = _current_signature(discovery, signed.model_dump(), "flywheel-execution-permit", "controller")
-        permit = ExecutionPermit.model_validate(payload["permit"])
-        execution = discovery.journal.latest(operation_key(permit.operation_id), cx)
-        if (
-            set(payload) != {"journal_identity", "permit"}
-            or charge.activity_id != "execution/" + permit.operation_id
-            or charge.mission_id != execution["mission"]["mission_id"]
-            or charge.bucket != permit.bucket
-            or charge.category != "model"
-            or charge.accrued_micro_usd is not None
-            or charge.paid_micro_usd != 0
-            or execution["permit"] != signed.model_dump()
-            or "original" in row
-        ):
-            raise ValueError("cost reservation differs from its actual signed execution")
-    elif signed.domain == "flywheel-gym-plan":
-        from .flywheel_gym import KEY as GYM_KEY, GymPlan
-
-        payload = _current_signature(discovery, signed.model_dump(), "flywheel-gym-plan", "controller")
-        plan = GymPlan.model_validate(payload["plan"])
-        campaign = discovery.journal.latest(GYM_KEY + plan.campaign_id, cx)
-        if (
-            set(payload) != {"journal_identity", "plan"}
-            or charge.activity_id != "gym/" + plan.campaign_id
-            or charge.mission_id != plan.mission_id
-            or charge.bucket != "C"
-            or charge.category != "compute"
-            or charge.accrued_micro_usd is not None
-            or charge.paid_micro_usd != 0
-            or charge.evidence_digest != digest("gym-plan", plan)
-            or campaign["plan"] != signed.model_dump()
-            or "original" in row
-        ):
-            raise ValueError("cost reservation differs from its actual signed Gym campaign")
-    else:
-        raise ValueError("cost signature has an unsupported authority domain")
-    if "original" in row:
-        _current_charge(discovery, row["original"], cx, depth + 1)
-
-
-def _costs(discovery: Any, mission_id: str, buckets: list[str], ledger: dict[str, Any], cx: Any) -> dict[str, Any]:
+def _costs(discovery: Any, mission_id: str, buckets: list[str], cx: Any) -> dict[str, Any]:
     report = discovery.costs.report(mission_id, cx)
     current = True
     try:
-        for row in ledger["charges"].values():
-            if row["mission_id"] == mission_id and row["bucket"] in buckets:
-                _current_charge(discovery, row, cx)
-        for bucket in buckets:
-            name = {"A": "seals", "B": "reuse_seals", "C": "investment_seals"}[bucket]
-            seal = ledger.get(name, {}).get(mission_id)
-            if seal is None:
-                continue
-            payload = _current_signature(discovery, seal["signed"], "flywheel-cost-command", "accounting")
-            allowed = {"A": {"seal"}, "B": {"seal-reuse", "seal-retention"}, "C": {"seal-investment"}}[bucket]
-            if (
-                set(payload) != {"journal_identity", "operation_id", "action", "record"}
-                or payload["action"] not in allowed
-                or CompletenessSeal.model_validate(payload["record"]).model_dump()
-                != {name: seal[name] for name in CompletenessSeal.model_fields}
-            ):
-                raise ValueError("completeness seal differs from its signed accounting command")
+        discovery.costs.require_current_evidence(mission_id, buckets, cx)
     except (KeyError, ValueError, TypeError):
         current = False
     return {
@@ -284,12 +297,12 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 present = {
                     row["bucket"] for row in ledger["charges"].values() if row["mission_id"] == trial.mission.mission_id
                 }
-                row = _costs(discovery, trial.mission.mission_id, sorted(present | {"A"}), ledger, cx)
+                row = _costs(discovery, trial.mission.mission_id, sorted(present | {"A"}), cx)
                 current = current and row["current_evidence_valid"]
                 row.update(role=trial.role, case_id=case.case_id, allocation="existing-delivery-costs")
                 cost_rows.append(row)
         for scope in plan.additional_costs:
-            row = _costs(discovery, scope.mission_id, [scope.bucket], ledger, cx)
+            row = _costs(discovery, scope.mission_id, [scope.bucket], cx)
             current = current and row["current_evidence_valid"]
             row.update(role=scope.role, case_id=None, allocation="additional-not-already-charged")
             cost_rows.append(row)
@@ -344,6 +357,11 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 "cost_basis": "existing signed ledger attestations; not inferred from token usage",
             }
         executed = [cell for cell in cells if cell["execution_digest"] is not None]
+        observed = [cell for cell in executed if cell["model_io"].get("recorded_response_count", 0) > 0]
+        unresolved = any(
+            cell["model_io"]["status"] in {"request-boundary-unresolved", "insufficient-executor-boundary-evidence"}
+            for cell in executed
+        )
         result = {
             "schema_name": "flywheel-operational-alpha-result/v1",
             "comparison_id": plan.comparison_id,
@@ -363,11 +381,15 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
             "cells": cells,
             "cost_allocations": cost_rows,
             "model_evidence": (
-                "simulated-model-protocol-fixture"
-                if any(cell["model_component"] == "simulated" for cell in executed)
-                else "actual-model-records-with-unqualified-attribution"
-                if executed
-                else "no-executions"
+                "no-executions"
+                if not executed
+                else "model-request-evidence-unresolved"
+                if unresolved
+                else "bound-executions-without-model-io-evidence"
+                if not observed
+                else "simulated-model-protocol-fixture"
+                if all(cell["model_component"] == "simulated" for cell in observed)
+                else "recorded-model-responses-provider-unverified"
             ),
             "scope": plan.purpose.scope,
             "authority_granted": False,

@@ -241,6 +241,8 @@ class ProtectedLibrary:
     ) -> None:
         if library.journal is not costs.journal or library.journal is not access.journal:
             raise ValueError("one authoritative transactional journal is required")
+        if library.trust is not costs.trust:
+            raise ValueError("one authoritative current trust registry is required")
         if (
             not keys
             or active_key not in keys

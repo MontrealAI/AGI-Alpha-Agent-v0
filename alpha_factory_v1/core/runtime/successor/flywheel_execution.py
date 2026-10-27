@@ -191,8 +191,7 @@ class ModelTransport(Protocol):
     """Provider calls and deterministic modeled calls share the same loop."""
 
     @property
-    def component(self) -> Literal["live", "simulated"]:
-        ...
+    def component(self) -> Literal["live", "simulated"]: ...
 
     def respond(self, payload: dict[str, Any], active: Callable[[], bool], remaining: float) -> dict[str, Any]:
         """Return a Responses envelope without retrying uncertain requests."""
@@ -202,12 +201,10 @@ class ExecutionEnvironment(Protocol):
     """A preauthorized sandbox or fixed tool set, with no imported authority."""
 
     @property
-    def component(self) -> Literal["live", "executed-local", "simulated"]:
-        ...
+    def component(self) -> Literal["live", "executed-local", "simulated"]: ...
 
     @property
-    def identity(self) -> dict[str, Any]:
-        ...
+    def identity(self) -> dict[str, Any]: ...
 
     def perform(self, name: str, arguments: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]:
         """Execute one permitted call and return actual results or observations."""
@@ -519,6 +516,7 @@ class MissionExecutor:
         authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
         if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
             raise ValueError("execution permit must bind this exact journal")
+        authority_commitment = digest("flywheel-execution-current-authority", authority)
         permit = ExecutionPermit.model_validate(authority["permit"])
         config = self.journal.config.model_copy(deep=True)
         if (
@@ -582,6 +580,12 @@ class MissionExecutor:
 
         def active() -> bool:
             self.qualification_check()
+            current_authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+            if (
+                current_authority.get("journal_identity") != self.journal.identity
+                or digest("flywheel-execution-current-authority", current_authority) != authority_commitment
+            ):
+                raise Conflict("execution authority changed during the mission")
             if (
                 digest("flywheel-execution-environment-contract", self.environment.identity)
                 != permit.environment_digest
@@ -628,8 +632,7 @@ class MissionExecutor:
                 basis="unknown",
                 evidence_digest=digest("flywheel-execution-reservation", state),
                 note=(
-                    "Model charges unknown, including interrupted work; "
-                    "tool/compute costs require separate categories."
+                    "Model charges unknown, including interrupted work; tool/compute costs require separate categories."
                 ),
             )
             costs["charges"][activity] = {**charge.model_dump(), "signed": signed.model_dump()}

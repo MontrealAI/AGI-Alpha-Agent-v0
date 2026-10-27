@@ -290,11 +290,11 @@ PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
 
 # Complete proposed discovery Flywheel successor; every predecessor remains exact.
 FLYWHEEL_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
-    "docs/service-worker.js": (23649, "482463fa8556610e811008e8ca4a522793765ecd824f19df1ed22aa2a9cd0de0"),
-    "docs/assets/service-worker.js": (24089, "ef89d0cd1a702a1686aa6d627510c89410c3448393ef1a59b8d5935be8311ecb"),
+    "docs/service-worker.js": (23649, "c274354e67c0494b7bf5c44dcb82acca16d57e9c001093ffaa6d0cffb6b484a0"),
+    "docs/assets/service-worker.js": (24089, "73c47d99b3278f6c265922051e5dfaf5f1638c51c5fd1d836f0fe15038b572d6"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26729,
-        "be9329c2190f4bd9ee2292a5f18bb4f4cc7988f3ec661f808716f6e162346a0a",
+        "37e043b4e2a3c6f13c6b96627aebb1ba4dd644bbd424d5c6011d49e60ac1cb93",
     ),
 }
 

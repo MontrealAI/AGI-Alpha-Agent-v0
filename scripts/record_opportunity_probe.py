@@ -166,7 +166,15 @@ def record() -> dict[str, Any]:
         source, target = Path(directory) / "input.json", Path(directory) / "output.json"
         source.write_bytes(canonical(partial))
         subprocess.run(
-            [sys.executable, str(Path(__file__).resolve()), "--recipient", str(source), "--output", str(target)],
+            [
+                sys.executable,
+                "-m",
+                "scripts.record_opportunity_probe",
+                "--recipient",
+                str(source),
+                "--output",
+                str(target),
+            ],
             check=True,
             cwd=ROOT,
             timeout=30,

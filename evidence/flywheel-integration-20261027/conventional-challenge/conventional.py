@@ -2,6 +2,7 @@
 from __future__ import annotations
 from typing import Any
 
+
 def solve(problem: dict[str, Any]) -> dict[str, Any]:
     actions = problem["steps"]
     goals = frozenset(problem["required_outputs"])
@@ -38,8 +39,17 @@ def solve(problem: dict[str, Any]) -> dict[str, Any]:
         rank = (sum(s["permission"] == "required" for s in chosen), cost, seconds, tuple(sequence))
         if best is None or rank < best:
             best, answer = rank, sequence
-    status = "incomplete" if not complete else "no-plan" if best is None else "conditional-plan" if best[0] else "declared-plan"
+    status = (
+        "incomplete"
+        if not complete
+        else "no-plan"
+        if best is None
+        else "conditional-plan"
+        if best[0]
+        else "declared-plan"
+    )
     return dict(status=status, rank=best, steps=answer, subsets_examined=examined, search_complete=complete)
+
 
 def witness(problem: dict[str, Any], report: dict[str, Any]) -> bool:
     actions = {a["step_id"]: a for a in problem["steps"]}
@@ -50,19 +60,30 @@ def witness(problem: dict[str, Any], report: dict[str, Any]) -> bool:
         for raw in report["steps"]:
             identity = raw["step_id"]
             a = actions[identity]
-            if a != raw or identity in seen or a["permission"] == "denied": return False
-            if not set(a["requires"]).issubset(facts): return False
-            if not set(problem["obligations"]).issubset(a["preserves"]): return False
+            if a != raw or identity in seen or a["permission"] == "denied":
+                return False
+            if not set(a["requires"]).issubset(facts):
+                return False
+            if not set(problem["obligations"]).issubset(a["preserves"]):
+                return False
             facts.update(a["produces"])
             seen.add(identity)
             cost += a["estimated_cost_micro_usd"]
             seconds += a["duration_seconds"]
-            if a["permission"] == "required": pending.append(identity)
-        return (report["status"] == ("conditional-plan" if pending else "declared-plan")
-                and set(problem["required_outputs"]).issubset(facts)
-                and cost <= problem["cost_cap_micro_usd"] and seconds <= problem["seconds_cap"]
-                and report["estimated_cost_micro_usd"] == cost and report["duration_seconds"] == seconds
-                and report["pending_permissions"] == pending and report["preserved_obligations"] == problem["obligations"]
-                and report["authority_granted"] is False and report["customer_acceptance"] is False
-                and report["actual_experiment_performed"] is False)
-    except (KeyError, TypeError): return False
+            if a["permission"] == "required":
+                pending.append(identity)
+        return (
+            report["status"] == ("conditional-plan" if pending else "declared-plan")
+            and set(problem["required_outputs"]).issubset(facts)
+            and cost <= problem["cost_cap_micro_usd"]
+            and seconds <= problem["seconds_cap"]
+            and report["estimated_cost_micro_usd"] == cost
+            and report["duration_seconds"] == seconds
+            and report["pending_permissions"] == pending
+            and report["preserved_obligations"] == problem["obligations"]
+            and report["authority_granted"] is False
+            and report["customer_acceptance"] is False
+            and report["actual_experiment_performed"] is False
+        )
+    except (KeyError, TypeError):
+        return False

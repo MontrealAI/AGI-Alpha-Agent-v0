@@ -164,10 +164,11 @@ def run_trial(
     fail: bool = False,
     accept: bool = True,
     controller: str = "controller",
+    transport: Any = None,
 ) -> dict[str, Any]:
     environment = SystemsTool()
     instance = PlacementProblem.model_validate(trial.mission.inputs["problem"])
-    transport = ScriptedModel(instance)
+    transport = ScriptedModel(instance) if transport is None else transport
     if fail:
 
         def refuse(name: str, arguments: dict[str, Any], active: Any) -> dict[str, Any]:
@@ -644,3 +645,134 @@ def test_execution_signature_substitution_never_qualifies_current_contrasts(setu
     assert not value["cells"][0]["execution_authority_current"]
     assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
     assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+
+
+def configured_model_state(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    initialize = f.Journal.initialize
+
+    def configured_initialize(root: Any, **kwargs: Any) -> Any:
+        return initialize(root, RuntimeConfig(llm_url="http://127.0.0.1:9", llm_model=profile().model_id), **kwargs)
+
+    with monkeypatch.context() as local:
+        local.setattr(f.Journal, "initialize", staticmethod(configured_initialize))
+        return f.setup.__wrapped__(tmp_path)
+
+
+def declared_live_plan(state: dict[str, Any], context_cap: int = 750_000) -> tuple[ComparisonPlan, ExecutionProfile]:
+    selected = profile().model_copy(update={"model_request_cap_micro_usd": 1, "max_context_bytes": context_cap})
+    spec = plan(state, 1)
+    spec = spec.model_copy(
+        update={
+            "arms": [
+                arm.model_copy(update={"model_profile_digest": digest("flywheel-execution-profile", selected)})
+                for arm in spec.arms
+            ]
+        }
+    )
+    for trial in spec.cases[0].trials:
+        trial.mission.components["model"] = "live"
+    return freeze(state, ComparisonPlan.model_validate(spec.model_dump())), selected
+
+
+def run_declared_model_double(
+    state: dict[str, Any], spec: ComparisonPlan, selected: ExecutionProfile, transport: Any
+) -> Any:
+    trial, environment = spec.cases[0].trials[0], SystemsTool()
+    terms = ExecutionPermit(
+        operation_id=trial.operation_id,
+        request_digest=digest("flywheel-execution-request", trial.mission),
+        profile_digest=digest("flywheel-execution-profile", selected),
+        environment_digest=digest("flywheel-execution-environment-contract", environment.identity),
+        config_digest=runtime_digest(state["journal"].config.model_dump()),
+        quota_evidence_digest=f.ZERO,
+        pricing_evidence_digest=f.ZERO,
+        max_authorized_micro_usd=1000,
+        expires_at=int(time.time()) + 3600,
+        bucket="A",
+    )
+    signed = sign_record(
+        state["keys"]["controller"],
+        "controller",
+        "flywheel-execution-permit",
+        {"journal_identity": state["journal"].identity, "permit": terms.model_dump()},
+    )
+    return MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+        trial.mission, selected, signed
+    )
+
+
+@pytest.mark.parametrize("stop_before_request", [True, False])
+def test_bound_execution_never_promotes_zero_or_uncertain_model_io(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, stop_before_request: bool
+) -> None:
+    state = configured_model_state(tmp_path, monkeypatch)
+    spec, selected = declared_live_plan(state, 1024 if stop_before_request else 750_000)
+    snapshots = []
+
+    class NoProviderDouble:
+        component = "live"
+        calls = 0
+
+        def respond(self, *args: Any) -> Any:
+            self.calls += 1
+            snapshots.append(report(state, spec))
+            raise TimeoutError("Offline uncertain-request fixture; no actual provider")
+
+    transport = NoProviderDouble()
+    result = run_declared_model_double(state, spec, selected, transport)
+    value = report(state, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.calls == (0 if stop_before_request else 1)
+    assert result["turn"] == 1 and result["status"] == "failed-or-uncertain"
+    assert result["usage_events"] == [] and result["actions"] == 0
+    assert io["recorded_response_count"] == 0 and io["provider_call_count"] is None
+    assert not io["provider_provenance_verified"] and value["cells"][0]["execution_digest"] is not None
+    assert len(value["cells"]) == 3 and value["arms"]["U"]["planned"] == 1
+    if stop_before_request:
+        assert result["reserved_request_caps_micro_usd"] == 0 and snapshots == []
+        assert io["status"] == "no-request-boundary-recorded"
+        assert value["model_evidence"] == "bound-executions-without-model-io-evidence"
+    else:
+        assert result["reserved_request_caps_micro_usd"] == 1
+        assert io["status"] == "request-boundary-unresolved" and io["unresolved_request"] is True
+        assert io["request_boundary_lower_bound"] == 1
+        assert snapshots[0]["cells"][0]["model_io"]["status"] == "request-boundary-unresolved"
+        assert value["model_evidence"] == "model-request-evidence-unresolved"
+        rewrite(state, operation_key(spec.cases[0].trials[0].operation_id), lambda row: row.update(pending=None))
+        missing = report(state, spec)["cells"][0]["model_io"]
+        assert missing["unresolved_request"] is True and missing["provider_call_count"] is None
+
+
+def test_recorded_scripted_responses_preserve_call_counts_without_provider_promotion(setup: dict[str, Any]) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    trial = spec.cases[0].trials[0]
+    transport = ScriptedModel(PlacementProblem.model_validate(trial.mission.inputs["problem"]))
+    run_trial(setup, trial, transport=transport)
+    value = report(setup, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.turn == io["recorded_response_count"] == io["processed_usage_count"] == 2
+    assert io["request_boundary_lower_bound"] == 2 and io["status"] == "response-recorded"
+    assert value["model_evidence"] == "simulated-model-protocol-fixture"
+    assert io["provider_call_count"] is None and not io["provider_provenance_verified"]
+    rewrite(setup, operation_key(trial.operation_id), lambda row: row.update(usage_events=[]))
+    assert report(setup, spec)["cells"][0]["model_io"]["recorded_response_count"] == 2
+
+
+def test_declared_live_double_responses_remain_provider_unverified(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = configured_model_state(tmp_path, monkeypatch)
+    spec, selected = declared_live_plan(state)
+
+    class DeclaredLiveFixture(ScriptedModel):
+        component = "live"
+
+    transport = DeclaredLiveFixture(PlacementProblem.model_validate(spec.cases[0].trials[0].mission.inputs["problem"]))
+    run_declared_model_double(state, spec, selected, transport)
+    value = report(state, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.turn == io["recorded_response_count"] == 2
+    assert io["declared_component"] == "live" and not io["provider_provenance_verified"]
+    assert value["model_evidence"] == "recorded-model-responses-provider-unverified"

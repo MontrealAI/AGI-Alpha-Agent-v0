@@ -1,0 +1,71 @@
+{
+  "schema": "agi-alpha.execution-revocation-checkpoint.v1",
+  "review_finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4997#discussion_r4395148245",
+  "reviewed_source": "83b005244da1ee2dd24c9a09237c935f383df44e",
+  "reviewed_source_tree": "fee19954e42c2a22f06d29dc2f419757d6ef16c0",
+  "baseline_execution_sha256": "2ae17f650a3826e29e21aad9da54ee599907b8430dbfd3a6f5577f01d18ca75a",
+  "current_sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "3751d8e8d9d70305d67a57907bbdf975d2407928fa5a9bf407800f2fea17921a",
+    "tests/runtime/test_flywheel_execution.py": "22c1155eff11c3ee4119100965fc2ce7d08701cb3d841623bee30f1e70e0306f"
+  },
+  "cases": [
+    "controller revoked before first model attempt",
+    "controller revoked during ResponsesTransport polling",
+    "controller revoked during HTTPToolEnvironment polling"
+  ],
+  "scope": "Executed protected software with synthetic local authority, HTTP MockTransport and fictional test credentials. No actual provider/sandbox call, live ENS authentication, spending, customer acceptance or deployed canary.",
+  "before": {
+    "command": "python -m pytest -q -o addopts= tests/runtime/test_flywheel_execution.py -k execution_controller_revocation --basetemp=/workspace/scratch/9c7b9ec78746/revocation-before",
+    "exit_code": 1,
+    "failed": 3,
+    "deselected": 33,
+    "meaning": "All three revoked-controller cases incorrectly delivered instead of stopping."
+  },
+  "first_retry": {
+    "exit_code": 1,
+    "passed": 35,
+    "failed": 1,
+    "meaning": "One new mocked model fixture changed memory/control configuration without updating config.json; final journal verification correctly refused. Corrected fixture uses existing pause/configure/resume. This failed attempt remains in after.txt."
+  },
+  "final": {
+    "command": "python -m pytest -q -o addopts= tests/runtime/test_flywheel_execution.py --basetemp=/workspace/scratch/9c7b9ec78746/revocation-final",
+    "exit_code": 0,
+    "passed": 36,
+    "elapsed_seconds": 6.37
+  },
+  "assertions": [
+    "current controller role and original signed domain checked at every active checkpoint",
+    "current journal and exact original permit commitment retained",
+    "mock pending HTTP task cancelled before its post-revocation effect",
+    "attempt pending label and liability caps retained",
+    "unknown actual charges remain unknown",
+    "terminal immutable record and prior processed model usage remain",
+    "revoked permit cannot restart or retry the mission"
+  ],
+  "ruff": {
+    "command": "python -m ruff check alpha_factory_v1/core/runtime/successor/flywheel_execution.py tests/runtime/test_flywheel_execution.py",
+    "exit_code": 0
+  },
+  "mypy": {
+    "command": "python -m mypy --strict --config-file mypy-runtime.ini --cache-dir=/dev/null alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+    "status": "passed",
+    "exit_code": 0,
+    "output": "Success: no issues found in 1 source file"
+  },
+  "gates_not_claimed": [
+    "full repository regression",
+    "hosted exact-source CI",
+    "security approval",
+    "merge",
+    "release",
+    "publication",
+    "post-deployment canary"
+  ],
+  "evidence_sha256": {
+    "before.txt": "94450d82cedd6a5a6574220c727bd6de0de44ad23e732983df3aed2d9ef01f0f",
+    "after.txt": "9810ed049570d6f1a9f4b17af3e80d35b96c2b338dd9f40e01cc8f8cb3f255eb",
+    "final.txt": "61ec7b7cd3912e2c96e948664da826b21f0e1db4a2507f70153199c9c1671a68",
+    "ruff-final.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "mypy.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  }
+}

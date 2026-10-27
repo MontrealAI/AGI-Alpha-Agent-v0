@@ -21,6 +21,12 @@ Comparison qualification now rechecks current execution/accounting signers, orig
 and completeness seals. Historical observations stay visible when current contrasts must be withheld.
 Declaring a live model without a bound execution does not create actual model evidence.
 
+Execution checkpoints recheck current permit authority before and during model/tool work. New earning
+rechecks the accepted delivery's execution and complete accounting support; prior observations remain.
+Embedded services must pass the same TrustRegistry instance to TransformationLibrary and CostLedger.
+The existing operator already does this. Split registries now refuse before state changes, so revocation
+cannot silently diverge between the delivery and accounting views.
+
 The strongest supported discovery result is exploratory ordinary planning. In a new independently
 implemented, frozen 32-case challenge, all 28 complete pairs tie; four searches per arm remain incomplete.
 Twenty-one plans and seven no-plan results agree; 63 native negative controls refuse. An initial

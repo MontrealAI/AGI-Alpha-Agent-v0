@@ -43,6 +43,11 @@ The proposed 1.47 edition preserves exact 1.46.1 metadata before changing versio
 first unpublished worker freeze, failed phone layout, before-CSS and before-manifest remain in `current/`;
 fresh final bindings qualify the corrected candidate separately. No historical fixture is repinned.
 
+The first reviewed submission is `83b0052` (the same entire tree as local `98b7fed`).
+Its exact-source review and hosted campaign found additional defects. See `followup/README.md`
+for preserved failures, corrections and separately bound qualification. The original inventories
+and the measurements below remain the first-source snapshot, not the corrected head's receipts.
+
 ## Economics and actual measurement
 
 `current/insight.json` models the same checked-access feasibility-packet offering at USD400/800/1000/1200,

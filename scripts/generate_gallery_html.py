@@ -39,8 +39,11 @@ def version_application_assets(docs_dir: Path, version: str) -> None:
     successor = docs_dir / "successor/index.html"
     if successor.is_file():
         source = successor.read_text(encoding="utf-8")
-        updated = re.sub(r'(<meta name="application-version" content=")[^"]+("\s*/?>)',
-                         lambda match: match[1] + version + match[2], source)
+        updated = re.sub(
+            r'(<meta name="application-version" content=")[^"]+("\s*/?>)',
+            lambda match: match[1] + version + match[2],
+            source,
+        )
         if updated != source:
             successor.write_text(updated, encoding="utf-8")
     local_url = re.compile(r"([\"'])(\.{1,2}/[^\"'\\\s?]+\?v=)\d+\.\d+\.\d+\1")
@@ -205,8 +208,11 @@ def insert_back_link(pages: Iterable[Path], *, preserved_pages: Iterable[Path] =
     for page in pages:
         if not page.is_file() or page in preserved:
             continue
-        if page.parts[-2:] in (("transformational-intelligence", "index.html"), ("try", "index.html"),
-                              ("flywheel", "index.html")):
+        if page.parts[-2:] in (
+            ("transformational-intelligence", "index.html"),
+            ("try", "index.html"),
+            ("flywheel", "index.html"),
+        ):
             continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
             ("reports", "research-foundry-v2", "index.html"),
@@ -551,6 +557,11 @@ def main() -> None:
 
     preserved_pages = (REPO_ROOT / name for name in experience_hashes(load_catalog(REPO_ROOT)))
     insert_back_link(pages, preserved_pages=preserved_pages)
+
+    # Versioned canonical pages and their compatibility routes form one edition.
+    # Mirror after all generators so a later scoped rebuild cannot change cache inputs.
+    mirror = importlib.import_module("scripts.mirror_demo_pages" if __package__ else "mirror_demo_pages")
+    mirror.main()
 
     print(
         "Wrote",
