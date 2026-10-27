@@ -31,6 +31,23 @@ def record() -> dict[str, Any]:
     with tempfile.TemporaryDirectory(prefix="protected-flywheel-conformance-") as temporary:
         state = module.setup.__wrapped__(Path(temporary))
         module.test_reconciled_acceptance_required_for_successful_reuse(state)
+        before_payment = state["costs"].report()
+        module.account(
+            state,
+            "payment",
+            {
+                "payment_id": "fictional-later-payment",
+                "activity_id": "origin/compute",
+                "amount_micro_usd": 1,
+                "evidence_digest": "d" * 64,
+            },
+            "fictional-later-payment",
+        )
+        after_payment = state["costs"].report()
+        assert after_payment["costs"] == before_payment["costs"]
+        assert after_payment["available_funds"] == before_payment["available_funds"]
+        assert after_payment["cash"] == before_payment["cash"] - 1
+        assert after_payment["obligations"] == before_payment["obligations"] - 1
         network = state["library"].snapshot()[module.BRANCH]
         ident = next(iter(network["entries"]))
         candidate = network["entries"][ident]
@@ -116,6 +133,12 @@ def record() -> dict[str, Any]:
                 "assessment": candidate["decision"],
                 "invocation": network["invocations"]["fresh-peer"],
                 "costs": state["costs"].report(),
+                "fictional_payment_reconciliation": {
+                    "before": before_payment,
+                    "after": after_payment,
+                    "attestations": state["costs"].snapshot()["payments"],
+                    "funds_transferred": False,
+                },
             },
             "catalog": catalog,
             "current_state": module.entry(state, ident)["state"],

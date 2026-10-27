@@ -63,6 +63,13 @@ class Charge(StrictModel):
         return self
 
 
+class Payment(StrictModel):
+    payment_id: Identifier
+    activity_id: Identifier
+    amount_micro_usd: int = Field(gt=0, le=10**15)
+    evidence_digest: Digest
+
+
 class CostLedger:
     """Use the existing atomic journal and configured accounting authority."""
 
@@ -149,11 +156,28 @@ class CostLedger:
                     raise Conflict("only a recorded unknown charge may be resolved once")
                 if any(previous[k] != getattr(charge, k) for k in ("mission_id", "bucket", "category")):
                     raise ValueError("reconciliation cannot move an activity between records or buckets")
+                if charge.paid_micro_usd < previous["paid_micro_usd"]:
+                    raise ValueError("reconciliation cannot reverse an already recorded payment")
                 state["charges"][charge.activity_id] = {
                     **charge.model_dump(),
                     "signed": signed.model_dump(),
                     "original": previous,
                 }
+            elif action == "payment":
+                payment = Payment.model_validate(record)
+                payments = state.setdefault("payments", {})
+                if payment.payment_id in payments or any(
+                    row["evidence_digest"] == payment.evidence_digest for row in payments.values()
+                ):
+                    raise Conflict("payment identity or allocated evidence already reconciled")
+                charge_record = state["charges"].get(payment.activity_id)
+                if charge_record is None or charge_record["accrued_micro_usd"] is None:
+                    raise Conflict("payment reconciliation requires an existing known accrual")
+                if payment.amount_micro_usd > charge_record["accrued_micro_usd"] - charge_record["paid_micro_usd"]:
+                    raise ValueError("payment exceeds the remaining accrued liability")
+                charge_record["paid_micro_usd"] += payment.amount_micro_usd
+                charge_record.setdefault("payment_ids", []).append(payment.payment_id)
+                payments[payment.payment_id] = {**payment.model_dump(), "signed": signed.model_dump()}
             elif action in {"capital", "collection", "offer", "invoice", "pending"}:
                 if not isinstance(record, dict) or set(record) != {
                     "record_id",

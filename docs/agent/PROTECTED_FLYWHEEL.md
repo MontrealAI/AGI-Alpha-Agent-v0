@@ -97,6 +97,11 @@ Amounts are integer USD micro-units, separate from AGIALPHA utility or token tra
 Reports distinguish complete-cost profit, cash, obligations, reserve and available funds. Unknown costs
 prevent complete-cost profit or available-funds claims. Collection records are attributed accounting
 attestations with evidence commitments; no bank verification or real collection is claimed here.
+The signed account action payment records a later payment against an existing known activity with a unique
+payment_id, activity_id, positive amount_micro_usd and allocated evidence_digest. Partial payments reduce cash
+and outstanding obligations equally, preserving accrual, A/B/C ownership and completeness seals. Overpayment,
+duplicate allocation evidence and unknown liabilities refuse; repeated identical commands are idempotent.
+This records an attributed payment attestation and never transfers funds.
 
 Only a completed native Research mission, with a verified exact result, approved review and complete A costs,
 can produce a candidate. The original
@@ -248,6 +253,11 @@ Les rapports distinguent profit à coûts complets, trésorerie, obligations, r�
 Un coût inconnu bloque les affirmations de profit complet et de fonds disponibles. Les encaissements
 sont des attestations comptables attribuées, liées à des engagements de preuve ; aucune vérification
 bancaire ou recette réelle n’est établie ici.
+L’action comptable signée payment enregistre un paiement ultérieur d’une activité connue : payment_id unique,
+activity_id, amount_micro_usd positif et evidence_digest d’allocation. Un paiement partiel réduit trésorerie
+et obligations du même montant sans modifier charge, catégorie A/B/C ou clôture. Surpaiement, preuve
+d’allocation répétée et dette inconnue bloquent ; une commande identique répétée reste idempotente.
+Cette attestation de paiement n’effectue aucun transfert de fonds.
 
 Une candidate exige une mission Research native terminée, son résultat exact vérifié, une revue approuvée
 et ses coûts A complets. Le portefeuille de l’agent

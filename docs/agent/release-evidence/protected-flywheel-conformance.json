@@ -6,22 +6,22 @@
       "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
       "block_number": 100,
       "chain_id": 1,
-      "checked_at": 1793075796,
+      "checked_at": 1793076168,
       "name": "two.agent.agi.eth",
       "owners": [
         {
           "name": "agi.eth",
-          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "owner": "0x555385884bec084a383619694538c68ac522290d",
           "wrapped_expiry": null
         },
         {
           "name": "agent.agi.eth",
-          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "owner": "0x555385884bec084a383619694538c68ac522290d",
           "wrapped_expiry": null
         },
         {
           "name": "two.agent.agi.eth",
-          "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+          "owner": "0x555385884bec084a383619694538c68ac522290d",
           "wrapped_expiry": null
         }
       ],
@@ -32,15 +32,15 @@
         "schema_version": 1,
         "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
       },
-      "registrar_expiry": 1793162195,
+      "registrar_expiry": 1793162567,
       "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
-      "wallet": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5"
+      "wallet": "0x555385884bec084a383619694538c68ac522290d"
     },
     "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
     "export": "controlled-invocation-only",
     "manifests": [
       {
-        "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+        "candidate_digest": "8a8045a0960eccfc7803906fec7956d1b31330e4a87cbf7b943fe035de84eb45",
         "manifest": {
           "content_digest": "ccb3d1e85c15d7a23b0c340962bd0b40afdc358189009012f50fa9acf9a3ffab",
           "dependency_digests": [],
@@ -48,8 +48,8 @@
           "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
           "origin_agent": "one.agent.agi.eth",
           "origin_mission": "00000000-0000-4000-8000-000000000001",
-          "origin_record_digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
-          "origin_wallet": "0x306776ec68df8d2f23f3c5473ffddddc8052d320",
+          "origin_record_digest": "f2b27855a6675b29976b3108c4f983cf062839e20dc5421e37294d3bb0b9c4bb",
+          "origin_wallet": "0x134a57b71f4aff1f3d5eafc79884369c70b91d8d",
           "prerequisites": [],
           "rights": "cleared-for-authenticated-network",
           "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -79,7 +79,7 @@
         "B": true,
         "C": false
       },
-      "cash": 10000,
+      "cash": 9999,
       "collected_revenue": 0,
       "complete": true,
       "complete_cost_profit": -98,
@@ -91,17 +91,95 @@
       "currency": "USD",
       "delivery_profit": -9,
       "evidence_basis": "configured accounting signer attestations",
-      "obligations": 98,
+      "obligations": 97,
       "reserve": 0,
       "token_movements_included": false,
       "unit": "micro_usd",
       "unknown_costs": false
     },
+    "fictional_payment_reconciliation": {
+      "after": {
+        "available_funds": 9902,
+        "bucket_complete": {
+          "A": true,
+          "B": true,
+          "C": false
+        },
+        "cash": 9999,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": -98,
+        "costs": {
+          "A": 9,
+          "B": 89,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": -9,
+        "evidence_basis": "configured accounting signer attestations",
+        "obligations": 97,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "attestations": {
+        "fictional-later-payment": {
+          "activity_id": "origin/compute",
+          "amount_micro_usd": 1,
+          "evidence_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "payment_id": "fictional-later-payment",
+          "schema_version": 1,
+          "signed": {
+            "domain": "flywheel-cost-command",
+            "payload": {
+              "action": "payment",
+              "journal_identity": "urn:agialpha:ed25519:ae2ea4b24a37e4ecf15535bfa6ef55e089bceb6554e1773c0f356b6a3c6e4041",
+              "operation_id": "fictional-later-payment",
+              "record": {
+                "activity_id": "origin/compute",
+                "amount_micro_usd": 1,
+                "evidence_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "payment_id": "fictional-later-payment"
+              }
+            },
+            "principal": "accountant",
+            "signature": "8V8SAH1ISUIYOWbkWNYtyxMikA60suRvy7as12OGpfMMiOYbaHNhckRLcJ+BUrSKmYk7k9GcJLAS3mJUCBn7AA=="
+          }
+        }
+      },
+      "before": {
+        "available_funds": 9902,
+        "bucket_complete": {
+          "A": true,
+          "B": true,
+          "C": false
+        },
+        "cash": 10000,
+        "collected_revenue": 0,
+        "complete": true,
+        "complete_cost_profit": -98,
+        "costs": {
+          "A": 9,
+          "B": 89,
+          "C": 0
+        },
+        "currency": "USD",
+        "delivery_profit": -9,
+        "evidence_basis": "configured accounting signer attestations",
+        "obligations": 98,
+        "reserve": 0,
+        "token_movements_included": false,
+        "unit": "micro_usd",
+        "unknown_costs": false
+      },
+      "funds_transferred": false
+    },
     "invocation": {
       "acceptance": {
         "domain": "flywheel-reuse-acceptance",
         "payload": {
-          "journal_identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
+          "journal_identity": "urn:agialpha:ed25519:ae2ea4b24a37e4ecf15535bfa6ef55e089bceb6554e1773c0f356b6a3c6e4041",
           "operation_id": "accept-reuse",
           "record": {
             "beta_correct": true,
@@ -113,7 +191,7 @@
                 "billing_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "candidate_digest": null,
                 "evidence_basis": "configured-executor-attestation",
-                "finished_at": 1793075796,
+                "finished_at": 1793076168,
                 "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
                 "model_id": "fictional-frontier-receipt-fixture",
                 "output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -121,47 +199,47 @@
                 "reasoning_mode": "fixture",
                 "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-                "started_at": 1793075796,
+                "started_at": 1793076168,
                 "tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
                 "usage": {
                   "fixture_tokens": 1
                 }
               },
               "principal": "executor",
-              "signature": "5B7SOf7XAxh79TqIMEcrevt7iBeihhxd7iA1aBR4FxN0GycT7kOQwW1iSpLwyOPi3RR5ILqTOUG8iKsCI04YAw=="
+              "signature": "pQBi7xMjOL8CDmXaMwhC/x7cRQI/HWyyQ2ITY+2iH7rxgUmgwgl23XMfLZhhte2/n20M348EJ7Y7T1Ziu8ZpDA=="
             },
             "candidate_correct": true,
             "independent_tests_digest": "0000000000000000000000000000000000000000000000000000000000000000",
             "limitations": "Synthetic qualification fixture; no real frontier trial",
             "mission_id": "fresh-peer",
-            "receipt_digest": "75f40625f9e361dfadd7da6c07e173fadfc53f340e345907e7aa9638af900a43",
+            "receipt_digest": "853d18ad9835f18460be54436fe4afd9136df3a96309ecd654ee66d8f5988115",
             "residual_interventions_digest": "0000000000000000000000000000000000000000000000000000000000000000"
           }
         },
         "principal": "acceptor",
-        "signature": "z6er4VbX7oBHIbUvXbHS6665dbtGxMqiXC8nS/FD8rj98y3tsZ1qvYfhIu66IeFfu74Pxc70Ic30GVX4/IjQBA=="
+        "signature": "XMObhDEiuYyvGsCO60Eqqw8V/iKyKGk/h+zy7i5uA3ZgFdalhR36m2vrjLT9Xj6EyY/lzpIao2or3rpw3IQuAw=="
       },
       "additional_value": 41,
       "authorization": {
         "block_hash": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
         "block_number": 100,
         "chain_id": 1,
-        "checked_at": 1793075796,
+        "checked_at": 1793076168,
         "name": "two.agent.agi.eth",
         "owners": [
           {
             "name": "agi.eth",
-            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+            "owner": "0x555385884bec084a383619694538c68ac522290d",
             "wrapped_expiry": null
           },
           {
             "name": "agent.agi.eth",
-            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+            "owner": "0x555385884bec084a383619694538c68ac522290d",
             "wrapped_expiry": null
           },
           {
             "name": "two.agent.agi.eth",
-            "owner": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5",
+            "owner": "0x555385884bec084a383619694538c68ac522290d",
             "wrapped_expiry": null
           }
         ],
@@ -172,13 +250,13 @@
           "schema_version": 1,
           "wrapper_sha256": "8610831f75a6b7da7c428c7c490db797438e90a401d6fa31ffa5fe8ac1470f84"
         },
-        "registrar_expiry": 1793162195,
+        "registrar_expiry": 1793162567,
         "rules": "ensv1-direct-registry-or-wrapped-owner/v1",
-        "wallet": "0x912b6ce34c604cd6d71c414c7298e0a365f585a5"
+        "wallet": "0x555385884bec084a383619694538c68ac522290d"
       },
       "baseline_output_digest": "0000000000000000000000000000000000000000000000000000000000000000",
       "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+      "candidate_digest": "8a8045a0960eccfc7803906fec7956d1b31330e4a87cbf7b943fe035de84eb45",
       "cost_cap_micro_usd": 100,
       "cost_report": {
         "available_funds": 9902,
@@ -205,10 +283,10 @@
         "unit": "micro_usd",
         "unknown_costs": false
       },
-      "elapsed_ns": 422397,
+      "elapsed_ns": 464371,
       "error": null,
       "execution": "installed-closed-selector; no frontier inference in this invocation",
-      "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
+      "execution_digest": "9a4c2ee4b39b3a10b45f4af9dbff2cfcb2f3fc5530d254a4771a8ae73f8f17f4",
       "input_digest": "fa0ce933eed4bca0cbdb2e991516cf74e86521a49e5abce3bdd68ed56e4b14ad",
       "logical_units": 31,
       "policy_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
@@ -257,8 +335,8 @@
       "limitations": "Synthetic protocol fixture; no live model or ENS qualification.",
       "origin_agent": "one.agent.agi.eth",
       "origin_mission": "00000000-0000-4000-8000-000000000001",
-      "origin_record_digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
-      "origin_wallet": "0x306776ec68df8d2f23f3c5473ffddddc8052d320",
+      "origin_record_digest": "f2b27855a6675b29976b3108c4f983cf062839e20dc5421e37294d3bb0b9c4bb",
+      "origin_wallet": "0x134a57b71f4aff1f3d5eafc79884369c70b91d8d",
       "prerequisites": [],
       "rights": "cleared-for-authenticated-network",
       "rights_evidence": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -268,13 +346,13 @@
       "version": 1
     },
     "origin_delivery": {
-      "digest": "cd9e43f8bc9e053d86ebc3df0b52bdbbe9c1d54e34c955e99a7c8fda9db03557",
-      "elapsed_seconds": 0.007025,
+      "digest": "f2b27855a6675b29976b3108c4f983cf062839e20dc5421e37294d3bb0b9c4bb",
+      "elapsed_seconds": 0.006431,
       "error": null,
       "execution_config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
       "id": "00000000-0000-4000-8000-000000000001",
       "inference": null,
-      "lease_expires_ns": 1793076456243391820,
+      "lease_expires_ns": 1793076828037338048,
       "request": {
         "generations": 12,
         "goal": "List the supported read operations in the supplied RPC source audit",
@@ -411,15 +489,15 @@
     "plan": {
       "domain": "flywheel-plan",
       "payload": {
-        "journal_identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
-        "operation_id": "plan/662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+        "journal_identity": "urn:agialpha:ed25519:ae2ea4b24a37e4ecf15535bfa6ef55e089bceb6554e1773c0f356b6a3c6e4041",
+        "operation_id": "plan/8a8045a0960eccfc7803906fec7956d1b31330e4a87cbf7b943fe035de84eb45",
         "record": {
           "beta_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-          "candidate_digest": "662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
-          "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
+          "candidate_digest": "8a8045a0960eccfc7803906fec7956d1b31330e4a87cbf7b943fe035de84eb45",
+          "execution_digest": "9a4c2ee4b39b3a10b45f4af9dbff2cfcb2f3fc5530d254a4771a8ae73f8f17f4",
           "fresh_input_digests": [
-            "447ede5cd06b3b530af87e79825474042889e0b0c6abaf9c16625e40702f2e8e",
-            "b266853183daa84456e4ae16fd2c3c6858b91d30108727ecc8f69e725b50ca78"
+            "971e335657540a85b620c5dc8d0664c6a8d5c9c278f3da206ba896e2202e49f6",
+            "6eb7f9e0d195d4ce055631c27a5f12bc92285f8c155a9d2f16e2f533f416a97b"
           ],
           "matched_tools_digest": "0000000000000000000000000000000000000000000000000000000000000000",
           "model_id": "fictional-frontier-receipt-fixture",
@@ -433,15 +511,15 @@
           "recipient_capabilities_digest": "0000000000000000000000000000000000000000000000000000000000000000",
           "remaining_retention_micro_usd": 1,
           "resource_rules_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-          "retention_cost_record": "retention/662ad17f99011674255f720e9d1fe35934e0c1a453f1f5aa3f36e631d3c2c18e",
+          "retention_cost_record": "retention/8a8045a0960eccfc7803906fec7956d1b31330e4a87cbf7b943fe035de84eb45",
           "schema_version": 1
         }
       },
       "principal": "evaluator",
-      "signature": "ClOxHxHVAJxjhxpwFlOogvceJ0zcmeRJ7T6Z6M5TbTu6XsTQAO4Vyd3lUJkFwVAYMtflaKmLg+7mbG9BEnvSCg=="
+      "signature": "7SF72LVdAdOc9woS88t0zYfluDFhB+lOipGjiwdMskbSIUdgrOwWHR5DZdfwn4aquBz7SMAKzx/4N4RWNirVBg=="
     }
   },
-  "execution_digest": "dfce93d074905a55e25d2dcb57b3c51e703d2edf00913f4deaf52eda1eda8249",
+  "execution_digest": "9a4c2ee4b39b3a10b45f4af9dbff2cfcb2f3fc5530d254a4771a8ae73f8f17f4",
   "historical_records": [
     {
       "file": "protected-flywheel-conformance-historical.json",
@@ -456,9 +534,9 @@
     }
   ],
   "journal_integrity": {
-    "events": 70,
-    "head": "2bcc2ba71154559f2299506e91612f491960fa694c90d8e8e721e0b485df4106",
-    "identity": "urn:agialpha:ed25519:f097071c07cc2c3fa23b3700c280b762fa02b6e96508c71d2d4929c4d73aa0fa",
+    "events": 71,
+    "head": "292cc16a0617c8bf2f77e1283a13debd8c3d138e42ef18faddd146242c946051",
+    "identity": "urn:agialpha:ed25519:ae2ea4b24a37e4ecf15535bfa6ef55e089bceb6554e1773c0f356b6a3c6e4041",
     "valid": true
   },
   "live_ens_qualification": false,
@@ -488,7 +566,7 @@
     "alpha_factory_v1/core/runtime/successor/flywheel_api.py": "0a38aa82533e8012e3f7c581f5e8c83404f2c48ec09e82bfa36cd01b17920a4c",
     "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "72e440325e900e2f19cf6bc192130f1862525f6a2553c8f01a87291b8c44b79e",
     "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py": "8d0604cae8432e8639edec316951c537a358829f39abc2fb9886d180e57c8620",
-    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "6b64c4032381f7837b7312c1ad275b1dbad3eb20e22757b2f2b81de86d652fb2",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "26aa25dbe77fb30de573f2a0f1af9a0d558aba5f29d10fc2a5230489105089ea",
     "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "fba839dd9335a39f0b74d6ee39a3cc68677b34ccce1268096a5a1ef029f210e8",
     "alpha_factory_v1/core/runtime/successor/flywheel_operator.py": "0fedec8aa7d51d22c60cfeee604fbce5f2f434648be088cf624e43f7e55abc27",
     "alpha_factory_v1/core/runtime/successor/protocol.py": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
@@ -497,7 +575,7 @@
     "alpha_factory_v1/core/runtime/successor/transformation_library.py": "5ed6678697511d21ccfa7d5847d7e73667b0b7212d56b3ed8bc5129971a8d092",
     "alpha_factory_v1/core/runtime/successor/trust.py": "d94cfcf49d28869980de084fc7e9cd9d9d59cd2b165c5e113119388629ba12cd",
     "alpha_factory_v1/core/runtime/work.py": "0dae1e55376f991a364cbe748fb7eccc3c91be29cfb8ed8a9a43e8366fe4c2c9",
-    "scripts/record_protected_flywheel_conformance.py": "5bc519c13032f6f48e47403db949e9d9cf6c0e7c9df68d65e524d73205ccea1c",
-    "tests/runtime/test_flywheel_protected.py": "302cc2dc5b5626fe9689eb19d8c4377afb1afb6716a4c67ad1ce68f00f4f54b3"
+    "scripts/record_protected_flywheel_conformance.py": "b226d4f0dc3bf76455a22515c4266d485a62002b123045579f4eef12c8525588",
+    "tests/runtime/test_flywheel_protected.py": "c44fb7d151cc85963894b4d63cbbee117d231f2ee5b96e644957c2d6e052dc3f"
   }
 }

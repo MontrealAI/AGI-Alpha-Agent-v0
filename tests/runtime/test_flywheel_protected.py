@@ -1288,3 +1288,89 @@ def test_reuse_baseline_must_bind_the_requesting_agents_existing_capabilities(se
     }
     with pytest.raises(ValueError, match="matched scope"):
         s["service"].accept_reuse(signed(s, "reuse-acceptance", "acceptor", record, "wrong-recipient-baseline"))
+
+
+def test_later_partial_payments_preserve_expense_and_sealed_costs(setup: dict[str, Any]) -> None:
+    s = setup
+    paid_origin(s)
+    for category in sorted(CATEGORIES):
+        charge = Charge(
+            activity_id="investment/" + category,
+            mission_id=ORIGIN,
+            bucket="C",
+            category=category,
+            accrued_micro_usd=300 if category == "compute" else 0,
+            paid_micro_usd=0,
+            basis="attested",
+            evidence_digest=ZERO,
+            note="Synthetic deferred payment",
+        )
+        account(s, "charge", charge.model_dump(), "deferred/" + category)
+    account(
+        s,
+        "seal-investment",
+        {"mission_id": ORIGIN, "evidence_digest": ZERO, "categories": sorted(CATEGORIES)},
+        "investment-seal",
+    )
+    before = s["costs"].report()
+    first = {
+        "payment_id": "payment-one",
+        "activity_id": "investment/compute",
+        "amount_micro_usd": 100,
+        "evidence_digest": "1" * 64,
+    }
+    account(s, "payment", first, "pay-one")
+    account(s, "payment", first, "pay-one")
+    partial = s["costs"].report()
+    assert partial["cash"] == before["cash"] - 100
+    assert partial["obligations"] == before["obligations"] - 100
+    for key in ("costs", "available_funds", "complete_cost_profit", "bucket_complete", "complete"):
+        assert partial[key] == before[key]
+    with pytest.raises(Conflict, match="already reconciled"):
+        account(s, "payment", first, "replayed-payment")
+    with pytest.raises(Conflict, match="already reconciled"):
+        account(s, "payment", {**first, "payment_id": "duplicate-evidence"}, "duplicate-allocation")
+    with pytest.raises(ValueError, match="remaining"):
+        account(
+            s,
+            "payment",
+            {**first, "payment_id": "overpay", "evidence_digest": "2" * 64, "amount_micro_usd": 201},
+            "overpay",
+        )
+    account(
+        s,
+        "payment",
+        {**first, "payment_id": "payment-two", "evidence_digest": "2" * 64, "amount_micro_usd": 200},
+        "pay-two",
+    )
+    after = s["costs"].report()
+    assert after["cash"] == before["cash"] - 300
+    assert after["obligations"] == before["obligations"] - 300
+    assert after["costs"] == before["costs"] and after["complete"] is True
+    current = s["costs"].snapshot()["charges"]["investment/compute"]
+    assert current["bucket"] == "C" and current["accrued_micro_usd"] == current["paid_micro_usd"] == 300
+
+
+def test_unknown_cost_payments_cannot_be_reversed_or_reconciled_twice(setup: dict[str, Any]) -> None:
+    s = setup
+    unknown = Charge(
+        activity_id="uncertain",
+        mission_id=ORIGIN,
+        bucket="B",
+        category="model",
+        accrued_micro_usd=None,
+        paid_micro_usd=5,
+        basis="unknown",
+        evidence_digest=ZERO,
+        note="Synthetic prepaid amount with final invoice unknown",
+    ).model_dump()
+    account(s, "charge", unknown, "uncertain-charge")
+    payment = {"payment_id": "later", "activity_id": "uncertain", "amount_micro_usd": 1, "evidence_digest": "3" * 64}
+    with pytest.raises(Conflict, match="known accrual"):
+        account(s, "payment", payment, "pay-unknown")
+    resolved = {**unknown, "accrued_micro_usd": 10, "basis": "attested"}
+    with pytest.raises(ValueError, match="reverse"):
+        account(s, "resolve", {**resolved, "paid_micro_usd": 0}, "reverse-prepayment")
+    account(s, "resolve", resolved, "resolved-prepayment")
+    account(s, "payment", payment, "pay-known")
+    assert s["costs"].snapshot()["charges"]["uncertain"]["paid_micro_usd"] == 6
