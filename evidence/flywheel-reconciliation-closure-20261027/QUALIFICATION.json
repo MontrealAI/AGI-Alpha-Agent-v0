@@ -1,4 +1,11 @@
 {
+  "artifact_packaging": {
+    "format": "txt copies because log files are ignored",
+    "original_candidate": "7907c6ce83c8156362d6498fe2943deccf244a2b",
+    "raw_bytes_preserved": true,
+    "runtime_and_canonical_page_bytes_unchanged": true,
+    "selected_diagnostics": 29
+  },
   "baseline": {
     "before_target_sha256": "54548405b4c063aeda310c397d328f88aa01c52e029c20cf6dd42057ebf03103",
     "junit": {
@@ -8,7 +15,7 @@
       "tests": 13
     },
     "parent_commit": "886112b2161377bc466391ba7211fbd650fbe1d2",
-    "report": "before.log",
+    "report": "before.txt",
     "same_enterprise_blob_at_final_parent": true,
     "test_source_sha256": "b4872b2c7a9b7a3ca26cc102961dedd658c3d2da71e1556ded451d2749913457"
   },
@@ -55,9 +62,9 @@
     {
       "cause_observed": "one retention authority freshness refusal",
       "reports": [
-        "runtime.log",
-        "retention-isolated.log",
-        "runtime-sequential.log"
+        "runtime.txt",
+        "retention-isolated.txt",
+        "runtime-sequential.txt"
       ],
       "result": {
         "errors": 0,
@@ -88,7 +95,7 @@
     {
       "correction": "complete deterministic generation before browser verification; unchanged checks pass",
       "observed": "source checker refused a packet while canonical generation was still running",
-      "report": "browser.log",
+      "report": "browser.txt",
       "stage": "first browser campaign"
     },
     {
@@ -112,7 +119,7 @@
       "skipped": 0,
       "tests": 283
     },
-    "report": "final-runtime.log"
+    "report": "final-runtime.txt"
   },
   "generation": {
     "deterministic": true,
@@ -129,7 +136,8 @@
     "changed_code_and_docs_whitespace": "passed",
     "formatters": "passed",
     "full_staged_whitespace": "failed: raw traceback whitespace preserved",
-    "report": "final-staged-hooks.log",
+    "previous_report": "final-staged-hooks.txt",
+    "report": "artifact-hooks.txt",
     "selected_blocking_checks": "passed"
   },
   "installed": {
@@ -140,14 +148,14 @@
       "skipped": 0,
       "tests": 39
     },
-    "report": "final-installed-tests.log",
+    "report": "final-installed-tests.txt",
     "scope": "Unpublished development wheel with existing dependencies and external source conformance fixtures; not a clean public installation",
     "wheel_sha256": "f2e95bffc3ca168f2729cb578c63e61cbcd3b66e4c5475c7d504cd3e8051b587"
   },
   "node": {
     "failures": 0,
     "pinned_release_platforms_qualified": false,
-    "report": "final-node.log",
+    "report": "final-node.txt",
     "skips": 0,
     "tests": 20,
     "version": "24.22.1"
@@ -190,14 +198,14 @@
   },
   "strict_docs": {
     "passed": true,
-    "report": "combined-docs.log"
+    "report": "combined-docs.txt"
   },
   "typing": {
     "configuration": "unchanged mypy-runtime.ini",
     "recorder_files": 1,
     "reports": [
-      "final-types.log",
-      "final-recorder-types.log"
+      "final-types.txt",
+      "final-recorder-types.txt"
     ],
     "runtime_files": 71
   },
@@ -209,6 +217,6 @@
       "skipped": 0,
       "tests": 50
     },
-    "report": "final-ui-source.log"
+    "report": "final-ui-source.txt"
   }
 }
