@@ -215,3 +215,70 @@ test('requalification rejects coercion/nonfinite costs and requires fresh curren
   registry.revalidate('composed-method', { ...valid, compositionChecked: true });
   assert.equal(registry.discover().length, 3);
 });
+
+test('every pending admission stage restarts against changed Beta and can complete a fully fresh admission', () => {
+  for (const pendingStatus of ['CANDIDATE', 'EVIDENCE', 'ASSESSED', 'VALIDATED']) {
+    const registry = createPublicSkillRegistry(), id = 'pending-method';
+    const evidence = { kind: 'PUBLIC_FRESH_FIXTURE', fresh: true, criteria: 'Original baseline criterion', taskFamily: 'original-fixture', benefit: 600, incrementalCost: 200 };
+    registry.create(candidate(id));
+    if (pendingStatus !== 'CANDIDATE') registry.evidence(id, evidence);
+    if (['ASSESSED', 'VALIDATED'].includes(pendingStatus)) registry.assess(id);
+    if (pendingStatus === 'VALIDATED') registry.validate(id, { freshPass: true, baseline: 'frontier-beta/1', independentCheck: true });
+    const previous = registry.inspect(id), priorHistory = registry.history();
+    assert.equal(previous.status, pendingStatus);
+    registry.baselineChanged('frontier-beta/2');
+    const restarted = registry.inspect(id), audit = registry.history();
+    assert.equal(restarted.status, 'CANDIDATE'); assert.equal(restarted.betaBaseline, 'frontier-beta/2');
+    assert.equal(restarted.evidence, null); assert.equal(restarted.assessment, null); assert.equal(restarted.validation, null);
+    assert.deepEqual(audit.slice(0, priorHistory.length), priorHistory);
+    assert.equal(audit.at(-1).event, 'baseline-restarted'); assert.deepEqual(audit.at(-1).previousState, previous);
+    audit.at(-1).previousState.status = 'ADMITTED';
+    assert.equal(registry.history().at(-1).previousState.status, pendingStatus);
+    assert.equal(registry.discover().length, 0);
+    assert.throws(() => registry.admit(id), /ADMISSION_REQUIRED/);
+    assert.throws(() => registry.assess(id), /EVIDENCE_REQUIRED/);
+    assert.throws(() => registry.validate(id, { freshPass: true, baseline: 'frontier-beta/2', independentCheck: true }), /FRESH_VALIDATION_REQUIRED/);
+    assert.throws(() => registry.reuse(id, { scope: 'single-station', fixtureEligible: true }), /CURRENT_APPLICABLE_ADMISSION_REQUIRED/);
+    registry.evidence(id, { ...evidence, criteria: 'Fresh new-baseline criterion', taskFamily: 'new-baseline-fixture' });
+    registry.assess(id);
+    assert.throws(() => registry.validate(id, { freshPass: true, baseline: 'frontier-beta/1', independentCheck: true }), /FRESH_VALIDATION_REQUIRED/);
+    registry.validate(id, { freshPass: true, baseline: 'frontier-beta/2', independentCheck: true });
+    registry.admit(id);
+    assert.equal(registry.reuse(id, { scope: 'single-station', baseline: 'frontier-beta/2', fixtureEligible: true }).skill.status, 'ADMITTED');
+  }
+});
+
+test('model updates preserve rejected failures and terminal records without restarting them', () => {
+  const registry = createPublicSkillRegistry();
+  registry.create(candidate('rejected-method'));
+  registry.evidence('rejected-method', { kind: 'PUBLIC_FRESH_FIXTURE', fresh: true, criteria: 'Net value', taskFamily: 'fresh', benefit: 100, incrementalCost: 200 });
+  registry.assess('rejected-method');
+  admitted(registry, 'revoked-method'); registry.revoke('revoked-method');
+  admitted(registry, 'retired-method'); registry.retire('retired-method');
+  admitted(registry, 'replaced-method'); admitted(registry, 'replacement-method'); registry.supersede('replaced-method', 'replacement-method');
+  const ids = ['rejected-method', 'revoked-method', 'retired-method', 'replaced-method'];
+  const states = ids.map(id => registry.inspect(id)), failures = registry.failures();
+  registry.baselineChanged('frontier-beta/2');
+  assert.deepEqual(ids.map(id => registry.inspect(id)), states); assert.deepEqual(registry.failures(), failures);
+  assert.equal(registry.discover().length, 0);
+  for (const id of ids) assert.throws(() => registry.admit(id));
+});
+
+test('restarted compositions require new joint validation and current components at validation and admission', () => {
+  const registry = createPublicSkillRegistry(); admitted(registry, 'component-method');
+  registry.create({ ...candidate('pending-composition'), components: ['component-method'] });
+  const evidence = { kind: 'PUBLIC_FRESH_FIXTURE', fresh: true, criteria: 'New joint advantage', taskFamily: 'new-composition', benefit: 600, incrementalCost: 200 };
+  registry.evidence('pending-composition', evidence); registry.assess('pending-composition');
+  registry.validate('pending-composition', { freshPass: true, baseline: 'frontier-beta/1', independentCheck: true, compositionChecked: true });
+  registry.baselineChanged('frontier-beta/2');
+  assert.equal(registry.inspect('pending-composition').status, 'CANDIDATE');
+  registry.evidence('pending-composition', evidence); registry.assess('pending-composition');
+  const validation = { freshPass: true, baseline: 'frontier-beta/2', independentCheck: true, compositionChecked: true };
+  assert.throws(() => registry.validate('pending-composition', validation), /FRESH_VALIDATION_REQUIRED/);
+  registry.revalidate('component-method', { ...validation, outcome: 'retains', benefit: 600, incrementalCost: 200 });
+  assert.throws(() => registry.validate('pending-composition', { ...validation, compositionChecked: false }), /FRESH_VALIDATION_REQUIRED/);
+  registry.validate('pending-composition', validation);
+  registry.revoke('component-method');
+  assert.throws(() => registry.admit('pending-composition'), /ADMISSION_REQUIRED/);
+  assert.equal(registry.discover().length, 0);
+});

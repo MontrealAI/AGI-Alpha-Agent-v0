@@ -355,7 +355,7 @@ export function createPublicSkillRegistry() {
   const current = new Map(), history = [], failureMemory = [];
   let baseline = 'frontier-beta/1';
   const read = id => { const skill = current.get(id); if (!skill) fail('UNKNOWN_CANDIDATE'); return skill; };
-  const save = (skill, event) => { current.set(skill.id, skill); history.push({ id: skill.id, event, status: skill.status, version: skill.version }); return clone(skill); };
+  const save = (skill, event, details = {}) => { current.set(skill.id, skill); history.push({ id: skill.id, event, status: skill.status, version: skill.version, ...clone(details) }); return clone(skill); };
   const notTerminal = skill => { if (['REVOKED', 'RETIRED', 'SUPERSEDED'].includes(skill.status)) fail('TERMINAL_SKILL'); };
   const isCurrent = (skill, day) => skill.status === 'ADMITTED' && skill.expiryDay > day && skill.betaBaseline === baseline && skill.components.every(id => isCurrent(read(id), day));
   return Object.freeze({
@@ -385,12 +385,12 @@ export function createPublicSkillRegistry() {
     },
     validate(id, input) {
       const skill = read(id); notTerminal(skill);
-      if (skill.status !== 'ASSESSED' || input?.freshPass !== true || input?.baseline !== baseline || !input?.independentCheck || (skill.components.length > 0 && input.compositionChecked !== true)) fail('FRESH_VALIDATION_REQUIRED');
+      if (skill.status !== 'ASSESSED' || input?.freshPass !== true || input?.baseline !== baseline || !input?.independentCheck || (skill.components.length > 0 && (input.compositionChecked !== true || skill.components.some(id => !isCurrent(read(id), 0))))) fail('FRESH_VALIDATION_REQUIRED');
       return save({ ...skill, status: 'VALIDATED', validation: clone(input) }, 'validation');
     },
     admit(id, day = 0) {
       const skill = read(id); notTerminal(skill); finite(day, 0, 100000, 'INVALID_DAY');
-      if (skill.status !== 'VALIDATED' || !skill.assessment?.passed || skill.betaBaseline !== baseline || day >= skill.expiryDay) fail('ADMISSION_REQUIRED');
+      if (skill.status !== 'VALIDATED' || !skill.assessment?.passed || skill.betaBaseline !== baseline || day >= skill.expiryDay || skill.components.some(id => !isCurrent(read(id), day))) fail('ADMISSION_REQUIRED');
       return save({ ...skill, status: 'ADMITTED' }, 'admission');
     },
     discover({ day = 0, baseline: requestedBaseline = baseline } = {}) {
@@ -406,7 +406,13 @@ export function createPublicSkillRegistry() {
     baselineChanged(next) {
       if (typeof next !== 'string' || !/^frontier-beta\/[1-9][0-9]{0,3}$/.test(next) || next === baseline) fail('INVALID_BASELINE');
       baseline = next;
-      for (const skill of [...current.values()]) if (skill.status === 'ADMITTED') save({ ...skill, status: 'NEEDS_REVALIDATION', validation: null }, 'baseline-changed');
+      for (const skill of [...current.values()]) {
+        if (skill.status === 'ADMITTED') save({ ...skill, status: 'NEEDS_REVALIDATION', validation: null }, 'baseline-changed');
+        else if (['CANDIDATE', 'EVIDENCE', 'ASSESSED', 'VALIDATED'].includes(skill.status)) {
+          save({ ...skill, status: 'CANDIDATE', betaBaseline: baseline, evidence: null, assessment: null, validation: null },
+            'baseline-restarted', { previousState: skill });
+        }
+      }
       return baseline;
     },
     revalidate(id, input) {

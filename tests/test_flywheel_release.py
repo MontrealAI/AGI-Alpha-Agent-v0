@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREVIOUS_PROJECT = "042380c2e3e90872027acc1053ebef09472cc34db142318af1ff2390aec5483f"
 PREVIOUS_PROFILE = "fb9aae3b8e67e66deb4da42c18c22ef16150d63390d53be31b1243b7ecbe778e"
 PREVIOUS_GUARD = "802bf748051d6b9bfa2af73aefba8abbdbcdb608a713ec3d0f4fe9688a6eff41"
-WORKER_FIXTURE = "8a20d367bff1faaa4249ded631347602ee5d5adfcdffd2d1bda48c0c485d894d"
+WORKER_FIXTURE = "8d480b0a8bc0abcd6d7546db74b2ba2d25182e9a2f938167016f92b227da431a"
 
 
 def test_release_metadata_preserves_entire_predecessor_configuration_and_guard() -> None:
