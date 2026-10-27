@@ -1,0 +1,235 @@
+{
+  "schema": "earned-turn-descriptive-operating-profile/v1",
+  "status": "RECORDED_DATA_ONLY_NOT_ADDITIONAL_CONFIRMATION",
+  "analysis_sha256": "90cd8e9b44aff985105997362b3977b7367f90dc94c99448b48d511c3fe2c36c",
+  "derived_report_sha256": "e562710399f611c5dd22032df7d17dc55ff05f67f3460778f64b9cafedd0763d",
+  "arms": {
+    "conventional_reuse": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 40965.131444,
+      "qualified_per_participant_wall_second": 12.01021411764715,
+      "all_dispatched_action_wall_ms_median": 47.25095049798256,
+      "all_dispatched_action_wall_ms_p95": 78.00188344808703,
+      "full_participant_cpu_ms_mean": 1745.4099149166657,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "direct_specialist": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 41436.478621,
+      "qualified_per_participant_wall_second": 11.873595835690885,
+      "all_dispatched_action_wall_ms_median": 49.18404150157585,
+      "all_dispatched_action_wall_ms_p95": 77.84227784795803,
+      "full_participant_cpu_ms_mean": 1763.8749119583338,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "equivalent": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 41304.867558,
+      "qualified_per_participant_wall_second": 11.911429066057098,
+      "all_dispatched_action_wall_ms_median": 47.18798699832405,
+      "all_dispatched_action_wall_ms_p95": 76.92459750505803,
+      "full_participant_cpu_ms_mean": 1758.5619729166672,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "flywheel": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 40708.422187,
+      "qualified_per_participant_wall_second": 12.085951102205023,
+      "all_dispatched_action_wall_ms_median": 46.257703499577474,
+      "all_dispatched_action_wall_ms_p95": 75.0938549037528,
+      "full_participant_cpu_ms_mean": 1730.732010875,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "native_refactor": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 40853.095548,
+      "qualified_per_participant_wall_second": 12.04315103666817,
+      "all_dispatched_action_wall_ms_median": 47.168095497909235,
+      "all_dispatched_action_wall_ms_p95": 80.32251160257147,
+      "full_participant_cpu_ms_mean": 1742.4017242083353,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "no_reinvestment": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 41645.459833,
+      "qualified_per_participant_wall_second": 11.814012907359892,
+      "all_dispatched_action_wall_ms_median": 48.87281099581742,
+      "all_dispatched_action_wall_ms_p95": 81.3122798481345,
+      "full_participant_cpu_ms_mean": 1758.841919291666,
+      "failures": 0,
+      "control_violations": 0
+    },
+    "parent_rebuilt": {
+      "qualified_useful": 492,
+      "participant_wall_ms_total": 41665.654345,
+      "qualified_per_participant_wall_second": 11.80828689083198,
+      "all_dispatched_action_wall_ms_median": 47.31568550050724,
+      "all_dispatched_action_wall_ms_p95": 78.52806139635504,
+      "full_participant_cpu_ms_mean": 1751.9637893749994,
+      "failures": 0,
+      "control_violations": 0
+    }
+  },
+  "limits": [
+    "Throughput divides useful qualified outputs by summed participant wall times; it excludes gaps between participants and external research.",
+    "Action latency pools dependent actions, including maintenance and refusal; its percentiles are descriptive, not independent-trial confidence bounds.",
+    "The campaign uses one sequential foreground worker; the larger 4096-node regime tests problem burden, not concurrent service load or production capacity.",
+    "Zero manual intermediate triggers in the frozen campaign does not erase prior human design, setup, debugging or review.",
+    "No service-level agreement, concurrent scaling result, paid demand or monetary return is inferred."
+  ],
+  "increasing_problem_burden": {
+    "maintenance": {
+      "conventional_reuse": {
+        "cpu_ms": 2546.9846331666745,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 2470.1669118333325,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 2540.4479604999983,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 2569.4558405000002,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 2538.357559833337,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 2523.631901333328,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 2566.8188633333357,
+        "qualified": 138,
+        "offered": 138
+      }
+    },
+    "rare": {
+      "conventional_reuse": {
+        "cpu_ms": 1096.0523021666665,
+        "qualified": 78,
+        "offered": 78
+      },
+      "direct_specialist": {
+        "cpu_ms": 1145.7158471666683,
+        "qualified": 78,
+        "offered": 78
+      },
+      "equivalent": {
+        "cpu_ms": 1071.4231091666697,
+        "qualified": 78,
+        "offered": 78
+      },
+      "flywheel": {
+        "cpu_ms": 1088.8420953333311,
+        "qualified": 78,
+        "offered": 78
+      },
+      "native_refactor": {
+        "cpu_ms": 1086.198558000002,
+        "qualified": 78,
+        "offered": 78
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1135.3864815,
+        "qualified": 78,
+        "offered": 78
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1092.1903376666655,
+        "qualified": 78,
+        "offered": 78
+      }
+    },
+    "recurring": {
+      "conventional_reuse": {
+        "cpu_ms": 1635.0132118333277,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 1700.6163809999991,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 1693.723202166665,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 1624.3001011666627,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 1642.0733651666717,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1698.442435499999,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1633.8568988333311,
+        "qualified": 138,
+        "offered": 138
+      }
+    },
+    "wide_change": {
+      "conventional_reuse": {
+        "cpu_ms": 1703.589512499994,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 1739.0005078333352,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 1728.653619833335,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 1640.3300065000058,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 1702.9774138333305,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1677.9068588333369,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1714.9890576666646,
+        "qualified": 138,
+        "offered": 138
+      }
+    }
+  }
+}

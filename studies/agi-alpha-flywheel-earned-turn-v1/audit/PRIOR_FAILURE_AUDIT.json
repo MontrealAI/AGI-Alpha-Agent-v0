@@ -1,0 +1,1673 @@
+{
+  "schema": "earned-turn-prior-failure-audit/v1",
+  "status": "READ_ONLY_RECONCILIATION_NOT_NEW_CONFIRMATION",
+  "created_utc": "2026-10-25T00:41:59.513498+00:00",
+  "prior_source_manifest": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+  "prior_frozen_files_verified": 52,
+  "all_prior_frozen_files_unchanged": true,
+  "audit_source_sha256": "9a7b81813c5506e81d0b6046421397bfbed9a1e9afdc08a55529a5b4dca44b9c",
+  "primary_aggregates": [
+    {
+      "arm": "flywheel",
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "work": 11714786,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 26238,
+        "catalog-lookup": 677,
+        "raw-evidence-block64": 44786,
+        "mission": 5575478,
+        "checkpoint-write-block64": 5238180,
+        "discovery": 829427
+      }
+    },
+    {
+      "arm": "learner",
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "work": 11714786,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 26238,
+        "catalog-lookup": 677,
+        "raw-evidence-block64": 44786,
+        "mission": 5575478,
+        "checkpoint-write-block64": 5238180,
+        "discovery": 829427
+      }
+    },
+    {
+      "arm": "no_admission",
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "work": 11714915,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 26238,
+        "catalog-lookup": 677,
+        "raw-evidence-block64": 44786,
+        "mission": 5575456,
+        "checkpoint-write-block64": 5238331,
+        "discovery": 829427
+      }
+    },
+    {
+      "arm": "no_discovery",
+      "offered": 864,
+      "attempted": 769,
+      "valid": 768,
+      "qualified": 591,
+      "work": 11719668,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 29809,
+        "catalog-lookup": 769,
+        "raw-evidence-block64": 43205,
+        "mission": 6336286,
+        "checkpoint-write-block64": 5309599
+      }
+    },
+    {
+      "arm": "no_retention",
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "work": 11714915,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 26238,
+        "catalog-lookup": 677,
+        "raw-evidence-block64": 44786,
+        "mission": 5575456,
+        "checkpoint-write-block64": 5238331,
+        "discovery": 829427
+      }
+    },
+    {
+      "arm": "no_succession",
+      "offered": 864,
+      "attempted": 619,
+      "valid": 618,
+      "qualified": 469,
+      "work": 11744541,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 24033,
+        "catalog-lookup": 619,
+        "raw-evidence-block64": 44153,
+        "mission": 5134623,
+        "checkpoint-write-block64": 5089946,
+        "discovery": 1451167
+      }
+    },
+    {
+      "arm": "portfolio",
+      "offered": 864,
+      "attempted": 769,
+      "valid": 768,
+      "qualified": 591,
+      "work": 11719575,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 29809,
+        "catalog-lookup": 769,
+        "raw-evidence-block64": 43205,
+        "mission": 6336294,
+        "checkpoint-write-block64": 5309498
+      }
+    },
+    {
+      "arm": "workflow",
+      "offered": 864,
+      "attempted": 615,
+      "valid": 613,
+      "qualified": 465,
+      "work": 11749635,
+      "assets": 0,
+      "costs": {
+        "receipt-write": 23839,
+        "catalog-lookup": 615,
+        "raw-evidence-block64": 45361,
+        "mission": 5092271,
+        "checkpoint-write-block64": 5228215,
+        "discovery": 1314098,
+        "qualification-reference": 22561,
+        "qualification": 22568,
+        "admission-decision": 107
+      }
+    }
+  ],
+  "primary_acquisitions": [
+    {
+      "stream": "stream-01",
+      "acquisition_work": 79327,
+      "search_paid_before_design": 78669,
+      "paid_calls": 13,
+      "max_training_prefix": 3,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 6,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:34:21.199Z",
+          "work_total": 409977,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:34:22.438Z",
+          "work_total": 854068,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-01/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-02",
+      "acquisition_work": 75088,
+      "search_paid_before_design": 74510,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "UNFUNDED_PIPELINE_CALL": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:34:40.080Z",
+          "work_total": 365935,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:34:41.179Z",
+          "work_total": 770062,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-02/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-03",
+      "acquisition_work": 75100,
+      "search_paid_before_design": 74520,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:34:59.510Z",
+          "work_total": 383406,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:35:00.654Z",
+          "work_total": 810993,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-03/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-04",
+      "acquisition_work": 75832,
+      "search_paid_before_design": 75254,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:35:19.387Z",
+          "work_total": 374671,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:35:20.505Z",
+          "work_total": 786692,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-04/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-05",
+      "acquisition_work": 74867,
+      "search_paid_before_design": 74288,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "UNFUNDED_PIPELINE_CALL": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:35:58.764Z",
+          "work_total": 390085,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:35:59.909Z",
+          "work_total": 826842,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-05/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-06",
+      "acquisition_work": 78595,
+      "search_paid_before_design": 78016,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:17.985Z",
+          "work_total": 376774,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:19.155Z",
+          "work_total": 785438,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-06/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-07",
+      "acquisition_work": 76012,
+      "search_paid_before_design": 75429,
+      "paid_calls": 12,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 6,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:38.005Z",
+          "work_total": 393507,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:39.143Z",
+          "work_total": 831911,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-07/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-08",
+      "acquisition_work": 78962,
+      "search_paid_before_design": 78315,
+      "paid_calls": 13,
+      "max_training_prefix": 3,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 6,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:56.122Z",
+          "work_total": 402469,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:36:57.205Z",
+          "work_total": 851607,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-08/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-09",
+      "acquisition_work": 74818,
+      "search_paid_before_design": 74234,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:14.244Z",
+          "work_total": 393100,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:15.401Z",
+          "work_total": 822159,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-09/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-10",
+      "acquisition_work": 75429,
+      "search_paid_before_design": 74812,
+      "paid_calls": 12,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 6,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:32.855Z",
+          "work_total": 388401,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:33.920Z",
+          "work_total": 826496,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-10/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-11",
+      "acquisition_work": 79004,
+      "search_paid_before_design": 78355,
+      "paid_calls": 13,
+      "max_training_prefix": 3,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 6,
+        "UNFUNDED_PIPELINE_CALL": 1
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:51.641Z",
+          "work_total": 408417,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:37:52.690Z",
+          "work_total": 855303,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-11/flywheel-inherited-1000000/checkpoint.json"
+    },
+    {
+      "stream": "stream-12",
+      "acquisition_work": 75876,
+      "search_paid_before_design": 75294,
+      "paid_calls": 11,
+      "max_training_prefix": 2,
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 3,
+        "UNFUNDED_PIPELINE_CALL": 1,
+        "NORMAL_VALID_HALVING_ELIMINATION": 4
+      },
+      "search_stop": "DISCOVERY_BUDGET",
+      "qualification": null,
+      "gate": null,
+      "completed_stages": [
+        "dispatch",
+        "lookahead",
+        "repair"
+      ],
+      "downstream_decisions": [
+        {
+          "sequence": 80,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:38:09.559Z",
+          "work_total": 370054,
+          "stage": "lookahead",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        },
+        {
+          "sequence": 153,
+          "kind": "OUT_EVOLVE",
+          "at": "2026-10-24T23:38:10.679Z",
+          "work_total": 778590,
+          "stage": "repair",
+          "decision": "DEFER_NO_ACCEPTED_PARENT"
+        }
+      ],
+      "evidence": "results/confirmation-v1/main/stream-12/flywheel-inherited-1000000/checkpoint.json"
+    }
+  ],
+  "primary_training": {
+    "paid_calls": 140,
+    "zero_work_refusals": 12,
+    "valid_paid_calls": 140,
+    "truncated_paid_calls": 0
+  },
+  "primary_candidate_statuses": {
+    "UNFINISHED_VALID_PREFIX": 26,
+    "NORMAL_VALID_HALVING_ELIMINATION": 58,
+    "UNFUNDED_PIPELINE_CALL": 12
+  },
+  "reservation": {
+    "stage_cap": 500000,
+    "qualification_outputs": 8,
+    "per_output_pipeline_allocation": 50000,
+    "extra_reserve": 1024,
+    "qualification_reserved": 401024,
+    "qualification_reserved_percent": 80.2048,
+    "maximum_precontrol_search_room": 98976,
+    "next_call_additional_reserve": 1024,
+    "pipeline_minimum_after_control_reserve": 18000,
+    "scheduled_training_calls_for_complete_race": 17,
+    "qualification_evaluations_executed": 0,
+    "admission_tests_executed": 0,
+    "note": "Reserved allocations were not charged as spent work. Control reserve further reduces a candidate call budget; no counterfactual reallocation was executed."
+  },
+  "diagnostic": [
+    {
+      "treatment": "inherited",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "total_work": 10656114,
+      "mean_work": 888009.5,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      }
+    },
+    {
+      "treatment": "removed",
+      "streams": 12,
+      "qualified": 37,
+      "valid": 48,
+      "total_work": 2704072,
+      "mean_work": 225339.33333333334,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 12
+      }
+    },
+    {
+      "treatment": "rebuild",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "total_work": 26877191,
+      "mean_work": 2239765.9166666665,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 72
+      }
+    },
+    {
+      "treatment": "equivalent",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "total_work": 10672309,
+      "mean_work": 889359.0833333334,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      }
+    }
+  ],
+  "fresh_repair_use": [
+    {
+      "stream": "diagnostic-01",
+      "task_id": "diagnostic-5000004-repair",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 1,
+      "makespan": 51,
+      "deadline": 46,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-02",
+      "task_id": "diagnostic-5100004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 34,
+      "deadline": 38,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-03",
+      "task_id": "diagnostic-5200004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 75,
+      "deadline": 84,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-04",
+      "task_id": "diagnostic-5300004-repair",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 0,
+      "makespan": 59,
+      "deadline": 56,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-05",
+      "task_id": "diagnostic-5400004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 42,
+      "deadline": 44,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-06",
+      "task_id": "diagnostic-5500004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 46,
+      "deadline": 50,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-07",
+      "task_id": "diagnostic-5600004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 53,
+      "deadline": 54,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-08",
+      "task_id": "diagnostic-5700004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 67,
+      "deadline": 78,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-09",
+      "task_id": "diagnostic-5800004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 50,
+      "deadline": 51,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-10",
+      "task_id": "diagnostic-5900004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 63,
+      "deadline": 67,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-11",
+      "task_id": "diagnostic-6000004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 66,
+      "deadline": 77,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-12",
+      "task_id": "diagnostic-6100004-repair",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 0,
+      "makespan": 45,
+      "deadline": 45,
+      "raw_line_1based": 68,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-inherited-5000000/raw.jsonl.gz"
+    }
+  ],
+  "fresh_lookahead_use": [
+    {
+      "stream": "diagnostic-01",
+      "task_id": "diagnostic-5000003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 36,
+      "deadline": 30,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-02",
+      "task_id": "diagnostic-5100003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 49,
+      "makespan": 32,
+      "deadline": 28,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-03",
+      "task_id": "diagnostic-5200003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 6,
+      "makespan": 60,
+      "deadline": 54,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-04",
+      "task_id": "diagnostic-5300003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 55,
+      "deadline": 49,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-05",
+      "task_id": "diagnostic-5400003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 24,
+      "makespan": 44,
+      "deadline": 38,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-06",
+      "task_id": "diagnostic-5500003-tight",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 2,
+      "makespan": 38,
+      "deadline": 38,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-07",
+      "task_id": "diagnostic-5600003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 61,
+      "deadline": 53,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-08",
+      "task_id": "diagnostic-5700003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 69,
+      "deadline": 65,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-09",
+      "task_id": "diagnostic-5800003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 52,
+      "deadline": 51,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-10",
+      "task_id": "diagnostic-5900003-tight",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 4,
+      "makespan": 47,
+      "deadline": 51,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-11",
+      "task_id": "diagnostic-6000003-tight",
+      "valid": true,
+      "qualified": false,
+      "parent_calls": 2,
+      "makespan": 46,
+      "deadline": 44,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-inherited-5000000/raw.jsonl.gz"
+    },
+    {
+      "stream": "diagnostic-12",
+      "task_id": "diagnostic-6100003-tight",
+      "valid": true,
+      "qualified": true,
+      "parent_calls": 2,
+      "makespan": 32,
+      "deadline": 32,
+      "raw_line_1based": 50,
+      "evidence": "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-inherited-5000000/raw.jsonl.gz"
+    }
+  ],
+  "repair_modes": {
+    "quality": 1,
+    "selective": 1,
+    "stable": 10
+  },
+  "fresh_repair_use_summary": {
+    "outputs": 12,
+    "qualified": 10,
+    "outputs_using_parent": 1,
+    "qualified_outputs_using_parent": 0
+  },
+  "native_reference_summary": {
+    "paired_tasks": 36,
+    "portfolio_qualified": 27,
+    "status": "Native specialist reference has separate wall-time accounting; no equal-unit primary comparison is asserted"
+  },
+  "interpretation": {
+    "proximate_failure": "Fixed acquisition allocation plus conservative complete-pipeline preflight exhausted exploration before one candidate completed six training cases; the economic admission gate was never reached.",
+    "implementation_defect_status": "No corrupt result, invalid primary paid training output, or contradiction of frozen stop logic was found. Allocation incompatibility and growing full-history checkpoint costs are design/engineering deficiencies, not proof that a completed candidate would have won.",
+    "shared_account": "Service and improvement consumed one cumulative account; research artifacts enlarged repeatedly serialized checkpoints.",
+    "terminal_failure": "A stage is marked completed before acquisition; failed dispatch is not retried, so descendants lacking an admitted parent defer.",
+    "transfer_evidence": "No primary admitted parent exists. Diagnostic inherited construction is cheaper than exact reconstruction but more costly and one qualified result worse than the strong parent-free alternative.",
+    "repair_lineage": "Repair tasks were generated from independent conventional-portfolio baselines, not actual accepted preceding mission outputs. Stored ancestry alone cannot establish use.",
+    "representation": "Finite dispatch-weight/lookahead/repair grammar did not preserve a reusable world-specific computational representation across unrelated random DAGs. This is a plausible limit, not a tested proof of impossibility.",
+    "economic_gate": "The old net-benefit gate charged all acquisition against a no-research counterfactual and conflated full-investment recovery with marginal adoption. It was not exercised in the primary flywheel.",
+    "nonclaim": "Do not repair this code and rerun the old confirmation as fresh evidence; do not attribute portfolio/workflow contrasts to retention when no asset was retained."
+  },
+  "next_hypotheses": [
+    {
+      "id": "H1",
+      "claim": "A family with repeated immutable structure and changed queries can repay a reusable representation.",
+      "decisive_test": "Bound candidate domains prospectively; compare competent direct, conventional reuse, cheapest equivalent builder, and inherited constructions on new task identities."
+    },
+    {
+      "id": "H2",
+      "claim": "Separately enforced service/improvement accounts preserve mission delivery during failed research.",
+      "decisive_test": "Exhaust improvement account, then verify incumbent service and authority remain intact within funded service limits."
+    },
+    {
+      "id": "H3",
+      "claim": "An accepted representation can reduce construction of a distinct successor capability.",
+      "decisive_test": "Use the actual accepted predecessor output/state; measure parent calls and removed-with-rebuild versus strong parent-free and independent equivalent construction."
+    },
+    {
+      "id": "H4",
+      "claim": "Measured released capacity can fund a bounded next construction.",
+      "decisive_test": "Use enforceable reusable capacity, debit it to the child construction; distinguish this from abstract operations and externally supplied research budget."
+    }
+  ],
+  "sources": {
+    "protocol/STUDY_FREEZE.json": {
+      "sha256": "6d0308707f3909fd18d086a950d237835dafd9ab6cfa9a559846715f46613827",
+      "bytes": 8347
+    },
+    "companion/stream.mjs": {
+      "sha256": "aa13cbf75f6489134e59f4f70353853104895e99055f46c7adfdb23924c13bb7",
+      "bytes": 24199
+    },
+    "companion/learning.mjs": {
+      "sha256": "06a09e324db72c990688de9504a4cedc6867931187d117b53ea762f1c2d70da0",
+      "bytes": 7441
+    },
+    "companion/scenarios.mjs": {
+      "sha256": "7962fd6c7dd546d9d611576073ff7d9a135b1114f65fa43dcfc929591a87b75d",
+      "bytes": 4723
+    },
+    "companion/core.mjs": {
+      "sha256": "9bba17b000c2ae6baa401d2f9a36a4391786d2e31d13e6ff5612f6573733459c",
+      "bytes": 18368
+    },
+    "protocol/MAIN_PROTOCOL.json": {
+      "sha256": "177f3332d5ed3352fb2118f093621a018eb5949c9db248aa39e34969a800e1e8",
+      "bytes": 11645
+    },
+    "results/confirmation-v1/trials.jsonl": {
+      "sha256": "71cbbb36644c305baec2ec3a05e4e2d9531a55d539a4e32c8e1a2610b004e523",
+      "bytes": 4073058
+    },
+    "results/confirmation-v1/NATIVE_REFERENCE.json": {
+      "sha256": "902db4a1e93276c3dbf8aa25338d6bbc426d78f71fa62bee578fdf6b232b8f8c",
+      "bytes": 209526
+    },
+    "results/confirmation-v1/main/stream-01/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "bfc9332e0cfc2deb393401cbe44a6d92b32a7ae748484718c2696bddea4078ea",
+      "bytes": 285021
+    },
+    "results/confirmation-v1/main/stream-01/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "f2c9be38c32b5a8a6f9408ec0e4493f611ca4bdf015a184b89d26d867454e318",
+      "bytes": 285910
+    },
+    "results/confirmation-v1/main/stream-01/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "d6bbb0375898d24c969712ba1f6c17ed33d6e77a65fd3f14d28b9a8fae0ea177",
+      "bytes": 285426
+    },
+    "results/confirmation-v1/main/stream-01/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "72d8a97ffaa8b22b4634d822576f4bac614f62f77a008ea48062bd6f20506e89",
+      "bytes": 285407
+    },
+    "results/confirmation-v1/main/stream-01/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "8c5969d1eef3b9eb68e90ca7c2d631072c960c791fbc4746d57c6924bb0a83ce",
+      "bytes": 285028
+    },
+    "results/confirmation-v1/main/stream-01/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "c5ae0c7aa637112f0fe8149242f2089cad4a2919a78349b08c2fae3747f3ee5b",
+      "bytes": 285424
+    },
+    "results/confirmation-v1/main/stream-01/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "e9c19a9c449c5c3fbedff2926806a5a5576ae5d334f8cb6cfacc0e0ba5c8eb4f",
+      "bytes": 285427
+    },
+    "results/confirmation-v1/main/stream-01/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "171a906a656149e40c0863408bfa2ce928b3675ffc291eec332ca6cca0da515b",
+      "bytes": 283386
+    },
+    "results/confirmation-v1/main/stream-02/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "f7d643952bc5bb42644a321d8d55863cc9c81b823c4840eab1086d25b00219e0",
+      "bytes": 293413
+    },
+    "results/confirmation-v1/main/stream-02/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "a8fb6b592c68b60e1e6a5974996faed4888d9990b3503364759b4fbd36c12ccc",
+      "bytes": 295736
+    },
+    "results/confirmation-v1/main/stream-02/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "d1f4c54d4a779f33607f6a252d42dcb955a62acfbab93af26a8c27786f2051ba",
+      "bytes": 295710
+    },
+    "results/confirmation-v1/main/stream-02/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "42dedb7c92b2f991e0c5372497f56e085c31bdad7a41e44f53066fc5fd52ad9e",
+      "bytes": 295932
+    },
+    "results/confirmation-v1/main/stream-02/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "7341d7e3c1d6980616aef966c6e9177fc97eb87f3bb6526efa2c67d3aa6e57e6",
+      "bytes": 295725
+    },
+    "results/confirmation-v1/main/stream-02/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "dd45332b0f5dabfc4ba6b78c11572e59847b5797a2f41cfe950608f7cb7dc35c",
+      "bytes": 295737
+    },
+    "results/confirmation-v1/main/stream-02/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "b51ae6ba1d0fa08a1afe15a97a8618e6d0fc920f18f007c6263fcad6f03e5fc5",
+      "bytes": 290403
+    },
+    "results/confirmation-v1/main/stream-02/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "ade20f0d50a54feb2566ccefadf548d10d564c9b65ade2a5dbaecb75addb8a58",
+      "bytes": 295929
+    },
+    "results/confirmation-v1/main/stream-03/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "204ac0d1922af9eb670afa59b7c3e4bef8bd9e24214df9d330ce58eb9e7d5e71",
+      "bytes": 289785
+    },
+    "results/confirmation-v1/main/stream-03/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "235811f06563c801d74c9f7185f1f15ca96e4316aafe2b56e48df8c0d42ccfb7",
+      "bytes": 289791
+    },
+    "results/confirmation-v1/main/stream-03/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "1afc9c7158a33d26aed2837bf26ad386ff4689dfeae77e3dcb68aa711e618cf3",
+      "bytes": 293232
+    },
+    "results/confirmation-v1/main/stream-03/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "81de74d3bf3a604dbffb6c668e1d22afab01ff33cdeb5672f883bf9e0b476d07",
+      "bytes": 289785
+    },
+    "results/confirmation-v1/main/stream-03/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "22336e6ca9b44e52792711ccc49276bc98787a72079f9ea2d8618b1897a66fae",
+      "bytes": 289778
+    },
+    "results/confirmation-v1/main/stream-03/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "5789d6ed71a18c808cf79117153a8e70be9dd60c2d4101c88ffef9d9dc9f0697",
+      "bytes": 284333
+    },
+    "results/confirmation-v1/main/stream-03/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "220791333f928f50ca990641c2a6b45c7bb2ba44bedbe44040d0e0469a9eaec8",
+      "bytes": 293241
+    },
+    "results/confirmation-v1/main/stream-03/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "353dbcea0933c7e73cd7e25857a5cf9792ea595cd0b4379a3b2ba88b70ae5209",
+      "bytes": 287633
+    },
+    "results/confirmation-v1/main/stream-04/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "c56d185b26c9dc4cbc236aee52f3ef714b9dfd60081c03de4b0cb848b5a51b54",
+      "bytes": 292567
+    },
+    "results/confirmation-v1/main/stream-04/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "0f4006b703b03bf3cc7898bc9c2b9ea16d4ad2e9ab7e23b23b5e8e937f55c48b",
+      "bytes": 296541
+    },
+    "results/confirmation-v1/main/stream-04/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "ea7fcca4cd0b91ae7b21f6496f7f4e4798fd5c3a03bd182996165fe1923ed635",
+      "bytes": 292582
+    },
+    "results/confirmation-v1/main/stream-04/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "aac63e86bcecb7c33dcdfb69266fc8d744b331bde008158148900189ddd3be5c",
+      "bytes": 292596
+    },
+    "results/confirmation-v1/main/stream-04/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "7f4a37733dca6c8903d2ea95a446cfd0fe7cfd765ae6e0d997657cfcd519268b",
+      "bytes": 287322
+    },
+    "results/confirmation-v1/main/stream-04/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "7333fb30bd229d8670afa9951387f9f8d109a28e40db7b4b5fe5261976f01426",
+      "bytes": 296528
+    },
+    "results/confirmation-v1/main/stream-04/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "f331da7310f72e18e2a93b94c5e27676204fbceda3cbecae68860760438c01d1",
+      "bytes": 290662
+    },
+    "results/confirmation-v1/main/stream-04/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "f43e585230b474f30cb64d43f580716989b5d27e8ed861d667e015a2d2e05bd4",
+      "bytes": 292578
+    },
+    "results/confirmation-v1/main/stream-05/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "a9822cabbef6657c4771f7e7a56193603a82ce140df84d737279c3f653355675",
+      "bytes": 291395
+    },
+    "results/confirmation-v1/main/stream-05/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "185d6fd28b43e777439863f0e461cde834c95c48e2cd7488b4e5fb777c772225",
+      "bytes": 288593
+    },
+    "results/confirmation-v1/main/stream-05/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "d9d51b392fb210d7245acb168744470c4c8f005d6321ebb787e371a8b130e25f",
+      "bytes": 288604
+    },
+    "results/confirmation-v1/main/stream-05/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "c442b6047bd81dda665df52a0e07227eedc08c598402ffaf61633b2f7bb74a52",
+      "bytes": 283583
+    },
+    "results/confirmation-v1/main/stream-05/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "2e66434d75bfe0b660b580c189d3da17d8947da75571664eb7820a4bdc7b6d25",
+      "bytes": 291404
+    },
+    "results/confirmation-v1/main/stream-05/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "3792d6a616d591e441670345c0fd12c2a3ac72f80bf0364a34f643ca24f73ccd",
+      "bytes": 286926
+    },
+    "results/confirmation-v1/main/stream-05/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "1ff3175eb956b6f30f38f49d0bec52511a700ef45cac5d295c806eb990402762",
+      "bytes": 288614
+    },
+    "results/confirmation-v1/main/stream-05/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "1989ad4b118c386cab125501f80db34f1e53dc09e95f1729adb2f98f72395f5a",
+      "bytes": 288590
+    },
+    "results/confirmation-v1/main/stream-06/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "b51505398dad9327f2e01a6d4eb5dbc936c6876532e1774d1e24d3f94012e17e",
+      "bytes": 292481
+    },
+    "results/confirmation-v1/main/stream-06/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "ab94ac4a4bdb31efc2764a8625b8d7e7db48dadbc6522f98f019c18c4f0e1df4",
+      "bytes": 292497
+    },
+    "results/confirmation-v1/main/stream-06/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "cfa3671f942419bfd69ceaa337b06eea417f77168c16daf3ad8174c82ded2c67",
+      "bytes": 287064
+    },
+    "results/confirmation-v1/main/stream-06/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "cb5ddbcbee855979efde60f9736880f058dcca3a8096ad2c7670d4160fb80d67",
+      "bytes": 296582
+    },
+    "results/confirmation-v1/main/stream-06/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "2a843a761ca96ed74caa818c386cfc4df030eaa3b478add35bf5da65cfcb599a",
+      "bytes": 290392
+    },
+    "results/confirmation-v1/main/stream-06/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "d5982f3537cab587e9e108b89abd8523ede3a0dc6d7429525abab8f8c0e850ee",
+      "bytes": 292451
+    },
+    "results/confirmation-v1/main/stream-06/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "b6a74ebb724d3c0e796c83539e689ba8941d049dfda0b020cda66925d9b7e737",
+      "bytes": 292456
+    },
+    "results/confirmation-v1/main/stream-06/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "449089890203c707471fa0bd82200fd530f3e8253f706fd4bba699a62ae89b7a",
+      "bytes": 296607
+    },
+    "results/confirmation-v1/main/stream-07/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "8b7b989fcc49eb090729e69d0fd32cc20b1993c24dea666f1d623fa61d0bea69",
+      "bytes": 286680
+    },
+    "results/confirmation-v1/main/stream-07/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "020e61fdce7b3f88a298703db85f367edb5797682548ff03b8d10d64d7f9a48b",
+      "bytes": 282273
+    },
+    "results/confirmation-v1/main/stream-07/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "661a07a2f8e67c455c7d4b47176b3de8d3baa3fa068540d48c98a032a70e552e",
+      "bytes": 287555
+    },
+    "results/confirmation-v1/main/stream-07/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "0db3a61d23de7159ab72b11a69b4b7d79a9c0462f378f6cacbbcdf15a020c1e8",
+      "bytes": 284726
+    },
+    "results/confirmation-v1/main/stream-07/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "54e73eb989aa116589286df22d4939429aa850eee41b191285980f8fc88f0142",
+      "bytes": 286644
+    },
+    "results/confirmation-v1/main/stream-07/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "0d47a4c7704396bc145c700380fedb3500b20f2869cfdc3f51b25d883377d093",
+      "bytes": 286672
+    },
+    "results/confirmation-v1/main/stream-07/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "27e65a346ff59bfdc4ff21ad716b143e0e5a46789c4dec8b97e67ebac163d392",
+      "bytes": 287570
+    },
+    "results/confirmation-v1/main/stream-07/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "efeba201e8a41186ec15e38381de975b5cd2d3bfc55cd9cdd8efc2ca7ab461f5",
+      "bytes": 286683
+    },
+    "results/confirmation-v1/main/stream-08/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "5b4e8a5e745c3a29e24fb6704392ea87436af0c85ac118f85ab4337e74989a59",
+      "bytes": 283290
+    },
+    "results/confirmation-v1/main/stream-08/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "57269a4a9b34117f09ea648778198810fa874fc78467acbc5e061942128cfad4",
+      "bytes": 284474
+    },
+    "results/confirmation-v1/main/stream-08/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "7813ed30bc99a5be835c756b332967f7a324c204195cd474e1097c6c9feee71e",
+      "bytes": 286801
+    },
+    "results/confirmation-v1/main/stream-08/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "ec73b0826f40e3449ec866e788367f3c3414a0940b7e1cb3a72d4ef95992123e",
+      "bytes": 289112
+    },
+    "results/confirmation-v1/main/stream-08/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "0befcfa8e3fb6f96102cab88a02903ecd4ad75a18bdc11be09f897c382333b80",
+      "bytes": 289094
+    },
+    "results/confirmation-v1/main/stream-08/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "e20c5a18f5af846669a48592aea7261a921010d1998c6a655acbbfcd65e74a60",
+      "bytes": 284473
+    },
+    "results/confirmation-v1/main/stream-08/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "e68263a9ff3b7a1a58c283d921ba80f21e66695325fe461b17f2cd2791e7b12b",
+      "bytes": 289103
+    },
+    "results/confirmation-v1/main/stream-08/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "ba83d2d85546860c2ebf9de7ef2266caf44a03bebaf4e063131e2aa951f40a7e",
+      "bytes": 289122
+    },
+    "results/confirmation-v1/main/stream-09/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "8e754d34c1da699eccfe022c6cd82c8835e71adcf516cd52a09109f7365ca21b",
+      "bytes": 292781
+    },
+    "results/confirmation-v1/main/stream-09/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "efa789f255140098b908ff27af41e56d9b7d539c4d23815ab4dba5367182840f",
+      "bytes": 286835
+    },
+    "results/confirmation-v1/main/stream-09/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "3ac98efb1f46f6b35613c5b2d0a280ea845e9feb56ac83d36988997f50e7df31",
+      "bytes": 288475
+    },
+    "results/confirmation-v1/main/stream-09/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "231f42c41f479cddd3baa4e29c4899865d0acf4cc5a5ff06ea3e96f8d7b22a2f",
+      "bytes": 288485
+    },
+    "results/confirmation-v1/main/stream-09/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "6ca0e40c844bec570416703ad78bebc6c785914217789b71026170c61c5373bc",
+      "bytes": 292792
+    },
+    "results/confirmation-v1/main/stream-09/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "cffe9bd82bd801c4cb87016b99c9db6488de8cb26f99d5323aa568edffdad07b",
+      "bytes": 288489
+    },
+    "results/confirmation-v1/main/stream-09/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "a12c1605fa7b30176004b1172f1905f521c633aec8b3f3e736fac991fab67ae3",
+      "bytes": 288489
+    },
+    "results/confirmation-v1/main/stream-09/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "c02ada3a9349f300f3e8e3d9189e8068ba057f499548fad05994f1ab60418401",
+      "bytes": 283570
+    },
+    "results/confirmation-v1/main/stream-10/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "0831f430942bff0406d0f32c7e8e4c8b84ec2f0b748019d8a4bcfaf8f761397c",
+      "bytes": 286402
+    },
+    "results/confirmation-v1/main/stream-10/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "e0365a7f768e7006ffa2943624392cb918053b20ec4ff27aa5f4f8b5ad1275eb",
+      "bytes": 288837
+    },
+    "results/confirmation-v1/main/stream-10/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "eef76323ff1b3b7c2ea3ff5547e159524d459b040352cbbcb9614ad44dc226c8",
+      "bytes": 288854
+    },
+    "results/confirmation-v1/main/stream-10/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "1b95fa8f058400824ed0873b95ef1906a2ebf5ee90bc6c58d378aa3fa865e5bc",
+      "bytes": 285902
+    },
+    "results/confirmation-v1/main/stream-10/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "f067c3194f3eb9dc9d2195c76eab637f522dd4e9e4d22d81c5b3dcbc589a6f8c",
+      "bytes": 288852
+    },
+    "results/confirmation-v1/main/stream-10/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "8f492aec73865b1821afa8a538f0ac559c68c5f9ccdb86657260fc4a834871c8",
+      "bytes": 288836
+    },
+    "results/confirmation-v1/main/stream-10/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "eff482825cabbe6fa169913279cc8c114a9fd73b6f42bebb41c61e65f6a8b78e",
+      "bytes": 283219
+    },
+    "results/confirmation-v1/main/stream-10/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "ac01fed4329fef666d85be294e93f9ee9d80e3bdca660e9466ad02456556f4e2",
+      "bytes": 285907
+    },
+    "results/confirmation-v1/main/stream-11/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "55b9432d6de0230b97f646a2e73d90c78e2ed913c0ef0cb0517265158103cf18",
+      "bytes": 285727
+    },
+    "results/confirmation-v1/main/stream-11/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "41e5497138587d97a281d7c0392563690e4ba52f0a9e8e58a17ef29f91a9bec3",
+      "bytes": 285755
+    },
+    "results/confirmation-v1/main/stream-11/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "03a0c077af316f108990a1e6c3d5895c948fb3b613574c9b50044d78cc36a6ea",
+      "bytes": 285370
+    },
+    "results/confirmation-v1/main/stream-11/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "3ef2290c9c6d109d7e6a1c3a62f49e6abc4089813cf2a81b9fc30b5aa90f3020",
+      "bytes": 285747
+    },
+    "results/confirmation-v1/main/stream-11/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "2edb21d8c81cb1e6804efc3dd358c4b0194d4a7becd71ce790d8396f3c39de10",
+      "bytes": 285753
+    },
+    "results/confirmation-v1/main/stream-11/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "c6b46a232d7bba3545f87c7cc9349ba0cd5bd76cb56c9471aeb46000241a8efb",
+      "bytes": 283750
+    },
+    "results/confirmation-v1/main/stream-11/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "664e24612c5f5cdfe802b0ceb0caec0560f2d1ec5fc06beaa8a88b462212619b",
+      "bytes": 285347
+    },
+    "results/confirmation-v1/main/stream-11/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "2337344a9f08f3aa849e027702b3d370b2e303f0acefa873244d9c4cc5bd2ccd",
+      "bytes": 285179
+    },
+    "results/confirmation-v1/main/stream-12/flywheel-inherited-1000000/checkpoint.json": {
+      "sha256": "486c54596eea0f53d433349779e9818de5e4ce3edaef45d98c2d8981a9d3a91b",
+      "bytes": 292782
+    },
+    "results/confirmation-v1/main/stream-12/no_discovery-inherited-1000000/checkpoint.json": {
+      "sha256": "0a6132ba1e261d6c63e1fddb7006a94aa8d247f5fff7247ca2f4ec1825967f07",
+      "bytes": 296231
+    },
+    "results/confirmation-v1/main/stream-12/no_admission-inherited-1000000/checkpoint.json": {
+      "sha256": "d141df88325786ffe290b1b559248e8c5ce34141f8b107d60f987c5467f3cb95",
+      "bytes": 292795
+    },
+    "results/confirmation-v1/main/stream-12/no_retention-inherited-1000000/checkpoint.json": {
+      "sha256": "f0b9948d57b387be5b84729514047d4af657750aa8fa2f80f31a1e0a6cf196ab",
+      "bytes": 292784
+    },
+    "results/confirmation-v1/main/stream-12/no_succession-inherited-1000000/checkpoint.json": {
+      "sha256": "6c58af410d779fbe4a7d21e27923500441d31411ba722a2285f7c0f767f03b57",
+      "bytes": 287077
+    },
+    "results/confirmation-v1/main/stream-12/portfolio-inherited-1000000/checkpoint.json": {
+      "sha256": "18e790c61ccf8749c2d0f1ed768e8f41bf15a20265107aae602e2ad01adcbb31",
+      "bytes": 296230
+    },
+    "results/confirmation-v1/main/stream-12/workflow-inherited-1000000/checkpoint.json": {
+      "sha256": "292fa175d2527111cac7ed0dd512e46b957fa8ae0e59f56f2bfd79aabdcd5c85",
+      "bytes": 289949
+    },
+    "results/confirmation-v1/main/stream-12/learner-inherited-1000000/checkpoint.json": {
+      "sha256": "e842034ab5c7b57946fed4cfdbad91dc23f6a3dfdf8099b816915e5810e00516",
+      "bytes": 292783
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "67dadecdeb5f8103b1c2a1f02e4b1f72eec7d4ba87cebc1d368ca3402c802f08",
+      "bytes": 227044
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "89fa0652326631f7338c0085fca4bfa67be939396a789e7eb09165d663f6cab0",
+      "bytes": 18576
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "b00a9045a4599a57367babc38360c18a4d78301630818a7007b84e93650821c4",
+      "bytes": 225518
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "b63d9b179ce4d02527f47162118272c051c536e399c3012661e48c9c527c0133",
+      "bytes": 19009
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "c7bff1ca465938a089cb198d2bfee451d636aa2625dce83406e58b2f2b0637be",
+      "bytes": 222872
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "f03d249e458f96350ac180fa8ddcefe81130dfc8e70f5cbe637408d5161caec2",
+      "bytes": 19379
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "4e72e3b646e31455d1afa5668aa888a241e29ad2c9826947edc83c2178b79b74",
+      "bytes": 223412
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "539c9ef399f52cdae222ed44765f4775e79c1d8754442a59f740f8163f89c6b6",
+      "bytes": 18487
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "81712f6d939581eeb7ccf2c58c1fac59b2ce1659b4cfb1f5e77baa8fd6507fc0",
+      "bytes": 220795
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "11b0504efcb9a1021f1312a508e3684670e680e1e594b6fb2e30c6b1dfde6dc6",
+      "bytes": 18604
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "d6dd0770f696acf45178646a5eaf116430d62487826f2f0bd4797014ccd8f87f",
+      "bytes": 222707
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "08d82366172dac3d374787ee07d09cecaafb1ba55e33d713f932d6f538eb4df3",
+      "bytes": 18364
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "da0219b62c0dcc96e3cca5dbbfc882ce09d5f41ca418b92bdf42f36862f3fc96",
+      "bytes": 222958
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "00341423f10e2c9717601a68734d35e6a94878676759ed324e2abdecd527b456",
+      "bytes": 18864
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "28f5987fe7ff9a70943795bc9c0d415c980cc80efadc67ec1dabed7ba913bcdc",
+      "bytes": 222722
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "47269d94a79735a666a13a0d1cc06405b604bc88169b386a37ffe362a65f69a9",
+      "bytes": 19162
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "afcacf570a7fa5461ac0b8ecd3aefa63998fda000eed35395c80e6c89e148079",
+      "bytes": 221862
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "aa2083c923bb3b21a733ee1854e40373c9751f47666d229d6e0f763ed4ff0b6a",
+      "bytes": 17842
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "80c311048ca97ad760202789129c86f492d8f464894361a12e525eca3a99a2d3",
+      "bytes": 223069
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "921b6ed1b60eaec052ffaf12c8e62dfa6ee31ec4e5240113df417920e109833e",
+      "bytes": 17825
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "da5fc6970d3894f2ba9696a41301d2d2740e06ef2af1fdaf147b1d715fffc7f8",
+      "bytes": 220341
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "9714cf4c5c12dd4edeee23cfadc941106bde70d288d9260fc2e5f6399c3a8154",
+      "bytes": 17730
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-inherited-5000000/checkpoint.json": {
+      "sha256": "8fa8b388762e59b241f913c8dbc0b606028b41c72e8e6cbc879c74a809a2b1fc",
+      "bytes": 222512
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-inherited-5000000/raw.jsonl.gz": {
+      "sha256": "b435798d657d6baccc5359b8a8ccef0fb3df2ee06e05e0efb9600cb2b3a42900",
+      "bytes": 18298
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "31e4d0316e03eaab0c42236cc872b43f7b96b3697dbae413e2460af9545fb2b0",
+      "bytes": 92398
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "d89dc05c8b0ca3a4c4128f893f3c6bf36534a1f66f27a3b3229d9f523558838b",
+      "bytes": 91686
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "b693088bccf36310fb6bc5c85d8889dbac2999c33d3c31f822a375e851b10811",
+      "bytes": 92021
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "a26d27cade6b9e517bd16a344a04a870d16dcecc01ea8ac13c8cd6f29f84f730",
+      "bytes": 92506
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "21974d72926eee17157a64d46cab542f40ee087787557012811b35862a58b906",
+      "bytes": 89913
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "8c72e49e4d9c67bf7474a2bc33451fc89448c24b4e40abec5662a4e3973e42e5",
+      "bytes": 91216
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "b2a982dbab9cb38a8ba9cb37b1fad73490a220161be05062277b4a9cd987be89",
+      "bytes": 91276
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "1164e0d97be5fc1218f1cf538375fab8bf6e6a1d900907630819fe9528a6a25d",
+      "bytes": 91619
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "951b25638e26dffde653a663584923c2f1b72a517a1b22f94b8b55ab7999c3f4",
+      "bytes": 91860
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "91a94770c790d1259172dc592920ff5e77282a17003c274261d78c8e7b41c349",
+      "bytes": 91030
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "65bd4b982c011d3dcdc3af9f4175b98b6932be355ab1d959c6ebba62d5f4ad91",
+      "bytes": 90558
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-removed-5000000/checkpoint.json": {
+      "sha256": "0ee2f2d1e47951380f52b6a47250e9b51e3fd1991bd486f3ad04aac57f5fd7dd",
+      "bytes": 92086
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "8bba9be276a30c62339d8f62d49079a15d89d5cf04addf622a4d8369e629d78c",
+      "bytes": 442729
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "70732b1852548b930f7c658450667809e148a1e75c3d7a9b9b5ac759eeec2ee1",
+      "bytes": 441413
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "775a32e145b28fd7a3179db58472cc0cbb1e440c761e1f15961ca59d49d2e276",
+      "bytes": 438974
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "4e4ea29546b96da87a203b218c56f2b37886f6dc4fee4c53423a03b9cc3e3276",
+      "bytes": 439923
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "29550e7c9b31601964609a94f5d40f648b839c63420c90ede27ab9a0ffb78376",
+      "bytes": 432766
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "42569a44884ee6a8f1c65fb13eae6f06a255b2f5b69c4c139e4a793032f4b7c5",
+      "bytes": 437670
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "3e66db1a9b09829d7e8b0890f81974f2e772aea292d57db38e6addbcdfb87bbb",
+      "bytes": 437971
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "4cab08b5c92141f5f7f1385ff44827de8f3d49a321fea9da1a9cc2390ebd220b",
+      "bytes": 439001
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "b13df7dc55dfcffd23ff9a694a27faa20f8c7ef8b299ec7df3acfc551535848d",
+      "bytes": 437398
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "2972a7449aa018907d425c0a74b7e33ad7d18422a2dc2390e46e782e7a959599",
+      "bytes": 438336
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "e59c0533faed3454ab87f7b330d96df14021542839cdf047477290a7971f09d5",
+      "bytes": 433149
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-rebuild-5000000/checkpoint.json": {
+      "sha256": "c333d676c2de58c6aff3c7acc556734549376b7f55fb0054ebda0208a14d6cd6",
+      "bytes": 438965
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-01/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "54e5d6330741318cc88fdc8a1910558c8678bf9ce243212ad1a60441043edf67",
+      "bytes": 228267
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-02/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "62958b6026b1e66b57d10684ab057b5554ec1a0b271ea833153d25f84c6e61ef",
+      "bytes": 226737
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-03/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "d990e3362adf55cac80540ae15b69162e63c01c25c3ec8ef822c7a9211cc3518",
+      "bytes": 224050
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-04/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "1816f2c6f87093bfca9c0f80cc9a0c6c0338e799a1b23aec50573b89e82cbec8",
+      "bytes": 224619
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-05/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "1e324042b657b93eaad0a187f17d6b3c516afd93fb9f9c3f8ad0e313ec91231c",
+      "bytes": 222010
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-06/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "13a1fe4ab90a9b504733db18af7a34164b082daa4f48aaa7a5e1ccab84eb39d8",
+      "bytes": 223935
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-07/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "47be16e4b7a7d4b72dfb858101ae2db16216403588cfb6f0db5f7c3b10d9791f",
+      "bytes": 224211
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-08/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "092b08776ebea6429f551ba4f7b700a4685dcc56293e6bdf2006577b9ca98e86",
+      "bytes": 223947
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-09/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "a87832fcc782487760e96e6c65df9b22b357ccff0fa9f4e1a15cecd50f9a39d6",
+      "bytes": 223104
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-10/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "8bcaf01c5844442f79a57bdefd79962ad04a322b71e530860d596b3600281e24",
+      "bytes": 224353
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-11/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "f59e84b3b4a49aa55ab362b6b51f7c670c0907f03c0f0702b236797dcf0da5ff",
+      "bytes": 221572
+    },
+    "results/confirmation-v1/diagnostic/diagnostic-12/diagnostic-equivalent-5000000/checkpoint.json": {
+      "sha256": "9392fbabc78e6e52a19b662c174ac8c37a485e656498ed7b6815172bc39683e9",
+      "bytes": 223752
+    },
+    "results/confirmation-v1/ACQUISITION_FAILURE_AUDIT.json": {
+      "sha256": "d7639e40ddcbb2545657a0f1a51bb1bdf4eec6d642ed3f40f6d9447f65bcec61",
+      "bytes": 710763
+    },
+    "results/confirmation-v1/SELECTED_LINEAGE_USE_AUDIT.json": {
+      "sha256": "3d2a14e942aa39dd3e5dfbd74fb6193894a4b94131eb6682631f9a408a79274c",
+      "bytes": 338609
+    }
+  }
+}

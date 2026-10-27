@@ -1,0 +1,68 @@
+% SPDX-License-Identifier: Apache-2.0
+\input{preamble.tex}
+\AtBeginDvi{\special{pdf:trailerid [<593dc207c20d4db9a286c359e488af04> <593dc207c20d4db9a286c359e488af04>]}}
+\begin{document}
+\pagenumbering{roman}
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+ \fill[midnight] (current page.south west) rectangle (current page.north east);
+ \fill[purple,opacity=.31] ([xshift=17cm,yshift=-9cm]current page.north west) circle (9cm);
+ \fill[purple,opacity=.11] ([xshift=3cm,yshift=-23cm]current page.north west) circle (7cm);
+ \foreach \r/\a in {4.6/.14,6.1/.20,7.6/.26}
+  \draw[violet,opacity=\a,line width=.65pt] ([xshift=17cm,yshift=-16cm]current page.north west) circle (\r cm);
+ \draw[gold,opacity=.35,line width=.65pt] ([xshift=17cm,yshift=-16cm]current page.north west) circle (6.8cm);
+ \foreach \x/\y/\r in {2/4/.018,6/2/.014,18/3/.025,14/6/.018,3/12/.02,18/13/.014,9/16/.021,2/23/.018,17/26/.025,13/4/.016,10/8/.012,4/20/.018,17/21/.016}
+  \fill[white,opacity=.68] ([xshift=\x cm,yshift=-\y cm]current page.north west) circle (\r cm);
+ \draw[gold,line width=1pt] ([xshift=23mm,yshift=-23mm]current page.north west)--++(15mm,0);
+\end{tikzpicture}
+\color{white}\vspace*{1.2cm}
+{\sffamily\small\bfseries\color{gold}MONTREAL.AI\hfill RESEARCH \& ENGINEERING / 04\par}
+\vspace{1.45cm}
+{\sffamily\fontsize{44}{46}\selectfont\bfseries AGI ALPHA\par FLYWHEEL\par}
+\vspace{.65cm}
+{\sffamily\fontsize{28}{32}\selectfont\color{gold}Earn the Next Turn\par}
+\vspace{.4cm}
+{\sffamily\fontsize{20}{25}\selectfont From Reusable Work\par to Accountable Succession\par}
+\vspace{.8cm}
+\begin{tikzpicture}
+ \draw[violet,opacity=.75,line width=.9pt] (0,0) circle (1.9);
+ \draw[gold,opacity=.65,line width=.7pt] (0,0) circle (1.18);
+ \node[text=white] at (0,0) {\fontsize{57}{60}\selectfont $\Omega$};
+ \foreach \a/\t in {90/BUILD,210/MEASURE,330/RETAIN}{
+  \fill[gold] (\a:1.9) circle (.07);
+  \node[font=\sffamily\scriptsize\bfseries,text=white] at (\a:2.45) {\t};}
+ \draw[-{Stealth[length=2.5mm]},gold,line width=1.1pt] (67:1.9) arc (67:12:1.9);
+ \draw[-{Stealth[length=2.5mm]},violet,line width=1.1pt] (205:1.18) arc (205:140:1.18);
+\end{tikzpicture}
+\vfill
+{\sffamily\large\bfseries BUILD WHAT MAKES\par THE NEXT MISSION BETTER.\par}
+\vspace{.55cm}
+{\sffamily\large\OmegaHarness\par}
+{\sffamily\bfseries\color{gold}ACTIVATE. EVOLVE. SCALE.\par}
+\vspace{.35cm}
+{\sffamily\small Powered by \TI\par}
+\vspace{.6cm}
+{\large Vincent Boucher\par}
+{\sffamily\small Montr\'eal, Qu\'ebec, Canada\quad /\quad 24 October 2026\par}
+\vspace{.3cm}
+{\sffamily\scriptsize An additive experiment. Earlier editions and results remain intact.\par}
+\end{titlepage}
+\pagenumbering{arabic}
+\input{abstract-results.tex}
+\clearpage
+\input{contribution.tex}
+\input{foundations.tex}
+\input{methods.tex}
+\input{experiment.tex}
+\input{results.tex}
+\input{operations.tex}
+\input{discussion.tex}
+\input{reproduction.tex}
+\clearpage
+\begingroup
+\raggedright
+\interlinepenalty=10000
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\endgroup
+\end{document}

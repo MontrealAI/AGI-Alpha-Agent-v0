@@ -1,0 +1,16 @@
+import {chromium,executablePath} from './qa-tools.mjs';
+import {writeFile,mkdir} from 'node:fs/promises';
+const browser=await chromium.launch({headless:true,executablePath,args:['--no-sandbox']});const results=[];
+const context=await browser.newContext({viewport:{width:1280,height:900}});await context.route('http**/*',r=>r.abort());const page=await context.newPage();
+const check=(name,passed,detail)=>{results.push({name,passed:Boolean(passed),detail});if(!passed)throw Error(name);};
+try{
+ await page.goto(new URL('./index.html',import.meta.url).href);await page.waitForFunction(()=>globalThis.__earnedTurnReady);
+ await page.evaluate(()=>{const poll=setInterval(()=>{if(globalThis.__earnedTurnState?.pending){clearInterval(poll);sessionStorage.setItem('interrupted-during-pending','yes');location.reload();}},1);document.querySelector('#start-button').click();});
+ await page.waitForFunction(()=>globalThis.__earnedTurnReady&&sessionStorage.getItem('interrupted-during-pending')==='yes'&&globalThis.__earnedTurnState?.status==='RECOVERED');
+ let s=await page.evaluate(()=>globalThis.__earnedTurnState);check('real_reload_with_pending_reservation',s.events.some(e=>e.kind==='INTERRUPTED_ATTEMPT_CHARGED'));check('partial_result_not_admitted',s.accepted.length===0);check('reservation_charged',s.accounts.service.spent===120000);
+ await page.click('#start-button');await page.waitForFunction(()=>globalThis.__earnedTurnState?.status==='BUDGET_STOP');s=await page.evaluate(()=>globalThis.__earnedTurnState);check('exhausted_budget_refuses_restart',s.accepted.length===0&&s.accounts.service.spent===120000);
+ await page.click('#reset-button');await page.evaluate(()=>{const poll=setInterval(()=>{const button=document.querySelector('#pause-button');if(!button.disabled&&globalThis.__earnedTurnState?.pending){clearInterval(poll);button.click();}},1);document.querySelector('#start-button').click();});await page.waitForFunction(()=>globalThis.__earnedTurnState?.status==='PAUSED');s=await page.evaluate(()=>globalThis.__earnedTurnState);check('pause_at_durable_acceptance',s.accepted.length>=1&&s.pending===null);
+ const prior=s.accepted.map(r=>r.result_hash);await page.reload();await page.waitForFunction(()=>globalThis.__earnedTurnReady);await page.click('#start-button');await page.waitForFunction(()=>globalThis.__earnedTurnState?.stage===4);s=await page.evaluate(()=>globalThis.__earnedTurnState);check('resume_preserves_prior_exact_results',prior.every((h,i)=>s.accepted[i].result_hash===h));check('one_acceptance_per_phase',s.accepted.length===4&&new Set(s.accepted.map(r=>r.phase)).size===4);
+ await page.evaluate(async()=>{const state=globalThis.__earnedTurnState;state.accepted[1].x[0]+=10;try{await globalThis.__earnedTurnTest.validateStored(state);window.__corruptionRefused=false;}catch{window.__corruptionRefused=true;}});check('corrupted_result_cannot_restore',await page.evaluate(()=>globalThis.__corruptionRefused));
+}catch(e){results.push({name:'unexpected_exception',passed:false,detail:String(e)});}
+finally{await browser.close();await mkdir(new URL('./qa/',import.meta.url),{recursive:true});await writeFile(new URL('./qa/RECOVERY_QA.json',import.meta.url),JSON.stringify({results,pass:results.every(r=>r.passed)},null,2));console.log(JSON.stringify(results));}

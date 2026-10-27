@@ -1,0 +1,66 @@
+{
+  "status": "OBSERVED_BEFORE_FREEZE",
+  "development_seed": 27101,
+  "side": 4,
+  "probes": [
+    {
+      "case": "empty updates",
+      "observed": "Accepted; one parent solve; operator unchanged",
+      "required": "Refuse before parent call"
+    },
+    {
+      "case": "boolean edge index",
+      "observed": "Accepted as index1; one parent solve",
+      "required": "Refuse before parent call"
+    },
+    {
+      "case": "NaN delta",
+      "observed": "One parent solve then UPDATE_SCOPE",
+      "required": "Refuse before parent call"
+    },
+    {
+      "case": "negative delta",
+      "observed": "TypeError from complex square root before parent call",
+      "required": "Explicit UPDATE_SCOPE"
+    },
+    {
+      "case": "out-of-range edge index",
+      "observed": "IndexError before parent call",
+      "required": "Explicit UPDATE_SCOPE"
+    },
+    {
+      "case": "incoherent factor recipe identity with freshly recomputed file checksum",
+      "observed": "Loader accepted identity forged-not-recomputed",
+      "required": "Refuse recipe inconsistency; do not claim checksum authentication"
+    },
+    {
+      "case": "integer grounding with fractional conductance",
+      "input": {
+        "n": 2,
+        "edges": [
+          [
+            0,
+            1,
+            1.5
+          ]
+        ],
+        "ground": [
+          1,
+          1
+        ],
+        "rhs": [
+          1,
+          0
+        ]
+      },
+      "observed_solution": [
+        1.1428571428571428,
+        0.8571428571428571
+      ],
+      "independent_relative_residual": 0.5714285714285714,
+      "required": "Floating-point diagonal assembly without integer truncation"
+    }
+  ],
+  "not_a_confirmation_run": true,
+  "scope": "Reproducible development defects. No numeric solver strategy or confirmation outcome was selected."
+}

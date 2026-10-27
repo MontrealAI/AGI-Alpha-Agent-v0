@@ -1,0 +1,826 @@
+{
+  "audit_version": 1,
+  "status": "PASS",
+  "runtime": "3.12.14",
+  "historical_runtime": "3.13.5",
+  "candidate_execution_replayed": false,
+  "method": "Original task generator with exact stored task hashes; new separate semantic checker and statistical recomputation; no original judge, engine, or statistics import",
+  "attempts": [
+    {
+      "attempt": 1,
+      "domain": "route",
+      "decision": "PROMOTED",
+      "candidate_sha256": "049e3e7ceed1d5430aa8ea374da61e13dc71f3c41933ae129e2caff92aa26137",
+      "incumbent_sha256": "76975af4935888cd51bce073497636c7f483e903d642840c3662716ed5205938",
+      "alpha_per_test": 0.0017857142857142857,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.8247248276329119,
+          "baseline_mean": 0.08254349320023148,
+          "mean_gain": 0.7421813344326803,
+          "lower_bound": 0.7125239435845993,
+          "radius": 0.02965739084808102,
+          "wins": 2838,
+          "ties": 6,
+          "losses": 228
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.8163008348583515,
+          "baseline_mean": 0.04626922123015873,
+          "mean_gain": 0.7700316136281927,
+          "lower_bound": 0.7268325207143552,
+          "radius": 0.043199092913837514,
+          "wins": 1463,
+          "ties": 9,
+          "losses": 64
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.8247248276329119,
+          "incumbent": 0.08254349320023148,
+          "random_search": 0.6941437047688681,
+          "reference": 0.08254349320023148,
+          "sham": 0.08254349320023148,
+          "strong_reference": 0.8906317947196863
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.8163008348583515,
+          "incumbent": 0.04626922123015873,
+          "random_search": 0.6147146237401371,
+          "reference": 0.04626922123015873,
+          "sham": 0.04626922123015873,
+          "strong_reference": 0.8886941540685782
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 32.4501953125,
+          "incumbent": 70.99837239583333,
+          "random_search": 41.854817708333336,
+          "reference": 70.99837239583333,
+          "sham": 70.99837239583333,
+          "strong_reference": 34.457356770833336
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 46.847005208333336,
+          "incumbent": 104.40559895833333,
+          "random_search": 73.04036458333333,
+          "reference": 104.40559895833333,
+          "sham": 104.40559895833333,
+          "strong_reference": 49.087890625
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 59.956380208333336,
+          "incumbent": 102.873046875,
+          "random_search": 84.01497395833333,
+          "reference": 102.873046875,
+          "sham": 102.873046875,
+          "strong_reference": 63.8037109375
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 83.20833333333333,
+          "incumbent": 142.7578125,
+          "random_search": 138.38802083333334,
+          "reference": 142.7578125,
+          "sham": 142.7578125,
+          "strong_reference": 87.85416666666667
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 11,
+        "incumbent": 5,
+        "random_search": 11,
+        "reference": 5,
+        "sham": 5,
+        "strong_reference": 7
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.0014893999916694156,
+          "candidate": 0.7199377980055033,
+          "incumbent": 0.923957136007175,
+          "random_search": 0.9962479260022974,
+          "reference": 0.9130171560034341,
+          "sham": 0.955723203993557,
+          "strong_reference": 0.6046776910025073
+        },
+        "shifted": {
+          "broken": 0.0008137490015087678,
+          "candidate": 0.5031413220015111,
+          "incumbent": 0.6532487269953435,
+          "random_search": 0.8293376820017784,
+          "reference": 0.6479992390059124,
+          "sham": 0.6515241959934883,
+          "strong_reference": 0.4193889889993443
+        }
+      },
+      "recorded_development_seconds": 1.7733491819999472,
+      "development_task_executions": 6320
+    },
+    {
+      "attempt": 2,
+      "domain": "evidence",
+      "decision": "HELD",
+      "candidate_sha256": "17fdc76834560229b0c3dce8b1769ac463b2ef7f29bad35c85cc433b266cf63e",
+      "incumbent_sha256": "360ce3d036b6105ddba093774af6fb99691cad394cfac0abb801e9068555dbb7",
+      "alpha_per_test": 0.0005952380952380952,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.8916569082002338,
+          "baseline_mean": 0.8776930387084069,
+          "mean_gain": 0.013963869491826831,
+          "lower_bound": -0.0010137741944956473,
+          "radius": 0.014977643686322479,
+          "wins": 1613,
+          "ties": 681,
+          "losses": 778
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.8606164780640243,
+          "baseline_mean": 0.8532310058304552,
+          "mean_gain": 0.007385472233569146,
+          "lower_bound": -0.020328451960552427,
+          "radius": 0.027713924194121574,
+          "wins": 818,
+          "ties": 218,
+          "losses": 500
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.8916569082002337,
+          "incumbent": 0.8776930387084069,
+          "random_search": 0.8776930387084069,
+          "reference": 0.8776930387084069,
+          "sham": 0.8776930387084069,
+          "strong_reference": 0.8776930387084069
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.8606164780640243,
+          "incumbent": 0.8532310058304552,
+          "random_search": 0.8532310058304552,
+          "reference": 0.8532310058304552,
+          "sham": 0.8532310058304552,
+          "strong_reference": 0.8532310058304552
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 10.768229166666666,
+          "incumbent": 10.565104166666666,
+          "random_search": 10.565104166666666,
+          "reference": 10.565104166666666,
+          "sham": 10.565104166666666,
+          "strong_reference": 10.565104166666666
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 14.8984375,
+          "incumbent": 14.702473958333334,
+          "random_search": 14.702473958333334,
+          "reference": 14.702473958333334,
+          "sham": 14.702473958333334,
+          "strong_reference": 14.702473958333334
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 59.126953125,
+          "incumbent": 76.6337890625,
+          "random_search": 76.6337890625,
+          "reference": 76.6337890625,
+          "sham": 76.6337890625,
+          "strong_reference": 76.6337890625
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 114.42057291666667,
+          "incumbent": 148.44010416666666,
+          "random_search": 148.44010416666666,
+          "reference": 148.44010416666666,
+          "sham": 148.44010416666666,
+          "strong_reference": 148.44010416666666
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 9,
+        "incumbent": 3,
+        "random_search": 3,
+        "reference": 3,
+        "sham": 3,
+        "strong_reference": 3
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.0015506340064348478,
+          "candidate": 0.8296409349998157,
+          "incumbent": 0.77049437199571,
+          "random_search": 0.7156683430052908,
+          "reference": 0.7381892389985296,
+          "sham": 0.716704534004748,
+          "strong_reference": 0.7250023869962661
+        },
+        "shifted": {
+          "broken": 0.0007852530025047599,
+          "candidate": 0.762800469000922,
+          "incumbent": 0.7251939730022059,
+          "random_search": 0.6891062069892087,
+          "reference": 0.7011541960112027,
+          "sham": 0.6854707479969875,
+          "strong_reference": 0.6935571109991088
+        }
+      },
+      "recorded_development_seconds": 1.5381698940000206,
+      "development_task_executions": 6320
+    },
+    {
+      "attempt": 3,
+      "domain": "schedule",
+      "decision": "HELD",
+      "candidate_sha256": "2af4283465eaa1d1aa06b3e65783ee849e1a11ecfadaa2d82da6d64998025285",
+      "incumbent_sha256": "88bad4b95635a979422d0789a3de7def06a4261cd3492424e9c4e574d20c51dd",
+      "alpha_per_test": 0.0002976190476190476,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.6757511257686306,
+          "baseline_mean": 0.6607556839953629,
+          "mean_gain": 0.014995441773267627,
+          "lower_bound": -0.003020008941001297,
+          "radius": 0.018015450714268924,
+          "wins": 1757,
+          "ties": 199,
+          "losses": 1116
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.6979276122703139,
+          "baseline_mean": 0.7012362986757349,
+          "mean_gain": -0.003308686405420973,
+          "lower_bound": -0.03696388233497928,
+          "radius": 0.033655195929558304,
+          "wins": 737,
+          "ties": 42,
+          "losses": 757
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.6757511257686305,
+          "incumbent": 0.6607556839953629,
+          "random_search": 0.6607556839953629,
+          "reference": 0.6607556839953629,
+          "sham": 0.6607556839953629,
+          "strong_reference": 0.6607556839953629
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.6979276122703139,
+          "incumbent": 0.7012362986757349,
+          "random_search": 0.7012362986757349,
+          "reference": 0.7012362986757349,
+          "sham": 0.7012362986757349,
+          "strong_reference": 0.7012362986757349
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 58.834635416666664,
+          "incumbent": 52.198893229166664,
+          "random_search": 52.198893229166664,
+          "reference": 52.198893229166664,
+          "sham": 52.198893229166664,
+          "strong_reference": 52.198893229166664
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 100.06315104166667,
+          "incumbent": 84.5390625,
+          "random_search": 84.5390625,
+          "reference": 84.5390625,
+          "sham": 84.5390625,
+          "strong_reference": 84.5390625
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 172.2802734375,
+          "incumbent": 177.95475260416666,
+          "random_search": 177.95475260416666,
+          "reference": 177.95475260416666,
+          "sham": 177.95475260416666,
+          "strong_reference": 177.95475260416666
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 495.7727864583333,
+          "incumbent": 520.8444010416666,
+          "random_search": 520.8444010416666,
+          "reference": 520.8444010416666,
+          "sham": 520.8444010416666,
+          "strong_reference": 520.8444010416666
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 7,
+        "incumbent": 3,
+        "random_search": 3,
+        "reference": 3,
+        "sham": 3,
+        "strong_reference": 3
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.0017413610014500591,
+          "candidate": 1.1118148240145729,
+          "incumbent": 0.8123585189946425,
+          "random_search": 0.8100399049974385,
+          "reference": 0.8174197120013105,
+          "sham": 0.8041129019927666,
+          "strong_reference": 0.8110361059952993
+        },
+        "shifted": {
+          "broken": 0.0009054650045072776,
+          "candidate": 1.5575567510052224,
+          "incumbent": 1.1575665430020763,
+          "random_search": 1.1687581000048795,
+          "reference": 1.173193166998999,
+          "sham": 1.1710784749989216,
+          "strong_reference": 1.1671413060032592
+        }
+      },
+      "recorded_development_seconds": 1.9597508259998904,
+      "development_task_executions": 6320
+    },
+    {
+      "attempt": 4,
+      "domain": "route",
+      "decision": "PROMOTED",
+      "candidate_sha256": "0e5c04cd805b6b2d46453628e620bd4fb62e9854c6263791da8a5ee35fc2bc19",
+      "incumbent_sha256": "049e3e7ceed1d5430aa8ea374da61e13dc71f3c41933ae129e2caff92aa26137",
+      "alpha_per_test": 0.00017857142857142857,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.9175877912878624,
+          "baseline_mean": 0.829620252585871,
+          "mean_gain": 0.08796753870199146,
+          "lower_bound": 0.06272056316085475,
+          "radius": 0.02524697554113671,
+          "wins": 2709,
+          "ties": 21,
+          "losses": 342
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.9166815845371875,
+          "baseline_mean": 0.8191113448346076,
+          "mean_gain": 0.09757023970257987,
+          "lower_bound": 0.051829623865699684,
+          "radius": 0.04574061583688019,
+          "wins": 1409,
+          "ties": 5,
+          "losses": 122
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.9175877912878624,
+          "incumbent": 0.8296202525858709,
+          "random_search": 0.8491005899626489,
+          "reference": 0.08091227213541667,
+          "sham": 0.8296202525858709,
+          "strong_reference": 0.892151544752549
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.9166815845371875,
+          "incumbent": 0.8191113448346076,
+          "random_search": 0.8345573213641334,
+          "reference": 0.04392299107142857,
+          "sham": 0.8191113448346076,
+          "strong_reference": 0.8911772096363247
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 40.360026041666664,
+          "incumbent": 32.1923828125,
+          "random_search": 33.779947916666664,
+          "reference": 71.1181640625,
+          "sham": 32.1923828125,
+          "strong_reference": 34.172200520833336
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 57.418619791666664,
+          "incumbent": 46.448567708333336,
+          "random_search": 47.62890625,
+          "reference": 104.408203125,
+          "sham": 46.448567708333336,
+          "strong_reference": 49.09375
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 73.15462239583333,
+          "incumbent": 59.736002604166664,
+          "random_search": 67.5048828125,
+          "reference": 103.0087890625,
+          "sham": 59.736002604166664,
+          "strong_reference": 63.487955729166664
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 100.41080729166667,
+          "incumbent": 82.447265625,
+          "random_search": 91.76822916666667,
+          "reference": 142.12565104166666,
+          "sham": 82.447265625,
+          "strong_reference": 87.70442708333333
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 13,
+        "incumbent": 11,
+        "random_search": 11,
+        "reference": 5,
+        "sham": 11,
+        "strong_reference": 7
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.00162016099397988,
+          "candidate": 1.012376050007333,
+          "incumbent": 0.7013819770022565,
+          "random_search": 0.7535590390025391,
+          "reference": 0.9272121730061826,
+          "sham": 0.6873689919950721,
+          "strong_reference": 0.5963589869970747
+        },
+        "shifted": {
+          "broken": 0.0010221300019566115,
+          "candidate": 0.7109157789959681,
+          "incumbent": 0.547795795994034,
+          "random_search": 0.5807784709966199,
+          "reference": 0.7288391090007735,
+          "sham": 0.5395363600023302,
+          "strong_reference": 0.4700454979983988
+        }
+      },
+      "recorded_development_seconds": 1.7937369699998271,
+      "development_task_executions": 6320
+    },
+    {
+      "attempt": 5,
+      "domain": "evidence",
+      "decision": "HELD",
+      "candidate_sha256": "78822b5cae0423e9c9d2b3d46476be6fbedc6e9347b59547bcfeab8e9a6914ad",
+      "incumbent_sha256": "360ce3d036b6105ddba093774af6fb99691cad394cfac0abb801e9068555dbb7",
+      "alpha_per_test": 0.00011904761904761905,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.8901564112104633,
+          "baseline_mean": 0.8746112973486437,
+          "mean_gain": 0.01554511386181963,
+          "lower_bound": -0.0020910595270871458,
+          "radius": 0.017636173388906776,
+          "wins": 1667,
+          "ties": 724,
+          "losses": 681
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.8624959173790264,
+          "baseline_mean": 0.8542302894721807,
+          "mean_gain": 0.008265627906845678,
+          "lower_bound": -0.024388430290725252,
+          "radius": 0.03265405819757093,
+          "wins": 850,
+          "ties": 218,
+          "losses": 468
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.8901564112104633,
+          "incumbent": 0.8746112973486437,
+          "random_search": 0.8746112973486437,
+          "reference": 0.8746112973486437,
+          "sham": 0.8746112973486437,
+          "strong_reference": 0.8746112973486437
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.8624959173790264,
+          "incumbent": 0.8542302894721807,
+          "random_search": 0.8542302894721807,
+          "reference": 0.8542302894721807,
+          "sham": 0.8542302894721807,
+          "strong_reference": 0.8542302894721807
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 10.806640625,
+          "incumbent": 10.605794270833334,
+          "random_search": 10.605794270833334,
+          "reference": 10.605794270833334,
+          "sham": 10.605794270833334,
+          "strong_reference": 10.605794270833334
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 14.900390625,
+          "incumbent": 14.703125,
+          "random_search": 14.703125,
+          "reference": 14.703125,
+          "sham": 14.703125,
+          "strong_reference": 14.703125
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 58.587890625,
+          "incumbent": 76.75716145833333,
+          "random_search": 76.75716145833333,
+          "reference": 76.75716145833333,
+          "sham": 76.75716145833333,
+          "strong_reference": 76.75716145833333
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 114.580078125,
+          "incumbent": 149.37369791666666,
+          "random_search": 149.37369791666666,
+          "reference": 149.37369791666666,
+          "sham": 149.37369791666666,
+          "strong_reference": 149.37369791666666
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 9,
+        "incumbent": 3,
+        "random_search": 3,
+        "reference": 3,
+        "sham": 3,
+        "strong_reference": 3
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.0015153409972299414,
+          "candidate": 0.7961960870031817,
+          "incumbent": 0.7551858960098343,
+          "random_search": 0.7078094190012507,
+          "reference": 0.7278283639927849,
+          "sham": 0.7060297510051896,
+          "strong_reference": 0.716016709004407
+        },
+        "shifted": {
+          "broken": 0.0008170269984475453,
+          "candidate": 0.7506793579957503,
+          "incumbent": 0.7177421730011702,
+          "random_search": 0.6832300049948117,
+          "reference": 0.6953034139989995,
+          "sham": 0.6795264249999491,
+          "strong_reference": 0.6865065690021765
+        }
+      },
+      "recorded_development_seconds": 1.476060471999972,
+      "development_task_executions": 6320
+    },
+    {
+      "attempt": 6,
+      "domain": "schedule",
+      "decision": "PROMOTED",
+      "candidate_sha256": "38322d13de3596ada28e54c76aa27d875d1566413480ce3fef02736af461ae58",
+      "incumbent_sha256": "88bad4b95635a979422d0789a3de7def06a4261cd3492424e9c4e574d20c51dd",
+      "alpha_per_test": 8.503401360544217e-05,
+      "recalculated": {
+        "nominal": {
+          "n": 3072,
+          "candidate_mean": 0.6986993420455749,
+          "baseline_mean": 0.6604768566928615,
+          "mean_gain": 0.0382224853527133,
+          "lower_bound": 0.018489395756990882,
+          "radius": 0.019733089595722415,
+          "wins": 2159,
+          "ties": 337,
+          "losses": 576
+        },
+        "shifted": {
+          "n": 1536,
+          "candidate_mean": 0.7433805243808131,
+          "baseline_mean": 0.7004112503289881,
+          "mean_gain": 0.04296927405182511,
+          "lower_bound": 0.006128250908905335,
+          "radius": 0.036841023142919774,
+          "wins": 1216,
+          "ties": 35,
+          "losses": 285
+        }
+      },
+      "means": {
+        "nominal": {
+          "broken": 0.0,
+          "candidate": 0.6986993420455748,
+          "incumbent": 0.6604768566928616,
+          "random_search": 0.6604768566928616,
+          "reference": 0.6604768566928616,
+          "sham": 0.6604768566928616,
+          "strong_reference": 0.6604768566928616
+        },
+        "shifted": {
+          "broken": 0.0,
+          "candidate": 0.7433805243808133,
+          "incumbent": 0.7004112503289881,
+          "random_search": 0.7004112503289881,
+          "reference": 0.7004112503289881,
+          "sham": 0.7004112503289881,
+          "strong_reference": 0.7004112503289881
+        }
+      },
+      "mean_work": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 58.109375,
+          "incumbent": 52.401041666666664,
+          "random_search": 52.401041666666664,
+          "reference": 52.401041666666664,
+          "sham": 52.401041666666664,
+          "strong_reference": 52.401041666666664
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 99.275390625,
+          "incumbent": 84.49088541666667,
+          "random_search": 84.49088541666667,
+          "reference": 84.49088541666667,
+          "sham": 84.49088541666667,
+          "strong_reference": 84.49088541666667
+        }
+      },
+      "mean_score_calls": {
+        "nominal": {
+          "broken": 0,
+          "candidate": 181.74837239583334,
+          "incumbent": 178.26236979166666,
+          "random_search": 178.26236979166666,
+          "reference": 178.26236979166666,
+          "sham": 178.26236979166666,
+          "strong_reference": 178.26236979166666
+        },
+        "shifted": {
+          "broken": 0,
+          "candidate": 534.83984375,
+          "incumbent": 518.5846354166666,
+          "random_search": 518.5846354166666,
+          "reference": 518.5846354166666,
+          "sham": 518.5846354166666,
+          "strong_reference": 518.5846354166666
+        }
+      },
+      "ast_nodes": {
+        "broken": 1,
+        "candidate": 13,
+        "incumbent": 3,
+        "random_search": 3,
+        "reference": 3,
+        "sham": 3,
+        "strong_reference": 3
+      },
+      "recorded_solver_execution_seconds": {
+        "nominal": {
+          "broken": 0.0016796140023416228,
+          "candidate": 1.699110144996439,
+          "incumbent": 0.8369380010003624,
+          "random_search": 0.8332143699963126,
+          "reference": 0.8319573810003931,
+          "sham": 0.832906766996075,
+          "strong_reference": 0.8490481600058501
+        },
+        "shifted": {
+          "broken": 0.0009967509990929102,
+          "candidate": 2.3838821849981287,
+          "incumbent": 1.1815962619978109,
+          "random_search": 1.3193882770008258,
+          "reference": 1.1810893070021393,
+          "sham": 1.17662292900377,
+          "strong_reference": 1.176238165997347
+        }
+      },
+      "recorded_development_seconds": 2.076906610000151,
+      "development_task_executions": 6320
+    }
+  ],
+  "seed_checks": {
+    "final_confirmation_unique": 27648,
+    "final_development_unique": 480,
+    "prior_confirmation_unique": 13824,
+    "prior_final_confirmation_overlap": 0,
+    "development_confirmation_overlap": 0,
+    "prior_confirmation_final_development_overlap": 0
+  },
+  "source_comparison": {
+    "statistics.py": {
+      "same": true,
+      "prior_sha256": "6b34c78e10de52942cc58157aab3fba6597572ae279bcd394d8cdfb4611358e7",
+      "final_sha256": "6b34c78e10de52942cc58157aab3fba6597572ae279bcd394d8cdfb4611358e7"
+    },
+    "providers.py": {
+      "same": true,
+      "prior_sha256": "4e6dd7e77e537124966ae2310d5fb55f8469c16b66e13333a2e3b4fce3678a63",
+      "final_sha256": "4e6dd7e77e537124966ae2310d5fb55f8469c16b66e13333a2e3b4fce3678a63"
+    },
+    "tasks.py": {
+      "same": true,
+      "prior_sha256": "53cf6de531f29f1d645c1647834603fcc9fcd7daf9f516ec2553fdfb281da866",
+      "final_sha256": "53cf6de531f29f1d645c1647834603fcc9fcd7daf9f516ec2553fdfb281da866"
+    },
+    "engine.py": {
+      "same": true,
+      "prior_sha256": "4313f9f8f39a875ab7769a09b5b03631c071110aab81daeb67e6a1e9cce032e9",
+      "final_sha256": "4313f9f8f39a875ab7769a09b5b03631c071110aab81daeb67e6a1e9cce032e9"
+    },
+    "__init__.py": {
+      "same": true,
+      "prior_sha256": "a22e97aee1beb09d28e1acd3efc00768d6674ee15bd442736922e147f8cfc59c",
+      "final_sha256": "a22e97aee1beb09d28e1acd3efc00768d6674ee15bd442736922e147f8cfc59c"
+    },
+    "programs.py": {
+      "same": true,
+      "prior_sha256": "daaf229882ea07b25202db9e0a7325ec34f37baf83dec6fdd3fe3a7066163fa5",
+      "final_sha256": "daaf229882ea07b25202db9e0a7325ec34f37baf83dec6fdd3fe3a7066163fa5"
+    },
+    "report.py": {
+      "same": false,
+      "prior_sha256": "b8ce39155a81df5aa65ff4f6b032e583ed8c436c504a41c25ad6a518063fbe71",
+      "final_sha256": "73ba3dbfc58e44773f7835ffc17c65ea40ad13886177d121bb42026bbd0c1160"
+    },
+    "storage.py": {
+      "same": true,
+      "prior_sha256": "1dcb8b2a2d4399907a46fb1323f80b7bfaac7fc21ecc11e22464df889792b767",
+      "final_sha256": "1dcb8b2a2d4399907a46fb1323f80b7bfaac7fc21ecc11e22464df889792b767"
+    },
+    "judge.py": {
+      "same": true,
+      "prior_sha256": "6a28cc68a06eb31f1305888ff08104cbc336efcbe1ce468f78cf0ba13c2a402b",
+      "final_sha256": "6a28cc68a06eb31f1305888ff08104cbc336efcbe1ce468f78cf0ba13c2a402b"
+    },
+    "__main__.py": {
+      "same": true,
+      "prior_sha256": "28f79452c49fbbaa656f59255b8ed17b38470fe45c497ced12d286d6d1b4b60d",
+      "final_sha256": "28f79452c49fbbaa656f59255b8ed17b38470fe45c497ced12d286d6d1b4b60d"
+    }
+  },
+  "limits": [
+    "Not external institutional review",
+    "Inputs regenerated with original generator and accepted only after exact hash match",
+    "No re-execution of historical candidate policies",
+    "Self-reported work counters cannot be fully reconstructed from final artifacts",
+    "Recorded solver times exclude full enterprise costs"
+  ],
+  "totals": {
+    "committed_tasks_regenerated": 27648,
+    "stored_artifacts_semantically_checked": 193536,
+    "development_task_executions_in_original": 37920,
+    "evolutionary_candidates_in_original": 432,
+    "random_candidates_in_original": 432,
+    "promotions": 3,
+    "holds": 3
+  },
+  "fresh_audit_elapsed_seconds": 8.224187920997792,
+  "audit_source_sha256": "6946efc916373d59cd3af13a4a873f289c4cb020ee56ec37d015869402faf8b2"
+}

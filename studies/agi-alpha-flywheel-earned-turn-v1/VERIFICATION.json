@@ -1,0 +1,73 @@
+{
+  "schema": "earned-turn-component-verification/v1",
+  "status": "COMPONENTS_VERIFIED_PRODUCT_HOLD",
+  "checks": {
+    "source_freeze": {
+      "status": "PASS",
+      "files": 32,
+      "sha256": "0c9c3ad04ab99a992e0746c2416eb657a46ddfae99176e26d7d7245ea0e2280d"
+    },
+    "native_confirmation": {
+      "status": "COMPLETED_ONCE",
+      "streams": 24,
+      "arms": 7,
+      "trials": 168,
+      "qualified_per_arm": "492/492",
+      "primary_product_admission": "HOLD"
+    },
+    "independent_numerical_audit": {
+      "status": "PASS",
+      "artifact": "review/results/INDEPENDENT_RESULTS.json",
+      "sha256": "466e92056bf83f42cfebe4df764ee4f799b95a8a79562823b3cd008302299367"
+    },
+    "paper": {
+      "status": "PASS",
+      "artifact": "paper/AGI_ALPHA_FLYWHEEL_Earn_the_Next_Turn.pdf",
+      "sha256": "209cda5c24dcfef2ad4f5c6e1f8ba4a974353000af27103e1edf65845c9a39c7",
+      "pages": 23,
+      "packaged_source_rebuild": "BYTE_IDENTICAL",
+      "all_rendered_pages_visually_inspected": true,
+      "rebuild_record": "publication/PDF_REBUILD_VERIFICATION.json"
+    },
+    "browser": {
+      "status": "PASS",
+      "artifact": "browser/index.html",
+      "sha256": "3e03c81d1a770cde5f2251c8d66c4985db63afa0ac2e2001f01e93dd59c98cd8",
+      "recorded_presentation_checks": 32,
+      "mode": "FRESH_LOCAL_COMPUTATION_AND_SEPARATELY_LABELED_RECORDED_NATIVE_EVIDENCE",
+      "authenticated_executor": "DISCONNECTED"
+    },
+    "raw_evidence": {
+      "status": "PASS",
+      "archive_sha256": "8d746fe1ea57fc62bc22213d11bdd8044f9fbf9bd96d69d877cd9c7bf53e8821",
+      "bytes": 329682836,
+      "verified_members": 6985,
+      "durable_readback": "EXACT",
+      "verification_record": "publication/RAW_ARCHIVE_VERIFICATION.json"
+    },
+    "prior_edition02": {
+      "status": "UNCHANGED_SERVED_BYTES_VERIFIED",
+      "sha256": "e1391d05727eb5afb0e0de903f9e87db744a79d7b017cf17c4177fed0467e40b",
+      "record": "publication/PREFERRED_EDITION02_READBACK.json"
+    },
+    "raw_extractor": {
+      "status": "PASS",
+      "tests": 20,
+      "actual_archive_members_verified": 6985,
+      "source_sha256": "aec20161bffcb9d051d46f4c04f5394c9e9412770e6b96dcf737a16bd9ed07fb",
+      "record": "publication/EXTRACTOR_VERIFICATION.json",
+      "boundary": "Packaging-only; no experiment executed; no-clobber and no-follow destination handling"
+    }
+  },
+  "publication": {
+    "state_at_source_preparation": "PREPARED_FOR_ADDITIVE_DRAFT_REVIEW",
+    "owner_review": "NOT_CLAIMED",
+    "merge": "NOT_PERFORMED",
+    "research_release": "NOT_PERFORMED",
+    "new_website_deployment": "NOT_PERFORMED",
+    "earlier_editions": "PRESERVED",
+    "existing_authority_restrictions": "UNCHANGED"
+  },
+  "outer_archive_identity": "Detached; a ZIP cannot include its own final hash. Consult the delivered archive identities and payload manifest.",
+  "scope": "Same commissioned team and host; these checks do not grant independent institutional proof or production authority."
+}

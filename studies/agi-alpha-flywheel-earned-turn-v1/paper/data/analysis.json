@@ -1,0 +1,325 @@
+{
+  "schema": "earned-turn-analysis/v1",
+  "arms": {
+    "conventional_reuse": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1745.4099149166657,
+      "total_cpu_ms": 41889.837957999975,
+      "total_wall_ms": 40965.131444,
+      "parent_using_qualified_fresh": 156,
+      "successors": 18,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 1066.869,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 206759849
+    },
+    "direct_specialist": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1763.8749119583338,
+      "total_cpu_ms": 42332.99788700001,
+      "total_wall_ms": 41436.478621,
+      "parent_using_qualified_fresh": 0,
+      "successors": 0,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 0.0,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 157088082
+    },
+    "equivalent": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1758.5619729166672,
+      "total_cpu_ms": 42205.48735000001,
+      "total_wall_ms": 41304.867558,
+      "parent_using_qualified_fresh": 228,
+      "successors": 24,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 1616.53,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 229887183
+    },
+    "flywheel": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1730.732010875,
+      "total_cpu_ms": 41537.568261,
+      "total_wall_ms": 40708.422187,
+      "parent_using_qualified_fresh": 156,
+      "successors": 18,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 1034.057,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 206759893
+    },
+    "native_refactor": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1742.4017242083353,
+      "total_cpu_ms": 41817.641381000045,
+      "total_wall_ms": 40853.095548,
+      "parent_using_qualified_fresh": 0,
+      "successors": 0,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 0.0,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 237033731
+    },
+    "no_reinvestment": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1758.841919291666,
+      "total_cpu_ms": 42212.20606299998,
+      "total_wall_ms": 41645.459833,
+      "parent_using_qualified_fresh": 0,
+      "successors": 0,
+      "released_ms": 0.0,
+      "construction_debits_ms": 0.0,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 236886163
+    },
+    "parent_rebuilt": {
+      "trials": 24,
+      "qualified": 492,
+      "offered": 492,
+      "mean_cpu_ms": 1751.9637893749994,
+      "total_cpu_ms": 42047.13094499998,
+      "total_wall_ms": 41665.654345,
+      "parent_using_qualified_fresh": 228,
+      "successors": 24,
+      "released_ms": 9600.0,
+      "construction_debits_ms": 1629.249,
+      "failures": 0,
+      "control_violations": 0,
+      "storage_bytes": 245996584
+    }
+  },
+  "comparisons": {
+    "conventional_reuse": {
+      "cpu_ratio": 0.9915905691171885,
+      "ci95": [
+        0.9639718978636049,
+        1.0191137290545134
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "direct_specialist": {
+      "cpu_ratio": 0.9812101749060329,
+      "ci95": [
+        0.9437036880505059,
+        1.0200646051200108
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "equivalent": {
+      "cpu_ratio": 0.9841745912454198,
+      "ci95": [
+        0.9531304430977249,
+        1.0139691538927302
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "flywheel": {
+      "cpu_ratio": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "native_refactor": {
+      "cpu_ratio": 0.9933025127493847,
+      "ci95": [
+        0.9668840576605685,
+        1.0264573742561598
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "no_reinvestment": {
+      "cpu_ratio": 0.9840179449282249,
+      "ci95": [
+        0.955959055172439,
+        1.0093340285232555
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    },
+    "parent_rebuilt": {
+      "cpu_ratio": 0.9878811544914557,
+      "ci95": [
+        0.9603090195218978,
+        1.0180564717719056
+      ],
+      "interpretation": "descriptive except native_refactor primary and conventional guard"
+    }
+  },
+  "primary_gate": false,
+  "conventional_noninferiority_guard": true,
+  "quality_resource_gate": true,
+  "product_admission": "HOLD",
+  "full_investment_recovery": "UNRESOLVED",
+  "acceleration": "NOT_TESTED",
+  "commercial_growth": "NOT_MEASURED",
+  "regimes": {
+    "maintenance": {
+      "conventional_reuse": {
+        "cpu_ms": 2546.9846331666745,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 2470.1669118333325,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 2540.4479604999983,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 2569.4558405000002,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 2538.357559833337,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 2523.631901333328,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 2566.8188633333357,
+        "qualified": 138,
+        "offered": 138
+      }
+    },
+    "rare": {
+      "conventional_reuse": {
+        "cpu_ms": 1096.0523021666665,
+        "qualified": 78,
+        "offered": 78
+      },
+      "direct_specialist": {
+        "cpu_ms": 1145.7158471666683,
+        "qualified": 78,
+        "offered": 78
+      },
+      "equivalent": {
+        "cpu_ms": 1071.4231091666697,
+        "qualified": 78,
+        "offered": 78
+      },
+      "flywheel": {
+        "cpu_ms": 1088.8420953333311,
+        "qualified": 78,
+        "offered": 78
+      },
+      "native_refactor": {
+        "cpu_ms": 1086.198558000002,
+        "qualified": 78,
+        "offered": 78
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1135.3864815,
+        "qualified": 78,
+        "offered": 78
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1092.1903376666655,
+        "qualified": 78,
+        "offered": 78
+      }
+    },
+    "recurring": {
+      "conventional_reuse": {
+        "cpu_ms": 1635.0132118333277,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 1700.6163809999991,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 1693.723202166665,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 1624.3001011666627,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 1642.0733651666717,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1698.442435499999,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1633.8568988333311,
+        "qualified": 138,
+        "offered": 138
+      }
+    },
+    "wide_change": {
+      "conventional_reuse": {
+        "cpu_ms": 1703.589512499994,
+        "qualified": 138,
+        "offered": 138
+      },
+      "direct_specialist": {
+        "cpu_ms": 1739.0005078333352,
+        "qualified": 138,
+        "offered": 138
+      },
+      "equivalent": {
+        "cpu_ms": 1728.653619833335,
+        "qualified": 138,
+        "offered": 138
+      },
+      "flywheel": {
+        "cpu_ms": 1640.3300065000058,
+        "qualified": 138,
+        "offered": 138
+      },
+      "native_refactor": {
+        "cpu_ms": 1702.9774138333305,
+        "qualified": 138,
+        "offered": 138
+      },
+      "no_reinvestment": {
+        "cpu_ms": 1677.9068588333369,
+        "qualified": 138,
+        "offered": 138
+      },
+      "parent_rebuilt": {
+        "cpu_ms": 1714.9890576666646,
+        "qualified": 138,
+        "offered": 138
+      }
+    }
+  }
+}
