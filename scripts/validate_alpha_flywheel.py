@@ -35,6 +35,9 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/enterprise-evidence.json",
     "scripts/templates/alpha-flywheel/discovery-evidence.json",
     "scripts/templates/alpha-flywheel/opportunity-evidence.json",
+    "scripts/templates/alpha-flywheel/insight-evidence.json",
+    "scripts/templates/alpha-flywheel/insight-section.html",
+    "scripts/templates/alpha-flywheel/insight.js",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )

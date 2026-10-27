@@ -100,9 +100,17 @@ def add_commands(commands: Any) -> None:
             "comparison",
             "arrangement",
             "offering-link",
+            "search",
+            "search-submission",
+            "search-review",
+            "search-assessment",
+            "research-seed",
+            "research-plan",
         ),
     )
     discovery_receipt.add_argument("identity")
+    search_receipt = actions.add_parser("search-report", help="Inspect the complete frozen discovery denominator")
+    search_receipt.add_argument("identity")
     for action in (
         "configure",
         "plan",
@@ -168,7 +176,7 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "capsule_export": "controlled-invocation-only",
             "discovery": {
                 "interface": "flywheel-opportunity/v1",
-                "commands": ["discovery-command", "discovery-receipt"],
+                "commands": ["discovery-command", "discovery-receipt", "search-report"],
                 "scope": "signed hypotheses, purpose-preserving witnesses and bounded experiment records",
                 "execution_authority": False,
                 "commercial_projection_is_receipt": False,
@@ -195,7 +203,12 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         from .flywheel_discovery import Discovery
 
         result = Discovery(service).inspect(args.kind, args.identity)
-    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt", "discovery-receipt"}:
+    if action == "search-report":
+        from .flywheel_discovery import Discovery
+        from .flywheel_insight import search_report
+
+        result = search_report(Discovery(service), args.identity)
+    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt", "discovery-receipt", "search-report"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:

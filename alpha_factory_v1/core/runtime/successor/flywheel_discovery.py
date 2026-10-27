@@ -305,6 +305,12 @@ class DiscoveryCommand(StrictModel):
         "decision",
         "link-offering",
         "arrangement",
+        "search-freeze",
+        "search-submit",
+        "search-review",
+        "search-assess",
+        "research-seed",
+        "research-plan",
     ]
     expected_head: Digest | None
     record: dict[str, Any]
@@ -364,16 +370,22 @@ class Discovery:
         return spec
 
     def inspect(self, kind: str, identity: str) -> dict[str, Any]:
-        if kind not in {
-            "opportunity",
-            "witness",
-            "bundle",
-            "observation",
-            "comparison",
-            "decision",
-            "offering-link",
-            "arrangement",
-        }:
+        from .flywheel_insight import KINDS
+
+        if (
+            kind
+            not in {
+                "opportunity",
+                "witness",
+                "bundle",
+                "observation",
+                "comparison",
+                "decision",
+                "offering-link",
+                "arrangement",
+            }
+            | KINDS
+        ):
             raise ValueError("unsupported discovery inspection")
         with self.journal.transaction() as cx:
             self.service._state(cx)
@@ -475,6 +487,10 @@ class Discovery:
         return key(kind, identity)
 
     def _apply(self, command: DiscoveryCommand, cx: Any) -> tuple[str, dict[str, Any]]:
+        from .flywheel_insight import ACTIONS, apply_insight
+
+        if command.action in ACTIONS:
+            return apply_insight(self, command, cx)
         if command.action == "opportunity":
             spec = Opportunity.model_validate(command.record)
             old = self._read("opportunity", spec.opportunity_id, cx)

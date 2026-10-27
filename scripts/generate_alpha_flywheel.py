@@ -85,11 +85,15 @@ def build(root: Path = ROOT) -> None:
         + json.dumps(opportunity_evidence, ensure_ascii=True, separators=(",", ":"))
         + ";\n"
     )
-    code += (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
+    insight_evidence = json.loads((template / "insight-evidence.json").read_text(encoding="utf-8"))
+    code += "\nconst INSIGHT_EVIDENCE=" + json.dumps(insight_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+    code += (template / "app.js").read_text(encoding="utf-8") + "\n"
+    code += (template / "insight.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the Flywheel bundle")
     style = "\n" + (template / "style.css").read_text(encoding="utf-8") + "\n"
     page = (template / "index.html").read_text(encoding="utf-8")
+    page = page.replace("{{INSIGHT_SECTION}}", (template / "insight-section.html").read_text(encoding="utf-8"))
     for key, value in (("SCRIPT", code), ("STYLE", style)):
         digest = base64.b64encode(hashlib.sha256(value.encode()).digest()).decode()
         page = page.replace("{{" + key + "_HASH}}", "sha256-" + digest).replace("{{" + key + "}}", value)

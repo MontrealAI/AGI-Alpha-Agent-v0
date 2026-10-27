@@ -1,0 +1,57 @@
+{
+  "schema": "insight-proposed-frontier-profiles/v1",
+  "checked_on": "2026-10-27",
+  "sources": [
+    "https://developers.openai.com/api/docs/models",
+    "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+    "https://developers.openai.com/api/docs/pricing"
+  ],
+  "actual_api_calls": 0,
+  "account_access": "unverified; approved API account, exact profile, billing, tool qualification and signed budget permit required",
+  "consumer_subscription_entitlement_assumed": false,
+  "profiles": [
+    {
+      "purpose": "invention and difficult judgment",
+      "model_id": "gpt-6-astra",
+      "api": "responses",
+      "reasoning_effort": "max",
+      "service_tier": "standard",
+      "input_usd_per_million_tokens": 10,
+      "output_usd_per_million_tokens": 50,
+      "proposed_tools": [
+        "source retrieval",
+        "bounded local checker"
+      ],
+      "qualification": "not invoked or provisioned"
+    },
+    {
+      "purpose": "capable execution where quality is sufficient",
+      "model_id": "gpt-6.1-sol",
+      "api": "responses",
+      "reasoning_effort": "high",
+      "service_tier": "standard",
+      "input_usd_per_million_tokens": 2,
+      "output_usd_per_million_tokens": 10,
+      "proposed_tools": [
+        "approved function tools"
+      ],
+      "qualification": "not invoked or provisioned"
+    },
+    {
+      "purpose": "computer and visual execution",
+      "model_id": "gpt-6.1-terra",
+      "api": "responses",
+      "reasoning_effort": "high",
+      "service_tier": "standard",
+      "input_usd_per_million_tokens": 1,
+      "output_usd_per_million_tokens": 5,
+      "proposed_tools": [
+        "approved computer-use environment"
+      ],
+      "qualification": "not invoked or provisioned"
+    }
+  ],
+  "tariff_scope": "Uncached standard short-context text rates checked on the date above; caching, tool fees, longer contexts, regional uplift and tier changes need separate current pricing evidence; output includes billed reasoning where applicable. These are estimates, not billing receipts.",
+  "identifier_scope": "Exact documented IDs; no dated immutable snapshot asserted; record actual returned provider identifier on any future run."
+}
