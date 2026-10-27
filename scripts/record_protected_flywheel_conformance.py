@@ -48,6 +48,23 @@ def record() -> dict[str, Any]:
         assert after_payment["available_funds"] == before_payment["available_funds"]
         assert after_payment["cash"] == before_payment["cash"] - 1
         assert after_payment["obligations"] == before_payment["obligations"] - 1
+        try:
+            module.account(
+                state,
+                "capital",
+                {
+                    "record_id": "duplicate-fictional-funding",
+                    "mission_id": module.ORIGIN,
+                    "amount_micro_usd": 10_000,
+                    "evidence_digest": module.ZERO,
+                },
+                "duplicate-fictional-funding",
+            )
+        except module.Conflict:
+            duplicate_funding_refused = True
+        else:
+            raise AssertionError("duplicate capital evidence unexpectedly credited")
+        assert state["costs"].report() == after_payment
         network = state["library"].snapshot()[module.BRANCH]
         ident = next(iter(network["entries"]))
         candidate = network["entries"][ident]
@@ -143,6 +160,7 @@ def record() -> dict[str, Any]:
             "catalog": catalog,
             "current_state": module.entry(state, ident)["state"],
             "revoked_stale_access_refused": refused,
+            "duplicate_funding_refused": duplicate_funding_refused,
             "journal_integrity": state["journal"].verify(),
             "required_live_resources": [
                 "approved frontier model/executor, exact configuration, quota, billing and finite allowance",

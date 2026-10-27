@@ -190,10 +190,12 @@ class CostLedger:
                 target = "capital" if action == "capital" else "receipts" if action == "collection" else "offers"
                 if any(record["record_id"] in state[key] for key in ("capital", "receipts", "offers")):
                     raise Conflict("money record identity already used")
-                if action == "collection" and any(
-                    row["evidence_digest"] == record["evidence_digest"] for row in state["receipts"].values()
+                if action in {"capital", "collection"} and any(
+                    row["evidence_digest"] == record["evidence_digest"]
+                    for key in ("capital", "receipts")
+                    for row in state[key].values()
                 ):
-                    raise Conflict("collection evidence already credited")
+                    raise Conflict("incoming funding evidence already credited as capital or collection")
                 state[target][record["record_id"]] = {**record, "kind": action, "signed": signed.model_dump()}
             elif action == "reserve":
                 if type(record) is not int or not 0 <= record <= 10**15:
@@ -247,7 +249,9 @@ class CostLedger:
         capital = sum(r["amount_micro_usd"] for r in state["capital"].values())
         all_collected = sum(r["amount_micro_usd"] for r in state["receipts"].values())
         paid = sum(r["paid_micro_usd"] for r in all_rows)
-        obligations = sum((r["accrued_micro_usd"] or 0) - r["paid_micro_usd"] for r in all_rows)
+        obligations = sum(
+            r["accrued_micro_usd"] - r["paid_micro_usd"] for r in all_rows if r["accrued_micro_usd"] is not None
+        )
         unknown = any(r["accrued_micro_usd"] is None for r in all_rows)
         seal_sets = {"A": state["seals"], "B": state.get("reuse_seals", {}), "C": state.get("investment_seals", {})}
         present = {row["bucket"] for row in rows}
@@ -269,7 +273,8 @@ class CostLedger:
             "delivery_profit": collected - totals["A"] if bucket_complete["A"] else None,
             "complete_cost_profit": collected - sum(totals.values()) if complete else None,
             "cash": capital + all_collected - paid,
-            "obligations": obligations,
+            "obligations": None if unknown else obligations,
+            "known_obligations": obligations,
             "reserve": state["reserve_micro_usd"],
             "available_funds": None
             if unknown

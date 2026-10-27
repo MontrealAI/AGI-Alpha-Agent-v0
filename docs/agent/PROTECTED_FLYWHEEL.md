@@ -102,6 +102,9 @@ payment_id, activity_id, positive amount_micro_usd and allocated evidence_digest
 and outstanding obligations equally, preserving accrual, A/B/C ownership and completeness seals. Overpayment,
 duplicate allocation evidence and unknown liabilities refuse; repeated identical commands are idempotent.
 This records an attributed payment attestation and never transfers funds.
+Incoming funding evidence can credit cash only once across capital and collected revenue. With unknown
+costs, total obligations and available funds remain unknown; known_obligations reports only reconciled
+liabilities. Prepayments reduce cash without creating a negative fictitious liability.
 
 Only a completed native Research mission, with a verified exact result, approved review and complete A costs,
 can produce a candidate. The original
@@ -258,6 +261,9 @@ activity_id, amount_micro_usd positif et evidence_digest d’allocation. Un paie
 et obligations du même montant sans modifier charge, catégorie A/B/C ou clôture. Surpaiement, preuve
 d’allocation répétée et dette inconnue bloquent ; une commande identique répétée reste idempotente.
 Cette attestation de paiement n’effectue aucun transfert de fonds.
+Une preuve de fonds entrants ne peut créditer la trésorerie qu’une fois entre capital et revenu encaissé.
+Avec des coûts inconnus, obligations totales et fonds disponibles restent inconnus ; known_obligations
+ne rapporte que les dettes rapprochées. Une avance réduit la trésorerie sans créer une dette négative fictive.
 
 Une candidate exige une mission Research native terminée, son résultat exact vérifié, une revue approuvée
 et ses coûts A complets. Le portefeuille de l’agent

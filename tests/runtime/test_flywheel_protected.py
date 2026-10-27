@@ -1365,6 +1365,10 @@ def test_unknown_cost_payments_cannot_be_reversed_or_reconciled_twice(setup: dic
         note="Synthetic prepaid amount with final invoice unknown",
     ).model_dump()
     account(s, "charge", unknown, "uncertain-charge")
+    uncertain = s["costs"].report()
+    assert uncertain["cash"] == -5
+    assert uncertain["obligations"] is None and uncertain["known_obligations"] == 0
+    assert uncertain["available_funds"] is None
     payment = {"payment_id": "later", "activity_id": "uncertain", "amount_micro_usd": 1, "evidence_digest": "3" * 64}
     with pytest.raises(Conflict, match="known accrual"):
         account(s, "payment", payment, "pay-unknown")
@@ -1374,3 +1378,21 @@ def test_unknown_cost_payments_cannot_be_reversed_or_reconciled_twice(setup: dic
     account(s, "resolve", resolved, "resolved-prepayment")
     account(s, "payment", payment, "pay-known")
     assert s["costs"].snapshot()["charges"]["uncertain"]["paid_micro_usd"] == 6
+
+
+@pytest.mark.parametrize(
+    "first,second",
+    [("capital", "capital"), ("capital", "collection"), ("collection", "capital"), ("collection", "collection")],
+)
+def test_incoming_funds_cannot_reuse_capital_or_collection_evidence(
+    setup: dict[str, Any], first: str, second: str
+) -> None:
+    s = setup
+    deposit = {"record_id": "deposit", "mission_id": ORIGIN, "amount_micro_usd": 100, "evidence_digest": "a" * 64}
+    account(s, first, deposit, "deposit")
+    account(s, first, deposit, "deposit")
+    before = s["costs"].report()
+    assert before["cash"] == before["available_funds"] == 100
+    with pytest.raises(Conflict, match="funding evidence"):
+        account(s, second, {**deposit, "record_id": "duplicate"}, "deposit-again")
+    assert s["costs"].report() == before
