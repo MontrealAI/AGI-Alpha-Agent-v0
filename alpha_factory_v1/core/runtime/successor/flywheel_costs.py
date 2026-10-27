@@ -15,6 +15,7 @@ from ..store import Conflict, Journal, digest as runtime_digest
 from .protocol import MAX_JSON_BYTES, MAX_JSON_NODES, Digest, Identifier, StrictModel, Text, canonical, digest
 from .trust import SignedEnvelope, TrustRegistry
 from .flywheel_checkpoint import DurableCheckpoint
+from .transformation_library import _is_exact_type
 
 KEY = "@flywheel-costs:v1"
 CATEGORIES = {"model", "tools", "compute", "storage", "network", "human", "acceptance", "correction", "overhead"}
@@ -313,7 +314,7 @@ class CostLedger:
                     raise Conflict("incoming funding evidence already credited as capital or collection")
                 state[target][record["record_id"]] = {**record, "kind": action, "signed": signed.model_dump()}
             elif action == "reserve":
-                if type(record) is not int or not 0 <= record <= 10**15:
+                if not _is_exact_type(record, int) or not 0 <= record <= 10**15:
                     raise ValueError("reserve requires nonnegative integer USD micro-units")
                 state["reserve_micro_usd"] = record
             elif action in {"seal", "seal-reuse", "seal-retention", "seal-investment"}:

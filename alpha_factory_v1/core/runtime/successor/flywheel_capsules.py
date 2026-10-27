@@ -37,7 +37,7 @@ from .transformation import (
     assert_public_content,
     _checked_source_bytes,
 )
-from .transformation_library import KEY, PROTECTED_BRANCH, TransformationLibrary
+from .transformation_library import KEY, PROTECTED_BRANCH, TransformationLibrary, _is_exact_type
 from .trust import SignedEnvelope
 
 BRANCH = PROTECTED_BRANCH
@@ -166,7 +166,7 @@ class FrontierRun(StrictModel):
             self.finished_at < self.started_at
             or not self.usage
             or len(self.usage) > 32
-            or any(type(v) is not int or not 0 <= v <= 10**12 for v in self.usage.values())
+            or any(not _is_exact_type(v, int) or not 0 <= v <= 10**12 for v in self.usage.values())
             or any(not 1 <= len(key) <= 80 for key in self.usage)
         ):
             raise ValueError("complete bounded usage and execution interval required")
@@ -632,7 +632,7 @@ class ProtectedLibrary:
                 if (
                     set(accepted) != {*expected, "candidate_correct", "beta_correct", "evidence_digest"}
                     or any(accepted[k] != v for k, v in expected.items())
-                    or any(type(accepted[k]) is not bool for k in ("candidate_correct", "beta_correct"))
+                    or any(not _is_exact_type(accepted[k], bool) for k in ("candidate_correct", "beta_correct"))
                 ):
                     raise ValueError("acceptance must bind the exact paired outcomes and frozen candidate")
                 all_correct = all_correct and accepted["candidate_correct"] and accepted["beta_correct"]
@@ -686,7 +686,7 @@ class ProtectedLibrary:
             or set(record) != {"candidate_digest", "previous_digest", "reason", "expires_at"}
             or not isinstance(record["reason"], str)
             or not 1 <= len(record["reason"]) <= 4000
-            or type(record["expires_at"]) is not int
+            or not _is_exact_type(record["expires_at"], int)
         ):
             raise ValueError("control must bind current state, reason and expiry")
         with self.journal.transaction() as cx:
