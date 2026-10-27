@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src &#x27;none&#x27;; style-src &#x27;sha256-OjMuMUnTGtBeXGUq/RE/rgF+fp+2a/YEHIIrqbTo0Og=&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;; object-src &#x27;none&#x27;">
+<title>regional-analysis-02 — Resilient Placement Decision Pack</title><style>
+    :root{color-scheme:light;font-family:ui-sans-serif,system-ui,sans-serif;color:#12243b;background:#f4f1eb}
+    *{box-sizing:border-box}body{margin:0}a{color:#005a71;text-underline-offset:.2em}a:focus-visible{outline:3px solid #be6100}
+    .skip{position:absolute;left:-10000px}.skip:focus{left:1rem;top:1rem;background:white;padding:1rem;z-index:3}
+    nav{display:flex;gap:1.3rem;justify-content:space-between;align-items:center;padding:1.2rem max(5vw,1rem);flex-wrap:wrap}
+    nav strong{font-size:.8rem;letter-spacing:.14em}nav div{display:flex;gap:1rem}main{max-width:1140px;margin:auto;padding:1rem}
+    .hero{background:#12243b;color:#fff;border-radius:24px;padding:clamp(1.5rem,5vw,4rem);margin-bottom:1.5rem}
+    .eyebrow{letter-spacing:.12em;font-size:.78rem;color:#a0ded8;text-transform:uppercase}.hero h1{font-size:clamp(2rem,5vw,3.7rem);
+    line-height:1.08;max-width:850px;margin:.6rem 0 1.1rem}.hero p{max-width:760px;line-height:1.65}.pill{display:inline-block;
+    padding:.5rem .8rem;border:1px solid #79a9ad;border-radius:20px;font-size:.85rem}.stats{display:grid;grid-template-columns:repeat(3,1fr);
+    gap:1rem;margin:1.5rem 0}.stat,section,.panel{background:#fff;border:1px solid #d9dedb;border-radius:16px;padding:1.5rem}
+    .stat strong{display:block;font-size:1.9rem;overflow-wrap:anywhere}.stat span{font-size:.9rem;color:#405568}
+    section{margin:1rem 0;scroll-margin-top:1rem}h2{margin-top:0;font-size:1.55rem}h3{margin-top:1.7rem}p,li{line-height:1.65}
+    .notice{border-left:4px solid #ad5b00;background:#fff6e9;padding:1rem;line-height:1.65}.table-wrap{max-width:100%;overflow:auto;
+    border:1px solid #dde3df;border-radius:10px}table{border-collapse:collapse;min-width:100%;font-size:.9rem}th,td{text-align:left;
+    border-bottom:1px solid #e5e9e5;padding:.8rem;vertical-align:top;overflow-wrap:anywhere}th{background:#eaf2ef;white-space:nowrap}
+    .downloads{display:flex;gap:.6rem;flex-wrap:wrap}.downloads a{padding:.7rem 1rem;border:1px solid #005a71;border-radius:9px}
+    code{overflow-wrap:anywhere;white-space:normal;font-size:.8rem}footer{padding:2rem 1rem;line-height:1.6;color:#405568;font-size:.85rem}
+    @media(max-width:650px){.stats{grid-template-columns:1fr}.hero{border-radius:16px}section{padding:1rem}th,td{padding:.6rem}}
+    @media print{nav,.downloads,.skip{display:none}body{background:white}.hero{background:white;color:#12243b;border:1px solid #aaa}
+    section,.stat{break-inside:avoid}.table-wrap{overflow:visible}table{font-size:9pt}}
+    </style></head>
+<body><a class="skip" href="#report">Skip to report / Aller au rapport</a>
+<nav aria-label="Report navigation"><strong>MONTREAL.AI · AGI ALPHA</strong><div><a href="#english" lang="en">English</a>
+<a href="#francais" lang="fr">Français</a><a href="#files">Files / Fichiers</a></div></nav><main id="report">
+<header class="hero"><div class="eyebrow">Research delivery · Livraison de recherche</div>
+<h1>Place workloads with a plan you can check.</h1><p lang="fr">Répartissez vos services avec un plan vérifiable.</p>
+<p>Research example: regional analysis delivery · <strong>regional-analysis-02</strong></p>
+<span class="pill">Exact minimum verified · Minimum exact vérifié</span></header>
+<div class="stats"><div class="stat"><strong>4</strong><span>Services · Two replicas each / Deux répliques</span></div>
+<div class="stat"><strong>4</strong><span>Named hosts / Hôtes nommés</span></div>
+<div class="stat"><strong>24</strong><span>declared objective units per replica · Objective / Objectif</span></div></div>
+<section id="english" lang="en"><h2>Your decision pack</h2>
+<p>This bounded plan assigns two replicas of each service to different declared failure domains, respecting every host capacity.
+The independent exhaustive checker verifies the exact minimum objective, or proves that no feasible placement exists within this model.</p>
+<p class="notice"><strong>Research acceptance, not customer acceptance.</strong> The solver and checker ran locally through a scripted-model
+hybrid configuration. No infrastructure was deployed. Capacity units, failure domains and costs are supplied assumptions;
+this does not verify provider independence, recovery behavior or physical availability. Actual customer collections are USD0;
+complete actual delivery and project costs remain unknown.</p>
+<h3>Scope and inventory</h3><p>Constructed digital-service planning inventory for research acceptance; not a live provider capacity or price quote.</p><p>Input authority: Original research-authored brief and inventory; Apache-2.0. No external customer data.</p>
+<h3>Named placement</h3><p>Each row is one replica allocation.
+Objective values use <strong>declared objective units per replica</strong>; they are not the sale price or measured provider profit.</p><div class="table-wrap" tabindex="0"><table><thead><tr><th scope="col">Service</th><th scope="col">Replica / Réplique</th><th scope="col">Host / Hôte</th><th scope="col">Failure domain / Domaine</th><th scope="col">Demand / Demande</th><th scope="col">Objective</th></tr></thead><tbody><tr><td>source-ingestion</td><td>1</td><td>north-b</td><td>zone-north</td><td>3</td><td>3</td></tr><tr><td>source-ingestion</td><td>2</td><td>south-a</td><td>zone-south</td><td>3</td><td>5</td></tr><tr><td>analysis-workers</td><td>1</td><td>north-a</td><td>zone-north</td><td>4</td><td>2</td></tr><tr><td>analysis-workers</td><td>2</td><td>central-a</td><td>zone-central</td><td>4</td><td>4</td></tr><tr><td>delivery-archive</td><td>1</td><td>central-a</td><td>zone-central</td><td>2</td><td>3</td></tr><tr><td>delivery-archive</td><td>2</td><td>south-a</td><td>zone-south</td><td>2</td><td>2</td></tr><tr><td>verification-service</td><td>1</td><td>north-b</td><td>zone-north</td><td>2</td><td>2</td></tr><tr><td>verification-service</td><td>2</td><td>south-a</td><td>zone-south</td><td>2</td><td>3</td></tr></tbody></table></div>
+<h3>Capacity reconciliation</h3><div class="table-wrap" tabindex="0"><table><thead><tr><th scope="col">Host / Hôte</th><th scope="col">Failure domain / Domaine</th><th scope="col">Capacity / Capacité</th><th scope="col">Load / Charge</th><th scope="col">Remaining / Disponible</th></tr></thead><tbody><tr><td>north-a</td><td>zone-north</td><td>6</td><td>4</td><td>2</td></tr><tr><td>north-b</td><td>zone-north</td><td>7</td><td>5</td><td>2</td></tr><tr><td>central-a</td><td>zone-central</td><td>7</td><td>6</td><td>1</td></tr><tr><td>south-a</td><td>zone-south</td><td>8</td><td>7</td><td>1</td></tr></tbody></table></div><h3>Acceptance and correction</h3>
+<p>1296 candidate assignments were independently enumerated. Acceptance applies only to the
+unchanged supplied scope. An incomplete search produces no accepted pack. Input corrections require a new scoped mission;
+package defects require correction and a new manifest. Any commercial price, turnaround, payment and refund terms require a separate agreed offer.</p>
+<p>For production use, validate the inventory, units, provider dependencies, failover behavior and implementation permissions before deployment.
+No frontier-performance advantage, market demand or retained Alpha is established.</p></section>
+<section id="francais" lang="fr"><h2>Votre dossier de décision</h2>
+<p>Ce plan borné affecte deux répliques de chaque service à des domaines de défaillance déclarés distincts, dans les limites de capacité de chaque hôte.
+Le vérificateur exhaustif indépendant confirme le minimum exact de l’objectif, ou prouve l’impossibilité dans ce modèle.</p>
+<p class="notice"><strong>Acceptation de recherche, sans acceptation client.</strong> Le solveur et le vérificateur ont été exécutés localement avec un modèle
+scénarisé en mode hybride. Aucun déploiement n’a eu lieu. Les capacités, domaines et coûts sont des hypothèses fournies;
+ni l’indépendance réelle des fournisseurs ni la reprise physique ne sont validées. Encaissements clients réels : USD0;
+coûts réels complets de livraison et du projet : inconnus.</p>
+<h3>Périmètre et données</h3><p>Constructed digital-service planning inventory for research acceptance; not a live provider capacity or price quote.</p><p>Autorisation des données : Original research-authored brief and inventory; Apache-2.0. No external customer data.</p>
+<h3>Affectations nominatives</h3><p>Chaque ligne représente une réplique.
+L’objectif est exprimé en <strong>declared objective units per replica</strong>, sans constituer le prix de vente ni un bénéfice réel.</p><div class="table-wrap" tabindex="0"><table><thead><tr><th scope="col">Service</th><th scope="col">Replica / Réplique</th><th scope="col">Host / Hôte</th><th scope="col">Failure domain / Domaine</th><th scope="col">Demand / Demande</th><th scope="col">Objective</th></tr></thead><tbody><tr><td>source-ingestion</td><td>1</td><td>north-b</td><td>zone-north</td><td>3</td><td>3</td></tr><tr><td>source-ingestion</td><td>2</td><td>south-a</td><td>zone-south</td><td>3</td><td>5</td></tr><tr><td>analysis-workers</td><td>1</td><td>north-a</td><td>zone-north</td><td>4</td><td>2</td></tr><tr><td>analysis-workers</td><td>2</td><td>central-a</td><td>zone-central</td><td>4</td><td>4</td></tr><tr><td>delivery-archive</td><td>1</td><td>central-a</td><td>zone-central</td><td>2</td><td>3</td></tr><tr><td>delivery-archive</td><td>2</td><td>south-a</td><td>zone-south</td><td>2</td><td>2</td></tr><tr><td>verification-service</td><td>1</td><td>north-b</td><td>zone-north</td><td>2</td><td>2</td></tr><tr><td>verification-service</td><td>2</td><td>south-a</td><td>zone-south</td><td>2</td><td>3</td></tr></tbody></table></div>
+<h3>Vérification des capacités</h3><div class="table-wrap" tabindex="0"><table><thead><tr><th scope="col">Host / Hôte</th><th scope="col">Failure domain / Domaine</th><th scope="col">Capacity / Capacité</th><th scope="col">Load / Charge</th><th scope="col">Remaining / Disponible</th></tr></thead><tbody><tr><td>north-a</td><td>zone-north</td><td>6</td><td>4</td><td>2</td></tr><tr><td>north-b</td><td>zone-north</td><td>7</td><td>5</td><td>2</td></tr><tr><td>central-a</td><td>zone-central</td><td>7</td><td>6</td><td>1</td></tr><tr><td>south-a</td><td>zone-south</td><td>8</td><td>7</td><td>1</td></tr></tbody></table></div><h3>Acceptation et correction</h3>
+<p>1296 affectations candidates ont été énumérées indépendamment.
+L’acceptation porte uniquement sur le périmètre fourni inchangé. Une recherche incomplète ne produit aucun dossier accepté.
+Toute correction des données exige une nouvelle mission; tout défaut du dossier exige une correction et un nouveau manifeste.
+Prix, délais, paiement et remboursement commerciaux doivent être convenus dans une offre distincte.</p>
+<p>Avant tout usage en production, validez données, unités, dépendances fournisseurs, reprise et autorisations de déploiement.
+Aucun avantage de modèle de pointe, demande commerciale ou Alpha conservé n’est établi.</p></section>
+<section id="files"><h2>Inspect and reproduce / Examiner et reproduire</h2><div class="downloads">
+<a href="plan.csv" download>Plan CSV</a><a href="delivery.json" download>Decision JSON</a>
+<a href="brief.json" download>Brief / Mandat</a><a href="execution.json" download>Execution evidence</a>
+<a href="manifest.json" download>SHA-256 manifest</a></div>
+<p>Brief commitment / Engagement : <code>4f3a476ce9e795207ff7d45e49470d4d9d0b7f492444019e0ee5a5e111a92cf0</code></p>
+<p>Artifact commitment / Artefact : <code>a1fe82a3599055efcf364351d83024ac0b5181068865c2163bed1eb051443aa8</code></p>
+<p>Packaging checks imported receipt consistency; it does not authenticate an imported Journal.
+The retained runner Journal provides the separate execution audit path.</p></section>
+<footer>Vincent Boucher — President of MONTREAL.AI · Conceptual research prototype; AGI describes a research objective.
+No financial return or transaction is asserted. / Prototype de recherche conceptuel; aucun rendement ni transaction n’est affirmé.</footer>
+</main></body></html>

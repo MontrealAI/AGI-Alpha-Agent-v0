@@ -1,0 +1,74 @@
+{
+  "schema_name": "resilient-placement-brief/v1",
+  "authorized_inputs": true,
+  "rights_basis": "Original research-authored brief and inventory; Apache-2.0. No external customer data.",
+  "inventory_basis": "Constructed digital-service planning inventory for research acceptance; not a live provider capacity or price quote.",
+  "cost_unit": "declared objective units per replica",
+  "price_micro_usd": 250000000,
+  "brief_id": "bilingual-publishing-01",
+  "beneficiary": "Research example: bilingual publishing operations",
+  "hosts": [
+    {
+      "id": "quebec-primary",
+      "capacity": 7,
+      "failure_domain": "facility-east"
+    },
+    {
+      "id": "quebec-secondary",
+      "capacity": 5,
+      "failure_domain": "facility-east"
+    },
+    {
+      "id": "ontario-backup",
+      "capacity": 8,
+      "failure_domain": "facility-central"
+    },
+    {
+      "id": "western-backup",
+      "capacity": 6,
+      "failure_domain": "facility-west"
+    }
+  ],
+  "services": [
+    {
+      "id": "reader-en",
+      "demand": 2,
+      "costs": {
+        "quebec-primary": 3,
+        "quebec-secondary": 2,
+        "ontario-backup": 5,
+        "western-backup": 8
+      }
+    },
+    {
+      "id": "reader-fr",
+      "demand": 3,
+      "costs": {
+        "quebec-primary": 2,
+        "quebec-secondary": 3,
+        "ontario-backup": 4,
+        "western-backup": 9
+      }
+    },
+    {
+      "id": "evidence-downloads",
+      "demand": 2,
+      "costs": {
+        "quebec-primary": 5,
+        "quebec-secondary": 4,
+        "ontario-backup": 3,
+        "western-backup": 6
+      }
+    },
+    {
+      "id": "mission-history",
+      "demand": 2,
+      "costs": {
+        "quebec-primary": 3,
+        "quebec-secondary": 5,
+        "ontario-backup": 6,
+        "western-backup": 4
+      }
+    }
+  ]
+}

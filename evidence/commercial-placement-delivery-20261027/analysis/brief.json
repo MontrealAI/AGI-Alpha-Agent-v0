@@ -1,0 +1,75 @@
+{
+  "schema_name": "resilient-placement-brief/v1",
+  "brief_id": "regional-analysis-02",
+  "beneficiary": "Research example: regional analysis delivery",
+  "authorized_inputs": true,
+  "rights_basis": "Original research-authored brief and inventory; Apache-2.0. No external customer data.",
+  "inventory_basis": "Constructed digital-service planning inventory for research acceptance; not a live provider capacity or price quote.",
+  "cost_unit": "declared objective units per replica",
+  "price_micro_usd": 250000000,
+  "hosts": [
+    {
+      "id": "north-a",
+      "capacity": 6,
+      "failure_domain": "zone-north"
+    },
+    {
+      "id": "north-b",
+      "capacity": 7,
+      "failure_domain": "zone-north"
+    },
+    {
+      "id": "central-a",
+      "capacity": 7,
+      "failure_domain": "zone-central"
+    },
+    {
+      "id": "south-a",
+      "capacity": 8,
+      "failure_domain": "zone-south"
+    }
+  ],
+  "services": [
+    {
+      "id": "source-ingestion",
+      "demand": 3,
+      "costs": {
+        "central-a": 7,
+        "north-a": 4,
+        "north-b": 3,
+        "south-a": 5
+      }
+    },
+    {
+      "id": "analysis-workers",
+      "demand": 4,
+      "costs": {
+        "central-a": 4,
+        "north-a": 2,
+        "north-b": 6,
+        "south-a": 8
+      }
+    },
+    {
+      "id": "delivery-archive",
+      "demand": 2,
+      "costs": {
+        "central-a": 3,
+        "north-a": 6,
+        "north-b": 4,
+        "south-a": 2
+      }
+    },
+    {
+      "id": "verification-service",
+      "demand": 2,
+      "costs": {
+        "central-a": 6,
+        "north-a": 5,
+        "north-b": 2,
+        "south-a": 3
+      }
+    }
+  ],
+  "node_budget": 250000
+}

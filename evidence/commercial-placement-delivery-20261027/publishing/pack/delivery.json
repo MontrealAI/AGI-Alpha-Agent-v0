@@ -1,0 +1,154 @@
+{
+  "acceptance_kind": "independent-finite-research-acceptance",
+  "actual_complete_cost_micro_usd": null,
+  "actual_customer_acceptance": false,
+  "actual_customer_collections_micro_usd": 0,
+  "artifact_digest": "925ca52b0cbcbc1e3f0c739a1a44138026ae464f84e94473b8b5fdb1208d043b",
+  "brief_digest": "fb26c21c96cc99200cd39aedf09243475c0eff6df393c040dcfedaa18a5497d2",
+  "brief_id": "bilingual-publishing-01",
+  "deployment_performed": false,
+  "hosts": [
+    {
+      "capacity": 7,
+      "failure_domain": "facility-east",
+      "host": "quebec-primary",
+      "load": 5,
+      "remaining": 2
+    },
+    {
+      "capacity": 5,
+      "failure_domain": "facility-east",
+      "host": "quebec-secondary",
+      "load": 4,
+      "remaining": 1
+    },
+    {
+      "capacity": 8,
+      "failure_domain": "facility-central",
+      "host": "ontario-backup",
+      "load": 7,
+      "remaining": 1
+    },
+    {
+      "capacity": 6,
+      "failure_domain": "facility-west",
+      "host": "western-backup",
+      "load": 2,
+      "remaining": 4
+    }
+  ],
+  "model": "scripted-protocol-fixture/v1",
+  "outcome": {
+    "cost": 27,
+    "logical_units": 157,
+    "placement": [
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "scope": "finite synthetic planning; no infrastructure deployment",
+    "search_nodes": 17,
+    "status": "optimal",
+    "workflow_digest": "760991e1e44d2ccb52ed10ff669548049663b66da70a05e495171b5550224ff3"
+  },
+  "plan": [
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-east",
+      "host": "quebec-secondary",
+      "objective_cost": 2,
+      "replica": 1,
+      "service": "reader-en"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-central",
+      "host": "ontario-backup",
+      "objective_cost": 5,
+      "replica": 2,
+      "service": "reader-en"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 3,
+      "failure_domain": "facility-east",
+      "host": "quebec-primary",
+      "objective_cost": 2,
+      "replica": 1,
+      "service": "reader-fr"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 3,
+      "failure_domain": "facility-central",
+      "host": "ontario-backup",
+      "objective_cost": 4,
+      "replica": 2,
+      "service": "reader-fr"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-east",
+      "host": "quebec-secondary",
+      "objective_cost": 4,
+      "replica": 1,
+      "service": "evidence-downloads"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-central",
+      "host": "ontario-backup",
+      "objective_cost": 3,
+      "replica": 2,
+      "service": "evidence-downloads"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-east",
+      "host": "quebec-primary",
+      "objective_cost": 3,
+      "replica": 1,
+      "service": "mission-history"
+    },
+    {
+      "cost_unit": "declared objective units per replica",
+      "demand": 2,
+      "failure_domain": "facility-west",
+      "host": "western-backup",
+      "objective_cost": 4,
+      "replica": 2,
+      "service": "mission-history"
+    }
+  ],
+  "price_basis": "Hypothesis only; not an accepted commercial offer or customer willingness to pay",
+  "price_hypothesis_micro_usd": 250000000,
+  "receipt_authentication": "runner journal audit required; pack checks content consistency only",
+  "schema_name": "resilient-placement-delivery/v1",
+  "verification": {
+    "accepted_finite_result": true,
+    "actual_customer_acceptance": false,
+    "feasible": true,
+    "frontier_model_advantage": "unmeasured",
+    "oracle_assignments": 1296,
+    "oracle_cost": 27,
+    "oracle_enumerated": true
+  }
+}
