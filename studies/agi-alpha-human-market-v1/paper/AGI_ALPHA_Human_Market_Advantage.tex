@@ -1,0 +1,480 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern,microtype,amsmath,amssymb,graphicx,booktabs,array,longtable,tabularx}
+\usepackage[margin=0.86in,headheight=15pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec,xurl}
+\usepackage[colorlinks=true,linkcolor=violet!60!black,urlcolor=blue!55!black,citecolor=violet!60!black]{hyperref}
+\selectlanguage{english}
+\definecolor{ink}{HTML}{211A36}
+\definecolor{accent}{HTML}{633FB4}
+\definecolor{soft}{HTML}{F0ECF8}
+\definecolor{teal}{HTML}{167B81}
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt}
+\setlist{nosep,leftmargin=1.5em}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small AGI ALPHA / Human-Market Advantage}
+\fancyhead[R]{\small Research edition 01}
+\fancyfoot[L]{\small 26 October 2026 \quad\textbar\quad Simulated economics; no sales}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\newcommand{\usd}[1]{US\$#1}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\src}[1]{\path{#1}}
+\newcommand{\status}[1]{\textbf{\color{accent}#1}}
+\hypersetup{pdftitle={AGI ALPHA Flywheel: The Human-Market Advantage},pdfauthor={AGI ALPHA research contribution},pdfsubject={Bounded CSV delivery, human-service prices and conditional operating-funded reinvestment}}
+
+\begin{document}
+\thispagestyle{empty}
+{\small\bfseries\color{accent} AGI ALPHA FLYWHEEL \hfill SUCCESSOR $\Omega$ HARNESS\par}
+\vspace{0.22in}
+{\Huge\bfseries The Human-Market\par Advantage\par}
+\vspace{0.13in}
+{\Large Useful work, complete costs, and conditional reinvestment\par}
+\vspace{0.14in}
+{\large A bounded CSV cleanup and reconciliation service using\par
+TRANSFORMATIONAL INTELLIGENCE $\infty$ and the existing SUCCESSOR Workbench\par}
+\vspace{0.15in}
+{\small Research contribution prepared with AI-assisted engineering and separately assigned,\par
+same-session assessment. Preprint; not external certification or peer review.\par
+Source and scenario freeze: 26 October 2026. Coordination: repository issue \#4850.\par}
+\vspace{0.2in}
+
+\begin{abstract}
+Can an automated service sell a useful outcome slightly below the price of equivalent human-delivered work, retain available operating surplus, and finance capabilities that repay their cost on fresh work? We screen six digital-work families and implement a narrow nonpersonal CSV cleanup service. The customer-facing outcome is a cleaned file, explicit exceptions, duplicate and supersession links, a complete record-disposition ledger, reproducible rules and a verified provenance packet. Separately authored acceptance confirms 8, 16 and 24 of 24 primary jobs across three progressively enabled configurations; all other primary attempts correctly refuse unsupported scope. The final configuration averages 0.176 seconds of inclusive process wall time, which is not a complete commercial cost.
+
+Published human-service advertisements anchor a frozen \usd{20}/\usd{25}/\usd{99} price panel and 5--15\% discounts. Complete monetary costs, buyer behavior and collections remain scenario assumptions. In 2,808 paired simulated worlds, 270 satisfy a strict two-investment cycle: collected operating resources fund both investments, each capability receives useful fresh-model reuse, both stages add positive project value and protected cash, and operating-generated funds remain. Every qualifying world uses the \usd{99} reference; the lower prices fail the declared initial buyer-choice rule. A selected first-seed, middle-cost path charges \usd{89.10}, accepts 59 jobs, incurs \usd{57.02} fully allocated cost per accepted job, and ends with \usd{2,203.03} available operating-generated funds after its declared reserves and investments. These are conditional simulated outcomes, not actual revenue. An independently reconstructed recipient passes all six fresh transfer jobs, so scarcity and an exclusive capability moat are not established. The evidence supports a functioning bounded service and a conditional economic mechanism, not realized commercial success or general intelligence.
+\end{abstract}
+
+\begin{center}\small\color{accent}
+Measured delivery \quad / \quad Sourced advertisements \quad / \quad Modeled economics \quad / \quad Actual collections: \usd{0}
+\end{center}
+\clearpage
+
+\section*{R\'esum\'e en fran\c{c}ais}
+\addcontentsline{toc}{section}{R\'esum\'e en fran\c{c}ais}
+\begingroup\hyphenpenalty=10000\exhyphenpenalty=10000
+Cette \'etude teste un service limit\'e de nettoyage et de rapprochement de fichiers CSV non personnels. Le r\'esultat utile comprend les lignes nettoy\'ees, les exceptions \`a r\'esoudre, les doublons, les versions remplac\'ees et une piste d'audit reliant chaque ligne \`a sa source. Les trois configurations livrent correctement 8, 16 et 24 des 24 travaux principaux. Les autres travaux sont refus\'es conform\'ement aux limites d\'eclar\'ees. Il s'agit d'une acceptation factuelle sur des donn\'ees synth\'etiques, et non d'une acceptation par des clients.
+
+Les prix publi\'es de services humains comparables sont de 20, 25 et 99 dollars am\'ericains. Les offres simul\'ees appliquent des rabais de 5, 10 ou 15\%. Les co\^uts complets, la confiance des acheteurs et la demande ne sont pas mesur\'es sur le terrain. Sur 2\,808 mondes simul\'es appari\'es, 270 financent deux investissements successifs rentables selon les crit\`eres enregistr\'es. Ces cas utilisent tous la r\'ef\'erence de 99 dollars. Les prix plus faibles ne compensent pas le co\^ut initial d'int\'egration suppos\'e dans le mod\`ele.
+
+Dans le cas illustratif d\'efini avant l'examen des r\'esultats financiers, le prix de vente est de 89,10 dollars. Les 59 livraisons accept\'ees co\^utent en moyenne 57,02 dollars chacune, en incluant toutes les allocations du sc\'enario. Deux investissements de 100 dollars sont financ\'es par les ressources d'exploitation simul\'ees. Leur remboursement incr\'emental en tr\'esorerie prot\'eg\'ee appara\^it aux semaines 36 et 42. Le solde disponible produit par l'exploitation est de 2\,203,03 dollars. Les encaissements r\'eels restent nuls.
+
+Un autre agent a reconstruit les capacit\'es avant d'acc\'eder au code du donneur et a r\'eussi six nouveaux travaux. Ce r\'esultat ne prouve donc ni une expertise rare ni un avantage exclusif. Le service est ex\'ecutable dans son p\'erim\`etre; le cycle commercial reste une possibilit\'e conditionnelle \`a v\'erifier aupr\`es d'acheteurs r\'eels. La d\'emonstration jointe pr\'esente les r\'esultats et les limites en anglais et en fran\c{c}ais.
+\endgroup
+
+\section*{The eight commercial questions}
+\addcontentsline{toc}{section}{The eight commercial questions}
+\begin{tabularx}{\linewidth}{@{}P{0.28\linewidth}Y@{}}
+\toprule
+Question & Evidence and answer \\
+\midrule
+What useful outcome? & A usable, traceable CSV cleanup and exception packet; final configuration 24/24 primary factual acceptances. \\
+What would human delivery cost? & Observed advertised references of \usd{20}, \usd{25} and \usd{99}; source-specific scope uncertainty remains. \\
+What is our selling price? & Reference multiplied by 0.95, 0.90 or 0.85. The illustrative \usd{99} reference gives \usd{89.10} at 10\% off. \\
+What is complete delivery cost? & Actual all-in money is unidentified. The illustrative modeled cost is \usd{31.59} recurring or \usd{57.02} fully allocated per accepted job. \\
+What surplus remains? & Illustrative operating-generated available funds: \usd{2,203.03}; actual collections: zero. \\
+What does it finance? & Two modeled \usd{100} investments, each including construction, validation, failed discovery and integration. \\
+How does fresh work improve? & Locale support and latest-version reconciliation expand accepted primary scope from 8 to 16 to 24; simulated accepted work rises from 31 to 52 to 59. \\
+Can the cycle repeat? & Twice within 270 declared primary model worlds. No paid cycle, indefinite acceleration, rare-skill transfer or general market success is established. \\
+\bottomrule
+\end{tabularx}
+\clearpage
+\begingroup\setlength{\parskip}{0pt}\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Question, claim boundary and prior evidence}
+The commercial benchmark is the price of equivalent competent human-delivered services. A service can be commercially useful without defeating every other AI system, specialist algorithm or graph selector. Human providers may themselves use ordinary Python, Excel, Power Query or AI assistance. The comparison concerns the delivered service, not manual keystrokes, and does not establish superiority over all available providers.
+
+Production efficiency and price answer different questions. The selling rule here is a modest discount to a substantiated service reference, not a small markup on inference cost. A low execution cost is useful only if the result has the promised scope, someone chooses to buy it, complete operating obligations can be met, and the remaining collected resources can fund a worthwhile next capability. Customer savings do not enter the seller's ledger. Gross margin is not automatically reinvestable cash.
+
+The study is additive to the current AGI ALPHA foundations. It uses exact source from the existing portable SUCCESSOR Workbench, the TRANSFORMATIONAL INTELLIGENCE source-understanding module, the AGI Jobs evidence compiler, and prior canonical cash and funding helpers. It does not replace the installed operator, reopen held native execution, change validator governance, or treat a local research packet as release qualification. All public research changes are confined to a new study namespace, coordinated through issue \#4850\cite{alpha,coordination}.
+
+Earlier negative results remain negative. The Second Investment study found the same six accepted decisions in three branches and no qualifying second capability; its adapter was slower and did not earn its complete cost. The Verified Capability study found equal accepted decisions for registry and graph and no incremental economic graph advantage. The Capability Advantage study accepted all 144 engineering evaluations but found no qualifying later-investment bundle; independent reconstruction succeeded\cite{second,verified,capability}. Those experiments tested their frozen technical and economic questions. They were not retrospectively repriced or rewritten to answer the present human-market question. This study reuses their applicable mechanisms and preserves their conclusions.
+
+\subsection{Four kinds of evidence}
+\begin{tabularx}{\linewidth}{@{}P{0.2\linewidth}Y@{}}
+\toprule
+Evidence class & What this study can say \\
+\midrule
+Measured production & Exact source/input identities, executed attempts, CPU and wall time, output bytes, independent synthetic acceptance, refusals and failures. \\
+Sourced market prices & Public provider advertisements, their stated deliverables and price limits as retrieved on 26 October 2026. No authorized quote or completed sale was obtained. \\
+Modeled economics & Complete-category cost allocations, buyer preferences, demand, payment/default/refund paths, finite cash, reserves, investment decisions and paired outcomes. \\
+Actual commercial activity & No customer onboarding, outreach, purchase, invoice, collection, token transaction or live settlement. Actual collections are \usd{0}. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip
+The monetary cost of this research session, authoring-model usage and active human attention is not available from the execution environment. Those fields remain null. The low, middle and high monetary schedules are not estimates of an observed invoice and are not confidence bounds on actual research cost.
+
+\section{Bounded discovery and candidate selection}
+Six lawful recurring digital-work families were screened. The discovery budget allowed at most six production-development datasets before confirmation; three distinct inputs and one same-source revision were used. Separately disclosed parser, oracle, accounting and driver controls do not become customer jobs. Research includes the unsuccessful candidates and all construction and review, even when their precise monetary cost is unknown.
+
+\begin{table}[htbp]\small
+\caption{Portfolio screen. A quoted rate is not automatically a matched project price.}
+\begin{tabularx}{\linewidth}{@{}P{0.18\linewidth}P{0.28\linewidth}Y@{}}
+\toprule
+Candidate / buyer & Trigger and useful outcome & Price evidence and decision \\
+\midrule
+CSV cleanup / operations analyst & Recurring export; clean rows, explicit exceptions and traceable import decisions & \usd{20}/\usd{25}/\usd{99} service listings. Selected for exact finite acceptance and natural locale/version burdens. \\
+Legal NDA support / qualified counsel & Changed synthetic NDA; source-linked obligations, deviations and auditable proposed changes & Ontario lawyer review advertised at \$599 plus HST, with redlining separate. Not an equivalent unreviewed support price; retain existing legal owner and professional-review gate. \\
+Software verification / maintainer & Release/change; specified tests, defect evidence, correction and retest packet & Manual QA advertised at CAD12/hour. Cheap human services constrain the gap; duration and full maintenance scope unresolved. \\
+API documentation / integrator & API release; version-bound migration evidence and tested examples & Technical documentation from CAD75/hour; total fee needs task-duration evidence. Existing work-discovery owner retained. \\
+Numerical engineering / research team & Model/library change; residual, reproducibility and sensitivity evidence & Adjacent statistical consultation at \$165/hour for private enterprises, CAD inferred. Professional judgment exceeds a prescribed solver run; matched quote absent. \\
+Evidence retrieval / researcher & New question/update; search trace, citations and limited evidence table & TMC librarian search \$75 first hour and \$30 later, USD inferred. Availability conditional; not a full synthesis fee. Recall, licensing and review remain unresolved. \\
+\bottomrule
+\end{tabularx}
+\label{tab:portfolio}
+\end{table}
+The supporting provider pages are retained as a source register\cite{patrick,ricardo,khalil,flatly,qa,docsmart,sherbrooke,tmc}. None establishes a representative market distribution or demand for AGI ALPHA. AROTIP's broader \$299 cleaning package was considered but not used as the sole reference after cheaper services were found\cite{arotip}. A \$2,000 API documentation engagement was also rejected as a price anchor for a narrow version-difference report because its scope is substantially broader.
+
+CSV cleanup is a bounded finalist, not a claim that data cleaning dominates the portfolio. The useful action is to import records whose compliance can be established and send unresolved source defects back to their owner without guessing missing facts. A correct exception packet can be accepted even when many records remain quarantined. Work-specific demand, willingness to pay and actual customer integration effort remain unmeasured.
+
+\subsection{Legal support remains a serious but gated opportunity}
+The existing legal lane owns synthetic Ontario mutual-NDA change-control support for qualified counsel. This study did not duplicate its implementation, inspect confidential client data, give client-specific advice, file or negotiate. A bounded support packet can identify source-linked obligations, playbook deviations and proposed changes, but professional judgment and responsibility cannot be credited unless actually supplied.
+
+The most specific observed Ontario listing charges \$599 plus HST for one NDA up to 15 pages, a written risk summary and recommended changes; redlining and negotiation are excluded, and redlining is separately advertised from \$250. The Canadian denomination is inferred from its Ontario context rather than explicitly labeled on the retrieved page\cite{flatly}. This is not a defensible price for an unreviewed factual packet. Qualified review, material omissions, false positives, source accuracy, inappropriate revisions and escalation must all be assessed and costed before admitting an equivalent service comparison.
+
+The Law Society of Ontario's April 2024 guidance, still linked in current professional resources, requires independent human verification before reliance, competent judgment and supervision, confidentiality, candour and reasonable fees. Its AI-disbursement discussion does not authorize passing off a model charge as professional time. Legal Aid Ontario's December 2025 notice requires its roster lawyers, from January 2026, to confirm compliance with the referenced resources; that roster rule does not apply to every NDA matter\cite{lso,lao}. Ontario's statutory definition also connects legal services to the application of legal principles and judgment\cite{lsa}. These sources support a counsel-support boundary, not a general authorization for autonomous legal practice. Qualified independent legal assessment was unavailable; this lane therefore contributes discovery evidence, not a validated commercial legal offering.
+
+\section{The offering and its human-service price match}
+\subsection{What is delivered}
+The service accepts one explicitly declared nonpersonal CSV with exactly five columns: \code{record\_id}, \code{category}, \code{date}, \code{amount}, and \code{updated\_at}. The contract fixes UTF-8 handling, explicit delimiters, 1--50,000 records, a 10 MiB input limit and 256 characters per cell. Normalization uses declared category maps and missing markers, exact decimal-to-cent parsing, explicit date grammar and auditable duplicate/version rules. There is no fuzzy entity resolution, enrichment, legal interpretation, Excel workbook editing or inferred missing value.
+
+Each accepted delivery contains the cleaned CSV; exception, duplicate, superseded and disposition files; original bytes; explicit rules and a reusable revision job; a quality report; semantic output; and a manifest binding all promised data files. The actual portable Workbench then packages typed evidence and verifies its native integrity. A source-understanding summary is generated by the existing TRANSFORMATIONAL INTELLIGENCE module. One scoped revision route is implemented and was executed during development, retaining the prior manifest and exact input identity.
+
+The accepted outcome is a complete clean-and-exception packet for the contracted rules. It does not guarantee that every input row is suitable for import. Rule approval, semantic source correction, customer adoption and independent real-world review are outside the executed deterministic service and are modeled or left unresolved explicitly.
+
+\subsection{Prices frozen before economic confirmation}
+\begin{table}[htbp]\small
+\caption{Human-delivered service reference panel, retrieved 26 October 2026. All primary economic prices are USD; platform taxes, exchange rates and client fees may be additional.}
+\begin{tabularx}{\linewidth}{@{}P{0.14\linewidth}P{0.15\linewidth}Y@{}}
+\toprule
+Provider & Advertised fee & Scope match and uncertainty \\
+\midrule
+Patrick K. & \usd{20} & One CSV up to 10,000 rows; whitespace/headings, exact duplicates, missing/invalid reporting, quality report and one revision. Latest-version reconciliation is not specifically quoted. \\
+Ricardo M. & \usd{25} starter & Python cleanup, duplicate/blanks report, original preserved and one revision. Exact row limit was not retrieved. Higher advertised tiers are not averaged into this reference. \\
+Khalil A. & \usd{99} standard & One UTF-8 CSV up to 10,000 rows, 100 columns and 10 MiB; agreed rules, clean/duplicate/exception/report outputs, sample review and one revision. This study supplies only five fixed columns and narrower cell limits. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+These are indexed public advertisements, not transactions or newly authorized comparable quotes\cite{patrick,ricardo,khalil}. Direct Upwork page retrieval returned HTTP 403 while search-indexed content was available; that retrieval limitation is preserved. The platform states that listed costs are USD\cite{upworkcurrency}. Provider use of AI and actual competent delivery quality were not independently established. The \usd{99} offer is the most detailed output match, not an estimated market median. Its professional sample review and support must be supplied or costed; our modeled attention allowance is not proof of equivalence.
+
+For human reference $H$ and discount $d$, the offered price is $P=\operatorname{round}_{\rm cents}[H(1-d)]$. The frozen discounts are 5\%, 10\% and 15\%. At 10\%, the offers are \usd{18.00}, \usd{22.50} and \usd{89.10}; nominal customer savings are \usd{2.00}, \usd{2.50} and \usd{9.90}. Production cost does not set these prices. All price and discount cells are retained, including unfavorable ones.
+
+A provisional \usd{20}/\usd{49}/\usd{99} panel was revised before confirmation: the \usd{49} tier covered no more than 500 records, whereas the primary cases contain 800--1,600. The final \usd{25} lower reference and the superseded discovery record are preserved. After the price-method freeze, no price, workload or acceptance threshold was tuned to improve confirmation results.
+
+\section{Execution and independent factual acceptance}
+\subsection{Build, freeze, generate, execute and reveal}
+Development used three inputs: ordinary cleanup, locale-specific normalization, and latest-version reconciliation. Configuration G0 completed the ordinary case and refused the locale requirement. G1 added locale handling, completed that case and refused the versioned requirement. G2 added explicit latest-version selection and completed the versioned case. The preserved implementation contains these configurations in the same source. The contrast tests product capability availability, not an intrinsic inability of a generally capable agent to write the missing logic.
+
+A separate contributor read the delivery contract without inspecting the producer and constructed canonical latent records, faults and expected dispositions. The oracle was not generated by running the cleaner. The 41-file production freeze preceded fresh input generation. Recorded postfreeze entropy determined source records; answer keys stayed outside production prompts and execution inputs until all predictions were sealed. There were 24 primary cases, eight per class, and six separate stresses. Each was attempted once per configuration, for 90 planned evaluations.
+
+The complete execution route includes source checks, input preparation, deterministic cleanup, quality/accounting checks, artifact packaging, actual native Workbench execution and integrity inspection. Native status remains \code{HOLD}, authority is empty and settlement is \code{NOT\_CONNECTED}. The research process invokes no runtime model and makes no network call. That statement does not erase model use in writing, research or independent assessment; its actual bill remains unknown.
+
+\begin{table}[htbp]
+\caption{Primary acceptance on 24 fresh synthetic jobs. Unsupported refusals are not accepted deliveries.}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Job class / outcome & G0 & G1 & G2 \\
+\midrule
+Ordinary cleanup, completed / 8 & 8 & 8 & 8 \\
+Locale normalization, completed / 8 & 0 & 8 & 8 \\
+Latest-version reconciliation, completed / 8 & 0 & 0 & 8 \\
+\midrule
+Accepted complete primary deliveries / 24 & 8 & 16 & 24 \\
+Correct unsupported primary refusals / 24 & 16 & 8 & 0 \\
+Semantic or packaging mismatches & 0 & 0 & 0 \\
+\bottomrule
+\end{tabularx}
+\label{tab:production}
+\end{table}
+The six stresses cover the 50,000-record limit, quoting/newlines, latest-version ties with missing or invalid fields, wrong source hash, duplicate headings and invalid UTF-8. G0 and G1 each complete two stress cases and correctly refuse four; G2 completes three and correctly refuses three. Across primary and stress evaluations, 55 packets complete and 35 are correctly refused. No expected refusal is counted as a delivered customer outcome.
+
+G2 processes 29,152 primary records into 6,018 clean records, 15,009 quarantined records, 6,263 duplicates and 1,862 superseded records. This deliberately fault-rich corpus is not an empirical customer-data distribution. A high exception count cannot be silently converted into an import-ready dataset. It demonstrates exact retention and diagnosis under the authored contract, not low customer remediation effort.
+
+Inclusive G2 primary process time averages 0.175544 seconds wall and 0.189733 CPU seconds, with wall times from 0.150495 to 0.239573 seconds. These measurements include process startup and packaging in the campaign controller, but exclude real customer communication, external professional review, commercial onboarding and human rule approval. A scenario tariff of \usd{1} per core-hour prices the CPU below one cent per job; a separate \usd{0.10} infrastructure allowance remains. Neither is a measured complete delivery bill.
+
+\subsection{Operational deviations are retained}
+The first frozen campaign invocation found no inputs because its driver expected \code{job.json} subdirectories while the independent generator produced flat filenames. A byte-identical execution layout was created. The next invocation executed one G0 locale refusal, then failed while converting a relative output path to the workspace-relative index. That attempt was preserved and not repeated. An additive recovery controller, separately frozen and publicly disclosed, resumed only the remaining 89 evaluations. The missing outer-startup measurement for the preserved first refusal is explicit; its inner producer measurement remains.
+
+An initial verifier invocation used the wrong base directory and reported missing files before semantic assessment. Its failure record was kept; the unchanged verifier then ran with the correct base. These are controller and assessment-invocation failures, not clean first-pass automation. They are part of construction and discovery cost. No primary efficacy case was replaced, retried to success, or dropped.
+
+\section{Capabilities, transfer and the additive graph}
+Two retained executable capabilities correspond to actual development burdens: explicit locale parsing and latest-version reconciliation with tied versions quarantined. Validation on separately authored fresh primary work establishes the scope expansions in Table~\ref{tab:production}. The second capability depends on the first configuration's contract and is tested as a composition on the versioned jobs. These are engineering results, not evidence of an expanding archive's economic value.
+
+Before donor access, another contributor independently reconstructed the contract's semantic behavior in an AI-assisted authoring-and-tools interval of 108 seconds. Ten initial control groups passed; the source was frozen. That interval is not competent-human labor or a monetary invoice. On a separately frozen six-job transfer panel, containing 8,242 fresh records, the recipient and donor both pass 6/6 exact semantic checks. The donor's complete packages also pass 6/6 integrity and operating-boundary checks. The route durations are retained but not compared as speed evidence because the recipient performed semantics only while the donor additionally packaged the native evidence.
+
+The recipient therefore did not demonstrably lack an equivalent capability before transfer. There is no measured scarce-skill unlock, quality gain or exclusive moat in that test. Reuse could avoid some reconstruction, but its net monetary value requires integration, validation and maintenance costs; those cannot be inferred from an absent file. Only one independent recipient and two retained capability stages were exercised, so broad transfer across agent populations or indefinitely many generations remains untested.
+
+The additional graph layer reuses typed commitment and authority code from the prior Verified Capability study, informed by the Merkle-root and PROOF LOOPS foundations\cite{merkle,proofloops,verified}. Creator identity, validator authority, root-writing authority and execution permission are separate. Eligible direct \code{*.agent.agi.eth} attestations must match an authenticated controller or permitted delegate and the operation-specific grant; existing \code{*.club.agi.eth} Jobs validation roles, contracts, governance and settlement are untouched.
+
+Our run uses noncryptographic identity fixtures, not real ENS authentication. Records bind implementation version, contract scope, dependency digest, environment, evidence, rights and expiry; revocation and supersession can block reuse. The original frozen graph driver failed closed because it omitted the expected predecessor/epoch and verified-admission/lifecycle context required by the unchanged root-authority API. That negative remains the primary graph result. A separately labeled postfreeze diagnostic supplies the checked fixture context, admits two scoped records and verifies their inclusion. Missing admission, missing lifecycle evidence, a stale epoch and a revoked root each remain rejected. No authority grants or fixture identities were changed to obtain success.
+
+Live identity enforcement and cryptographic authentication are \status{NOT RUN}. A Merkle inclusion proves only a commitment under the specified research scheme, not correctness, usefulness or operating permission. The research commitment profile is not asserted byte-compatible with the foundational on-chain design. The service's commercial viability does not require graph superiority, and this graph diagnostic provides no evidence of it.
+
+\section{Complete costs, buyer choice and finite cash}
+\subsection{Cost categories and assumptions}
+The economic adapter reuses unchanged cash, invoice, bill, collection and funding functions from the Second Investment lineage. An additive export module makes those functions callable without editing their bodies. The canonical shadow ledger continues to report actual collections as zero. Scenario receipts populate only explicitly modeled fields.
+
+\begin{table}[htbp]\small
+\caption{Declared cost schedules. These are complete-category sensitivity allocations, not observed invoices, empirical bounds or measured human effort.}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Assumption & Low & Middle & High \\
+\midrule
+Historical research/discovery, once & \usd{250} & \usd{1,000} & \usd{4,000} \\
+Shared setup, once & \usd{100} & \usd{300} & \usd{800} \\
+Provider review minutes per attempt & 5 & 15 & 45 \\
+Support/correction/revision per attempt & \usd{1} & \usd{3} & \usd{8} \\
+Acquisition per opportunity, including refusals & \usd{1} & \usd{3} & \usd{10} \\
+Provider onboarding minutes per new buyer & 5 & 15 & 45 \\
+Fixed operating cost per week & \usd{1} & \usd{3} & \usd{10} \\
+Complete cost per new capability & \usd{25} & \usd{100} & \usd{400} \\
+Maintenance per active capability/week & \usd{0.25} & \usd{1} & \usd{3} \\
+\bottomrule
+\end{tabularx}
+\label{tab:costs}
+\end{table}
+Provider attention is priced at an assumed \usd{35}/hour. Every attempted delivery, including a rejected one, incurs its execution, review and support costs. First-customer onboarding is separately charged even if that first attempt is rejected. Prospect acquisition and \usd{0.02} screening are charged for each active-firm opportunity, including human choices and unsupported work. An assumed \usd{0.10} covers per-attempt infrastructure, storage and tools in addition to the CPU tariff. A marginal cost already contained in recurring delivery is never added twice.
+
+Each middle-schedule capability costs \usd{50} construction, \usd{20} validation, \usd{10} unsuccessful discovery and \usd{20} integration. Shared construction is charged once; subsequent maintenance is separate. Historical research is paid from virtual seed at opening and reported separately from new investment. This models prospective reconstruction of a capability with the measured resulting profile; it does not assert that these already completed research assets were historically funded by real operating receipts.
+
+Base collection probability is 98\%, collection delay is two weeks, refund probability after collection is 2\%, and collection fees are 10\%. Fees remain due on later-refunded invoices. Refund liabilities accrue immediately on collection and block investment before their later payment. The model protects a \usd{500} fixed reserve and a prudential reserve equal to 20\% of positive operating contribution before capability outlays. The latter is an explicit scenario allowance, not a statutory tax rate or legal assessment.
+
+Actual review minutes, onboarding minutes, support incidents, customer attention and authoring-model costs remain unmeasured. Modeled review is not an executed professional quality gate. Conversely, setting these categories to nonzero allowances does not prove that they are sufficient. They are visible reasons to test the commercial claim further.
+
+\subsection{Buyer-choice model and the initial demand threshold}
+The alternatives are the AGI ALPHA supported service, the equivalent human-delivered service, or deferral. The enterprise is not offered when its scope is unsupported, capacity is exhausted, or protected liquidity cannot finance delivery and onboarding. Buyers can choose the human service or decline. No competing AI provider is introduced as an additional success prerequisite.
+
+Baseline buyers value a successful outcome at $1.5H$, believe human quality is 1 and enterprise quality is 0.98, and attach a \usd{25} loss to failure. Both alternatives require five minutes of buyer attention at \usd{35}/hour. First enterprise use imposes an additional \usd{3} buyer integration burden, distinct from the provider's onboarding expense. No monetary speed advantage is credited, even though hypothetical service days are recorded. These are declared structural assumptions, not empirical conversion calibration.
+
+With equal attention and no delay premium, the enterprise's first-use utility advantage is
+\begin{equation}
+\Delta U = H d-0.02(1.5H+25)-3.
+\label{eq:buyer}
+\end{equation}
+This pre-outcome calculation predicts that \usd{20} and \usd{25} lose the initial deterministic buyer choice even at a 15\% discount, by \usd{1.10} and \usd{0.50}, respectively. At \usd{99}, the required discount exceeds about 6.54\%, so 5\% does not attract first use but 10\% and 15\% can. Confirmation reproducing that pattern is a check on the assumptions and implementation, not newly discovered buyer behavior.
+
+Quality beliefs stay fixed within each condition, even after a failure or refund. The lower-trust condition sets enterprise perceived quality to 0.90; it is a structural stress, not a learned reputation model. The evidence calibrates service scope, advertised prices and measured production profiles. It does not identify demand elasticity, trust or switching behavior. A market probability cannot be estimated from this scenario grid.
+
+\subsection{Available funds and investment admission}
+Let $C_t$ be cash, $Q_t$ accrued unpaid obligations, $F$ the fixed reserve, and $R_t$ the prudential fiscal reserve. Protected cash is $L_t=C_t-Q_t-F-R_t$. With cumulative collections $K_t$, all accrued costs $E_t$, and opening historical research $D_0$ actually paid from seed, available operating-generated funds are
+\begin{equation}
+A_t=\max\{0,\min[L_t,\ K_t-E_t+D_0-R_t]\}.
+\label{eq:funds}
+\end{equation}
+The $D_0$ adjustment separates previously seed-financed research from subsequent operating generation; it does not inject cash. Cash itself still equals initial seed plus collected receipts minus payments. Shared setup, new capability costs, failures and all unpaid obligations remain deducted. Full-project value separately subtracts historical research, so profitable operation and recovery of past research cannot be conflated.
+
+An investment is admitted only if its full cost is affordable from both $A_t$ and protected liquidity, and its conservative projected benefit exceeds construction and maintenance. Forecasts replay only prior simulated opportunities from a trailing eight-week window through the same human/enterprise/defer choice rule. They use a 0.5 benefit haircut, one-week construction lag, the remaining observation horizon and the useful lives of prerequisite capabilities. Future outcomes and uncollected invoices do not finance construction. The first investment cannot precede week four.
+
+The common virtual seed is \usd{5,000}; no further injection occurs. The high schedule pays \usd{4,800} for opening research and setup, leaving only \usd{200}, below the \usd{500} protected reserve. Its failure to begin delivery is therefore modeled undercapitalization, not proof that the technical capability cannot work at high cost.
+
+\section{Frozen economic confirmation}
+\subsection{Design and criterion}
+The primary protocol contains three references, three discounts, three cost schedules, 13 conditions and eight fixed seeds: 351 cells, 2,808 paired worlds and 8,424 histories. Each world runs the same opportunity and outcome draws for zero investments, at most one investment and at most two. The 52-week service period is followed by settlement runoff; the baseline records balances through week 57. Each campaign has a declared 600-second execution budget and refuses an existing output directory.
+
+Conditions vary arrival probability, buyer integration, provider review, maintenance, useful lifetime, class mix, realized quality and collections, fees and fiscal reserves, prospect acquisition and trust. The base has eight prospective buyers with 0.25 weekly arrival probability and equal class weights. Low/high arrival probabilities are 0.05/0.50; another condition sets arrivals to zero. Other stresses use \usd{10} buyer integration, 45-minute provider review, \usd{5} weekly capability maintenance, eight-week lifetime, 80/10/10\% class mix, 0.9 realized-reliability multiplier with 10\% refunds and eight-week collections, 35\% fiscal reserve with 15\% fees, \usd{20} prospect acquisition, or 0.90 perceived quality.
+
+A separate, predeclared diagnostic sets only buyer integration cost to zero, retaining provider onboarding and all other costs. It has 27 cells, 216 paired worlds and 648 histories. It is not folded into the primary result and cannot rescue unfavorable primary assumptions retroactively.
+
+A full cycle requires two operating-funded investments, accepted uses of the classes actually improved by each capability, positive first-stage incremental project value and protected cash against the zero-investment control, positive second-stage increments against the first-only control, and remaining operating-generated funds. Counts of unchanged jobs after an upgrade do not qualify as capability benefits. A favorable forecast alone does not qualify. Protected-cash repayment is the first positive paired crossing after availability; terminal gains must also remain positive. Full historical-cost recovery is reported separately.
+
+\subsection{Results across the entire declared panel}
+Both campaigns completed without simulation failure or source drift. Primary execution used 32.616 wall seconds and 36.015 CPU seconds. The primary grid funds a first investment in 295 worlds and a second in 279; 270 qualify the complete cycle. Nine second-investment paths fail the final cycle criterion. The two-investment policy has positive full-project value in 294 worlds and negative value in 2,514. All 270 primary cycle worlds also recover their declared historical and full project costs, although that recovery was not built into the cycle criterion.
+
+\begin{table}[htbp]
+\caption{Primary qualifying cycle counts. Each cell contains 312 designed worlds: three cost schedules, 13 conditions and eight seeds. These are not probabilities of market success.}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Human-service reference & 5\% discount & 10\% discount & 15\% discount \\
+\midrule
+\usd{20} & 0 / 312 & 0 / 312 & 0 / 312 \\
+\usd{25} & 0 / 312 & 0 / 312 & 0 / 312 \\
+\usd{99} & 0 / 312 & 131 / 312 & 139 / 312 \\
+\bottomrule
+\end{tabularx}
+\label{tab:cycles}
+\end{table}
+Every qualifying world uses the \usd{99} reference. This is a materially conditional result because lower-priced same-family services are available and the richest listing is broader than our implemented contract. Under the registered initial-friction model the lower prices attract no first customer. Changing that assumption changes the result: the separate zero-buyer-integration diagnostic qualifies 80/216 worlds, including lower-price cases. One qualifying diagnostic world does not recover historical/full project costs. That distinction is retained rather than reclassifying operating generation as recovery of all prior research.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/cycle_conditions.pdf}
+\caption{Qualifying primary cycles by declared condition. Each row includes all prices, discounts, costs and eight seeds (216 worlds). Favorable counts cluster in a restricted price-and-cost region. The grid is a sensitivity design, not a sampled market.}
+\label{fig:conditions}
+\end{figure}
+
+All 936 high-cost worlds fail to operate and become insolvent under the fixed seed and opening expense schedule. Zero-demand and lower-trust conditions produce no qualifying cycle. Lower demand, expensive acquisition and obsolescence remove qualifying cases. The 45-minute-review condition still allows 31/216 cycles because the upper price can cover substantial review in some low/middle construction scenarios; this does not measure actual necessary review. The \usd{5} maintenance condition retains 32/216 cycles, while increasing the analytic reuse requirement. Every unfavorable cell remains in the downloadable results and bilingual explorer.
+
+\section{A complete illustrative reinvestment path}
+For detailed accounting we selected the first fixed seed, 26001, with the \usd{99} reference, 10\% discount, middle cost schedule and base condition before inspecting its financial outcomes. It is an illustration of the most detailed price match at the middle allocation, not an estimate of an average business or a representative customer. The offered price is \usd{89.10}.
+
+\begin{table}[htbp]\small
+\caption{Paired policies in the illustrative modeled world. All money is simulated USD.}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Quantity & No investment & First only & Up to two \\
+\midrule
+Opportunities & 99 & 99 & 99 \\
+Accepted jobs & 31 & 52 & 59 \\
+Gross collections & 2,673.00 & 4,544.10 & 5,167.80 \\
+Complete accrued costs & 2,459.63 & 3,103.69 & 3,364.01 \\
+Full project profit & 213.37 & 1,440.41 & 1,803.79 \\
+Final cash, including retained seed & 5,213.37 & 6,440.41 & 6,803.79 \\
+Prudential fiscal reserve & 242.67 & 508.08 & 600.76 \\
+Fixed reserve & 500.00 & 500.00 & 500.00 \\
+Available operating-generated funds & 970.70 & 1,932.33 & 2,203.03 \\
+New capability investment & 0.00 & 100.00 & 200.00 \\
+Fully allocated cost / accepted job & 79.34 & 59.69 & 57.02 \\
+\bottomrule
+\end{tabularx}
+\label{tab:case}
+\end{table}
+The first investment occurs in week 32, when \usd{164.83} of operating-generated funds is available. Its \usd{100} cost buys the G1 profile after one construction week. The second occurs in week 36, with \usd{227.60} available before its \usd{100} outlay, and G2 becomes available in week 37. Initial seed cannot satisfy those operating-funds tests. The forecasts use only prior simulated opportunities; the engineering benefit is anchored in the independently accepted fresh-work profiles.
+
+G1 receives 21 useful locale-class acceptances in the first-only control, adding \usd{1,227.04} project value and \usd{961.63} protected cash relative to G0. G2 receives seven useful versioned-class acceptances, adding another \usd{363.38} project value and \usd{270.70} protected cash relative to G1. First protected-cash repayment occurs at week 36, four weeks after the first outlay, and second repayment at week 42, six weeks after the second. Accrued-value crossings occur earlier, at weeks 34 and 40; they cannot be spent as collected cash.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/selected_cash.pdf}
+\caption{The selected first-seed path, including settlement runoff. The displayed series is available operating-generated funds, not total cash or seed. Investment markers show actual modeled outlays; the paired comparisons separately establish repayment.}
+\label{fig:cash}
+\end{figure}
+
+\subsection{Where the money goes}
+The final two-investment policy issues \usd{5,256.90} in invoices for 59 accepted jobs. One \usd{89.10} invoice defaults, so gross collections are \usd{5,167.80}; a separate \usd{89.10} refund is charged as a cost. Nominal customer savings across accepted jobs are \usd{584.10}, which is not seller revenue and is not net of buyers' attention or integration burden. Final obligations and receivables are both zero after runoff.
+
+\begin{table}[htbp]\small
+\caption{Complete cost record for the selected two-investment policy. Costs are accrued once; reserves are protected balances rather than expenditures.}
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Category & Total USD & USD / 59 accepted \\
+\midrule
+Marginal execution, tools and infrastructure allowance & 5.90 & 0.10 \\
+Delivery review & 516.25 & 8.75 \\
+Support, correction and revision allowance & 177.00 & 3.00 \\
+Prospect acquisition and screening & 298.98 & 5.07 \\
+Provider onboarding & 70.00 & 1.19 \\
+Fixed operating costs & 156.00 & 2.64 \\
+Collection fees & 516.78 & 8.76 \\
+Refunds & 89.10 & 1.51 \\
+Capability maintenance & 34.00 & 0.58 \\
+\midrule
+Recurring delivery and operating subtotal & 1,864.01 & 31.59 \\
+Allocated shared setup & 300.00 & 5.08 \\
+New capability construction/validation/discovery/integration & 200.00 & 3.39 \\
+Allocated historical research and discovery & 1,000.00 & 16.95 \\
+\midrule
+Complete project cost & 3,364.01 & 57.02 \\
+\bottomrule
+\end{tabularx}
+\label{tab:casecost}
+\end{table}
+This record is very different from declaring a sub-cent compute bill to be the full service cost. Direct delivery and support are \usd{11.85} per attempt; recurring business costs raise the accepted-job average to \usd{31.59}; setup, new capabilities and historical research raise it to \usd{57.02}. Individual rounded rows may differ by a cent when summed. The operating-generated balance of \usd{2,203.03} excludes the \usd{500} fixed reserve, the \usd{600.76} fiscal reserve and already incurred costs. It also distinguishes the opening seed-funded research from current operation. It is not equal to the \usd{1,803.79} full-project accounting profit.
+
+\subsection{Break-even workload, useful lifetime and downside}
+Analytic break-even calculations supplement, rather than retune, the frozen paths. For an existing buyer under the middle schedule, expected receipts net of collection failure, refunds and fees at \usd{89.10} are \usd{76.84}. Subtracting direct delivery/support of \usd{11.85} leaves \usd{64.99} per additional accepted job before the fiscal reserve, or approximately \usd{51.99} afterward. A \usd{100} capability plus a full 52 weeks of \usd{1} maintenance therefore needs at least three useful accepted reuses from existing buyers. If every use requires a new buyer's onboarding, the threshold is four. This is an incremental-capability calculation: common prospect acquisition, screening and fixed service overhead remain in the complete service ledger and are not assumed absent.
+
+At \usd{5} weekly maintenance, the corresponding thresholds rise to seven existing-buyer or nine new-buyer reuses. An eight-week lifetime needs three reuses in a much shorter interval: 0.375 useful jobs/week, compared with about 0.058/week for three reuses over 52 weeks. G2's effective life cannot exceed its prerequisite's remaining life. At the \usd{20} reference with a 10\% discount and middle costs, the existing-buyer threshold rises to 52 useful reuses; repeated new-buyer onboarding makes that incremental contribution nonpositive. Even that arithmetic is moot when the initial buyer refuses the offer.
+
+Forecast affordability is necessary but insufficient. Some funded investments fail to repay under subsequent demand and outcome draws. A high upfront research cost can prevent operation before the service gets a chance to earn. Low trust or a modest integration burden can erase the buyer's reason to switch. Expensive acquisition charges resources even for rejected offers. Finite lifetime can end reuse before recovery. The complete output retains all of these downside paths; no extra capital, token appreciation or internal transfer repairs them.
+
+\section{Interpretation and limits}
+The positive result is a connected \emph{conditional simulated} mechanism with executed technical foundations. A narrow service produces usable accepted packets, a sourced upper human-service reference supports a price well above the complete cost under some declared allocations, and generated collections can finance two capability stages that add accepted work and repay their incremental costs. This goes beyond showing that an existing asset is cheap to execute. It also goes beyond a large skills archive or a favorable static margin example.
+
+The limits are consequential. First, the commercial price match is provisional. Advertised scope is not demonstrated professional quality, and our five-column contract is narrower than the richest comparison service. Second, the very low human-service references remain relevant; the model does not establish willingness to pay the upper reference when cheaper substitutes are suitable. Third, production acceptance is exact but synthetic and fault-rich, with only eight primary jobs per class. It does not estimate field reliability, real customer remediation burden or business value. Fourth, the study is AI-authored and independently assessed within one session; role separation is not organizational independence.
+
+Fifth, actual complete research and delivery money is unidentified. Nonzero scenario allocations acknowledge real work but cannot replace bills, measured review time or a qualified professional. Sixth, buyer trust, integration, arrivals and willingness to pay are assumed. Fixed beliefs do not respond to failures, and this is not an equilibrium model of a competitive service market. Seventh, both capability configurations were built before the cash simulation. Their retrospective availability supports prospective modeling, not a claim that simulated money literally funded historical development. Eighth, the recipient could reconstruct the capability, so the evidence offers no exclusive moat. Ninth, graph authentication is fixture-only and the frozen graph integration failed. Tenth, the installed native Harness/Fleet and repository-wide release gates were not qualified by this work.
+
+The experiment does not require a paid pilot to study viability, but real commercial success requires more evidence than this study supplies. The next informative work is a same-scope buyer choice with permission to decline, measured onboarding and review, and a costed fresh delivery under that accepted scope. For legal support, qualified independent counsel assessment and an equivalent professional-service or support-only price are additional gates. These are specified next tests, not completed activities or requests for unauthorized outreach.
+
+\section{Conclusion}
+The bounded CSV offering works on the registered fresh synthetic tasks, and the declared upper-price scenarios demonstrate that a finite-cash reinvestment loop can repay two capability investments without token income or extra seed. The complete grid also shows substantial failure: lower human-service prices and buyer friction remove initial demand, many costs do not recover, and not every funded investment earns admission afterward.
+
+A useful service can proceed to bounded commercial validation without proving graph superiority or self-acceleration. This evidence supports that next step. It does not establish realized operating profit, a generally autonomous enterprise, rare capability transfer or sustained acceleration. Human-market equivalence, real buyer acceptance and complete observed costs remain the decisive unresolved measurements.
+
+\appendix
+\section{Foundation identities and operating boundary}
+\begin{tabularx}{\linewidth}{@{}P{0.34\linewidth}Y@{}}
+\toprule
+Foundation & Inspected immutable identity \\
+\midrule
+AGI Alpha main & \src{882456afe59d7bf9493ceaefc79f4f05c0cf7c9a} \\
+AGI Fleet Linux main & \src{45759fb096faf8988f58ae5ea71248d0f35a97c7} \\
+AGI Jobs v0 main & \src{bc4abbd5c28f3672275b13300e40ea26c820b8ee} \\
+AGI Job Manager main & \src{5d5670df9dbbc79da115e0a44b71989f34df58c1} \\
+Graph paper repository & \src{1e9a5675b1662e98074fb1c71cf2c5b94c7d259f} \\
+Reused Second Investment source & \src{daac40ee9e02a1b1bb100d7b9fcfa5caab04c297} \\
+Reused Verified Capability authority & \src{c9f2892c06e173cb0f9d5ae710cffc4a6f1fa723} \\
+\bottomrule
+\end{tabularx}
+The main Alpha release inspected was v1.43.0. Read-only source inspection does not transfer release or installation qualification to this study. Seven native Workbench source hashes are checked against the supplied source manifest on every delivery. The actual runtime was Python 3.12.14 and Node 24.22.1, not a qualification of the repository's separately declared installed Node profile. Exact source and upstream licenses accompany the full companion.
+
+The native evidence engine, build-successor model, AGI Jobs compiler and portable Workbench extension are called in the permitted local route. They prepare unfunded job/evidence descriptions, not on-chain settlement. The source-understanding module provides a structural summary; it does not autonomously judge business value. \$AGIALPHA utility is recorded as not exercised, with zero token proceeds credited to earnings. No wallet, credential, financial transaction, client onboarding, security change or execution bypass was performed.
+
+\section{Freeze, evidence custody and reproducibility}
+\begin{longtable}{@{}P{0.30\linewidth}P{0.66\linewidth}@{}}
+\toprule Artifact & SHA-256 \\ \midrule\endhead
+Production freeze & \src{8178135bd18d273df48a57be246271244535bc1a1f43433b836a04bf6118e944} \\
+Sealed production index & \src{66e206d176d42b2e7f2b868e9c52b4272595e92addc5291d260065718bbac5ff} \\
+Production acceptance & \src{559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903} \\
+Economic source freeze & \src{57db871f5f75dadfe829e6f41f5bd0be89f3677a8e316f7a7b152279b7c9d744} \\
+Primary economic protocol & \src{7913a386443c42a81973de2a9c4b3d6a3b0256977f4faf966e1a48ee4ae96109} \\
+Separate diagnostic protocol & \src{34bcd88f74f0f48efffacacd5da49fe0e2e6046c8f2025fd9efaf4f9d504812e} \\
+Primary compressed histories & \src{f1db6c0029f3b9aa54215b0551ef4ac2524dbf314191ab8d275bfb9ab70801ec} \\
+Fresh transfer source freeze & \src{6548396c6d0bd02e998f40904c39f32bcb9b6edc3b379b173ab2d9a21a8b9f90} \\
+Fresh transfer acceptance & \src{fdc3739d4b81c962578b2e3881fe3a3c94ee8de4eb2138a1d3a2e480473e5d49} \\
+\bottomrule
+\end{longtable}
+Public registrations on issue \#4850 precede production inputs and economic outcomes. The production registration is comment 6427772287, the controller-deviation notice 6427800937, and the economic registration 6427938262. The compact economic freeze binds 86 consequential files and a closure over 1,157 raw production artifacts. A preliminary overscoped manifest was superseded before economic execution and retained. A metadata-only erratum maps two generated price-reference labels to the correct frozen evidence filenames; it changes no number, criterion or source behavior.
+
+The full companion includes all source copies needed for the relative imports, actual synthetic inputs and released oracle keys, all 90 production attempts, the separate transfer panel, native evidence packs, exact frozen protocols, compressed complete economic histories, per-cell CSVs, cost and investment ledgers, analysis corrections, independent reviews, source licenses, the bilingual demonstration and this LaTeX source. All failed attempts and original prefreeze code remain available. The selective public source-review edition explicitly lists omissions; it must not be mistaken for the full offline reproduction archive.
+
+To reproduce one delivery, extract the complete companion, keep its \code{upstream/} and \code{studies/} layout, and run from the companion root:
+\begin{quote}\small\ttfamily
+cd studies/agi-alpha-human-market-v1 \\
+python3 src/deliver.py \textbackslash \\
+\quad \verb|--job| acceptance/execution\_layout/main-versioned-01/job.json \textbackslash \\
+\quad \verb|--generation| 2 \verb|--out| /absolute/new-output-directory
+\end{quote}
+Output directories must be new. The full README supplies commands for frozen-source verification, one complete existing-input replay, fresh-output economic reproduction, rebuilding the paper and opening the offline demo. Repeated archived jobs are reproductions, not new confirmation samples. No source edit is needed to rerun an economic protocol into a fresh destination. Released synthetic answer keys are oracle artifacts, not account credentials.
+
+\section{Verification and publication status}
+The frozen producer passed 11 independent parser control groups and a separately verified revision package before confirmation. The economic implementation passed 16 development controls plus independent exact arithmetic and onboarding controls. The runner was tested in disposable copies: an intact control completed, while deliberate identity drift produced an incomplete failure. Production acceptance and transfer checks independently reconcile content, source identities, exact record disposition and native boundary fields. These checks have different units and are not added to the scientific sample.
+
+\InputIfFileExists{verification_note.tex}{}{\textbf{Publication verification note pending assembly.}}
+
+Pre-commit, repository-wide coverage, strict typing, complete installed-operator tests, hosted merge/release checks and live ENS enforcement are not asserted to pass. The draft contribution does not waive any required gate or resolve another owner's held operation. No frozen scientific source is reformatted after confirmation to obtain a green check. Publication-helper corrections, if needed, are separately recorded. The standalone paper is a research artifact, not financial advice or legal service.
+
+\begin{thebibliography}{99}\small
+\bibitem{alpha} MontrealAI. \emph{AGI-Alpha-Agent-v0}, source identity recorded in Appendix A. \url{https://github.com/MontrealAI/AGI-Alpha-Agent-v0}.
+\bibitem{coordination} MontrealAI. Research coordination, issue \#4850. \url{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850}.
+\bibitem{second} MontrealAI. \emph{Test operating-funded second investment}, draft PR \#4940, frozen source and negative results. \url{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4940}.
+\bibitem{verified} MontrealAI. \emph{Test the economy of verified capability}, draft PR \#4942, frozen evidence and subsequent lint disposition. \url{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4942}.
+\bibitem{capability} MontrealAI. \emph{Test earned capability transfer and financing}, draft PR \#4943. \url{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4943}.
+\bibitem{patrick} Patrick K., Upwork. \emph{A cleaned CSV file with a clear data quality report}. Public indexed service advertisement, retrieved 2026-10-26; direct fetch restricted. \url{https://www.upwork.com/services/product/development-it-a-cleaned-csv-file-with-a-clear-data-quality-report-2079370782052650683}.
+\bibitem{ricardo} Ricardo M., Upwork. \emph{Clean CSV data and deliver a clear quality report with Python}. Public indexed service advertisement, retrieved 2026-10-26. \url{https://www.upwork.com/services/product/development-it-clean-csv-data-and-deliver-a-clear-quality-report-with-python-2083569219662566184}.
+\bibitem{khalil} Khalil A., Upwork. \emph{A cleaned CSV with a data quality report}. Public indexed service advertisement, retrieved 2026-10-26. \url{https://www.upwork.com/services/product/development-it-a-cleaned-csv-with-a-data-quality-report-2112258274761084548}.
+\bibitem{upworkcurrency} Upwork Help. \emph{How to pay in your local currency}. Listed costs are USD; retrieved 2026-10-26. \url{https://support.upwork.com/hc/en-us/articles/211068028-How-to-pay-in-your-local-currency}.
+\bibitem{flatly} Flatly Ontario Legal. \emph{NDA Review}. Provider advertisement, retrieved 2026-10-26. \url{https://flatly.ca/services/nda-review}.
+\bibitem{qa} Ask Digital. \emph{Software Testing Packages \& Pricing}. Retrieved 2026-10-26. \url{https://www.askdigital.ca/pricing/software-testing-services-packages-and-pricing/}.
+\bibitem{docsmart} DocSmart. \emph{Technical writing and editing, hourly rates}. Retrieved 2026-10-26. \url{https://docsmart.ca/}.
+\bibitem{sherbrooke} Universit\'e de Sherbrooke, Centre de consultation statistique. \emph{Tarification}, rates updated 2026-05-01, retrieved 2026-10-26. \url{https://www.usherbrooke.ca/consultation-statistique/tarification}.
+\bibitem{tmc} The TMC Library. \emph{Search Services}. Retrieved 2026-10-26. \url{https://library.tmc.edu/search-services/}.
+\bibitem{arotip} AROTIP Data Services. \emph{Services}. Broader screened package, retrieved 2026-10-26. \url{https://www.arotip.com/services.html}.
+\bibitem{lso} Law Society of Ontario. \emph{Generative AI: Your professional obligations}. 10 April 2024; retrieved 2026-10-26. \url{https://lawsocietyontario-dwd0dscmayfwh7bj.a01.azurefd.net/media/lso/media/lawyers/practice-supports-resources/generative-ai-your-professional-obligations.pdf}.
+\bibitem{lao} Legal Aid Ontario. \emph{2026 update to Lawyer Self-Report: AI compliance confirmation}. 12 December 2025; retrieved 2026-10-26. \url{https://www.legalaid.on.ca/in-briefs/2025-12-12_2026-update-to-lawyer-self-report-ai-compliance-confirmation/}.
+\bibitem{lsa} Ontario. \emph{Law Society Act}, R.S.O. 1990, c. L.8. Current indexed text retrieved 2026-10-26; direct page fetch returned 403. \url{https://www.ontario.ca/laws/statute/90l08}.
+\bibitem{merkle} MontrealAI. \emph{Merkle Roots for the Validated Skill Graph}, version 114. Source/PDF inspected from the pinned repository. \url{https://github.com/MontrealAI/goalos-agialpha-sovereign-machine-economy/blob/main/docs/paper/Merkle_Roots_for_the_Validated_Skill_Graph_v114.pdf}.
+\bibitem{proofloops} MontrealAI. \emph{PROOF LOOPS}, research paper v2, author edition. \url{https://github.com/MontrealAI/goalos-agialpha-sovereign-machine-economy/blob/main/docs/paper/PROOF_LOOPS_research_paper_v2_author_edition.pdf}.
+\end{thebibliography}
+\end{document}
