@@ -1,0 +1,131 @@
+{
+  "schema": "opportunity-investigation/v1",
+  "author": "Vincent Boucher \u2014 President of MONTREAL.AI",
+  "base_runtime": "03b2eb97f1e150956ef0fa028e1ad665cc755cf6",
+  "main_inspected": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "scope": "Additive observation instrument on existing #4972 lifecycle; no new discovery infrastructure or publication reservation",
+  "selection": "observation-design",
+  "selection_reason": "A narrowly testable information-acquisition pilot grounded in an acknowledged failure mode; broad retry and replay novelty rejected. No scientifically novel algorithm or viable market assumed.",
+  "chronology": "The general research-record scaffold and finite compiler were drafted during the opportunity investigation. This selection is fixed before the local end-to-end pilot runs; it is not a blind test of autonomous discovery.",
+  "candidates": [
+    {
+      "candidate_id": "native-idempotency",
+      "outcome": "Prevent duplicate remote effects after an acknowledgement failure",
+      "existing_approaches": "Stripe and ECS accept request tokens; Temporal recommends idempotent activities and explains lost acknowledgements.",
+      "consequential_gap": "These are strong incumbents. No new opportunity where a native exact request token is available.",
+      "required_construction": "Use the existing endpoint semantics and the same parameters and token.",
+      "restriction": "A native idempotency mechanism is not yet used",
+      "alternatives": [
+        "Existing endpoint token",
+        "Durable workflow"
+      ],
+      "smallest_experiment": "Check the real endpoint contract before constructing an adapter.",
+      "falsifier": "A supported native mechanism already satisfies the recipient.",
+      "disposition": "reject",
+      "sources": [
+        "https://docs.stripe.com/api/idempotent_requests",
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_Idempotency.html"
+      ],
+      "version": 1,
+      "beneficiary": "Operators delivering tool-mediated work with ambiguous completion",
+      "why_now": "Frontier reasoning can propose mission-specific observations; bounded construction and checking can make them inspectable. Actual frontier superiority remains untested.",
+      "commercial_mechanism": "Qualification and integration service priced against a matched human service when sourced, otherwise an explicit willingness-to-pay hypothesis. No customer demand, quote or sale is observed.",
+      "uncertainties": [
+        "Complete engineering, provider, customer and maintenance cost unknown",
+        "No buyer commitment or recipient price evidence",
+        "Finite coverage does not cover concurrency or adversarial sources"
+      ],
+      "evidence": []
+    },
+    {
+      "candidate_id": "trace-to-outcome",
+      "outcome": "Infer useful task completion from interoperable agent traces",
+      "existing_approaches": "OpenTelemetry supplies common trace and operation semantics; tool success is recorded where available.",
+      "consequential_gap": "An operation trace need not identify whether the original beneficiary outcome is satisfied.",
+      "required_construction": "Bind recorded spans to mission-specific acceptance semantics and actual current-state evidence.",
+      "restriction": "A successful transport span is used as a proxy for useful completion",
+      "alternatives": [
+        "Application acceptance checks",
+        "Domain-specific instrumentation"
+      ],
+      "smallest_experiment": "Challenge the inference with successful transport and corrupted output.",
+      "falsifier": "Trace inference accepts a wrong artifact or existing application checks solve the need.",
+      "sources": [
+        "https://opentelemetry.io/docs/concepts/semantic-conventions/",
+        "https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/"
+      ],
+      "version": 1,
+      "beneficiary": "Operators delivering tool-mediated work with ambiguous completion",
+      "why_now": "Frontier reasoning can propose mission-specific observations; bounded construction and checking can make them inspectable. Actual frontier superiority remains untested.",
+      "commercial_mechanism": "Qualification and integration service priced against a matched human service when sourced, otherwise an explicit willingness-to-pay hypothesis. No customer demand, quote or sale is observed.",
+      "uncertainties": [
+        "Complete engineering, provider, customer and maintenance cost unknown",
+        "No buyer commitment or recipient price evidence",
+        "Finite coverage does not cover concurrency or adversarial sources"
+      ],
+      "evidence": [],
+      "disposition": "conditional"
+    },
+    {
+      "candidate_id": "workflow-replay",
+      "outcome": "Resume long missions without losing completed work",
+      "existing_approaches": "Temporal and LangGraph already persist workflow state and checkpoints.",
+      "consequential_gap": "Broad replay infrastructure would duplicate existing systems and this repository Journal.",
+      "required_construction": "Integrate existing durable state rather than invent another engine.",
+      "restriction": "In-memory mission state is treated as the only durable knowledge",
+      "alternatives": [
+        "Existing signed Journal",
+        "Temporal",
+        "LangGraph persistence"
+      ],
+      "smallest_experiment": "Kill a process and inspect the existing durable state.",
+      "falsifier": "The existing Journal already preserves the required result.",
+      "disposition": "reject",
+      "sources": [
+        "https://docs.temporal.io/activity-definition",
+        "https://docs.langchain.com/oss/python/langgraph/persistence"
+      ],
+      "version": 1,
+      "beneficiary": "Operators delivering tool-mediated work with ambiguous completion",
+      "why_now": "Frontier reasoning can propose mission-specific observations; bounded construction and checking can make them inspectable. Actual frontier superiority remains untested.",
+      "commercial_mechanism": "Qualification and integration service priced against a matched human service when sourced, otherwise an explicit willingness-to-pay hypothesis. No customer demand, quote or sale is observed.",
+      "uncertainties": [
+        "Complete engineering, provider, customer and maintenance cost unknown",
+        "No buyer commitment or recipient price evidence",
+        "Finite coverage does not cover concurrency or adversarial sources"
+      ],
+      "evidence": []
+    },
+    {
+      "candidate_id": "observation-design",
+      "outcome": "Determine whether the exact intended artifact exists after an ambiguous tool result, while preserving uncertainty and the original mission",
+      "existing_approaches": "Idempotency, application acceptance and durable workflows are primary incumbents. Exact hash inspection and finite distinguishing-set search are standard building blocks.",
+      "consequential_gap": "For a tool without an adequate outcome read, acknowledged and unacknowledged worlds can be observationally identical. A purpose-specific read interface may distinguish them; reasoning alone cannot.",
+      "required_construction": "Construct and execute a bounded read-only instrument tied to the original outcome; preserve HOLD when observations cannot separate success and failure.",
+      "restriction": "Only an ambiguous acknowledgement is observed",
+      "alternatives": [
+        "Use native idempotency first",
+        "Manually construct the same direct byte checker",
+        "Use an identical-content ordinary library",
+        "Stop when no authorized informative read exists"
+      ],
+      "smallest_experiment": "After an actual local child writes and exits before acknowledgement, compile authorized observations; use unchanged byte-level acceptance, then apply the actual retained compiler to a different artifact family.",
+      "falsifier": "Any invalid artifact is classified satisfied; ambiguity is erased; a probe implies retry authority; or competent existing methods match and defeat the incremental-Alpha claim.",
+      "sources": [
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_Idempotency.html",
+        "https://docs.temporal.io/activity-definition"
+      ],
+      "version": 1,
+      "beneficiary": "Operators delivering tool-mediated work with ambiguous completion",
+      "why_now": "Frontier reasoning can propose mission-specific observations; bounded construction and checking can make them inspectable. Actual frontier superiority remains untested.",
+      "commercial_mechanism": "Qualification and integration service priced against a matched human service when sourced, otherwise an explicit willingness-to-pay hypothesis. No customer demand, quote or sale is observed.",
+      "uncertainties": [
+        "Complete engineering, provider, customer and maintenance cost unknown",
+        "No buyer commitment or recipient price evidence",
+        "Finite coverage does not cover concurrency or adversarial sources"
+      ],
+      "evidence": [],
+      "disposition": "conditional"
+    }
+  ]
+}

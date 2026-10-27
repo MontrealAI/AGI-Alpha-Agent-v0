@@ -1,0 +1,58 @@
+black....................................................................Passed
+ruff.....................................................................Passed
+ruff-format..............................................................Passed
+flake8...................................................................Failed
+- hook id: flake8
+- exit code: 1
+
+scripts/observation_economics.py:166:121: E501 line too long (126 > 120 characters)
+scripts/observation_economics.py:230:121: E501 line too long (178 > 120 characters)
+scripts/record_opportunity_observations.py:96:121: E501 line too long (140 > 120 characters)
+scripts/record_opportunity_observations.py:170:121: E501 line too long (126 > 120 characters)
+scripts/record_opportunity_observations.py:304:121: E501 line too long (132 > 120 characters)
+scripts/record_opportunity_observations.py:308:121: E501 line too long (129 > 120 characters)
+scripts/record_opportunity_observations.py:355:121: E501 line too long (121 > 120 characters)
+scripts/record_opportunity_observations.py:358:121: E501 line too long (154 > 120 characters)
+scripts/record_opportunity_observations.py:362:121: E501 line too long (140 > 120 characters)
+scripts/record_opportunity_observations.py:415:121: E501 line too long (128 > 120 characters)
+scripts/record_opportunity_observations.py:501:121: E501 line too long (158 > 120 characters)
+scripts/record_opportunity_observations.py:513:121: E501 line too long (138 > 120 characters)
+scripts/record_opportunity_observations.py:520:121: E501 line too long (138 > 120 characters)
+scripts/record_opportunity_observations.py:532:121: E501 line too long (160 > 120 characters)
+scripts/record_opportunity_observations.py:535:121: E501 line too long (125 > 120 characters)
+scripts/validate_alpha_flywheel.py:490:121: E501 line too long (121 > 120 characters)
+
+semgrep..................................................................Passed
+shellcheck...........................................(no files to check)Skipped
+Lint GitHub Actions workflow files...................(no files to check)Skipped
+Verify protobuf files are up to date.....................................Passed
+Verify environment docs and runbook checklist............................Passed
+Detect private text in commit............................................Failed
+- hook id: dp-scrub
+- exit code: 1
+
+Private or pay-walled text detected in:
+docs/flywheel/index.html
+Set ALLOW_PRIVATE_TEXT=1 to override.
+
+Verify required Python packages are installed............................Passed
+Ensure scripts import disclaimer helper..................................Passed
+Verify demo gallery preview assets exist.................................Passed
+Verify HTML pages reference the disclaimer snippet.......................Passed
+Block binary diffs.......................................................Failed
+- hook id: no-binary-diff
+- exit code: 1
+
+Traceback (most recent call last):
+  File "/workspace/scratch/0e663382dca0/AGI-Alpha-Agent-v0/scripts/check_no_binary_diff.py", line 484, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/scratch/0e663382dca0/AGI-Alpha-Agent-v0/scripts/check_no_binary_diff.py", line 455, in main
+    preserve_catalog(parse_catalog(previous.stdout.encode()), catalog)
+  File "/workspace/scratch/0e663382dca0/AGI-Alpha-Agent-v0/scripts/research_papers.py", line 310, in preserve_catalog
+    raise ValueError("Historical paper IDs must remain present")
+ValueError: Historical paper IDs must remain present
+
+Update workflow action versions......................(no files to check)Skipped
+Validate Python syntax with py_compile...................................Passed
+Lint Insight Browser with ESLint.....................(no files to check)Skipped
