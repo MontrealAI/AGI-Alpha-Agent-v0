@@ -98,6 +98,33 @@
       "stage": "installed CLI command",
       "original": "A relative .venv path was invoked from outside the repository and returned 127 before Python started.",
       "correction": "Use the absolute existing interpreter with the installed target first; installed CLI help passes. No clean bootstrap claim."
+    },
+    {
+      "stage": "configured review of 886112b2",
+      "original": "Untyped mission and operation allocation keys could collide, and an unreconciled legacy claim could be missed by a newer observation.",
+      "correction": "Use typed version-two mission/bucket indexes in the existing Journal. Resolve all legacy claims through their original observation, bundle and exact execution receipt before new allocation or continuation. Preserve both older formats and dual aliases. Refuse contradictory legacy claims atomically; never choose a winner or post another ledger charge.",
+      "review_comments": [
+        4392247733,
+        4392247744
+      ]
+    },
+    {
+      "stage": "legacy provenance regression",
+      "original": "The first directed run passed 55 cases but one assertion assumed a particular one of two equivalent historical allocation aliases would be the typed index provenance.",
+      "correction": "Require provenance to be one of the two actual verified aliases and to pin the original observation; preserve both old records. The index may process either cryptographic key first. All 57 directed cases pass prospectively, including both formats, both processing orders, ID collisions, contradictory claims and corrupted legacy links.",
+      "original_report": "typed-allocation-directed-failed.junit.txt",
+      "corrected_report": "typed-allocation-directed.junit.txt"
+    },
+    {
+      "stage": "typed allocation concurrent qualification",
+      "original": "The 293-case runtime run reported 292 passed / one failure when the existing protected invocation rejected a prepared proof after its monotonic deadline. The simultaneous full browser journey timed out while capturing a screenshot after fonts loaded.",
+      "correction": "Unchanged assertions and deadlines pass on rerun with fewer concurrent campaigns: 293 runtime cases and 22 browser/axe checks. Both original failures remain failures; no cause is established by the successful reruns.",
+      "original_report": "typed-runtime-first-failed.junit.txt",
+      "corrected_reports": [
+        "typed-runtime-focused.junit.txt",
+        "typed-full-browser.json"
+      ],
+      "browser_failure_report": "typed-browser-first-failure.json"
     }
   ],
   "meaning": "Corrections do not retroactively qualify earlier attempts. All identity/model/money fixtures remain explicitly synthetic."

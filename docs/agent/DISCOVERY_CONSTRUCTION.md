@@ -44,10 +44,15 @@ the operation ID remains the execution identity and is not a ledger alias. This
 reads the existing ledger rather than charging it again. Unknown costs pause the
 package. Every signed continuation rechecks the original execution identity and
 current accounting, preserves old incomplete records, recomputes totals once and
-resumes or stops on the resolved budget. A paused legacy observation whose
-allocation used its operation ID gets an additional mission-scoped allocation
-when reconciled; the old allocation and observation remain historical. Overlap
-with another observation refuses. It never
+resumes or stops on the resolved budget. Typed version-two allocation records
+keep mission identity distinct from an operation ID with identical text. Before
+any new allocation or continuation, every legacy allocation is resolved through
+its original observation, bundle and exact execution receipt, then reserved in
+the typed index. Both earlier untyped formats and duplicate aliases for the same
+observation are supported. Old allocations and observations remain historical.
+Conflicting legacy claims or inconsistent provenance require explicit correction;
+processing a newer bundle first cannot steal an older claim. No ledger charge
+is added. It never
 replays an action or restores consumed permission. Stale heads/evidence, replay,
 wrong roles, expired signatures, stopped control and changed source refuse.
 

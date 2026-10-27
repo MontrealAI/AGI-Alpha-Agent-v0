@@ -28,6 +28,10 @@ def key(kind: str, identity: str) -> str:
     return PREFIX + kind + ":" + digest("discovery-record-identity", {"id": identity})
 
 
+def cost_scope(mission_id: str, bucket: str) -> str:
+    return digest("discovery-ledger-cost-scope/v2", {"mission_id": mission_id, "bucket": bucket})
+
+
 class Purpose(StrictModel):
     useful_purpose: Text
     deliverable: Text
@@ -386,6 +390,64 @@ class Discovery:
             raise Conflict("accounting reconciliation requires the original exact execution receipt")
         return str(ExecutionMission.model_validate(execution["mission"]).mission_id)
 
+    def _migrate_cost_allocations(self, cx: Any) -> None:
+        """Reserve legacy claims before granting any new mission allocation.
+
+        Derive an old ambiguous key's meaning from its pinned observation.
+        Typed indexes share the same Journal and never charge the ledger.
+        """
+        names = [
+            row[0]
+            for row in cx.execute(
+                "SELECT DISTINCT mission FROM events WHERE mission GLOB ? ORDER BY mission",
+                (PREFIX + "cost-allocation:*",),
+            )
+        ]
+        for name in names:
+            legacy = self.journal.latest(name, cx)
+            observation = self._read("observation", legacy["observation_id"], cx)
+            if observation is None:
+                raise Conflict("legacy allocation has no original observation")
+            terms = ExperimentObservation.model_validate(observation["terms"])
+            bundle = self._read("bundle", terms.bundle_id, cx)
+            if bundle is None:
+                raise Conflict("legacy allocation has no original bundle")
+            spec = ExplorationBundle.model_validate(bundle["spec"])
+            step = next((item for item in spec.steps if item.step_id == terms.step_id), None)
+            ledger_mission = self._ledger_mission(terms, observation["execution_digest"], cx)
+            if (
+                step is None
+                or legacy["bundle_id"] != terms.bundle_id
+                or legacy["cost_operation"] != terms.cost_operation
+                or legacy["bucket"] != step.cost_bucket
+                or legacy.get("ledger_mission_id", ledger_mission) != ledger_mission
+            ):
+                raise Conflict("legacy allocation differs from its original observed accounting scope")
+            identity = cost_scope(ledger_mission, step.cost_bucket)
+            current = self._read("mission-cost-allocation", identity, cx)
+            if current is not None:
+                if (
+                    current["observation_id"] != legacy["observation_id"]
+                    or current["bundle_id"] != terms.bundle_id
+                    or current["cost_operation"] != terms.cost_operation
+                ):
+                    raise Conflict("legacy ledger mission and bucket already belong to another discovery observation")
+                continue
+            self.journal.append(
+                cx,
+                key("mission-cost-allocation", identity),
+                {
+                    "scope_version": 2,
+                    "bundle_id": terms.bundle_id,
+                    "observation_id": legacy["observation_id"],
+                    "cost_operation": terms.cost_operation,
+                    "ledger_mission_id": ledger_mission,
+                    "bucket": step.cost_bucket,
+                    "legacy_allocation_digest": legacy["digest"],
+                    "observation_digest": observation["digest"],
+                },
+            )
+
     def apply(self, signed: SignedEnvelope) -> dict[str, Any]:
         signed = SignedEnvelope.model_validate_json(canonical(signed))
         raw = self.service.trust.verify(signed, "flywheel-discovery-command", "controller")
@@ -473,25 +535,17 @@ class Discovery:
             self._evidence(checkpoint.evidence, cx)
             value = self.journal.document(old)
             if checkpoint.disposition == "continue":
+                self._migrate_cost_allocations(cx)
                 costs = []
                 reconciled = []
                 steps = {step.step_id: step for step in bundle.steps}
                 for row in value["observations"]:
                     terms = ExperimentObservation.model_validate(row["terms"])
                     ledger_mission = self._ledger_mission(terms, row["execution_digest"], cx)
-                    allocation_id = ledger_mission + "/" + steps[terms.step_id].cost_bucket
-                    allocation = self._read("cost-allocation", allocation_id, cx)
+                    allocation_id = cost_scope(ledger_mission, steps[terms.step_id].cost_bucket)
+                    allocation = self._read("mission-cost-allocation", allocation_id, cx)
                     if allocation is None:
-                        legacy = self._read(
-                            "cost-allocation", terms.cost_operation + "/" + steps[terms.step_id].cost_bucket, cx
-                        )
-                        if legacy is None:
-                            raise Conflict("recorded observation has no cost allocation")
-                        allocation = dict(legacy)
-                        allocation["ledger_mission_id"] = ledger_mission
-                        self.journal.append(
-                            cx, key("cost-allocation", allocation_id), self.journal.document(allocation)
-                        )
+                        raise Conflict("recorded observation has no cost allocation")
                     if (
                         allocation["bundle_id"] != bundle.bundle_id
                         or allocation["cost_operation"] != terms.cost_operation
@@ -693,11 +747,9 @@ class Discovery:
                 cx,
             )
         ledger_mission = self._ledger_mission(observation, execution_digest, cx)
-        claim_id = ledger_mission + "/" + step.cost_bucket
-        if (
-            self._read("cost-allocation", claim_id, cx) is not None
-            or self._read("cost-allocation", observation.cost_operation + "/" + step.cost_bucket, cx) is not None
-        ):
+        self._migrate_cost_allocations(cx)
+        claim_id = cost_scope(ledger_mission, step.cost_bucket)
+        if self._read("mission-cost-allocation", claim_id, cx) is not None:
             raise Conflict("this ledger mission and bucket already belong to another discovery observation")
         report = self.costs.report(ledger_mission, cx)
         complete = report["bucket_complete"][step.cost_bucket]
@@ -743,8 +795,9 @@ class Discovery:
         self.journal.append(cx, key("observation", command.operation_id), observed_value)
         self.journal.append(
             cx,
-            key("cost-allocation", claim_id),
+            key("mission-cost-allocation", claim_id),
             {
+                "scope_version": 2,
                 "bundle_id": bundle.bundle_id,
                 "observation_id": command.operation_id,
                 "cost_operation": observation.cost_operation,

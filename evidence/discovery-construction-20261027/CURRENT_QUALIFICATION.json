@@ -1,6 +1,6 @@
 {
   "schema": "flywheel-review-correction-qualification/v1",
-  "reviewed_parent_commit": "e722053488ab9b7f8513fd85dc9cb7ed14b67d26",
+  "reviewed_parent_commit": "886112b2161377bc466391ba7211fbd650fbe1d2",
   "base_main": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
   "scope": "This packet qualifies exact named component bytes. Earlier QUALIFICATION.json and MAIN_INTEGRATION.json remain historical evidence for their original sources, not qualification of the corrected runtime.",
   "corrections": [
@@ -15,16 +15,25 @@
     {
       "run": 40549768123,
       "mechanism": "Nested complementary landmark replaced by labelled section; original axe assertions retained"
+    },
+    {
+      "comment": 4392247733,
+      "mechanism": "Typed mission/bucket scope indexes prevent mission IDs and operation IDs with identical text from colliding."
+    },
+    {
+      "comment": 4392247744,
+      "mechanism": "Resolve and reserve all legacy allocations from exact original observations before any new claim or continuation. Both legacy formats and dual aliases supported; conflicting or corrupt legacy links refuse atomically. No ledger charge or authority is created."
     }
   ],
   "qualification": {
     "runtime_tests": {
-      "passed": 283,
-      "report": "review-runtime-focused.junit.txt"
+      "passed": 293,
+      "report": "typed-runtime-focused.junit.txt",
+      "original_failed_attempt": "typed-runtime-first-failed.junit.txt"
     },
     "publication_and_ui_source_tests": {
       "passed": 539,
-      "report": "review-publication-ui.junit.txt"
+      "report": "typed-publication-ui.junit.txt"
     },
     "strict_runtime_mypy": {
       "files": 71,
@@ -32,51 +41,57 @@
       "config": "mypy-runtime.ini"
     },
     "coverage": {
-      "cases": 95,
+      "cases": 105,
       "modules": 3,
-      "percent": 94.52554744525547,
+      "percent": 97.1563981042654,
       "floor": 80,
-      "report": "review-focused-coverage.json",
+      "report": "typed-focused-coverage.json",
       "scope": "focused statement coverage only"
     },
     "original_flywheel_browser": {
       "checks": 22,
       "axe": "passed",
-      "report": "review-full-browser.json"
+      "report": "typed-full-browser.json",
+      "original_failed_attempt": "typed-browser-first-failure.json"
     },
     "discovery_browser": {
       "groups": 13,
-      "report": "review-discovery-browser.json"
+      "report": "typed-discovery-browser.json"
     },
     "canonical_regeneration": "Exact self-contained source/CSP inventory and deterministic rebuild verified by the browser validator; canonical research render/check passed",
     "strict_mkdocs": "passed",
     "selected_hooks": {
-      "blocking": "passed for named changed files; staged privacy/binary checks cover actual PR delta",
-      "cosmetic": "One inherited E501 in flywheel_enterprise.py:472 remains advisory",
-      "report": "review-hooks.txt"
+      "blocking": "passed for named changed discovery/test/guide paths; staged privacy/binary checks cover the correction delta",
+      "cosmetic": "Black, Ruff, Ruff-format and Flake8 all pass for the current named paths. Earlier inherited parent E501 remains historical feedback, not reclassified.",
+      "report": "typed-hooks.txt"
     },
     "held_sources": "All five regular-file identities preserved; omitted behavior remains unqualified",
     "installed_overlay": {
-      "source_report": "review-installed-source.json",
-      "replay_report": "review-installed-replay-summary.json",
-      "cli": "installed target help passed",
-      "scope": "Unpublished development wheel using existing development dependencies; not clean bootstrap or release qualification"
+      "source_report": "typed-installed-source.json",
+      "replay_report": "typed-installed-replay-summary.json",
+      "cli": "installed target reports inherited development version 1.46.1; actual discovery import resolves inside installed target",
+      "scope": "Unpublished development wheel using existing dependencies, not clean bootstrap or released qualification"
     },
-    "whitespace": "Review correction delta passes excluding preserved raw evidence. The complete PR delta retains the parent enterprise guide Markdown hard line break; it is not an all-PR whitespace pass."
+    "whitespace": "Review correction delta passes excluding preserved raw evidence. The complete PR delta retains the parent enterprise guide Markdown hard line break; it is not an all-PR whitespace pass.",
+    "directed_discovery": {
+      "cases": 57,
+      "report": "typed-allocation-directed.junit.txt",
+      "prior_failed_attempt": "typed-allocation-directed-failed.junit.txt"
+    }
   },
   "component_sources": {
-    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "10f0ddf9be20df85bae1ac1bc6ea17b3e85a92e46864d691413e059c8398fa17",
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "4a592e55b6270e7abd64a700157c8b570582499dc82d7f2b199bab6a83aad418",
     "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py": "54548405b4c063aeda310c397d328f88aa01c52e029c20cf6dd42057ebf03103",
-    "tests/runtime/test_flywheel_discovery.py": "73f2bef46b61a9ac7f82ed316c34139eddcd7bb1a7a5c47461b04dc865e0d47b",
+    "tests/runtime/test_flywheel_discovery.py": "aacc1e87889015a2f7081391c05b1373adc168770d5c8e70581f384bc241f63d",
     "tests/runtime/test_flywheel_enterprise.py": "e8b4b02f86825347f2a3ebfe7b2857737f64bdac372311e370d47529b967b64a",
     "scripts/templates/alpha-flywheel/index.html": "135e2afb4f77efe96411707ed0470074c206f82b9312db6505444704f3be150d",
-    "scripts/templates/alpha-flywheel/discovery-evidence.json": "3ea902a4567b81a22f15d602deb21723b2cee6713477359b651415759d896422",
+    "scripts/templates/alpha-flywheel/discovery-evidence.json": "8daa6dfefd8ec77fd8ccd249f48febd29768b90882d4f15b7a1d06e4737a9dc6",
     "scripts/templates/alpha-flywheel/opportunity-evidence.json": "68ead7051de3f90e8ccbee12e4868daad18499a9fef3173230b28bbc9c6c1f90",
-    "docs/agent/DISCOVERY_CONSTRUCTION.md": "65cb92026ccdf3ab64d954899c4e2a955a3939ebbe41afdb1f3399c6aaadf605"
+    "docs/agent/DISCOVERY_CONSTRUCTION.md": "34b74739b5bc3e602ac0cff74163d05f9d5f4404d16c2977f3fa52dd2bcda747"
   },
-  "flywheel_source_hash": "9401c1a35b0edee860d1205aa79ac791ff248f3d8c50b78e03b46c5ba2983dbe",
-  "flywheel_page_sha256": "d92bf8f1d8d9e65a523fde566e5de9330a8f69d5437745e79e52b7b907e52582",
-  "prior_failures": "All three review-regression attempts, prior full-regression interruption, aggregate coverage failure and hosted accessibility failure remain failures. Corrections do not relabel them.",
+  "flywheel_source_hash": "48e928cdb89c6504eb5c217caa67c3309317500da54b2d35b00faaa331fae6a1",
+  "flywheel_page_sha256": "3cfc2912ac48352c8464d9d996cfacf94e7d2a64d2ca947ebf75bc2df165dca4",
+  "prior_failures": "All earlier failed attempts retain their original states, including the first typed runtime freshness refusal and browser screenshot timeout. The unchanged reruns pass; cause of the original timeouts remains unestablished.",
   "pending": [
     "Fresh exact-head configured review and hosted checks",
     "Parent integration through existing owners",
@@ -90,5 +105,10 @@
   "actual_customer_collections_micro_usd": 0,
   "actual_complete_cost": "unknown",
   "alpha_admission": "rejected in preserved lineage",
-  "publication": "No main ref, owner ref, version allocation or publisher changed"
+  "publication": "No main ref, owner ref, version allocation or publisher changed",
+  "previous_qualification": {
+    "commit": "886112b2161377bc466391ba7211fbd650fbe1d2",
+    "path": "evidence/discovery-construction-20261027/CURRENT_QUALIFICATION.json",
+    "meaning": "Retains its original exact-source scope; not reclassified as the final typed-index qualification."
+  }
 }
