@@ -1,27 +1,62 @@
 {
-  "method": "Every final physical page visually inspected after Poppler rendering; changed page images rechecked after layout-only corrections.",
-  "render_max_dimension_pixels": 1500,
-  "reviewers": "Separate AI work roles, not external certification",
+  "edition": "1.0.1",
+  "reviewed_at_utc": "2026-10-27T14:26:04.269415+00:00",
+  "method": "Every physical page visually inspected after Poppler rendering at maximum dimension1500pixels; no final layout changes required.",
+  "reviewers": "Separate AI work roles, not external institutional certification",
   "documents": [
     {
       "path": "paper/Making_the_Next_Opportunity_Possible.pdf",
-      "pages": 20,
-      "bytes": 477799,
-      "sha256": "e5a33ccfe19a94828977f83a136b72970f74744f4dd1aff61ca0c6d9f195cf39"
+      "pages": 21,
+      "bytes": 482894,
+      "sha256": "d4a8f2669e3414c0b318ea8280af6304a9d80dae30f70aa95a2d253edf9b4fa0",
+      "rendered_page_sha256": {
+        "paper-01.png": "c04a540b947865026440f0ab9872679f269426674053948bd2ac8c407166787a",
+        "paper-02.png": "473f56f41890f2f248f5045967c6901c6ff4ca29a588a8e3340198a92d28748d",
+        "paper-03.png": "fc248f6ecb9f030179a76d9ed5df6ff79264f27ce669fda1f7c75198d0580896",
+        "paper-04.png": "483199eb9bb6b49119fc13fe0040929af5e402c78f269cc04af8fcc6689f0cf9",
+        "paper-05.png": "3d0bc177b7088535482d7891c2ddd4380ce80cfce665a547d1dc9459d437395b",
+        "paper-06.png": "493fef4c1368fd8fad4ebc5eafe90f8de3933aa7c09b12c8770b325d88fae6c1",
+        "paper-07.png": "4c25c4a2a02f4b8fb26a78903c4fde6a130d84efe96be1e7136dfbb185af4b5a",
+        "paper-08.png": "af6837a525ae65aa37290d093900f4778545cd393a83031835a720a1a566916e",
+        "paper-09.png": "8ec883b8f893e210d7cdccf6dd6374778419e79d2bf6b55cf691718771c6033e",
+        "paper-10.png": "577723d3a19303e8c233f0ad9cc023a4063616a2bc6a258dbba6c1948d2bc528",
+        "paper-11.png": "e8aee814d91fd69945c3c840118731f344d3170e14de2604af86cb4d7308a287",
+        "paper-12.png": "c1608d9646a079b876508dd7903adabb7bd61ce0e864deb27e9bbfacaf90cdc8",
+        "paper-13.png": "19541a2126a612ae919943f3e31713e0b34707c9cc552e1a00a7795d8ea0ad5a",
+        "paper-14.png": "e7530cc90cac41f78d36c12580075e8e6d6629c8c97be55e6ad0cee3a7e6ac62",
+        "paper-15.png": "1bb73b2459e0e9ea35311c7f4263e4a14b0c9a84c7b745f7a30b585e619e7373",
+        "paper-16.png": "0fdee394e1b4ece4eee7f94c3ea5614f14c57bc9c5cd58f0aeeab8f1e8808d64",
+        "paper-17.png": "87e37caa0691f6d1e316e6eb91afc77e843b36632334db6babc478a5c7b17d50",
+        "paper-18.png": "9e15f331d783009dc28309938e542ae4c3d9a3a276ea98f1275b8efb63a7a31e",
+        "paper-19.png": "58377c235f9e587c4621a332d09a295bccf07774f5b92c643ded516ed2a4e6c1",
+        "paper-20.png": "b82c7c8a3257386f3792754fd03f775e7142e9ef2061856def866f1c898847df",
+        "paper-21.png": "bcf0dfcea1f09204ff5814cbb742eb25f6d466392e430c8408409aeb9ac91719"
+      }
     },
     {
       "path": "paper/Executive_Brief_EN_FR.pdf",
       "pages": 2,
-      "bytes": 180662,
-      "sha256": "1057526835bdc92ed5af684f0cd39bd2361f84af35f21dcc58567b4054c396f7"
+      "bytes": 181003,
+      "sha256": "7465c69e694adf8711c4be1ae81b68018c79710e41ecd58da6839524de6a15cb",
+      "rendered_page_sha256": {
+        "brief-1.png": "87864275f8a89379d03d02438ee66dbe61692702be8bbc9f2f06fd6e90999973",
+        "brief-2.png": "d63aa162e615e3d2afc16e5a9c3b257cf6cb1ae04ccdfd05a3629e91cf78dc33"
+      }
     }
   ],
-  "findings": "No clipping, overlaps, orphan section headings, missing glyphs or unreadable tables/figures remain. Main paper final compile has no overfull boxes.",
+  "findings": "No clipping, overlap, orphan section headings, missing glyphs or unreadable tables/figures observed. Main paper compile has no overfull boxes or undefined references.",
   "main_review_coverage": {
-    "technical": "01\u201307 and10\u201311",
-    "sources": "08\u201313",
-    "root": "14\u201320 andbrief01\u201302",
-    "repository": "15\u201320"
+    "technical": "physical01\u201307",
+    "sources": "physical08\u201314",
+    "root": "physical15\u201321 and brief01\u201302"
   },
-  "final_layout_record": "section9_layout_report.json"
+  "source_review_receipts": [
+    "visual_review_v1_0_1_pages08_14.json",
+    "economic_figure_v3_review.json"
+  ],
+  "historical_layout_record": {
+    "edition": "1.0.0",
+    "path": "section9_layout_report.json",
+    "paper_sha256": "e5a33ccfe19a94828977f83a136b72970f74744f4dd1aff61ca0c6d9f195cf39"
+  }
 }

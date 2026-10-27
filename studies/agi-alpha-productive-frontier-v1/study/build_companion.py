@@ -103,11 +103,28 @@ def build() -> None:
     native = native_replay(example, config)
     base = results["scenarios"]["base"]
     scenarios = results["scenarios"]
+    audit = read("evidence/economic_audit_v3.json")
+    if audit["status"] != "PASS" or audit["cohort"]["seeds"] != results["seeds"]:
+        raise AssertionError("The final economic audit must pass for this exact confirmation cohort")
+    seed_count = results["seeds"][1] - results["seeds"][0] + 1
+    comparisons = [
+        (scenario, policy, row["incremental_profit_vs_beta"]["mean"])
+        for scenario, group in scenarios.items()
+        for policy, row in group.items()
+        if policy != "competent_beta"
+    ]
+    positive_means = [(scenario, policy) for scenario, policy, increment in comparisons if increment > 0]
+    comparative_result = (
+        "No additional-capability or assessment policy has a positive mean paired increment in any declared scenario."
+        if not positive_means
+        else f"Positive mean paired increments occur in {len(positive_means)} of {len(comparisons)} declared scenario-policy comparisons; their mechanisms require separate inspection."
+    )
     lines = [
         r"The frozen confirmation executes 256 paired seeds, 12 scenarios and six policies (18,432 enterprise histories). "
         r"Table~\ref{tab:economics} reports central assumed-market outcomes over 60 operating days. "
         r"These amounts are entirely simulated USD, not earned customer revenue. "
-        r"All optional capability treatments remain below their competent ordinary alternative in this experiment.",
+        +
+        comparative_result,
         r"\begin{table}[htbp]\centering\small\begin{tabularx}{\linewidth}{Yrrr}\toprule",
         r"Policy & Mean surplus & Paired increment & Available funds\\\midrule",
     ]
@@ -133,14 +150,14 @@ def build() -> None:
         for policy in ["selective"]
     }
     lines.append(
-        f"The selective policy adopts an additional specialist in {counts['selective']} of {256 * len(scenarios):,} scenario-seed histories. "
-        r"Its central paired increment is minus USD8, the retained assessment cost. "
-        r"The shared-work treatment loses approximately USD61 despite positive absolute delivery surplus. "
+        f"The selective policy adopts an additional specialist in {counts['selective']} of {seed_count * len(scenarios):,} scenario-seed histories. "
+        f"Its central mean paired increment is USD {money(base['selective']['incremental_profit_vs_beta']['mean'])}. "
+        f"The shared-work treatment's central mean paired increment is USD {money(base['shared_work']['incremental_profit_vs_beta']['mean'])}. "
         r"This separates the commercial foundation from the additional learning investment."
     )
     lines += [
         r"\fig{06_cumulative_incremental_profit}{Conditional cumulative incremental surplus relative to equally resourced ordinary delivery. The negative lines retain additional assessment, integration and upkeep; no customer premium is assigned to the specialist.}{fig:cumulative}",
-        r"\fig{07_portfolio_and_available_funds}{Conditional portfolio and available-funds paths. Left: all policies qualify the same offerings. Right: selective-policy surplus and available funds. Productization can add offerings for both enterprises; this is not specialist-created feasibility.}{fig:portfolio}",
+        r"\fig{07_portfolio_and_available_funds}{Conditional portfolio and available-funds paths. Left: preparation completion delays offering readiness in the capacity-pressure scenario. Right: selective-policy surplus and available funds in the central scenario. The same candidate offerings are available to ordinary and specialist enterprises; productization is not specialist-created feasibility.}{fig:portfolio}",
         r"\begin{table}[htbp]\centering\footnotesize\begin{tabularx}{\linewidth}{Yrrr}\toprule",
         r"Scenario & Beta surplus & Shared work increment & Selective increment\\\midrule",
     ]
@@ -155,10 +172,49 @@ def build() -> None:
     ]
     lines.append(
         r"The corrected low-willingness-to-pay policy stops both lead acquisition and optional prototypes. It still loses USD 874.26 because the fixed 60-day operating commitment and common setup/origin research costs remain. "
-        r"The preserved initial policy lost USD 984.26 in that scenario, including USD 110 of avoidable prototypes. One declared amendment conditioned productization on the marginal contribution of an acquisition-viable portfolio; a new 256-seed cohort confirmed the correction without changing technical criteria, prices or demand assumptions. This is a researcher-corrected policy, not evidence of autonomously learned commercial judgment. "
+        r"The preserved initial policy lost USD 984.26 in that scenario, including USD 110 of avoidable prototypes. The first declared amendment conditioned productization on the marginal contribution of an acquisition-viable portfolio. The final cohort additionally corrects capacity carryover and readiness as disclosed above. These are researcher-corrected policies, not evidence of autonomously learned commercial judgment. "
         r"The growth arm can earn much more under its assumed high demand because every policy may purchase extra capacity. That result concerns scalable ordinary delivery under the assumed market, not a learned expansion of what is technically possible. "
-        r"Quality-adjusted units use declared weights 1/3/6 for accepted output, and a separate metric divides them by processing hours. These are accounting weights, not measured buyer value."
+        r"Quality-adjusted units use declared weights 1/3/6 for accepted output. The historical processing-hour ratio excludes preparation and idle capacity; the corrected edition also reports weighted output per total available capacity-hour. Neither weight is measured buyer value."
     )
+    pressure = scenarios["capacity_pressure"]
+    lines += [
+        r"\begin{table}[htbp]\centering\footnotesize\begin{tabularx}{\linewidth}{Yrrrr}\toprule",
+        r"Policy & Prep seconds & Job reservations & Unused seconds & Units / hour\\\midrule",
+    ]
+    for policy, label in LABELS.items():
+        row = pressure[policy]
+        lines.append(
+            f"{label} & {row['preparation_consumed_seconds']['mean']:,.0f} & {row['production_reserved_seconds']['mean']:,.0f} & "
+            f"{row['unused_capacity_seconds']['mean']:,.0f} & {row['weighted_units_per_total_capacity_hour']['mean']:,.2f}\\\\"
+        )
+    lines.append(
+        r"\bottomrule\end{tabularx}\caption{Corrected capacity-pressure accounting over 60 days. Every policy receives 108,000 seconds. Preparation plus customer reservations plus unused capacity equals that allowance in each history, before rounding. The final column divides accepted weighted output by the full allowance, including preparation and idle time. Horizon backlog is reported separately in the raw results.}\end{table}"
+    )
+    growth = scenarios["growth_financed_by_surplus"]
+    growth_note = (
+        f"Under capacity pressure, shared work's mean increment is USD {money(pressure['shared_work']['incremental_profit_vs_beta']['mean'])} "
+        f"and Gym's is USD {money(pressure['shared_gym']['incremental_profit_vs_beta']['mean'])}. "
+        "The difference includes delayed readiness, displaced accepted work and the acquisition stop; it is not a second cash charge for opportunity cost. "
+        "In the separate surplus-financed growth scenario, only acquired leads inform the unchanged arrival-rate heuristic. "
+        f"Mean final additional workers are {growth['competent_beta']['workers']['mean']:.3f} for ordinary Beta, "
+        f"{growth['shared_work']['workers']['mean']:.3f} for shared work and {growth['shared_gym']['workers']['mean']:.3f} for Gym. "
+        f"Gym's mean accepted output is {growth['shared_gym']['accepted']['mean']:.2f} orders versus "
+        f"{growth['competent_beta']['accepted']['mean']:.2f} for Beta; its weighted output per total capacity-hour is "
+        f"{growth['shared_gym']['weighted_units_per_total_capacity_hour']['mean']:.3f} versus "
+        f"{growth['competent_beta']['weighted_units_per_total_capacity_hour']['mean']:.3f}. "
+        "A ratio can improve when the enterprise buys less capacity even while total useful output and surplus fall. "
+        "These path-dependent outcomes belong to the declared scheduling and observation heuristic; they do not establish general market growth or a globally optimal investment rule."
+    )
+    lines.append(growth_note)
+    audit_note = (
+        f"The read-only audit reconciles all {audit['cohort']['raw_rows']:,} histories, their summaries and exported readiness paths. "
+        "Every horizon capacity/backlog identity is exact; the largest cash-accounting residual is less than USD 0.00000002. "
+        "No preparation remains unfinished at day 59 in this cohort; separate boundary fixtures demonstrate that unfinished work remains visible when the horizon is shorter. "
+        f"Ordinary Beta still loses money in {audit['scenario_policy_descriptives']['low_demand']['competent_beta']['negative_profit_histories']} of 256 low-demand histories, "
+        f"and selective assessment in {audit['scenario_policy_descriptives']['low_demand']['selective']['negative_profit_histories']}. "
+        "The evidence therefore supports conditional ordinary delivery and selective refusal, not guaranteed enterprise profitability."
+    )
+    lines.append(audit_note)
     (ROOT / "paper/economic_results.tex").write_text("\n\n".join(lines) + "\n")
 
     table = [
@@ -170,10 +226,20 @@ def build() -> None:
         table.append(
             f"| {label} | {money(row['profit']['mean'])} | {money(row['incremental_profit_vs_beta']['mean'])} | {money(row['available']['mean'])} |"
         )
+    resource_table = [
+        "| Policy | Preparation seconds | Customer reservations | Unused seconds | Weighted units / total capacity-hour |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for policy, label in LABELS.items():
+        row = pressure[policy]
+        resource_table.append(
+            f"| {label} | {row['preparation_consumed_seconds']['mean']:,.0f} | {row['production_reserved_seconds']['mean']:,.0f} | "
+            f"{row['unused_capacity_seconds']['mean']:,.0f} | {row['weighted_units_per_total_capacity_hour']['mean']:,.2f} |"
+        )
     text = f"""# Evidence companion: Making the Next Opportunity Possible
 
 **Vincent Boucher — President of MONTREAL.AI**  
-27 October 2026. Research edition 1.0.
+27 October 2026. Research edition 1.0.1.
 
 ## Result and claim boundary
 
@@ -231,7 +297,7 @@ refinement or abstention. It is a real adjacent prototype, not a live LLM opport
 Continuous monitoring is declined for lack of prototype, assurance and buyer evidence.
 
 C freezes the code/configuration and then executes 256 paired seeds across 12 scenarios and 6 policies:
-18,432 enterprise histories. The same customer draws, opportunities, seed funds and capacity are used. The final cohort uses seeds 10000–10255.
+18,432 enterprise histories. The same customer draws, opportunities, seed funds and capacity allowances are used. The final corrected cohort uses seeds 11000–11255.
 Forced investment treatments isolate learning/sharing costs; selective investment may decline.
 No policy sees future outcomes to price or reserve a job. The audit, screen and selection reserve
 95, 125 and 182 s, including assumed model work. Unused job reservations are not reclaimed within
@@ -243,13 +309,31 @@ future default outcomes. Ordinary library and shared work are identical in every
 {chr(10).join(table)}
 
 These are 60-day simulated USD values. They are not sales or evidence of actual market profitability.
-The selective policy makes {counts["selective"]} optional adoptions across {256 * len(scenarios):,} scenario-seed
-histories. The central USD 8 loss versus ordinary Beta is the retained assessment cost.
+The selective policy makes {counts["selective"]} optional adoptions across {seed_count * len(scenarios):,} scenario-seed
+histories. Its central mean increment is USD {money(base["selective"]["incremental_profit_vs_beta"]["mean"])}.
+{comparative_result}
+
+### Conserved capacity under pressure
+
+{chr(10).join(resource_table)}
+
+These are means over the capacity-pressure cohort. Each policy receives exactly 108,000 seconds over
+60 days. Preparation, customer reservations and unused capacity partition that amount in every
+history. Backlog and unfinished tasks remain explicit at the horizon. The last column includes all
+available capacity; the earlier processing-hour ratio excludes preparation and idle time and is
+retained as a narrower diagnostic. Weights 1/3/6 are accounting assumptions, not measured buyer value.
+`capacity_paths.json` records daily preparation/readiness. Capacity-aware acquisition also changes
+which leads can be bought, and therefore the observed arrival-rate estimate used by the existing
+growth rule; this effect is reported without retuning that rule.
+
+{growth_note}
+
+{audit_note}
 
 The initial economic confirmation is retained under `development/economics_v1`. It exposed a policy
 that stopped acquisition in the low-value market but still spent USD 110 on prototypes. One declared
 amendment in `protocol/economic_amendment.json` conditioned productization on incremental
-contribution from an acquisition-viable portfolio. The final fresh cohort confirms that optional
+contribution from an acquisition-viable portfolio. The second cohort confirmed that optional
 prototype spending stops in that scenario. Its remaining USD 874.26 loss comprises common setup
 and origin research plus fixed operating commitments. The correction is researcher informed; it
 does not establish autonomously learned opportunity judgment.
@@ -289,9 +373,14 @@ This executes actual accounting code; it does not turn fictional amounts into ve
 
 - 6 numerical boundary/transfer tests pass; original arrays/source hashes are preserved.
 - 10 native accounting/trust tests pass, including duplicate costs, unknown costs, revocation and mutation.
-- 17 financial integrity tests pass, including funds-before-acquisition, reservation-before-runtime,
+- 29 financial/resource integrity tests pass, including funds-before-acquisition, reservation-before-runtime,
   no future-prefix leakage, refund/default behavior, real-chain inputs, library/shared equality
-  and rejection of prototypes whose portfolio cannot support acquisition.
+  and rejection of prototypes whose portfolio cannot support acquisition. The 12 added regressions
+  cover preparation carryover, delayed readiness, failed/unfinished work, capacity-aware acquisition
+  and unsupported execution overruns.
+- Independent resource review passed 864 closed-form fixtures and 72 histories on existing development
+  seed 8000. It checked 3,461 fixture identities plus 4,320 daily scenario ledgers before fresh confirmation;
+  no protected 11000-series outcome was used to change the policy.
 - EN/FR local Chromium checks pass, including responsive widths 320/390 px, no-JavaScript fallback,
   negative-return calculator branches and assumption download.
 - Separate AI review roles examined numerical and economic claims. They are not independent institutions.
@@ -318,6 +407,21 @@ bases. Its replay of 7401 is reproduction, not another protected confirmation. T
 script writes its original validated location; copy the complete technical directory to a new temporary
 directory before running it, so published observations are preserved. The complete package contains
 all numerical arrays, original code, source manifests and LaTeX figure dependencies.
+
+## Capacity correction and preserved submitted edition
+
+Configured review found that the submitted engine discarded preparation work exceeding a daily
+capacity allowance. The complete second cohort, engine, protocol, paper and figures are preserved
+under `development/economics_v2`; its low-capacity comparisons are not valid matched-resource
+evidence for the corrected scheduler. The original paper proposal #4968 was closed unmerged.
+
+A further declared correctness amendment precedes seeds 11000–11255. Preparation carries forward
+in a finite queue, readiness follows completion, and cash is charged once at commitment. Daily
+capacity equals preparation consumed plus customer reservations plus unused capacity; horizon
+backlog remains visible. Acquisition stops when no ready offer fits remaining capacity, and
+unsupported execution overruns fail closed. The additional correctness pass exceeds the first
+amendment's one-correction budget and is explicitly disclosed as a protocol deviation. Demand,
+prices, numerical criteria, learned arrays and capacity allowances are unchanged.
 
 ## Source distribution
 
@@ -347,7 +451,14 @@ receipt distinguish reviewed source, paper-only publication and full browser-edi
             (ROOT / "results/economics/economic_results.json").read_bytes()
         ).hexdigest(),
         "native_reconciliation": native["simulation_reconciliation"],
-        "study_seed_count": 256,
+        "study_seed_count": seed_count,
+        "confirmation_seeds": results["seeds"],
+        "capacity_amendment_sha256": hashlib.sha256(
+            (ROOT / "protocol/economic_capacity_amendment.json").read_bytes()
+        ).hexdigest(),
+        "economic_audit_sha256": hashlib.sha256(
+            (ROOT / "evidence/economic_audit_v3.json").read_bytes()
+        ).hexdigest(),
         "scenario_count": len(scenarios),
         "policy_count": 6,
         "actual_customer_collections_usd": 0,

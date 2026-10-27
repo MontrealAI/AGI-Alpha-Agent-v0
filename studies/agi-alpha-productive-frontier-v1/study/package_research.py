@@ -52,10 +52,12 @@ def main() -> None:
         "are not established. Existing publication qualification remains required.\n\n"
         "`MANIFEST.json` identifies every original file. Enterprise histories are lossless "
         "gzip files with additional original-byte hashes in the study's evidence directory. "
-        "The original economic cohort and declared policy correction remain included.\n"
+        "Both earlier complete economic cohorts, the submitted edition1.0.0 paper, and the "
+        "declared policy/capacity correction history remain included. This is edition1.0.1.\n"
     ).encode()
     manifest = {
         "schema": "agi-alpha-productive-frontier-package/v1",
+        "edition": "1.0.1",
         "native_source_commit": native["repository_commit"],
         "native_files": len(native["files"]),
         "study": study_relative,

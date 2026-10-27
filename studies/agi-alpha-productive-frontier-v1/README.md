@@ -1,7 +1,7 @@
 # AGI ALPHA FLYWHEEL: Making the Next Opportunity Possible
 
 **Vincent Boucher — President of MONTREAL.AI**  
-Research edition 1.0, 27 October 2026.
+Research edition 1.0.1, 27 October 2026.
 
 An executable study of real numerical learning, fresh artifact reuse, adjacent offering prototypes,
 and conditional complete enterprise economics. The work-derived specialist makes a fresh eight-case
@@ -13,6 +13,7 @@ actual revenue, or sustained compounding is demonstrated.
 
 - [Full paper](paper/Making_the_Next_Opportunity_Possible.pdf)
 - [LaTeX source](paper/Making_the_Next_Opportunity_Possible.tex)
+- [Full browser-readable paper](browser/paper.html)
 - [Two-page English/French executive brief](paper/Executive_Brief_EN_FR.pdf)
 - [English/French browser demonstration](browser/index.html)
 - [Evidence companion](evidence_companion.md)
@@ -49,8 +50,10 @@ cd studies/agi-alpha-productive-frontier-v1
 python study/test_repository_adapter.py
 python study/test_economics.py
 python study/technical/test_numerics.py
+python study/audit_economics.py
 python study/technical/lyapunov_study.py --out reproduction/numerical
 python study/economics.py --technical results/economic_inputs --output reproduction/economics
+python study/audit_economics.py --results reproduction/economics --receipt reproduction/economic_audit.json
 python study/make_figures.py
 python study/build_companion.py
 cd paper
@@ -63,12 +66,22 @@ The companion includes the exact commands for the final fresh prototype and expo
 revalidation. Do not overwrite original result directories when reproducing. Runtime changes across
 hardware, BLAS builds and load are expected; acceptance counts and algorithmic conditions are the
 more stable checks. Economics reproduces its fixed-input results; doing so does not validate its
-market assumptions. The final full economic run uses 256 paired seeds (10000–10255), 12 scenarios and six policies.
-An earlier complete cohort is preserved under `development/economics_v1`; the declared amendment
-corrects prototype spending when the resulting portfolio cannot cover acquisition. No numerical
-threshold, price or demand assumption was tuned between those cohorts. The 5 s / 2 s gates are
+market assumptions. The final full economic run uses 256 paired seeds (11000–11255), 12 scenarios and six policies.
+Earlier complete cohorts are preserved under `development/economics_v1` and
+`development/economics_v2`. The first amendment corrected acquisition-aware productization.
+Configured review then found discarded preparation capacity; the final correctness amendment
+carries unfinished work forward and activates capabilities/offers only after completion. This
+further pass is disclosed as a deviation from the first amendment's one-correction budget. No
+numerical threshold, price, demand or capacity allowance was retuned. The original submitted
+edition1.0.0 paper and all its evidence remain in the second-cohort archive. The 5 s / 2 s gates are
 numerical-work deadlines. End-to-end reservations of 95 / 125 / 182 s include assumed preparation
 and packaging; no live workflow SLA was measured.
+
+`evidence/resource_accounting_review.json` binds the final scheduler review to its exact source.
+`evidence/economic_confirmation_start.json` records the subsequent protected-run freeze.
+Earlier review snapshots remain historical records for their stated hashes; they do not qualify a
+different source version. The final economic audit reports complete resource and financial identities,
+including preparation backlog, readiness and productivity per total available capacity-hour.
 
 The native adapter expects the exact pinned source closure at the repository root. Source SHA:
 `80b345828f34fd8a6e592977dd17ef37141305f4`. A standalone archive includes that unmodified closure

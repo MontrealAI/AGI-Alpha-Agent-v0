@@ -10,6 +10,7 @@ import importlib.metadata
 import json
 import os
 from pathlib import Path
+import re
 
 import fitz
 
@@ -51,6 +52,9 @@ def build(pdf: Path, output: Path, expected_sha256: str | None = None) -> dict:
         raise ValueError("Every PDF page must provide selectable text")
     title = metadata.get("title") or "Making the Next Opportunity Possible"
     author = metadata.get("author") or "Vincent Boucher, President of MONTREAL.AI"
+    edition_match = re.search(r"Research\s+edition\s+([0-9]+\.[0-9]+\.[0-9]+)", pages[0], re.IGNORECASE)
+    edition = edition_match.group(1) if edition_match else None
+    edition_label = f"English full text · Edition {edition}" if edition else "English reading edition"
     pdf_href = Path(os.path.relpath(pdf, output.resolve().parent)).as_posix()
     version = importlib.metadata.version("PyMuPDF")
     escape = html.escape
@@ -82,7 +86,7 @@ def build(pdf: Path, output: Path, expected_sha256: str | None = None) -> dict:
 <title>{escape(title)} — Full text</title><style>{STYLE}</style></head>
 <body id="top"><a class="skip" href="#paper-text">Skip to the paper text</a>
 <header class="hero"><div class="wrap"><div class="brand"><b>∞</b> AGI ALPHA FLYWHEEL</div>
-<span class="eyebrow">English reading edition · {len(pages)} PDF pages</span><h1>{escape(title)}</h1>
+<span class="eyebrow">{escape(edition_label)} · {len(pages)} PDF pages</span><h1>{escape(title)}</h1>
 <p class="byline">{escape(author)}</p><div class="links"><a class="primary" href="{escape(pdf_href, quote=True)}">Read the original PDF</a><a href="index.html">English / French demonstration</a><a href="../evidence_companion.md">Evidence companion</a></div></div></header>
 <main class="wrap"><div class="intro"><p>The complete text below is extracted directly from the accompanying PDF, page by page. It reads without JavaScript or an embedded PDF viewer.</p>
 <p class="boundary"><strong>Research evidence boundary</strong>Local numerical experiments and explicitly conditional commercial simulation. The paper records its methods, failures and limitations.</p>
@@ -100,6 +104,7 @@ def build(pdf: Path, output: Path, expected_sha256: str | None = None) -> dict:
         "source_pdf_sha256": digest,
         "source_pdf_bytes": len(raw),
         "pages": len(pages),
+        "edition": edition,
         "extractor": f"PyMuPDF {version}",
         "extraction": 'page.get_text("text", sort=True); all content escaped with html.escape',
         "javascript_required": False,

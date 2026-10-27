@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
@@ -339,11 +340,15 @@ def break_even() -> None:
 def economics() -> None:
     path = STUDY / "results" / "economics" / "economic_results.json"
     trajectories = STUDY / "results" / "economics" / "economic_paths.json"
+    capacity_trajectories = STUDY / "results" / "economics" / "capacity_paths.json"
     if not path.exists() or not trajectories.exists():
         NUMBERS["economic_figures"] = "Pending economic result files; technical figures complete."
         return
     results = read(path)
     curves = read(trajectories)
+    capacity_curves = read(capacity_trajectories)
+    if capacity_curves["seeds"] != results["seeds"] or capacity_curves["scenario"] != "capacity_pressure":
+        raise ValueError("Capacity readiness paths must match the economic confirmation cohort")
     base = curves["competent_beta"]
     days = np.asarray([row["day"] + 1 for row in base])
     base_profit = np.asarray([row["profit"] for row in base])
@@ -372,19 +377,36 @@ def economics() -> None:
         "identical contents and permissions have identical outcomes. The graph does not validate demand "
         "or demonstrate earned revenue. Forced investment treatments are explanatory ablations.",
     )
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.6))
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.8))
+    readiness = capacity_curves["policies"]
+    first_week = min(7, len(readiness["competent_beta"]))
+    readiness_days = np.asarray([row["day"] + 1 for row in readiness["competent_beta"][:first_week]])
     for policy, label, color, linestyle in [
-        ("competent_beta", "Competent Beta", NAVY, "-"),
+        ("competent_beta", "Beta / selective", NAVY, "-"),
         ("private_work", "Private work", TEAL, "--"),
-        ("shared_gym", "Shared Gym", GOLD, ":"),
-        ("selective", "Selective", RED, "-."),
+        ("shared_work", "Shared work", GOLD, "-."),
+        ("shared_gym", "Shared Gym", RED, ":"),
     ]:
-        axes[0].plot(days, [row["offers"] for row in curves[policy]], color=color, lw=1.7, ls=linestyle, label=label)
-    axes[0].set_ylim(0.8, 3.2)
-    axes[0].set_yticks([1, 2, 3])
-    axes[0].set_ylabel("Mean active offerings")
+        axes[0].step(
+            readiness_days,
+            [row["offers"] for row in readiness[policy][:first_week]],
+            where="post",
+            color=color,
+            lw=1.8,
+            ls=linestyle,
+            label=label,
+        )
+    if not np.allclose(
+        [row["offers"] for row in readiness["competent_beta"][:first_week]],
+        [row["offers"] for row in readiness["selective"][:first_week]],
+    ):
+        raise ValueError("The combined Beta / selective readiness label requires matching trajectories")
+    axes[0].set_ylim(0.8, 3.1)
+    axes[0].set_yticks([1, 1.5, 2, 2.5, 3])
+    axes[0].set_ylabel("Mean ready offerings")
     axes[0].set_xlabel("Simulated operating day")
-    axes[0].set_title("Portfolio qualification", loc="left")
+    axes[0].set_title("Readiness under constrained capacity", loc="left", fontsize=10.5)
+    axes[0].text(0.04, 0.90, "1,800 reserved seconds per day", transform=axes[0].transAxes, fontsize=9, color=GREY)
     selective = curves["selective"]
     axes[1].plot(
         days, np.asarray([row["profit"] for row in selective]) / 1000, lw=1.9, color=NAVY, label="Operating profit"
@@ -396,22 +418,25 @@ def economics() -> None:
     axes[1].set_xlabel("Simulated operating day")
     axes[1].set_title("Conditional balances", loc="left")
     axes[1].text(0.035, 0.94, "Assumed demand and prices", transform=axes[1].transAxes, fontsize=9, color=GREY)
-    if all(np.allclose([row["offers"] for row in curves[p]], [row["offers"] for row in base]) for p in policies):
-        axes[0].text(0.04, 0.15, "All policy curves overlap", transform=axes[0].transAxes, fontsize=9.5, color=GREY)
     for ax in axes:
         ax.grid(color=RULE, lw=0.7)
-        ax.set_xlim(1, days[-1])
         ax.legend(
             loc="upper center", bbox_to_anchor=(0.5, -0.28), frameon=False, fontsize=9.3, ncol=2 if ax is axes[0] else 1
         )
+    axes[0].set_xlim(1, first_week)
+    axes[0].set_xticks(range(1, first_week + 1))
+    axes[1].set_xlim(1, days[-1])
     fig.subplots_adjust(left=0.085, right=0.98, top=0.87, bottom=0.28, wspace=0.36)
     save(
         fig,
         "07_portfolio_and_available_funds",
-        "Conditional simulated portfolio and balances. Left: average active offerings across confirmation "
-        "seeds; every enterprise may qualify the same three technically deliverable services. Growth in "
-        "this count does not establish a specialist-created frontier crossing or a new market. Right: "
-        "the selective policy's operating profit and available funds are distinct. Available funds include "
+        "Conditional simulated readiness and balances. Left: first-week mean end-of-day ready offerings in the "
+        "predeclared capacity_pressure scenario (1,800 reserved seconds per day). Setup, retention, Gym practice "
+        "and prototypes consume capacity in FIFO order; an offering becomes ready only after its preparation "
+        "finishes. The Beta and selective readiness paths coincide; shared work equals an ordinary library "
+        "with identical contents. Delayed readiness does not establish a specialist-created frontier crossing "
+        "or a new market. Right: under the base assumptions, the selective policy's operating profit and "
+        "available funds are distinct. Available funds include "
         "the remaining seed capital and reflect collections, obligations and reserves; seed capital is "
         "not revenue. Market and buyer assumptions remain unvalidated.",
     )
@@ -474,16 +499,40 @@ def economics() -> None:
         "base_incremental_profit": {p: results["scenarios"]["base"][p]["incremental_profit_vs_beta"] for p in policies},
         "base_profit": {p: results["scenarios"]["base"][p]["profit"] for p in ["competent_beta", *policies]},
         "final_portfolio_count": {p: curves[p][-1]["offers"] for p in curves},
+        "capacity_pressure_readiness_first_week": {
+            p: [
+                {
+                    "day": row["day"] + 1,
+                    "mean_ready_offerings": row["offers"],
+                    "mean_preparation_backlog_seconds": row["preparation_backlog_end_seconds"],
+                }
+                for row in readiness[p][:first_week]
+            ]
+            for p in ["competent_beta", *policies]
+        },
     }
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--economics-only",
+        action="store_true",
+        help="Refresh figures06-08 and merged metadata while preserving figures01-05 byte-for-byte",
+    )
+    args = parser.parse_args()
     style()
-    acceptance()
-    feasibility()
-    proposal()
-    lineage()
-    break_even()
+    if args.economics_only:
+        CAPTIONS.update(json.loads((OUT / "figure_captions.json").read_text()))
+        NUMBERS.update(json.loads((OUT / "figure_numbers.json").read_text()))
+        previous_sources = json.loads((OUT / "figure_source_manifest.json").read_text())
+        SOURCES.update(STUDY / relative for relative in previous_sources)
+    else:
+        acceptance()
+        feasibility()
+        proposal()
+        lineage()
+        break_even()
     economics()
     (OUT / "figure_captions.json").write_text(json.dumps(CAPTIONS, indent=2))
     (OUT / "figure_numbers.json").write_text(json.dumps(NUMBERS, indent=2))

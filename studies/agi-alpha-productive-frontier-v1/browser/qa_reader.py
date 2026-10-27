@@ -26,6 +26,7 @@ def main(chromium: str, screenshots: Path, structure_only: bool = False) -> None
     assert hashlib.sha256(source).hexdigest() == manifest["html_sha256"]
     report = {
         "pages": len(sections),
+        "edition": manifest.get("edition"),
         "javascript_elements": 0,
         "source_binding": "not_run_structure_only" if structure_only else "exact_pdf_page_text",
         "html_sha256": manifest["html_sha256"],

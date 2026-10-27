@@ -1,0 +1,59 @@
+{
+  "schema": "productive-frontier-capacity-correctness-amendment/v1",
+  "specification_frozen_utc": "2026-10-27T14:05:38Z",
+  "trigger": {
+    "source_pr": 4967,
+    "review_finding": 4389504108,
+    "priority": "P2",
+    "defect": "Preparation exceeding daily capacity was clipped away; readiness and prototype success were exposed before all declared work completed."
+  },
+  "previous_code_sha256": "8a24ff0f13c29bddcfae36e9b68abf2d6302b1fa57c8f2ecb2c1b040eef392b1",
+  "previous_protocol_sha256": "4b335e6bbec0c32d95946b0ef6a755de12e2a8a79ac05eacabeb54b8e05edaa9",
+  "preserved_previous_edition": "development/economics_v2; exact submitted source, protocol, tests, results, paper, figures and review retained under PRESERVATION_MANIFEST",
+  "status": "Post-review correctness repair and disclosed protocol deviation, after the one optional policy-improvement budget was exhausted; not unchanged preregistration.",
+  "required_semantics": [
+    "A FIFO queue contains common setup, forced or selective retention/Gym preparation, and optional productization; each task records committed, consumed and remaining seconds and completion state.",
+    "Cash charges occur exactly once at commitment. Failed and unfinished work retains its charges; opportunity cost is represented by consumed capacity and resulting production displacement, without a second cash charge.",
+    "After checkpoint commitments and any existing growth purchase, preparation consumes actual daily gross capacity before production. Excess preparation carries forward without truncation or borrowing.",
+    "The audit is unavailable until setup completes. Active capability mode remains Beta until its entire retention/Gym task completes. Prototype success is revealed and its offering activated only on completion; an unfinished prototype has no known outcome.",
+    "The already-committed base audit may enter prospective productization valuation, as in the previous policy, but not current delivery availability. Pending prototype outcomes never enter the valuation catalogue.",
+    "Committed capability target is separate from active mode and prevents repeat commitments. Existing price calculations, demand draws, investment formulas and calendar upkeep commitments are preserved; upkeep on an unfinished committed target is an assumption, not evidence of readiness.",
+    "Before reading a prospective lead's hidden fields, acquire it only if at least one currently ready offering can fit remaining capacity. Acquired-lead counts alone update the demand-rate estimate; the effects of this censoring on growth are reported, not retuned.",
+    "Reserved job capacity is not reclaimed. Any observed numerical workload exceeding its declared kernel reservation fails closed rather than clipping an overrun or inventing debt/cancellation semantics.",
+    "Check daily and cumulative gross capacity = preparation consumed + job reservations + unused capacity, and backlog conservation = prior backlog + new commitments - preparation consumed.",
+    "Report horizon unfinished tasks/seconds, active versus committed mode, task completion, and a separate weighted-output-per-total-available-capacity-hour diagnostic; retain the historical job-processing ratio under its existing name.",
+    "Export capacity_paths.json with mean daily readiness, active/committed mode fractions, preparation backlog/consumption, job reservation and unused capacity for all six policies in capacity_pressure; preserve the existing base-path schema."
+  ],
+  "unchanged": [
+    "Numerical A/B evidence and artifacts",
+    "Offering acceptance criteria",
+    "Market and price assumptions",
+    "Seed capital and declared capacity amounts",
+    "Learning/maintenance budgets",
+    "Common random-number design",
+    "Previous optional amendment and its exhausted search budget"
+  ],
+  "verification_before_confirmation": [
+    "Multi-day spill and exact capacity boundary",
+    "Zero-duration work at zero capacity",
+    "Delayed specialist and prototype readiness",
+    "Failed prototype costs and work retained",
+    "No repeated pending commitments",
+    "Finite-horizon unfinished work",
+    "No acquisition or hidden-field access when ready capacity is exhausted",
+    "Future-prefix invariance",
+    "Shared/library equivalence",
+    "Daily/cumulative conservation",
+    "Fail-closed unsupported numerical overruns"
+  ],
+  "fresh_confirmation_seeds": [
+    11000,
+    11255
+  ],
+  "confirmation_budget": "One correctness-fix cohort of 256 seeds x 12 scenarios x 6 policies after independent review and source/protocol freeze. No additional outcome-driven policy tuning; a new concrete defect would require separate disclosure.",
+  "pre_confirmation_export_clarification": {
+    "recorded_utc": "2026-10-27T14:14:05Z",
+    "status": "Descriptive export clarification before any protected 11000-11255 outcomes; no simulation rule, source input, policy or budget change.",
+    "fields": "capacity_paths.json additionally reports ready_offer_fractions for audit/screen/select, setup-qualified mode_ready_fractions, and enterprise_not_ready_fraction. All readiness fields describe end-of-day availability; completion at exhausted capacity does not imply same-day production."
+  }
+}

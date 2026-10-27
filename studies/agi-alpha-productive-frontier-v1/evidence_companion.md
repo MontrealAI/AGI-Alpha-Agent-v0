@@ -1,7 +1,7 @@
 # Evidence companion: Making the Next Opportunity Possible
 
 **Vincent Boucher — President of MONTREAL.AI**  
-27 October 2026. Research edition 1.0.
+27 October 2026. Research edition 1.0.1.
 
 ## Result and claim boundary
 
@@ -59,7 +59,7 @@ refinement or abstention. It is a real adjacent prototype, not a live LLM opport
 Continuous monitoring is declined for lack of prototype, assurance and buyer evidence.
 
 C freezes the code/configuration and then executes 256 paired seeds across 12 scenarios and 6 policies:
-18,432 enterprise histories. The same customer draws, opportunities, seed funds and capacity are used. The final cohort uses seeds 10000–10255.
+18,432 enterprise histories. The same customer draws, opportunities, seed funds and capacity allowances are used. The final corrected cohort uses seeds 11000–11255.
 Forced investment treatments isolate learning/sharing costs; selective investment may decline.
 No policy sees future outcomes to price or reserve a job. The audit, screen and selection reserve
 95, 125 and 182 s, including assumed model work. Unused job reservations are not reclaimed within
@@ -70,21 +70,46 @@ future default outcomes. Ordinary library and shared work are identical in every
 
 | Policy | Simulated surplus (USD) | Increment vs Beta | Available funds |
 | --- | ---: | ---: | ---: |
-| Competent ordinary Beta | 51,655.06 | 0.00 | 54,055.06 |
-| Private work (forced) | 51,495.06 | -160.00 | 53,895.06 |
-| Shared work (forced) | 51,594.06 | -61.00 | 53,994.06 |
-| Shared Gym (forced) | 51,569.06 | -86.00 | 53,969.06 |
-| Ordinary library (matched) | 51,594.06 | -61.00 | 53,994.06 |
-| Selective assessment | 51,647.06 | -8.00 | 54,047.06 |
+| Competent ordinary Beta | 51,423.19 | 0.00 | 53,823.19 |
+| Private work (forced) | 51,263.20 | -160.00 | 53,663.20 |
+| Shared work (forced) | 51,362.20 | -61.00 | 53,762.20 |
+| Shared Gym (forced) | 51,337.19 | -86.00 | 53,737.19 |
+| Ordinary library (matched) | 51,362.20 | -61.00 | 53,762.20 |
+| Selective assessment | 51,415.19 | -8.00 | 53,815.19 |
 
 These are 60-day simulated USD values. They are not sales or evidence of actual market profitability.
 The selective policy makes 0 optional adoptions across 3,072 scenario-seed
-histories. The central USD 8 loss versus ordinary Beta is the retained assessment cost.
+histories. Its central mean increment is USD -8.00.
+No additional-capability or assessment policy has a positive mean paired increment in any declared scenario.
+
+### Conserved capacity under pressure
+
+| Policy | Preparation seconds | Customer reservations | Unused seconds | Weighted units / total capacity-hour |
+| --- | ---: | ---: | ---: | ---: |
+| Competent ordinary Beta | 2,700 | 102,815 | 2,485 | 68.14 |
+| Private work (forced) | 5,100 | 100,455 | 2,445 | 66.59 |
+| Shared work (forced) | 3,300 | 102,218 | 2,482 | 67.74 |
+| Shared Gym (forced) | 4,200 | 101,358 | 2,442 | 67.19 |
+| Ordinary library (matched) | 3,300 | 102,218 | 2,482 | 67.74 |
+| Selective assessment | 2,700 | 102,815 | 2,485 | 68.14 |
+
+These are means over the capacity-pressure cohort. Each policy receives exactly 108,000 seconds over
+60 days. Preparation, customer reservations and unused capacity partition that amount in every
+history. Backlog and unfinished tasks remain explicit at the horizon. The last column includes all
+available capacity; the earlier processing-hour ratio excludes preparation and idle time and is
+retained as a narrower diagnostic. Weights 1/3/6 are accounting assumptions, not measured buyer value.
+`capacity_paths.json` records daily preparation/readiness. Capacity-aware acquisition also changes
+which leads can be bought, and therefore the observed arrival-rate estimate used by the existing
+growth rule; this effect is reported without retuning that rule.
+
+Under capacity pressure, shared work's mean increment is USD -1,377.68 and Gym's is USD -3,214.57. The difference includes delayed readiness, displaced accepted work and the acquisition stop; it is not a second cash charge for opportunity cost. In the separate surplus-financed growth scenario, only acquired leads inform the unchanged arrival-rate heuristic. Mean final additional workers are 0.617 for ordinary Beta, 0.598 for shared work and 0.586 for Gym. Gym's mean accepted output is 1225.07 orders versus 1273.34 for Beta; its weighted output per total capacity-hour is 63.459 versus 63.384. A ratio can improve when the enterprise buys less capacity even while total useful output and surplus fall. These path-dependent outcomes belong to the declared scheduling and observation heuristic; they do not establish general market growth or a globally optimal investment rule.
+
+The read-only audit reconciles all 18,432 histories, their summaries and exported readiness paths. Every horizon capacity/backlog identity is exact; the largest cash-accounting residual is less than USD 0.00000002. No preparation remains unfinished at day 59 in this cohort; separate boundary fixtures demonstrate that unfinished work remains visible when the horizon is shorter. Ordinary Beta still loses money in 6 of 256 low-demand histories, and selective assessment in 7. The evidence therefore supports conditional ordinary delivery and selective refusal, not guaranteed enterprise profitability.
 
 The initial economic confirmation is retained under `development/economics_v1`. It exposed a policy
 that stopped acquisition in the low-value market but still spent USD 110 on prototypes. One declared
 amendment in `protocol/economic_amendment.json` conditioned productization on incremental
-contribution from an acquisition-viable portfolio. The final fresh cohort confirms that optional
+contribution from an acquisition-viable portfolio. The second cohort confirmed that optional
 prototype spending stops in that scenario. Its remaining USD 874.26 loss comprises common setup
 and origin research plus fixed operating commitments. The correction is researcher informed; it
 does not establish autonomously learned opportunity judgment.
@@ -114,9 +139,9 @@ reserves. Refunds are paid in full when collection arrives. Invoices, token move
 and speculative future value are excluded from earned revenue. Displaced production is counted
 separately and not deducted again as cash expense.
 
-One full simulated history (seed 10000, selective policy) is aggregated into 27 explicit
+One full simulated history (seed 11000, selective policy) is aggregated into 27 explicit
 bucket/category attestations and replayed through the unchanged native ledger. Reconciliation
-differences are {'complete_cost_profit': 1, 'cash': 0, 'obligations': 0, 'available_funds': 1, 'collected_revenue': 0} microUSD, within the
+differences are {'complete_cost_profit': 1, 'cash': 1, 'obligations': 0, 'available_funds': 1, 'collected_revenue': 0} microUSD, within the
 declared 27 microUSD aggregate rounding tolerance. The raw history remains in `exemplar.json`.
 This executes actual accounting code; it does not turn fictional amounts into verified payments.
 
@@ -124,9 +149,14 @@ This executes actual accounting code; it does not turn fictional amounts into ve
 
 - 6 numerical boundary/transfer tests pass; original arrays/source hashes are preserved.
 - 10 native accounting/trust tests pass, including duplicate costs, unknown costs, revocation and mutation.
-- 17 financial integrity tests pass, including funds-before-acquisition, reservation-before-runtime,
+- 29 financial/resource integrity tests pass, including funds-before-acquisition, reservation-before-runtime,
   no future-prefix leakage, refund/default behavior, real-chain inputs, library/shared equality
-  and rejection of prototypes whose portfolio cannot support acquisition.
+  and rejection of prototypes whose portfolio cannot support acquisition. The 12 added regressions
+  cover preparation carryover, delayed readiness, failed/unfinished work, capacity-aware acquisition
+  and unsupported execution overruns.
+- Independent resource review passed 864 closed-form fixtures and 72 histories on existing development
+  seed 8000. It checked 3,461 fixture identities plus 4,320 daily scenario ledgers before fresh confirmation;
+  no protected 11000-series outcome was used to change the policy.
 - EN/FR local Chromium checks pass, including responsive widths 320/390 px, no-JavaScript fallback,
   negative-return calculator branches and assumption download.
 - Separate AI review roles examined numerical and economic claims. They are not independent institutions.
@@ -153,6 +183,21 @@ bases. Its replay of 7401 is reproduction, not another protected confirmation. T
 script writes its original validated location; copy the complete technical directory to a new temporary
 directory before running it, so published observations are preserved. The complete package contains
 all numerical arrays, original code, source manifests and LaTeX figure dependencies.
+
+## Capacity correction and preserved submitted edition
+
+Configured review found that the submitted engine discarded preparation work exceeding a daily
+capacity allowance. The complete second cohort, engine, protocol, paper and figures are preserved
+under `development/economics_v2`; its low-capacity comparisons are not valid matched-resource
+evidence for the corrected scheduler. The original paper proposal #4968 was closed unmerged.
+
+A further declared correctness amendment precedes seeds 11000–11255. Preparation carries forward
+in a finite queue, readiness follows completion, and cash is charged once at commitment. Daily
+capacity equals preparation consumed plus customer reservations plus unused capacity; horizon
+backlog remains visible. Acquisition stops when no ready offer fits remaining capacity, and
+unsupported execution overruns fail closed. The additional correctness pass exceeds the first
+amendment's one-correction budget and is explicitly disclosed as a protocol deviation. Demand,
+prices, numerical criteria, learned arrays and capacity allowances are unchanged.
 
 ## Source distribution
 

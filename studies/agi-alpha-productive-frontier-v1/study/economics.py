@@ -8,7 +8,7 @@ import csv
 import hashlib
 import json
 import math
-from collections import defaultdict
+from collections import defaultdict, deque
 from pathlib import Path
 from typing import Any
 
@@ -180,13 +180,14 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
              events: list[list[dict[str, Any]]]) -> dict[str, Any]:
     c = scenario_config(config, scenario)
     days = config["days"]
+    if days < 1 or len(events) != days:
+        raise ValueError("A positive horizon and one event list per operating day are required")
     charges: list[dict[str, Any]] = []
     collections: list[dict[str, Any]] = []
     invoices: list[dict[str, Any]] = []
     decisions: list[dict[str, Any]] = []
     paths = []
     count: dict[str, int] = defaultdict(int)
-    setup = c["production_setup_usd"]
     today = -1
     accrued_now = 0.0
     paid_now = 0.0
@@ -194,6 +195,19 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
     accrual_schedule: dict[int, float] = defaultdict(float)
     payment_schedule: dict[int, float] = defaultdict(float)
     collection_schedule: dict[int, float] = defaultdict(float)
+    preparation_tasks: list[dict[str, Any]] = []
+    preparation_queue: deque[dict[str, Any]] = deque()
+    preparation_committed = 0.0
+    preparation_consumed = 0.0
+    gross_capacity_total = 0.0
+    production_reserved_total = 0.0
+    unused_capacity_total = 0.0
+    setup_ready = False
+    mode = "beta"
+    committed_mode = "beta"
+    offers: set[str] = set()
+    attempted = {"audit"}
+    prototype_draws = np.random.default_rng(seed + 331000).random(3)
 
     def charge(day: int, bucket: str, category: str, amount: float, reason: str, immediate_paid: bool = False) -> None:
         nonlocal accrued_now, paid_now
@@ -221,42 +235,83 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
         cash = c["seed_capital_usd"] + collected_now - paid_now
         return accrued_now * -1 + collected_now, cash, outstanding, cash - outstanding - c["reserve_usd"], collected_now
 
-    charge(0, "C", "model", setup, "common production integration and acceptance setup; assumed all-in budget")
+    def enqueue_preparation(day: int, kind: str, seconds: float, **details: Any) -> dict[str, Any]:
+        nonlocal preparation_committed
+        seconds = float(seconds)
+        if not math.isfinite(seconds) or seconds < 0:
+            raise ValueError("Preparation must have finite, nonnegative duration")
+        task = {"task_id": f"preparation-{len(preparation_tasks)}", "kind": kind, "submitted_day": day,
+                "total_seconds": seconds, "remaining_seconds": seconds, "completed_day": None,
+                "status": "pending", **details}
+        preparation_tasks.append(task)
+        preparation_queue.append(task)
+        preparation_committed += seconds
+        return task
+
+    def finish_preparation(task: dict[str, Any], day: int) -> None:
+        nonlocal setup_ready, mode
+        task["completed_day"] = day
+        task["status"] = "completed"
+        completion = {"day": day, "action": "preparation_completed", "task_id": task["task_id"],
+                      "kind": task["kind"]}
+        if task["kind"] == "setup":
+            setup_ready = True
+            offers.add("audit")
+        elif task["kind"] == "capability":
+            if not setup_ready:
+                raise AssertionError("Capability preparation completed before prerequisite setup")
+            mode = str(task["target_mode"])
+            completion["mode"] = mode
+        elif task["kind"] == "prototype":
+            if not setup_ready:
+                raise AssertionError("Prototype preparation completed before prerequisite setup")
+            # The latent outcome is revealed only after every declared preparation second is consumed.
+            succeeded = bool(prototype_draws[task["proposal_index"]] < c["prototype_success_probability"])
+            task["success"] = succeeded
+            if succeeded:
+                offers.add(task["offer"])
+            count["failed_prototypes"] += int(not succeeded)
+            completion.update(action="prototype_completed", offer=task["offer"], success=succeeded)
+        decisions.append(completion)
+
+    def require_equal(left: float, right: float, label: str) -> None:
+        if not math.isclose(left, right, rel_tol=1e-12, abs_tol=1e-8):
+            raise AssertionError(f"Resource conservation failed ({label}): {left} != {right}")
+
+    charge(0, "C", "model", c["production_setup_usd"],
+           "common production integration and acceptance setup; assumed all-in budget")
+    enqueue_preparation(0, "setup", c["setup_capacity_seconds"])
     for j in range(c["origin_exact_jobs"]):
         charge(0, "C", "compute", c["origin_seconds_per_example_assumption"] * c["compute_usd_per_hour"] / 3600,
                f"unpaid-origin-full-covariance-{j}; rounded timing assumption")
         charge(0, "C", "model", c["model_pipeline_usd"], f"unpaid-origin-research-delivery-{j}")
         if c["origin_collection_usd"]:
             collect(0, c["origin_collection_usd"], f"explicitly-assumed-origin-collection-{j}")
-    mode = "beta"
     if policy in ["private_work", "shared_work", "ordinary_library", "shared_gym"]:
-        mode = "gym" if policy == "shared_gym" else "work"
+        committed_mode = "gym" if policy == "shared_gym" else "work"
         copies = c["agents"] if policy == "private_work" else 1
         charge(0, "B", "acceptance", copies * c["retention_assessment_usd"], "candidate evidence review")
         charge(0, "B", "model", copies * c["retention_integration_usd"], "additional retention/integration")
         if policy != "private_work":
             charge(0, "B", "network", c["shared_admission_usd"], "shared admission and rights/access preparation")
         charge(0, "B", "tools", (c["agents"] - 1) * c["recipient_integration_usd"], "recipient integration")
-        if mode == "gym":
+        seconds = c["retention_capacity_seconds"] * copies
+        if committed_mode == "gym":
             charge(0, "C", "model", c["gym_extra_usd"], "extra Gym assessment, four solves, refit and checks")
+            seconds += c["gym_capacity_seconds"]
+        enqueue_preparation(0, "capability", seconds, target_mode=committed_mode)
     elif policy == "selective":
         charge(0, "B", "acceptance", c["retention_assessment_usd"], "information acquisition; rejected candidate costs retained")
-    offers = {"audit"}
-    attempted = {"audit"}
-    prototype_draws = np.random.default_rng(seed + 331000).random(3)
-    investment_capacity: dict[int, float] = defaultdict(float)
-    investment_capacity[0] = c["setup_capacity_seconds"]
-    if mode != "beta":
-        investment_capacity[0] += c["retention_capacity_seconds"] * (c["agents"] if policy == "private_work" else 1)
-        if mode == "gym":
-            investment_capacity[0] += c["gym_capacity_seconds"]
+    # Preserve the original price rule: forced arms quote from their committed target;
+    # the selective arm's original quotes remain based on Beta even if it later invests.
+    pricing_mode = committed_mode
     expected_kernel = {}
     for offer in config["offers"]:
         if offer["id"] == "select":
-            t = selection_seconds(measured, mode)
+            t = selection_seconds(measured, pricing_mode)
         else:
-            t = offer["cases"] * ((1-c["shift_probability"]) * np.mean(measured["confirmation"][mode]) +
-                                  c["shift_probability"] * np.mean(measured["shift"][mode]))
+            t = offer["cases"] * ((1-c["shift_probability"]) * np.mean(measured["confirmation"][pricing_mode]) +
+                                  c["shift_probability"] * np.mean(measured["shift"][pricing_mode]))
         expected_kernel[offer["id"]] = float(t)
     price_info = [choose_price(o, c, config["price_fractions"], expected_kernel[o["id"]] * c["compute_usd_per_hour"] / 3600)
                   for o in config["offers"]]
@@ -269,6 +324,7 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
     refunds = 0.0
     for day, daily in enumerate(events):
         today = day
+        backlog_start = sum(task["remaining_seconds"] for task in preparation_queue if task["submitted_day"] < day)
         accrued_now += accrual_schedule[day]
         paid_now += payment_schedule[day]
         collected_now += collection_schedule[day]
@@ -280,9 +336,13 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
             for i, offer in enumerate(config["offers"]):
                 if offer["id"] in attempted:
                     continue
+                # The base audit is already committed and remains in prospective valuation.
+                # It is not currently deliverable until setup finishes. Pending prototypes
+                # do not enter this catalogue and their outcomes remain unobserved.
+                valuation_offers = offers | {"audit"}
                 before = c["compatible_input_probability"] * sum(
                     c["offer_probabilities"][j] * price_info[j][2]
-                    for j, existing in enumerate(config["offers"]) if existing["id"] in offers
+                    for j, existing in enumerate(config["offers"]) if existing["id"] in valuation_offers
                 ) - c["qualified_lead_acquisition_usd"] - c["intake_cost_usd"]
                 after = before + c["compatible_input_probability"] * c["offer_probabilities"][i] * price_info[i][2]
                 expected = prior_rate * remaining * (max(0, after) - max(0, before))
@@ -292,16 +352,13 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
                 if expected > cost and available >= cost:
                     charge(day, "C", "model", cost, f"prototype, check and package {offer['id']}")
                     attempted.add(offer["id"])
-                    investment_capacity[day] += c["prototype_capacity_seconds"]
-                    succeeded = bool(prototype_draws[i] < c["prototype_success_probability"])
-                    if succeeded:
-                        offers.add(offer["id"])
-                    count["failed_prototypes"] += int(not succeeded)
-                    decisions.append({"day": day, "action": "prototype", "success": succeeded, "offer": offer["id"],
-                                      "expected_remaining_contribution": expected, "cost": cost})
+                    task = enqueue_preparation(day, "prototype", c["prototype_capacity_seconds"],
+                                               offer=offer["id"], proposal_index=i)
+                    decisions.append({"day": day, "action": "prototype", "status": "pending", "offer": offer["id"],
+                                      "task_id": task["task_id"], "expected_remaining_contribution": expected, "cost": cost})
                 else:
                     decisions.append({"day": day, "action": "decline_prototype", "offer": offer["id"]})
-            if policy == "selective" and mode == "beta":
+            if policy == "selective" and committed_mode == "beta":
                 best = {"action": "hold_cash", "net": 0.0, "mode": "beta"}
                 for candidate in ["work", "gym"]:
                     saved = np.mean(measured["confirmation"]["beta"]) - np.mean(measured["confirmation"][candidate])
@@ -317,33 +374,67 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
                     if benefits - extra - future_upkeep > best["net"] and balances(day)[3] >= extra:
                         best = {"action": "invest", "net": benefits - extra - future_upkeep,
                                 "mode": candidate, "cost": extra, "future_upkeep_valuation_only": future_upkeep}
-                if best["action"] == "invest" and mode == "beta":
-                    mode = str(best["mode"])
-                    gym_cost = c["gym_extra_usd"] if mode == "gym" else 0
+                if best["action"] == "invest":
+                    committed_mode = str(best["mode"])
+                    gym_cost = c["gym_extra_usd"] if committed_mode == "gym" else 0
                     charge(day, "B", "model", float(best["cost"]) - gym_cost,
                            "selective additional retention/admission/recipient integration")
                     if gym_cost:
                         charge(day, "C", "model", gym_cost, "selective optional Gym development")
-                    investment_capacity[day] += c["retention_capacity_seconds"]
-                    if mode == "gym":
-                        investment_capacity[day] += c["gym_capacity_seconds"]
+                    seconds = c["retention_capacity_seconds"]
+                    if committed_mode == "gym":
+                        seconds += c["gym_capacity_seconds"]
+                    task = enqueue_preparation(day, "capability", seconds, target_mode=committed_mode)
+                    best.update(status="pending", task_id=task["task_id"])
                 decisions.append({"day": day, **best})
-        if mode != "beta" and day and day % 15 == 0:
+        if committed_mode != "beta" and day and day % 15 == 0:
             copies = c["agents"] if policy == "private_work" else 1
-            charge(day, "B", "acceptance", copies * c["maintenance_per_15_days_usd"], "maintenance and drift assessment")
+            charge(day, "B", "acceptance", copies * c["maintenance_per_15_days_usd"],
+                   "preserved calendar upkeep commitment; active capability readiness is separate")
         if scenario == "growth_financed_by_surplus" and day and day % 5 == 0:
             expected_load = prior_rate * 120 * c["compatible_input_probability"] * max(x[1] for x in price_info)
             capacity_now = c["daily_capacity_seconds"] + workers * c["growth_worker_capacity_seconds"]
             if expected_load > capacity_now and workers < c["growth_max_workers"] and balances(day)[3] > c["seed_capital_usd"] + c["growth_worker_usd"]:
                 charge(day, "C", "tools", c["growth_worker_usd"], "additional capacity purchased from available operating surplus")
                 workers += 1
-        capacity = max(0, c["daily_capacity_seconds"] + workers * c["growth_worker_capacity_seconds"] - investment_capacity[day])
+        gross_capacity = float(c["daily_capacity_seconds"] + workers * c["growth_worker_capacity_seconds"])
+        if not math.isfinite(gross_capacity) or gross_capacity < 0:
+            raise ValueError("Daily processing capacity must be finite and nonnegative")
+        capacity = gross_capacity
+        prep_today = 0.0
+        scheduled_today = sum(task["total_seconds"] for task in preparation_tasks if task["submitted_day"] == day)
+        completions = []
+        while preparation_queue:
+            task = preparation_queue[0]
+            if task["remaining_seconds"] > 0 and capacity <= 0:
+                break
+            used = min(task["remaining_seconds"], capacity)
+            task["remaining_seconds"] -= used
+            capacity -= used
+            prep_today += used
+            if task["remaining_seconds"] == 0:
+                finish_preparation(task, day)
+                completions.append(task["task_id"])
+                preparation_queue.popleft()
+        preparation_consumed += prep_today
+        backlog_end = sum(task["remaining_seconds"] for task in preparation_queue)
+        require_equal(backlog_start + scheduled_today, prep_today + backlog_end, "daily preparation")
+        require_equal(preparation_committed, preparation_consumed + backlog_end, "cumulative preparation")
+        reserved_today = 0.0
         acquisition_value = sum(c["offer_probabilities"][i] * price_info[i][2]
                                 for i, offer in enumerate(config["offers"]) if offer["id"] in offers)
         buy_leads = acquisition_value * c["compatible_input_probability"] > c["qualified_lead_acquisition_usd"] + c["intake_cost_usd"]
+        minimum_ready_reservation = min(
+            (offer["model_seconds_assumed"] + offer["core_deadline_seconds"]
+             for offer in config["offers"] if offer["id"] in offers), default=math.inf
+        )
         if not buy_leads:
             daily = []
         for event in daily:
+            # This gate uses current readiness and capacity, never this lead's hidden fields.
+            if minimum_ready_reservation > capacity:
+                count["acquisition_capacity_holds"] += 1
+                break
             if balances(day)[3] < c["qualified_lead_acquisition_usd"] + c["intake_cost_usd"]:
                 count["declined_acquisition_funds"] += 1
                 continue
@@ -376,9 +467,11 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
                 displaced += 1
                 continue
             capacity -= reservation
+            reserved_today += reservation
             seconds = core_seconds(measured, mode, offer, event, c, upgraded)
+            if not math.isfinite(seconds) or seconds < 0 or seconds > offer["core_deadline_seconds"]:
+                raise ValueError("Numerical workload exceeds its declared capacity reservation; unsupported overrun")
             total_seconds = seconds + offer["model_seconds_assumed"]
-            capacity = max(0, capacity - max(0, total_seconds - reservation))
             count["orders"] += 1
             cpu_seconds += seconds
             processing_seconds += total_seconds
@@ -402,9 +495,31 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
                     charge(day + delay, "A", "correction", price, "full customer refund after failed acceptance", True)
                     if day + delay < days:
                         refunds += price
+        gross_capacity_total += gross_capacity
+        production_reserved_total += reserved_today
+        unused_capacity_total += capacity
+        require_equal(gross_capacity, prep_today + reserved_today + capacity, "daily total capacity")
+        require_equal(gross_capacity_total, preparation_consumed + production_reserved_total + unused_capacity_total,
+                      "cumulative total capacity")
         profit, cash, liabilities, available, collected = balances(day)
         paths.append({"day": day, "profit": profit, "cash": cash, "obligations": liabilities,
-                      "available": available, "collections": collected, "offers": len(offers), "workers": workers})
+                      "available": available, "collections": collected, "offers": len(offers), "workers": workers,
+                      "ready_offers": sorted(offers), "setup_ready": setup_ready, "mode": mode,
+                      "committed_mode": committed_mode,
+                      "pending_mode": committed_mode if committed_mode != mode else None,
+                      "preparation_backlog_start_seconds": backlog_start,
+                      "preparation_scheduled_seconds": scheduled_today,
+                      "preparation_consumed_seconds": prep_today,
+                      "preparation_backlog_end_seconds": backlog_end,
+                      "completed_preparations": completions,
+                      "gross_capacity_seconds": gross_capacity,
+                      "production_reserved_seconds": reserved_today,
+                      "unused_capacity_seconds": capacity,
+                      "cumulative_preparation_seconds": preparation_consumed,
+                      "cumulative_gross_capacity_seconds": gross_capacity_total,
+                      "cumulative_production_reserved_seconds": production_reserved_total,
+                      "cumulative_unused_capacity_seconds": unused_capacity_total,
+                      "orders_total": count.get("orders", 0), "acquired_leads_total": observed_leads})
     profit, cash, liabilities, available, collected = balances(days - 1)
     accrued = {bucket: sum(x["amount"] for x in charges if x["bucket"] == bucket and x["day"] < days)
                for bucket in ["A", "B", "C"]}
@@ -416,10 +531,21 @@ def simulate(seed: int, scenario: str, policy: str, config: dict[str, Any], meas
             "receivables_excluded": receivables, "refunds": refunds, "seed_capital": c["seed_capital_usd"],
             "quality_adjusted_units": value_units, "cpu_seconds": cpu_seconds,
             "weighted_units_per_processing_hour": value_units / (processing_seconds / 3600) if processing_seconds else 0,
+            "weighted_units_per_total_capacity_hour": value_units / (gross_capacity_total / 3600) if gross_capacity_total else 0,
             "processing_seconds": processing_seconds, "displaced_orders": displaced, "workers": workers,
             "prices": {o["id"]: price_info[i][0] for i, o in enumerate(config["offers"])},
-            "mode": mode, **dict(count), "path": paths, "charges": charges, "collection_events": collections,
-            "decisions": decisions}
+            "mode": mode, "committed_mode": committed_mode,
+            "pending_mode": committed_mode if committed_mode != mode else None,
+            "setup_ready": setup_ready, "ready_offerings": len(offers),
+            "preparation_committed_seconds": preparation_committed,
+            "preparation_consumed_seconds": preparation_consumed,
+            "unfinished_preparation_seconds": sum(task["remaining_seconds"] for task in preparation_queue),
+            "unfinished_preparation_tasks": len(preparation_queue),
+            "gross_capacity_seconds": gross_capacity_total,
+            "production_reserved_seconds": production_reserved_total,
+            "unused_capacity_seconds": unused_capacity_total,
+            **dict(count), "path": paths, "charges": charges, "collection_events": collections,
+            "decisions": decisions, "preparation_tasks": preparation_tasks}
 
 
 def summary(values: list[float]) -> dict[str, float]:
@@ -444,6 +570,7 @@ def run(technical: Path, output: Path, seeds: int | None = None, development: bo
     rows = []
     aggregate = {}
     daily = defaultdict(list)
+    capacity_daily = defaultdict(list)
     exemplar = None
     for scenario in config["stress_scenarios"]:
         results = []
@@ -454,11 +581,13 @@ def run(technical: Path, output: Path, seeds: int | None = None, development: bo
             for policy in POLICIES:
                 r = simulate(seed, scenario, policy, config, measured, events)
                 matched[policy] = r
-                scalar = {k: v for k, v in r.items() if k not in ["path", "charges", "collection_events", "decisions"]}
+                scalar = {k: v for k, v in r.items() if k not in ["path", "charges", "collection_events", "decisions", "preparation_tasks"]}
                 results.append(scalar)
                 rows.append({k: v for k, v in scalar.items() if k != "prices"})
                 if scenario == "base":
                     daily[policy].append(r["path"])
+                if scenario == "capacity_pressure":
+                    capacity_daily[policy].append(r["path"])
                 if seed == seed0 and scenario == "base" and policy == "selective":
                     exemplar = r
             assert matched["shared_work"]["profit"] == matched["ordinary_library"]["profit"]
@@ -467,10 +596,20 @@ def run(technical: Path, output: Path, seeds: int | None = None, development: bo
         for policy, group in by.items():
             metrics = {key: summary([r.get(key, 0) for r in group]) for key in
                        ["profit", "collections", "cost_A", "cost_B", "cost_C", "available", "cash",
-                        "obligations", "quality_adjusted_units", "displaced_orders", "orders", "accepted", "workers"]}
+                        "obligations", "quality_adjusted_units", "displaced_orders", "orders", "accepted", "workers",
+                        "preparation_committed_seconds", "preparation_consumed_seconds", "unfinished_preparation_seconds",
+                        "unfinished_preparation_tasks", "gross_capacity_seconds", "production_reserved_seconds",
+                        "unused_capacity_seconds", "ready_offerings", "weighted_units_per_processing_hour",
+                        "weighted_units_per_total_capacity_hour"]}
             metrics["incremental_profit_vs_beta"] = summary([r["profit"] - b["profit"]
                                                            for r, b in zip(group, by["competent_beta"])])
             metrics["mode_counts"] = {mode: sum(r["mode"] == mode for r in group) for mode in ["beta", "work", "gym"]}
+            metrics["committed_mode_counts"] = {
+                mode: sum(r["committed_mode"] == mode for r in group) for mode in ["beta", "work", "gym"]
+            }
+            metrics["pending_mode_counts"] = {
+                mode: sum(r["pending_mode"] == mode for r in group) for mode in ["work", "gym"]
+            }
             metrics["prices"] = group[0]["prices"]
             aggregate[scenario][policy] = metrics
     keys = sorted({k for row in rows for k in row})
@@ -486,6 +625,36 @@ def run(technical: Path, output: Path, seeds: int | None = None, development: bo
                                       for key in ["profit", "available", "offers", "workers"]}}
                        for day in range(config["days"])] for policy, paths in daily.items()}
     (output / "economic_paths.json").write_text(json.dumps(curves, indent=2))
+    resource_keys = ["offers", "workers", "setup_ready", "preparation_backlog_start_seconds",
+                     "preparation_scheduled_seconds", "preparation_consumed_seconds",
+                     "preparation_backlog_end_seconds", "gross_capacity_seconds", "production_reserved_seconds",
+                     "unused_capacity_seconds", "cumulative_preparation_seconds", "cumulative_gross_capacity_seconds",
+                     "cumulative_production_reserved_seconds", "cumulative_unused_capacity_seconds"]
+    capacity_curves = {
+        policy: [
+            {"day": day, **{key: float(np.mean([path[day][key] for path in paths])) for key in resource_keys},
+             "mode_ready_fractions": {
+                 mode: float(np.mean([path[day]["setup_ready"] and path[day]["mode"] == mode for path in paths]))
+                 for mode in ["beta", "work", "gym"]
+             },
+             "enterprise_not_ready_fraction": float(np.mean([not path[day]["setup_ready"] for path in paths])),
+             "ready_offer_fractions": {
+                 offer: float(np.mean([offer in path[day]["ready_offers"] for path in paths]))
+                 for offer in ["audit", "screen", "select"]
+             },
+             "committed_mode_fractions": {
+                 mode: float(np.mean([path[day]["committed_mode"] == mode for path in paths]))
+                 for mode in ["beta", "work", "gym"]
+             }}
+            for day in range(config["days"])
+        ] for policy, paths in capacity_daily.items()
+    }
+    (output / "capacity_paths.json").write_text(json.dumps({
+        "schema": "productive-frontier-capacity-paths/v1", "scenario": "capacity_pressure", "seeds": [seed0, seed1],
+        "per_policy_histories": seed1 - seed0 + 1, "units": "seconds except day index, counts and readiness/mode fractions",
+        "readiness_semantics": "End-of-day availability after preparation; a ready offer may have no capacity left for production that day. Mode readiness requires completed common setup; committed mode does not imply readiness.",
+        "policies": capacity_curves,
+    }, indent=2))
     print(json.dumps({p: aggregate["base"][p]["profit"] for p in POLICIES}, indent=2))
 
 

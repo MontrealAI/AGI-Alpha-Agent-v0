@@ -20,15 +20,28 @@ and identity, the custom browser edition is a downloadable research artifact awa
 
 ## Public review submissions
 
-- Research and browser source: [PR #4967](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4967),
-  implementation candidate `22d240f668ab026274c676585e1953b86c155ba1`; all 170 file identities, sizes
-  and modes match the local candidate. Subsequent receipt-only changes do not rerun or relabel experiments.
-- Passive paper: [PR #4968](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4968),
-  `56b916b9a4bde6ccabfd527ee64fded25cd4ecb9`. The unchanged trusted classifier accepts its exact
-  public head as paper-only: eight permitted paths. All 28 prior records and 49 originals survive.
+The source proposal is [PR #4967](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4967).
+Configured review of edition 1.0.0 found discarded preparation capacity in low-capacity scenarios.
+The exact submitted source at `25a793148b334e4d124b47399497a4ae5d0d7376`, paper and both earlier
+economic cohorts remain preserved. The original passive [PR #4968](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4968)
+was closed unmerged and is superseded, not a publication-ready result.
 
-Both proposals are drafts pending the applicable configured reviews and hosted gates. The browser
-reader and EN/FR demonstration are available as source/downloadable artifacts. They have not been
-published to the canonical product site. The existing owner must integrate the reader through full
-source qualification and allocate a compatible release; a source link is not live Pages acceptance.
+Corrected edition 1.0.1 freezes a FIFO preparation queue, completion-dependent readiness,
+capacity-aware acquisition and explicit resource conservation. Its fresh seeds 11000–11255 produce
+18,432 histories after independent source review. The further correctness amendment is explicitly
+disclosed beyond the first amendment's exhausted optional policy-search budget. Numerical A/B
+evidence, market assumptions, prices and capacity allowances remain unchanged.
+
+The corrected 21-page paper and two-page EN/FR brief are visually cleared. Browser/mobile/no-JavaScript
+checks pass, and the complete reader matches the frozen PDF text. The new passive proposal is prepared
+from trusted main on `papers/agi-alpha-productive-frontier-v1-0-1`; it preserves all 28 prior catalog
+records and 49 original files through eight permitted paths. Final public candidate/PR identities and
+download checks are recorded in `evidence/publication_status.json` after submission. Subsequent
+receipt-only commits do not rerun or relabel experiments.
+
+The reader/demo remain downloadable research artifacts awaiting the existing full-source-qualified
+publication process. The applicable rules are `docs/agent/PAPER_UPLOADS.md` and
+`docs/agent/FAST_RELEASE_POLICY.md`; the active v1.46 release owner and matching-public-software gate
+remain authoritative. The owner must allocate and qualify a compatible release before a canonical
+live-browser link can be verified. No main merge, parallel publisher or passive-HTML bypass is used.
 The passive original TeX requires the complete study's figure files and economic include to rebuild.

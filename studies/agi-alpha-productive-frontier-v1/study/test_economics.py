@@ -75,7 +75,176 @@ def run(c, daily, policy="competent_beta", m=None):
     return ec.simulate(123, "base", policy, c, m or measured(), daily)
 
 
+class UnobservedLead:
+    def __getitem__(self, key):
+        raise AssertionError(f"Unacquired lead field was inspected: {key}")
+
+
+def prototype_config(days):
+    c = config(days)
+    offer = copy.deepcopy(c["offers"][0])
+    offer.update(id="screen", productization_usd=1)
+    c["offers"].append(offer)
+    c["base"].update(offer_probabilities=[0.5, 0.5, 0], daily_capacity_seconds=400,
+                     prototype_capacity_seconds=900, prototype_success_probability=0.01)
+    return c
+
+
 class EconomicIntegrityTests(unittest.TestCase):
+    def test_setup_work_carries_across_days_before_audit_is_available(self):
+        c = config(3)
+        c["base"].update(setup_capacity_seconds=900, daily_capacity_seconds=400, production_setup_usd=19)
+        r = run(c, [[event(id=f"day-{day}")] for day in range(3)])
+        self.assertEqual([x["preparation_backlog_end_seconds"] for x in r["path"]], [500, 100, 0])
+        self.assertEqual([x["preparation_consumed_seconds"] for x in r["path"]], [400, 400, 100])
+        self.assertEqual([x["ready_offers"] for x in r["path"]], [[], [], ["audit"]])
+        self.assertEqual([x["orders_total"] for x in r["path"]], [0, 0, 1])
+        self.assertEqual([x["production_reserved_seconds"] for x in r["path"]], [0, 0, 100])
+        self.assertEqual([x["unused_capacity_seconds"] for x in r["path"]], [0, 0, 200])
+        self.assertEqual(r["cost_C"], 19)
+        self.assertEqual(r["preparation_committed_seconds"], 900)
+        self.assertEqual(r["preparation_consumed_seconds"], 900)
+        self.assertEqual(r["gross_capacity_seconds"], 1200)
+        self.assertEqual(r["weighted_units_per_total_capacity_hour"], 3)
+        self.assertEqual(r["weighted_units_per_processing_hour"], 3600)
+
+    def test_exact_preparation_boundary_activates_without_free_production(self):
+        c = config(2)
+        c["base"].update(setup_capacity_seconds=400, daily_capacity_seconds=400)
+        r = run(c, [[event(id="first")], [event(id="second")]])
+        self.assertTrue(r["path"][0]["setup_ready"])
+        self.assertEqual(r["path"][0]["orders_total"], 0)
+        self.assertEqual(r["path"][0]["unused_capacity_seconds"], 0)
+        self.assertEqual(r["path"][1]["orders_total"], 1)
+        self.assertEqual(r["production_reserved_seconds"], 100)
+        self.assertEqual(r["unused_capacity_seconds"], 300)
+
+    def test_horizon_does_not_complete_or_erase_unfinished_setup(self):
+        c = config(2)
+        c["base"].update(setup_capacity_seconds=900, daily_capacity_seconds=400, production_setup_usd=17)
+        r = run(c, [[], []])
+        self.assertFalse(r["setup_ready"])
+        self.assertEqual(r["ready_offerings"], 0)
+        self.assertEqual(r["unfinished_preparation_seconds"], 100)
+        self.assertEqual(r["unfinished_preparation_tasks"], 1)
+        self.assertEqual(r["preparation_consumed_seconds"], 800)
+        self.assertEqual(r["preparation_tasks"][0]["status"], "pending")
+        self.assertIsNone(r["preparation_tasks"][0]["completed_day"])
+        self.assertEqual(r["profit"], -17)
+        self.assertEqual(r["cost_C"], 17)
+
+    def test_retention_and_gym_cannot_activate_before_all_preparation_finishes(self):
+        for policy, retention, gym, target in [("shared_work", 900, 0, "work"),
+                                                ("shared_gym", 300, 600, "gym"),
+                                                ("private_work", 225, 0, "work")]:
+            with self.subTest(policy=policy):
+                c = config(3)
+                c["base"].update(retention_capacity_seconds=retention, gym_capacity_seconds=gym,
+                                 daily_capacity_seconds=400)
+                r = run(c, [[], [], []], policy)
+                self.assertEqual([x["mode"] for x in r["path"]], ["beta", "beta", target])
+                self.assertEqual([x["committed_mode"] for x in r["path"]], [target] * 3)
+                self.assertEqual([x["pending_mode"] for x in r["path"]], [target, target, None])
+                self.assertEqual(r["preparation_consumed_seconds"], 900)
+                self.assertEqual(r["preparation_tasks"][1]["completed_day"], 2)
+
+    def test_pending_selective_investment_is_not_purchased_again_at_next_checkpoint(self):
+        c = config(8)
+        c["base"].update(retention_capacity_seconds=5000, daily_capacity_seconds=400,
+                         compute_usd_per_hour=1000, seed_capital_usd=100000)
+        r = run(c, [[] for _ in range(8)], "selective", measured(beta=100, work=1, gym=2))
+        self.assertEqual(sum(x["action"] == "invest" for x in r["decisions"]), 1)
+        self.assertEqual(r["mode"], "beta")
+        self.assertEqual(r["committed_mode"], "work")
+        self.assertEqual(r["pending_mode"], "work")
+        self.assertEqual(r["preparation_committed_seconds"], 5000)
+        self.assertEqual(r["preparation_consumed_seconds"], 3200)
+        self.assertEqual(r["unfinished_preparation_seconds"], 1800)
+        self.assertEqual(r["cost_B"], 52)
+
+    def test_failed_prototype_requires_complete_work_and_retains_cost(self):
+        pending = run(prototype_config(2), [[], []])
+        task = next(x for x in pending["preparation_tasks"] if x["kind"] == "prototype")
+        self.assertEqual(task["remaining_seconds"], 100)
+        self.assertNotIn("success", task)
+        self.assertEqual(pending.get("failed_prototypes", 0), 0)
+        self.assertEqual(pending["cost_C"], 1)
+        completed = run(prototype_config(3), [[], [], []])
+        task = next(x for x in completed["preparation_tasks"] if x["kind"] == "prototype")
+        self.assertEqual(task["completed_day"], 2)
+        self.assertFalse(task["success"])
+        self.assertEqual(completed["failed_prototypes"], 1)
+        self.assertEqual(completed["preparation_consumed_seconds"], 900)
+        self.assertEqual(completed["cost_C"], 1)
+        self.assertEqual(completed["path"][-1]["ready_offers"], ["audit"])
+        commitment = next(x for x in completed["decisions"] if x["action"] == "prototype")
+        self.assertNotIn("success", commitment)
+
+    def test_successful_prototype_is_not_offered_until_its_work_is_done(self):
+        c = prototype_config(3)
+        c["base"]["prototype_success_probability"] = 1
+        r = run(c, [[event(offer=1, id=f"screen-{day}")] for day in range(3)])
+        self.assertEqual([x["ready_offers"] for x in r["path"]],
+                         [["audit"], ["audit"], ["audit", "screen"]])
+        self.assertEqual([x["orders_total"] for x in r["path"]], [0, 0, 1])
+        completions = [x for x in r["decisions"] if x["action"] == "prototype_completed"]
+        self.assertEqual(len(completions), 1)
+        self.assertEqual(completions[0]["day"], 2)
+        self.assertTrue(completions[0]["success"])
+
+    def test_unready_or_exhausted_capacity_never_reads_or_buys_a_lead(self):
+        for preparation in (400, 500):
+            with self.subTest(preparation=preparation):
+                c = config(1)
+                c["base"].update(setup_capacity_seconds=preparation, daily_capacity_seconds=400,
+                                 qualified_lead_acquisition_usd=8)
+                r = run(c, [[UnobservedLead()]])
+                self.assertEqual(r.get("leads", 0), 0)
+                self.assertEqual(r.get("orders", 0), 0)
+                self.assertEqual(r["cost_A"], 0)
+                self.assertEqual(r["preparation_consumed_seconds"], 400)
+
+    def test_capacity_gate_rechecks_before_buying_the_next_hidden_lead(self):
+        c = config(1)
+        c["base"].update(daily_capacity_seconds=100, qualified_lead_acquisition_usd=8)
+        r = run(c, [[event(), UnobservedLead()]])
+        self.assertEqual(r["leads"], 1)
+        self.assertEqual(r["orders"], 1)
+        self.assertEqual(r["production_reserved_seconds"], 100)
+        acquisition = [x for x in r["charges"] if x["reason"] == "assumed qualified lead acquisition"]
+        self.assertEqual(len(acquisition), 1)
+
+    def test_zero_duration_preparation_completes_with_zero_capacity(self):
+        c = config(1)
+        c["base"]["daily_capacity_seconds"] = 0
+        r = run(c, [[UnobservedLead()]], "shared_work")
+        self.assertTrue(r["setup_ready"])
+        self.assertEqual(r["mode"], "work")
+        self.assertIsNone(r["pending_mode"])
+        self.assertEqual(r["unfinished_preparation_tasks"], 0)
+        self.assertEqual(r["preparation_consumed_seconds"], 0)
+        self.assertEqual(r["gross_capacity_seconds"], 0)
+        self.assertEqual(r.get("orders", 0), 0)
+
+    def test_future_suffix_cannot_change_a_pending_preparation_prefix(self):
+        c = config(8)
+        c["base"].update(setup_capacity_seconds=900, retention_capacity_seconds=900,
+                         daily_capacity_seconds=400)
+        prefix = [[event(id=f"prefix-{day}")] for day in range(3)]
+        a = run(c, prefix + [[] for _ in range(5)], "shared_work")
+        b = run(c, prefix + [[event(id=f"later-{day}-{j}") for j in range(3)] for day in range(5)],
+                "shared_work")
+        self.assertEqual(a["path"][:3], b["path"][:3])
+        self.assertEqual([x for x in a["decisions"] if x["day"] < 3],
+                         [x for x in b["decisions"] if x["day"] < 3])
+
+    def test_unsupported_kernel_overrun_fails_instead_of_borrowing_capacity(self):
+        c = config(1)
+        c["offers"][0]["core_deadline_seconds"] = 5
+        c["base"]["daily_capacity_seconds"] = 5
+        with self.assertRaisesRegex(ValueError, "unsupported overrun"):
+            run(c, [[event()]], m=measured(beta=6))
+
     def test_unprofitable_acquisition_blocks_optional_productization(self):
         c = config(60)
         protocol = json.loads(ec.CONFIG.read_text())

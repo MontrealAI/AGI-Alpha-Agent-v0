@@ -1,0 +1,249 @@
+{
+  "acceptance_intervals": {
+    "confirmation": {
+      "schur": {
+        "accepted": 64,
+        "n": 64,
+        "wilson95": [
+          0.9433759402071946,
+          1.0
+        ]
+      },
+      "adaptive_krylov": {
+        "accepted": 64,
+        "n": 64,
+        "wilson95": [
+          0.9433759402071946,
+          1.0
+        ]
+      },
+      "fixed_krylov48": {
+        "accepted": 2,
+        "n": 64,
+        "wilson95": [
+          0.008612138346171874,
+          0.10697291770958313
+        ]
+      },
+      "work_pod24": {
+        "accepted": 17,
+        "n": 64,
+        "wilson95": [
+          0.17296379074222612,
+          0.38482873728565137
+        ]
+      },
+      "work_pod48": {
+        "accepted": 62,
+        "n": 64,
+        "wilson95": [
+          0.8930270822904169,
+          0.9913878616538281
+        ]
+      },
+      "gym_pod48": {
+        "accepted": 62,
+        "n": 64,
+        "wilson95": [
+          0.8930270822904169,
+          0.9913878616538281
+        ]
+      }
+    },
+    "shift": {
+      "schur": {
+        "accepted": 32,
+        "n": 32,
+        "wilson95": [
+          0.8928208017449293,
+          1.0
+        ]
+      },
+      "adaptive_krylov": {
+        "accepted": 22,
+        "n": 32,
+        "wilson95": [
+          0.5143332169904459,
+          0.8204745836639026
+        ]
+      },
+      "fixed_krylov48": {
+        "accepted": 0,
+        "n": 32,
+        "wilson95": [
+          0.0,
+          0.1071791982550706
+        ]
+      },
+      "work_pod24": {
+        "accepted": 0,
+        "n": 32,
+        "wilson95": [
+          0.0,
+          0.1071791982550706
+        ]
+      },
+      "work_pod48": {
+        "accepted": 0,
+        "n": 32,
+        "wilson95": [
+          0.0,
+          0.1071791982550706
+        ]
+      },
+      "gym_pod48": {
+        "accepted": 0,
+        "n": 32,
+        "wilson95": [
+          0.0,
+          0.1071791982550706
+        ]
+      }
+    }
+  },
+  "final_prototype": {
+    "schur": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 2.0553997499664547,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 0,
+      "adaptive_calls": 0,
+      "schur_calls": 64,
+      "selection_refinements": 0,
+      "qualifies_frozen_service": false
+    },
+    "adaptive_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.4662158989813179,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 0,
+      "adaptive_calls": 64,
+      "schur_calls": 2,
+      "selection_refinements": 2,
+      "qualifies_frozen_service": true
+    },
+    "work48_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.17280067801766563,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 64,
+      "adaptive_calls": 0,
+      "schur_calls": 0,
+      "selection_refinements": 0,
+      "qualifies_frozen_service": true
+    },
+    "gym48_fallback": {
+      "n": 8,
+      "accepted": 8,
+      "seconds_total": 0.45915170497028157,
+      "max_objective_regret": 0.0,
+      "abstained": 0,
+      "specialist_calls": 64,
+      "adaptive_calls": 2,
+      "schur_calls": 8,
+      "selection_refinements": 8,
+      "qualifies_frozen_service": true
+    }
+  },
+  "cpu_only_break_even": {
+    "saved_seconds_per_eight_case_service": 0.29341522096365225,
+    "assumed_usd_per_core_hour": 0.5,
+    "saved_usd_per_service": 4.0752114022729476e-05,
+    "additional_budgets_usd": [
+      20,
+      61
+    ],
+    "break_even_service_counts": [
+      490772.08580749965,
+      1496854.861712874
+    ]
+  },
+  "economic_figures": {
+    "execution_status": "executed_confirmation",
+    "seeds": [
+      10000,
+      10255
+    ],
+    "base_incremental_profit": {
+      "private_work": {
+        "mean": -159.99782013842614,
+        "mc95_low": -159.99790182755987,
+        "mc95_high": -159.9977384492924,
+        "p05": -159.99903721677856,
+        "p95": -159.997102736721
+      },
+      "shared_work": {
+        "mean": -60.99782013842747,
+        "mc95_low": -60.99790182756115,
+        "mc95_high": -60.99773844929379,
+        "p05": -60.99903721677583,
+        "p95": -60.99710273672099
+      },
+      "shared_gym": {
+        "mean": -85.9990844176158,
+        "mc95_low": -85.99913108247665,
+        "mc95_high": -85.99903775275496,
+        "p05": -85.99993126062873,
+        "p95": -85.99869621645848
+      },
+      "selective": {
+        "mean": -7.9999999999999005,
+        "mc95_low": -8.000000000000119,
+        "mc95_high": -7.999999999999683,
+        "p05": -8.0,
+        "p95": -8.0
+      }
+    },
+    "base_profit": {
+      "competent_beta": {
+        "mean": 51655.06055307253,
+        "mc95_low": 50115.39619319072,
+        "mc95_high": 53194.72491295434,
+        "p05": 30532.702101476574,
+        "p95": 65390.85616384345
+      },
+      "private_work": {
+        "mean": 51495.06273293409,
+        "mc95_low": 49955.39829406649,
+        "mc95_high": 53034.7271718017,
+        "p05": 30372.703169561264,
+        "p95": 65230.85885411751
+      },
+      "shared_work": {
+        "mean": 51594.06273293409,
+        "mc95_low": 50054.39829406649,
+        "mc95_high": 53133.7271718017,
+        "p05": 30471.70316956126,
+        "p95": 65329.85885411751
+      },
+      "shared_gym": {
+        "mean": 51569.06146865491,
+        "mc95_low": 50029.397080394156,
+        "mc95_high": 53108.72585691566,
+        "p05": 30446.702879858316,
+        "p95": 65304.85719573105
+      },
+      "selective": {
+        "mean": 51647.06055307253,
+        "mc95_low": 50107.39619319072,
+        "mc95_high": 53186.72491295434,
+        "p05": 30524.702101476574,
+        "p95": 65382.85616384345
+      }
+    },
+    "final_portfolio_count": {
+      "competent_beta": 2.69921875,
+      "private_work": 2.69921875,
+      "shared_work": 2.69921875,
+      "shared_gym": 2.69921875,
+      "ordinary_library": 2.69921875,
+      "selective": 2.69921875
+    }
+  }
+}

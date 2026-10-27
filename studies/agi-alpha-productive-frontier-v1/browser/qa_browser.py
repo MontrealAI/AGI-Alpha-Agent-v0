@@ -23,6 +23,8 @@ def main(chromium: str, screenshots: Path) -> None:
         assert page.locator("#comparison tr").count() == 6
         assert page.locator("#selection tr").count() == 4
         assert page.locator("#workflow-contracts tr").count() == 3
+        assert "Edition 1.0.1" in page.locator("#revision-heading").inner_text()
+        assert page.evaluate("Array.from(document.querySelectorAll('[data-en]')).every(e => e.textContent === e.dataset.en)")
         report["checks"]["data_tables"] = True
         report["checks"]["workflow_reservations"] = page.locator(
             "#workflow-contracts tr td:last-child"
@@ -47,6 +49,8 @@ def main(chromium: str, screenshots: Path) -> None:
         page.locator("#fr").click()
         assert page.locator("html").get_attribute("lang") == "fr"
         assert page.locator("h1").inner_text() == "Rendre possible la prochaine occasion"
+        assert "Édition 1.0.1" in page.locator("#revision-heading").inner_text()
+        assert page.evaluate("Array.from(document.querySelectorAll('[data-en]')).every(e => e.textContent === e.dataset.fr)")
         assert page.locator("#selection tr").first.locator("td").last.inner_text() == "Non"
         report["checks"]["french_toggle"] = True
         page.screenshot(path=str(screenshots / "french.png"), full_page=True)
@@ -79,10 +83,12 @@ def main(chromium: str, screenshots: Path) -> None:
         page.reload()
         for width in [390, 320]:
             page.set_viewport_size({"width": width, "height": 844})
-            overflow = page.evaluate("document.documentElement.scrollWidth > innerWidth")
-            report["checks"][f"overflow_{width}"] = overflow
-            assert not overflow
-            page.screenshot(path=str(screenshots / f"mobile_{width}.png"), full_page=True)
+            for language in ["en", "fr"]:
+                page.locator(f"#{language}").click()
+                overflow = page.evaluate("document.documentElement.scrollWidth > innerWidth")
+                report["checks"][f"overflow_{width}_{language}"] = overflow
+                assert not overflow
+                page.screenshot(path=str(screenshots / f"mobile_{width}_{language}.png"), full_page=True)
         nojs = browser.new_context(java_script_enabled=False, viewport={"width": 390, "height": 844})
         nojspage = nojs.new_page()
         nojspage.goto((root / "index.html").as_uri())
