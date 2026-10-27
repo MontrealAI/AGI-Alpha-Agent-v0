@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E1 bounded commitment-package input",
+  "type": "object",
+  "required": [
+    "schema",
+    "case_id",
+    "synthetic",
+    "currency",
+    "horizon",
+    "shifts",
+    "employers",
+    "workers",
+    "children",
+    "providers",
+    "locations",
+    "staff",
+    "offers",
+    "scenarios",
+    "payers",
+    "coordinator_fee_cents",
+    "limits"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agi-alpha.e1-case.v1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true
+    },
+    "currency": {
+      "const": "CAD"
+    },
+    "horizon": {
+      "type": "object",
+      "required": [
+        "operating_days",
+        "scenario_semantics",
+        "maximum_backup_event_worlds_realized"
+      ],
+      "properties": {
+        "operating_days": {
+          "const": 1
+        },
+        "maximum_backup_event_worlds_realized": {
+          "const": 1
+        },
+        "scenario_semantics": {
+          "type": "string"
+        }
+      }
+    },
+    "shifts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "start_minute",
+          "end_minute"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "start_minute": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end_minute": {
+            "type": "integer",
+            "maximum": 1440
+          }
+        }
+      }
+    },
+    "employers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "staffing_quotas"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "staffing_quotas": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "workers": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "employer_id",
+          "current_shift_id",
+          "permitted_shift_ids",
+          "change_compensation_cents"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employer_id": {
+            "type": "string"
+          },
+          "current_shift_id": {
+            "type": "string"
+          },
+          "permitted_shift_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "change_compensation_cents": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "children": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "parent_worker_id",
+          "acceptable_location_ids",
+          "commute_minutes_by_location"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "parent_worker_id": {
+            "type": "string"
+          },
+          "acceptable_location_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commute_minutes_by_location": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "before",
+                "after"
+              ],
+              "properties": {
+                "before": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "after": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "declared_offer_acceptance"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "declared_offer_acceptance": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "opening_windows",
+          "declared_concurrent_child_capacity"
+        ]
+      }
+    },
+    "staff": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "qualification_tags",
+          "available_windows",
+          "max_active_minutes",
+          "max_reserved_minutes"
+        ]
+      }
+    },
+    "offers": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "provider_id",
+          "location_id",
+          "role",
+          "window",
+          "staff_ids",
+          "minimum_qualified_staff",
+          "required_qualification_tags",
+          "declared_child_capacity",
+          "commitment_required",
+          "fixed_opening_cost_cents",
+          "per_child_cost_cents",
+          "standby_retainer_cents"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "primary",
+              "backup"
+            ]
+          },
+          "declared_child_capacity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minimum_qualified_staff": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "fixed_opening_cost_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "per_child_cost_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "standby_retainer_cents": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "announced_minute",
+          "failed_provider_ids",
+          "failed_staff_ids",
+          "closed_location_ids"
+        ]
+      }
+    },
+    "payers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "beneficiary_worker_ids",
+          "payment_ceiling_cents",
+          "allowed_cost_categories"
+        ],
+        "properties": {
+          "payment_ceiling_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "allowed_cost_categories": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "primary_care",
+                "backup_standby",
+                "backup_activation_reserve",
+                "worker_compensation",
+                "coordination_fee"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "coordinator_fee_cents": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "maximum_workers",
+        "maximum_children",
+        "maximum_offers",
+        "maximum_scenarios",
+        "maximum_search_states"
+      ]
+    },
+    "disclosures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$comment": "Runtime validation additionally checks unique and cross-referenced identifiers, integer intervals/cents, bounded sizes and full per-world resource feasibility. This is a one-day finite package only."
+}
+

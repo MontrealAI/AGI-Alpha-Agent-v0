@@ -1,0 +1,109 @@
+{
+  "all_tampered_witnesses_rejected": true,
+  "cases": [
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Serialized care interval differs: normal/E_A_W1_C"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "care_gap"
+    },
+    {
+      "check": {
+        "checks_performed": 123,
+        "errors": [
+          "Required scenario omitted or added",
+          "Malformed or inconsistent witness: KeyError: 'primary_provider_absent'"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "missing_backup_world"
+    },
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Backup reserve understated"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "understated_reserve"
+    },
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Worker permission violated: E_A_W2"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "unaccepted_shift"
+    },
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Insufficient qualified staff: primary_provider_absent/B_early"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "qualification_removed"
+    },
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Payer ceiling exceeded: payer_E_A",
+          "Payer ceiling changed: payer_E_A",
+          "Reported maximum fee is not fundable"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "payer_ceiling_reduced"
+    },
+    {
+      "check": {
+        "checks_performed": 270,
+        "errors": [
+          "Cost items duplicated/omitted",
+          "Unexpected/missing cost obligation",
+          "Malformed or inconsistent witness: KeyError: 'worker:E_A_W2'"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "cost_obligation_deleted"
+    },
+    {
+      "check": {
+        "checks_performed": 364,
+        "errors": [
+          "Employer useful work minutes differ: E_A"
+        ],
+        "scope": "Separately coded finite-input checker; no actual delivery or external acceptance.",
+        "valid": false
+      },
+      "rejected": true,
+      "tamper": "reported_employer_output_changed"
+    }
+  ],
+  "run_utc": "2026-10-27T19:15:00.314680+00:00",
+  "schema": "agi-alpha.e1-origin-tamper-checks.v1",
+  "scope": "Origin-only checker tests before freeze, not fresh outcome selection."
+}

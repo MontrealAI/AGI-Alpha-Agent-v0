@@ -1,0 +1,150 @@
+{
+  "schema": "agi-alpha.publication-browser-qa.v1",
+  "recorded_at_utc": "2026-10-27T19:51:54.041056+00:00",
+  "source": "publication/AGI_ALPHA_FLYWHEEL.html",
+  "source_sha256": "ee2ca8e22b65285d7b0bf8445280d887c652a8303241f9ccc141537030889c54",
+  "source_unchanged_after_qa": true,
+  "browser_executable": "/root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+  "browser_version": "139.0.7258.5",
+  "command": "python publication/browser_qa_record.py --output publication/qa/final --chromium-executable /root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+  "working_directory": "/workspace/scratch/d6bd84c0f702/agi-alpha/studies/agi-alpha-opportunity-construction-v1",
+  "final_exit_code": 0,
+  "automated_checks_pass": true,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "document_width": 1440,
+      "horizontal_overflow": false,
+      "loaded_images": 5,
+      "all_images_loaded": true,
+      "missing_alt": 0,
+      "internal_links": 15,
+      "all_internal_targets_exist": true,
+      "relative_file_links": 46,
+      "missing_relative_files": [],
+      "page_errors": [],
+      "console_errors": [],
+      "keyboard_navigation": {
+        "href": "#paper",
+        "observed_hash": "#paper",
+        "interaction": "keyboard focus and Enter"
+      },
+      "passed": true
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "document_width": 390,
+      "horizontal_overflow": false,
+      "loaded_images": 5,
+      "all_images_loaded": true,
+      "missing_alt": 0,
+      "internal_links": 15,
+      "all_internal_targets_exist": true,
+      "relative_file_links": 46,
+      "missing_relative_files": [],
+      "page_errors": [],
+      "console_errors": [],
+      "keyboard_navigation": {
+        "href": "#paper",
+        "observed_hash": "#paper",
+        "interaction": "keyboard focus and Enter"
+      },
+      "passed": true
+    }
+  ],
+  "visual_review": {
+    "screenshots_inspected": [
+      "publication/qa/final/desktop-top.png",
+      "publication/qa/final/desktop-figure.png",
+      "publication/qa/final/mobile-top.png",
+      "publication/qa/final/mobile-figure.png"
+    ],
+    "desktop": "Title, buttons, cards, body text, table of contents, first figure and caption fit and remain readable. No visible clipping or overlap in inspected screenshots.",
+    "mobile": "Title, buttons, text and first figure fit the 390px viewport; no visible clipping or overlap in inspected screenshots.",
+    "observations": [
+      {
+        "severity": "minor_nonblocking",
+        "item": "At native mobile width the first diagram is scaled down and internal labels are small; the caption and surrounding prose remain readable. No figure or page modification was made."
+      }
+    ],
+    "not_examined": "Every below-the-fold section was not individually screenshot-reviewed; PDF visual review remains the parent task.",
+    "final_review_method": "Final desktop-top screenshot reopened and inspected; the other three final screenshots are byte-identical to their visually inspected initial versions.",
+    "byte_identity_to_initial": {
+      "desktop-top.png": false,
+      "desktop-figure.png": true,
+      "mobile-top.png": true,
+      "mobile-figure.png": true
+    }
+  },
+  "attempts": [
+    {
+      "command": "python publication/browser_qa_record.py --output publication/qa --chromium-executable /root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+      "environment": "default sandbox",
+      "exit_code": 1,
+      "outcome": "Chromium launch blocked",
+      "error": "BrowserType.launch TargetClosedError; crashpad setsockopt: Operation not permitted (1)",
+      "run_label": "initial HTML"
+    },
+    {
+      "command": "python publication/browser_qa_record.py --output publication/qa --chromium-executable /root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+      "environment": "automatic-review-approved escalation; fresh temporary Chromium profile",
+      "exit_code": 1,
+      "outcome": "QA navigation method failed on off-screen accessibility skip link",
+      "error": "Locator.click timeout after 30000ms: element outside viewport",
+      "resolution": "QA script changed to keyboard focus and Enter; publication itself unchanged.",
+      "run_label": "initial HTML"
+    },
+    {
+      "command": "python publication/browser_qa_record.py --output publication/qa --chromium-executable /root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+      "environment": "automatic-review-approved escalation; fresh temporary Chromium profile",
+      "exit_code": 0,
+      "outcome": "Desktop and mobile automated checks passed; four screenshots saved and inspected.",
+      "run_label": "initial HTML"
+    },
+    {
+      "command": "python publication/browser_qa_record.py --output publication/qa/final --chromium-executable /root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome",
+      "environment": "automatic-review-approved escalation; fresh temporary Chromium profile",
+      "run_label": "final HTML",
+      "exit_code": 0,
+      "outcome": "Desktop and mobile checks passed; final screenshots saved; HTML hash stable during check."
+    }
+  ],
+  "qa_script_changes": {
+    "file": "publication/browser_qa_record.py",
+    "original_sha256": "ff6be20bde097ac4376e68614cc24825a49d1b1036132e1584bb1012a421d5f1",
+    "current_sha256": "381829e963af43eceec60c6f10f55591c0c40b12c7538509f86624b7be2f4527",
+    "changes": [
+      "Record console.error messages as well as uncaught page errors.",
+      "Exercise actual accessibility skip navigation with keyboard focus and Enter.",
+      "Record exact command, browser version, missing local links and HTML hash before/after.",
+      "Allow nested QA output directory creation."
+    ],
+    "reused_paths": "Already correct for this opportunity-construction publication.",
+    "unchanged_between_initial_and_final_qa": true
+  },
+  "artifacts": {
+    "publication/qa/final/receipt.json": "609ef7b5694cb35d06ef887aaa38801ea11768a8fb834dbb92238ee047bc7727",
+    "publication/qa/final/desktop-top.png": "f0157f21a70991b697e3874227553754bdc9d00bb96964f8bd25d4205939bea8",
+    "publication/qa/final/desktop-figure.png": "df0a8e6054bfc7c572c45b7112c88fdf9ac2eb8bca9c5fa1adb5e0e5a00caa67",
+    "publication/qa/final/mobile-top.png": "c0289eae4a1ead2d84f3c63b1d69e12b4aa45744db89c28e0688b78f691f1371",
+    "publication/qa/final/mobile-figure.png": "2f7e5d282137b38d77205740beec39672c89523c6a9452196242efebaa6420f8"
+  },
+  "scope": {
+    "local_file_rendering_only": true,
+    "external_links_not_visited": true,
+    "relative_link_check": "All linked relative files exist on disk; external references were not fetched.",
+    "publication_or_research_content_modified": false,
+    "only_modified_existing_file": "publication/browser_qa_record.py"
+  },
+  "run_label": "Final QA after parent-confirmed editorial rerender",
+  "checked_at_utc": "2026-10-27T19:51:21.179590+00:00",
+  "initial_run_preserved": {
+    "directory": "publication/qa/initial/",
+    "index": "publication/qa/INITIAL_RUN.json",
+    "html_sha256": "ac62ad1eb89946e62960a50b196bf55f5e7cb402906e202a89fbe22cff106e0d",
+    "summary_sha256": "c0d218dc8db830bec1ce8d202a54e55d929ae7b1d8e4daca7fa552cb31d0999a",
+    "note": "Initial receipt, screenshots, QA script and summary remain unchanged."
+  }
+}

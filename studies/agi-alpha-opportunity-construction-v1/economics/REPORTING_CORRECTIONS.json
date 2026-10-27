@@ -1,0 +1,27 @@
+{
+  "schema": "agi-alpha.reporting-corrections.v1",
+  "economic_policy_and_source_unchanged": true,
+  "reported_profit_and_price_unchanged": true,
+  "items": [
+    {
+      "field": "minimum_company_cash_cad",
+      "correction": "Minimum of observed initial/month-end cash, not minimum intramonth balance. Event guards preserve the CAD500 reserve, but this field must not be described as the intramonth trough.",
+      "origin": "Independent economics audit"
+    },
+    {
+      "field": "unsettled_customer_obligations_at_runoff_cad",
+      "correction": "Zero is a scenario closure assumption after the 20-day commitments expire. No customer account was reconciled. Separate finite settlement enumeration tests conservation for each modeled day/world; actual escrow operations remain absent.",
+      "origin": "Independent economics audit"
+    },
+    {
+      "field": "available_growth_cash_cad",
+      "correction": "Spendable closing company cash after the CAD500 reserve, including any unconsumed seed financing. It is not all earned surplus. Initial CAD2500 is never service revenue.",
+      "origin": "Root reporting review"
+    },
+    {
+      "field": "monthly_package activation prefunding",
+      "correction": "Version 1 guard unnecessarily required the full daily equivalent service fee in care prefunding, inconsistent with half-at-acceptance service terms. Version 2 prefunds only complete provider/worker/backup obligations; service acceptance collection and deferred receivable are separately stated. Version 1 code/output are preserved.",
+      "origin": "Root commercial/technical identity check"
+    }
+  ]
+}

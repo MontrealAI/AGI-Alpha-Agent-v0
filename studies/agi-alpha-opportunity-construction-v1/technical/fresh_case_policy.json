@@ -1,0 +1,118 @@
+{
+  "schema": "agi-alpha.e1-fresh-policy.v1",
+  "frozen_before_generation": true,
+  "targeted_cases": [
+    "locked_choices",
+    "insufficient_qualified_staff",
+    "insufficient_care_capacity",
+    "no_acceptable_location",
+    "long_backup_commute",
+    "primary_provider_withdrawn",
+    "backup_provider_withdrawn",
+    "correlated_provider_absence",
+    "late_contingency_notice",
+    "underfunded",
+    "no_worker_compensation_payer",
+    "existing_capacity",
+    "low_opening_cost",
+    "high_change_compensation",
+    "three_employers_six_children",
+    "same_caregiver_overlapping_blocks",
+    "exact_payment_boundary",
+    "one_cent_below_boundary"
+  ],
+  "random_seeds": [
+    2026102701,
+    2026102702,
+    2026102703,
+    2026102704,
+    2026102705,
+    2026102706,
+    2026102707,
+    2026102708,
+    2026102709,
+    2026102710,
+    2026102711,
+    2026102712,
+    2026102713,
+    2026102714,
+    2026102715,
+    2026102716,
+    2026102717,
+    2026102718,
+    2026102719,
+    2026102720,
+    2026102721,
+    2026102722,
+    2026102723,
+    2026102724
+  ],
+  "sampling_rules": {
+    "worker_alternative_permission_probability": 0.8,
+    "worker_alternative_compensation_cents": [
+      0,
+      500,
+      1000,
+      2000
+    ],
+    "commute_minutes": [
+      10,
+      20,
+      30,
+      45,
+      60
+    ],
+    "remove_primary_location_probability": 0.05,
+    "remove_backup_location_probability": 0.15,
+    "provider_withdrawal_probability": 0.05,
+    "staff_qualification_removal_probability": 0.08,
+    "offer_capacity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "location_capacity": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "opening_cost_cents_min": 8000,
+    "opening_cost_cents_max": 24000,
+    "opening_cost_step_cents": 500,
+    "per_child_cost_cents": [
+      200,
+      400,
+      500,
+      700,
+      900
+    ],
+    "standby_retainer_cents": [
+      1000,
+      1500,
+      2000,
+      2500,
+      3500
+    ],
+    "parent_ceiling_cents_min": 1500,
+    "parent_ceiling_cents_max": 6000,
+    "parent_ceiling_step_cents": 500,
+    "employer_ceiling_cents_min": 9000,
+    "employer_ceiling_cents_max": 26000,
+    "employer_ceiling_step_cents": 500,
+    "all_capacity_already_open_probability": 0.15,
+    "correlated_outage_probability": 0.1
+  },
+  "retention_rule": "Save every generated input and all four results. Do not replace failed cases or tune policy after observing outcomes.",
+  "claim_boundary": "Synthetic varied engineering checks. Acceptance rates are not estimates of real-world prevalence or demand.",
+  "freeze_files": [
+    "src/e1_instrument.py",
+    "src/e1_verify.py",
+    "src/e1_run_suite.py",
+    "technical/origin_case.json",
+    "technical/input_schema.json",
+    "technical/fresh_case_policy.json"
+  ]
+}
+

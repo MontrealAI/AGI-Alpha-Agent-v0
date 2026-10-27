@@ -1,0 +1,372 @@
+{
+  "case_id": "recipient_fresh_4_df26f7e2e479b2c1",
+  "children": [
+    {
+      "acceptable_location_ids": [
+        "locations_032f238d050d_0",
+        "locations_032f238d050d_1"
+      ],
+      "commute_minutes_by_location": {
+        "locations_032f238d050d_0": {
+          "after": 19,
+          "before": 12
+        },
+        "locations_032f238d050d_1": {
+          "after": 13,
+          "before": 13
+        }
+      },
+      "id": "children_032f238d050d_0",
+      "parent_worker_id": "workers_032f238d050d_0"
+    },
+    {
+      "acceptable_location_ids": [
+        "locations_032f238d050d_0",
+        "locations_032f238d050d_1"
+      ],
+      "commute_minutes_by_location": {
+        "locations_032f238d050d_0": {
+          "after": 30,
+          "before": 25
+        },
+        "locations_032f238d050d_1": {
+          "after": 31,
+          "before": 30
+        }
+      },
+      "id": "children_032f238d050d_1",
+      "parent_worker_id": "workers_032f238d050d_2"
+    }
+  ],
+  "coordinator_fee_cents": 1617,
+  "currency": "CAD",
+  "disclosures": [
+    "Independently generated synthetic audit case; no actual consent, price or legal qualification is asserted.",
+    "V2 confirmation: all entity identities renamed; new monetary/permission parameters, retimed schedules, and changed commute assumptions.",
+    "New local recipient portability input; generated after public-code handoff; no answer supplied."
+  ],
+  "employers": [
+    {
+      "id": "employers_032f238d050d_0",
+      "staffing_quotas": {
+        "shifts_032f238d050d_0": 1,
+        "shifts_032f238d050d_1": 1
+      }
+    },
+    {
+      "id": "employers_032f238d050d_1",
+      "staffing_quotas": {
+        "shifts_032f238d050d_0": 1,
+        "shifts_032f238d050d_1": 1
+      }
+    }
+  ],
+  "horizon": {
+    "end_minute": 1440,
+    "maximum_backup_event_worlds_realized": 1,
+    "operating_days": 1,
+    "scenario_semantics": "Exactly one mutually exclusive preannounced whole-day world.",
+    "start_minute": 0
+  },
+  "limits": {
+    "maximum_children": 8,
+    "maximum_offers": 8,
+    "maximum_scenarios": 6,
+    "maximum_search_states": 500000,
+    "maximum_workers": 12
+  },
+  "locations": [
+    {
+      "declared_concurrent_child_capacity": 2,
+      "id": "locations_032f238d050d_0",
+      "opening_windows": [
+        [
+          0,
+          1440
+        ]
+      ]
+    },
+    {
+      "declared_concurrent_child_capacity": 2,
+      "id": "locations_032f238d050d_1",
+      "opening_windows": [
+        [
+          0,
+          1440
+        ]
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "commitment_required": true,
+      "declared_child_capacity": 2,
+      "fixed_opening_cost_cents": 9458,
+      "id": "offers_032f238d050d_0",
+      "location_id": "locations_032f238d050d_0",
+      "minimum_qualified_staff": 1,
+      "per_child_cost_cents": 686,
+      "provider_id": "providers_032f238d050d_0",
+      "required_qualification_tags": [
+        "qualification_032f238d050d"
+      ],
+      "role": "primary",
+      "staff_ids": [
+        "staff_032f238d050d_0"
+      ],
+      "standby_retainer_cents": 0,
+      "window": [
+        312,
+        564
+      ]
+    },
+    {
+      "commitment_required": true,
+      "declared_child_capacity": 2,
+      "fixed_opening_cost_cents": 8614,
+      "id": "offers_032f238d050d_1",
+      "location_id": "locations_032f238d050d_0",
+      "minimum_qualified_staff": 1,
+      "per_child_cost_cents": 623,
+      "provider_id": "providers_032f238d050d_0",
+      "required_qualification_tags": [
+        "qualification_032f238d050d"
+      ],
+      "role": "primary",
+      "staff_ids": [
+        "staff_032f238d050d_1"
+      ],
+      "standby_retainer_cents": 0,
+      "window": [
+        564,
+        816
+      ]
+    },
+    {
+      "commitment_required": true,
+      "declared_child_capacity": 2,
+      "fixed_opening_cost_cents": 11579,
+      "id": "offers_032f238d050d_2",
+      "location_id": "locations_032f238d050d_1",
+      "minimum_qualified_staff": 1,
+      "per_child_cost_cents": 308,
+      "provider_id": "providers_032f238d050d_1",
+      "required_qualification_tags": [
+        "qualification_032f238d050d"
+      ],
+      "role": "backup",
+      "staff_ids": [
+        "staff_032f238d050d_2"
+      ],
+      "standby_retainer_cents": 1283,
+      "window": [
+        312,
+        564
+      ]
+    },
+    {
+      "commitment_required": true,
+      "declared_child_capacity": 2,
+      "fixed_opening_cost_cents": 11772,
+      "id": "offers_032f238d050d_3",
+      "location_id": "locations_032f238d050d_1",
+      "minimum_qualified_staff": 1,
+      "per_child_cost_cents": 582,
+      "provider_id": "providers_032f238d050d_1",
+      "required_qualification_tags": [
+        "qualification_032f238d050d"
+      ],
+      "role": "backup",
+      "staff_ids": [
+        "staff_032f238d050d_3"
+      ],
+      "standby_retainer_cents": 1302,
+      "window": [
+        564,
+        816
+      ]
+    }
+  ],
+  "payers": [
+    {
+      "allowed_cost_categories": [
+        "primary_care",
+        "backup_standby",
+        "backup_activation_reserve",
+        "worker_compensation",
+        "coordination_fee"
+      ],
+      "beneficiary_worker_ids": [
+        "workers_032f238d050d_0",
+        "workers_032f238d050d_1",
+        "workers_032f238d050d_2",
+        "workers_032f238d050d_3"
+      ],
+      "id": "payers_032f238d050d_0",
+      "kind": "employer",
+      "payment_ceiling_cents": 33109
+    }
+  ],
+  "providers": [
+    {
+      "declared_offer_acceptance": true,
+      "id": "providers_032f238d050d_0"
+    },
+    {
+      "declared_offer_acceptance": true,
+      "id": "providers_032f238d050d_1"
+    }
+  ],
+  "scenarios": [
+    {
+      "announced_minute": 0,
+      "closed_location_ids": [],
+      "failed_provider_ids": [],
+      "failed_staff_ids": [],
+      "id": "normal"
+    },
+    {
+      "announced_minute": 0,
+      "closed_location_ids": [],
+      "failed_provider_ids": [
+        "providers_032f238d050d_0"
+      ],
+      "failed_staff_ids": [],
+      "id": "scenarios_032f238d050d_1"
+    },
+    {
+      "announced_minute": 0,
+      "closed_location_ids": [],
+      "failed_provider_ids": [
+        "providers_032f238d050d_1"
+      ],
+      "failed_staff_ids": [],
+      "id": "scenarios_032f238d050d_2"
+    }
+  ],
+  "schema": "agi-alpha.e1-case.v1",
+  "shifts": [
+    {
+      "end_minute": 529,
+      "id": "shifts_032f238d050d_0",
+      "start_minute": 347
+    },
+    {
+      "end_minute": 781,
+      "id": "shifts_032f238d050d_1",
+      "start_minute": 599
+    }
+  ],
+  "staff": [
+    {
+      "available_windows": [
+        [
+          312,
+          564
+        ]
+      ],
+      "id": "staff_032f238d050d_0",
+      "max_active_minutes": 252,
+      "max_reserved_minutes": 252,
+      "qualification_tags": [
+        "qualification_032f238d050d"
+      ]
+    },
+    {
+      "available_windows": [
+        [
+          564,
+          816
+        ]
+      ],
+      "id": "staff_032f238d050d_1",
+      "max_active_minutes": 252,
+      "max_reserved_minutes": 252,
+      "qualification_tags": [
+        "qualification_032f238d050d"
+      ]
+    },
+    {
+      "available_windows": [
+        [
+          312,
+          564
+        ]
+      ],
+      "id": "staff_032f238d050d_2",
+      "max_active_minutes": 252,
+      "max_reserved_minutes": 252,
+      "qualification_tags": [
+        "qualification_032f238d050d"
+      ]
+    },
+    {
+      "available_windows": [
+        [
+          564,
+          816
+        ]
+      ],
+      "id": "staff_032f238d050d_3",
+      "max_active_minutes": 252,
+      "max_reserved_minutes": 252,
+      "qualification_tags": [
+        "qualification_032f238d050d"
+      ]
+    }
+  ],
+  "synthetic": true,
+  "workers": [
+    {
+      "change_compensation_cents": {
+        "shifts_032f238d050d_0": 0,
+        "shifts_032f238d050d_1": 620
+      },
+      "current_shift_id": "shifts_032f238d050d_0",
+      "employer_id": "employers_032f238d050d_0",
+      "id": "workers_032f238d050d_0",
+      "permitted_shift_ids": [
+        "shifts_032f238d050d_0"
+      ]
+    },
+    {
+      "change_compensation_cents": {
+        "shifts_032f238d050d_0": 860,
+        "shifts_032f238d050d_1": 0
+      },
+      "current_shift_id": "shifts_032f238d050d_1",
+      "employer_id": "employers_032f238d050d_0",
+      "id": "workers_032f238d050d_1",
+      "permitted_shift_ids": [
+        "shifts_032f238d050d_0",
+        "shifts_032f238d050d_1"
+      ]
+    },
+    {
+      "change_compensation_cents": {
+        "shifts_032f238d050d_0": 347,
+        "shifts_032f238d050d_1": 0
+      },
+      "current_shift_id": "shifts_032f238d050d_1",
+      "employer_id": "employers_032f238d050d_1",
+      "id": "workers_032f238d050d_2",
+      "permitted_shift_ids": [
+        "shifts_032f238d050d_0",
+        "shifts_032f238d050d_1"
+      ]
+    },
+    {
+      "change_compensation_cents": {
+        "shifts_032f238d050d_0": 0,
+        "shifts_032f238d050d_1": 689
+      },
+      "current_shift_id": "shifts_032f238d050d_0",
+      "employer_id": "employers_032f238d050d_1",
+      "id": "workers_032f238d050d_3",
+      "permitted_shift_ids": [
+        "shifts_032f238d050d_0",
+        "shifts_032f238d050d_1"
+      ]
+    }
+  ]
+}

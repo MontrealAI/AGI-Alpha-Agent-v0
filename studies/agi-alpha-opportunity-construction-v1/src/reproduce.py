@@ -1,0 +1,225 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Read-only verification and isolated regeneration of the published study.
+
+Outputs default to a new temporary directory. Historical evidence is never
+rewritten. No paid API, wallet, RPC, live ENS or customer action is performed.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import importlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def read(path: str):
+    return json.loads((ROOT / path).read_text())
+
+
+def save(path: Path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+
+
+def frozen() -> dict:
+    checks = []
+    for manifest in [
+        "technical/FROZEN_TECHNICAL_POLICY.json",
+        "technical/FROZEN_BOUNDARY_POLICY.json",
+        "technical/FROZEN_TECHNICAL_V2.json",
+    ]:
+        data = read(manifest)
+        for key in ["files", "preserved_evidence"]:
+            for name, expected in data.get(key, {}).items():
+                actual = sha(ROOT / name)
+                if actual != expected:
+                    raise ValueError(f"Frozen file changed: {name}")
+                checks.append(name)
+    econ = importlib.import_module("economics_v2")
+    econ.check_freeze()
+    original = read("discovery/SELECTION_RECORD.json")
+    for arm, expected in original["arm_sha256"].items():
+        if sha(ROOT / f"discovery/arms/{arm}.json") != expected:
+            raise ValueError(f"Original discovery arm changed: {arm}")
+    return {"frozen_file_checks": len(checks), "economic_freeze": True, "discovery_arm_hashes": True}
+
+
+def technical(output: Path) -> dict:
+    instrument = importlib.import_module("e1_instrument_v2")
+    verifier = importlib.import_module("e1_verify_v2")
+    auditor = importlib.import_module("independent_audit_v2")
+    files = [
+        ROOT / "technical/origin_case.json",
+        *sorted((ROOT / "technical/fresh").glob("*.input.json")),
+        *sorted((ROOT / "technical/boundary").glob("*.input.json")),
+    ]
+    rows = []
+    for path in files:
+        case = json.loads(path.read_text())
+        result = instrument.compare(case)
+        if not result["same_formulation_exact_control"]["identical_selected_result"]:
+            raise AssertionError("Ordinary control differs")
+        for item in result["results"].values():
+            if item["offer"] and not verifier.verify_offer(case, item["offer"])["valid"]:
+                raise AssertionError("Offered result does not verify")
+        old_path = (
+            ROOT / "technical/origin_result.json"
+            if path.name == "origin_case.json"
+            else path.with_name(path.name.replace(".input.json", ".result.json"))
+        )
+        original = json.loads(old_path.read_text())
+        statuses = {m: v["status"] for m, v in result["results"].items()}
+        if statuses != {m: v["status"] for m, v in original["results"].items()}:
+            raise AssertionError(f"Original case status changed: {case['case_id']}")
+        rows.append({"case_id": case["case_id"], "statuses": statuses, "ordinary_parity": True})
+    oracle_rows = []
+    for filename in ["fresh_cases.json", "v2_fresh_cases.json"]:
+        cases = read("technical/independent_audit/" + filename)
+        for case in cases:
+            result, _ = auditor.check_case(case, instrument)
+            if not all(result["checks"].values()):
+                raise AssertionError(result)
+            oracle_rows.append(result)
+    tampers = read("technical/independent_audit/v2_fresh_tamper_pairs.json")
+    for pair in tampers:
+        if verifier.verify_offer(pair["input"], pair["witness"])["valid"]:
+            raise AssertionError(f"Tamper accepted: {pair['case_id']}")
+    days = read("technical/monthly_package/DAY_WITNESSES.json")
+    for day in days:
+        if not verifier.verify_offer(day["case"], day["offer"])["valid"]:
+            raise AssertionError("Monthly commercial package differs from accepted technical scope")
+    result = {
+        "frozen_checks": frozen(),
+        "preserved_case_replays": len(rows),
+        "oracle_case_replays": len(oracle_rows),
+        "fresh_tamper_replays_rejected": len(tampers),
+        "commercial_day_witnesses": len(days),
+        "ordinary_control_parity": True,
+        "cases": rows,
+        "oracle": oracle_rows,
+        "interpretation": "Reproduction of previously published fresh cases is replay, not a new fresh experiment.",
+    }
+    save(output / "TECHNICAL_REPRODUCTION.json", result)
+    return {k: v for k, v in result.items() if k not in ["cases", "oracle"]}
+
+
+def economics(output: Path) -> dict:
+    module = importlib.import_module("economics_v2")
+    target = output / "economics_v2"
+    target.mkdir(parents=True, exist_ok=True)
+    for name in ["POLICY_FREEZE.json", "POLICY_SELECTION.json"]:
+        shutil.copy2(ROOT / "economics_v2" / name, target / name)
+    module.OUT = target
+    module.confirmation(read("config/economic_config_v2.json"))
+    names = [
+        "COMMERCIAL_RESULT.json",
+        "FRESH_WORLDS.json",
+        "SENSITIVITY.json",
+        "BROAD_WORLDS.json",
+        "BROAD_UNCERTAINTY.json",
+        "ALPHA_RESULTS.json",
+        "VERIFICATION.json",
+    ]
+    equal = {n: sha(target / n) == sha(ROOT / "economics_v2" / n) for n in names}
+    if not all(equal.values()):
+        raise AssertionError({"economic_byte_differences": equal})
+    result = {
+        "byte_identical_outputs": equal,
+        "current_policy": read("economics_v2/POLICY_FREEZE.json")["selected_policy"],
+        "interpretation": "Full deterministic replay of corrected published seeds; no model/customer calls.",
+    }
+    save(output / "ECONOMIC_REPRODUCTION.json", result)
+    return result
+
+
+def verify(output: Path) -> dict:
+    result = {"freeze": frozen()}
+    native = subprocess.run(
+        [sys.executable, str(ROOT / "src/native_linkage.py"), "--verify", str(ROOT / "integration/selected-run-v2")],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    result["native_linkage"] = json.loads(native.stdout)
+    manifest = ROOT / "technical/RESEARCH_INSTRUMENT_MANIFEST_V2.json"
+    # The existing assessment fixture deliberately restricts output to a new
+    # study-local directory. Honor that boundary, preserve every original file,
+    # then copy this new run into the requested external reproduction folder.
+    with tempfile.TemporaryDirectory(prefix="reproduction-access-", dir=ROOT) as tmp:
+        fixture_output = Path(tmp) / "run"
+        fixture = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "src/research_access_fixture.py"),
+                "--manifest",
+                str(manifest),
+                "--manifest-sha256",
+                sha(manifest),
+                "--output",
+                str(fixture_output),
+            ],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        result["research_access_fixture"] = json.loads(fixture.stdout)
+        shutil.copytree(fixture_output, output / "research_access_fixture", dirs_exist_ok=True)
+    result["fixture_output_note"] = (
+        "Native study-local output restriction honored in a new temporary directory; only that new directory was removed after copying. Original evidence unchanged."
+    )
+    manifest_path = ROOT / "MANIFEST.sha256"
+    if manifest_path.exists():
+        count = 0
+        for line in manifest_path.read_text().splitlines():
+            expected, name = line.split("  ", 1)
+            if sha(ROOT / name) != expected:
+                raise AssertionError(f"Publication manifest differs: {name}")
+            count += 1
+        result["publication_manifest_files_verified"] = count
+    else:
+        result["publication_manifest"] = "Not yet built; archive is a later publication step."
+    save(output / "VERIFICATION.json", result)
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--technical", action="store_true")
+    parser.add_argument("--economics", action="store_true")
+    parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--all", action="store_true")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    output = (args.output or Path(tempfile.mkdtemp(prefix="agi-alpha-care-reproduction-"))).resolve()
+    if output == ROOT or ROOT in output.parents:
+        raise ValueError("Reproduction output must be outside the immutable study folder")
+    output.mkdir(parents=True, exist_ok=True)
+    result = {"output": str(output)}
+    if args.technical or args.all:
+        result["technical"] = technical(output)
+    if args.economics or args.all:
+        result["economics"] = economics(output)
+    if args.verify or args.all or not (args.technical or args.economics):
+        result["verification"] = verify(output)
+    save(output / "REPRODUCTION_SUMMARY.json", result)
+    print(json.dumps(result, indent=2))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,247 @@
+{
+  "cash_fixture": {
+    "checks": {
+      "actual_event_trough_matches": true,
+      "cash_conserves": true,
+      "complete_A_matches": true,
+      "external_closure_explicitly_assumed": true,
+      "month_end_minimum_separately_matches": true,
+      "one_package_accepted": true,
+      "profit_matches": true
+    },
+    "definition": "One selling month, one interested eligible accepted job, selected CAD750 fee half immediate and half next month, no default. Manually supplied job, no RNG.",
+    "independent_event_ledger": [
+      {
+        "cash_cad": 2500.0,
+        "event": "opening finance"
+      },
+      {
+        "cash_cad": 1700.0,
+        "event": "launch A800"
+      },
+      {
+        "cash_cad": 1300.0,
+        "event": "monthly overhead A400"
+      },
+      {
+        "cash_cad": 1280.0,
+        "event": "acquire one lead A20"
+      },
+      {
+        "cash_cad": 1213.11,
+        "event": "attempt A66.89 before collection"
+      },
+      {
+        "cash_cad": 1588.11,
+        "event": "acceptance half-fee collection375"
+      },
+      {
+        "cash_cad": 1963.11,
+        "event": "runoff deferred collection375"
+      }
+    ],
+    "program_result": {
+      "A_acquisition_cad": 20.0,
+      "A_business_overhead_cad": 400.0,
+      "A_complete_operating_cost_cad": 1286.8899999999999,
+      "A_delivery_and_launch_cad": 866.89,
+      "accepted": 1,
+      "actual_receipts_cad": 0,
+      "assumed_unsettled_customer_obligations_at_runoff_cad": 0,
+      "attempted": 1,
+      "available_growth_cash_cad": 1463.11,
+      "bad_debt_cad": 0.0,
+      "capacity_declines": 0,
+      "cash_declines": 0,
+      "closing_company_cash_cad": 1963.11,
+      "collected_service_cash_cad": 750.0,
+      "common_shock": false,
+      "company_reserve_cad": 500,
+      "contribution_before_fixed_business_cost_cad": 663.11,
+      "customer_pass_funding_separate_cad": 7600.0,
+      "interested": 1,
+      "minimum_company_cash_cad": 1213.11,
+      "minimum_month_end_cash_cad": 1588.11,
+      "monthly": [
+        {
+          "accepted": 1,
+          "cash": 1588.11,
+          "month": 1
+        },
+        {
+          "cash": 1963.11,
+          "month": 2,
+          "runoff": true
+        }
+      ],
+      "operating_profit_cad": -536.8899999999999,
+      "policy": {
+        "deferred_fraction": 0.5,
+        "name": "750-half-30days",
+        "price_cad": 750
+      },
+      "preflight_refusals": 0,
+      "qualified_leads": 1,
+      "service_revenue_cad": 750.0,
+      "unsettled_receivables_at_runoff_cad": 0,
+      "wind_down": false,
+      "world": "manual-intramonth-audit"
+    }
+  },
+  "checks": {
+    "audited_input_bytes_unchanged": true,
+    "freeze_matches_source_config_selection": true,
+    "manual_cash_fixture_passed": true,
+    "non_seed_economic_assumptions_unchanged": true,
+    "paired_leads_common_shock_and_other_params_invariant": true,
+    "preformat_ast_identical": true,
+    "v1_exact_bytes_preserved": true
+  },
+  "input_files": {
+    "configuration": {
+      "path": "config/economic_config_v2.json",
+      "sha256": "e3f87f36fc5049f54c143f057f6b0227b349489b0338ca8eab4fada2e3b6334c"
+    },
+    "freeze": {
+      "path": "economics_v2/POLICY_FREEZE.json",
+      "sha256": "fa50ef285d6e02968d061e3ff50fa220e66037608f01ba6395283d3a2d6e07c5"
+    },
+    "selection": {
+      "path": "economics_v2/POLICY_SELECTION.json",
+      "sha256": "f69e236677e3adf094ceefe4360ca868683392245577c70d28bbad50c4ed5e48"
+    },
+    "source": {
+      "path": "src/economics_v2.py",
+      "sha256": "9193eade9acdc8baf5e3db626184d9640641cbdc904ae59705afa62c0c04a2cb"
+    },
+    "v1_exact": {
+      "path": "src/economics_v1.py.frozen",
+      "sha256": "6fb648061e840fd6c55a71d3ce1d4b3944f484884fc9c9d35c7977de022c6391"
+    },
+    "v1_reporting_corrections": {
+      "path": "economics/REPORTING_CORRECTIONS.json",
+      "sha256": "5cd8910a009a34765a8889b90fc50edfd60fd3f3351a7baaa09c30373c14d3dd"
+    },
+    "v2_preformat": {
+      "path": "src/economics_v2_preformat.py.frozen",
+      "sha256": "85dc2331f461baad356833b6258536390cc758a3c22fd4f4551eb3c0a7efc027"
+    }
+  },
+  "paired_stream_checks": [
+    {
+      "broad_fixture_mode": false,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.75,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": false,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.85,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": false,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.95,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": false,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.97,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": true,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.75,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": true,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.85,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": true,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.95,
+      "world_indices": 100
+    },
+    {
+      "broad_fixture_mode": true,
+      "lead_or_common_shock_mismatches": [],
+      "other_parameter_mismatches": [],
+      "passed": true,
+      "quality_draw_changed_count": 100,
+      "quality_override": 0.97,
+      "world_indices": 100
+    }
+  ],
+  "previous_review": "../economics/INDEPENDENT_REVIEW.json",
+  "remaining_limits": [
+    "All demand, prices, operating costs and actual benefit distributions remain assumptions.",
+    "RNG isolation supports paired conditional sensitivities; it does not measure an operational quality improvement.",
+    "The true minimum is over explicitly modeled discrete cash events, not unmodeled payroll, claims or intraday operational transactions.",
+    "V1 adverse results and the original audit remain preserved. This addendum does not select a policy or judge new confirmation results."
+  ],
+  "reporting_assessment": [
+    {
+      "detail": "minimum_company_cash_cad now updates immediately after every modeled cash debit. minimum_month_end_cash_cad is separately retained. The fixture reports CAD1213.11 versus CAD1588.11.",
+      "item": "minimum cash",
+      "status": "Corrected"
+    },
+    {
+      "detail": "assumed_unsettled_customer_obligations_at_runoff_cad remains a literal zero. Separate finite pass-through settlement identities are not real account reconciliation.",
+      "item": "external customer closure",
+      "status": "Correctly relabeled as an assumption"
+    },
+    {
+      "detail": "available_growth_cash_cad includes unconsumed opening finance and means spendable modeled company cash above the reserve, not earned surplus.",
+      "item": "available growth cash",
+      "status": "Prior qualification still required"
+    },
+    {
+      "detail": "Authentication for research access does not establish positive retained-instrument economics or authorize admission.",
+      "item": "retained economics",
+      "status": "HOLD unchanged"
+    }
+  ],
+  "reviewed_at_utc": "2026-10-27T19:26:32.338734+00:00",
+  "reviewer_actions": {
+    "confirmation_or_broad_worlds_generated": false,
+    "existing_selection_seed_used": 481121,
+    "frozen_files_modified": false,
+    "held_out_confirmation_or_broad_result_contents_read": false,
+    "held_out_confirmation_or_broad_seed_used": false,
+    "quality_comparisons": 800,
+    "synthetic_manual_cash_fixtures": 1
+  },
+  "schema": "agi-alpha.independent-economic-review-addendum.v2",
+  "scope": "Focused independent-agent check of v2 RNG isolation, true modeled event cash minimum and reporting corrections. Not a fresh commercial confirmation, a human audit or an observed business outcome.",
+  "status": "PASS",
+  "unchanged_assumption_diff": {}
+}

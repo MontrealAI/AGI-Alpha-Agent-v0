@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-10-27T19:31:29.828661+00:00",
+  "checks": {
+    "adapter_matches_recorded_hash": true,
+    "exact_public_output_inventory_no_private_key_file": true,
+    "license_routes_identical": true,
+    "public_only_saved_signature_replay_at_recorded_time": true,
+    "recorded_fixture_all_27_checks_pass": true,
+    "recorded_grant_expires_at_exact_boundary": true,
+    "two_code_routes_identical_to_pinned_current_sources": true
+  },
+  "execution_note": "Sandbox mount initialization reported no space left on device before a command ran. Automatic review approved the bounded local writer/formatter/checker outside that broken mount. No shared files were deleted and no network operation was made.",
+  "interpretation": "Saved public signatures can be inspected without private keys. Replay is evaluated at the recorded fixture time; it does not extend the short-lived grant. Public-code availability is identical in the ordinary-library control.",
+  "manifest_sha256": "4084dc815d927248113faf58744b6c22c8edf758b4883f23fb5c2093ee8379b8",
+  "passed": true,
+  "peer_review": {
+    "correction": "authenticate_assessment now reloads and pins exact manifest bytes itself before verifying signatures.",
+    "finding": "No critical defect in the CLI path. A detached mutable-manifest argument in the reusable helper was identified and corrected before execution.",
+    "human_or_external_independent_audit": false,
+    "reviewer_rechecked_correction": true,
+    "scope": "Separate subagent read-only narrow inspection of fixture and actual native APIs"
+  },
+  "public_output_inventory_before_this_validation_file": [
+    "RESULTS.json",
+    "authenticated_recipient/LICENSE",
+    "authenticated_recipient/src/e1_instrument_v2.py",
+    "authenticated_recipient/src/e1_verify_v2.py",
+    "ordinary_library/LICENSE",
+    "ordinary_library/src/e1_instrument_v2.py",
+    "ordinary_library/src/e1_verify_v2.py"
+  ],
+  "reproduce_command": "python studies/agi-alpha-opportunity-construction-v1/src/research_access_fixture.py --manifest studies/agi-alpha-opportunity-construction-v1/technical/RESEARCH_INSTRUMENT_MANIFEST_V2.json --manifest-sha256 4084dc815d927248113faf58744b6c22c8edf758b4883f23fb5c2093ee8379b8 --output studies/agi-alpha-opportunity-construction-v1/technical/research_access_fixture_v2_replay",
+  "result_sha256": "3b877a6d1773032aadd4f3906cfa3c594327f3b934a79d6f8b96a81d32bf943a",
+  "schema": "agi-alpha.research-access-validation.v2",
+  "source_sha256": "05c9253fdf6490e761507d084e59459656a7f706a0e4c50f472bd3af1593901f",
+  "style_checks": {
+    "black": "Not rerun; prior environment invocation failed due missing pathspec.patterns.gitignore. Ruff formatter used.",
+    "full_repository_test_suite": "Not run; bounded fixture and saved-artifact checks cover the assigned scope.",
+    "ruff_check": "passed",
+    "ruff_format_line_length_120": "passed"
+  }
+}
