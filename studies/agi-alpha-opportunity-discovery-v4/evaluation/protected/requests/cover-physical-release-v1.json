@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1",
+  "mission": {
+    "id": "cover-physical-release-v1",
+    "purpose": "physical_release",
+    "statement": "Determine whether this evidence instrument can authorize physical part release; assumption labels are not authority."
+  },
+  "assets": {
+    "source_qif": {
+      "path": "../inputs/Cover_FAIR.qif",
+      "sha256": "ccb67423f6f4a917ef9e92820e5f4a47be6b7e5137a193d94d4ba9fd2a17c124"
+    },
+    "incoming_qif": {
+      "path": "../inputs/Cover_incoming.qif",
+      "sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24"
+    },
+    "cad_step": {
+      "path": "../inputs/Cover_AP242.STP",
+      "sha256": "d678cd5267f70cf664a613597eecc5d531b542e3d65cb571d4aa6b34730e475b"
+    },
+    "reference_owl": {
+      "path": "../inputs/Cover_integrated.owl",
+      "sha256": "7fe7a7b0df19c7a863b987328117c8cb54d10ae46f9677c4aa3baa879091df0d"
+    }
+  },
+  "guards": {
+    "feature_set_identity": "researcher_assumed",
+    "specimen_scope": "researcher_assumed",
+    "requirement_requalification": "researcher_assumed",
+    "measurement_adequacy": "researcher_assumed",
+    "current_authority": "researcher_assumed"
+  },
+  "family": {
+    "source_characteristic_ids": [
+      "14",
+      "23",
+      "26",
+      "29",
+      "32",
+      "35",
+      "38",
+      "41",
+      "44",
+      "47",
+      "50",
+      "53",
+      "56",
+      "59",
+      "62",
+      "65",
+      "68",
+      "71",
+      "74",
+      "83"
+    ],
+    "incoming_characteristic_id": "23"
+  },
+  "counterfactual": {
+    "source_linear_unit": {
+      "name": "mm",
+      "factor_to_metre": "0.001"
+    }
+  }
+}

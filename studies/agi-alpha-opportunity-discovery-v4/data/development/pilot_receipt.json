@@ -1,0 +1,882 @@
+{
+  "status": "development pilot; not prospective confirmation or independent customer acceptance",
+  "versions": {
+    "python": "3.12.14",
+    "cadquery": "2.7.0",
+    "OCP": "7.8.1.1"
+  },
+  "input_manifest": [
+    {
+      "archive": "qif-ontology-dataset-V2.zip",
+      "member": "qif-ontology-dataset/1_DesignData/Plate.STP",
+      "file": "Plate_AP242.STP",
+      "bytes": 1345369,
+      "sha256": "393e6ca99dc45b41c6f7d376f749f36247672d4f07e30e6c2814986a7f50edbf"
+    },
+    {
+      "archive": "qif-ontology-dataset-V2.zip",
+      "member": "qif-ontology-dataset/5_IntegratedOntology/Plate_integrated.owl",
+      "file": "Plate_integrated.owl",
+      "bytes": 5991185,
+      "sha256": "8bb85ddfff0f7fab3ffe2d8731f67167073bf3f29a78b9e6a49a4e86ea7c108b"
+    },
+    {
+      "archive": "nist_box_mtc.zip",
+      "member": "FAIR/7_11_2017 9_16_18 AM Plate_Results.qif",
+      "file": "Plate_FAIR.qif",
+      "bytes": 408499,
+      "sha256": "bc7d0ed1b7b45ac9618cd40a641604a6c16e668536115ef4921a87da49d74fa7"
+    },
+    {
+      "archive": "nist_box_mtc.zip",
+      "member": "QIF-IncomingInspection/PlateResults_20_samples.QIF",
+      "file": "Plate_incoming.qif",
+      "bytes": 480274,
+      "sha256": "dc0517cb271e0f0ddf2182e3ed494010a85bd98444ba915523e70d341cfdc82e"
+    }
+  ],
+  "units": {
+    "incoming": {
+      "name": "mm",
+      "si": "meter",
+      "factor": "0.001"
+    },
+    "FAIR_explicit_file_units": null,
+    "FAIR_per_value_unit_attributes": [],
+    "FAIR_formal_default": "meter",
+    "FAIR_candidate_values_as_formal_millimeters": [
+      3026.0,
+      3065.0
+    ],
+    "schema_source": "https://qifstandards.org/wp-content/uploads/2015/03/QIF-2.1.zip",
+    "schema_member": "QIF_2.1_XMLSchemaFiles.zip/QIFLibrary/Units.xsd",
+    "schema_sha256": "2d46993e49300841e66fc05c35dafbcb63ac8085e9c9c8cbc8670e97c13a5fbd",
+    "schema_documentation": {
+      "LinearValueType": "The LinearValueType is a SpecifiedDecimalType with an optional\n        linearUnit attribute that identifies the unit being used by its\n        UnitName. If no value for the attribute is given in an instance\n        file when a length value is given, the unit type is the LinearUnit\n        specified in the PrimaryUnits element of a FileUnits element, if\n        that specification exists, and meters if not.",
+      "ActualLinearValueType": "The ActualLinearValueType is an ActualDecimalType with an optional\n        linearUnit attribute that identifies the unit being used by its\n        UnitName. If no value for the attribute is given in an instance\n        file when a length value is given, the unit type is the LinearUnit\n        specified in the PrimaryUnits element of a FileUnits element, if\n        that specification exists, and meters if not."
+    }
+  },
+  "cad": {
+    "valid": true,
+    "solids": 1,
+    "faces": 261,
+    "edges": 722,
+    "surface_types": {
+      "PLANE": 103,
+      "BSPLINE": 120,
+      "CYLINDER": 34,
+      "CONE": 4
+    }
+  },
+  "cylindrical_feature_matches": [
+    {
+      "feature_item_id": "19",
+      "feature_name": "CYLINDER1",
+      "feature_nominal_id": "18",
+      "feature_definition_id": "17",
+      "axis_point": [
+        101.73,
+        5.49999999999998,
+        2.295
+      ],
+      "axis_direction": [
+        0.0,
+        6.96610525255e-15,
+        -1.0
+      ],
+      "diameter": 4.5,
+      "candidate_faces": [
+        {
+          "face_index": 51,
+          "axis_distance_mm": 2.042810365310288e-14,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "33",
+      "feature_name": "CYLINDER2",
+      "feature_nominal_id": "32",
+      "feature_definition_id": "31",
+      "axis_point": [
+        18.27,
+        65.66,
+        2.295
+      ],
+      "axis_direction": [
+        -1.7415263131375e-15,
+        6.96610525255e-15,
+        -1.0
+      ],
+      "diameter": 4.5,
+      "candidate_faces": [
+        {
+          "face_index": 53,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "44",
+      "feature_name": "SIMPLE_HOLE7",
+      "feature_nominal_id": "43",
+      "feature_definition_id": "42",
+      "axis_point": [
+        5.00000000000001,
+        45.58,
+        4.5
+      ],
+      "axis_direction": [
+        -2.22044604925031e-16,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 122,
+          "axis_distance_mm": 9.769962616701378e-15,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "52",
+      "feature_name": "SIMPLE_HOLE6",
+      "feature_nominal_id": "51",
+      "feature_definition_id": "50",
+      "axis_point": [
+        5.0,
+        35.58,
+        4.5
+      ],
+      "axis_direction": [
+        -4.44089209850062e-16,
+        -1.77635683940025e-15,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 131,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "57",
+      "feature_name": "SIMPLE_HOLE5",
+      "feature_nominal_id": "56",
+      "feature_definition_id": "55",
+      "axis_point": [
+        5.0,
+        25.58,
+        4.5
+      ],
+      "axis_direction": [
+        4.44089209850062e-16,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 114,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "62",
+      "feature_name": "CYLINDER-137",
+      "feature_nominal_id": "61",
+      "feature_definition_id": "60",
+      "axis_point": [
+        18.27,
+        5.5,
+        2.295
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.5,
+      "candidate_faces": [
+        {
+          "face_index": 63,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "97",
+      "feature_name": "SIMPLE_HOLE10",
+      "feature_nominal_id": "96",
+      "feature_definition_id": "95",
+      "axis_point": [
+        45.6066017177982,
+        25.6066017177982,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 3.0,
+      "candidate_faces": [
+        {
+          "face_index": 93,
+          "axis_distance_mm": 2.853900538820985e-10,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "105",
+      "feature_name": "SIMPLE_HOLE12",
+      "feature_nominal_id": "104",
+      "feature_definition_id": "103",
+      "axis_point": [
+        34.9999999999999,
+        30.0,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        8.88178419700125e-16,
+        -1.0
+      ],
+      "diameter": 3.0,
+      "candidate_faces": [
+        {
+          "face_index": 95,
+          "axis_distance_mm": 9.947598300641403e-14,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "110",
+      "feature_name": "SIMPLE_HOLE11",
+      "feature_nominal_id": "109",
+      "feature_definition_id": "108",
+      "axis_point": [
+        24.3933982822017,
+        25.6066017177982,
+        4.5
+      ],
+      "axis_direction": [
+        8.88178419700125e-16,
+        1.77635683940025e-15,
+        -1.0
+      ],
+      "diameter": 3.0,
+      "candidate_faces": [
+        {
+          "face_index": 92,
+          "axis_distance_mm": 2.8531972241046065e-10,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "115",
+      "feature_name": "SIMPLE_HOLE14",
+      "feature_nominal_id": "114",
+      "feature_definition_id": "113",
+      "axis_point": [
+        35.0,
+        15.0,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 10.0,
+      "candidate_faces": [
+        {
+          "face_index": 90,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "123",
+      "feature_name": "CYLINDER3",
+      "feature_nominal_id": "122",
+      "feature_definition_id": "121",
+      "axis_point": [
+        42.5,
+        15.0,
+        4.47203725882707
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 5.0,
+      "candidate_faces": [
+        {
+          "face_index": 83,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        },
+        {
+          "face_index": 260,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "131",
+      "feature_name": "SIMPLE_HOLE4",
+      "feature_nominal_id": "130",
+      "feature_definition_id": "129",
+      "axis_point": [
+        50.0,
+        5.0,
+        4.5
+      ],
+      "axis_direction": [
+        1.77635683940025e-15,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 130,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "136",
+      "feature_name": "SIMPLE_HOLE3",
+      "feature_nominal_id": "135",
+      "feature_definition_id": "134",
+      "axis_point": [
+        60.0,
+        5.00000000000001,
+        4.5
+      ],
+      "axis_direction": [
+        -1.77635683940025e-15,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 129,
+          "axis_distance_mm": 9.769962616701378e-15,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "141",
+      "feature_name": "SIMPLE_HOLE2",
+      "feature_nominal_id": "140",
+      "feature_definition_id": "139",
+      "axis_point": [
+        70.0,
+        5.0,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        -4.44089209850062e-16,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 103,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "146",
+      "feature_name": "SIMPLE_HOLE8",
+      "feature_nominal_id": "145",
+      "feature_definition_id": "144",
+      "axis_point": [
+        107.5,
+        31.16,
+        4.5
+      ],
+      "axis_direction": [
+        -3.5527136788005e-15,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 132,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "154",
+      "feature_name": "SIMPLE_HOLE13",
+      "feature_nominal_id": "153",
+      "feature_definition_id": "152",
+      "axis_point": [
+        107.5,
+        41.16,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        1.77635683940025e-15,
+        -1.0
+      ],
+      "diameter": 10.0,
+      "candidate_faces": [
+        {
+          "face_index": 82,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "159",
+      "feature_name": "SIMPLE_HOLE9",
+      "feature_nominal_id": "158",
+      "feature_definition_id": "157",
+      "axis_point": [
+        107.5,
+        51.16,
+        4.5
+      ],
+      "axis_direction": [
+        -3.5527136788005e-15,
+        3.5527136788005e-15,
+        -1.0
+      ],
+      "diameter": 4.0,
+      "candidate_faces": [
+        {
+          "face_index": 118,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    {
+      "feature_item_id": "164",
+      "feature_name": "CYLINDER-140",
+      "feature_nominal_id": "163",
+      "feature_definition_id": "162",
+      "axis_point": [
+        101.73,
+        65.66,
+        2.295
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 4.5,
+      "candidate_faces": [
+        {
+          "face_index": 55,
+          "axis_distance_mm": 0.0,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    }
+  ],
+  "complete_trace": {
+    "scope": "one incoming diameter obligation, not overall part acceptance",
+    "requirement": {
+      "item_id": "101",
+      "name": "DIAMETER7",
+      "kind": "Diameter",
+      "nominal_id": "100",
+      "definition_id": "99",
+      "target": 3.0,
+      "interval": [
+        2.746,
+        3.254
+      ],
+      "defined_as_limit": "false",
+      "material_condition_literal": null,
+      "tolerance_value_literal": null,
+      "analysis_mode_literal": null,
+      "features": [
+        "97"
+      ]
+    },
+    "actual": {
+      "id": "102",
+      "value": 3.017,
+      "status": "PASS",
+      "feature_actual_ids": [
+        "98"
+      ]
+    },
+    "feature_actual_id": "98",
+    "feature_actual_diameter": 3.017,
+    "geometry": {
+      "feature_item_id": "97",
+      "feature_name": "SIMPLE_HOLE10",
+      "feature_nominal_id": "96",
+      "feature_definition_id": "95",
+      "axis_point": [
+        45.6066017177982,
+        25.6066017177982,
+        4.5
+      ],
+      "axis_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "diameter": 3.0,
+      "candidate_faces": [
+        {
+          "face_index": 93,
+          "axis_distance_mm": 2.853900538820985e-10,
+          "direction_residual": 0.0,
+          "radius_residual_mm": 0.0
+        }
+      ]
+    },
+    "cad_surface": {
+      "face_index": 93,
+      "radius": 1.5,
+      "location": [
+        45.606601718,
+        25.606601718,
+        5.0
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "area": 47.12388980384689,
+      "z_extent": [
+        0.0,
+        5.0
+      ]
+    },
+    "step_records": {
+      "8": "(LENGTH_UNIT()NAMED_UNIT(*)SI_UNIT(.MILLI.,.METRE.))",
+      "7265": "CARTESIAN_POINT('',(45.606601718,25.606601718,5.))",
+      "7266": "DIRECTION('',(0.,0.,1.))",
+      "7267": "DIRECTION('',(1.,0.,-0.))",
+      "7268": "AXIS2_PLACEMENT_3D('',#7265,#7266,#7267)",
+      "7269": "CYLINDRICAL_SURFACE('',#7268,1.5)",
+      "7281": "ADVANCED_FACE('',(#7280),#7269,.F.)"
+    },
+    "reference_graph_assertions": [
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#CylinderFeatureActual_6",
+        "qif_id": "98",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#CylinderFeatureActual",
+          "AxisSlot": "http://www.nist.gov/QIF_ontology#Axis_182",
+          "Diameter": "3.017",
+          "FeatureItemId": "97",
+          "_id": "98"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#CylinderFeatureDefinition_11",
+        "qif_id": "95",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#CylinderFeatureDefinition",
+          "Diameter": "3.0",
+          "InternalExternal": "NOT_APPLICABLE",
+          "_id": "95"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#CylinderFeatureItem_11",
+        "qif_id": "97",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#CylinderFeatureItem",
+          "DeterminationModeSlot": "http://www.nist.gov/QIF_ontology#DeterminationMode_12",
+          "FeatureName": "SIMPLE_HOLE10",
+          "FeatureNominalId": "96",
+          "_id": "97"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#CylinderFeatureNominal_9",
+        "qif_id": "96",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#CylinderFeatureNominal",
+          "AxisSlot": "http://www.nist.gov/QIF_ontology#Axis_53",
+          "FeatureDefinitionId": "95",
+          "_id": "96"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicActual_275",
+        "qif_id": "102",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicActual",
+          "FeatureActualIdsSlot": "http://www.nist.gov/QIF_ontology#FeatureActualIds_119",
+          "StatusSlot": "http://www.nist.gov/QIF_ontology#Status_146",
+          "CharacteristicItemId": "101",
+          "Value": "3.017",
+          "_id": "102"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicDefinition_1",
+        "qif_id": "99",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicDefinition",
+          "ToleranceSlot": "http://www.nist.gov/QIF_ontology#Tolerance_7",
+          "_id": "99"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicItem_3",
+        "qif_id": "101",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicItem",
+          "FeatureItemIdsSlot": "http://www.nist.gov/QIF_ontology#FeatureItemIds_5",
+          "KeyCharacteristicSlot": "http://www.nist.gov/QIF_ontology#KeyCharacteristic_8",
+          "MeasurementDeviceIdsSlot": "http://www.nist.gov/QIF_ontology#MeasurementDeviceIds_7",
+          "CharacteristicNominalId": "100",
+          "Name": "DIAMETER7",
+          "_id": "101"
+        }
+      },
+      {
+        "uri": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicNominal_4",
+        "qif_id": "100",
+        "assertions": {
+          "type": "http://www.nist.gov/QIF_ontology#DiameterCharacteristicNominal",
+          "CharacteristicDefinitionId": "99",
+          "TargetValue": "3.0",
+          "_id": "100"
+        }
+      }
+    ],
+    "measurement_result_id": "183",
+    "component_id": "4",
+    "serial": "PLATE_RESULTS_A01_NIST_MTC_CRADA_PLATE_ORIGIN_NIKON_SCAN",
+    "overall_inspection_status": "FAIL",
+    "numeric_requirement_satisfied": true
+  },
+  "label_join_diagnostics": [
+    {
+      "fair_id": "23",
+      "incoming_id": "23",
+      "label": "DIAMETER4",
+      "fair_nominal": 10.0,
+      "incoming_nominal": 4.5,
+      "required_common_unit_scale": 0.45
+    },
+    {
+      "fair_id": "80",
+      "incoming_id": "150",
+      "label": "DIAMETER6",
+      "fair_nominal": 4.0,
+      "incoming_nominal": 4.0,
+      "required_common_unit_scale": 1.0
+    },
+    {
+      "fair_id": "83",
+      "incoming_id": "48",
+      "label": "DIAMETER5",
+      "fair_nominal": 4.0,
+      "incoming_nominal": 4.0,
+      "required_common_unit_scale": 1.0
+    },
+    {
+      "fair_id": "95",
+      "incoming_id": "101",
+      "label": "DIAMETER7",
+      "fair_nominal": 4.0,
+      "incoming_nominal": 3.0,
+      "required_common_unit_scale": 0.75
+    },
+    {
+      "fair_id": "98",
+      "incoming_id": "119",
+      "label": "DIAMETER8",
+      "fair_nominal": 4.0,
+      "incoming_nominal": 10.0,
+      "required_common_unit_scale": 2.5
+    }
+  ],
+  "interval_countermodel": {
+    "fair_id": "110",
+    "incoming_id": "169",
+    "scope": "candidate same-distance interpretation under explicitly common units; identity is unproved",
+    "fair_interval": [
+      71.0,
+      71.4
+    ],
+    "incoming_interval": [
+      70.96,
+      71.36
+    ],
+    "constructed_value": 71.38,
+    "fair_numeric_pass": true,
+    "incoming_numeric_pass": false,
+    "observed_measurement": false
+  },
+  "conditional_reuse_certificate": {
+    "scope": "counterfactual numeric certificate AFTER authorized FAIR millimeter metadata repair; NOT admitted physical reuse",
+    "current_formal_default": "meters",
+    "admitted_cross_provider_reuse": false,
+    "fair_candidate_item_ids": [
+      "71",
+      "89",
+      "92"
+    ],
+    "fair_candidate_intervals": [
+      [
+        2.75,
+        3.25
+      ],
+      [
+        2.75,
+        3.25
+      ],
+      [
+        2.75,
+        3.25
+      ]
+    ],
+    "incoming_characteristic_item": "101",
+    "incoming_interval": [
+      2.746,
+      3.254
+    ],
+    "all_source_intervals_subset_of_destination": true,
+    "recorded_value_count": 60,
+    "recorded_value_min": 3.026,
+    "recorded_value_max": 3.065,
+    "all_recorded_values_satisfy_destination_numeric_interval": true,
+    "number_of_candidate_feature_permutations": 6,
+    "permutations": [
+      [
+        "71",
+        "89",
+        "92"
+      ],
+      [
+        "71",
+        "92",
+        "89"
+      ],
+      [
+        "89",
+        "71",
+        "92"
+      ],
+      [
+        "89",
+        "92",
+        "71"
+      ],
+      [
+        "92",
+        "71",
+        "89"
+      ],
+      [
+        "92",
+        "89",
+        "71"
+      ]
+    ],
+    "individual_feature_permutation_needed_for_family_all_pass": false,
+    "prerequisites_not_established": [
+      "authorized correction confirming intended FAIR millimeter units despite formal meter default",
+      "same complete design/inspection requirement identity or accepted requalification",
+      "set identity: three FAIR characteristics cover the same three intended diameter features",
+      "specimen/lot identity and coverage between providers",
+      "measurement adequacy and authorized acceptance"
+    ],
+    "cad_nominal_three_diameter_faces": [
+      92,
+      93,
+      95
+    ]
+  },
+  "literal_semantic_conflicts": {
+    "position": {
+      "FAIR": "NONE",
+      "incoming": "MAXIMUM",
+      "interpretation": "different literals; authoritative semantic adjudication still required"
+    },
+    "perpendicularity_tolerance": {
+      "FAIR": "0.13",
+      "incoming": "-0.13",
+      "interpretation": "sign discrepancy retained; no silent absolute-value correction"
+    }
+  },
+  "mechanical_checks": {
+    "source_hashes_unchanged": true,
+    "valid_solid": true,
+    "trace_unique_geometry_candidate": true,
+    "trace_item_matches_feature_actual": true,
+    "trace_value_equals_feature_diameter": true,
+    "trace_numeric_pass_matches_record": true,
+    "trace_does_not_release_failed_part": true,
+    "reference_contains_existing_item_101": true,
+    "label_join_inconsistent_under_uniform_scale": true,
+    "countermodel_rejects_equal_intervals": true,
+    "conditional_numeric_certificate_after_unit_repair": true,
+    "exact_schema_default_and_absent_overrides": true,
+    "three_candidate_family_and_cad_features": true
+  },
+  "run_seconds": 1.2295251059986185,
+  "limits": [
+    "Plate only; no Box/Cover inspected during this pilot",
+    "No full QIF XSD/GD&T standards conformance validation",
+    "No current cross-provider physical equivalence or authority established",
+    "No commercial cost advantage or new feasibility measured",
+    "Reference graph reused as supplied; no graph-versus-library claim",
+    "Common coordinate representation checked on this model; no universal registration method claimed"
+  ]
+}

@@ -1,0 +1,34 @@
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{xurl}
+\definecolor{AlphaNavy}{HTML}{172B45}
+\definecolor{AlphaTeal}{HTML}{087F8C}
+\definecolor{AlphaGold}{HTML}{C48B24}
+\AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=AlphaTeal,urlcolor=AlphaTeal,citecolor=AlphaTeal,
+ pdftitle={AGI ALPHA FLYWHEEL — When Capability Creates Opportunity},
+ pdfauthor={Vincent Boucher — President of MONTREAL.AI},
+ pdfsubject={Additive opportunity-discovery edition v4; executed evidence and conditional commercial analysis}}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\tabcolsep}{4pt}
+\setcounter{tocdepth}{1}
+\titleformat{\section}{\Large\bfseries\raggedright\hyphenpenalty=10000\color{AlphaNavy}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{AlphaTeal}}{\thesubsection}{.65em}{}
+\titlespacing*{\section}{0pt}{1.4em}{.65em}
+\titlespacing*{\subsection}{0pt}{1.0em}{.4em}
+\let\OriginalSection\section
+\renewcommand{\section}{\needspace{5\baselineskip}\OriginalSection}
+\let\OriginalSubsection\subsection
+\renewcommand{\subsection}{\needspace{6\baselineskip}\OriginalSubsection}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\footnotesize\sffamily Research edition v4}
+\fancyfoot[L]{\scriptsize Vincent Boucher · MONTREAL.AI}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{15pt}

@@ -1,0 +1,9 @@
+{
+  "schema": "native-accounting-adapter-attempt/v1",
+  "status": "failed-before-final-receipts",
+  "source_sha256": "522d549bcb16f5b19a196906a93ba63fb365527e9b1c39293cf823e4fdc28eb8",
+  "source_preserved": "history/replay_economics_float_payload_v0.py",
+  "error": "Native signed-record commitments reject floating-point values. The attempted original-event journal payload contained floats.",
+  "scientific_or_market_inputs_changed": false,
+  "correction_required": "Encode original finite float literals as explicit decimal strings in signed payloads, retain source event hash and encoding disclosure."
+}

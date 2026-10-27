@@ -1,0 +1,118 @@
+{
+  "schema": "offline-demo-solvency-panel-qa-v1",
+  "artifact_sha256": "31ddde9449c05bfe78b0b47f83be082b95a3bdfbfa4316b6bb2c2f8d61f01b42",
+  "scope": "Focused review of added bilingual adverse-solvency panel, source import, download and layout; no scientific/economic rerun.",
+  "prior_full_control_qa": {
+    "path": "demo-qa-original.json",
+    "sha256": "f799550761768a3652104312b1d58065ba28b3ba6f9678d6a7e8c0c06ab6c567",
+    "scope": "Earlier exact artifact: all 32 explorer states and original controls."
+  },
+  "browser": "139.0.7258.5",
+  "page_errors": [],
+  "external_requests": [],
+  "checks": [
+    {
+      "name": "exact-audit-aggregate",
+      "passed": true
+    },
+    {
+      "name": "en-title-and-scope",
+      "passed": true,
+      "title": "114 of 1,889 original selected commitments are exposed.",
+      "caveat": "These are conditional funding exposures, not realized insolvencies. Eleven exposed commitments were later cancelled in the original withdrawal realizations. The original expected-profit results remain unchanged; this audit assigns no milestone-rejection probability.",
+      "condition": "If all committed precollection work is incurred, the development milestone is rejected, every advance must be refunded, and no final collection finances the work, 114 commitments need more opening cash than their unchanged seed capital."
+    },
+    {
+      "name": "en-four-arm-breakdown",
+      "passed": true,
+      "rows": [
+        [
+          "Expert · standard",
+          "772",
+          "0",
+          "$0.00"
+        ],
+        [
+          "Retained · standard",
+          "127",
+          "0",
+          "$0.00"
+        ],
+        [
+          "Expert · arranged",
+          "796",
+          "62",
+          "$3,311.46"
+        ],
+        [
+          "Retained · arranged",
+          "194",
+          "52",
+          "$5,222.25"
+        ]
+      ]
+    },
+    {
+      "name": "fr-title-and-scope",
+      "passed": true,
+      "title": "114 engagements exposés sur les 1 889 engagements initialement retenus.",
+      "caveat": "Il s’agit d’expositions conditionnelles de financement, pas d’insolvabilités réalisées. Onze engagements exposés ont ensuite été annulés dans les réalisations initiales de retrait. Les résultats initiaux de bénéfice espéré restent inchangés; cet audit n’attribue aucune probabilité au rejet du jalon.",
+      "condition": "Si tous les travaux engagés avant encaissement sont effectués, que le jalon de développement est rejeté, que chaque acompte doit être intégralement remboursé et qu’aucun paiement final ne finance les travaux, 114 engagements exigent plus de trésorerie initiale que leur capital de départ inchangé."
+    },
+    {
+      "name": "fr-four-arm-breakdown",
+      "passed": true,
+      "rows": [
+        [
+          "Expert · standard",
+          "772",
+          "0",
+          "0,00 $"
+        ],
+        [
+          "Conservé · standard",
+          "127",
+          "0",
+          "0,00 $"
+        ],
+        [
+          "Expert · contrat",
+          "796",
+          "62",
+          "3 311,46 $"
+        ],
+        [
+          "Conservé · contrat",
+          "194",
+          "52",
+          "5 222,25 $"
+        ]
+      ]
+    },
+    {
+      "name": "desktop-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "name": "mobile-no-horizontal-overflow",
+      "passed": true
+    },
+    {
+      "name": "keyboard-new-details",
+      "passed": true
+    },
+    {
+      "name": "download-includes-exact-stress-result-and-source-manifest",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "demo-solvency-en.png",
+    "demo-solvency-fr.png"
+  ],
+  "passed": true,
+  "visual_review": {
+    "english_desktop": "reviewed; complete conditional scenario, unchanged-profit and no-probability caveats readable",
+    "french_mobile": "reviewed; all caveats readable without horizontal overflow"
+  }
+}

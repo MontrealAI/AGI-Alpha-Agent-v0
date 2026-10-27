@@ -1,0 +1,39 @@
+{
+  "schema": "v4-integration-targeted-verification/v1",
+  "timestamp_utc": "2026-10-27T16:44:14.083049+00:00",
+  "records": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "studies/agi-alpha-opportunity-discovery-v4/integration"
+      ],
+      "returncode": 0,
+      "seconds": 0.03722904701135121,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "studies/agi-alpha-opportunity-discovery-v4/integration/test_binding.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 1.3027557360037463,
+      "stdout": "",
+      "stderr": "test_altered_archive_refuses_old_identity (__main__.IntegrityTests.test_altered_archive_refuses_old_identity) ... ok\ntest_credential_and_registered_protected_material_refused (__main__.IntegrityTests.test_credential_and_registered_protected_material_refused) ... ok\ntest_declared_dependency_version_mismatch_refused (__main__.IntegrityTests.test_declared_dependency_version_mismatch_refused) ... ok\ntest_existing_A_B_C_ledger_counts_once_and_keeps_unknown_cost_unknown (__main__.IntegrityTests.test_existing_A_B_C_ledger_counts_once_and_keeps_unknown_cost_unknown) ... ok\ntest_existing_native_journal_prevents_grant_replay (__main__.IntegrityTests.test_existing_native_journal_prevents_grant_replay) ... ok\ntest_existing_source_manifest_is_verified (__main__.IntegrityTests.test_existing_source_manifest_is_verified) ... ok\ntest_generic_receipt_carries_neither_mission_acceptance_nor_authority (__main__.IntegrityTests.test_generic_receipt_carries_neither_mission_acceptance_nor_authority) ... ok\ntest_native_signature_time_revocation_and_scope_checks (__main__.IntegrityTests.test_native_signature_time_revocation_and_scope_checks) ... ok\ntest_received_bytes_bind_complete_source_and_environment (__main__.IntegrityTests.test_received_bytes_bind_complete_source_and_environment) ... ok\ntest_request_semantics_and_source_bytes_are_both_bound (__main__.IntegrityTests.test_request_semantics_and_source_bytes_are_both_bound) ... ok\ntest_source_drift_prevents_packing (__main__.IntegrityTests.test_source_drift_prevents_packing) ... ok\ntest_undeclared_data_cannot_enter_payload (__main__.IntegrityTests.test_undeclared_data_cannot_enter_payload) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 1.139s\n\nOK\n"
+    }
+  ],
+  "files": {
+    "run_integration.py": "bfa1018316ff23f2acd884ccf93f0a910b17251559fb535358590dd13a4accf8",
+    "recipient.py": "322f9ed7a7c60944728b73cb663fdb7f9cd1a9681e417bb7f7e7781e6458658f",
+    "test_binding.py": "92425d1835b4545f720d050f2d20147df1c63b62db5f3799f4e545dc660b1525",
+    "binding.py": "e15791432d3d2123e3d10ffd3e02cfd00c7240337e77bce1e6314c933df05b65"
+  },
+  "scope": "integrity and native-interface fixtures only; no protected scientific tasks opened",
+  "black_status": "Installed Black failed importing pathspec.patterns.gitignore; Ruff formatter used."
+}

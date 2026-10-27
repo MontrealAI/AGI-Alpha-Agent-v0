@@ -1,0 +1,143 @@
+{
+  "schema": "model-documentation-check/v1",
+  "checked_utc_date": "2026-10-27",
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers"
+  ],
+  "models": [
+    {
+      "official_identifier": "gpt-6-astra",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "intended_role": "complex reasoning, research, coding, validation",
+      "classification": "sourced_current_documentation_not_observed_execution",
+      "reasoning_effort_supported": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "context_tokens": 1050000,
+      "maximum_output_tokens": 128000,
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "streaming": true,
+      "function_calling": true,
+      "structured_outputs": true,
+      "fine_tuning_supported": false,
+      "tools_via_responses": [
+        "web search",
+        "file search",
+        "image generation",
+        "code interpreter",
+        "hosted shell",
+        "apply patch",
+        "skills",
+        "computer use",
+        "MCP",
+        "tool search"
+      ],
+      "standard_usd_per_million": {
+        "input": 10,
+        "cached_input": 1,
+        "output": 50,
+        "cache_write_30m": 12.5,
+        "cache_write_12h": 25
+      },
+      "public_rate_limit_example": {
+        "tier": "Build",
+        "requests_per_minute": 5000,
+        "tokens_per_minute": 1000000,
+        "batch_queue_tokens": 3000000
+      },
+      "access": "Free API tier not supported; account entitlement and assigned limits were not tested."
+    },
+    {
+      "official_identifier": "gpt-6.1-terra",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "intended_role": "visual reasoning and computer execution candidate",
+      "classification": "sourced_current_documentation_not_observed_execution",
+      "reasoning_effort_supported": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "context_tokens": 1050000,
+      "maximum_output_tokens": 128000,
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "streaming": true,
+      "function_calling": true,
+      "structured_outputs": true,
+      "fine_tuning_supported": false,
+      "tools_via_responses": [
+        "web search",
+        "file search",
+        "image generation",
+        "code interpreter",
+        "hosted shell",
+        "apply patch",
+        "skills",
+        "computer use",
+        "MCP",
+        "tool search"
+      ],
+      "standard_usd_per_million": {
+        "input": 1,
+        "cached_input": 0.05,
+        "output": 5,
+        "cache_write_30m": 1.25,
+        "cache_write_12h": 2.5
+      },
+      "public_rate_limit_example": {
+        "tier": "Build",
+        "requests_per_minute": 5000,
+        "tokens_per_minute": 1000000,
+        "batch_queue_tokens": 3000000
+      },
+      "access": "Free API tier not supported; account entitlement and assigned limits were not tested."
+    }
+  ],
+  "pricing_adjustments_sourced": {
+    "input_above_272000_tokens": {
+      "input_and_cache_multiplier": 2,
+      "output_multiplier": 1.5,
+      "scope": "full request"
+    },
+    "batch_or_flex_multiplier": 0.5,
+    "fast_multiplier": 2,
+    "qualifying_regional_or_FedRAMP_multiplier": 1.1,
+    "tool_charges": "additional where applicable"
+  },
+  "execution_provenance": {
+    "hosted_model_role": "GPT-6 Astra Pro declared by session; exact served API snapshot not exposed",
+    "hosted_reasoning_effort": "not observable as billed API configuration",
+    "UEEplus": "same inherited hosted configuration; separate fork-none recipient conversations; no model override",
+    "actual_tools": "local execution, XML/CAD libraries, source research and hosted collaboration; see experiment receipts",
+    "Terra_API_execution": false,
+    "API_token_usage": null,
+    "API_billing": null,
+    "ChatGPT_Pro": "subscription plan; no API identifier or automatic API entitlement inferred"
+  },
+  "reuse_policy": "Recheck models, prices, access and tool support before deployment. A future API adapter must log exact requested identifier, reasoning setting, tools, ceilings, retries and usage. No cost estimate here is study billing."
+}

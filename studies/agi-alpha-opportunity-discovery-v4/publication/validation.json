@@ -1,0 +1,1572 @@
+{
+  "schema": "agi-alpha-opportunity-discovery-v4-final-evidence-audit/v1",
+  "audited_at_utc": "2026-10-27T17:20:32.371235+00:00",
+  "method": "Read existing freeze manifests and receipts; hash source, manifest, input, answer and report bytes. No experiments, grading, scientific calculations, tests, external writes or publication operations rerun.",
+  "research_parent_commit": "231834269599d85e49cfe1ca9917a1a874522d44",
+  "runtime_base_commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+  "closure_groups": [
+    {
+      "name": "instrument_0_1_0",
+      "manifest": "instrument/freeze.json",
+      "sha256": "3526300d1499a58d6bae81bcebfde7252aeb42d625a7e463bcbf29766108fc64",
+      "files": 11,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "instrument_0_1_1",
+      "manifest": "instrument_v0_1_1/freeze.json",
+      "sha256": "107338d3358d6a98f33631bb7fe3915fcbd5e9f46dc449bb3fc11d86972e402d",
+      "files": 12,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "evaluator_original",
+      "manifest": "evaluation/EVALUATOR_FREEZE.json",
+      "sha256": "b5e165a9b447a4953b402148e393e2b937f11da6237502af5ca0ad6b0d86b953",
+      "files": 36,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "evaluator_prospective",
+      "manifest": "evaluation/PROSPECTIVE_EVALUATOR_FREEZE.json",
+      "sha256": "592907d3b313f55cdeb3bf6800cd08bbb2cf8420360922311a61056060859daa",
+      "files": 17,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "economics_original",
+      "manifest": "economics/freeze.json",
+      "sha256": "1e8aea2ed0913c10cde17fae98a4a8b9b13d9dcfb1c43eaf53362cdee1ab64ce",
+      "files": 4,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "economics_adverse_solvency",
+      "manifest": "economics/postconfirmation_solvency_v1/FREEZE.json",
+      "sha256": "847a5abe0b7efedc5e0a9a84c9e9477ada4adeb8a6c3308f9382f5523b802f78",
+      "files": 6,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "hosted_expertise",
+      "manifest": "expertise/freeze.json",
+      "sha256": "a5320338c4bdcab566ee8f73390bc0478db8ce4327ede8ccb2533ddd26008679",
+      "files": 4,
+      "matches": true,
+      "missing": 0
+    },
+    {
+      "name": "prospective_requests",
+      "manifest": "evaluation/prospective-v1/FREEZE.json",
+      "sha256": "9bb07729b6c25783f4ac8e54ef31ca816828eb630dec25b06d47ada467d0e45d",
+      "files": 9,
+      "matches": true,
+      "missing": 0
+    }
+  ],
+  "file_integrity_checks": [
+    {
+      "group": "instrument_0_1_0:manifest",
+      "path": "instrument/freeze.json",
+      "representation": "file bytes",
+      "expected_sha256": "3526300d1499a58d6bae81bcebfde7252aeb42d625a7e463bcbf29766108fc64",
+      "actual_sha256": "3526300d1499a58d6bae81bcebfde7252aeb42d625a7e463bcbf29766108fc64",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/__init__.py",
+      "representation": "file bytes",
+      "expected_sha256": "8e6d53ee0c134be2bb855991327ce5273bf18d27c747a46b2f8014260cc2dff4",
+      "actual_sha256": "8e6d53ee0c134be2bb855991327ce5273bf18d27c747a46b2f8014260cc2dff4",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/audit.py",
+      "representation": "file bytes",
+      "expected_sha256": "4598a5a8556d24cb4429b827d356b61fa1dd99b7d0e397483e25c80650ae2569",
+      "actual_sha256": "4598a5a8556d24cb4429b827d356b61fa1dd99b7d0e397483e25c80650ae2569",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/cli.py",
+      "representation": "file bytes",
+      "expected_sha256": "1cc6202af1cfe9b4fb8fe9e4e67422dbeb29d9e58507618da6fea4acd1e28544",
+      "actual_sha256": "1cc6202af1cfe9b4fb8fe9e4e67422dbeb29d9e58507618da6fea4acd1e28544",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/qif_reader.py",
+      "representation": "file bytes",
+      "expected_sha256": "930645a83184cc0c1a60eb5904124bfd7a204be6478b288ce84a6f2a9ec3c89f",
+      "actual_sha256": "930645a83184cc0c1a60eb5904124bfd7a204be6478b288ce84a6f2a9ec3c89f",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/geometry.py",
+      "representation": "file bytes",
+      "expected_sha256": "5fc542a54e6a55351741d9a7ed2c40533272f6e331875a51f01468e89202b205",
+      "actual_sha256": "5fc542a54e6a55351741d9a7ed2c40533272f6e331875a51f01468e89202b205",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/proofs.py",
+      "representation": "file bytes",
+      "expected_sha256": "6d2b1a9af16891621cb2478fcbdc30dcdd17862177f5b28f46c365d5c4d04dbd",
+      "actual_sha256": "6d2b1a9af16891621cb2478fcbdc30dcdd17862177f5b28f46c365d5c4d04dbd",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/policy.json",
+      "representation": "file bytes",
+      "expected_sha256": "987e26844af2a476f81180fcb380144dac66b9dbe1d55cfccf52282bd4b8bb4e",
+      "actual_sha256": "987e26844af2a476f81180fcb380144dac66b9dbe1d55cfccf52282bd4b8bb4e",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/request.schema.json",
+      "representation": "file bytes",
+      "expected_sha256": "02764be6ce928e5234edff75580e208bd0aa80c9ff45844d843e7c8d6f7d0f31",
+      "actual_sha256": "02764be6ce928e5234edff75580e208bd0aa80c9ff45844d843e7c8d6f7d0f31",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/report.schema.json",
+      "representation": "file bytes",
+      "expected_sha256": "ae586013bb1ff0550d29d4e93088d053df8eba79dff1349936d9a2aceba0f362",
+      "actual_sha256": "ae586013bb1ff0550d29d4e93088d053df8eba79dff1349936d9a2aceba0f362",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/dependencies.json",
+      "representation": "file bytes",
+      "expected_sha256": "b67cb8123f3222939f58dd1bcc80e8a9a1023ee985047517f24b58d69d338236",
+      "actual_sha256": "b67cb8123f3222939f58dd1bcc80e8a9a1023ee985047517f24b58d69d338236",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_0",
+      "path": "instrument/QIF_2_1_Units.xsd",
+      "representation": "file bytes",
+      "expected_sha256": "2d46993e49300841e66fc05c35dafbcb63ac8085e9c9c8cbc8670e97c13a5fbd",
+      "actual_sha256": "2d46993e49300841e66fc05c35dafbcb63ac8085e9c9c8cbc8670e97c13a5fbd",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1:manifest",
+      "path": "instrument_v0_1_1/freeze.json",
+      "representation": "file bytes",
+      "expected_sha256": "107338d3358d6a98f33631bb7fe3915fcbd5e9f46dc449bb3fc11d86972e402d",
+      "actual_sha256": "107338d3358d6a98f33631bb7fe3915fcbd5e9f46dc449bb3fc11d86972e402d",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/__init__.py",
+      "representation": "file bytes",
+      "expected_sha256": "98a628b008565467aef2ab23527ee436abd70d7afbda097308e60a6444052a37",
+      "actual_sha256": "98a628b008565467aef2ab23527ee436abd70d7afbda097308e60a6444052a37",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/audit.py",
+      "representation": "file bytes",
+      "expected_sha256": "685a9841a277ced5712369b7f2fe73c70060c646a34d65b2ebf33840ba74edd5",
+      "actual_sha256": "685a9841a277ced5712369b7f2fe73c70060c646a34d65b2ebf33840ba74edd5",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/cli.py",
+      "representation": "file bytes",
+      "expected_sha256": "552d68a8ba262f0eda1e5412af7d5d84f22d3e2b2c41e0d7a20972c1549df433",
+      "actual_sha256": "552d68a8ba262f0eda1e5412af7d5d84f22d3e2b2c41e0d7a20972c1549df433",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/qif_reader.py",
+      "representation": "file bytes",
+      "expected_sha256": "930645a83184cc0c1a60eb5904124bfd7a204be6478b288ce84a6f2a9ec3c89f",
+      "actual_sha256": "930645a83184cc0c1a60eb5904124bfd7a204be6478b288ce84a6f2a9ec3c89f",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/geometry.py",
+      "representation": "file bytes",
+      "expected_sha256": "5fc542a54e6a55351741d9a7ed2c40533272f6e331875a51f01468e89202b205",
+      "actual_sha256": "5fc542a54e6a55351741d9a7ed2c40533272f6e331875a51f01468e89202b205",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/proofs.py",
+      "representation": "file bytes",
+      "expected_sha256": "6d2b1a9af16891621cb2478fcbdc30dcdd17862177f5b28f46c365d5c4d04dbd",
+      "actual_sha256": "6d2b1a9af16891621cb2478fcbdc30dcdd17862177f5b28f46c365d5c4d04dbd",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/policy.json",
+      "representation": "file bytes",
+      "expected_sha256": "230f06545c636d9be52560f3b5067ec80925ffdb9c89f567d9f8040e25f04bbd",
+      "actual_sha256": "230f06545c636d9be52560f3b5067ec80925ffdb9c89f567d9f8040e25f04bbd",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/request.schema.json",
+      "representation": "file bytes",
+      "expected_sha256": "02764be6ce928e5234edff75580e208bd0aa80c9ff45844d843e7c8d6f7d0f31",
+      "actual_sha256": "02764be6ce928e5234edff75580e208bd0aa80c9ff45844d843e7c8d6f7d0f31",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/report.schema.json",
+      "representation": "file bytes",
+      "expected_sha256": "0464b348cec74fbe7cedc33db4259571eb9887cf570b7496f1383b55895ac383",
+      "actual_sha256": "0464b348cec74fbe7cedc33db4259571eb9887cf570b7496f1383b55895ac383",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/dependencies.json",
+      "representation": "file bytes",
+      "expected_sha256": "b67cb8123f3222939f58dd1bcc80e8a9a1023ee985047517f24b58d69d338236",
+      "actual_sha256": "b67cb8123f3222939f58dd1bcc80e8a9a1023ee985047517f24b58d69d338236",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/QIF_2_1_Units.xsd",
+      "representation": "file bytes",
+      "expected_sha256": "2d46993e49300841e66fc05c35dafbcb63ac8085e9c9c8cbc8670e97c13a5fbd",
+      "actual_sha256": "2d46993e49300841e66fc05c35dafbcb63ac8085e9c9c8cbc8670e97c13a5fbd",
+      "matches": true
+    },
+    {
+      "group": "instrument_0_1_1",
+      "path": "instrument_v0_1_1/QIF_DMSC_NOTICE.md",
+      "representation": "file bytes",
+      "expected_sha256": "164853c789673d73d134c8bc3b7ab2c5acacb5bf04c7a983abe2a26961dc6877",
+      "actual_sha256": "164853c789673d73d134c8bc3b7ab2c5acacb5bf04c7a983abe2a26961dc6877",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original:manifest",
+      "path": "evaluation/EVALUATOR_FREEZE.json",
+      "representation": "file bytes",
+      "expected_sha256": "b5e165a9b447a4953b402148e393e2b937f11da6237502af5ca0ad6b0d86b953",
+      "actual_sha256": "b5e165a9b447a4953b402148e393e2b937f11da6237502af5ca0ad6b0d86b953",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/checker.py",
+      "representation": "file bytes",
+      "expected_sha256": "20c47da32e4098db71136eb5fa370bc708ca2cae3656c891b840f5c6a12fef28",
+      "actual_sha256": "20c47da32e4098db71136eb5fa370bc708ca2cae3656c891b840f5c6a12fef28",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/curate.py",
+      "representation": "file bytes",
+      "expected_sha256": "b1deb789b7b0ea2f23339e841bf83554927c66838f8f3c825fb91a990395674e",
+      "actual_sha256": "b1deb789b7b0ea2f23339e841bf83554927c66838f8f3c825fb91a990395674e",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/run_confirmation.py",
+      "representation": "file bytes",
+      "expected_sha256": "fc3adf9d1da1389d138e0becf49aefac7f578615d1b1860c5c464784e6c74b79",
+      "actual_sha256": "fc3adf9d1da1389d138e0becf49aefac7f578615d1b1860c5c464784e6c74b79",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/source_oracle.py",
+      "representation": "file bytes",
+      "expected_sha256": "7418154ab98bf9f1f9fb87d9f4f1d3694c5c0ee4d69dedbe14516f30160f976f",
+      "actual_sha256": "7418154ab98bf9f1f9fb87d9f4f1d3694c5c0ee4d69dedbe14516f30160f976f",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/test_checker.py",
+      "representation": "file bytes",
+      "expected_sha256": "32a2a750c27fd45ee813a1ed4d9544ac492cfa5f99f20c9f44f1a351f0e2648a",
+      "actual_sha256": "32a2a750c27fd45ee813a1ed4d9544ac492cfa5f99f20c9f44f1a351f0e2648a",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "84554da024fcb467b39149b733c48bfbb90145827371543c79edd7d78f0b72d0",
+      "actual_sha256": "84554da024fcb467b39149b733c48bfbb90145827371543c79edd7d78f0b72d0",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/HOSTED_PACKET.md",
+      "representation": "file bytes",
+      "expected_sha256": "93ac8bc7f7755892d489df4efad24355bd85dc58d93319a28db5c0b67807ed93",
+      "actual_sha256": "93ac8bc7f7755892d489df4efad24355bd85dc58d93319a28db5c0b67807ed93",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/jobs.json",
+      "representation": "file bytes",
+      "expected_sha256": "bdb3584279cff1540db8987671a1814d14a647aecab891953d8d18d4b0a23b28",
+      "actual_sha256": "bdb3584279cff1540db8987671a1814d14a647aecab891953d8d18d4b0a23b28",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/input_manifest.json",
+      "representation": "file bytes",
+      "expected_sha256": "8010d778fbb198a2794a3b2b51bab342742ff03637b9b287f34aee31b4dcef32",
+      "actual_sha256": "8010d778fbb198a2794a3b2b51bab342742ff03637b9b287f34aee31b4dcef32",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/box-counterfactual-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "32d0ca323a1fd5ecfc7006ee0ebb594f6b2e67db7698bde408ed1aa179701f69",
+      "actual_sha256": "32d0ca323a1fd5ecfc7006ee0ebb594f6b2e67db7698bde408ed1aa179701f69",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/box-feature-localization-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "59e3019731b527d47867b3885d7bbb80d1299f5ab51ecbc5ffbd771f72c1a1d0",
+      "actual_sha256": "59e3019731b527d47867b3885d7bbb80d1299f5ab51ecbc5ffbd771f72c1a1d0",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/box-formal-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "05642abba9e00b02981b33ea71c8326c5a4320b414529196677158d414da7711",
+      "actual_sha256": "05642abba9e00b02981b33ea71c8326c5a4320b414529196677158d414da7711",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/box-report-comparability-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "9649f372670b46576c4adecd82237ec195fd6fb549a5869386e44bdecaafa0fe",
+      "actual_sha256": "9649f372670b46576c4adecd82237ec195fd6fb549a5869386e44bdecaafa0fe",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/cover-counterfactual-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "0b433b15468c0bc21d74f78f37e1bc7c3aa7225821a1bc82b2bf315c791aae0d",
+      "actual_sha256": "0b433b15468c0bc21d74f78f37e1bc7c3aa7225821a1bc82b2bf315c791aae0d",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/cover-no-geometry-audit-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "adc39ce1eaded0c352eb04d62caf108529c87e7415ed2055c9e81a5fbc72f6e4",
+      "actual_sha256": "adc39ce1eaded0c352eb04d62caf108529c87e7415ed2055c9e81a5fbc72f6e4",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/cover-physical-release-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "d7d84aba283d40c4a0c3cce43d6be98b7e9c76aed4bedca9c0dafabea7f8f2ac",
+      "actual_sha256": "d7d84aba283d40c4a0c3cce43d6be98b7e9c76aed4bedca9c0dafabea7f8f2ac",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/cover-report-comparability-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "be88382a4cd4f71f2bf3e0b89ae404aedbbde6606a84ac2a88b979c156e80554",
+      "actual_sha256": "be88382a4cd4f71f2bf3e0b89ae404aedbbde6606a84ac2a88b979c156e80554",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/requests/recipient-cover-evidence-acquisition-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+      "actual_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Box_FAIR.json",
+      "representation": "file bytes",
+      "expected_sha256": "e864b802a47de9d583a75fa261538c61c3725e05706094726b3bd490dfa274f2",
+      "actual_sha256": "e864b802a47de9d583a75fa261538c61c3725e05706094726b3bd490dfa274f2",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Box_brep.json",
+      "representation": "file bytes",
+      "expected_sha256": "cb33fafcc80d3ebb4d207a35200a17d2a27511c094c01e2bc8f3781b9c0cf1ad",
+      "actual_sha256": "cb33fafcc80d3ebb4d207a35200a17d2a27511c094c01e2bc8f3781b9c0cf1ad",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Box_incoming.json",
+      "representation": "file bytes",
+      "expected_sha256": "269d45766157f9b54e7d804cf5c7ce51ec38719909ebcce661f6dadece3d9fad",
+      "actual_sha256": "269d45766157f9b54e7d804cf5c7ce51ec38719909ebcce661f6dadece3d9fad",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Box_step.json",
+      "representation": "file bytes",
+      "expected_sha256": "c91a12ba9d21cffac8a19a63d77be1809488f56778f196bdc3d7ddfdd74b20e3",
+      "actual_sha256": "c91a12ba9d21cffac8a19a63d77be1809488f56778f196bdc3d7ddfdd74b20e3",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Cover_FAIR.json",
+      "representation": "file bytes",
+      "expected_sha256": "565b23d3012772123d5ce3808f4c4ffe8da8cfd85b26d378f281fbe1db7a95d2",
+      "actual_sha256": "565b23d3012772123d5ce3808f4c4ffe8da8cfd85b26d378f281fbe1db7a95d2",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Cover_brep.json",
+      "representation": "file bytes",
+      "expected_sha256": "ce229bb1f69a9c1dc2e64f78f10482b571a8e541c1e395c86f19624f342ab894",
+      "actual_sha256": "ce229bb1f69a9c1dc2e64f78f10482b571a8e541c1e395c86f19624f342ab894",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Cover_incoming.json",
+      "representation": "file bytes",
+      "expected_sha256": "526c40e75fc2ed03eb25f473e6637b530343ee1380def9a42c75560afba0288c",
+      "actual_sha256": "526c40e75fc2ed03eb25f473e6637b530343ee1380def9a42c75560afba0288c",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/Cover_step.json",
+      "representation": "file bytes",
+      "expected_sha256": "8f83da8e9d11038d3e7e2c7fa63ca4cbbf27816958db7d8e8a199a3885274e8c",
+      "actual_sha256": "8f83da8e9d11038d3e7e2c7fa63ca4cbbf27816958db7d8e8a199a3885274e8c",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/box-counterfactual-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "fc74539b52a4fbf41ce8549f10f9cd1ce37b044a19657a5fb9f6ae6e138fe867",
+      "actual_sha256": "fc74539b52a4fbf41ce8549f10f9cd1ce37b044a19657a5fb9f6ae6e138fe867",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/box-feature-localization-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "1c4427fa2c6ae83668eff01ae22f8e6b8228a5daed93dc9daa25705e84d36a91",
+      "actual_sha256": "1c4427fa2c6ae83668eff01ae22f8e6b8228a5daed93dc9daa25705e84d36a91",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/box-formal-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "62ba61ecef5927ec3f16974b6408ec46f3a9edcc1ad14fd06dd7afa9ca662047",
+      "actual_sha256": "62ba61ecef5927ec3f16974b6408ec46f3a9edcc1ad14fd06dd7afa9ca662047",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/box-report-comparability-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "e4760629b55a81c3ed201e97b47cc0ce2c86db012a0d9782c010df1eb1133fdb",
+      "actual_sha256": "e4760629b55a81c3ed201e97b47cc0ce2c86db012a0d9782c010df1eb1133fdb",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/cover-counterfactual-family-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "dfa3c74e78047589d8fc5849a8bb7e3a68d7d0b89c445ae1dfc3f09415e2e427",
+      "actual_sha256": "dfa3c74e78047589d8fc5849a8bb7e3a68d7d0b89c445ae1dfc3f09415e2e427",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/cover-no-geometry-audit-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "79183928a356ccee06df9b07f055fc3144bc11a3be5410c3ea0f6bffafc20e69",
+      "actual_sha256": "79183928a356ccee06df9b07f055fc3144bc11a3be5410c3ea0f6bffafc20e69",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/cover-physical-release-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "024047ed296ca888ccb29eaa3a3abda93305b5d81f8148e4ce33d1a5c235b84b",
+      "actual_sha256": "024047ed296ca888ccb29eaa3a3abda93305b5d81f8148e4ce33d1a5c235b84b",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/cover-report-comparability-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "7441c37f277797d6b977da3060e62c01fae3debbc58a16d5a939fa278f700d8e",
+      "actual_sha256": "7441c37f277797d6b977da3060e62c01fae3debbc58a16d5a939fa278f700d8e",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/hosted_rubric.json",
+      "representation": "file bytes",
+      "expected_sha256": "30d8f4c368faee425ed2a3281f9bce45869ce5cc70d9b8a6ef2fee3a8ebd405f",
+      "actual_sha256": "30d8f4c368faee425ed2a3281f9bce45869ce5cc70d9b8a6ef2fee3a8ebd405f",
+      "matches": true
+    },
+    {
+      "group": "evaluator_original",
+      "path": "evaluation/protected/oracles/recipient-cover-evidence-acquisition-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "b10656a9d02f8a364af9107dc363d575e887b082be07d3f1a3ff22ad32044480",
+      "actual_sha256": "b10656a9d02f8a364af9107dc363d575e887b082be07d3f1a3ff22ad32044480",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective:manifest",
+      "path": "evaluation/PROSPECTIVE_EVALUATOR_FREEZE.json",
+      "representation": "file bytes",
+      "expected_sha256": "592907d3b313f55cdeb3bf6800cd08bbb2cf8420360922311a61056060859daa",
+      "actual_sha256": "592907d3b313f55cdeb3bf6800cd08bbb2cf8420360922311a61056060859daa",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/checker_v0_1_1.py",
+      "representation": "file bytes",
+      "expected_sha256": "a3d69949b3d01040bbe9a530eae0115db4578afc81f860a320d943fb182f6161",
+      "actual_sha256": "a3d69949b3d01040bbe9a530eae0115db4578afc81f860a320d943fb182f6161",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/source_oracle.py",
+      "representation": "file bytes",
+      "expected_sha256": "7418154ab98bf9f1f9fb87d9f4f1d3694c5c0ee4d69dedbe14516f30160f976f",
+      "actual_sha256": "7418154ab98bf9f1f9fb87d9f4f1d3694c5c0ee4d69dedbe14516f30160f976f",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/run_prospective.py",
+      "representation": "file bytes",
+      "expected_sha256": "b43fa4ec1d37166c839ce606f274f4036e689288271fae83580c6ac52b8e90e2",
+      "actual_sha256": "b43fa4ec1d37166c839ce606f274f4036e689288271fae83580c6ac52b8e90e2",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "0c235c0ae94e5577f9fcccfaa3692caa600d74c4fac3461071dff7c14100def5",
+      "actual_sha256": "0c235c0ae94e5577f9fcccfaa3692caa600d74c4fac3461071dff7c14100def5",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/FREEZE.json",
+      "representation": "file bytes",
+      "expected_sha256": "9bb07729b6c25783f4ac8e54ef31ca816828eb630dec25b06d47ada467d0e45d",
+      "actual_sha256": "9bb07729b6c25783f4ac8e54ef31ca816828eb630dec25b06d47ada467d0e45d",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/test_scope.py",
+      "representation": "file bytes",
+      "expected_sha256": "00161cc8020f287b00ecf52f31f2a51a1d1fa3df58df6994c43b43be450f5178",
+      "actual_sha256": "00161cc8020f287b00ecf52f31f2a51a1d1fa3df58df6994c43b43be450f5178",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/protected/input_manifest.json",
+      "representation": "file bytes",
+      "expected_sha256": "8010d778fbb198a2794a3b2b51bab342742ff03637b9b287f34aee31b4dcef32",
+      "actual_sha256": "8010d778fbb198a2794a3b2b51bab342742ff03637b9b287f34aee31b4dcef32",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/requests/box-position-modifier-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "df478c24bbfa6571c82d23ea4730fb6568f07376154e2591ab457adee1d6214a",
+      "actual_sha256": "df478c24bbfa6571c82d23ea4730fb6568f07376154e2591ab457adee1d6214a",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/requests/box-size-to-width-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "2996de4a1c8af0a1e024094b46c3d82fbaf9e0f829eea9f583734a51d9ed24bb",
+      "actual_sha256": "2996de4a1c8af0a1e024094b46c3d82fbaf9e0f829eea9f583734a51d9ed24bb",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/requests/cover-labeled-distance-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "889b5eb3e32c56d6902f945642c5ec6b727006b8c8f6019d32fb9b7e18debd2d",
+      "actual_sha256": "889b5eb3e32c56d6902f945642c5ec6b727006b8c8f6019d32fb9b7e18debd2d",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/requests/cover-signed-tolerance-export-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "80120daba0425e934c20ab59e138ff5c9de517fa7465f0b988fa47b1069f25c0",
+      "actual_sha256": "80120daba0425e934c20ab59e138ff5c9de517fa7465f0b988fa47b1069f25c0",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/oracles/box-position-modifier-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "ed521e12fa0e54f9b642b24d8e850d62199965811b37191a73b3e56101b89fe1",
+      "actual_sha256": "ed521e12fa0e54f9b642b24d8e850d62199965811b37191a73b3e56101b89fe1",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/oracles/box-size-to-width-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "b8ad0fd84f95c01ddebf524604f6f17159c9e640cc609e9661474060af1802ef",
+      "actual_sha256": "b8ad0fd84f95c01ddebf524604f6f17159c9e640cc609e9661474060af1802ef",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/oracles/cover-labeled-distance-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "ebd3566d6115502069e757c36fe958a7c8b501c27eb8bce0993cf80919e92027",
+      "actual_sha256": "ebd3566d6115502069e757c36fe958a7c8b501c27eb8bce0993cf80919e92027",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/prospective-v1/oracles/cover-signed-tolerance-export-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "fdbbe226078b177cc9d8776c194eb5110aec969ba8e53e6bef43c45451cabb7a",
+      "actual_sha256": "fdbbe226078b177cc9d8776c194eb5110aec969ba8e53e6bef43c45451cabb7a",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/protected/oracles/Box_brep.json",
+      "representation": "file bytes",
+      "expected_sha256": "cb33fafcc80d3ebb4d207a35200a17d2a27511c094c01e2bc8f3781b9c0cf1ad",
+      "actual_sha256": "cb33fafcc80d3ebb4d207a35200a17d2a27511c094c01e2bc8f3781b9c0cf1ad",
+      "matches": true
+    },
+    {
+      "group": "evaluator_prospective",
+      "path": "evaluation/protected/oracles/Cover_brep.json",
+      "representation": "file bytes",
+      "expected_sha256": "ce229bb1f69a9c1dc2e64f78f10482b571a8e541c1e395c86f19624f342ab894",
+      "actual_sha256": "ce229bb1f69a9c1dc2e64f78f10482b571a8e541c1e395c86f19624f342ab894",
+      "matches": true
+    },
+    {
+      "group": "economics_original:manifest",
+      "path": "economics/freeze.json",
+      "representation": "file bytes",
+      "expected_sha256": "1e8aea2ed0913c10cde17fae98a4a8b9b13d9dcfb1c43eaf53362cdee1ab64ce",
+      "actual_sha256": "1e8aea2ed0913c10cde17fae98a4a8b9b13d9dcfb1c43eaf53362cdee1ab64ce",
+      "matches": true
+    },
+    {
+      "group": "economics_original",
+      "path": "economics/model.py",
+      "representation": "file bytes",
+      "expected_sha256": "c2bb3e5178671373a383286adf9f1a37a1063452f9db240676d6be9ecab9b509",
+      "actual_sha256": "c2bb3e5178671373a383286adf9f1a37a1063452f9db240676d6be9ecab9b509",
+      "matches": true
+    },
+    {
+      "group": "economics_original",
+      "path": "economics/trajectory.py",
+      "representation": "file bytes",
+      "expected_sha256": "843c39aa317071934de17c563e8e9eb777e1f0db11759da94c6a7f0e5c5a163e",
+      "actual_sha256": "843c39aa317071934de17c563e8e9eb777e1f0db11759da94c6a7f0e5c5a163e",
+      "matches": true
+    },
+    {
+      "group": "economics_original",
+      "path": "economics/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "1aca2f646ba2be767fd053ca769cefbe1f6ef2a30647c1dddb4bfc307d669b1f",
+      "actual_sha256": "1aca2f646ba2be767fd053ca769cefbe1f6ef2a30647c1dddb4bfc307d669b1f",
+      "matches": true
+    },
+    {
+      "group": "economics_original",
+      "path": "economics/admission.json",
+      "representation": "file bytes",
+      "expected_sha256": "ea1abb7e2c6b4aa5b7cb6f63ce69d2f0e02b1988d660ee6022f8ad14cc070e81",
+      "actual_sha256": "ea1abb7e2c6b4aa5b7cb6f63ce69d2f0e02b1988d660ee6022f8ad14cc070e81",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency:manifest",
+      "path": "economics/postconfirmation_solvency_v1/FREEZE.json",
+      "representation": "file bytes",
+      "expected_sha256": "847a5abe0b7efedc5e0a9a84c9e9477ada4adeb8a6c3308f9382f5523b802f78",
+      "actual_sha256": "847a5abe0b7efedc5e0a9a84c9e9477ada4adeb8a6c3308f9382f5523b802f78",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/postconfirmation_solvency_v1/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "0fd45f6e07ec1c977725eef982665b1236c73459b84eb6c765509ed1784af315",
+      "actual_sha256": "0fd45f6e07ec1c977725eef982665b1236c73459b84eb6c765509ed1784af315",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/postconfirmation_solvency_v1/audit.py",
+      "representation": "file bytes",
+      "expected_sha256": "9b5370a4bf6dd5fc484a6ec85476e73e733174eecbc3efa1a603a84791e6b501",
+      "actual_sha256": "9b5370a4bf6dd5fc484a6ec85476e73e733174eecbc3efa1a603a84791e6b501",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/freeze.json",
+      "representation": "file bytes",
+      "expected_sha256": "1e8aea2ed0913c10cde17fae98a4a8b9b13d9dcfb1c43eaf53362cdee1ab64ce",
+      "actual_sha256": "1e8aea2ed0913c10cde17fae98a4a8b9b13d9dcfb1c43eaf53362cdee1ab64ce",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/confirmation/rows.json",
+      "representation": "file bytes",
+      "expected_sha256": "3536d031c99b9db4d4fdc3747e7376955662b04b41642ed952776b92581a28a8",
+      "actual_sha256": "3536d031c99b9db4d4fdc3747e7376955662b04b41642ed952776b92581a28a8",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/confirmation/assumptions.json",
+      "representation": "file bytes",
+      "expected_sha256": "b9dd5d0721b0d359e3d4e3290d925cdb68e581e0b3a219a01e5d99140d2836dd",
+      "actual_sha256": "b9dd5d0721b0d359e3d4e3290d925cdb68e581e0b3a219a01e5d99140d2836dd",
+      "matches": true
+    },
+    {
+      "group": "economics_adverse_solvency",
+      "path": "economics/confirmation/cash_examples.json",
+      "representation": "file bytes",
+      "expected_sha256": "6d1168db0aeea3a2b85b6e8405bdeded6c28d07c34a8b4de532126839a788001",
+      "actual_sha256": "6d1168db0aeea3a2b85b6e8405bdeded6c28d07c34a8b4de532126839a788001",
+      "matches": true
+    },
+    {
+      "group": "hosted_expertise:manifest",
+      "path": "expertise/freeze.json",
+      "representation": "file bytes",
+      "expected_sha256": "a5320338c4bdcab566ee8f73390bc0478db8ce4327ede8ccb2533ddd26008679",
+      "actual_sha256": "a5320338c4bdcab566ee8f73390bc0478db8ce4327ede8ccb2533ddd26008679",
+      "matches": true
+    },
+    {
+      "group": "hosted_expertise",
+      "path": "expertise/METHOD-v1.md",
+      "representation": "file bytes",
+      "expected_sha256": "ace7ebeb611280eaed0d94640b6dad904f82432776708527aad86524cdcbe0b9",
+      "actual_sha256": "ace7ebeb611280eaed0d94640b6dad904f82432776708527aad86524cdcbe0b9",
+      "matches": true
+    },
+    {
+      "group": "hosted_expertise",
+      "path": "expertise/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "50cc6440af9333b66298d16bdd8f17d13e33577d9064e345d3f12633c93c2970",
+      "actual_sha256": "50cc6440af9333b66298d16bdd8f17d13e33577d9064e345d3f12633c93c2970",
+      "matches": true
+    },
+    {
+      "group": "hosted_expertise",
+      "path": "evaluation/HOSTED_PACKET.md",
+      "representation": "file bytes",
+      "expected_sha256": "93ac8bc7f7755892d489df4efad24355bd85dc58d93319a28db5c0b67807ed93",
+      "actual_sha256": "93ac8bc7f7755892d489df4efad24355bd85dc58d93319a28db5c0b67807ed93",
+      "matches": true
+    },
+    {
+      "group": "hosted_expertise",
+      "path": "evaluation/protected/oracles/hosted_rubric.json",
+      "representation": "file bytes",
+      "expected_sha256": "30d8f4c368faee425ed2a3281f9bce45869ce5cc70d9b8a6ef2fee3a8ebd405f",
+      "actual_sha256": "30d8f4c368faee425ed2a3281f9bce45869ce5cc70d9b8a6ef2fee3a8ebd405f",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests:manifest",
+      "path": "evaluation/prospective-v1/FREEZE.json",
+      "representation": "file bytes",
+      "expected_sha256": "9bb07729b6c25783f4ac8e54ef31ca816828eb630dec25b06d47ada467d0e45d",
+      "actual_sha256": "9bb07729b6c25783f4ac8e54ef31ca816828eb630dec25b06d47ada467d0e45d",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/requests/box-size-to-width-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "2996de4a1c8af0a1e024094b46c3d82fbaf9e0f829eea9f583734a51d9ed24bb",
+      "actual_sha256": "2996de4a1c8af0a1e024094b46c3d82fbaf9e0f829eea9f583734a51d9ed24bb",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/oracles/box-size-to-width-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "b8ad0fd84f95c01ddebf524604f6f17159c9e640cc609e9661474060af1802ef",
+      "actual_sha256": "b8ad0fd84f95c01ddebf524604f6f17159c9e640cc609e9661474060af1802ef",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/requests/cover-labeled-distance-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "889b5eb3e32c56d6902f945642c5ec6b727006b8c8f6019d32fb9b7e18debd2d",
+      "actual_sha256": "889b5eb3e32c56d6902f945642c5ec6b727006b8c8f6019d32fb9b7e18debd2d",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/oracles/cover-labeled-distance-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "ebd3566d6115502069e757c36fe958a7c8b501c27eb8bce0993cf80919e92027",
+      "actual_sha256": "ebd3566d6115502069e757c36fe958a7c8b501c27eb8bce0993cf80919e92027",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/requests/box-position-modifier-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "df478c24bbfa6571c82d23ea4730fb6568f07376154e2591ab457adee1d6214a",
+      "actual_sha256": "df478c24bbfa6571c82d23ea4730fb6568f07376154e2591ab457adee1d6214a",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/oracles/box-position-modifier-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "ed521e12fa0e54f9b642b24d8e850d62199965811b37191a73b3e56101b89fe1",
+      "actual_sha256": "ed521e12fa0e54f9b642b24d8e850d62199965811b37191a73b3e56101b89fe1",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/requests/cover-signed-tolerance-export-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "80120daba0425e934c20ab59e138ff5c9de517fa7465f0b988fa47b1069f25c0",
+      "actual_sha256": "80120daba0425e934c20ab59e138ff5c9de517fa7465f0b988fa47b1069f25c0",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/oracles/cover-signed-tolerance-export-evidence-v1.json",
+      "representation": "file bytes",
+      "expected_sha256": "fdbbe226078b177cc9d8776c194eb5110aec969ba8e53e6bef43c45451cabb7a",
+      "actual_sha256": "fdbbe226078b177cc9d8776c194eb5110aec969ba8e53e6bef43c45451cabb7a",
+      "matches": true
+    },
+    {
+      "group": "prospective_requests",
+      "path": "evaluation/prospective-v1/PROTOCOL.md",
+      "representation": "file bytes",
+      "expected_sha256": "0c235c0ae94e5577f9fcccfaa3692caa600d74c4fac3461071dff7c14100def5",
+      "actual_sha256": "0c235c0ae94e5577f9fcccfaa3692caa600d74c4fac3461071dff7c14100def5",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Cover_FAIR.qif",
+      "representation": "file bytes",
+      "expected_sha256": "ccb67423f6f4a917ef9e92820e5f4a47be6b7e5137a193d94d4ba9fd2a17c124",
+      "actual_sha256": "ccb67423f6f4a917ef9e92820e5f4a47be6b7e5137a193d94d4ba9fd2a17c124",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Box_FAIR.qif",
+      "representation": "file bytes",
+      "expected_sha256": "0fc6588807ce67a939ee3fa769dc8894d9ed67528309b3cd5e6a336d714f038f",
+      "actual_sha256": "0fc6588807ce67a939ee3fa769dc8894d9ed67528309b3cd5e6a336d714f038f",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Box_incoming.qif",
+      "representation": "file bytes",
+      "expected_sha256": "05a5d027a1c96f0177e661063740046cd69b18824fe342520a95053066a9d736",
+      "actual_sha256": "05a5d027a1c96f0177e661063740046cd69b18824fe342520a95053066a9d736",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Cover_incoming.qif",
+      "representation": "file bytes",
+      "expected_sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24",
+      "actual_sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Box_AP242.STP",
+      "representation": "file bytes",
+      "expected_sha256": "94d9fe150c5d1a68e1e91c14bb2e2700fabe6eaf068d6390d6eeb36644fbfbe0",
+      "actual_sha256": "94d9fe150c5d1a68e1e91c14bb2e2700fabe6eaf068d6390d6eeb36644fbfbe0",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Cover_AP242.STP",
+      "representation": "file bytes",
+      "expected_sha256": "d678cd5267f70cf664a613597eecc5d531b542e3d65cb571d4aa6b34730e475b",
+      "actual_sha256": "d678cd5267f70cf664a613597eecc5d531b542e3d65cb571d4aa6b34730e475b",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Box_reference_incoming.qif",
+      "representation": "file bytes",
+      "expected_sha256": "05a5d027a1c96f0177e661063740046cd69b18824fe342520a95053066a9d736",
+      "actual_sha256": "05a5d027a1c96f0177e661063740046cd69b18824fe342520a95053066a9d736",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Cover_reference_incoming.qif",
+      "representation": "file bytes",
+      "expected_sha256": "a513cf188d40ed83332fb47f8fcfbfe40cf2c342cbd28149256146836ac07ffa",
+      "actual_sha256": "a513cf188d40ed83332fb47f8fcfbfe40cf2c342cbd28149256146836ac07ffa",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Box_integrated.owl",
+      "representation": "file bytes",
+      "expected_sha256": "fe7b2ccd314e179a8213c830e567a912078b974c214166b7754b519853a19443",
+      "actual_sha256": "fe7b2ccd314e179a8213c830e567a912078b974c214166b7754b519853a19443",
+      "matches": true
+    },
+    {
+      "group": "public_inputs",
+      "path": "evaluation/protected/inputs/Cover_integrated.owl",
+      "representation": "file bytes",
+      "expected_sha256": "7fe7a7b0df19c7a863b987328117c8cb54d10ae46f9677c4aa3baa879091df0d",
+      "actual_sha256": "7fe7a7b0df19c7a863b987328117c8cb54d10ae46f9677c4aa3baa879091df0d",
+      "matches": true
+    },
+    {
+      "group": "hosted_answers",
+      "path": "expertise/U/answer.md",
+      "representation": "file bytes",
+      "expected_sha256": "9692e281021b7316c8bf8e681e1432351a6d10cb4a7e1a830c918e8b44c12127",
+      "actual_sha256": "9692e281021b7316c8bf8e681e1432351a6d10cb4a7e1a830c918e8b44c12127",
+      "matches": true
+    },
+    {
+      "group": "hosted_answers",
+      "path": "expertise/E/answer.md",
+      "representation": "file bytes",
+      "expected_sha256": "196a7c16c4ddb6c3d3b7949bd41199613dfaeba860a9e2d185f6e5bca81fe3ed",
+      "actual_sha256": "196a7c16c4ddb6c3d3b7949bd41199613dfaeba860a9e2d185f6e5bca81fe3ed",
+      "matches": true
+    },
+    {
+      "group": "hosted_answers",
+      "path": "expertise/Eplus/answer.md",
+      "representation": "file bytes",
+      "expected_sha256": "2c36ecb7716cc49c9ff807de58625c0b49e523b32f13690cc214a58f70252e94",
+      "actual_sha256": "2c36ecb7716cc49c9ff807de58625c0b49e523b32f13690cc214a58f70252e94",
+      "matches": true
+    },
+    {
+      "group": "hosted_grader",
+      "path": "evaluation/grade_hosted.py",
+      "representation": "file bytes",
+      "expected_sha256": "1653abe05bd1adb0d8b470066c3b9f46cf900b21bcc53d7c1891bdffad7aae60",
+      "actual_sha256": "1653abe05bd1adb0d8b470066c3b9f46cf900b21bcc53d7c1891bdffad7aae60",
+      "matches": true
+    }
+  ],
+  "report_integrity_checks": [
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/box-report-comparability-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "0a3002dc2d5a14d2ec947217836664fbbb03fd174d0663b2c09f681c584f9a4f",
+      "actual_sha256": "0a3002dc2d5a14d2ec947217836664fbbb03fd174d0663b2c09f681c584f9a4f",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/cover-report-comparability-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "58c184d271559187021bc0b2bea3a16be3938d67cf0d0b47b458da7d34849255",
+      "actual_sha256": "58c184d271559187021bc0b2bea3a16be3938d67cf0d0b47b458da7d34849255",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/box-formal-family-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "46b2a610159ea7e91529769be654f5328518cfbb94927c46f9523e939e1ffcfe",
+      "actual_sha256": "46b2a610159ea7e91529769be654f5328518cfbb94927c46f9523e939e1ffcfe",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/box-counterfactual-family-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "b76c71d3c6b1f35633878cb6e4c37d2446e9be951087b89a43c9414c905f4436",
+      "actual_sha256": "b76c71d3c6b1f35633878cb6e4c37d2446e9be951087b89a43c9414c905f4436",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/cover-counterfactual-family-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "74501b5bde403295963dd1306de9b5a1f99fd2baa7338a8ed7e43f9834cd38b7",
+      "actual_sha256": "74501b5bde403295963dd1306de9b5a1f99fd2baa7338a8ed7e43f9834cd38b7",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/box-feature-localization-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "c6e30623248b271ba971c88a7a19bba98cc7d1a00253d5b03780bdfe5440846f",
+      "actual_sha256": "c6e30623248b271ba971c88a7a19bba98cc7d1a00253d5b03780bdfe5440846f",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/cover-physical-release-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "13ce6307f40b16877cc6ed722b3a215eaad5d97bcfa1c61ae0eccbc55b5152c1",
+      "actual_sha256": "13ce6307f40b16877cc6ed722b3a215eaad5d97bcfa1c61ae0eccbc55b5152c1",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "original",
+      "path": "evaluation/results/confirmation-v1/cover-no-geometry-audit-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "9288df8dacecd274ac86c57b399b1bc66dfe994854979700ee374ffea2c4243d",
+      "actual_sha256": "9288df8dacecd274ac86c57b399b1bc66dfe994854979700ee374ffea2c4243d",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "prospective",
+      "path": "evaluation/prospective-v1/results/confirmation-v1/box-size-to-width-evidence-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "4898c7bf0488caf7a49f6ff1c858b9b2edeee595477b8ebcda2e917e63633857",
+      "actual_sha256": "4898c7bf0488caf7a49f6ff1c858b9b2edeee595477b8ebcda2e917e63633857",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "prospective",
+      "path": "evaluation/prospective-v1/results/confirmation-v1/cover-labeled-distance-evidence-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "3542318f9c9deaffaa038185a162317289234c589000bf47d23b08d05aa020d7",
+      "actual_sha256": "3542318f9c9deaffaa038185a162317289234c589000bf47d23b08d05aa020d7",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "prospective",
+      "path": "evaluation/prospective-v1/results/confirmation-v1/box-position-modifier-evidence-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "8dbddb7518c7fb41d63d70d8679eea47a4ee78737a190be73e3d547d08be976c",
+      "actual_sha256": "8dbddb7518c7fb41d63d70d8679eea47a4ee78737a190be73e3d547d08be976c",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "prospective",
+      "path": "evaluation/prospective-v1/results/confirmation-v1/cover-signed-tolerance-export-evidence-v1.report.json.gz",
+      "representation": "decompressed exact report bytes",
+      "expected_sha256": "f2d619190a2788ee16f31c2971db2bad8edc5a7eb15a49b89b6b36ec42a553a5",
+      "actual_sha256": "f2d619190a2788ee16f31c2971db2bad8edc5a7eb15a49b89b6b36ec42a553a5",
+      "matches": true,
+      "checker_acceptance_matches_summary": true,
+      "checker_report_hash_matches_summary": true
+    },
+    {
+      "group": "fresh_recipient",
+      "path": "integration/results/confirmation-v1/fresh-recipient/report.json",
+      "representation": "file bytes",
+      "expected_sha256": "c8d49406b23c33239084aae1b7643efd2ba50a635a1803f1c44fe913ae56af33",
+      "actual_sha256": "c8d49406b23c33239084aae1b7643efd2ba50a635a1803f1c44fe913ae56af33",
+      "matches": true,
+      "accepted": true
+    },
+    {
+      "group": "ordinary_library",
+      "path": "integration/results/confirmation-v1/ordinary-library/report.json",
+      "representation": "file bytes",
+      "expected_sha256": "b690fb281921e4960395cbc516f19c1de7d56dd239b16c426e5a9014a2631232",
+      "actual_sha256": "b690fb281921e4960395cbc516f19c1de7d56dd239b16c426e5a9014a2631232",
+      "matches": true,
+      "accepted": true
+    }
+  ],
+  "receipt_inventory": {
+    "evaluation/results/confirmation-v1/summary.json": {
+      "sha256": "16693d38d9a6677a147625bb32a4c0c4a4735e64922fcae73dcb01039ebc0c4d",
+      "bytes": 9746
+    },
+    "evaluation/prospective-v1/results/confirmation-v1/summary.json": {
+      "sha256": "acc518ae5b57d2489baf0fdec377ea6c10255644c67d941a690c2d6948dd73aa",
+      "bytes": 3652
+    },
+    "evaluation/results/confirmation-v1/box-report-comparability-v1.check.json": {
+      "sha256": "f93c3ce79a97fb134ba2d3bea8e268d98b448816d836eaf9bba582d497c89464",
+      "bytes": 1748
+    },
+    "evaluation/results/confirmation-v1/cover-report-comparability-v1.check.json": {
+      "sha256": "0484badc83aa01f21b92eded8bc08be30b463f152bb20fb23cbfc1db91527a23",
+      "bytes": 1750
+    },
+    "evaluation/results/confirmation-v1/box-formal-family-v1.check.json": {
+      "sha256": "f7d9baca139c3783dd17d1cdebb99667802d5ea01afcce9f69582c1938a3c384",
+      "bytes": 1584
+    },
+    "evaluation/results/confirmation-v1/box-counterfactual-family-v1.check.json": {
+      "sha256": "64bcba0a0f5cc87044a0fb967d271fb25f6965cbfb5899e5f62b24ab3c6637f7",
+      "bytes": 1617
+    },
+    "evaluation/results/confirmation-v1/cover-counterfactual-family-v1.check.json": {
+      "sha256": "dc36989f32948af92ef2fafa781c014e2f2ab7a604d46b52e50bfde9887e6898",
+      "bytes": 1620
+    },
+    "evaluation/results/confirmation-v1/box-feature-localization-v1.check.json": {
+      "sha256": "5545e5efe01d2ff81626a91caa869f98e189c868d6b6d7bd9b3a28926c2c9e53",
+      "bytes": 1630
+    },
+    "evaluation/results/confirmation-v1/cover-physical-release-v1.check.json": {
+      "sha256": "d14485b7cbe33aaba90cedcd51b6a568b527b97137f2611ff948106e3d179319",
+      "bytes": 1628
+    },
+    "evaluation/results/confirmation-v1/cover-no-geometry-audit-v1.check.json": {
+      "sha256": "085c21c0b886a3683fa062226f2f4ca0e30253158eb5de40cb08d2b7b288bf3f",
+      "bytes": 1744
+    },
+    "evaluation/prospective-v1/results/confirmation-v1/box-size-to-width-evidence-v1.check.json": {
+      "sha256": "bf6abc9a93bfb086583e5cb4216f2b05abda262cfec4e4ae2acd4ac2cc1aa4bb",
+      "bytes": 1580
+    },
+    "evaluation/prospective-v1/results/confirmation-v1/cover-labeled-distance-evidence-v1.check.json": {
+      "sha256": "8d6c6120efbe7bef4d9e8e6b69666a9c76260c608ad5e296c13b1777fa884bd3",
+      "bytes": 1584
+    },
+    "evaluation/prospective-v1/results/confirmation-v1/box-position-modifier-evidence-v1.check.json": {
+      "sha256": "51fdb5e1108ba501caab3819d2a4cce4f38f5110aec24c8cfa94727a00730b77",
+      "bytes": 1584
+    },
+    "evaluation/prospective-v1/results/confirmation-v1/cover-signed-tolerance-export-evidence-v1.check.json": {
+      "sha256": "bcf0536b309684ecefa30dbc6abd30fa5253dc24999780c872e73f13c66aa46b",
+      "bytes": 1589
+    },
+    "integration/results/confirmation-v1/summary.json": {
+      "sha256": "35448f2ce6c1b319547f1d5e028975111bd6063ccf68e06f7ea671b55360de9b",
+      "bytes": 21528
+    },
+    "evaluation/hosted-grading-v1/summary.json": {
+      "sha256": "5461fa521733a32d2617f33e22bae3fb4841fbf77f80bebeb84e1a2b98931218",
+      "bytes": 2862
+    },
+    "integration/results/economics-retained-arranged-21001-v1/summary.json": {
+      "sha256": "6216bcb94eecb9e95ad925f994e0c9e8fe56d544744e8a0108a89649bf1f40ad",
+      "bytes": 3399
+    },
+    "integration/results/economics-retained-arranged-21001/failure.json": {
+      "sha256": "7e048184b0603fd3f413f789ef7d8482a75b16df767c80782e08fe79b93690ea",
+      "bytes": 608
+    },
+    "integration/results/economics-retained-arranged-21001-v1/source-audit.json": {
+      "sha256": "3c3c730716a098b6d3e7aeb7903970b1851e9c7ec3272dc83e0c39e45415bd84",
+      "bytes": 10306
+    },
+    "economics/confirmation/summary.json": {
+      "sha256": "5f54a4aa21a43ed56c924f4bd25b24977dc7e46310fc4c0069fed272d15319f6",
+      "bytes": 14615
+    },
+    "economics/confirmation/rows.json": {
+      "sha256": "3536d031c99b9db4d4fdc3747e7376955662b04b41642ed952776b92581a28a8",
+      "bytes": 4671701
+    },
+    "economics/postconfirmation_solvency_v1/RESULTS.json": {
+      "sha256": "70423143134e3f7f4eb87175283daff9600b83545b2adece0fc440c78a75293f",
+      "bytes": 2408555
+    },
+    "data/development/development_receipt.json": {
+      "sha256": "9825032c55e0fddf2e4925cc0a65b69bf0105c42c80d8d88ff1a947bd5afc0a9",
+      "bytes": 1556
+    },
+    "data/development/revision_0_1_1/development_receipt.json": {
+      "sha256": "3455ad9a46fc3c6997e719c11059a929888bbd8ccbee3ad714f941ce25ed9643",
+      "bytes": 1590
+    },
+    "integration/targeted-verification.json": {
+      "sha256": "0987b39eb9bb47981241b764cebb375ce7784d12db091bcdfcb7212e8720d345",
+      "bytes": 3033
+    },
+    "publication/demo-qa.json": {
+      "sha256": "f4d2154879e28fab4c70abc1e68c008ac9a052608df63eb7207ecb8a6b7ad6d3",
+      "bytes": 3935
+    },
+    "publication/qa/pdf_inventory.json": {
+      "sha256": "a25d0bb2b638c0118912aadee8f6336f09759b8365d3eb766fbea380feff2eb5",
+      "bytes": 6485
+    }
+  },
+  "integrity_summary": {
+    "closure_groups": 8,
+    "file_checks": 121,
+    "file_checks_passed": 121,
+    "unique_checked_paths": 104,
+    "report_checks": 14,
+    "report_checks_passed": 14,
+    "missing_files": 0
+  },
+  "existing_results": {
+    "core_development": {
+      "original_plate_tests": {
+        "passed": 11,
+        "failed": 0,
+        "observed_elapsed_seconds": 2.566,
+        "independent_evaluation": false
+      },
+      "revised_plate_tests": 13,
+      "revised_returncode": 0,
+      "independent_confirmation": false
+    },
+    "evaluator_development_logs": [
+      {
+        "path": "evaluation/development/checker_tests.txt",
+        "sha256": "0fd8cef056edd9282abbe6a65a72831710ab703bd1392b1afe87bf35d94e7c13",
+        "recorded_test_count": 19,
+        "recorded_seconds": 3.661,
+        "recorded_ok": true,
+        "rerun_in_this_audit": false
+      },
+      {
+        "path": "evaluation/prospective-v1/development/scope_tests.txt",
+        "sha256": "512f94a28ae0d2df0ffaf23139f86fc47d0e905bf2f781fddac121c17a46d792",
+        "recorded_test_count": 6,
+        "recorded_seconds": 2.059,
+        "recorded_ok": true,
+        "rerun_in_this_audit": false
+      }
+    ],
+    "integration_development": [
+      {
+        "recorded_test_count": 12,
+        "recorded_seconds": 1.139,
+        "returncode": 0
+      }
+    ],
+    "primary_confirmation": {
+      "executed": 8,
+      "accepted": 5,
+      "retries": 0,
+      "failed_jobs": [
+        "box-report-comparability-v1",
+        "cover-report-comparability-v1",
+        "cover-no-geometry-audit-v1"
+      ],
+      "summed_core_wall_seconds": 31.7491416449775,
+      "summed_checker_wall_seconds": 1.6501662129885517,
+      "scope": "retrospective public-source computational audit; no physical/customer acceptance"
+    },
+    "prospective_confirmation": {
+      "executed": 4,
+      "accepted": 4,
+      "retries": 0,
+      "summed_core_wall_seconds": 19.883645626003272,
+      "summed_checker_wall_seconds": 1.1941769020049833,
+      "scope": "four fresh requests on previously used sources; supplements immutable first pass; no physical/customer acceptance"
+    },
+    "fresh_transfer": {
+      "accepted_audits": 1,
+      "jobs": 1,
+      "cli_wall_seconds": 3.0115730409888783,
+      "library_semantic_parity": true,
+      "library_is_independent_job": false,
+      "conformance_passed": 35,
+      "conformance_total": 35,
+      "transferred_application_files": 11,
+      "transferred_application_bytes": 116202,
+      "production_admission": "NOT_QUALIFIED_UNSUPPORTED_MANUFACTURING_SCOPE",
+      "live_ens_authentication": false,
+      "physical_release": false,
+      "graph_specific_value": "not established; identical-content ordinary library is the parity control"
+    },
+    "hosted_expertise": {
+      "arms": [
+        {
+          "arm": "U",
+          "answer_sha256": "9692e281021b7316c8bf8e681e1432351a6d10cb4a7e1a830c918e8b44c12127",
+          "accepted_jobs": 4,
+          "total_jobs": 4,
+          "mandatory_criteria_passed": 24,
+          "mandatory_criteria_total": 24,
+          "tool_calls_self_reported": 7,
+          "answer_words_whitespace": 1239,
+          "complete_cost": null
+        },
+        {
+          "arm": "E",
+          "answer_sha256": "196a7c16c4ddb6c3d3b7949bd41199613dfaeba860a9e2d185f6e5bca81fe3ed",
+          "accepted_jobs": 4,
+          "total_jobs": 4,
+          "mandatory_criteria_passed": 24,
+          "mandatory_criteria_total": 24,
+          "tool_calls_self_reported": 6,
+          "answer_words_whitespace": 1185,
+          "complete_cost": null
+        },
+        {
+          "arm": "Eplus",
+          "answer_sha256": "2c36ecb7716cc49c9ff807de58625c0b49e523b32f13690cc214a58f70252e94",
+          "accepted_jobs": 3,
+          "total_jobs": 4,
+          "mandatory_criteria_passed": 23,
+          "mandatory_criteria_total": 24,
+          "tool_calls_self_reported": 8,
+          "answer_words_whitespace": 1207,
+          "complete_cost": null
+        }
+      ],
+      "grading": "Independent AI-assisted adjudication against unchanged mandatory criteria and fatal-error list, with answer-line evidence. Exact identifiers must remain unambiguous across an actionable answer.",
+      "no_answer_revisions": true,
+      "strict_identifier_criterion": "The enhanced answer states the correct full serial once but later uses the component ID as a serial in its requested next action. Strict complete acceptance requires resolving that conflict; it was not corrected.",
+      "lenient_reading": "If the correct table entry alone were sufficient and the conflicting action ignored, Eplus would be 4/4. That is not the exact-identifier acceptance applied here; either reading establishes no additional accepted-quality gain.",
+      "costs": null,
+      "tools_self_reported": true,
+      "same_served_model_snapshot_verified": false,
+      "trials_per_arm": 1
+    },
+    "economics": {
+      "rows": 3520,
+      "summary_cells": 44,
+      "arms": [
+        "expert_arranged",
+        "expert_standard",
+        "retained_arranged",
+        "retained_standard"
+      ],
+      "scenarios": 11,
+      "horizons_per_cell": [
+        80
+      ],
+      "actual_customer_collections": 0,
+      "actual_earned_revenue": 0,
+      "actual_complete_cost": null,
+      "all_economic_results": "assumed/simulated; not observed market or finance validation"
+    },
+    "solvency_adverse_audit": {
+      "inspected_original_rows": 3520,
+      "aggregate": {
+        "original_producing_plans": 1889,
+        "original_realization_produced": 1718,
+        "original_realization_cancelled": 171,
+        "exposed_packages": 114,
+        "max_shortfall_usd": "5222.253475166306968000",
+        "max_required_opening_cash_usd": "6748.15192237855820800"
+      },
+      "source_buyer_checks": 36,
+      "max_cash_formula_reconciliation_usd": "1.068800E-12",
+      "status": "adverse_audit_of_original_selected_plans_not_new_confirmation",
+      "limits": [
+        "All prices, resources and costs are original research assumptions",
+        "Original selected commitments, including subsequently cancelled plans, are audited",
+        "Full committed work is a conservative adverse envelope, not a probability or realized loss",
+        "Other contractual nonperformance, legal acceptance, strategic behavior and late payments are unmodeled",
+        "No expected-profit, recovered-confirmation or new-customer claim"
+      ],
+      "original_results_modified": false
+    },
+    "native_accounting": {
+      "passed": 12,
+      "total": 12,
+      "scope": "settled terminal net-cash projection only; authoritative chronology, deposits, refunds, receivables and noncash writeoffs remain in original research ledger and signed event journal",
+      "seed_or_unearned_deposit_counted_as_revenue": false,
+      "bad_debt_double_counted": false,
+      "rounding_profit_residual_usd": "-1.99133E-7",
+      "earlier_attempt_failure_preserved": "Native signed-record commitments reject floating-point values. The attempted original-event journal payload contained floats.",
+      "earlier_failure_path": "integration/results/economics-retained-arranged-21001/failure.json"
+    },
+    "publication_qa_receipts": {
+      "demo_passed": true,
+      "demo_checks": 9,
+      "demo_page_errors": 0,
+      "demo_external_requests": 0,
+      "demo_artifact_sha256": "31ddde9449c05bfe78b0b47f83be082b95a3bdfbfa4316b6bb2c2f8d61f01b42",
+      "prior_demo_receipt": {
+        "path": "demo-qa-original.json",
+        "sha256": "f799550761768a3652104312b1d58065ba28b3ba6f9678d6a7e8c0c06ab6c567",
+        "scope": "Earlier exact artifact: all 32 explorer states and original controls."
+      },
+      "pdf_inventory": [
+        {
+          "path": "AGI_ALPHA_FLYWHEEL_v4.pdf",
+          "pages": 32
+        },
+        {
+          "path": "AGI_ALPHA_FLYWHEEL_v4_Evidence_Companion.pdf",
+          "pages": 6
+        },
+        {
+          "path": "AGI_ALPHA_FLYWHEEL_v4_Executive_Brief.pdf",
+          "pages": 3
+        }
+      ],
+      "limit": "Existing QA receipts only. Documents may be rebuilt during publication; this audit does not independently re-render or approve deployment.",
+      "root_reported_final_visual_review": "Root reports review of all pages via contact sheets and detailed cover/table/figure pages; final 32/3/6 pages, no overfull warnings, missing glyphs, outside-20pt blocks, attachments/widgets/JavaScript. No independent re-render in this audit.",
+      "final_pdf_hash_checks": [
+        {
+          "path": "publication/AGI_ALPHA_FLYWHEEL_v4.pdf",
+          "recorded_sha256": "56966e8f0e167d237f53159f90d7258c38d56524c6b94b2f3f6f79d5b4f8beb2",
+          "actual_sha256": "56966e8f0e167d237f53159f90d7258c38d56524c6b94b2f3f6f79d5b4f8beb2",
+          "matches": true,
+          "pages": 32,
+          "outside_20pt_blocks": 0,
+          "attachments": 0,
+          "widgets": 0,
+          "javascript_occurrences": 0,
+          "latex_overfull": 0,
+          "missing_glyphs": 0
+        },
+        {
+          "path": "publication/AGI_ALPHA_FLYWHEEL_v4_Evidence_Companion.pdf",
+          "recorded_sha256": "398b9b0e69ab001e64b5704348ace9e40a7930f4928a999687a8faf7d53f40e9",
+          "actual_sha256": "398b9b0e69ab001e64b5704348ace9e40a7930f4928a999687a8faf7d53f40e9",
+          "matches": true,
+          "pages": 6,
+          "outside_20pt_blocks": 0,
+          "attachments": 0,
+          "widgets": 0,
+          "javascript_occurrences": 0,
+          "latex_overfull": 0,
+          "missing_glyphs": 0
+        },
+        {
+          "path": "publication/AGI_ALPHA_FLYWHEEL_v4_Executive_Brief.pdf",
+          "recorded_sha256": "367d34ad25c3788338c366343d574430beda5de7229de19819aee66b0fadb51e",
+          "actual_sha256": "367d34ad25c3788338c366343d574430beda5de7229de19819aee66b0fadb51e",
+          "matches": true,
+          "pages": 3,
+          "outside_20pt_blocks": 0,
+          "attachments": 0,
+          "widgets": 0,
+          "javascript_occurrences": 0,
+          "latex_overfull": 0,
+          "missing_glyphs": 0
+        }
+      ]
+    }
+  },
+  "publication_disclosure": {
+    "paper_retrospective_statement": "publication/PAPER_BODY.md, section preceding First protected result",
+    "procedural_protection_only": true,
+    "public_historical_sources": true,
+    "independent_physical_replication": false,
+    "published_tasks_oracles_answers_now_disclosed": true,
+    "future_confirmation_requires_new_protected_evidence_or_requests_and_freeze": true,
+    "same_data_new_requests_must_disclose_nonindependence": true,
+    "license_notices": [
+      "evaluation/SOURCE_NOTICES.md",
+      "instrument_v0_1_1/QIF_DMSC_NOTICE.md"
+    ]
+  },
+  "not_performed_in_final_audit": [
+    "Scientific experiment rerun",
+    "New tests or regrading",
+    "Full repository CI or release qualification",
+    "Live customer trial, human-service comparison or sales",
+    "Physical manufacturing measurement, substitution or part release",
+    "Live ENS authentication or native production manufacturing-scope admission",
+    "Canonical Pages deployment, software release, or upstream publication approval"
+  ],
+  "interpretive_limits": [
+    "Hash equality checks integrity against recorded manifests, not truth of all assumptions or independence of historical timestamps.",
+    "Independent evaluator is separately implemented and AI-assisted on the same host; CAD geometry shares the OCP kernel.",
+    "Field checks and repeated scenarios are not independent customers or physical samples.",
+    "Recorded elapsed durations do not establish complete research cost, customer effort, active model latency, or accepted-quality cost superiority.",
+    "The original 5/8 result, three failures, rejected candidates, earlier failed accounting replay and adverse solvency result remain preserved.",
+    "A useful accepted audit can correctly reject physical reuse; audit acceptance is not part-release acceptance."
+  ],
+  "audit_read_and_hash_elapsed_seconds": 0.2334685840032762,
+  "all_recorded_integrity_checks_match": true
+}

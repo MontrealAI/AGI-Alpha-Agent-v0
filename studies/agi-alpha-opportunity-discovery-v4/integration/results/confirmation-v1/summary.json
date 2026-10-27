@@ -1,0 +1,480 @@
+{
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0,
+  "actual_model_tokens": null,
+  "artifact_bytes": 43242,
+  "artifact_sha256": "db571361b945bffc46c602713c4fa09d6e667ee9a8dc2d54c46dfa42f1784bd0",
+  "authority": "native local Ed25519 roles plus existing Journal; modeled agent names, no live ENS authentication",
+  "checks": [
+    {
+      "name": "correct-current-local-research-signature",
+      "passed": true
+    },
+    {
+      "name": "changed-mission-refused",
+      "passed": true,
+      "reason": "authority does not bind complete current artifact and mission"
+    },
+    {
+      "name": "removed-request-metadata-refused",
+      "passed": true,
+      "reason": "authority does not bind complete current artifact and mission"
+    },
+    {
+      "name": "changed-dependency-authority-refused",
+      "passed": true,
+      "reason": "authority does not bind complete current artifact and mission"
+    },
+    {
+      "name": "changed-source-authority-refused",
+      "passed": true,
+      "reason": "authority does not bind complete current artifact and mission"
+    },
+    {
+      "name": "expired-authority-refused",
+      "passed": true,
+      "reason": "current mission authority expired or not yet valid"
+    },
+    {
+      "name": "future-authority-refused",
+      "passed": true,
+      "reason": "current mission authority expired or not yet valid"
+    },
+    {
+      "name": "revoked-authority-refused",
+      "passed": true,
+      "reason": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "invalid-signature-refused",
+      "passed": true,
+      "reason": "record signature is invalid"
+    },
+    {
+      "name": "physical-operation-right-not-conferred",
+      "passed": true,
+      "reason": "current recipient or computation right absent"
+    },
+    {
+      "name": "altered-transferred-archive-refused",
+      "passed": true,
+      "reason": "received bundle size or digest mismatch"
+    },
+    {
+      "name": "changed-received-source-refused",
+      "passed": true,
+      "reason": "recipient source changed: instrument/cli.py"
+    },
+    {
+      "name": "incompatible-current-dependency-refused",
+      "passed": true,
+      "reason": "runtime dependency version changed: cadquery"
+    },
+    {
+      "name": "changed-public-source-bytes-refused",
+      "passed": true,
+      "reason": "current mission source changed: source_qif"
+    },
+    {
+      "name": "cache-invalidated-by-source",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-artifact",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-schema",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-dependencies",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-evaluator",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-scope",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-policy",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "cache-invalidated-by-bank",
+      "passed": true,
+      "reason": "changed complete identity requires new qualification; no passing receipt supplied"
+    },
+    {
+      "name": "native-manufacturing-scope-refused",
+      "passed": true,
+      "reason": "unchanged native supported_scope literal excludes this manufacturing capability"
+    },
+    {
+      "count": 29,
+      "name": "existing-lifecycle-controls",
+      "passed": true
+    },
+    {
+      "name": "same-content-library-manifest",
+      "passed": true
+    },
+    {
+      "name": "exact-generic-reuse-cases-only",
+      "passed": true
+    },
+    {
+      "name": "consumed-current-authority-refused",
+      "passed": true
+    },
+    {
+      "name": "fresh-cli-executed",
+      "passed": true
+    },
+    {
+      "name": "same-content-library-cli-executed",
+      "passed": true
+    },
+    {
+      "name": "fresh-current-mission-preserved",
+      "passed": true
+    },
+    {
+      "name": "fresh-independent-audit-acceptance",
+      "passed": true
+    },
+    {
+      "name": "same-content-library-independent-acceptance",
+      "passed": true
+    },
+    {
+      "name": "same-content-library-semantic-parity",
+      "passed": true
+    },
+    {
+      "name": "original-source-manifest-still-valid",
+      "passed": true
+    },
+    {
+      "name": "independent-evaluator-and-task-freeze-still-valid",
+      "passed": true
+    }
+  ],
+  "current_request_sha256": "0531bedb522b792fa0056759ee0251377d4f77e7f208d76435c8a0747927eacc",
+  "dependency_boundary": "complete custom application transferred; declared installed dependencies rehashed separately",
+  "empirical_alpha_admission": false,
+  "fresh_mission_rechecked": true,
+  "fresh_recipient": {
+    "execution": {
+      "actual_model_calls_in_this_execution": 0,
+      "authority": {
+        "expires": 1793123380,
+        "identity": "4c2acf3b11941b809118f25d9f5763c5d046727ad5c5e205664b745831e70516",
+        "mode": "LOCAL_EPHEMERAL_RESEARCH_AUTHORITY_NOT_LIVE_ENS",
+        "nonce": "fresh-received-computation",
+        "not_before": 1793119779,
+        "recipient": "lyra.agent.agi.eth",
+        "request_binding": "6aa19ad5b9fcec6f0600c4cff968b8694aee9128c0de397aedf1f3db5a228abd",
+        "right": "run-research-evidence-audit",
+        "scope": "local-computational-inspection-evidence-audit/v1"
+      },
+      "authority_scope": "computational audit only; no manufacturing, physical release or live ENS permission",
+      "cli_seconds": 3.0115730409888783,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/recipient-code/instrument/cli.py",
+        "--request",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/requests/recipient-cover-evidence-acquisition-v1.json",
+        "--output",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/fresh-recipient/report.json"
+      ],
+      "complete_cost_usd": null,
+      "customer_collections_usd": 0,
+      "dependency_bytes_rehashed": 1088987406,
+      "dependency_inventory_seconds": 1.691673228997388,
+      "independent_acceptance": null,
+      "isolation": "new local processes and explicit files; not a production sandbox or independent organization",
+      "journal_after_consumption": {
+        "events": 2,
+        "head": "9a4e80488f15ad92cedb5717cca9591ee7216e9471ceb5a521fad50f79b4587f",
+        "identity": "urn:agialpha:ed25519:5c2371838e2dc70d406092c40287913584180e8e6c2a50d14437a15bc4f6a9db",
+        "valid": true
+      },
+      "mission_result": {
+        "physical_reuse_admitted": false,
+        "reasons": [
+          "Source-grounded audit produced; no physical substitution admitted"
+        ],
+        "status": "supported_audit"
+      },
+      "model_tokens": null,
+      "pid": 61,
+      "report_bytes": 2195265,
+      "report_sha256": "c8d49406b23c33239084aae1b7643efd2ba50a635a1803f1c44fe913ae56af33",
+      "request": {
+        "assets": {
+          "cad_step": {
+            "bytes": 1021262,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_AP242.STP",
+            "sha256": "d678cd5267f70cf664a613597eecc5d531b542e3d65cb571d4aa6b34730e475b"
+          },
+          "incoming_qif": {
+            "bytes": 418590,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_incoming.qif",
+            "sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24"
+          },
+          "reference_owl": {
+            "bytes": 6494247,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_integrated.owl",
+            "sha256": "7fe7a7b0df19c7a863b987328117c8cb54d10ae46f9677c4aa3baa879091df0d"
+          },
+          "source_qif": {
+            "bytes": 303966,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_FAIR.qif",
+            "sha256": "ccb67423f6f4a917ef9e92820e5f4a47be6b7e5137a193d94d4ba9fd2a17c124"
+          }
+        },
+        "mission": {
+          "id": "recipient-cover-evidence-acquisition-v1",
+          "purpose": "evidence_audit",
+          "statement": "Plan the additional exact evidence a process engineer must obtain before combining provider results for investigation. Preserve usable findings; identify unresolved unit, feature-set, specimen, requirement and measurement prerequisites. Do not infer a machining cause, perform a remeasurement, or authorize release."
+        },
+        "request_file_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+        "request_sha256": "0531bedb522b792fa0056759ee0251377d4f77e7f208d76435c8a0747927eacc",
+        "source_access": "separate filesystem sources; read-only application use checked by pre/post digests"
+      },
+      "returncode": 0,
+      "schema": "inspection-evidence-recipient-execution/v1",
+      "separate_cli_process": true,
+      "source_integrity_before_after": true,
+      "stderr": "",
+      "stdout": "{\"mission\": \"recipient-cover-evidence-acquisition-v1\", \"result\": {\"status\": \"supported_audit\", \"reasons\": [\"Source-grounded audit produced; no physical substitution admitted\"], \"physical_reuse_admitted\": false}, \"output\": \"/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/fresh-recipient/report.json\", \"identity\": \"49d772c5ff0b84617c012867ccdfb6f189b49d442dd7dbbaffb039e1e63e5af3\"}\n",
+      "total_seconds": 4.993251731997589
+    },
+    "independent_verification": {
+      "accepted": true,
+      "checker_returncode": 0,
+      "checker_verdict": {
+        "acceptance_scope": "useful, source-faithful computational evidence audit; no physical or live-authority acceptance",
+        "accepted": true,
+        "checker_sha256": "20c47da32e4098db71136eb5fa370bc708ca2cae3656c891b840f5c6a12fef28",
+        "checks_by_category": {
+          "completeness": 6,
+          "counterfactual": 1,
+          "execution_scope": 1,
+          "formal_units": 5,
+          "freeze": 1,
+          "geometry": 171,
+          "guard_separation": 25,
+          "instrument_identity": 3,
+          "mission_identity": 3,
+          "no_fabrication": 1,
+          "proof_completeness": 3,
+          "proof_soundness": 812,
+          "purpose": 1,
+          "quantities": 3253,
+          "references": 9234,
+          "repairs": 6,
+          "semantics": 163,
+          "source_facts": 2402,
+          "source_identity": 10,
+          "status_ancestry": 3423,
+          "traces": 160,
+          "usefulness": 5
+        },
+        "complete_cost": null,
+        "elapsed_seconds": 0.16487816500011832,
+        "failed_checks_by_category": {},
+        "failures": [],
+        "independence": "standard-library XML/Expat and Decimal; source-derived oracle; direct OCP shared kernel",
+        "job_id": "recipient-cover-evidence-acquisition-v1",
+        "mission_result": {
+          "physical_reuse_admitted": false,
+          "reasons": [
+            "Source-grounded audit produced; no physical substitution admitted"
+          ],
+          "status": "supported_audit"
+        },
+        "oracle_sha256": "b10656a9d02f8a364af9107dc363d575e887b082be07d3f1a3ff22ad32044480",
+        "physical_release_accepted": false,
+        "report_sha256": "c8d49406b23c33239084aae1b7643efd2ba50a635a1803f1c44fe913ae56af33",
+        "request_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+        "schema": "independent-manufacturing-checker-0.1"
+      },
+      "verification_seconds": 0.22207855799933895
+    }
+  },
+  "generic_cases_exact_reuse": 0,
+  "generic_cases_first": 6,
+  "generic_reuse_scope": "finite packaging/runtime checks only; no scientific mission acceptance or economic admission",
+  "graph_specific_value": "not established; identical-content ordinary library is the parity control",
+  "jobs_validator_governance_settlement_changes": false,
+  "mounted_source_bytes": 8238065,
+  "ordinary_library": {
+    "execution": {
+      "actual_model_calls_in_this_execution": 0,
+      "authority": {
+        "expires": 1793123385,
+        "identity": "4c2acf3b11941b809118f25d9f5763c5d046727ad5c5e205664b745831e70516",
+        "mode": "LOCAL_EPHEMERAL_RESEARCH_AUTHORITY_NOT_LIVE_ENS",
+        "nonce": "same-content-library",
+        "not_before": 1793119784,
+        "recipient": "lyra.agent.agi.eth",
+        "request_binding": "6aa19ad5b9fcec6f0600c4cff968b8694aee9128c0de397aedf1f3db5a228abd",
+        "right": "run-research-evidence-audit",
+        "scope": "local-computational-inspection-evidence-audit/v1"
+      },
+      "authority_scope": "computational audit only; no manufacturing, physical release or live ENS permission",
+      "cli_seconds": 3.0374019379960373,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/ordinary-library-code/instrument/cli.py",
+        "--request",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/requests/recipient-cover-evidence-acquisition-v1.json",
+        "--output",
+        "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/ordinary-library/report.json"
+      ],
+      "complete_cost_usd": null,
+      "customer_collections_usd": 0,
+      "dependency_bytes_rehashed": 1088987406,
+      "dependency_inventory_seconds": 1.7791571499983547,
+      "independent_acceptance": null,
+      "isolation": "new local processes and explicit files; not a production sandbox or independent organization",
+      "journal_after_consumption": {
+        "events": 3,
+        "head": "8c93d60a25afdf35bc626d896e5e5eda6b0ee975636d75a5c072a342c0ffdabe",
+        "identity": "urn:agialpha:ed25519:5c2371838e2dc70d406092c40287913584180e8e6c2a50d14437a15bc4f6a9db",
+        "valid": true
+      },
+      "mission_result": {
+        "physical_reuse_admitted": false,
+        "reasons": [
+          "Source-grounded audit produced; no physical substitution admitted"
+        ],
+        "status": "supported_audit"
+      },
+      "model_tokens": null,
+      "pid": 71,
+      "report_bytes": 2195265,
+      "report_sha256": "b690fb281921e4960395cbc516f19c1de7d56dd239b16c426e5a9014a2631232",
+      "request": {
+        "assets": {
+          "cad_step": {
+            "bytes": 1021262,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_AP242.STP",
+            "sha256": "d678cd5267f70cf664a613597eecc5d531b542e3d65cb571d4aa6b34730e475b"
+          },
+          "incoming_qif": {
+            "bytes": 418590,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_incoming.qif",
+            "sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24"
+          },
+          "reference_owl": {
+            "bytes": 6494247,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_integrated.owl",
+            "sha256": "7fe7a7b0df19c7a863b987328117c8cb54d10ae46f9677c4aa3baa879091df0d"
+          },
+          "source_qif": {
+            "bytes": 303966,
+            "path": "/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/evaluation/protected/inputs/Cover_FAIR.qif",
+            "sha256": "ccb67423f6f4a917ef9e92820e5f4a47be6b7e5137a193d94d4ba9fd2a17c124"
+          }
+        },
+        "mission": {
+          "id": "recipient-cover-evidence-acquisition-v1",
+          "purpose": "evidence_audit",
+          "statement": "Plan the additional exact evidence a process engineer must obtain before combining provider results for investigation. Preserve usable findings; identify unresolved unit, feature-set, specimen, requirement and measurement prerequisites. Do not infer a machining cause, perform a remeasurement, or authorize release."
+        },
+        "request_file_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+        "request_sha256": "0531bedb522b792fa0056759ee0251377d4f77e7f208d76435c8a0747927eacc",
+        "source_access": "separate filesystem sources; read-only application use checked by pre/post digests"
+      },
+      "returncode": 0,
+      "schema": "inspection-evidence-recipient-execution/v1",
+      "separate_cli_process": true,
+      "source_integrity_before_after": true,
+      "stderr": "",
+      "stdout": "{\"mission\": \"recipient-cover-evidence-acquisition-v1\", \"result\": {\"status\": \"supported_audit\", \"reasons\": [\"Source-grounded audit produced; no physical substitution admitted\"], \"physical_reuse_admitted\": false}, \"output\": \"/workspace/scratch/7f1a65ee00a6/AGI-Alpha-Agent-v0/studies/agi-alpha-opportunity-discovery-v4/integration/results/confirmation-v1/ordinary-library/report.json\", \"identity\": \"49d772c5ff0b84617c012867ccdfb6f189b49d442dd7dbbaffb039e1e63e5af3\"}\n",
+      "total_seconds": 5.090626172997872
+    },
+    "independent_verification": {
+      "accepted": true,
+      "checker_returncode": 0,
+      "checker_verdict": {
+        "acceptance_scope": "useful, source-faithful computational evidence audit; no physical or live-authority acceptance",
+        "accepted": true,
+        "checker_sha256": "20c47da32e4098db71136eb5fa370bc708ca2cae3656c891b840f5c6a12fef28",
+        "checks_by_category": {
+          "completeness": 6,
+          "counterfactual": 1,
+          "execution_scope": 1,
+          "formal_units": 5,
+          "freeze": 1,
+          "geometry": 171,
+          "guard_separation": 25,
+          "instrument_identity": 3,
+          "mission_identity": 3,
+          "no_fabrication": 1,
+          "proof_completeness": 3,
+          "proof_soundness": 812,
+          "purpose": 1,
+          "quantities": 3253,
+          "references": 9234,
+          "repairs": 6,
+          "semantics": 163,
+          "source_facts": 2402,
+          "source_identity": 10,
+          "status_ancestry": 3423,
+          "traces": 160,
+          "usefulness": 5
+        },
+        "complete_cost": null,
+        "elapsed_seconds": 0.1418702060036594,
+        "failed_checks_by_category": {},
+        "failures": [],
+        "independence": "standard-library XML/Expat and Decimal; source-derived oracle; direct OCP shared kernel",
+        "job_id": "recipient-cover-evidence-acquisition-v1",
+        "mission_result": {
+          "physical_reuse_admitted": false,
+          "reasons": [
+            "Source-grounded audit produced; no physical substitution admitted"
+          ],
+          "status": "supported_audit"
+        },
+        "oracle_sha256": "b10656a9d02f8a364af9107dc363d575e887b082be07d3f1a3ff22ad32044480",
+        "physical_release_accepted": false,
+        "report_sha256": "b690fb281921e4960395cbc516f19c1de7d56dd239b16c426e5a9014a2631232",
+        "request_sha256": "8a1fab88f6996a5de0ab63eaedfa0f052678cd86cb03a2825994e4b195c49184",
+        "schema": "independent-manufacturing-checker-0.1"
+      },
+      "verification_seconds": 0.20733794799889438
+    },
+    "same_content_semantic_parity": true
+  },
+  "passed": 35,
+  "production_admission": "NOT_QUALIFIED_UNSUPPORTED_MANUFACTURING_SCOPE",
+  "recipient_mission": {
+    "id": "recipient-cover-evidence-acquisition-v1",
+    "purpose": "evidence_audit",
+    "statement": "Plan the additional exact evidence a process engineer must obtain before combining provider results for investigation. Preserve usable findings; identify unresolved unit, feature-set, specimen, requirement and measurement prerequisites. Do not infer a machining cause, perform a remeasurement, or authorize release."
+  },
+  "schema": "inspection-evidence-fresh-transfer/v1",
+  "scope_changes": false,
+  "total": 35,
+  "total_seconds": 17.165767447993858,
+  "transport_basis": "unchanged lifecycle artificial monetary conformance fixture; not economic evidence",
+  "transport_seconds": 1.6499370090023149,
+  "uncompressed_application_bytes": 116202
+}

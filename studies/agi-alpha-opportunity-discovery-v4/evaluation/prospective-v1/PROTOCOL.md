@@ -1,0 +1,9 @@
+# Prospective repair confirmation — four fresh requests
+
+Frozen before the developer repairs the empty affected-assertion bindings. These are new researcher-authored requests on already-used public Box/Cover data, not independent physical data, unseen source documents, new customers, or recovered original performance. Original eight primary results and original recipient remain immutable.
+
+Each request is an unspecialized evidence audit with explicit customer obligations in the mission statement and no supplied family mapping. The existing independent source/quantity/geometry/authority checks remain applicable. Two evidence-acquisition topics, feature-set identity and measurement adequacy, must identify actual affected source and incoming obligations. Their IDs must resolve under an explicit source role/digest; empty or fabricated bindings fail. A complete source-bound scope collection may contain the requested obligations, but it must not be called a physical mapping. Signed literals, unsupported types, original purpose, source hashes and missing geometry remain enforced.
+
+The protected rubric adds concrete source obligations and semantic preservation checks before the repair. No source values or requested IDs are disclosed to the developer. Development is Plate-only. Bind v0.1.1 as a new exact source/dependency/policy closure and retain v0.1.0 unchanged. The original independent evaluator remains frozen; a prospective adapter may bind the new closure without weakening acceptance or altering the original verdicts. Run each fresh request once with a 60-second deadline after both new source and evaluator freezes. Preserve failures and distinguish old-case diagnostic replays.
+
+Actual complete research cost and token/billing telemetry remain unknown. No prospective result is asserted at curation time.
