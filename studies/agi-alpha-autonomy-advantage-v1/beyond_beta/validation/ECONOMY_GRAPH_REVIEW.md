@@ -1,0 +1,26 @@
+# Independent graph and native integration review
+
+This is a pre-outcome source review. It runs no calibrated economic worlds. The original reviewed economy checkpoint had SHA-256 `ea01c6e2f25839e162dd5b227a928a75228951df839a4bbc0a9c43e29e5e02b4`. All four findings below have been closed by a narrow final source re-read. The closure checkpoint for `src/economy.py` has SHA-256 `a2021735441aa76e84bb07f1642515d6ee12f50b52dbd605ccedeb7ce397df9b`. A separate expected-net upkeep gate is being reviewed by the parent; it is not part of these four closure findings. The final root freeze binds the complete integrated source.
+
+## Closed graph findings
+
+An admitted-state label was previously sufficient for an internal capability to enter the comparator catalog even when discovery refused it. Internal comparison alternatives now pass the same current `_usable` predicate and private-access check as current production availability. Expired, revoked, Beta-stale, comparison-stale and foreign-private artifacts no longer count as available options. External software inventory remains governed by its declared availability flag. Fresh successful revalidation that restores an alternative also advances the relevant comparison epoch. Duplicate promotion still refuses at the mandatory stage gate.
+
+The complete graph suite passes **60/60** fictional adversarial controls. This includes the original lifecycle, cost, composition and revocation controls; eight paid-job ownership/failure-memory/role-separation controls; and five current-comparator controls. Source gates do not establish truth of caller-supplied economic or validation evidence.
+
+## Economy findings and final disposition
+
+1. **Independent verification capacity — CLOSED.** The initial checkpoint bundled qualification verification into producer capacity. `assay_plan` and `actual_assay` now split producer and independent-verifier resources, and both initial qualification and fresh revalidation pass these separately into the calendar. The total charged work retains both roles.
+2. **Matched inventory cases — CLOSED.** Candidate, Beta and current inventory use the same case-size factors, functional-overlap outcomes and checking scale. Every inventory arm's production/check work is charged in the assay. Inventory quality is evaluated under its modeled validity rather than granted perfect acceptance. The current comparator keys and Beta version are captured before scheduling; a changed context produces a paid failed qualification rather than silently adding unpriced alternatives. This remains finite modeled stage evidence, not an executed general-software benchmark.
+3. **Comparison-epoch upkeep — CLOSED.** `maintain_assets` now treats a comparison-epoch mismatch as stale alongside stale Beta or proof age. Current discovery/dispatch continues to refuse these assets while a separately funded and scheduled revalidation is pending. Remaining-lifetime limits can retire them rather than allowing stale influence.
+4. **Hidden helper validity — CLOSED.** A currently authorized and successfully adapted revalidation helper acts regardless of its hidden correctness. The helper's hidden `trueValid` now sets `qualificationHelperFault` only after influence, affecting the subsequent modeled independent-check outcome. Its receipt checkpoint and costs are recorded. No hidden-truth validity test grants free suppression of an invalid helper.
+
+The independent economics auditor separately owns cash, A/B/C bill reconciliation, terminal settlement, public resource reservation and nonclairvoyance checks. The forwarded probe-cache timing observation is also closed in the inspected source: task-local probe results enter the shared cache at completion. This source signoff covers the four identified graph/economy integration defects; it is not a claim that calibrated outputs have already passed the separate trace audit.
+
+## Executed existing-system integration
+
+The local smoke in `tests/test_native_smoke.py` executes a fictional paid job in the unchanged finite CashBook, binds its original A cost as provenance, charges an incremental B retention expense, admits and authorizes an offline graph artifact, and passes the bound cash projection through `src/native_bridge.mjs`. The bridge reuses the unchanged native projection adapter; it performs two actual `planMission` calls and three existing direct-agent authority checks. Eligible direct, nested and revoked fixtures produce the expected eligibility outcomes. Full enterprise cash costs include A+B, while the Alpha lifecycle denominator includes only B.
+
+`validation/native-smoke.json` preserves the graph audit, explicit financial inputs, source hashes and native outputs. Observed revenue remains zero, actual complete cost remains unknown, and actual model calls remain zero. The historical study's admission predicate is not invoked. No live identity, permissions, chain or club settlement API is contacted or changed.
+
+The initial smoke fixture attempted to hash continuous-day bill fields with the integer-only graph canonicalizer and was correctly refused. `native-smoke-development.json` preserves that failure and the repair to a typed integer bill commitment; no economic assumptions were changed.

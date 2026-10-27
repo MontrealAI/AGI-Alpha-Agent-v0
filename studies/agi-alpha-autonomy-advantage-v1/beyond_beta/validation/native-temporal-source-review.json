@@ -1,0 +1,48 @@
+{
+  "schema": "beyond-beta-independent-temporal-diagnosis/v1",
+  "basis": "READ_ONLY_PRESERVED_TRACE_AND_FROZEN_SOURCE_REVIEW",
+  "finding": "Frozen auditor omitted the global epoch increment for BETA_ADVANCED; checked permit is consistent with executed graph semantics",
+  "worldIdentity": {
+    "policyId": "policy-02",
+    "scenario": "high-repeat",
+    "profile": "efficient",
+    "seed": 1,
+    "arm": "network-alpha"
+  },
+  "jobId": "job-33-1",
+  "trainingLine": 137,
+  "rawLineSHA256": "88a5dcff6aba8cc16945bb4e867a7f22b4b59003b8cd6b89f15ba6b9664461ad",
+  "checks": [
+    {
+      "key": "retained-job-10-15-contracts@1",
+      "function": "contracts",
+      "completionWeek": 36,
+      "permitComparisonEpoch": 2,
+      "frozenAuditorInference": 1,
+      "correctedEventReplay": 2,
+      "relevantAdmissions": [
+        {
+          "index": 30,
+          "week": 33,
+          "key": "retained-job-10-15-contracts@1"
+        }
+      ],
+      "betaAdvances": [
+        {
+          "index": 12,
+          "week": 26
+        }
+      ],
+      "policyAdvances": 0,
+      "inventoryUpdates": 0
+    }
+  ],
+  "sourceHashes": {
+    "src/graph_lifecycle.py": "6b1db34aae8ab9fa720e02e6f0ea45742e269e3373dc019efa9db872b9d56c8c",
+    "foundations/audit_economic_trace.py": "bbb845ffbfba640a9597265a283ab5e984b18ba793879ada71e7200c36ce4c17"
+  },
+  "frozenInputsModified": false,
+  "economicWorldsExecuted": 0,
+  "actualModelCalls": 0,
+  "scope": "One exact source-and-trace diagnosis; separate corrected all-history audit remains necessary and original FAIL is preserved"
+}

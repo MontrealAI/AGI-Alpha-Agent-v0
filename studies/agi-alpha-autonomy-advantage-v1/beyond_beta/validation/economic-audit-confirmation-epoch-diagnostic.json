@@ -1,0 +1,73 @@
+{
+  "schema": "beyond-beta-epoch-diagnostic-replay/v1",
+  "classification": "POST_FREEZE_AUDITOR_INSTRUMENTATION_DIAGNOSIS_NOT_NEW_PRODUCTION",
+  "originalAuditStatus": "PASS",
+  "originalAuditFailures": 0,
+  "originalAuditSha256": "4bd8f04573d2e7ca88102079758438df9f57cc3e10fef1933987713362656b03",
+  "frozenAuditorSha256": "bbb845ffbfba640a9597265a283ab5e984b18ba793879ada71e7200c36ce4c17",
+  "diagnosticSha256": "e9e2ac35358d8b47451ffcba80f2446b0afd786ed63bdfde04b92e557caf7fe8",
+  "inputSha256": "a9803357b5216a2409870f6928fec440c50e661e1c50438776b6b6a9d15b84b7",
+  "protocolSha256": "ac755ad9b148c33fed91bfb247fc4b09abd2199d839e2741fec4fce38e357664",
+  "controls": [
+    {
+      "name": "Initial relevant admission contributes one",
+      "passed": true
+    },
+    {
+      "name": "Beta update and fresh admission contribute two",
+      "passed": true
+    },
+    {
+      "name": "Old epoch cannot survive a later Beta update",
+      "passed": true
+    },
+    {
+      "name": "New relevant admission invalidates prior epoch",
+      "passed": true
+    },
+    {
+      "name": "Unrelated function admission does not increment this function",
+      "passed": true
+    },
+    {
+      "name": "Policy update increments every declared function",
+      "passed": true
+    },
+    {
+      "name": "Revocation does not erase historical increments",
+      "passed": true
+    },
+    {
+      "name": "Ambiguous inventory update is refused",
+      "passed": true
+    }
+  ],
+  "worlds": 4560,
+  "checks": 7471202,
+  "worldsWithCompleteStageWorkerTrace": 4560,
+  "historicalReuseReceiptsAudited": 56,
+  "failures": [],
+  "epochMismatchWorlds": [],
+  "epochMismatchUses": 0,
+  "graphEventCounts": {
+    "BETA_ADVANCED": 5760,
+    "CANDIDATE": 30,
+    "EVIDENCE": 30,
+    "NET_ALPHA_ASSESSED": 30,
+    "FAILURE_MEMORY_RECORDED": 22,
+    "VALIDATED": 60,
+    "CANONICAL_ADMISSION": 8,
+    "RETIRED": 8
+  },
+  "economicWorldsExecuted": 0,
+  "economicHistoriesModified": 0,
+  "selectionModified": false,
+  "correction": {
+    "oldExpression": "current_epoch=sum(e['kind']=='CANONICAL_ADMISSION' and records[e['key']]['descriptor']['function']==function for e in prefix)",
+    "newExpression": "current_epoch=reconstructed_epoch(prefix,records,function)",
+    "rule": "Relevant canonical admissions plus all preceding Beta and policy advances. Function-specific inventory changes without historical snapshots are refused."
+  },
+  "originalEpochFailureCount": 0,
+  "allOriginalFailuresExplainedExactly": true,
+  "status": "PASS"
+}

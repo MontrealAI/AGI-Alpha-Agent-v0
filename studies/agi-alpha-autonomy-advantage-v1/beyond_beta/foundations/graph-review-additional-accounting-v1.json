@@ -1,0 +1,45 @@
+{
+  "schema": "beyond-beta-independent-graph-review/v1",
+  "createdAt": "2026-10-26T23:28:09.708103+00:00",
+  "evidenceClass": "own-observation-of-fictional-source-controls",
+  "sourcesBefore": {
+    "beyond_beta/src/graph_lifecycle.py": "2787aa55c20f9d41a8ed5d810f8fe2887165adc9b79bad57c1b423470398e6a1",
+    "beyond_beta/src/fixture_factory.py": "d9e1a95994ae8baf9707969cba9b09ef49d5cf060a09347d1e07b3a928af54c9"
+  },
+  "sourcesAfter": {
+    "beyond_beta/src/graph_lifecycle.py": "2787aa55c20f9d41a8ed5d810f8fe2887165adc9b79bad57c1b423470398e6a1",
+    "beyond_beta/src/fixture_factory.py": "d9e1a95994ae8baf9707969cba9b09ef49d5cf060a09347d1e07b3a928af54c9"
+  },
+  "sourceStableDuringProbe": true,
+  "scope": "Fictional costs, ephemeral fixture agents and sanitized IR; no economic worlds or private customer material.",
+  "probes": [
+    {
+      "id": "GRAPH-R04",
+      "invariant": "Failed first-qualification verification cost cannot disappear when fresh initial evidence is submitted.",
+      "invariantHeld": true,
+      "observations": {
+        "initialQualified": false,
+        "refusal": "UNRECOVERED_INITIAL_PROGRAM_COST_ERASURE"
+      }
+    },
+    {
+      "id": "GRAPH-R05",
+      "invariant": "A bundle includes complete transitive support costs without double counting shared dependencies.",
+      "invariantHeld": true,
+      "observations": {
+        "refusal": "SUPPORT_BUILD_COST_OMITTED_FROM_BUNDLE",
+        "trueFictionalSupportCost": 10000
+      }
+    },
+    {
+      "id": "GRAPH-R06",
+      "invariant": "A creator cannot obtain another creator's private component through its own private bundle without compose/retrieval authority.",
+      "invariantHeld": true,
+      "observations": {
+        "refusal": "FOREIGN_PRIVATE_COMPONENT_COMPOSE_PERMISSION_REQUIRED"
+      }
+    }
+  ],
+  "invariantsHeld": 3,
+  "controls": 3
+}

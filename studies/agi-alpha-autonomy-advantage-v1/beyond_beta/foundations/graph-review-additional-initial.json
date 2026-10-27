@@ -1,0 +1,57 @@
+{
+  "schema": "beyond-beta-independent-graph-review/v1",
+  "createdAt": "2026-10-26T23:15:12.961648+00:00",
+  "evidenceClass": "own-observation-of-fictional-source-controls",
+  "sourcesBefore": {
+    "beyond_beta/src/graph_lifecycle.py": "393b9f3b0c806be2d1689f10e626f8ccaf359723e2671cb32c948c63f17bf4f6",
+    "beyond_beta/src/fixture_factory.py": "dfa9557e1f0c0b95ba7421d5e21704ecbbab440df4300d069ece15ac98a318f8"
+  },
+  "sourcesAfter": {
+    "beyond_beta/src/graph_lifecycle.py": "393b9f3b0c806be2d1689f10e626f8ccaf359723e2671cb32c948c63f17bf4f6",
+    "beyond_beta/src/fixture_factory.py": "dfa9557e1f0c0b95ba7421d5e21704ecbbab440df4300d069ece15ac98a318f8"
+  },
+  "sourceStableDuringProbe": true,
+  "scope": "Fictional costs, ephemeral fixture agents and sanitized IR; no economic worlds or private customer material.",
+  "probes": [
+    {
+      "id": "GRAPH-R04",
+      "invariant": "Failed first-qualification verification cost cannot disappear when fresh initial evidence is submitted.",
+      "invariantHeld": false,
+      "observations": {
+        "initialQualified": false,
+        "initialLowerNetAlpha": "-9901",
+        "nextQualified": true,
+        "nextLowerNetAlpha": "99",
+        "stage": "ADMITTED"
+      }
+    },
+    {
+      "id": "GRAPH-R05",
+      "invariant": "A bundle includes complete transitive support costs without double counting shared dependencies.",
+      "invariantHeld": false,
+      "observations": {
+        "qualified": true,
+        "lowerNetAlpha": "99",
+        "stage": "ADMITTED",
+        "boundSupportCosts": {
+          "support-b@1": 0
+        },
+        "trueFictionalSupportCost": 10000,
+        "chargedConstruction": 0
+      }
+    },
+    {
+      "id": "GRAPH-R06",
+      "invariant": "A creator cannot obtain another creator's private component through its own private bundle without compose/retrieval authority.",
+      "invariantHeld": false,
+      "observations": {
+        "firstCreator": "creator.agent.agi.eth",
+        "secondCreator": "other.agent.agi.eth",
+        "componentShareable": false,
+        "foreignPrivateComponentReleased": true
+      }
+    }
+  ],
+  "invariantsHeld": 0,
+  "controls": 3
+}

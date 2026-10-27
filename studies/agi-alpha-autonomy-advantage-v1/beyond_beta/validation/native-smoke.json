@@ -1,0 +1,642 @@
+{
+  "schema": "beyond-beta-native-smoke/v1",
+  "classification": "FICTIONAL_CONTROL_NOT_CALIBRATED_OUTCOME",
+  "passed": true,
+  "actualModelCalls": 0,
+  "actualRevenueUsd": 0,
+  "actualCompleteCostUsd": null,
+  "graphAssessment": {
+    "schema": "beyond-beta-net-alpha/v1",
+    "candidateHash": "77f3ee3719b913c86abd2ff69e1cec14813481584385c0c4ddcbb5e904b9daa6",
+    "evidenceHash": "f9c152917d1034f86306d572c2d4e885b228228c57ac26ba084af1de349c7d18",
+    "policyHash": "96b5bf3758e151f17379a7fcd9446de4a60cf6c3ec5f5165f178ceb6b0cb8b05",
+    "betaHash": "af93d41ccd698286c34480e9e5375db86a0bcb5011774ab71f4d226ff4f64115",
+    "inventoryHash": "a98d0acf2bb34d0946bcfd3d6b6a70827ccf63cb83823730d9ae1471e60da4ac",
+    "comparisonEpoch": 0,
+    "assessedEpoch": 1,
+    "assessor": "assessor.agent.agi.eth",
+    "arms": {
+      "candidate": {
+        "accepted": 2,
+        "criticalFailures": 0,
+        "totalExecutionCostMicros": 40000000,
+        "lifecycleCostMicros": 4000000,
+        "allocationUses": 1,
+        "historicalConstructionMicros": 0,
+        "meanNetValueMicros": "-24000000",
+        "completeCostPerAcceptedMicros": "24000000"
+      },
+      "beta": {
+        "accepted": 2,
+        "criticalFailures": 0,
+        "totalExecutionCostMicros": 200000000,
+        "lifecycleCostMicros": 0,
+        "allocationUses": 1,
+        "historicalConstructionMicros": 0,
+        "meanNetValueMicros": "-100000000",
+        "completeCostPerAcceptedMicros": "100000000"
+      }
+    },
+    "comparisons": [
+      {
+        "comparator": "beta",
+        "meanNetAlphaMicros": "76000000",
+        "standardErrorMicros": "0",
+        "policyUncertaintyAllowanceMicros": "0",
+        "lowerNetAlphaMicros": "76000000",
+        "positive": true
+      }
+    ],
+    "acceptanceGate": true,
+    "qualified": true,
+    "basis": "SIMULATED_FIXTURE",
+    "uncertaintyRule": "PAIRED_MEAN_MINUS_PREDECLARED_MULTIPLE_OF_STANDARD_ERROR",
+    "costOwnership": {
+      "originDeliveryCostMicros": 20000000,
+      "incrementalRetentionCostMicros": 4000000,
+      "optionalResearchCostMicros": 0,
+      "alphaLifecycleCostMicros": 4000000,
+      "originDeliveryIncludedInAlpha": false,
+      "enterpriseOriginCostRecord": "RETAINED_IN_EXTERNAL_ENTERPRISE_LEDGER; provenance only in this gate",
+      "ledgerCommitments": [
+        "06dd8c221a9ec3fa9b767030a8dbbb05cec105d0bc33d3baf6f312fbab52e2fd",
+        "90b3af7377e84f9ee47297d310428e967a0e4142eaff74293891f11b64018347"
+      ]
+    },
+    "statisticalClaim": "A gate on supplied finite evidence; no distribution-free or actual commercial guarantee",
+    "prospectiveRevalidation": false
+  },
+  "graphAudit": {
+    "events": [
+      {
+        "index": 0,
+        "kind": "CANDIDATE",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "77f3ee3719b913c86abd2ff69e1cec14813481584385c0c4ddcbb5e904b9daa6",
+        "previous": "3967cd46e716f8015ec8a172a0fd6328ee2228361a739eca3c6a6bd474f790bf",
+        "hash": "ac241ac65841241716907f24ba9bb08a6ff24f954e51372380159a3f4f2670dd"
+      },
+      {
+        "index": 1,
+        "kind": "EVIDENCE",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "f9c152917d1034f86306d572c2d4e885b228228c57ac26ba084af1de349c7d18",
+        "previous": "ac241ac65841241716907f24ba9bb08a6ff24f954e51372380159a3f4f2670dd",
+        "hash": "732ec82fb0587a910bc22d2bd10c9b6bb908e34686c8d0930ecb5a9836aaf771"
+      },
+      {
+        "index": 2,
+        "kind": "NET_ALPHA_ASSESSED",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "b83bf09066e622c493d513c3557456bd65bc6b95031108e990ec98b03ece4f41",
+        "previous": "732ec82fb0587a910bc22d2bd10c9b6bb908e34686c8d0930ecb5a9836aaf771",
+        "hash": "489caed58c13791ebaa984722b50851a463a28d50598f7beed80d2c235a530d3"
+      },
+      {
+        "index": 3,
+        "kind": "VALIDATED",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "73c0d6afb8380c5c12d3d92d8b7491656a4b3e0fbb83f108ce4d01e672ef8a50",
+        "previous": "489caed58c13791ebaa984722b50851a463a28d50598f7beed80d2c235a530d3",
+        "hash": "74986ea844769dea7433e2741d0b41ee4ec8b32967ffba561f14052a7b4568c1"
+      },
+      {
+        "index": 4,
+        "kind": "VALIDATED",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "54669a96673c9fd5d843c09611fc0bdd2cee846ea4ad2af7577b48b37df77898",
+        "previous": "74986ea844769dea7433e2741d0b41ee4ec8b32967ffba561f14052a7b4568c1",
+        "hash": "936f643c3563f33eb1f33808a1e9cb294383750d635d62a31c1d6f4fc59d4d10"
+      },
+      {
+        "index": 5,
+        "kind": "CANONICAL_ADMISSION",
+        "key": "paid-job-retention@1",
+        "epoch": 1,
+        "binding": "b050ce23fc4754efa22f3f01df433ac436a07051c00ab96476c53a2c80385b0d",
+        "previous": "936f643c3563f33eb1f33808a1e9cb294383750d635d62a31c1d6f4fc59d4d10",
+        "hash": "956faa04ba06462ed5e655e4ba4852394648e21eef31849c9105bf23410e78b9"
+      }
+    ],
+    "root": "849e0e026fe2fbeee86a44dc849d8ad75227cf5bec245980efe283b834de746a",
+    "hash": "SHA-256",
+    "canonicalization": "UTF-8 sorted-key finite integer JSON",
+    "leafDomain": "MERKLE-LEAF",
+    "nodeDomain": "MERKLE-NODE",
+    "oddLeaf": "DUPLICATE_LAST",
+    "liveIdentity": false,
+    "livePermissions": false,
+    "encryption": "EXECUTED_AES_256_GCM_EPHEMERAL_KEYS",
+    "signatures": "EXECUTED_ED25519_OFFLINE_FIXTURE_KEYS",
+    "existingClubRoles": "UNCHANGED",
+    "limitation": "Revocation blocks future guarded influence; it cannot erase previously disclosed plaintext."
+  },
+  "simulatedCash": {
+    "schema": "agialpha-venture-simulated-cash/v1",
+    "t": 1.0,
+    "actualCollectionsUsd": 0,
+    "actualCompleteCostUsd": null,
+    "seedUsd": 100.0,
+    "seedMicros": 100000000,
+    "baseReserveMicros": 10000000,
+    "taxFraction": 0.0,
+    "warrantyFraction": 0.0,
+    "funds": {
+      "cash": 176.0,
+      "collected": 100.0,
+      "accrued": 24.0,
+      "paid": 24.0,
+      "unpaid": 0.0,
+      "receivable": 0.0,
+      "reserve": 10.0,
+      "availableOperating": 66.0,
+      "liquidAfterObligations": 166.0,
+      "earnedAfterCosts": 66.0,
+      "baseReserve": 10.0,
+      "warrantyReserve": 0.0,
+      "taxReserve": 0.0,
+      "cashMicros": 176000000,
+      "collectedMicros": 100000000,
+      "accruedMicros": 24000000,
+      "paidMicros": 24000000,
+      "unpaidMicros": 0,
+      "receivableMicros": 0,
+      "reserveMicros": 10000000,
+      "availableOperatingMicros": 66000000,
+      "liquidAfterObligationsMicros": 166000000,
+      "earnedAfterCostsMicros": 66000000,
+      "baseReserveMicros": 10000000,
+      "warrantyReserveMicros": 0,
+      "taxReserveMicros": 0,
+      "t": 1.0,
+      "seedCountsAsRevenue": false,
+      "insolvent": false,
+      "insolventAt": null
+    },
+    "bills": [
+      {
+        "id": "bill-0",
+        "t": 0.0,
+        "due": 0.0,
+        "amountMicros": 20000000,
+        "category": "originalDeliveryA",
+        "ref": "paid-job-a",
+        "paid": true,
+        "paidAt": 0.0,
+        "missedDue": false
+      },
+      {
+        "id": "bill-1",
+        "t": 1.0,
+        "due": 1.0,
+        "amountMicros": 4000000,
+        "category": "incrementalRetentionB",
+        "ref": "retained-solver",
+        "paid": true,
+        "paidAt": 1.0,
+        "missedDue": false
+      }
+    ],
+    "invoices": [
+      {
+        "id": "invoice-0",
+        "jobId": "paid-job-a",
+        "t": 0.0,
+        "due": 1.0,
+        "amountMicros": 100000000,
+        "pays": true,
+        "feeFraction": 0.0,
+        "warrantyUntil": 1.0,
+        "status": "collected",
+        "collectedAt": 1.0,
+        "cancelledAt": null,
+        "refundBillId": null
+      }
+    ],
+    "events": [
+      {
+        "t": 0.0,
+        "type": "SIMULATED_COST_COMMITMENT",
+        "billId": "bill-0",
+        "amountMicros": 20000000,
+        "cashAfterMicros": 100000000
+      },
+      {
+        "t": 0.0,
+        "type": "SIMULATED_EXPENSE_PAYMENT",
+        "billId": "bill-0",
+        "amountMicros": -20000000,
+        "cashAfterMicros": 80000000
+      },
+      {
+        "t": 1.0,
+        "type": "SIMULATED_COLLECTION",
+        "invoiceId": "invoice-0",
+        "amountMicros": 100000000,
+        "cashAfterMicros": 180000000
+      },
+      {
+        "t": 1.0,
+        "type": "SIMULATED_COST_COMMITMENT",
+        "billId": "bill-1",
+        "amountMicros": 4000000,
+        "cashAfterMicros": 180000000
+      },
+      {
+        "t": 1.0,
+        "type": "SIMULATED_EXPENSE_PAYMENT",
+        "billId": "bill-1",
+        "amountMicros": -4000000,
+        "cashAfterMicros": 176000000
+      }
+    ],
+    "snapshots": [],
+    "insolvent": false,
+    "insolventAt": null,
+    "nativeProjectionInput": {
+      "accrual": {
+        "missionId": "venture-creation-scenario",
+        "reference": "SIMULATED receipts/costs; actual collections zero",
+        "currency": "USD",
+        "acceptance": "accepted",
+        "totalCollectedCents": 0,
+        "priceAssumptionCents": 10000,
+        "operatingCostsComplete": true,
+        "capabilityCostCents": 0,
+        "reserveCents": 1000,
+        "costBasis": "assumed",
+        "reinvestmentBps": 0,
+        "totalOperatingCostCents": 2400,
+        "obligationCents": 0
+      },
+      "liquidity": {
+        "missionId": "venture-creation-scenario",
+        "reference": "SIMULATED receipts/costs; actual collections zero",
+        "currency": "USD",
+        "acceptance": "accepted",
+        "totalCollectedCents": 0,
+        "priceAssumptionCents": 10000,
+        "operatingCostsComplete": true,
+        "capabilityCostCents": 0,
+        "reserveCents": 1000,
+        "costBasis": "assumed",
+        "reinvestmentBps": 0,
+        "totalOperatingCostCents": 2400,
+        "obligationCents": 0
+      },
+      "expectedEarnedMicros": 66000000,
+      "expectedLiquidExcludingSeedMicros": 66000000
+    }
+  },
+  "nativeInput": {
+    "schema": "beyond-beta-native-input/v1",
+    "worlds": [
+      {
+        "id": "fictional-paid-job-retention",
+        "projection": {
+          "accrual": {
+            "missionId": "beyond-beta-fictional-smoke",
+            "reference": "Fictional offline paid-job A and incremental retention B boundary; actual receipts zero",
+            "currency": "USD",
+            "acceptance": "accepted",
+            "totalCollectedCents": 0,
+            "priceAssumptionCents": 10000,
+            "operatingCostsComplete": true,
+            "capabilityCostCents": 0,
+            "reserveCents": 1000,
+            "costBasis": "assumed",
+            "reinvestmentBps": 0,
+            "totalOperatingCostCents": 2400,
+            "obligationCents": 0
+          },
+          "liquidity": {
+            "missionId": "beyond-beta-fictional-smoke",
+            "reference": "Fictional offline paid-job A and incremental retention B boundary; actual receipts zero",
+            "currency": "USD",
+            "acceptance": "accepted",
+            "totalCollectedCents": 0,
+            "priceAssumptionCents": 10000,
+            "operatingCostsComplete": true,
+            "capabilityCostCents": 0,
+            "reserveCents": 1000,
+            "costBasis": "assumed",
+            "reinvestmentBps": 0,
+            "totalOperatingCostCents": 2400,
+            "obligationCents": 0
+          },
+          "expectedEarnedMicros": 66000000,
+          "expectedLiquidExcludingSeedMicros": 66000000
+        },
+        "graphAuditRoot": "849e0e026fe2fbeee86a44dc849d8ad75227cf5bec245980efe283b834de746a",
+        "graphSourceHash": "6b1db34aae8ab9fa720e02e6f0ea45742e269e3373dc019efa9db872b9d56c8c",
+        "authorityChecks": [
+          {
+            "fixture": {
+              "name": "creator.agent.agi.eth",
+              "controller": "OFFLINE-EPHEMERAL-FIXTURE",
+              "eligible": true,
+              "validFromWeek": 0,
+              "expiresWeek": 10000,
+              "revoked": false,
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "publicKey": "dfd1cafe93a7c6b228f8233e4ea77deaf43ce5874b9b48b5b0ca858f5aafc555",
+              "roles": [
+                "creator",
+                "compose",
+                "execution",
+                "retrieve"
+              ]
+            },
+            "week": 1
+          },
+          {
+            "fixture": {
+              "name": "child.creator.agent.agi.eth",
+              "controller": "OFFLINE-EPHEMERAL-FIXTURE",
+              "eligible": true,
+              "validFromWeek": 0,
+              "expiresWeek": 10000,
+              "revoked": false,
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "publicKey": "dfd1cafe93a7c6b228f8233e4ea77deaf43ce5874b9b48b5b0ca858f5aafc555",
+              "roles": [
+                "creator",
+                "compose",
+                "execution",
+                "retrieve"
+              ]
+            },
+            "week": 1
+          },
+          {
+            "fixture": {
+              "name": "creator.agent.agi.eth",
+              "controller": "OFFLINE-EPHEMERAL-FIXTURE",
+              "eligible": true,
+              "validFromWeek": 0,
+              "expiresWeek": 10000,
+              "revoked": true,
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "publicKey": "dfd1cafe93a7c6b228f8233e4ea77deaf43ce5874b9b48b5b0ca858f5aafc555",
+              "roles": [
+                "creator",
+                "compose",
+                "execution",
+                "retrieve"
+              ]
+            },
+            "week": 1
+          }
+        ]
+      }
+    ]
+  },
+  "nativeResult": {
+    "schema": "beyond-beta-native-results/v1",
+    "inputSha256": "7078a6dd9ddf9c65d370aee225190030434c37b9e4e9d61821ed2d472880639d",
+    "sources": [
+      {
+        "path": "beyond_beta/src/native_bridge.mjs",
+        "sha256": "90de0b9f43724ba18f8b2d2b1e85d77802681a7f542a7728762ff198ced6d758"
+      },
+      {
+        "path": "venture_creation/src/native_integration.mjs",
+        "bytes": 9685,
+        "sha256": "3211bb2995ef41209b4c7f0714bc4d60fa2b33a86f1ed20dc637a79ca6a8473b"
+      },
+      {
+        "path": "native_snapshot/canonical/shadow-ledger.mjs",
+        "bytes": 17514,
+        "sha256": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21"
+      },
+      {
+        "path": "human_market/validation/skill_admission.mjs",
+        "bytes": 14127,
+        "sha256": "dea1944f7700df267a0fd0edf31e1c83b98fcfc2d91f5e941bfb9ed982cd9e89"
+      }
+    ],
+    "worlds": [
+      {
+        "id": "fictional-paid-job-retention",
+        "inputSha256": "3af18c96d2ad147df95510d67943c4fc0d7879cf042826af761f04475edbb2ff",
+        "accounting": {
+          "nativePlanMissionCalls": 2,
+          "inputSha256": "e26c05676f12d96e3b7e6918e33d6616abf894d56ab9583adf27b7eb5417bfdd",
+          "accrual": {
+            "schema": "alpha-shadow-ledger-summary/v1",
+            "currency": "USD",
+            "reinvestmentBps": 0,
+            "eventCount": 9,
+            "missions": [
+              {
+                "missionId": "beyond-beta-fictional-smoke",
+                "acceptance": "accepted",
+                "reference": "Fictional offline paid-job A and incremental retention B boundary; actual receipts zero",
+                "observed": {
+                  "revenue": 0,
+                  "fullCost": null,
+                  "operatingMargin": null,
+                  "reserve": null,
+                  "unpaidObligations": null,
+                  "afterReserves": null,
+                  "availableSurplus": null,
+                  "eligibleInvestment": null
+                },
+                "scenario": {
+                  "revenue": 10000,
+                  "fullCost": 2400,
+                  "operatingMargin": 7600,
+                  "reserve": 1000,
+                  "unpaidObligations": 0,
+                  "afterReserves": 6600,
+                  "availableSurplus": 6600,
+                  "eligibleInvestment": 0
+                },
+                "assumedPrice": 10000,
+                "missingCostCategories": [],
+                "unknownEventIds": [],
+                "capabilityEvents": []
+              }
+            ],
+            "observed": {
+              "revenue": 0,
+              "fullCost": null,
+              "operatingMargin": null,
+              "reserve": null,
+              "unpaidObligations": null,
+              "afterReserves": null,
+              "availableSurplus": null,
+              "eligibleInvestment": null
+            },
+            "scenario": {
+              "revenue": 10000,
+              "fullCost": 2400,
+              "operatingMargin": 7600,
+              "reserve": 1000,
+              "unpaidObligations": 0,
+              "afterReserves": 6600,
+              "availableSurplus": 6600,
+              "eligibleInvestment": 0
+            },
+            "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+          },
+          "liquidity": {
+            "schema": "alpha-shadow-ledger-summary/v1",
+            "currency": "USD",
+            "reinvestmentBps": 0,
+            "eventCount": 9,
+            "missions": [
+              {
+                "missionId": "beyond-beta-fictional-smoke",
+                "acceptance": "accepted",
+                "reference": "Fictional offline paid-job A and incremental retention B boundary; actual receipts zero",
+                "observed": {
+                  "revenue": 0,
+                  "fullCost": null,
+                  "operatingMargin": null,
+                  "reserve": null,
+                  "unpaidObligations": null,
+                  "afterReserves": null,
+                  "availableSurplus": null,
+                  "eligibleInvestment": null
+                },
+                "scenario": {
+                  "revenue": 10000,
+                  "fullCost": 2400,
+                  "operatingMargin": 7600,
+                  "reserve": 1000,
+                  "unpaidObligations": 0,
+                  "afterReserves": 6600,
+                  "availableSurplus": 6600,
+                  "eligibleInvestment": 0
+                },
+                "assumedPrice": 10000,
+                "missingCostCategories": [],
+                "unknownEventIds": [],
+                "capabilityEvents": []
+              }
+            ],
+            "observed": {
+              "revenue": 0,
+              "fullCost": null,
+              "operatingMargin": null,
+              "reserve": null,
+              "unpaidObligations": null,
+              "afterReserves": null,
+              "availableSurplus": null,
+              "eligibleInvestment": null
+            },
+            "scenario": {
+              "revenue": 10000,
+              "fullCost": 2400,
+              "operatingMargin": 7600,
+              "reserve": 1000,
+              "unpaidObligations": 0,
+              "afterReserves": 6600,
+              "availableSurplus": 6600,
+              "eligibleInvestment": 0
+            },
+            "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+          },
+          "reconciliation": {
+            "passed": true,
+            "accrualErrorCents": 0,
+            "liquidityErrorCents": 0,
+            "toleranceCents": 2.01
+          },
+          "actualCollectionsUsd": 0,
+          "actualCompleteCostUsd": null
+        },
+        "admissions": [],
+        "influence": [],
+        "transfers": [],
+        "authorities": [
+          {
+            "inputSha256": "a06738c1f194850f3116bec8ca032fe7a82105335b3149ad7764878e9e3a9ca9",
+            "name": "creator.agent.agi.eth",
+            "result": {
+              "eligible": true,
+              "reasons": [],
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "liveIdentityAuthenticated": false
+            }
+          },
+          {
+            "inputSha256": "d4c7da89470bcd56f3510a0b2b88afb52deaa4e1e1748c18892aac45e56e3abf",
+            "name": "child.creator.agent.agi.eth",
+            "result": {
+              "eligible": false,
+              "reasons": [
+                "DIRECT_AGENT_NAME_REQUIRED"
+              ],
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "liveIdentityAuthenticated": false
+            }
+          },
+          {
+            "inputSha256": "ff8f73a1b2eee944f38d7cb797a15f7f314101ffc525ecea671eefb0a43a61d2",
+            "name": "creator.agent.agi.eth",
+            "result": {
+              "eligible": false,
+              "reasons": [
+                "AUTHORITY_REVOKED"
+              ],
+              "authenticationMode": "SIMULATED_CONTROLLER_BINDING_ONLY",
+              "liveIdentityAuthenticated": false
+            }
+          }
+        ],
+        "authorityAttestations": [],
+        "graphAuditRoot": "849e0e026fe2fbeee86a44dc849d8ad75227cf5bec245980efe283b834de746a",
+        "graphSourceHash": "6b1db34aae8ab9fa720e02e6f0ea45742e269e3373dc019efa9db872b9d56c8c"
+      }
+    ],
+    "measuredExecution": {
+      "nativePlanMissionCalls": 2,
+      "admissionCalls": 0,
+      "influenceCalls": 0,
+      "transferCalls": 0,
+      "authorityCalls": 3,
+      "ventureAttestationChecks": 0,
+      "elapsedSeconds": 0.009492361000000017,
+      "cpuSeconds": 0.005271
+    },
+    "boundaries": {
+      "actualCollectionsUsd": 0,
+      "actualCompleteCostUsd": null,
+      "actualModelCalls": 0,
+      "liveIdentityAuthenticated": false,
+      "livePermissions": false,
+      "nativeModule": "Unchanged native_snapshot/canonical/shadow-ledger.mjs planMission",
+      "authorityModule": "Unchanged direct-agent fixture authorityStatus; no live ENS or EIP-712 verification",
+      "existingClubValidation": "UNCHANGED; no club settlement path invoked",
+      "scope": "Executed inert native cash/accrual reconciliation and fixture eligibility only. BeyondBeta graph gates execute separately. This is not actual model production or commercial acceptance.",
+      "historicalQualificationRulesInvoked": false
+    },
+    "inputFileSha256": "e4065ef8044ab65a4a760db308d8cd7513f5002d50cdb62f7c12af989e8e93ba"
+  },
+  "stdout": "{\"outputFile\":\"/tmp/beyond-beta-native-gdnydhtc/output.json\",\"nativePlanMissionCalls\":2,\"admissionCalls\":0,\"influenceCalls\":0,\"transferCalls\":0,\"authorityCalls\":3,\"ventureAttestationChecks\":0,\"elapsedSeconds\":0.009492361000000017,\"cpuSeconds\":0.005271}",
+  "sources": [
+    {
+      "path": "beyond_beta/tests/test_native_smoke.py",
+      "sha256": "00bcda15c014d368d482280ae505e3914ce1d3326572d9113c71b5ef03db0797"
+    },
+    {
+      "path": "beyond_beta/src/graph_lifecycle.py",
+      "sha256": "6b1db34aae8ab9fa720e02e6f0ea45742e269e3373dc019efa9db872b9d56c8c"
+    },
+    {
+      "path": "beyond_beta/src/fixture_factory.py",
+      "sha256": "d9e1a95994ae8baf9707969cba9b09ef49d5cf060a09347d1e07b3a928af54c9"
+    },
+    {
+      "path": "venture_creation/src/finance_capacity.py",
+      "sha256": "e04e1cea8afcd0ada9f645565a64de6b5ac9de9f133a85fb8755bacf99650955"
+    }
+  ]
+}

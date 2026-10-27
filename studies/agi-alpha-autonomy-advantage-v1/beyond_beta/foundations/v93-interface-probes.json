@@ -1,0 +1,168 @@
+{
+  "schema": "beyond-beta-v93-source-probe/v1",
+  "evidenceClass": "own-observation-of-supplied-local-demo-code",
+  "source": {
+    "path": "beyond_beta/sources/supplied/goalos-v93-rsi-validated-skill-graph-ascension-lab-interface.html",
+    "sha256": "3c3d606a76ec6a0ca1e854205032042284f83cff866e5eb3f3ae541675dac6ee"
+  },
+  "method": {
+    "execution": "Node vm with no provided network, process, filesystem, wallet, or browser globals",
+    "changes": "Rendering, logging, animation, badge and toast functions replaced with no-ops; read-only state snapshot injected. Business functions unmodified. Only public UI actions and UI form fields invoked.",
+    "scope": "Local source logic, not browser rendering, live protocol exploit, real proof, real job execution, or economic evidence."
+  },
+  "probes": [
+    {
+      "id": "V93-C01",
+      "kind": "positive_control",
+      "claim": "An ordinary simulated candidate can pass the local Chronicle gate.",
+      "observed": true,
+      "details": {
+        "chronicleEntries": 1,
+        "status": "admitted-chronicle"
+      }
+    },
+    {
+      "id": "V93-C02",
+      "kind": "positive_control",
+      "claim": "A clean boot blocks next-mission generation.",
+      "observed": true,
+      "details": {
+        "cycle": 0,
+        "edges": 0
+      }
+    },
+    {
+      "id": "V93-C03",
+      "kind": "positive_control",
+      "claim": "The supplied deliberately bad skill remains outside Chronicle.",
+      "observed": true,
+      "details": {
+        "status": "repair-required",
+        "chronicleEntries": 0
+      }
+    },
+    {
+      "id": "V93-F01",
+      "kind": "draft_invariant_violation",
+      "claim": "Canonical promotion grants a reuse path without a Chronicle entry.",
+      "observed": true,
+      "details": {
+        "chronicleEntries": 0,
+        "canonicalEntries": 1,
+        "status": "canonical-reused",
+        "futurePriorEdges": [
+          {
+            "from": "skill-rsi-00-517dde12",
+            "to": "future-mission",
+            "type": "future-prior",
+            "label": "validated skill influences next mission",
+            "cycle": 0,
+            "created_at": "2026-10-26T23:09:27.914Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "V93-F02",
+      "kind": "draft_invariant_violation",
+      "claim": "A retired skill still seeds a mission through historical Chronicle.",
+      "observed": true,
+      "details": {
+        "currentStatus": "retired",
+        "cycle": 1,
+        "futurePriorEdges": [
+          {
+            "from": "skill-rsi-00-517dde12",
+            "to": "mission-cycle-1",
+            "type": "future-prior",
+            "label": "Chronicle skill seeds harder mission",
+            "cycle": 1,
+            "created_at": "2026-10-26T23:09:27.918Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "V93-F03",
+      "kind": "draft_invariant_violation",
+      "claim": "The gate uses the mutable slider rather than the mission-bound L5 policy.",
+      "observed": true,
+      "details": {
+        "frozenMissionProofLevel": "L5 Chronicle / Formal",
+        "skillProofLevel": "L5 Chronicle / Formal",
+        "beforeStatus": "repair-required",
+        "afterStatus": "admitted-chronicle",
+        "currentSlider": 3
+      }
+    },
+    {
+      "id": "V93-F04",
+      "kind": "draft_invariant_violation",
+      "claim": "Repeating admission increments the frontier without new evidence or a new Chronicle entry.",
+      "observed": true,
+      "details": {
+        "entriesBefore": 1,
+        "entriesAfter": 1,
+        "frontierBefore": {
+          "Trust": 0,
+          "Replay": 0,
+          "Boundary": 0,
+          "Jobs": 0,
+          "Evidence": 0,
+          "Research": 0,
+          "Governance": 4,
+          "Packaging": 5,
+          "Review": 17
+        },
+        "frontierAfter": {
+          "Trust": 0,
+          "Replay": 0,
+          "Boundary": 0,
+          "Jobs": 0,
+          "Evidence": 0,
+          "Research": 0,
+          "Governance": 8,
+          "Packaging": 10,
+          "Review": 34
+        }
+      }
+    },
+    {
+      "id": "V93-F05",
+      "kind": "draft_invariant_violation",
+      "claim": "A composition can be admitted using inherited evidence IDs and no new job execution.",
+      "observed": true,
+      "details": {
+        "parentEvidence": [
+          "proofbundle-agi-job-rsi-00-001",
+          "proofbundle-agi-job-rsi-00-002",
+          "proofbundle-agi-job-rsi-00-003",
+          "proofbundle-agi-job-rsi-00-004",
+          "proofbundle-agi-job-rsi-00-005"
+        ],
+        "childEvidence": [
+          "proofbundle-agi-job-rsi-00-001",
+          "proofbundle-agi-job-rsi-00-002",
+          "proofbundle-agi-job-rsi-00-003",
+          "proofbundle-agi-job-rsi-00-004",
+          "proofbundle-agi-job-rsi-00-005"
+        ],
+        "jobsBefore": 5,
+        "jobsAfter": 5,
+        "childStatus": "admitted-chronicle"
+      }
+    },
+    {
+      "id": "V93-F06",
+      "kind": "draft_invariant_violation",
+      "claim": "Retirement can be undone by the same admission command and stale evidence.",
+      "observed": true,
+      "details": {
+        "beforeStatus": "retired",
+        "afterStatus": "admitted-chronicle",
+        "evidenceUnchanged": true
+      }
+    }
+  ],
+  "allExpectedBehaviorsReproduced": true
+}

@@ -1,0 +1,373 @@
+{
+  "schema": "beyond-beta-source-register/v1",
+  "date": "2026-10-26",
+  "sources": [
+    {
+      "id": "alphaevolve-2025",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "authors": "Novikov et al., Google DeepMind",
+      "sourceType": "primary_research_paper_vendor_authored",
+      "url": "https://arxiv.org/html/2506.13131v1",
+      "date": "2025-06-16",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn33academia26",
+        "turn35view0",
+        "turn36view7"
+      ],
+      "facts": {
+        "kernelHeuristicReportedSpeedupPercent": 23,
+        "reportedGeminiTrainingTimeReductionPercent": 1,
+        "heldoutShapes": "Half of observed input shapes reserved for evaluation.",
+        "engineeringBurden": "Authors report several months of dedicated kernel-heuristic engineering versus days of automated experimentation.",
+        "deployment": "Authors report the heuristic deployed internally."
+      },
+      "scope": "Gemini/Pallas/TPU ecosystem; authored by the developers, not an independent Astra/Terra trial. Supports plausibility of useful algorithm discovery, not our throughput, costs, demand or probability of success.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "sakana-robust-kbench-2025",
+      "title": "Towards Robust Agentic CUDA Kernel Benchmarking, Verification, and Optimization",
+      "authors": "Lange et al., Sakana AI",
+      "sourceType": "primary_research_paper_vendor_authored",
+      "url": "https://arxiv.org/pdf/2509.14279",
+      "abstractUrl": "https://arxiv.org/abs/2509.14279",
+      "date": "2025-09-16",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn36view1",
+        "turn36view2",
+        "turn38view0",
+        "turn38view1"
+      ],
+      "facts": {
+        "benchmarkName": "robust-kbench",
+        "reportedInitialTranslationMinutesApprox": 15,
+        "reportedOptimizationHoursApprox": 1.5,
+        "reportedParallelGpuDevices": 4,
+        "reportedLoop": "Ten generations; candidate generation, verification, compilation, correctness and timing.",
+        "performanceQualification": "Selected forward tasks improved over PyTorch eager; unseen-shape performance varied, including overfitting.",
+        "evaluationRisk": "The paper addresses exploitable benchmarking loopholes and varied-condition correctness."
+      },
+      "scope": "The retrieved primary paper does not call its benchmark KernelEval. Its costs/timings are paper-specific and exclude our product integration, support and failed-venture history; its eager baseline is not a guarantee of beating tuned libraries.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "optimus-v4-2026",
+      "title": "OptiMUS-0.3: Using large language models to model and solve optimization problems at scale",
+      "authors": "AhmadiTeshnizi et al.",
+      "sourceType": "primary_research_paper",
+      "url": "https://arxiv.org/html/2407.19633v4",
+      "abstractUrl": "https://arxiv.org/abs/2407.19633",
+      "firstDate": "2024-07-29",
+      "versionDate": "2026-06-26",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn36view3",
+        "turn37view0",
+        "turn38view5"
+      ],
+      "facts": {
+        "deliverableType": "Executable mixed-integer/linear programming models, solver code, debugging and solution checks.",
+        "benchmarkTestProblems": 331,
+        "developmentProblems": 23,
+        "additionalCaseStudyInstances": 7,
+        "caseStudyData": "Synthetic data matched to published operational case scales.",
+        "caseDomains": [
+          "Capacity allocation",
+          "Scheduling",
+          "Routing",
+          "Fulfillment"
+        ]
+      },
+      "scope": "Evidence for modeling and solver assembly on benchmark problems. Case-study resemblance does not establish customer purchase or correct interpretation of an unseen operational policy.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "orthought-2025",
+      "title": "Automated Optimization Modeling through Expert-Guided Large Language Model Reasoning",
+      "authors": "Yang et al.",
+      "sourceType": "primary_research_paper",
+      "url": "https://arxiv.org/html/2508.14410v1",
+      "date": "2025-08-20",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn36view4",
+        "turn37view7"
+      ],
+      "facts": {
+        "reportedExistingBenchmarkLabelErrorsUpToPercent": 42,
+        "newBenchmark": "LogiOR",
+        "criticism": "Evaluating only an optimum value can miss errors in the modeled constraints and problem meaning."
+      },
+      "scope": "A task-specific warning against accepting executable solver output as proof that the intended business problem was represented correctly. The reported error maximum is not a universal error rate.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "pdebench-v7-2024",
+      "title": "PDEBench: An Extensive Benchmark for Scientific Machine Learning",
+      "authors": "Takamoto et al.",
+      "sourceType": "primary_research_paper",
+      "url": "https://arxiv.org/abs/2210.07182",
+      "firstDate": "2022-10-13",
+      "versionDate": "2024-08-26",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn36view5",
+        "turn37view8"
+      ],
+      "facts": {
+        "benchmark": "Time-dependent PDE tasks with code/data, classical simulation and learned baselines, varying initial/boundary conditions and physical parameters."
+      },
+      "scope": "A public validation substrate for numerical surrogate/solver products. Not a frontier-agent benchmark, physical-system certification or evidence of fee-paying demand.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "metr-rct-2025",
+      "title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "authors": "Becker et al., METR",
+      "sourceType": "primary_research_paper_independent",
+      "url": "https://arxiv.org/abs/2507.09089",
+      "date": "2025-07-12",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn33academia27"
+      ],
+      "facts": {
+        "developers": 16,
+        "tasks": 246,
+        "reportedAiAllowedTimeIncreasePercent": 19,
+        "models": "Predominantly Cursor with Claude 3.5/3.7 Sonnet; early-2025 tasks in mature familiar repositories."
+      },
+      "scope": "Counterevidence against an automatic professional-software productivity multiplier. It does not estimate current Astra/Terra autonomous kernel or solver performance.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "metr-update-2026",
+      "title": "We are Changing our Developer Productivity Experiment Design",
+      "authors": "METR",
+      "sourceType": "primary_author_update",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "date": "2026-02-24",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn35view2",
+        "turn36view9"
+      ],
+      "facts": {
+        "interpretation": "Authors judge newer estimates unreliable because of developer/task selection and concurrent-agent time-measurement problems; possible later speedups remain poorly identified."
+      },
+      "scope": "Keep the earlier adverse finding and the later limitation together. Neither supports a universal current slowdown or a precise positive frontier multiplier.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "bls-software-2025",
+      "title": "Software Developers, Quality Assurance Analysts, and Testers",
+      "sourceType": "official_labor_statistics",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+      "dataDate": "2025-05",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn35view3",
+        "turn36view8"
+      ],
+      "currency": "USD",
+      "geography": "United States",
+      "facts": {
+        "developerMedianAnnualUsd": 135980,
+        "qaMedianAnnualUsd": 104300
+      },
+      "scope": "Employee wage benchmarks, not GPU-specialist consulting fees or full customer prices.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "bls-ecec-june2026",
+      "title": "Employer Costs for Employee Compensation, June 2026",
+      "sourceType": "official_labor_statistics",
+      "url": "https://www.bls.gov/news.release/ecec.nr0.htm",
+      "date": "2026-09-09",
+      "dataDate": "2026-06",
+      "accessed": "2026-10-26",
+      "refs": [
+        "turn37view2",
+        "turn38view3"
+      ],
+      "currency": "USD",
+      "geography": "United States",
+      "facts": {
+        "privateIndustryWageShare": 0.7,
+        "privateIndustryHourlyCompensationUsd": 46.89
+      },
+      "scope": "Using the aggregate wage share to load specialist wages is an explicit cross-occupation approximation.",
+      "reusedExternalFactOnly": true
+    },
+    {
+      "id": "swe-proof-v2",
+      "title": "SWE-Proof: Can Language Models Resolve Real-World Issues with Machine-Checked Proofs?",
+      "url": "https://arxiv.org/pdf/2609.21190v2",
+      "date": "2026-09-22",
+      "sourceType": "primary_research_preprint_university_and_AWS_authors",
+      "refs": [
+        "turn53view0",
+        "turn53view1"
+      ],
+      "facts": {
+        "baselineModel": "Claude Opus4.8",
+        "givenFormalSpecResolutionPercent": [
+          85.0,
+          95.1
+        ],
+        "selfWrittenSpecsPassingAuditPercent": 56,
+        "taskCount": 500
+      },
+      "scope": "Construction sees a known correct patch and test metadata; evaluated solver does not. Proofs assume callee axioms and a patch-equivalence bridge. The v1/search62% specification figure was superseded by v2; do not pool. No current Astra/Terra acceptance calibration.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "derivative-informed-operators",
+      "title": "Efficient PDE-constrained optimization under high-dimensional uncertainty using Derivative-Informed Neural Operators",
+      "url": "https://arxiv.org/html/2305.20053v1",
+      "date": "2023-05-31",
+      "sourceType": "primary_research_paper",
+      "refs": [
+        "turn51view0"
+      ],
+      "facts": {
+        "task": "PDE-constrained optimization under uncertainty; surrogate values and design derivatives; reduced-basis architecture"
+      },
+      "scope": "Supports a recurring simulation burden and conventional baseline. Not autonomous discovery, customer demand or a transferable speedup multiplier.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "operator-inference",
+      "title": "Non-intrusive reduced-order models for parametric partial differential equations via data-driven operator inference",
+      "url": "https://arxiv.org/abs/2110.07653v4",
+      "date": "2023-03-15",
+      "sourceType": "primary_research_paper",
+      "refs": [
+        "turn51view3"
+      ],
+      "facts": {
+        "task": "Physics-structured reduced operators for repeated parametric forward solves; heat-equation demonstration"
+      },
+      "scope": "Mature method belongs in competent Beta, not an Alpha-exclusive invention by default.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "surrogate-uq",
+      "title": "Total Uncertainty Quantification in Inverse PDE Solutions Obtained with Reduced-Order Deep Learning Surrogate Models",
+      "url": "https://arxiv.org/abs/2408.11145",
+      "date": "2024-08-20",
+      "sourceType": "primary_research_paper",
+      "refs": [
+        "turn51view1"
+      ],
+      "facts": {
+        "finding": "Accounts for observation, PDE and surrogate uncertainty; deep ensembles underestimated uncertainty in the studied comparison"
+      },
+      "scope": "Task-specific counterevidence to treating surrogate consensus as faithful uncertainty or physical truth.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "mechanism-design-llm",
+      "title": "An Interpretable Automated Mechanism Design Framework with Large Language Models",
+      "url": "https://arxiv.org/html/2502.12203v1",
+      "date": "2025-02-16",
+      "sourceType": "primary_research_paper",
+      "refs": [
+        "turn51view2",
+        "turn52view4"
+      ],
+      "facts": {
+        "mechanism": "Code generation/evolution with problem-specific fixing for feasibility or strategy-proofness"
+      },
+      "scope": "The fixing rule and modeled type distribution bound guarantees; no realized institutional adoption or price evidence.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "metr-horizon-v4",
+      "title": "Measuring AI Ability to Complete Long Software Tasks",
+      "url": "https://arxiv.org/html/2503.14499v4",
+      "date": "2026-07-10",
+      "sourceType": "primary_independent_evaluation",
+      "refs": [
+        "turn52view1"
+      ],
+      "facts": {
+        "finding": "Human-duration-calibrated task horizons vary by model release and task distribution"
+      },
+      "scope": "Supports versioned Beta evaluation; historical doubling trends do not identify future arrival dates, software-package acceptance or Alpha asset half-life.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "swe-live-v2",
+      "title": "SWE-bench Goes Live!",
+      "url": "https://arxiv.org/html/2505.23419v2",
+      "date": "2025-06-01",
+      "sourceType": "primary_benchmark_paper_Microsoft_authors",
+      "refs": [
+        "turn52view2"
+      ],
+      "facts": {
+        "tasks": 1319,
+        "repositories": 93,
+        "scope": "Issue tasks since2024 with executable environments"
+      },
+      "scope": "Supports recurring change and chronological holdouts. Benchmark issue resolution is not the entire proposed verified-component service.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "official-current-models",
+      "title": "Current official GPT-6 Astra/Terra documentation",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "date": "2026-10-26",
+      "sourceType": "official_vendor_documentation",
+      "refs": [
+        "turn44view0",
+        "turn45view2",
+        "turn47view0"
+      ],
+      "facts": {
+        "modelAliases": [
+          "gpt-6-astra",
+          "gpt-6.1-terra"
+        ],
+        "astraInputOutputCachedUsdPerM": [
+          10,
+          50,
+          1
+        ],
+        "terraInputOutputCachedUsdPerM": [
+          1,
+          5,
+          0.05
+        ]
+      },
+      "scope": "Aliases and prices current at retrieval, not measured foundry competence. Pro aggregates work; reasoning output billed. No account access purchased.",
+      "accessed": "2026-10-26"
+    },
+    {
+      "id": "official-tools",
+      "title": "Official API tool pricing",
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "date": "2026-10-26",
+      "sourceType": "official_vendor_price_documentation",
+      "refs": [
+        "turn45view5"
+      ],
+      "facts": {
+        "hostedContainer4gbUsdPer20min": 0.12,
+        "webSearchUsdPer1000": 10
+      },
+      "scope": "A4GB hosted-container-hour allowance ofUSD0.36 is an arithmetic normalization, not CPU-core rent or guaranteed availability. Local proof tools incur modeled container cost; tool licensing assumed zero only when permissive.",
+      "accessed": "2026-10-26"
+    }
+  ],
+  "freshSearchQueries": 4,
+  "furtherBroadSearchStopped": true,
+  "actualResearchCostUsd": null,
+  "retrievalFailures": [
+    "SWE-Proof HTML disabled; ordinary official PDF read instead"
+  ],
+  "correctedBeforeCalibration": "SWE-Proofv2 replaces stale search/v1 specification pass62% with56%."
+}
