@@ -1,0 +1,290 @@
+{
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0,
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "src/economics.py",
+        "self-test"
+      ],
+      "cwd": "<TEMP_STUDY>",
+      "elapsed_seconds": 0.11619124400021974,
+      "returncode": 0,
+      "stderr_sha256": "2a6ccfadf1139b9532c9198e5f60765ec99d35831f4e96ac8a177545def78385",
+      "stderr_tail": "test_acceptance_and_settlement_conservation (__main__.AccountingTests.test_acceptance_and_settlement_conservation) ... ok\ntest_assessment_is_charged_once (__main__.AccountingTests.test_assessment_is_charged_once) ... ok\ntest_cost_cap_does_not_inspect_future_cost_draw (__main__.AccountingTests.test_cost_cap_does_not_inspect_future_cost_draw) ... ok\ntest_default_releases_unpaid_processing_fee (__main__.AccountingTests.test_default_releases_unpaid_processing_fee) ... ok\ntest_deposits_cannot_fund_launch (__main__.AccountingTests.test_deposits_cannot_fund_launch) ... ok\ntest_failed_readiness_gate_stops_after_sixty_percent (__main__.AccountingTests.test_failed_readiness_gate_stops_after_sixty_percent) ... ok\ntest_full_failure_refunds_deposit (__main__.AccountingTests.test_full_failure_refunds_deposit) ... ok\ntest_late_invoice_fee_accrual (__main__.AccountingTests.test_late_invoice_fee_accrual) ... ok\ntest_no_launch_is_zero_new_spend (__main__.AccountingTests.test_no_launch_is_zero_new_spend) ... ok\ntest_non_cash_commitments_and_failed_threshold_cost (__main__.AccountingTests.test_non_cash_commitments_and_failed_threshold_cost) ... ok\ntest_price_can_remove_purchase (__main__.AccountingTests.test_price_can_remove_purchase) ... ok\ntest_token_envelope (__main__.AccountingTests.test_token_envelope) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.030s\n\nOK\n",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_tail": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "src/economics.py",
+        "develop"
+      ],
+      "cwd": "<TEMP_STUDY>",
+      "elapsed_seconds": 9.559603365996736,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "5752875fc8bdd033417bcea3bf8935e0f8c28ff40bcc0af490655e4dc1b946c9",
+      "stdout_tail": "{\n  \"selected_by_family\": {\n    \"direct\": {\n      \"family\": \"direct\",\n      \"fee\": 12000,\n      \"deposit\": 1.0\n    },\n    \"conditional\": {\n      \"family\": \"conditional\",\n      \"fee\": 6000,\n      \"deposit\": 0.25\n    }\n  },\n  \"overall_selected\": {\n    \"family\": \"none\",\n    \"fee\": 0,\n    \"deposit\": 0\n  },\n  \"development_means\": [\n    {\n      \"policy\": \"none:0:0\",\n      \"profit\": 0.0,\n      \"funds_gain\": 0.0,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"direct:6000:0.25\",\n      \"profit\": -30847.738265052263,\n      \"funds_gain\": -32502.838265052258,\n      \"accepted\": 0.272\n    },\n    {\n      \"policy\": \"direct:6000:0.5\",\n      \"profit\": -30836.39555002326,\n      \"funds_gain\": -32371.795550023257,\n      \"accepted\": 0.272\n    },\n    {\n      \"policy\": \"direct:6000:1\",\n      \"profit\": -30803.5507035902,\n      \"funds_gain\": -32099.550703590194,\n      \"accepted\": 0.272\n    },\n    {\n      \"policy\": \"direct:12000:0.25\",\n      \"profit\": -30063.757632737168,\n      \"funds_gain\": -31906.95763273717,\n      \"accepted\": 0.18\n    },\n    {\n      \"policy\": \"direct:12000:0.5\",\n      \"profit\": -30043.192280724412,\n      \"funds_gain\": -31703.99228072441,\n      \"accepted\": 0.18\n    },\n    {\n      \"policy\": \"direct:12000:1\",\n      \"profit\": -30005.54416828408,\n      \"funds_gain\": -31301.544168284072,\n      \"accepted\": 0.18\n    },\n    {\n      \"policy\": \"direct:18000:0.25\",\n      \"profit\": -30609.3299116787,\n      \"funds_gain\": -32213.129911678698,\n      \"accepted\": 0.068\n    },\n    {\n      \"policy\": \"direct:18000:0.5\",\n      \"profit\": -30604.422002249816,\n      \"funds_gain\": -32105.622002249813,\n      \"accepted\": 0.068\n    },\n    {\n      \"policy\": \"direct:18000:1\",\n      \"profit\": -30594.606183392047,\n      \"funds_gain\": -31890.606183392043,\n      \"accepted\": 0.068\n    },\n    {\n      \"policy\": \"conditional:6000:0.25\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:6000:0.5\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:6000:1\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:12000:0.25\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:12000:0.5\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:12000:1\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:18000:0.25\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:18000:0.5\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    },\n    {\n      \"policy\": \"conditional:18000:1\",\n      \"profit\": -3435.685185506698,\n      \"funds_gain\": -3435.6851855066975,\n      \"accepted\": 0\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "src/economics.py",
+        "confirm"
+      ],
+      "cwd": "<TEMP_STUDY>",
+      "elapsed_seconds": 75.76619228399068,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "46c823625e097a1a4af89112daeafa8e64e1a308e8d3f3aa33d820e76af7eca6",
+      "stdout_tail": "{\n  \"overall_selected\": {\n    \"deposit\": 0,\n    \"family\": \"none\",\n    \"fee\": 0\n  },\n  \"family_results\": {\n    \"conditional\": {\n      \"profit\": {\n        \"mean\": -3510.669044301315,\n        \"p05\": -5624.129106480927,\n        \"median\": -3502.109305661269,\n        \"p95\": -1489.0430574916265,\n        \"positive_fraction\": 0.0,\n        \"mean_mc95_low\": -3592.11489756901,\n        \"mean_mc95_high\": -3429.22319103362\n      },\n      \"accepted\": 0,\n      \"readiness\": 0.0,\n      \"conditional_on_readiness\": {\n        \"worlds\": 0,\n        \"mean_service_contribution\": null,\n        \"mean_full_venture_profit\": null,\n        \"mean_accepted\": null\n      }\n    },\n    \"direct\": {\n      \"profit\": {\n        \"mean\": -30146.878943036874,\n        \"p05\": -41175.696797141514,\n        \"median\": -34806.05146494138,\n        \"p95\": -8815.511159760177,\n        \"positive_fraction\": 0.001,\n        \"mean_mc95_low\": -30829.22465354091,\n        \"mean_mc95_high\": -29464.533232532838\n      },\n      \"accepted\": 0.218,\n      \"readiness\": 0.318,\n      \"conditional_on_readiness\": {\n        \"worlds\": 318,\n        \"mean_service_contribution\": 6391.818631553779,\n        \"mean_full_venture_profit\": -32364.290888593958,\n        \"mean_accepted\": 0.6855345911949685\n      }\n    },\n    \"no_launch\": {\n      \"profit\": {\n        \"mean\": 0.0,\n        \"p05\": 0.0,\n        \"median\": 0.0,\n        \"p95\": 0.0,\n        \"positive_fraction\": 0.0,\n        \"mean_mc95_low\": 0.0,\n        \"mean_mc95_high\": 0.0\n      },\n      \"accepted\": 0,\n      \"readiness\": 0.0,\n      \"conditional_on_readiness\": {\n        \"worlds\": 0,\n        \"mean_service_contribution\": null,\n        \"mean_full_venture_profit\": null,\n        \"mean_accepted\": null\n      }\n    }\n  }\n}\n"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "src/economic_conditional_supplement.py",
+        "run"
+      ],
+      "cwd": "<TEMP_STUDY>",
+      "elapsed_seconds": 16.534149245999288,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "98f79917b0438bca83f45e8946ca8306a857a65b22ddedd05658bb18f7d4a507",
+      "stdout_tail": "{\n  \"all_zero_launches\": true,\n  \"all_mean_losses\": true,\n  \"policies\": [\n    {\n      \"policy\": \"conditional:6000:0.25\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"qualified_pipeline_smaller_than_minimum\": 1000\n      }\n    },\n    {\n      \"policy\": \"conditional:6000:0.5\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"qualified_pipeline_smaller_than_minimum\": 1000\n      }\n    },\n    {\n      \"policy\": \"conditional:6000:1\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"qualified_pipeline_smaller_than_minimum\": 1000\n      }\n    },\n    {\n      \"policy\": \"conditional:12000:0.25\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 516,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 224\n      }\n    },\n    {\n      \"policy\": \"conditional:12000:0.5\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 516,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 224\n      }\n    },\n    {\n      \"policy\": \"conditional:12000:1\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 516,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 224\n      }\n    },\n    {\n      \"policy\": \"conditional:18000:0.25\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 149,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 577,\n        \"insufficient_all_owner_consent_before_deadline\": 12,\n        \"value_budget_outside_option_or_screening_prevents_threshold\": 2\n      }\n    },\n    {\n      \"policy\": \"conditional:18000:0.5\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 149,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 577,\n        \"insufficient_all_owner_consent_before_deadline\": 12,\n        \"value_budget_outside_option_or_screening_prevents_threshold\": 2\n      }\n    },\n    {\n      \"policy\": \"conditional:18000:1\",\n      \"profit_mean\": -3509.8637325172504,\n      \"launch_fraction\": 0.0,\n      \"counts\": {\n        \"too_few_arrived_before_deadline\": 149,\n        \"qualified_pipeline_smaller_than_minimum\": 260,\n        \"too_few_completed_procurement_before_deadline\": 577,\n        \"insufficient_all_owner_consent_before_deadline\": 12,\n        \"value_budget_outside_option_or_screening_prevents_threshold\": 2\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "src/economic_tables.py"
+      ],
+      "cwd": "<TEMP_STUDY>",
+      "elapsed_seconds": 0.10908115100755822,
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "4cde4094aa96dc5b90c20089e8935f798f94375d93908a5b6231d72680ea66f4",
+      "stdout_tail": "{\n  \"schema\": \"agialpha.reserve.publication-economic-tables.v1\",\n  \"evidence\": \"All modeled; Monte Carlo trajectories are alternatives, not actual customers or transactions\",\n  \"source_confirmation_sha256\": \"b2fa60e3cb3f1034049257ab5c1b727231b586732d0e9e155e4059055fbbd4a0\",\n  \"policy_rows\": [\n    {\n      \"policy\": \"no_launch\",\n      \"fee_usd\": 0,\n      \"deposit_fraction\": 0,\n      \"profit_mean_usd\": 0.0,\n      \"profit_p05_usd\": 0.0,\n      \"profit_p95_usd\": 0.0,\n      \"positive_profit_fraction\": 0.0,\n      \"revenue_mean_usd\": 0.0,\n      \"complete_cost_mean_usd\": 0.0,\n      \"delivery_contribution_mean_usd\": 0.0,\n      \"accepted_mean\": 0,\n      \"readiness_fraction\": 0.0,\n      \"cash_mean_usd\": 60000.0,\n      \"available_funds_mean_usd\": 60000.0,\n      \"available_gain_excluding_seed_mean_usd\": 0.0\n    },\n    {\n      \"policy\": \"direct\",\n      \"fee_usd\": 12000,\n      \"deposit_fraction\": 1.0,\n      \"profit_mean_usd\": -30146.878943036874,\n      \"profit_p05_usd\": -41175.696797141514,\n      \"profit_p95_usd\": -8815.511159760177,\n      \"positive_profit_fraction\": 0.001,\n      \"revenue_mean_usd\": 2616.0,\n      \"complete_cost_mean_usd\": 32762.878943036874,\n      \"delivery_contribution_mean_usd\": 2032.5983248341015,\n      \"accepted_mean\": 0.218,\n      \"readiness_fraction\": 0.318,\n      \"cash_mean_usd\": 29889.534406313065,\n      \"available_funds_mean_usd\": 28581.121056963126,\n      \"available_gain_excluding_seed_mean_usd\": -31418.878943036874\n    },\n    {\n      \"policy\": \"conditional\",\n      \"fee_usd\": 6000,\n      \"deposit_fraction\": 0.25,\n      \"profit_mean_usd\": -3510.669044301315,\n      \"profit_p05_usd\": -5624.129106480927,\n      \"profit_p95_usd\": -1489.0430574916265,\n      \"positive_profit_fraction\": 0.0,\n      \"revenue_mean_usd\": 0.0,\n      \"complete_cost_mean_usd\": 3510.669044301315,\n      \"delivery_contribution_mean_usd\": 0.0,\n      \"accepted_mean\": 0,\n      \"readiness_fraction\": 0.0,\n      \"cash_mean_usd\": 56489.330955698686,\n      \"available_funds_mean_usd\": 56489.330955698686,\n      \"available_gain_excluding_seed_mean_usd\": -3510.669044301315\n    }\n  ],\n  \"direct_delivery_economics\": {\n    \"price_usd\": 12000,\n    \"variable_cost_per_accepted_equivalent_usd\": 2676.154473238066,\n    \"contribution_per_accepted_equivalent_usd\": 9323.845526761934,\n    \"complete_venture_cost_per_accepted_equivalent_usd\": 150288.43551851777,\n    \"ratio_definition\": \"Sum costs across all 1000 worlds divided by all accepted assessments, including failed-booking costs. Variable cost excludes startup, acquisition, fixed business and insurance. Complete venture cost includes them. No dollar total is actual earned revenue.\",\n    \"ready_worlds\": 318,\n    \"ready_full_venture_profit_mean_usd\": -32364.290888593958,\n    \"ready_operating_profit_excluding_startup\": {\n      \"mean\": -6932.128104786751,\n      \"p05\": -17568.585797653468,\n      \"median\": -8426.792520460047,\n      \"p95\": 6291.713452906963,\n      \"positive_fraction\": 0.1540880503144654,\n      \"mean_mc95_low\": -7844.569603367562,\n      \"mean_mc95_high\": -6019.686606205939\n    },\n    \"interpretation\": \"Positive delivery contribution is not profitable service operation: acquisition, business and insurance still produce a loss even after successful startup is treated as sunk.\"\n  },\n  \"conservative_commitment_threshold_example\": {\n    \"screening_already_spent_usd\": 3000,\n    \"fixed_forecast_usd\": 41793.8895,\n    \"fees\": {\n      \"6000\": {\n        \"required_commitments\": 17,\n        \"expected_net_per_commitment_after_delivery_usd\": 2488.6800000000003\n      },\n      \"12000\": {\n        \"required_commitments\": 7,\n        \"expected_net_per_commitment_after_delivery_usd\": 6777.360000000001\n      },\n      \"18000\": {\n        \"required_commitments\": 4,\n        \"expected_net_per_commitment_after_delivery_usd\": 11066.039999999999\n      }\n    },\n    \"boundary\": \"The selected $6000 conditional policy is a grid-order tie and is structurally unable to launch within nine qualified opportunities. All nine policies tied without launches in development; only the frozen selected policy was freshly confirmed. Four high-value $18000 commitments are a next validation target, not observed demand.\"\n  },\n  \"actual_complete_research_cost_usd\": null,\n  \"actual_customer_collections_usd\": 0\n}\n"
+    }
+  ],
+  "comparison_policy": "All ten outputs must match byte for byte. There are no wall-time, output-path or random-key metadata fields in these deterministic economic artifacts, so no omissions or numerical tolerances are needed.",
+  "comparisons": [
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_development.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 136489,
+      "published_sha256": "b966c9b3d45b8973a63cb69d61a4c46ae016776d599cc0f56b87e43e65f13dc7",
+      "reproduced_bytes": 136489,
+      "reproduced_sha256": "b966c9b3d45b8973a63cb69d61a4c46ae016776d599cc0f56b87e43e65f13dc7"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_freeze.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 877,
+      "published_sha256": "5277d19dddb3a3a0d9a8aa4cebc4330050a2b2d9eee40efb63a010945227e108",
+      "reproduced_bytes": 877,
+      "reproduced_sha256": "5277d19dddb3a3a0d9a8aa4cebc4330050a2b2d9eee40efb63a010945227e108"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_confirmation.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 282883,
+      "published_sha256": "b2fa60e3cb3f1034049257ab5c1b727231b586732d0e9e155e4059055fbbd4a0",
+      "reproduced_bytes": 282883,
+      "reproduced_sha256": "b2fa60e3cb3f1034049257ab5c1b727231b586732d0e9e155e4059055fbbd4a0"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_sensitivity.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 18224,
+      "published_sha256": "a18e8cfa0c5a00595ebfd732e09d9beb121fe1ff4f7af44cf4be7ae5f75fb80c",
+      "reproduced_bytes": 18224,
+      "reproduced_sha256": "a18e8cfa0c5a00595ebfd732e09d9beb121fe1ff4f7af44cf4be7ae5f75fb80c"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_retention.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 29705,
+      "published_sha256": "570a9a8e2a8fccb411afe29fa262750ed69d96878d13f8cf376f64bf3a0f1f92",
+      "reproduced_bytes": 29705,
+      "reproduced_sha256": "570a9a8e2a8fccb411afe29fa262750ed69d96878d13f8cf376f64bf3a0f1f92"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_example_ledger.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 12515,
+      "published_sha256": "96b026a0f7c34ee7a9144e5a24387a8b6f2ba246125d20e416ef0539f7734217",
+      "reproduced_bytes": 12515,
+      "reproduced_sha256": "96b026a0f7c34ee7a9144e5a24387a8b6f2ba246125d20e416ef0539f7734217"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_summary.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 22107,
+      "published_sha256": "541d3a06fb30a01797008b63f9ede3198e57dc1f19a157d9176492e087225d18",
+      "reproduced_bytes": 22107,
+      "reproduced_sha256": "541d3a06fb30a01797008b63f9ede3198e57dc1f19a157d9176492e087225d18"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_conditional_supplement.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 41885,
+      "published_sha256": "95f25118c190db3dbfbf593c75466bd62dabcac91c295f9beb864e20cf1660e1",
+      "reproduced_bytes": 41885,
+      "reproduced_sha256": "95f25118c190db3dbfbf593c75466bd62dabcac91c295f9beb864e20cf1660e1"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_plot_data.json",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 4252,
+      "published_sha256": "4cde4094aa96dc5b90c20089e8935f798f94375d93908a5b6231d72680ea66f4",
+      "reproduced_bytes": 4252,
+      "reproduced_sha256": "4cde4094aa96dc5b90c20089e8935f798f94375d93908a5b6231d72680ea66f4"
+    },
+    {
+      "comparison": "byte-for-byte",
+      "differences": [],
+      "file": "results/economics_policy_table.csv",
+      "omitted_fields": [],
+      "passed": true,
+      "published_bytes": 727,
+      "published_sha256": "cb0e2e384126374e94f26b3d96d6510080b2ef3eff720d3a8c965039125f9bbf",
+      "reproduced_bytes": 727,
+      "reproduced_sha256": "cb0e2e384126374e94f26b3d96d6510080b2ef3eff720d3a8c965039125f9bbf"
+    }
+  ],
+  "comparisons_passed": 10,
+  "comparisons_total": 10,
+  "copied_inputs": [
+    "src/economics.py",
+    "src/economic_conditional_supplement.py",
+    "src/economic_tables.py",
+    "config/commercial_protocol.json",
+    "config/commercial_conditional_supplement.json",
+    "evidence/commercial_design_proposal.json"
+  ],
+  "elapsed_seconds": 102.10387433199503,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+    "dependencies": "Python standard library only",
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "evidence": "Replay of supplied frozen seeds and inputs; not new research, independent customer evidence or full-repository CI.",
+  "freeze_checks": {
+    "original_after": {
+      "primary:config/commercial_protocol.json": true,
+      "primary:evidence/commercial_design_proposal.json": true,
+      "primary:results/economics_development.json": true,
+      "primary:src/economics.py": true,
+      "supplement:config/commercial_protocol.json": true,
+      "supplement:evidence/commercial_design_proposal.json": true,
+      "supplement:results/economics_confirmation.json": true,
+      "supplement:results/economics_development.json": true,
+      "supplement:results/economics_freeze.json": true,
+      "supplement:results/economics_summary.json": true,
+      "supplement:src/economic_conditional_supplement.py": true,
+      "supplement:src/economics.py": true
+    },
+    "original_before": {
+      "primary:config/commercial_protocol.json": true,
+      "primary:evidence/commercial_design_proposal.json": true,
+      "primary:results/economics_development.json": true,
+      "primary:src/economics.py": true,
+      "supplement:config/commercial_protocol.json": true,
+      "supplement:evidence/commercial_design_proposal.json": true,
+      "supplement:results/economics_confirmation.json": true,
+      "supplement:results/economics_development.json": true,
+      "supplement:results/economics_freeze.json": true,
+      "supplement:results/economics_summary.json": true,
+      "supplement:src/economic_conditional_supplement.py": true,
+      "supplement:src/economics.py": true
+    },
+    "reproduced": {
+      "primary:config/commercial_protocol.json": true,
+      "primary:evidence/commercial_design_proposal.json": true,
+      "primary:results/economics_development.json": true,
+      "primary:src/economics.py": true,
+      "supplement:config/commercial_protocol.json": true,
+      "supplement:evidence/commercial_design_proposal.json": true,
+      "supplement:results/economics_confirmation.json": true,
+      "supplement:results/economics_development.json": true,
+      "supplement:results/economics_freeze.json": true,
+      "supplement:results/economics_summary.json": true,
+      "supplement:src/economic_conditional_supplement.py": true,
+      "supplement:src/economics.py": true
+    }
+  },
+  "generated_outputs_copied": false,
+  "original_economic_file_manifest": {
+    "config/commercial_conditional_supplement.json": "7fb67f0bd4f87d1b3074051cd84cbe346d682542e70ec7f7126e52121bcd29d7",
+    "config/commercial_protocol.json": "c38cefd8a0c580919658f60b47ecc95764ff4a968f702c25c010f4432564b98b",
+    "evidence/commercial_design_proposal.json": "7c33ca2055182c6242602980c5ffecd6b89055466d6e52f72b5eccede4d789c5",
+    "results/economics_conditional_supplement.json": "95f25118c190db3dbfbf593c75466bd62dabcac91c295f9beb864e20cf1660e1",
+    "results/economics_confirmation.json": "b2fa60e3cb3f1034049257ab5c1b727231b586732d0e9e155e4059055fbbd4a0",
+    "results/economics_development.json": "b966c9b3d45b8973a63cb69d61a4c46ae016776d599cc0f56b87e43e65f13dc7",
+    "results/economics_example_ledger.json": "96b026a0f7c34ee7a9144e5a24387a8b6f2ba246125d20e416ef0539f7734217",
+    "results/economics_freeze.json": "5277d19dddb3a3a0d9a8aa4cebc4330050a2b2d9eee40efb63a010945227e108",
+    "results/economics_plot_data.json": "4cde4094aa96dc5b90c20089e8935f798f94375d93908a5b6231d72680ea66f4",
+    "results/economics_policy_table.csv": "cb0e2e384126374e94f26b3d96d6510080b2ef3eff720d3a8c965039125f9bbf",
+    "results/economics_retention.json": "570a9a8e2a8fccb411afe29fa262750ed69d96878d13f8cf376f64bf3a0f1f92",
+    "results/economics_sensitivity.json": "a18e8cfa0c5a00595ebfd732e09d9beb121fe1ff4f7af44cf4be7ae5f75fb80c",
+    "results/economics_summary.json": "541d3a06fb30a01797008b63f9ede3198e57dc1f19a157d9176492e087225d18",
+    "results/economics_upgrade_bound.json": "17c7c59279bc819fdd9cff74dd9cc9d63d2e7267b7c9e43401d847e3d0a5d07f",
+    "results/economics_validation.json": "6916ed76878e27363c4d5ff22d6b8f09fd03046b50cfc69d777159c013e83346",
+    "src/economic_conditional_supplement.py": "9c6ed1546c070f4c556e75f23423dfcf726ae5b27507d78f719d9f9280504692",
+    "src/economic_tables.py": "626c3beb598537c4fc5a770330ee6da854eb359d03e494324f8e1ddb1ad087a0",
+    "src/economics.py": "a77b049485f0c8c7d256b720a508beb328304c6ac1b69a9378b21549b304396d"
+  },
+  "original_file_differences": [],
+  "original_files_unchanged": true,
+  "passed": true,
+  "preserved_but_not_regenerated": [
+    "results/economics_upgrade_bound.json (post-result analytic bound)",
+    "results/economics_validation.json (historical review receipt)"
+  ],
+  "recorded_at_utc": "2026-10-27T19:52:06.419410+00:00",
+  "reproduction_runner_sha256": "15fcc864ee49394a36e4f20c8159aef335cb998d301229522637f221d35931dc",
+  "schema": "agialpha.reserve.economic-reproduction.v1",
+  "scope": "Economic CLIs only: self-tests, development, primary confirmation and sensitivities, prospective conditional supplement, and derived publication tables.",
+  "temporary_tree_deleted": true
+}

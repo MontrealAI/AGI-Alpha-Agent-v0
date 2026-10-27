@@ -1,0 +1,106 @@
+{
+  "public_source_probe": {
+    "source": "https://vrs.ga4gh.org/en/2.1/model/MolecularVariation/Adjacency.html",
+    "fixture": "Published two-location Adjacency JSON, transcribed directly",
+    "ordered_locations": [
+      {
+        "refgetAccession": "SQ.S_KjnFVz-FE7M0W6yoaUDgYxLPc1jyWU",
+        "id": "NC_000001.10",
+        "end": 123
+      },
+      {
+        "refgetAccession": "SQ.9KdcA9ZpY1Cpvxvg8bMSLYDUpsX6GDLO",
+        "id": "NC_000002.11",
+        "start": 456
+      }
+    ],
+    "input_order_invariance": true,
+    "limitation": "Tests coordinate parsing and normative orientation only; no reference bases or biological truth were available. The public page caption conflicts with its normative start/end explanation; code follows normative text."
+  },
+  "synthetic_exhaustive_probe": {
+    "alphabet": "AC",
+    "reference_length": 5,
+    "reference_pairs": 1024,
+    "junction_cases": 36864,
+    "unique_sequence_classes": 24064,
+    "ambiguous_cases": 21504,
+    "false_merges": 0,
+    "false_splits": 0,
+    "sequence_preservation": true,
+    "idempotence": true
+  },
+  "cartesian_range_counterexample": {
+    "a": "CAGT",
+    "b": "GAGC",
+    "input": [
+      1,
+      1
+    ],
+    "target_sequence": "CAGC",
+    "coupled_equivalent_coordinates": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "independent_coordinate_combinations": 9,
+    "false_combinations": [
+      {
+        "coordinates": [
+          1,
+          2
+        ],
+        "sequence": "CGC"
+      },
+      {
+        "coordinates": [
+          1,
+          3
+        ],
+        "sequence": "CC"
+      },
+      {
+        "coordinates": [
+          2,
+          1
+        ],
+        "sequence": "CAAGC"
+      },
+      {
+        "coordinates": [
+          2,
+          3
+        ],
+        "sequence": "CAC"
+      },
+      {
+        "coordinates": [
+          3,
+          1
+        ],
+        "sequence": "CAGAGC"
+      },
+      {
+        "coordinates": [
+          3,
+          2
+        ],
+        "sequence": "CAGGC"
+      }
+    ]
+  },
+  "limits": [
+    "Synthetic, bounded exact strings; no human structural-variant callset evaluated.",
+    "No reverse-complement sequence processing, linker sequences, circular molecules, uncertain instrument ranges, or complex derivative molecules implemented.",
+    "No VRS digest calculated; output is an experimental certificate, not a standard VRS identifier.",
+    "Demonstrates a feasible mathematical subroutine and concrete representation hazard; neither novelty nor clinical utility is established."
+  ]
+}

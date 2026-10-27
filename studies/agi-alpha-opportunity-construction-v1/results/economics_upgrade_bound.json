@@ -1,0 +1,28 @@
+{
+  "schema": "agialpha.reserve.post-result-upgrade-bound.v1",
+  "evidence_status": "POST-RESULT ANALYTIC UPPER BOUND. Not preregistered, not a simulation rerun, not a measured frontier-model improvement.",
+  "source_summary_sha256": "541d3a06fb30a01797008b63f9ede3198e57dc1f19a157d9176492e087225d18",
+  "fixed_offer_usd": 12000,
+  "mean_interested_pools": 0.837,
+  "mean_booked": 0.258,
+  "mean_withdrawn": 0.009,
+  "mean_unserved": 0.57,
+  "interest_reconciliation": true,
+  "optimistic_assumptions": [
+    "Hold original readiness, owner consent, buyer beliefs, interests and fixed startup/acquisition/business/insurance costs fixed.",
+    "Serve every interested pool, including those originally withdrawn, unserved or lacking a ready supplier.",
+    "Charge the frozen $12000 fee, collect every amount, and incur zero repeat delivery, processing, failure or credit-loss cost.",
+    "This is more favorable than merely halving repeat inference tariffs or raising execution success to .98 under unchanged buyer beliefs."
+  ],
+  "maximum_mean_revenue_usd": 10044.0,
+  "unchanged_fixed_cost_mean_usd": 32179.477267870974,
+  "maximum_mean_full_venture_profit_usd": -22135.477267870974,
+  "fixed_volume_half_inference_price_saving_upper_bound_usd": 180.6,
+  "fixed_volume_bound_derivation": "Each original booking has at most $700 base inference cost times the declared retry cap2; halving tariffs saves at most $700 per original booking. This secondary bound holds volume fixed.",
+  "limitations": [
+    "Changing buyer beliefs, readiness success/cost, qualified demand, allowed outputs or the offering requires a fresh evaluation.",
+    "These numerical values are conditional on the original hypothetical world model, not market measurements."
+  ],
+  "actual_customer_collections_usd": 0,
+  "actual_complete_research_cost_usd": null
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "agialpha.reserve.economic-validation.v1",
+  "source_sha256": "a77b049485f0c8c7d256b720a508beb328304c6ac1b69a9378b21549b304396d",
+  "protocol_sha256": "c38cefd8a0c580919658f60b47ecc95764ff4a968f702c25c010f4432564b98b",
+  "scope": "Focused study checks only; no full repository CI or production qualification claim.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "self_tests": {
+    "passed": 12,
+    "total": 12,
+    "command": "PYTHONDONTWRITEBYTECODE=1 python src/economics.py self-test"
+  },
+  "ruff_check": {
+    "passed": true,
+    "cache": "disabled"
+  },
+  "strict_mypy": {
+    "passed": true,
+    "incremental": false,
+    "cache_dir": "/dev/null"
+  },
+  "independent_audit_file": "evidence/economics_independent_probes.json",
+  "independent_audit_reported_passed": 16,
+  "preserved_predevelopment_corrections": [
+    {
+      "finding": "Initial source tested qualification after all three startup stages, while the written design required a gate after cumulative 60%.",
+      "stage": "Before any development or fresh outcomes",
+      "correction": "Gate moved after 20% + 40%; final 40% is conditional. The twelfth controlled test verifies that a $10,000 startup stops at $6,000.",
+      "original_tests": "11/11 passed but did not cover this gate; independent review identified it."
+    },
+    {
+      "finding": "Ruff E731 lambda assignment",
+      "correction": "Named typed objective function before development."
+    },
+    {
+      "finding": "Seven strict mypy diagnostics for Any numerical returns and inferred collection/scenario types",
+      "correction": "Explicit numeric conversions and type annotations before development."
+    }
+  ],
+  "scope_clarifications": [
+    "Two bookings per fixed 30-day period; this is not a rolling limit.",
+    "The association is the coalition's procurement agent; no fourth actor's value is duplicated.",
+    "The scheduled settlement tail may retain accounts payable after insolvency; available funds deduct them.",
+    "An optional B assessment is charged once after the first accepted origin; no origin means no assessment."
+  ],
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0,
+  "fresh_confirmation": {
+    "completed": true,
+    "worlds": 1000,
+    "seed_start": 9811000,
+    "seed_end": 9811999,
+    "source_and_protocol_unchanged": true,
+    "actual_collections_usd": 0,
+    "actual_complete_research_cost_usd": null
+  },
+  "supplement": {
+    "completed": true,
+    "protocol_sha256": "7fb67f0bd4f87d1b3074051cd84cbe346d682542e70ec7f7126e52121bcd29d7",
+    "paired_worlds": 1000,
+    "policies": 9,
+    "seed_start": 9821000,
+    "seed_end": 9821999,
+    "all_policy_means_negative": true,
+    "all_policies_zero_launches": true,
+    "primary_evidence_preserved": true,
+    "failure_diagnostics": "Hierarchical first failed gate; not unique causal attribution."
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "study_date": "2026-10-27",
+  "retrieved_date": "2026-10-27",
+  "currency": "USD",
+  "status": "Official documentation inventory and modeling guidance; no paid API calls or trial expenditures measured.",
+  "selection_boundary": "Provider descriptions establish available capabilities and tariff assumptions, not mission accuracy or a cross-provider global capability ranking. Model-specific controlled evaluations remain necessary.",
+  "sources": [
+    {
+      "id": "openai_astra",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "ref": "turn1view0",
+      "claim": "gpt-6-astra; low/medium/high/xhigh/max reasoning; 1,050,000 context and 128,000 output; standard $10 input/$50 output per MTok; $1 cached input, $12.50 cache write; >272K input raises full-request input/cache 2x and output 1.5x. Responses computer use, hosted shell, code interpreter and structured outputs supported; fine-tuning unsupported. Free API tier unsupported; Build/Launch/Grow rate limits apply."
+    },
+    {
+      "id": "openai_sol",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "ref": "turn10view0",
+      "claim": "gpt-6.1-sol; low/medium(default)/high/xhigh/max; Responses required for tools; 1,050,000 context/128,000 output; standard $2 input/$10 output/$0.10 cache read/$2.50 cache write per MTok."
+    },
+    {
+      "id": "openai_terra",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+      "ref": "turn1view1",
+      "claim": "gpt-6.1-terra; none/low/medium(default)/high/xhigh/max; Responses required for tools; 1,050,000 context/128,000 output; standard $1 input/$5 output/$0.05 cache read/$1.25 cache write per MTok; positioned for visual reasoning and precise computer use."
+    },
+    {
+      "id": "openai_prices",
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "ref": "turn1view2",
+      "claim": "Standard token prices are distinct from Flex/Batch, Fast and Ultrafast. Web search $10/1,000 calls plus retrieved content tokens at model rates. Regional processing and FedRAMP endpoints have stated 10% uplifts for eligible newer models. Do not ignore tool execution and environment costs."
+    },
+    {
+      "id": "openai_computer",
+      "url": "https://developers.openai.com/api/docs/guides/tools-computer-use",
+      "ref": "turn11view0",
+      "claim": "Computer tool generates action requests; application executes actions and returns screenshots. Tool-call completion means generation completed, not that the action was executed. A client-side execution environment and its operating costs are still required."
+    },
+    {
+      "id": "claude_fable",
+      "url": "https://platform.claude.com/docs/en/models/fable-5-1/overview",
+      "ref": "turn1view3",
+      "claim": "claude-fable-5-1; $10 input/$50 output per MTok; $0.25 cache read; adaptive thinking always on, high default; 1M context/128K output; released September 1 2026. Provider recommends Opus 5.5 for most workloads and Fable for harder reasoning or long-horizon jobs when evals warrant it. Mythos equivalent access is verified-organization gated and is not assumed."
+    },
+    {
+      "id": "claude_opus",
+      "url": "https://platform.claude.com/docs/en/models/opus-5-5/overview",
+      "ref": "turn15view0",
+      "claim": "claude-opus-5-5; standard $4 input/$20 output per MTok; $0.20 cache read; 1M context/128K output; adaptive always on, medium default; released September 22 2026."
+    },
+    {
+      "id": "claude_effort",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+      "ref": "turn10view3",
+      "claim": "Fable 5.1 and Opus 5.5 support low/medium/high/xhigh/max. max_tokens bounds total thinking plus visible output. Effort changes trade cost/latency against capability; measure on the actual workload."
+    },
+    {
+      "id": "claude_computer",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+      "ref": "turn6view4",
+      "claim": "computer_toolset_20260801 is a client toolset with screenshot/mouse/keyboard actions; the application executes each call. Supported models include Fable 5.1 and Opus 5.5. Default tool definitions add roughly 4,500 input tokens, plus screenshots and execution results. Claude API Opus 5.5 requires the toolset instead of older computer beta versions."
+    },
+    {
+      "id": "gemini_argon",
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+      "ref": "turn1view4",
+      "claim": "gemini-4-argon stable; unified 1,048,576 input/output context; default synchronous max output 65,536, long decode up to context limit; thinking low/medium/high; code execution/functions/search/structured outputs supported and computer use Preview; updated October 14 2026."
+    },
+    {
+      "id": "gemini_price",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "ref": "turn1view5",
+      "claim": "Argon standard $2 input/$10 output per MTok through November 30 2026, $4/$20 from December 1. Cache read $0.10 then $0.20; implicit only. No free-tier Argon. Thinking and internal tool instructions are billed. Search: 5,000 monthly free requests shared across Gemini 3+, then $14/1,000; per-query charges can multiply within one model request."
+    },
+    {
+      "id": "gemini_computer",
+      "url": "https://ai.google.dev/gemini-api/docs/computer-use",
+      "ref": "turn10view4",
+      "claim": "Provider lists Argon for complex reasoning/UI workflows, recommends gemini-3.8-flash for computer use, and offers gemini-3.5-flash-lite as a lower-cost alternative. No task-specific success rate follows from this recommendation."
+    },
+    {
+      "id": "bls_software",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+      "ref": "turn6view0",
+      "claim": "May 2025 US software developer median annual wage $135,980; lowest decile below $82,460, highest above $214,670. Software QA/tester median $104,300. These are employee wages, not contractor service prices."
+    },
+    {
+      "id": "bls_data",
+      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
+      "ref": "turn6view1",
+      "claim": "May 2025 US data scientist median annual wage $120,230; lowest decile below $67,240, highest above $199,130. Wage distribution does not establish equivalent task competence or consultant prices."
+    },
+    {
+      "id": "bls_research",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/computer-and-information-research-scientists.htm",
+      "ref": "turn6view2",
+      "claim": "May 2025 US computer/information research scientist median wage $140,300; lowest decile below $82,200, highest above $230,630; R&D physical/engineering/life-sciences industry median $141,830."
+    },
+    {
+      "id": "bls_benefits",
+      "url": "https://www.bls.gov/news.release/ecec.nr0.htm",
+      "ref": "turn6view3",
+      "claim": "June 2026 private industry employer compensation $46.89/hour; wages $32.82 and benefits $14.07 (30% of compensation). Full-time private industry $54.00 total/$36.97 wages. September 9 2026 release. Benefits ratio is a broad proxy, not occupation-specific overhead or supplier margin."
+    }
+  ],
+  "recommended_documented_configuration": {
+    "discovery": {
+      "provider": "OpenAI",
+      "model": "gpt-6-astra",
+      "api": "Responses",
+      "reasoning_effort": "high",
+      "max_output_tokens": 32000,
+      "request_input_token_cap": 200000,
+      "service_tier": "standard",
+      "notes": "Raise effort only under a frozen development policy; do not silently claim current harness configuration matches a billed API run."
+    },
+    "execution": {
+      "provider": "OpenAI",
+      "model": "gpt-6.1-terra",
+      "api": "Responses",
+      "reasoning_effort": "medium",
+      "max_output_tokens": 16000,
+      "request_input_token_cap": 200000,
+      "service_tier": "standard",
+      "notes": "Use computer tool only where needed; direct data-processing/code is often more efficient."
+    },
+    "independent_validation_option": {
+      "provider": "Anthropic",
+      "model": "claude-fable-5-1",
+      "thinking": {
+        "type": "adaptive"
+      },
+      "output_config": {
+        "effort": "high"
+      },
+      "max_tokens": 32000,
+      "notes": "Cross-model agreement is not independent truth; deterministic tests/source reconstruction and adversarial cases remain required."
+    },
+    "alternative": {
+      "provider": "Google",
+      "model": "gemini-4-argon",
+      "thinking_level": "high",
+      "max_output_tokens": 32000,
+      "notes": "Apply December 2026 tariff step in any longer horizon. Preview computer-use status retained."
+    }
+  },
+  "economic_model_guidance": {
+    "inflation_adjustment": "None silently applied. Labor anchor is May 2025, benefits June 2026, scenario date October 27 2026; any escalation must be an explicit parameter.",
+    "benefit_factor": 1.4287020109689215,
+    "hourly_anchor_calculation": "annual wage / 2080 (assumed full-time-equivalent hours). This is a simplified production-cost proxy.",
+    "hourly_medians": {
+      "data_scientist": 57.80288461538461,
+      "software_developer": 65.375,
+      "research_scientist": 67.45192307692308,
+      "qa_tester": 50.14423076923077
+    },
+    "competent_service_scenarios": "Set scope-specific hours and roles after selecting the offering. Low/central/high hours must include scoping, execution, verification, correction, packaging and required coordination. Do not count these again in overhead.",
+    "human_cost_formula": "sum(hours_role * wage_hour_role * benefit_factor) + explicit nonlabor overhead + tools + external services; nonlabor overhead excludes benefits, paid leave and payroll taxes already in benefit_factor.",
+    "selling_price_formula": "human service reference price = production cost / (1-assumed operating margin), only if a comparable offered service is meaningfully defined. Mark commercial margin as assumed. Cost is not buyer willingness to pay.",
+    "novel_offering": "Use human-led development cost/duration/probability of success, then a separately modeled customer value and participation mechanism. Do not invent an equivalent-service price.",
+    "ai_cost_formula": "sum(input_tokens*input_tariff + billed_output_tokens*output_tariff + actual_cache_charges)/1e6 + search + execution + verification + retries + corrections + packaging + support + acquisition + business overhead. Unmeasured quantities remain assumptions/unknown, not zero.",
+    "cost_partition": {
+      "A": "Originating delivery and necessary within-job learning",
+      "B": "Additional evaluation/extraction/retention/sharing/invocation/maintenance not paid in A",
+      "C": "Optional extra research/Gym"
+    },
+    "scenario_treatment": "No paid model calls undertaken. API tariffs sourced; token usage, mission success, demand, prices, collections and cost forecasts unmeasured unless actual study records establish them. Actual collected cash stays zero.",
+    "elasticity": "Buyer selects maximum nonnegative utility among agent service, equivalent human/conventional option, and abstention. Price changes must recompute choice. Participation constraints apply to all counterparties.",
+    "uncertainty": "Pair worlds across policies; use held-out seeds after freezing pricing/policy; include no-benefit E/E+ and negative reuse value. Do not equate Monte Carlo percentiles with empirical confidence in assumption truth.",
+    "liquidity": "Track invoice revenue, cash collections, variable outflows, debt/seed separately, refunds/fallback liabilities and reserves. Available expansion cash excludes unpaid obligations and reserve.",
+    "residual_human_effort": "Include human delivery/review only if the supported configuration actually requires it; programmatic acceptance/packaging may be automated. Sensitivity to unresolved human requirements is separate from an invented mandatory allowance."
+  },
+  "no_claims": [
+    "No numerical Operational Alpha established by documentation.",
+    "No independent capacity or API account access established.",
+    "No supplier quote, human time study, sale, collected revenue or tax treatment established.",
+    "No model weight editing assumed.",
+    "Consumer subscription access is not treated as unlimited production entitlement."
+  ]
+}
