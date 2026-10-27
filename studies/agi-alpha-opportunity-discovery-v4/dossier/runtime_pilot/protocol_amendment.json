@@ -1,0 +1,18 @@
+{
+  "reason": "First attempt in each environment stalled without artifacts; interrupted, preserved, counted against attempt budget.",
+  "next_cases": [
+    "reported_default_attempt2",
+    "local_control",
+    "direct_create_control"
+  ],
+  "dropped_case": "reported_synchronous",
+  "maximum_total_attempts_per_environment": 4,
+  "next_attempt_timeout_seconds": 30,
+  "stack_dump_after_seconds": 10,
+  "thread_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "execution_context": "normal require_escalated local qualification, no application network calls or external writes",
+  "note": "No scientific target outcome had been observed before this amendment. Background-thread socketpair and asyncio probes in default sandbox both passed; root cause of initial stall not yet known."
+}

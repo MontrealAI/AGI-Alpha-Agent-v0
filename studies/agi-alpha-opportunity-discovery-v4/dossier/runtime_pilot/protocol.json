@@ -1,0 +1,12 @@
+{
+  "schema": "bounded-runtime-qualification-protocol/v1",
+  "prespecified_before_runs": true,
+  "purpose": "Check current reproducibility of the public write-to-existing-Zarr-array ZipStore path, with all established controls available to E.",
+  "environments": ["reported", "current"],
+  "maximum_cases_per_environment": 4,
+  "cases_in_order": ["reported_default", "reported_synchronous", "local_control", "direct_create_control"],
+  "acceptance": "Write and close complete; fresh-process readback recovers expected shape, dtype and values; ZIP testzip reports no bad member.",
+  "important_controls": "LocalStore preserves the group/data layout; the published direct create_array workaround uses a root array and arange(20), so it is an available alternative, not a matched-layout cure.",
+  "not_tested": ["large datasets", "distributed cluster", "true cancellation", "general original-purpose scientific correctness", "Operational Alpha", "customer demand", "profit"],
+  "stop": "No speculative patch, stress campaign or general instrument. If current standard path succeeds, retain fixed/regression-history result and stop expansion."
+}

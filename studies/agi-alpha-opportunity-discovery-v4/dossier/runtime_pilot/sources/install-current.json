@@ -1,0 +1,1156 @@
+{
+  "version": "1",
+  "pip_version": "25.0.1",
+  "install": [
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/8b/19/56f6907c420c54c7c81a648a266bd047882515fd5182ad432d5e6ca2d545/zarr-3.4.2-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=a21530a931ac3123b4a4aa17146d11eb9ace227733650d5efbebbbfe38053428",
+          "hashes": {
+            "sha256": "a21530a931ac3123b4a4aa17146d11eb9ace227733650d5efbebbbfe38053428"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.5",
+        "name": "zarr",
+        "version": "3.4.2",
+        "summary": "An implementation of chunked, compressed, N-dimensional arrays for Python",
+        "description": "<div align=\"center\">\n  <img src=\"https://raw.githubusercontent.com/zarr-developers/community/main/logos/logo2.png\"><br>\n</div>\n\n# Zarr\n\n[![Latest Release](https://badge.fury.io/py/zarr.svg)](https://pypi.org/project/zarr/)\n[![CondaForge](https://anaconda.org/conda-forge/zarr/badges/version.svg)](https://anaconda.org/anaconda/zarr/)\n[![Package Status](https://img.shields.io/pypi/status/zarr.svg)](https://pypi.org/project/zarr/)\n[![License](https://img.shields.io/pypi/l/zarr.svg)](https://github.com/zarr-developers/zarr-python/blob/main/LICENSE.txt)\n[![Coverage](https://codecov.io/gh/zarr-developers/zarr-python/branch/main/graph/badge.svg)](https://app.codecov.io/gh/zarr-developers/zarr-python)\n[![Downloads](https://static.pepy.tech/badge/zarr)](https://zarr.readthedocs.io/en/stable/)\n[![Developer Chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://ossci.zulipchat.com/#narrow/channel/423692-Zarr-Python)\n[![Citation](https://zenodo.org/badge/DOI/10.5281/zenodo.3773450.svg)](https://doi.org/10.5281/zenodo.3773450)\n\n## What is it?\n\nThe `zarr` library is a Python implementation of the [Zarr storage format](https://zarr.dev/). `zarr` delivers compressed, chunked, N-dimensional arrays that work well for parallel computing and object storage. See the [documentation](https://zarr.readthedocs.io/en/stable/) for more information.\n\n## Main Features\n\n- [**Create**](https://zarr.readthedocs.io/en/stable/user-guide/arrays/#creating-an-array) N-dimensional arrays with NumPy-compatible `dtype`s.\n- [**Chunk arrays**](https://zarr.readthedocs.io/en/stable/user-guide/performance/#chunk-optimizations) along any dimension.\n- [**Encode**](https://zarr.readthedocs.io/en/stable/user-guide/arrays/#compressors) chunks using a variety of useful encodings (e.g., compression).\n- [**Store arrays**](https://zarr.readthedocs.io/en/stable/user-guide/storage/) in memory, on disk, inside a zip file, on S3, etc...\n- [**Read**](https://zarr.readthedocs.io/en/stable/user-guide/arrays/#reading-and-writing-data) an array [**concurrently**](https://zarr.readthedocs.io/en/stable/user-guide/performance/#parallel-computing-and-synchronization) from multiple threads or processes.\n- [**Write**](https://zarr.readthedocs.io/en/stable/user-guide/arrays/#reading-and-writing-data) to an array concurrently from multiple threads or processes.\n- Organize arrays into hierarchies via [**groups**](https://zarr.readthedocs.io/en/stable/quick-start/#hierarchical-groups).\n\n## Where to get it\n\nZarr can be installed from PyPI using `pip`:\n\n```bash\npip install zarr\n```\n\nor via `conda`:\n\n```bash\nconda install -c conda-forge zarr\n```\n\nFor more details, including how to install from source, see the [installation documentation](https://zarr.readthedocs.io/en/stable/#installation).\n\n## Repository sub-packages\n\nIn addition to the primary `zarr` implementation, this repository contains other packages that provide specialized functionality with minimal dependencies:\n\n- [`zarr-metadata`](https://github.com/zarr-developers/zarr-python/tree/main/packages/zarr-metadata): Tools for Zarr metadata. Install with `pip install zarr-metadata`.\n- [`zarr-indexing`](https://github.com/zarr-developers/zarr-python/tree/main/packages/zarr-indexing): Tools for lazily indexing chunked arrays. Install with `pip install zarr-indexing`.\n- [`zarr-http-server`](https://github.com/zarr-developers/zarr-python/tree/main/packages/zarr-http-server): An HTTP server implementation targeting Zarr data. Install with `pip install zarr-http-server`.\n",
+        "description_content_type": "text/markdown",
+        "keywords": [
+          "Python",
+          "compressed",
+          "ndimensional-arrays",
+          "zarr"
+        ],
+        "author_email": "Alistair Miles <alimanfoo@googlemail.com>",
+        "maintainer": "jakirkham, Norman Rzepka, Ryan Abernathey, David Stansby, Deepak Cherian",
+        "maintainer_email": "Davis Bennett <davis.v.bennett@gmail.com>, Josh Moore <josh@openmicroscopy.org>, Joe Hamman <joe@earthmover.io>, Juan Nunez-Iglesias <juan.nunez-iglesias@monash.edu>, Martin Durant <mdurant@anaconda.com>, Tom Augspurger <tom.w.augspurger@gmail.com>",
+        "license_expression": "MIT",
+        "license_file": [
+          "LICENSE.txt"
+        ],
+        "classifier": [
+          "Development Status :: 6 - Mature",
+          "Intended Audience :: Developers",
+          "Intended Audience :: Information Technology",
+          "Intended Audience :: Science/Research",
+          "Operating System :: Unix",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Topic :: Software Development :: Libraries :: Python Modules"
+        ],
+        "requires_dist": [
+          "donfig>=0.8",
+          "google-crc32c>=1.5",
+          "msgspec>=0.19",
+          "numcodecs!=0.17.0,>=0.16.6",
+          "numpy>=2",
+          "packaging>=22.0",
+          "typing-extensions>=4.14",
+          "cast-value-rs>=0.4.2; extra == 'cast-value-rs'",
+          "typer; extra == 'cli'",
+          "cupy-cuda12x; (sys_platform != 'darwin') and extra == 'gpu'",
+          "universal-pathlib; extra == 'optional'",
+          "fsspec>=2023.10.0; extra == 'remote'",
+          "obstore>=0.5.1; extra == 'remote'"
+        ],
+        "requires_python": ">=3.12",
+        "project_url": [
+          "issues, https://github.com/zarr-developers/zarr-python/issues",
+          "changelog, https://zarr.readthedocs.io/en/stable/release-notes.html",
+          "Discussions, https://github.com/zarr-developers/zarr-python/discussions",
+          "documentation, https://zarr.readthedocs.io/",
+          "homepage, https://github.com/zarr-developers/zarr-python"
+        ],
+        "provides_extra": [
+          "cast-value-rs",
+          "cli",
+          "gpu",
+          "optional",
+          "remote"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/f8/3a/4fc99e788bcfa1b3b3f21abf57da45898d807d007e7f6fd1c7300904eb70/dask-2026.8.0-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=ccc0c83a189b0398602435189771d28dad7b5773b6089bb8dce14ae732dd782c",
+          "hashes": {
+            "sha256": "ccc0c83a189b0398602435189771d28dad7b5773b6089bb8dce14ae732dd782c"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "dask",
+        "version": "2026.8.0",
+        "dynamic": [
+          "license-file"
+        ],
+        "summary": "Parallel PyData with Task Scheduling",
+        "description": "Dask\n====\n\n|Build Status| |Coverage| |Doc Status| |Discourse| |Version Status| |NumFOCUS|\n\nDask is a flexible parallel computing library for analytics.  See\ndocumentation_ for more information.\n\n\nLICENSE\n-------\n\nNew BSD. See `License File <https://github.com/dask/dask/blob/main/LICENSE.txt>`__.\n\n.. _documentation: https://dask.org\n.. |Build Status| image:: https://github.com/dask/dask/actions/workflows/tests.yml/badge.svg\n   :target: https://github.com/dask/dask/actions/workflows/tests.yml\n.. |Coverage| image:: https://codecov.io/gh/dask/dask/branch/main/graph/badge.svg\n   :target: https://codecov.io/gh/dask/dask/branch/main\n   :alt: Coverage status\n.. |Doc Status| image:: https://readthedocs.org/projects/dask/badge/?version=latest\n   :target: https://dask.org\n   :alt: Documentation Status\n.. |Discourse| image:: https://img.shields.io/discourse/users?logo=discourse&server=https%3A%2F%2Fdask.discourse.group\n   :alt: Discuss Dask-related things and ask for help\n   :target: https://dask.discourse.group\n.. |Version Status| image:: https://img.shields.io/pypi/v/dask.svg\n   :target: https://pypi.python.org/pypi/dask/\n.. |NumFOCUS| image:: https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A\n   :target: https://www.numfocus.org/\n",
+        "description_content_type": "text/x-rst",
+        "keywords": [
+          "task-scheduling",
+          "parallel",
+          "numpy",
+          "pandas",
+          "pydata"
+        ],
+        "maintainer_email": "Matthew Rocklin <mrocklin@gmail.com>",
+        "license_expression": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE.txt",
+          "dask/array/NUMPY_LICENSE.txt"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "Intended Audience :: Science/Research",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: Free Threading :: 1 - Unstable",
+          "Topic :: Scientific/Engineering",
+          "Topic :: System :: Distributed Computing"
+        ],
+        "requires_dist": [
+          "click>=8.1",
+          "cloudpickle>=3.0.0",
+          "fsspec>=2021.09.0",
+          "packaging>=20.0",
+          "partd>=1.4.0",
+          "pyyaml>=5.4.1",
+          "toolz>=0.12.0",
+          "importlib_metadata>=4.13.0; python_version < \"3.12\"",
+          "numpy>=1.24; extra == \"array\"",
+          "dask[array]; extra == \"dataframe\"",
+          "pandas>=2.0; extra == \"dataframe\"",
+          "pyarrow>=16.0; extra == \"dataframe\"",
+          "distributed<2026.8.1,>=2026.8.0; extra == \"distributed\"",
+          "bokeh>=3.1.0; extra == \"diagnostics\"",
+          "jinja2>=2.10.3; extra == \"diagnostics\"",
+          "dask[array,dataframe,diagnostics,distributed]; extra == \"complete\"",
+          "lz4>=4.3.2; extra == \"complete\"",
+          "pandas[test]; extra == \"test\"",
+          "pytest; extra == \"test\"",
+          "pytest-cov; extra == \"test\"",
+          "pytest-mock; extra == \"test\"",
+          "pytest-rerunfailures; extra == \"test\"",
+          "pytest-timeout; extra == \"test\"",
+          "pytest-xdist; extra == \"test\"",
+          "pre-commit; extra == \"test\""
+        ],
+        "requires_python": ">=3.10",
+        "project_url": [
+          "Homepage, https://github.com/dask/dask/"
+        ],
+        "provides_extra": [
+          "array",
+          "bag",
+          "dataframe",
+          "distributed",
+          "diagnostics",
+          "delayed",
+          "complete",
+          "test"
+        ]
+      },
+      "requested_extras": [
+        "array"
+      ]
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/58/50/6c0d534c5f134586a8e1ba4e330569e32f057e33372ae556463212fb4cd3/click-8.5.0-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+          "hashes": {
+            "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "click",
+        "version": "8.5.0",
+        "summary": "Composable command line interface toolkit",
+        "description": "<div align=\"center\"><img src=\"https://raw.githubusercontent.com/pallets/click/refs/heads/stable/docs/_static/click-name.svg\" alt=\"\" height=\"150\"></div>\n\n# Click\n\nClick is a Python package for creating beautiful command line interfaces\nin a composable way with as little code as necessary. It's the \"Command\nLine Interface Creation Kit\". It's highly configurable but comes with\nsensible defaults out of the box.\n\nIt aims to make the process of writing command line tools quick and fun\nwhile also preventing any frustration caused by the inability to\nimplement an intended CLI API.\n\nClick in three points:\n\n-   Arbitrary nesting of commands\n-   Automatic help page generation\n-   Supports lazy loading of subcommands at runtime\n\n\n## A Simple Example\n\n```python\nimport click\n\n@click.command()\n@click.option(\"--count\", default=1, help=\"Number of greetings.\")\n@click.option(\"--name\", prompt=\"Your name\", help=\"The person to greet.\")\ndef hello(count, name):\n    \"\"\"Simple program that greets NAME for a total of COUNT times.\"\"\"\n    for _ in range(count):\n        click.echo(f\"Hello, {name}!\")\n\nif __name__ == '__main__':\n    hello()\n```\n\n```\n$ python hello.py --count=3\nYour name: Click\nHello, Click!\nHello, Click!\nHello, Click!\n```\n\n\n## Donate\n\nThe Pallets organization develops and supports Click and other popular\npackages. In order to grow the community of contributors and users, and\nallow the maintainers to devote more time to the projects, [please\ndonate today][].\n\n[please donate today]: https://palletsprojects.com/donate\n\n## Contributing\n\nSee our [detailed contributing documentation][contrib] for many ways to\ncontribute, including reporting issues, requesting features, asking or answering\nquestions, and making PRs.\n\n[contrib]: https://palletsprojects.com/contributing/\n\n",
+        "description_content_type": "text/markdown",
+        "maintainer_email": "Pallets <contact@palletsprojects.com>",
+        "license_expression": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE.txt"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
+          "Typing :: Typed"
+        ],
+        "requires_python": ">=3.10",
+        "project_url": [
+          "Changes, https://click.palletsprojects.com/page/changes/",
+          "Chat, https://discord.gg/pallets",
+          "Documentation, https://click.palletsprojects.com/",
+          "Donate, https://palletsprojects.com/donate",
+          "Source, https://github.com/pallets/click/"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/88/39/799be3f2f0f38cc727ee3b4f1445fe6d5e4133064ec2e4115069418a5bb6/cloudpickle-3.1.2-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a",
+          "hashes": {
+            "sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "cloudpickle",
+        "version": "3.1.2",
+        "summary": "Pickler class to extend the standard pickle.Pickler functionality",
+        "description": "# cloudpickle\n\n[![Automated Tests](https://github.com/cloudpipe/cloudpickle/workflows/Automated%20Tests/badge.svg?branch=master&event=push)](https://github.com/cloudpipe/cloudpickle/actions)\n[![codecov.io](https://codecov.io/github/cloudpipe/cloudpickle/coverage.svg?branch=master)](https://codecov.io/github/cloudpipe/cloudpickle?branch=master)\n\n`cloudpickle` makes it possible to serialize Python constructs not supported\nby the default `pickle` module from the Python standard library.\n\n`cloudpickle` is especially useful for **cluster computing** where Python\ncode is shipped over the network to execute on remote hosts, possibly close\nto the data.\n\nAmong other things, `cloudpickle` supports pickling for **lambda functions**\nalong with **functions and classes defined interactively** in the\n`__main__` module (for instance in a script, a shell or a Jupyter notebook).\n\nCloudpickle can only be used to send objects between the **exact same version\nof Python**.\n\nUsing `cloudpickle` for **long-term object storage is not supported and\nstrongly discouraged.**\n\n**Security notice**: one should **only load pickle data from trusted sources** as\notherwise `pickle.load` can lead to arbitrary code execution resulting in a critical\nsecurity vulnerability.\n\n\nInstallation\n------------\n\nThe latest release of `cloudpickle` is available from\n[pypi](https://pypi.python.org/pypi/cloudpickle):\n\n    pip install cloudpickle\n\n\nExamples\n--------\n\nPickling a lambda expression:\n\n```python\n>>> import cloudpickle\n>>> squared = lambda x: x ** 2\n>>> pickled_lambda = cloudpickle.dumps(squared)\n\n>>> import pickle\n>>> new_squared = pickle.loads(pickled_lambda)\n>>> new_squared(2)\n4\n```\n\nPickling a function interactively defined in a Python shell session\n(in the `__main__` module):\n\n```python\n>>> CONSTANT = 42\n>>> def my_function(data: int) -> int:\n...     return data + CONSTANT\n...\n>>> pickled_function = cloudpickle.dumps(my_function)\n>>> depickled_function = pickle.loads(pickled_function)\n>>> depickled_function\n<function __main__.my_function(data:int) -> int>\n>>> depickled_function(43)\n85\n```\n\n\nOverriding pickle's serialization mechanism for importable constructs:\n----------------------------------------------------------------------\n\nAn important difference between `cloudpickle` and `pickle` is that\n`cloudpickle` can serialize a function or class **by value**, whereas `pickle`\ncan only serialize it **by reference**. Serialization by reference treats\nfunctions and classes as attributes of modules, and pickles them through\ninstructions that trigger the import of their module at load time.\nSerialization by reference is thus limited in that it assumes that the module\ncontaining the function or class is available/importable in the unpickling\nenvironment. This assumption breaks when pickling constructs defined in an\ninteractive session, a case that is automatically detected by `cloudpickle`,\nthat pickles such constructs **by value**.\n\nAnother case where the importability assumption is expected to break is when\ndeveloping a module in a distributed execution environment: the worker\nprocesses may not have access to the said module, for example if they live on a\ndifferent machine than the process in which the module is being developed. By\nitself, `cloudpickle` cannot detect such \"locally importable\" modules and\nswitch to serialization by value; instead, it relies on its default mode, which\nis serialization by reference. However, since `cloudpickle 2.0.0`, one can\nexplicitly specify modules for which serialization by value should be used,\nusing the\n`register_pickle_by_value(module)`/`/unregister_pickle_by_value(module)` API:\n\n```python\n>>> import cloudpickle\n>>> import my_module\n>>> cloudpickle.register_pickle_by_value(my_module)\n>>> cloudpickle.dumps(my_module.my_function)  # my_function is pickled by value\n>>> cloudpickle.unregister_pickle_by_value(my_module)\n>>> cloudpickle.dumps(my_module.my_function)  # my_function is pickled by reference\n```\n\nUsing this API, there is no need to re-install the new version of the module on\nall the worker nodes nor to restart the workers: restarting the client Python\nprocess with the new source code is enough.\n\nNote that this feature is still **experimental**, and may fail in the following\nsituations:\n\n- If the body of a function/class pickled by value contains an `import` statement:\n  ```python\n  >>> def f():\n  >>> ... from another_module import g\n  >>> ... # calling f in the unpickling environment may fail if another_module\n  >>> ... # is unavailable\n  >>> ... return g() + 1\n  ```\n\n- If a function pickled by reference uses a function pickled by value during its execution.\n\n\nRunning the tests\n-----------------\n\n- With `tox`, to test run the tests for all the supported versions of\n  Python and PyPy:\n\n      pip install tox\n      tox\n\n  or alternatively for a specific environment:\n\n      tox -e py312\n\n\n- With `pytest` to only run the tests for your current version of\n  Python:\n\n      pip install -r dev-requirements.txt\n      PYTHONPATH='.:tests' pytest\n\nHistory\n-------\n\n`cloudpickle` was initially developed by [picloud.com](http://web.archive.org/web/20140721022102/http://blog.picloud.com/2013/11/17/picloud-has-joined-dropbox/) and shipped as part of\nthe client SDK.\n\nA copy of `cloudpickle.py` was included as part of PySpark, the Python\ninterface to [Apache Spark](https://spark.apache.org/). Davies Liu, Josh\nRosen, Thom Neale and other Apache Spark developers improved it significantly,\nmost notably to add support for PyPy and Python 3.\n\nThe aim of the `cloudpickle` project is to make that work available to a wider\naudience outside of the Spark ecosystem and to make it easier to improve it\nfurther notably with the help of a dedicated non-regression test suite.\n\n",
+        "description_content_type": "text/markdown",
+        "home_page": "https://github.com/cloudpipe/cloudpickle",
+        "author": "The cloudpickle developer team",
+        "author_email": "cloudpipe@googlegroups.com",
+        "license": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: BSD License",
+          "Operating System :: POSIX",
+          "Operating System :: Microsoft :: Windows",
+          "Operating System :: MacOS :: MacOS X",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Programming Language :: Python :: Implementation :: PyPy",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+          "Topic :: Scientific/Engineering",
+          "Topic :: System :: Distributed Computing"
+        ],
+        "requires_python": ">=3.8"
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=2a3175ce74a06109ff9307d90a230f81215cbac9a751f4d1c6194644b8204f9d",
+          "hashes": {
+            "sha256": "2a3175ce74a06109ff9307d90a230f81215cbac9a751f4d1c6194644b8204f9d"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.1",
+        "name": "donfig",
+        "version": "0.8.1.post1",
+        "summary": "Python package for configuring a python package",
+        "description": "Donfig\n======\n\n.. image:: https://github.com/pytroll/donfig/workflows/CI/badge.svg?branch=main\n    :target: https://github.com/pytroll/donfig/actions?query=workflow%3A%22CI%22\n\n.. image:: https://codecov.io/gh/pytroll/donfig/branch/main/graph/badge.svg?token=xmvNtxzdoB\n   :target: https://codecov.io/gh/pytroll/donfig\n\n.. image:: https://anaconda.org/conda-forge/donfig/badges/version.svg\n   :target: https://anaconda.org/conda-forge/donfig/\n\n.. image:: https://results.pre-commit.ci/badge/github/pytroll/donfig/main.svg\n   :target: https://results.pre-commit.ci/latest/github/pytroll/donfig/main\n   :alt: pre-commit.ci status\n\nDonfig is a python library meant to make configuration easier for other\npython packages. Donfig can be configured programmatically, by\nenvironment variables, or from YAML files in standard locations. The\nbelow examples show the basics of using donfig. For more details see the\nofficial `documentation <https://donfig.readthedocs.io/en/latest/>`_.\n\nInstallation\n------------\n\nDonfig can be installed from PyPI using pip:\n\n.. code-block:: bash\n\n    pip install donfig\n\nOr with conda using the conda-forge channel:\n\n.. code-block:: bash\n\n    conda install -c conda-forge donfig\n\nUsing Donfig\n------------\n\nCreate the package-wide configuration object for your package named `mypkg`:\n\n.. code-block:: python\n\n    # mypkg/__init__.py\n    from donfig import Config\n    config = Config('mypkg')\n\nUse the configuration object:\n\n.. code-block:: python\n\n    from mypkg import config\n    important_val = config.get('important_key')\n    if important_val:\n        # do something\n    else:\n        # something else\n\nSet configuration in Python\n---------------------------\n\nConfiguration can be modified in python before code using it is called:\n\n.. code-block:: python\n\n    # mypkg/work.py\n    from mypkg import config\n    config.set(important_key=5)\n\n    # use the configuration\n\nDonfig configurations can also be changed as a context manager:\n\n.. code-block:: python\n\n    config.set(other_key=True)\n\n    with config.set(other_key=False):\n        print(config.get('other_key'))  # False\n\n    print(config.get('other_key'))  # True\n\nConfigure from environment variables\n------------------------------------\n\nEnvironment variables are automatically loaded when the Config object is\ncreated. Any environment variable starting with the name of the config\nobject in all capital letters and an underscore will be loaded in to\nthe config object:\n\n.. code-block:: bash\n\n    export MYPKG_MY_KEY=\"a value\"\n\nAnd can be accessed in python:\n\n.. code-block:: python\n\n    from mypkg import config\n    print(config.get('my_key'))\n\nConfigure from YAML file\n------------------------\n\nDonfig will also automatically load any YAML configuration files found in\nspecific paths. The default paths:\n\n- ~/.config/<config name>/\n- /etc/<config name>/\n- <sys.prefix>/etc/<config name>/\n\nNote the `/etc/<config name>/` directory can also be specified with the\nenvironment variable `DASK_ROOT_CONFIG`. Also note that\n`~/.config/<package name>` (or other location specified with `DASK_CONFIG`)\ncan be created as a custom user configuration file for easier user\ncustomization (see documentation for details).\n\nHistory\n-------\n\nDonfig is based on the original configuration logic of the `dask` library.\nThe code has been modified to use a config object instead of a global\nconfiguration dictionary. This makes the configuration logic of dask available\nto everyone. The name \"donfig\" is a shortening of \"dask.config\", the original\ndask module that implemented this functionality.\n\nLicense\n-------\n\nOriginal code from the dask library was distributed under the license\nspecified in `DASK_LICENSE.txt`. In November 2018 this code was migrated to\nthe Donfig project under the MIT license described in `LICENSE.txt`. The full\ncopyright for this project is therefore::\n\n    Copyright (c) 2018 Donfig Developers\n    Copyright (c) 2014-2018, Anaconda, Inc. and contributors\n",
+        "description_content_type": "text/x-rst",
+        "keywords": [
+          "task-scheduling",
+          "parallel",
+          "numpy",
+          "pandas",
+          "pydata"
+        ],
+        "maintainer_email": "David Hoese <david.hoese@ssec.wisc.edu>",
+        "license": "MIT",
+        "license_file": [
+          "LICENSE.txt",
+          "AUTHORS.md"
+        ],
+        "classifier": [
+          "Development Status :: 3 - Alpha",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: MIT License",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
+          "Topic :: Scientific/Engineering"
+        ],
+        "requires_dist": [
+          "pyyaml",
+          "sphinx >=4.0.0 ; extra == 'docs'",
+          "numpydoc ; extra == 'docs'",
+          "pytest ; extra == 'docs'",
+          "cloudpickle ; extra == 'docs'",
+          "pytest ; extra == 'test'",
+          "cloudpickle ; extra == 'test'"
+        ],
+        "requires_python": ">=3.8",
+        "project_url": [
+          "Homepage, https://github.com/pytroll/donfig"
+        ],
+        "provides_extra": [
+          "docs",
+          "test"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/6c/c0/a98505f18594f1bce828bb159cec0fcf9860562f1a2c85913409fc8f3d9e/fsspec-2026.9.0-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f",
+          "hashes": {
+            "sha256": "8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.5",
+        "name": "fsspec",
+        "version": "2026.9.0",
+        "summary": "File-system specification",
+        "description": "# filesystem_spec\n\n[![PyPI version](https://badge.fury.io/py/fsspec.svg)](https://pypi.python.org/pypi/fsspec/)\n[![Anaconda-Server Badge](https://anaconda.org/conda-forge/fsspec/badges/version.svg)](https://anaconda.org/conda-forge/fsspec)\n![Build](https://github.com/fsspec/filesystem_spec/workflows/CI/badge.svg)\n[![Docs](https://readthedocs.org/projects/filesystem-spec/badge/?version=latest)](https://filesystem-spec.readthedocs.io/en/latest/?badge=latest)\n\nA specification for pythonic filesystems.\n\n## Install\n\n```bash\npip install fsspec\n```\n\nwould install the base fsspec. Various optionally supported features might require specification of custom\nextra require, e.g. `pip install fsspec[ssh]` will install dependencies for `ssh` backends support.\nUse `pip install fsspec[full]` for installation of all known extra dependencies.\n\nUp-to-date package also provided through conda-forge distribution:\n\n```bash\nconda install -c conda-forge fsspec\n```\n\n\n## Purpose\n\nTo produce a template or specification for a file-system interface, that specific implementations should follow,\nso that applications making use of them can rely on a common behaviour and not have to worry about the specific\ninternal implementation decisions with any given backend. Many such implementations are included in this package,\nor in sister projects such as `s3fs` and `gcsfs`.\n\nIn addition, if this is well-designed, then additional functionality, such as a key-value store or FUSE\nmounting of the file-system implementation may be available for all implementations \"for free\".\n\n## Documentation\n\nPlease refer to [RTD](https://filesystem-spec.readthedocs.io/en/latest/?badge=latest)\n\n## Develop\n\nfsspec uses GitHub Actions for CI. Environment files can be found\nin the \"ci/\" directory. Note that the main environment is called \"py38\",\nbut it is expected that the version of python installed be adjustable at\nCI runtime. For local use, pick a version suitable for you.\n\n```bash\n# For a new environment (mamba / conda).\nmamba create -n fsspec -c conda-forge  python=3.10 -y\nconda activate fsspec\n\n# Standard dev install with docs and tests.\npip install -e \".[dev,doc,test]\"\n\n# Full tests except for downstream\npip install s3fs\npip uninstall s3fs\npip install -e .[dev,doc,test_full]\npip install s3fs --no-deps\npytest -v\n\n# Downstream tests.\nsh install_s3fs.sh\n# Windows powershell.\ninstall_s3fs.sh\n```\n\n### Testing\n\nTests can be run in the dev environment, if activated, via ``pytest fsspec``.\n\nThe full fsspec suite requires a system-level docker, docker-compose, and fuse\ninstallation. If only making changes to one backend implementation, it is\nnot generally necessary to run all tests locally.\n\nIt is expected that contributors ensure that any change to fsspec does not\ncause issues or regressions for either other fsspec-related packages such\nas gcsfs and s3fs, nor for downstream users of fsspec. The \"downstream\" CI\nrun and corresponding environment file run a set of tests from the dask\ntest suite, and very minimal tests against pandas and zarr from the\ntest_downstream.py module in this repo.\n\n### Code Formatting\n\nfsspec uses [Black](https://black.readthedocs.io/en/stable) to ensure\na consistent code format throughout the project.\nRun ``black fsspec`` from the root of the filesystem_spec repository to\nauto-format your code. Additionally, many editors have plugins that will apply\n``black`` as you edit files. ``black`` is included in the ``tox`` environments.\n\nOptionally, you may wish to setup [pre-commit hooks](https://pre-commit.com) to\nautomatically run ``black`` when you make a git commit.\nRun ``pre-commit install --install-hooks`` from the root of the\nfilesystem_spec repository to setup pre-commit hooks. ``black`` will now be run\nbefore you commit, reformatting any changed files. You can format without\ncommitting via ``pre-commit run`` or skip these checks with ``git commit\n--no-verify``.\n\n## Support\n\nWork on this repository is supported in part by:\n\n\"Anaconda, Inc. - Advancing AI through open source.\"\n\n<a href=\"https://anaconda.com/\"><img src=\"https://camo.githubusercontent.com/b8555ef2222598ed37ce38ac86955febbd25de7619931bb7dd3c58432181d3b6/68747470733a2f2f626565776172652e6f72672f636f6d6d756e6974792f6d656d626572732f616e61636f6e64612f616e61636f6e64612d6c617267652e706e67\" alt=\"anaconda logo\" width=\"40%\"/></a>\n",
+        "description_content_type": "text/markdown",
+        "keywords": [
+          "file"
+        ],
+        "maintainer_email": "Martin Durant <mdurant@anaconda.com>",
+        "license_expression": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 4 - Beta",
+          "Intended Audience :: Developers",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14"
+        ],
+        "requires_dist": [
+          "adlfs; extra == 'abfs'",
+          "adlfs; extra == 'adl'",
+          "pyarrow>=1; extra == 'arrow'",
+          "dask; extra == 'dask'",
+          "distributed; extra == 'dask'",
+          "pre-commit; extra == 'dev'",
+          "ruff>=0.5; extra == 'dev'",
+          "numpydoc; extra == 'doc'",
+          "sphinx; extra == 'doc'",
+          "sphinx-design; extra == 'doc'",
+          "sphinx-rtd-theme; extra == 'doc'",
+          "yarl; extra == 'doc'",
+          "dropbox; extra == 'dropbox'",
+          "dropboxdrivefs; extra == 'dropbox'",
+          "requests; extra == 'dropbox'",
+          "adlfs; extra == 'full'",
+          "aiohttp!=4.0.0a0,!=4.0.0a1; extra == 'full'",
+          "dask; extra == 'full'",
+          "distributed; extra == 'full'",
+          "dropbox; extra == 'full'",
+          "dropboxdrivefs; extra == 'full'",
+          "fusepy; extra == 'full'",
+          "gcsfs>=2026.4.0; extra == 'full'",
+          "libarchive-c; extra == 'full'",
+          "ocifs; extra == 'full'",
+          "panel; extra == 'full'",
+          "paramiko; extra == 'full'",
+          "pyarrow>=1; extra == 'full'",
+          "pygit2; extra == 'full'",
+          "requests; extra == 'full'",
+          "s3fs>=2026.6.0; extra == 'full'",
+          "smbprotocol; extra == 'full'",
+          "tqdm; extra == 'full'",
+          "fusepy; extra == 'fuse'",
+          "gcsfs>=2026.4.0; extra == 'gcs'",
+          "pygit2; extra == 'git'",
+          "requests; extra == 'github'",
+          "gcsfs>=2026.4.0; extra == 'gs'",
+          "panel; extra == 'gui'",
+          "pyarrow>=1; extra == 'hdfs'",
+          "aiohttp!=4.0.0a0,!=4.0.0a1; extra == 'http'",
+          "libarchive-c; extra == 'libarchive'",
+          "ocifs; extra == 'oci'",
+          "s3fs>=2026.6.0; extra == 's3'",
+          "paramiko; extra == 'sftp'",
+          "smbprotocol; extra == 'smb'",
+          "paramiko; extra == 'ssh'",
+          "aiohttp!=4.0.0a0,!=4.0.0a1; extra == 'test'",
+          "numpy; extra == 'test'",
+          "pytest; extra == 'test'",
+          "pytest-asyncio!=0.22.0; extra == 'test'",
+          "pytest-benchmark; extra == 'test'",
+          "pytest-cov; extra == 'test'",
+          "pytest-mock; extra == 'test'",
+          "pytest-recording; extra == 'test'",
+          "pytest-rerunfailures; extra == 'test'",
+          "requests; extra == 'test'",
+          "aiobotocore<3.0.0,>=2.5.4; extra == 'test-downstream'",
+          "dask[dataframe,test]; extra == 'test-downstream'",
+          "moto[server]<5,>4; extra == 'test-downstream'",
+          "pytest-timeout; extra == 'test-downstream'",
+          "xarray; extra == 'test-downstream'",
+          "zarr; extra == 'test-downstream'",
+          "adlfs; extra == 'test-full'",
+          "aiohttp!=4.0.0a0,!=4.0.0a1; extra == 'test-full'",
+          "backports-zstd; (python_version < '3.14') and extra == 'test-full'",
+          "cloudpickle; extra == 'test-full'",
+          "dask; extra == 'test-full'",
+          "distributed; extra == 'test-full'",
+          "dropbox; extra == 'test-full'",
+          "dropboxdrivefs; extra == 'test-full'",
+          "fastparquet; extra == 'test-full'",
+          "fusepy; extra == 'test-full'",
+          "gcsfs>=2026.4.0; extra == 'test-full'",
+          "jinja2; extra == 'test-full'",
+          "kerchunk; extra == 'test-full'",
+          "libarchive-c; extra == 'test-full'",
+          "lz4; extra == 'test-full'",
+          "notebook; extra == 'test-full'",
+          "numpy; extra == 'test-full'",
+          "ocifs; extra == 'test-full'",
+          "pandas<3.0.0; extra == 'test-full'",
+          "panel; extra == 'test-full'",
+          "paramiko; extra == 'test-full'",
+          "pyarrow>=1; extra == 'test-full'",
+          "pyftpdlib; extra == 'test-full'",
+          "pygit2; extra == 'test-full'",
+          "pytest; extra == 'test-full'",
+          "pytest-asyncio!=0.22.0; extra == 'test-full'",
+          "pytest-benchmark; extra == 'test-full'",
+          "pytest-cov; extra == 'test-full'",
+          "pytest-mock; extra == 'test-full'",
+          "pytest-recording; extra == 'test-full'",
+          "pytest-rerunfailures; extra == 'test-full'",
+          "python-snappy; extra == 'test-full'",
+          "requests; extra == 'test-full'",
+          "s3fs>=2026.6.0; extra == 'test-full'",
+          "smbprotocol; extra == 'test-full'",
+          "tqdm; extra == 'test-full'",
+          "urllib3; extra == 'test-full'",
+          "zarr<3.2.0; extra == 'test-full'",
+          "zstandard; (python_version < '3.14') and extra == 'test-full'",
+          "tqdm; extra == 'tqdm'"
+        ],
+        "requires_python": ">=3.10",
+        "project_url": [
+          "Changelog, https://filesystem-spec.readthedocs.io/en/latest/changelog.html",
+          "Documentation, https://filesystem-spec.readthedocs.io/en/latest/",
+          "Homepage, https://github.com/fsspec/filesystem_spec"
+        ],
+        "provides_extra": [
+          "abfs",
+          "adl",
+          "arrow",
+          "dask",
+          "dev",
+          "doc",
+          "dropbox",
+          "entrypoints",
+          "full",
+          "fuse",
+          "gcs",
+          "git",
+          "github",
+          "gs",
+          "gui",
+          "hdfs",
+          "http",
+          "libarchive",
+          "oci",
+          "s3",
+          "sftp",
+          "smb",
+          "ssh",
+          "test",
+          "test-downstream",
+          "test-full",
+          "tqdm"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/9e/43/9db03635bb10188d93dcbab9baa2a8670a0da4e868b4370cdbd98d65fed8/google_crc32c-1.9.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+        "archive_info": {
+          "hash": "sha256=3abb18297d9ef0ab120531838be0e6d68c9fa876570e11c229c48f2edac23ce7",
+          "hashes": {
+            "sha256": "3abb18297d9ef0ab120531838be0e6d68c9fa876570e11c229c48f2edac23ce7"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "google-crc32c",
+        "version": "1.9.0",
+        "dynamic": [
+          "license-file"
+        ],
+        "platform": [
+          "Posix",
+          "MacOS X",
+          "Windows"
+        ],
+        "summary": "A python wrapper of the C library 'Google CRC32C'",
+        "description": "# `google-crc32c`\n![GA](https://img.shields.io/badge/support-GA-gold.svg) [<img src=\"https://img.shields.io/pypi/v/google-crc32c.svg\">](https://pypi.org/project/google-crc32c) ![Python Versions](https://img.shields.io/pypi/pyversions/google-crc32c)\n\nThis package wraps the [`google/crc32c`](https://github.com/google/crc32c)\nhardware-based implementation of the CRC32C hashing algorithm. Multiple wheels\nare distributed as well as source. If a wheel is not published for the python\nversion and platform you are using, you will need to compile crc32c using a\nC toolchain.\n\n# Currently Published Wheels\n\nWheels are currently published for CPython 3.10, 3.11, 3.12, 3.13, 3.14 and 3.15\nfor multiple architectures.\nFor information on building your own wheels please view [BUILDING.md](BUILDING.md).\n\n\n## Linux\n\nWheels are published for the following platforms / architectures:\n\n- `manylinux2010` platform, `x86_64` and `1686` architectures\n- `manylinux2014` platform, `aarch64` architecture\n\n### Unsupported Platforms\n\n- `manylinux1` platform, `x86_64` architecture support has ended.\n\nSee https://github.com/pypa/manylinux/issues/994.\n\n## Mac OS\n\nWheels are published for `x86_64` and `arm64` architectures.\n\n\n## Windows\n\nWheels are published for the `win_amd64` architecture.\n",
+        "description_content_type": "text/markdown",
+        "home_page": "https://github.com/googleapis/python-crc32c",
+        "author": "Google LLC",
+        "author_email": "googleapis-packages@google.com",
+        "license": "Apache-2.0",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 4 - Beta",
+          "Intended Audience :: Developers",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15"
+        ],
+        "requires_python": ">=3.10"
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/4a/cc/aa1a47f8c92280d37498a5ea56a2a36606d034383e3e6472d64cbb56cf85/msgspec-0.22.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+        "archive_info": {
+          "hash": "sha256=99c401861c5bb3a57f7d6423ea7ed4352cd57aa3f04f4fbe9f3e3e4564a10f08",
+          "hashes": {
+            "sha256": "99c401861c5bb3a57f7d6423ea7ed4352cd57aa3f04f4fbe9f3e3e4564a10f08"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "msgspec",
+        "version": "0.22.0",
+        "dynamic": [
+          "license-file"
+        ],
+        "summary": "A fast serialization and validation library, with builtin support for JSON, MessagePack, YAML, and TOML.",
+        "description": "<p align=\"center\">\n  <a href=\"https://msgspec.dev\">\n    <picture>\n      <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/msgspec/msgspec/main/docs/_static/msgspec-logo-dark.svg\">\n      <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/msgspec/msgspec/main/docs/_static/msgspec-logo-light.svg\">\n      <img src=\"https://raw.githubusercontent.com/msgspec/msgspec/main/docs/_static/msgspec-logo-light.svg\" width=\"35%\" alt=\"msgspec\">\n    </picture>\n  </a>\n</p>\n\n<div align=\"center\">\n\n[![CI](https://github.com/msgspec/msgspec/actions/workflows/ci.yml/badge.svg)](https://github.com/msgspec/msgspec/actions/workflows/ci.yml)\n[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://msgspec.dev)\n[![License](https://img.shields.io/github/license/msgspec/msgspec.svg)](https://github.com/msgspec/msgspec/blob/main/LICENSE)\n[![PyPI Version](https://img.shields.io/pypi/v/msgspec.svg)](https://pypi.org/project/msgspec/)\n[![Conda Version](https://img.shields.io/conda/vn/conda-forge/msgspec.svg)](https://anaconda.org/conda-forge/msgspec)\n[![Code Coverage](https://codecov.io/gh/msgspec/msgspec/branch/main/graph/badge.svg)](https://app.codecov.io/gh/msgspec/msgspec)\n\n</div>\n\n`msgspec` is a *fast* serialization and validation library, with builtin\nsupport for [JSON](https://json.org), [MessagePack](https://msgpack.org),\n[YAML](https://yaml.org), and [TOML](https://toml.io/en/). It features:\n\n- 🚀 **High performance encoders/decoders** for common protocols. The JSON and\n  MessagePack implementations regularly\n  [benchmark](https://msgspec.dev/benchmarks) as the fastest\n  options for Python.\n\n- 🎉 **Support for a wide variety of Python types**. Additional types may be\n  supported through\n  [extensions](https://msgspec.dev/extending).\n\n- 🔍 **Zero-cost schema validation** using familiar Python type annotations. In\n  [benchmarks](https://msgspec.dev/benchmarks) `msgspec`\n  decodes *and* validates JSON faster than\n  [orjson](https://github.com/ijl/orjson) can decode it alone.\n\n- ✨ **A speedy Struct type** for representing structured data. If you already\n  use [dataclasses](https://docs.python.org/3/library/dataclasses.html) or\n  [attrs](https://www.attrs.org/en/stable/),\n  [structs](https://msgspec.dev/structs) should feel familiar.\n  However, they're\n  [5-60x faster](https://msgspec.dev/benchmarks#structs)\n  for common operations.\n\nAll of this is included in a\n[lightweight library](https://msgspec.dev/benchmarks#library-size)\nwith no required dependencies.\n\n---\n\n`msgspec` may be used for serialization alone, as a faster JSON or\nMessagePack library. For the greatest benefit though, we recommend using\n`msgspec` to handle the full serialization & validation workflow:\n\n**Define** your message schemas using standard Python type annotations.\n\n```python\n>>> import msgspec\n\n>>> class User(msgspec.Struct):\n...     \"\"\"A new type describing a User\"\"\"\n...     name: str\n...     groups: set[str] = set()\n...     email: str | None = None\n```\n\n**Encode** messages as JSON, or one of the many other supported protocols.\n\n```python\n>>> alice = User(\"alice\", groups={\"admin\", \"engineering\"})\n\n>>> alice\nUser(name='alice', groups={\"admin\", \"engineering\"}, email=None)\n\n>>> msg = msgspec.json.encode(alice)\n\n>>> msg\nb'{\"name\":\"alice\",\"groups\":[\"admin\",\"engineering\"],\"email\":null}'\n```\n\n**Decode** messages back into Python objects, with optional schema validation.\n\n```python\n>>> msgspec.json.decode(msg, type=User)\nUser(name='alice', groups={\"admin\", \"engineering\"}, email=None)\n\n>>> msgspec.json.decode(b'{\"name\":\"bob\",\"groups\":[123]}', type=User)\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nmsgspec.ValidationError: Expected `str`, got `int` - at `$.groups[0]`\n```\n\n`msgspec` is designed to be as performant as possible, while retaining some of\nthe nicities of validation libraries like\n[pydantic](https://pydantic.dev/docs/validation/latest/get-started/). For supported types,\nencoding/decoding a message with `msgspec` can be\n[~10-80x faster than alternative libraries](https://msgspec.dev/benchmarks).\n\n<p align=\"center\">\n  <a href=\"https://msgspec.dev/benchmarks\">\n    <img src=\"https://raw.githubusercontent.com/msgspec/msgspec/main/docs/_static/bench-validation.svg\">\n  </a>\n</p>\n\nSee [the documentation](https://msgspec.dev) for more information.\n\n\n## LICENSE\n\nNew BSD. See the\n[License File](https://github.com/msgspec/msgspec/blob/main/LICENSE).\n",
+        "description_content_type": "text/markdown",
+        "keywords": [
+          "JSON",
+          "MessagePack",
+          "TOML",
+          "YAML",
+          "msgpack",
+          "schema",
+          "serialization",
+          "validation"
+        ],
+        "maintainer_email": "Jim Crist-Harif <jcristharif@gmail.com>, Ofek Lev <oss@ofek.dev>, Nikita Sobolev <mail@sobolevn.me>",
+        "license_expression": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 4 - Beta",
+          "Environment :: WebAssembly :: Emscripten",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Topic :: Software Development :: Libraries"
+        ],
+        "requires_dist": [
+          "tomli; python_version < \"3.11\" and extra == \"toml\"",
+          "tomli_w; extra == \"toml\"",
+          "pyyaml; extra == \"yaml\""
+        ],
+        "requires_python": ">=3.10",
+        "project_url": [
+          "Homepage, https://msgspec.dev",
+          "Issue Tracker, https://github.com/msgspec/msgspec/issues",
+          "Source, https://github.com/msgspec/msgspec"
+        ],
+        "provides_extra": [
+          "toml",
+          "yaml"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/76/c7/e6b131d0240345bc523873b9f16b22aaca8319abdf0acef4247ccffb3cea/numcodecs-0.17.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+        "archive_info": {
+          "hash": "sha256=8e3c08f6f4074eb92b3312efbf293afbbae5697d6b9d009435671a3a18e22ba5",
+          "hashes": {
+            "sha256": "8e3c08f6f4074eb92b3312efbf293afbbae5697d6b9d009435671a3a18e22ba5"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "numcodecs",
+        "version": "0.17.1",
+        "summary": "A Python package providing buffer compression and transformation codecs for use in data storage and communication applications.",
+        "description": "# Numcodecs\n\nNumcodecs is a Python package providing buffer compression and transformation\ncodecs for use in data storage and communication applications.\n\n[![Docs](https://readthedocs.org/projects/numcodecs/badge/?version=latest)](https://numcodecs.readthedocs.io/en/latest/?badge=latest)\n[![Tests](https://github.com/zarr-developers/numcodecs/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/zarr-developers/numcodecs/actions/workflows/ci.yaml)\n[![Wheels](https://github.com/zarr-developers/numcodecs/actions/workflows/wheel.yaml/badge.svg?branch=main)](https://github.com/zarr-developers/numcodecs/actions/workflows/wheel.yaml)\n[![Codecov](https://codecov.io/gh/zarr-developers/numcodecs/branch/main/graph/badge.svg)](https://codecov.io/gh/zarr-developers/numcodecs)\n",
+        "description_content_type": "text/markdown",
+        "maintainer_email": "Alistair Miles <alimanfoo@googlemail.com>",
+        "license_expression": "MIT",
+        "license_file": [
+          "LICENSE.txt",
+          "c-blosc/LICENSE.txt",
+          "c-blosc/LICENSES/BITSHUFFLE.txt",
+          "c-blosc/LICENSES/FASTLZ.txt",
+          "c-blosc/LICENSES/LZ4.txt",
+          "c-blosc/LICENSES/SNAPPY.txt",
+          "c-blosc/LICENSES/STDINT.txt",
+          "c-blosc/LICENSES/ZLIB-NG.txt",
+          "c-blosc/LICENSES/ZLIB.txt"
+        ],
+        "classifier": [
+          "Development Status :: 4 - Beta",
+          "Intended Audience :: Developers",
+          "Intended Audience :: Information Technology",
+          "Intended Audience :: Science/Research",
+          "Programming Language :: Python",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+          "Operating System :: Unix",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3 :: Only"
+        ],
+        "requires_dist": [
+          "numpy>=2.0",
+          "typing_extensions",
+          "msgpack; extra == \"msgpack\"",
+          "zfpy>=1.0.0; extra == \"zfpy\"",
+          "pcodec<2,>=1; extra == \"pcodec\"",
+          "crc32c>=2.7; extra == \"crc32c\"",
+          "google-crc32c>=1.5; extra == \"google-crc32c\"",
+          "sphinx; extra == \"docs\"",
+          "sphinx-issues; extra == \"docs\"",
+          "pydata-sphinx-theme; extra == \"docs\"",
+          "numpydoc; extra == \"docs\"",
+          "myst-parser; extra == \"docs\"",
+          "coverage; extra == \"test\"",
+          "pytest; extra == \"test\"",
+          "pytest-cov; extra == \"test\"",
+          "pyzstd; extra == \"test\"",
+          "importlib_metadata; extra == \"test-extras\""
+        ],
+        "requires_python": ">=3.12",
+        "project_url": [
+          "Bug Tracker, https://github.com/zarr-developers/numcodecs/issues",
+          "Changelog, https://numcodecs.readthedocs.io/en/stable/release.html",
+          "Documentation, https://numcodecs.readthedocs.io/",
+          "Homepage, https://github.com/zarr-developers/numcodecs"
+        ],
+        "provides_extra": [
+          "msgpack",
+          "zfpy",
+          "pcodec",
+          "crc32c",
+          "google-crc32c",
+          "docs",
+          "test",
+          "test-extras"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/43/a3/c799c62e19c337e6d3770b08e475887fb30ce8477d3c09efca6b2f0228a6/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+        "archive_info": {
+          "hash": "sha256=fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+          "hashes": {
+            "sha256": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "numpy",
+        "version": "2.5.4",
+        "summary": "Fundamental package for array computing in Python",
+        "description": "<h1 align=\"center\">\n<img src=\"https://raw.githubusercontent.com/numpy/numpy/main/branding/logo/primary/numpylogo.svg\" width=\"300\">\n</h1><br>\n\n\n[![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](\nhttps://numfocus.org)\n[![PyPI Downloads](https://img.shields.io/pypi/dm/numpy.svg?label=PyPI%20downloads)](\nhttps://pypi.org/project/numpy/)\n[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/numpy.svg?label=Conda%20downloads)](\nhttps://anaconda.org/conda-forge/numpy)\n[![Stack Overflow](https://img.shields.io/badge/stackoverflow-Ask%20questions-blue.svg)](\nhttps://stackoverflow.com/questions/tagged/numpy)\n[![Nature Paper](https://img.shields.io/badge/DOI-10.1038%2Fs41586--020--2649--2-blue)](\nhttps://doi.org/10.1038/s41586-020-2649-2)\n[![LFX Health Score](https://insights.linuxfoundation.org/api/badge/health-score?project=numpy)](https://insights.linuxfoundation.org/project/numpy)\n[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/numpy/numpy/badge)](https://securityscorecards.dev/viewer/?uri=github.com/numpy/numpy)\n[![Typing](https://img.shields.io/pypi/types/numpy)](https://pypi.org/project/numpy/)\n\n\nNumPy is the fundamental package for scientific computing with Python.\n\n- **Website:** https://numpy.org\n- **Documentation:** https://numpy.org/doc\n- **Mailing list:** https://mail.python.org/mailman/listinfo/numpy-discussion\n- **Source code:** https://github.com/numpy/numpy\n- **Contributing:** https://numpy.org/devdocs/dev/index.html\n- **Bug reports:** https://github.com/numpy/numpy/issues\n- **Report a security vulnerability:** https://github.com/numpy/numpy/security/policy (via Tidelift)\n\nIt provides:\n\n- a powerful N-dimensional array object\n- sophisticated (broadcasting) functions\n- tools for integrating C/C++ and Fortran code\n- useful linear algebra, Fourier transform, and random number capabilities\n\nTesting:\n\nNumPy requires `pytest` and `hypothesis`.  Tests can then be run after installation with:\n\n    python -c \"import numpy, sys; sys.exit(numpy.test() is False)\"\n\nCode of Conduct\n----------------------\n\nNumPy is a community-driven open source project developed by a diverse group of\n[contributors](https://numpy.org/teams/). The NumPy leadership has made a strong\ncommitment to creating an open, inclusive, and positive community. Please read the\n[NumPy Code of Conduct](https://numpy.org/code-of-conduct/) for guidance on how to interact\nwith others in a way that makes our community thrive.\n\nCall for Contributions\n----------------------\n\nThe NumPy project welcomes your expertise and enthusiasm!\n\nSmall improvements or fixes are always appreciated. If you are considering larger contributions\nto the source code, please contact us through the [mailing\nlist](https://mail.python.org/mailman/listinfo/numpy-discussion) first.\n\nWriting code isn’t the only way to contribute to NumPy. You can also:\n- review pull requests\n- help us stay on top of new and old issues\n- develop tutorials, presentations, and other educational materials\n- maintain and improve [our website](https://github.com/numpy/numpy.org)\n- develop graphic design for our brand assets and promotional materials\n- translate website content\n- help with outreach and onboard new contributors\n- write grant proposals and help with other fundraising efforts\n\nFor more information about the ways you can contribute to NumPy, visit [our website](https://numpy.org/contribute/). \nIf you’re unsure where to start or how your skills fit in, reach out! You can\nask on the mailing list or here, on GitHub, by opening a new issue or leaving a\ncomment on a relevant issue that is already open.\n\nOur preferred channels of communication are all public, but if you’d like to\nspeak to us in private first, contact our community coordinators at\nnumpy-team@googlegroups.com or on Slack (write numpy-team@googlegroups.com for\nan invitation).\n\nWe also have a biweekly community call, details of which are announced on the\nmailing list. You are very welcome to join.\n\nIf you are new to contributing to open source, [this\nguide](https://opensource.guide/how-to-contribute/) helps explain why, what,\nand how to successfully get involved.\n",
+        "description_content_type": "text/markdown",
+        "author": "Travis E. Oliphant et al.",
+        "maintainer_email": "NumPy Developers <numpy-discussion@python.org>",
+        "license_expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+        "license_file": [
+          "LICENSE.txt",
+          "numpy/_core/include/numpy/libdivide/LICENSE.txt",
+          "numpy/_core/src/common/pythoncapi-compat/COPYING",
+          "numpy/_core/src/highway/LICENSE",
+          "numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+          "numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+          "numpy/_core/src/umath/svml/LICENSE",
+          "numpy/fft/pocketfft/LICENSE.md",
+          "numpy/linalg/lapack_lite/LICENSE.txt",
+          "numpy/ma/LICENSE",
+          "numpy/random/LICENSE.md",
+          "numpy/random/src/distributions/LICENSE.md",
+          "numpy/random/src/mt19937/LICENSE.md",
+          "numpy/random/src/pcg64/LICENSE.md",
+          "numpy/random/src/philox/LICENSE.md",
+          "numpy/random/src/sfc64/LICENSE.md",
+          "numpy/random/src/splitmix64/LICENSE.md"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Science/Research",
+          "Intended Audience :: Developers",
+          "Programming Language :: C",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Topic :: Software Development",
+          "Topic :: Scientific/Engineering",
+          "Typing :: Typed",
+          "Operating System :: Microsoft :: Windows",
+          "Operating System :: POSIX",
+          "Operating System :: Unix",
+          "Operating System :: MacOS"
+        ],
+        "requires_python": ">=3.12",
+        "project_url": [
+          "homepage, https://numpy.org",
+          "documentation, https://numpy.org/doc/",
+          "source, https://github.com/numpy/numpy",
+          "download, https://pypi.org/project/numpy/#files",
+          "tracker, https://github.com/numpy/numpy/issues",
+          "release notes, https://numpy.org/doc/stable/release"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+          "hashes": {
+            "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "packaging",
+        "version": "26.3",
+        "summary": "Core utilities for Python packages",
+        "description": "packaging\n=========\n\n.. start-intro\n\nReusable core utilities for various Python Packaging\n`interoperability specifications <https://packaging.python.org/specifications/>`_.\n\nThis library provides utilities that implement the interoperability\nspecifications which have clearly one correct behaviour (eg: :pep:`440`)\nor benefit greatly from having a single shared implementation (eg: :pep:`425`).\n\n.. end-intro\n\nThe ``packaging`` project includes the following: version handling, specifiers,\nmarkers, requirements, tags, metadata, lockfiles, utilities.\n\nDocumentation\n-------------\n\nThe `documentation`_ provides information and the API for the following:\n\n- Version Handling\n- Specifiers\n- Markers\n- Licenses\n- Requirements\n- Metadata\n- Tags\n- Lockfiles (pylock)\n- Direct URL helpers\n- Dependency groups\n- Errors\n- Utilities\n\nInstallation\n------------\n\nUse ``pip`` to install these utilities::\n\n    pip install packaging\n\nThe ``packaging`` library uses calendar-based versioning (``YY.N``).\n\nDiscussion\n----------\n\nIf you run into bugs, you can file them in our `issue tracker`_.\n\nYou can also join discussions on `GitHub Discussions`_ to ask questions or get involved.\n\n.. _`documentation`: https://packaging.pypa.io/\n.. _`issue tracker`: https://github.com/pypa/packaging/issues\n.. _`GitHub Discussions`: https://github.com/pypa/packaging/discussions\n\n\nCode of Conduct\n---------------\n\nEveryone interacting in the packaging project's codebases, issue trackers, chat\nrooms, and mailing lists is expected to follow the `PSF Code of Conduct`_.\n\n.. _PSF Code of Conduct: https://github.com/pypa/.github/blob/main/CODE_OF_CONDUCT.md\n\nContributing\n------------\n\nThe ``CONTRIBUTING.rst`` file outlines how to contribute to this project as\nwell as how to report a potential security issue. The documentation for this\nproject also covers information about `project development`_ and `security`_.\n\n.. _`project development`: https://packaging.pypa.io/en/latest/development/\n.. _`security`: https://packaging.pypa.io/en/latest/security/\n\nProject History\n---------------\n\nPlease review the ``CHANGELOG.rst`` file or the `Changelog documentation`_ for\nrecent changes and project history.\n\n.. _`Changelog documentation`: https://packaging.pypa.io/en/latest/changelog/\n\n",
+        "description_content_type": "text/x-rst",
+        "author_email": "Donald Stufft <donald@stufft.io>",
+        "license_expression": "Apache-2.0 OR BSD-2-Clause",
+        "license_file": [
+          "LICENSE",
+          "LICENSE.APACHE",
+          "LICENSE.BSD"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Programming Language :: Python :: Implementation :: PyPy",
+          "Programming Language :: Python :: Free Threading :: 4 - Resilient",
+          "Typing :: Typed"
+        ],
+        "requires_python": ">=3.9",
+        "project_url": [
+          "Documentation, https://packaging.pypa.io/",
+          "Source, https://github.com/pypa/packaging"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/71/e7/40fb618334dcdf7c5a316c0e7343c5cd82d3d866edc100d98e29bc945ecd/partd-1.4.2-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=978e4ac767ec4ba5b86c6eaa52e5a2a3bc748a2ca839e8cc798f1cc6ce6efb0f",
+          "hashes": {
+            "sha256": "978e4ac767ec4ba5b86c6eaa52e5a2a3bc748a2ca839e8cc798f1cc6ce6efb0f"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.1",
+        "name": "partd",
+        "version": "1.4.2",
+        "summary": "Appendable key-value storage",
+        "description": "PartD\n=====\n\n|Build Status| |Version Status|\n\nKey-value byte store with appendable values\n\n    Partd stores key-value pairs.\n    Values are raw bytes.\n    We append on old values.\n\nPartd excels at shuffling operations.\n\nOperations\n----------\n\nPartD has two main operations, ``append`` and ``get``.\n\n\nExample\n-------\n\n1.  Create a Partd backed by a directory::\n\n        >>> import partd\n        >>> p = partd.File('/path/to/new/dataset/')\n\n2.  Append key-byte pairs to dataset::\n\n        >>> p.append({'x': b'Hello ', 'y': b'123'})\n        >>> p.append({'x': b'world!', 'y': b'456'})\n\n3.  Get bytes associated to keys::\n\n        >>> p.get('x')         # One key\n        b'Hello world!'\n\n        >>> p.get(['y', 'x'])  # List of keys\n        [b'123456', b'Hello world!']\n\n4.  Destroy partd dataset::\n\n        >>> p.drop()\n\nThat's it.\n\n\nImplementations\n---------------\n\nWe can back a partd by an in-memory dictionary::\n\n    >>> p = Dict()\n\nFor larger amounts of data or to share data between processes we back a partd\nby a directory of files.  This uses file-based locks for consistency.::\n\n    >>> p = File('/path/to/dataset/')\n\nHowever this can fail for many small writes.  In these cases you may wish to buffer one partd with another, keeping a fixed maximum of data in the buffering partd.  This writes the larger elements of the first partd to the second partd when space runs low::\n\n    >>> p = Buffer(Dict(), File(), available_memory=2e9)  # 2GB memory buffer\n\nYou might also want to have many distributed process write to a single partd\nconsistently.  This can be done with a server\n\n*   Server Process::\n\n        >>> p = Buffer(Dict(), File(), available_memory=2e9)  # 2GB memory buffer\n        >>> s = Server(p, address='ipc://server')\n\n*   Worker processes::\n\n        >>> p = Client('ipc://server')  # Client machine talks to remote server\n\n\nEncodings and Compression\n-------------------------\n\nOnce we can robustly and efficiently append bytes to a partd we consider\ncompression and encodings.  This is generally available with the ``Encode``\npartd, which accepts three functions, one to apply on bytes as they are\nwritten, one to apply to bytes as they are read, and one to join bytestreams.\nCommon configurations already exist for common data and compression formats.\n\nWe may wish to compress and decompress data transparently as we interact with a\npartd.  Objects like ``BZ2``, ``Blosc``, ``ZLib`` and ``Snappy`` exist and take\nanother partd as an argument.::\n\n    >>> p = File(...)\n    >>> p = ZLib(p)\n\nThese work exactly as before, the (de)compression happens automatically.\n\nCommon data formats like Python lists, numpy arrays, and pandas\ndataframes are also supported out of the box.::\n\n    >>> p = File(...)\n    >>> p = NumPy(p)\n    >>> p.append({'x': np.array([...])})\n\nThis lets us forget about bytes and think instead in our normal data types.\n\nComposition\n-----------\n\nIn principle we want to compose all of these choices together\n\n1.  Write policy:  ``Dict``, ``File``, ``Buffer``, ``Client``\n2.  Encoding:  ``Pickle``, ``Numpy``, ``Pandas``, ...\n3.  Compression:  ``Blosc``, ``Snappy``, ...\n\nPartd objects compose by nesting.  Here we make a partd that writes pickle\nencoded BZ2 compressed bytes directly to disk::\n\n    >>> p = Pickle(BZ2(File('foo')))\n\nWe could construct more complex systems that include compression,\nserialization, buffering, and remote access.::\n\n    >>> server = Server(Buffer(Dict(), File(), available_memory=2e0))\n\n    >>> client = Pickle(Snappy(Client(server.address)))\n    >>> client.append({'x': [1, 2, 3]})\n\n.. |Build Status| image:: https://github.com/dask/partd/workflows/CI/badge.svg\n   :target: https://github.com/dask/partd/actions?query=workflow%3ACI\n.. |Version Status| image:: https://img.shields.io/pypi/v/partd.svg\n   :target: https://pypi.python.org/pypi/partd/\n",
+        "description_content_type": "text/x-rst",
+        "maintainer_email": "Matthew Rocklin <mrocklin@gmail.com>",
+        "license": "BSD",
+        "license_file": [
+          "LICENSE.txt"
+        ],
+        "classifier": [
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12"
+        ],
+        "requires_dist": [
+          "locket",
+          "toolz",
+          "numpy >=1.20.0 ; extra == 'complete'",
+          "pandas >=1.3 ; extra == 'complete'",
+          "pyzmq ; extra == 'complete'",
+          "blosc ; extra == 'complete'"
+        ],
+        "requires_python": ">=3.9",
+        "project_url": [
+          "Homepage, http://github.com/dask/partd/"
+        ],
+        "provides_extra": [
+          "complete"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/8b/9d/b3589d3877982d4f2329302ef98a8026e7f4443c765c46cfecc8858c6b4b/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+        "archive_info": {
+          "hash": "sha256=ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+          "hashes": {
+            "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "PyYAML",
+        "version": "6.0.3",
+        "dynamic": [
+          "author",
+          "author-email",
+          "classifier",
+          "description",
+          "download-url",
+          "home-page",
+          "license",
+          "license-file",
+          "platform",
+          "project-url",
+          "requires-python",
+          "summary"
+        ],
+        "platform": [
+          "Any"
+        ],
+        "summary": "YAML parser and emitter for Python",
+        "description": "YAML is a data serialization format designed for human readability\nand interaction with scripting languages.  PyYAML is a YAML parser\nand emitter for Python.\n\nPyYAML features a complete YAML 1.1 parser, Unicode support, pickle\nsupport, capable extension API, and sensible error messages.  PyYAML\nsupports standard YAML tags and provides Python-specific tags that\nallow to represent an arbitrary Python object.\n\nPyYAML is applicable for a broad range of tasks from complex\nconfiguration files to object serialization and persistence.\n",
+        "home_page": "https://pyyaml.org/",
+        "download_url": "https://pypi.org/project/PyYAML/",
+        "author": "Kirill Simonov",
+        "author_email": "xi@resolvent.net",
+        "license": "MIT",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: MIT License",
+          "Operating System :: OS Independent",
+          "Programming Language :: Cython",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Programming Language :: Python :: Implementation :: PyPy",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+          "Topic :: Text Processing :: Markup"
+        ],
+        "requires_python": ">=3.8",
+        "project_url": [
+          "Bug Tracker, https://github.com/yaml/pyyaml/issues",
+          "CI, https://github.com/yaml/pyyaml/actions",
+          "Documentation, https://pyyaml.org/wiki/PyYAMLDocumentation",
+          "Mailing lists, http://lists.sourceforge.net/lists/listinfo/yaml-core",
+          "Source Code, https://github.com/yaml/pyyaml"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/db/17/4c8beb6c8c4176c6bf143bfd7e1e4dd6719b00ced90738c7ac471b71c1df/toolz-1.2.0-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=890f820b1cb8152785aaf9386d8707770110809035800985ca65cb24ce1120ef",
+          "hashes": {
+            "sha256": "890f820b1cb8152785aaf9386d8707770110809035800985ca65cb24ce1120ef"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "toolz",
+        "version": "1.2.0",
+        "dynamic": [
+          "license-file"
+        ],
+        "summary": "List processing tools and functional utilities",
+        "description": "Toolz\n=====\n\n|Build Status| |Coverage Status| |Version Status|\n\nA set of utility functions for iterators, functions, and dictionaries.\n\nSee the PyToolz documentation at https://toolz.readthedocs.io\n\nLICENSE\n-------\n\nNew BSD. See `License File <https://github.com/pytoolz/toolz/blob/master/LICENSE.txt>`__.\n\nInstall\n-------\n\n``toolz`` is on the Python Package Index (PyPI):\n\n::\n\n    pip install toolz\n\nStructure and Heritage\n----------------------\n\n``toolz`` is implemented in three parts:\n\n|literal itertoolz|_, for operations on iterables. Examples: ``groupby``,\n``unique``, ``interpose``,\n\n|literal functoolz|_, for higher-order functions. Examples: ``memoize``,\n``curry``, ``compose``,\n\n|literal dicttoolz|_, for operations on dictionaries. Examples: ``assoc``,\n``update-in``, ``merge``.\n\n.. |literal itertoolz| replace:: ``itertoolz``\n.. _literal itertoolz: https://github.com/pytoolz/toolz/blob/master/toolz/itertoolz.py\n\n.. |literal functoolz| replace:: ``functoolz``\n.. _literal functoolz: https://github.com/pytoolz/toolz/blob/master/toolz/functoolz.py\n\n.. |literal dicttoolz| replace:: ``dicttoolz``\n.. _literal dicttoolz: https://github.com/pytoolz/toolz/blob/master/toolz/dicttoolz.py\n\nThese functions come from the legacy of functional languages for list\nprocessing. They interoperate well to accomplish common complex tasks.\n\nRead our `API\nDocumentation <https://toolz.readthedocs.io/en/latest/api.html>`__ for\nmore details.\n\nExample\n-------\n\nThis builds a standard wordcount function from pieces within ``toolz``:\n\n.. code:: python\n\n    >>> def stem(word):\n    ...     \"\"\" Stem word to primitive form \"\"\"\n    ...     return word.lower().rstrip(\",.!:;'-\\\"\").lstrip(\"'\\\"\")\n\n    >>> from toolz import compose, frequencies\n    >>> from toolz.curried import map\n    >>> wordcount = compose(frequencies, map(stem), str.split)\n\n    >>> sentence = \"This cat jumped over this other cat!\"\n    >>> wordcount(sentence)\n    {'this': 2, 'cat': 2, 'jumped': 1, 'over': 1, 'other': 1}\n\nDependencies\n------------\n\n``toolz`` supports Python 3.9+ with a common codebase.\nIt is pure Python and requires no dependencies beyond the standard\nlibrary.\n\nIt is, in short, a lightweight dependency.\n\n\nCyToolz\n-------\n\nThe ``toolz`` project has been reimplemented in `Cython <http://cython.org>`__.\nThe ``cytoolz`` project is a drop-in replacement for the Pure Python\nimplementation.\nSee `CyToolz GitHub Page <https://github.com/pytoolz/cytoolz/>`__ for more\ndetails.\n\nSee Also\n--------\n\n-  `Underscore.js <https://underscorejs.org/>`__: A similar library for\n   JavaScript\n-  `Enumerable <https://ruby-doc.org/core-2.0.0/Enumerable.html>`__: A\n   similar library for Ruby\n-  `Clojure <https://clojure.org/>`__: A functional language whose\n   standard library has several counterparts in ``toolz``\n-  `itertools <https://docs.python.org/2/library/itertools.html>`__: The\n   Python standard library for iterator tools\n-  `functools <https://docs.python.org/2/library/functools.html>`__: The\n   Python standard library for function tools\n\nProject Status\n--------------\n\n**This project is alive but inactive.**\n\nThe original maintainers have mostly moved on to other endeavors.  We're still\naround for critical bug fixes, Python version bumps, and security issues and\nwill commit to keeping the project alive (it's highly depended upon).\nHowever, beyond that we don't plan to spend much time reviewing contributions.\nWe view Toolz as mostly complete.\n\nWe encourage enthusiasts to innovate in new and wonderful places 🚀\n\n.. |Build Status| image:: https://github.com/pytoolz/toolz/actions/workflows/test.yml/badge.svg?branch=master\n   :target: https://github.com/pytoolz/toolz/actions\n.. |Coverage Status| image:: https://codecov.io/gh/pytoolz/toolz/graph/badge.svg?token=4ZFc9dwKqY\n   :target: https://codecov.io/gh/pytoolz/toolz\n.. |Version Status| image:: https://badge.fury.io/py/toolz.svg\n   :target: https://badge.fury.io/py/toolz\n",
+        "description_content_type": "text/x-rst",
+        "keywords": [
+          "functional",
+          "utility",
+          "itertools",
+          "functools"
+        ],
+        "author": "PyToolz Contributors",
+        "maintainer_email": "Erik Welch <erik.n.welch@gmail.com>",
+        "license_expression": "BSD-3-Clause",
+        "license_file": [
+          "LICENSE.txt"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Programming Language :: Python :: Implementation :: PyPy"
+        ],
+        "requires_python": ">=3.9",
+        "project_url": [
+          "homepage, https://github.com/pytoolz/toolz",
+          "repository, https://github.com/pytoolz/toolz",
+          "documentation, https://toolz.readthedocs.io/en/latest/",
+          "changelog, https://github.com/pytoolz/toolz/releases"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+          "hashes": {
+            "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "typing_extensions",
+        "version": "4.16.0",
+        "summary": "Backported and Experimental Type Hints for Python 3.9+",
+        "description": "# Typing Extensions\n\n[![Chat at https://gitter.im/python/typing](https://badges.gitter.im/python/typing.svg)](https://gitter.im/python/typing)\n\n[Documentation](https://typing-extensions.readthedocs.io/en/latest/#) –\n[PyPI](https://pypi.org/project/typing-extensions/)\n\n## Overview\n\nThe `typing_extensions` module serves two related purposes:\n\n- Enable use of new type system features on older Python versions. For example,\n  `typing.TypeGuard` is new in Python 3.10, but `typing_extensions` allows\n  users on previous Python versions to use it too.\n- Enable experimentation with new type system PEPs before they are accepted and\n  added to the `typing` module.\n\n`typing_extensions` is treated specially by static type checkers such as\nmypy and pyright. Objects defined in `typing_extensions` are treated the same\nway as equivalent forms in `typing`.\n\n`typing_extensions` uses\n[Semantic Versioning](https://semver.org/). The\nmajor version will be incremented only for backwards-incompatible changes.\nTherefore, it's safe to depend\non `typing_extensions` like this: `typing_extensions ~=x.y`,\nwhere `x.y` is the first version that includes all features you need.\n[This](https://packaging.python.org/en/latest/specifications/version-specifiers/#compatible-release)\nis equivalent to `typing_extensions >=x.y, <(x+1)`. Do not depend on `~= x.y.z`\nunless you really know what you're doing; that defeats the purpose of\nsemantic versioning.\n\n## Included items\n\nSee [the documentation](https://typing-extensions.readthedocs.io/en/latest/#) for a\ncomplete listing of module contents.\n\n## Contributing\n\nSee [CONTRIBUTING.md](https://github.com/python/typing_extensions/blob/main/CONTRIBUTING.md)\nfor how to contribute to `typing_extensions`.\n\n",
+        "description_content_type": "text/markdown",
+        "keywords": [
+          "annotations",
+          "backport",
+          "checker",
+          "checking",
+          "function",
+          "hinting",
+          "hints",
+          "type",
+          "typechecking",
+          "typehinting",
+          "typehints",
+          "typing"
+        ],
+        "author_email": "\"Guido van Rossum, Jukka Lehtosalo, Łukasz Langa, Michael Lee\" <levkivskyi@gmail.com>",
+        "license_expression": "PSF-2.0",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Environment :: Console",
+          "Intended Audience :: Developers",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: Python :: 3.15",
+          "Topic :: Software Development"
+        ],
+        "requires_python": ">=3.9",
+        "project_url": [
+          "Bug Tracker, https://github.com/python/typing_extensions/issues",
+          "Changes, https://github.com/python/typing_extensions/blob/main/CHANGELOG.md",
+          "Documentation, https://typing-extensions.readthedocs.io/",
+          "Home, https://github.com/python/typing_extensions",
+          "Q & A, https://github.com/python/typing/discussions",
+          "Repository, https://github.com/python/typing_extensions"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/db/bc/83e112abc66cd466c6b83f99118035867cecd41802f8d044638aa78a106e/locket-1.0.0-py2.py3-none-any.whl",
+        "archive_info": {
+          "hash": "sha256=b6c819a722f7b6bd955b80781788e4a66a55628b858d347536b7e81325a3a5e3",
+          "hashes": {
+            "sha256": "b6c819a722f7b6bd955b80781788e4a66a55628b858d347536b7e81325a3a5e3"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": false,
+      "metadata": {
+        "metadata_version": "2.1",
+        "name": "locket",
+        "version": "1.0.0",
+        "platform": [
+          "UNKNOWN"
+        ],
+        "summary": "File-based locks for Python on Linux and Windows",
+        "description": "locket.py: File-based locks for Python on Linux and Windows\n===========================================================\n\nLocket implements a file-based lock that can be used by multiple processes provided they use the same path.\n\n.. code-block:: python\n\n    import locket\n\n    # Wait for lock\n    with locket.lock_file(\"path/to/lock/file\"):\n        perform_action()\n\n    # Raise LockError if lock cannot be acquired immediately\n    with locket.lock_file(\"path/to/lock/file\", timeout=0):\n        perform_action()\n\n    # Raise LockError if lock cannot be acquired after thirty seconds\n    with locket.lock_file(\"path/to/lock/file\", timeout=30):\n        perform_action()\n\n    # Without context managers:\n    lock = locket.lock_file(\"path/to/lock/file\")\n    try:\n        lock.acquire()\n        perform_action()\n    finally:\n        lock.release()\n\nLocks largely behave as (non-reentrant) ``Lock`` instances from the ``threading``\nmodule in the standard library. Specifically, their behaviour is:\n\n* Locks are uniquely identified by the file being locked,\n  both in the same process and across different processes.\n\n* Locks are either in a locked or unlocked state.\n\n* When the lock is unlocked, calling ``acquire()`` returns immediately and changes\n  the lock state to locked.\n\n* When the lock is locked, calling ``acquire()`` will block until the lock state\n  changes to unlocked, or until the timeout expires.\n\n* If a process holds a lock, any thread in that process can call ``release()`` to\n  change the state to unlocked.\n\n* Calling ``release()`` on an unlocked lock raises ``LockError``.\n\n* Behaviour of locks after ``fork`` is undefined.\n\nInstallation\n------------\n\n.. code-block:: sh\n\n    pip install locket\n\n\n",
+        "keywords": [
+          "lock",
+          "filelock",
+          "lockfile",
+          "process"
+        ],
+        "home_page": "http://github.com/mwilliamson/locket.py",
+        "author": "Michael Williamson",
+        "author_email": "mike@zwobble.org",
+        "license": "BSD-2-Clause",
+        "license_file": [
+          "LICENSE"
+        ],
+        "classifier": [
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: BSD License",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Operating System :: Unix",
+          "Operating System :: Microsoft :: Windows"
+        ],
+        "requires_python": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+      }
+    }
+  ],
+  "environment": {
+    "implementation_name": "cpython",
+    "implementation_version": "3.12.14",
+    "os_name": "posix",
+    "platform_machine": "x86_64",
+    "platform_release": "6.18.55",
+    "platform_system": "Linux",
+    "platform_version": "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+    "python_full_version": "3.12.14",
+    "platform_python_implementation": "CPython",
+    "python_version": "3.12",
+    "sys_platform": "linux"
+  }
+}

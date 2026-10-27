@@ -1,0 +1,85 @@
+{
+  "schema": "reproduction-packaging-verification/v1",
+  "restore_manifest_sha256": "db32c180e67e3ef45289156fc89d19218191d63f078792094c05a759df3601a6",
+  "restore_script_sha256": "71a7fe9445c01c22192370f503abea87dbd6fdfe88e27ca4f7850cc8e2ab0412",
+  "checks": [
+    {
+      "name": "empty-directory-lossless-restoration",
+      "passed": true,
+      "files": 529,
+      "bytes": 98470738
+    },
+    {
+      "name": "all-restored-byte-hashes-verified",
+      "passed": true
+    },
+    {
+      "name": "idempotent-no-overwrite",
+      "passed": true
+    },
+    {
+      "name": "differing-user-file-refused-before-any-writes",
+      "passed": true
+    },
+    {
+      "name": "symlink-ancestor-refused",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-../outside",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-/tmp/outside",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-a/../outside",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-a//b",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-.",
+      "passed": true
+    },
+    {
+      "name": "path-rejection-C:/outside",
+      "passed": true
+    }
+  ],
+  "passed": 11,
+  "total": 11,
+  "first_restore": {
+    "schema": "exact-study-restoration/v1",
+    "restore_manifest_sha256": "db32c180e67e3ef45289156fc89d19218191d63f078792094c05a759df3601a6",
+    "verified_files": 529,
+    "verified_raw_bytes": 98470738,
+    "restored_files": 529,
+    "already_identical_files": 0,
+    "verify_only": false,
+    "overwritten_differing_files": 0,
+    "original_package_mutations": 0,
+    "scientific_experiments_executed": 0,
+    "scope": "Exact restoration of known evidence; any subsequent rerun is reproduction, not fresh confirmation"
+  },
+  "second_verify": {
+    "schema": "exact-study-restoration/v1",
+    "restore_manifest_sha256": "db32c180e67e3ef45289156fc89d19218191d63f078792094c05a759df3601a6",
+    "verified_files": 529,
+    "verified_raw_bytes": 98470738,
+    "restored_files": 0,
+    "already_identical_files": 529,
+    "verify_only": true,
+    "overwritten_differing_files": 0,
+    "original_package_mutations": 0,
+    "scientific_experiments_executed": 0,
+    "scope": "Exact restoration of known evidence; any subsequent rerun is reproduction, not fresh confirmation"
+  },
+  "elapsed_seconds": 1.7809877609979594,
+  "scientific_experiments_executed": 0,
+  "originals_mutated": false,
+  "scope": "Temporary-directory file restoration/integrity checks only; not a new scientific confirmation or hostile-host proof"
+}

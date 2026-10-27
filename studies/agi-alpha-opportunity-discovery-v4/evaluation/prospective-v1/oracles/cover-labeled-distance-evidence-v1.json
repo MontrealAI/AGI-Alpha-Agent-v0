@@ -1,0 +1,69 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "cover-labeled-distance-evidence-v1",
+  "part": "Cover",
+  "request_sha256": "889b5eb3e32c56d6902f945642c5ec6b727006b8c8f6019d32fb9b7e18debd2d",
+  "request_canonical_sha256": "74b33d5b76378fba8927b778ffc9f0efe41c70e193ae65e0dc8dab1c07ac1a72",
+  "mission": {
+    "id": "cover-labeled-distance-evidence-v1",
+    "purpose": "evidence_audit",
+    "statement": "Identify the exact source and receiving evidence needed to reconcile source record77 with incoming obligation155. Distinguish the human label from the encoded characteristic kind, preserve raw numeric literals and formal units, and request verified requirement/feature identity rather than silently coercing a type."
+  },
+  "source_oracles": {
+    "source_qif": "../../protected/oracles/Cover_FAIR.json",
+    "incoming_qif": "../../protected/oracles/Cover_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "../../protected/oracles/Cover_step.json",
+    "brep": "../../protected/oracles/Cover_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [
+    "29"
+  ],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions",
+  "prospective_requirements": {
+    "required_binding_topics": [
+      "feature_set_identity",
+      "measurement_adequacy"
+    ],
+    "source_characteristic_ids": [
+      "77"
+    ],
+    "incoming_characteristic_ids": [
+      "155"
+    ],
+    "binding_rule": "Each required repair must identify affected source/receiving obligations with source role or digest. Complete source-bound scope collections may include these IDs; such scope is not an inferred physical correspondence. Empty, unresolvable or fictitious identifiers fail.",
+    "additional_scope_checks": [
+      "Source77 retains encoded Diameter despite its human Distance label.",
+      "Incoming155 retains DistanceBetween type; no cross-kind identity or unit repair is assumed."
+    ],
+    "original_source_data_already_seen_by_v0_1_0": true,
+    "current_request_not_seen_before_repair": true
+  }
+}

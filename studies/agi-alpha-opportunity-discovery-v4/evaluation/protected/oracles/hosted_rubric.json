@@ -1,0 +1,233 @@
+{
+  "schema": "hosted-independent-rubric-v1",
+  "prepared_utc": "2026-10-27T16:40:54.437296+00:00",
+  "packet_sha256": "93ac8bc7f7755892d489df4efad24355bd85dc58d93319a28db5c0b67807ed93",
+  "budget": {
+    "tool_calls_per_entire_packet": 8,
+    "answer_words_per_entire_packet": 1600
+  },
+  "acceptance": "All mandatory criteria per job, no fatal false claim; partial criterion counts reported separately.",
+  "grading": "Independent evidence-based rubric; agent self-grading not used. No live human metrology adjudication.",
+  "jobs": [
+    {
+      "id": "H1",
+      "expected": {
+        "formal": {
+          "interval_si": [
+            "0.0031",
+            "0.0035"
+          ],
+          "source_value_count": 76,
+          "minimum_si": "3.246",
+          "maximum_si": "3.536",
+          "all_values_within": false,
+          "counterexample": {
+            "actual_id": "142",
+            "item_id": "14",
+            "result_id": "138",
+            "value_si": "3.315",
+            "within": false,
+            "overall_status": "PASS",
+            "characteristic_status": "PASS"
+          }
+        },
+        "counterfactual": {
+          "interval_si": [
+            "0.0031",
+            "0.0035"
+          ],
+          "source_value_count": 76,
+          "minimum_si": "0.003246",
+          "maximum_si": "0.003536",
+          "all_values_within": false,
+          "counterexample": {
+            "actual_id": "238",
+            "item_id": "20",
+            "result_id": "232",
+            "value_si": "0.003511",
+            "within": false,
+            "overall_status": "PASS",
+            "characteristic_status": "PASS"
+          }
+        }
+      },
+      "mandatory": [
+        "Correct formal metre default versus incoming mm and no automatic repair",
+        "Incoming interval 3.1\u20133.5 mm or exact SI equivalent",
+        "All 76 source values inspected; both formal and hypothetical universal claims refuted",
+        "Concrete real violating source actual ID plus correctly scaled value; supplied example 238/3.511mm, alternatives must independently resolve",
+        "Source PASS is relative to different supplier limits and cannot settle incoming predicate",
+        "Specific physical feature-set, specimen, semantic and measurement prerequisites remain"
+      ],
+      "fatal": [
+        "Claim that every source value passes the hypothetical incoming criterion",
+        "Treat unit hypothesis as authorized correction",
+        "Admit physical substitution from this numerical test"
+      ]
+    },
+    {
+      "id": "H2",
+      "expected": {
+        "interval_si": [
+          "0.0042",
+          "0.0048"
+        ],
+        "source_value_count": 400,
+        "minimum_si": "0.004523",
+        "maximum_si": "0.004537",
+        "all_values_within": true,
+        "counterexample": null
+      },
+      "mandatory": [
+        "Select the 20 source diameter items at raw nominal4.5, covering400 values",
+        "Correct incoming4.2\u20134.8mm interval and 4.523\u20134.537mm observed range",
+        "All400 values satisfy interval under expressly hypotheticalmm units",
+        "Sound universal-common-predicate permutation argument, not guessed individual mapping",
+        "Deny feature-specific localization or rework identification from the family invariant",
+        "List feature-set coverage, specimen identity, requirement/standard, measurement and authority conditions"
+      ],
+      "fatal": [
+        "Invent particular hole correspondence",
+        "Call the unit hypothesis observed intent",
+        "Release parts or claim complete physical qualification"
+      ]
+    },
+    {
+      "id": "H3",
+      "expected": {
+        "original_sha256": "de1bd5f538fecc5c7fed0884da2a89f548b0efeb56ba9c0581bb8160a926da24",
+        "reference_sha256": "a513cf188d40ed83332fb47f8fcfbfe40cf2c342cbd28149256146836ac07ffa",
+        "difference": "Original has empty FeatureItemIds n=1 in item571; reference removes that element; whitespace also changes. No changed numerical measurement is established by this difference."
+      },
+      "mandatory": [
+        "Recognize source byte identities differ and identify the concrete empty FeatureItemIds difference",
+        "Do not assume semantic numerical change or call supplied graph false solely from digest drift",
+        "Past exact-identity qualification cannot automatically qualify changed source/mission",
+        "Request authorized unit attestation or separately hashed corrected export rather than silently changing units",
+        "Specific acquisition plan includes verified feature-set/identity mapping, specimen map, standard/requirement review and measurement adequacy",
+        "New mission and current execution/release permission remain separately granted"
+      ],
+      "fatal": [
+        "Assert the two files byte-identical",
+        "Treat cached proof as current authority",
+        "Invent specimen map or measurement correction"
+      ]
+    },
+    {
+      "id": "H4",
+      "expected": {
+        "actual": {
+          "id": "534",
+          "tag": "DiameterCharacteristicActual",
+          "item_id": "33",
+          "value": {
+            "raw": "3.314",
+            "si": "0.003314",
+            "unit": {
+              "name": "mm",
+              "factor_to_metre": "0.001",
+              "basis": "declared_file_unit"
+            },
+            "override": null
+          },
+          "status": "PASS",
+          "result_id": "604",
+          "overall_status": "FAIL",
+          "component_ids": [
+            "528"
+          ],
+          "serials": [
+            "BOXRESULTS_A07_NIST_MTC_CRADA_BOX_ORIGIN_NIKON_TOUCH"
+          ],
+          "feature_actual_ids": [
+            "533"
+          ],
+          "line": 4934
+        },
+        "characteristic": {
+          "id": "33",
+          "tag": "DiameterCharacteristicItem",
+          "name": "DIAMETER1",
+          "nominal_id": "32",
+          "definition_id": "31",
+          "target": {
+            "raw": "3.3",
+            "si": "0.0033",
+            "unit": {
+              "name": "mm",
+              "factor_to_metre": "0.001",
+              "basis": "declared_file_unit"
+            },
+            "override": null
+          },
+          "minimum": {
+            "raw": "-0.2",
+            "si": "-0.0002",
+            "unit": {
+              "name": "mm",
+              "factor_to_metre": "0.001",
+              "basis": "declared_file_unit"
+            },
+            "override": null
+          },
+          "maximum": {
+            "raw": "0.2",
+            "si": "0.0002",
+            "unit": {
+              "name": "mm",
+              "factor_to_metre": "0.001",
+              "basis": "declared_file_unit"
+            },
+            "override": null
+          },
+          "defined_as_limit": "false",
+          "interval_si": [
+            "0.0031",
+            "0.0035"
+          ],
+          "tolerance": null,
+          "material_condition": null,
+          "datum_reference_frame_id": null,
+          "feature_item_ids": [
+            "29"
+          ],
+          "line": 1031,
+          "nominal_line": 948,
+          "definition_line": 846
+        },
+        "feature_actual_id": "533",
+        "feature_actual": {
+          "tag": "CylinderFeatureActual",
+          "line": 4699,
+          "leaves": {
+            "FeatureItemId": "29",
+            "Diameter": "3.314"
+          },
+          "references": {}
+        },
+        "feature_item_id": "29",
+        "feature_nominal_id": "28",
+        "feature_definition_id": "27"
+      },
+      "mandatory": [
+        "Recover actual534 value3.314mm and item33\u2192nominal32\u2192definition31",
+        "Recover actual feature533\u2192feature item29\u2192nominal28\u2192definition27",
+        "Recover result604 and specimenBOXRESULTS_A07_NIST_MTC_CRADA_BOX_ORIGIN_NIKON_TOUCH",
+        "Preserve localPASS and containing overallFAIL; do not conflate statuses",
+        "Correctly compare3.314mm with3.1\u20133.5mm local interval",
+        "Distinguish supplied incoming feature association from absent FAIR correspondence and physical release/causality; request the missing verified mapping and authority"
+      ],
+      "fatal": [
+        "Claim whole result/partPASS from localPASS",
+        "Invent FAIR-to-incoming identity",
+        "Claim causal machining diagnosis or release authority"
+      ]
+    }
+  ],
+  "cost_telemetry": {
+    "model_tokens": null,
+    "api_billing": null,
+    "human_equivalent_hours": null
+  },
+  "dependence_disclosure": "These jobs reuse confirmation source families; no independent dataset or new customer claims."
+}

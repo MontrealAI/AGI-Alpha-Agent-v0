@@ -1,0 +1,1488 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "box-counterfactual-family-v1",
+  "part": "Box",
+  "request_sha256": "32d0ca323a1fd5ecfc7006ee0ebb594f6b2e67db7698bde408ed1aa179701f69",
+  "request_canonical_sha256": "4fc67f7b5f14d6c4b39636cc0f1205c016337f1f06552e6b1277ae2974d44f73",
+  "mission": {
+    "id": "box-counterfactual-family-v1",
+    "purpose": "family_all",
+    "statement": "Separately evaluate the declared millimetre unit-repair hypothesis; preserve the formal result and every physical guard."
+  },
+  "source_oracles": {
+    "source_qif": "Box_FAIR.json",
+    "incoming_qif": "Box_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "Box_step.json",
+    "brep": "Box_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions",
+  "formal_family": {
+    "supported": true,
+    "source_characteristic_ids": [
+      "14",
+      "20",
+      "26",
+      "32"
+    ],
+    "incoming_characteristic_id": "33",
+    "basis": "formal_QIF_units",
+    "interval_si": [
+      "0.0031",
+      "0.0035"
+    ],
+    "source_value_count": 76,
+    "minimum_si": "3.246",
+    "maximum_si": "3.536",
+    "all_values_within": false,
+    "permutation_invariant": true,
+    "permutations_checked": 24,
+    "admissible_permutations_count": "24",
+    "invariance_proof": "universal conjunction under one common interval; finite family only",
+    "counterexample": {
+      "actual_id": "142",
+      "item_id": "14",
+      "result_id": "138",
+      "value_si": "3.315",
+      "within": false,
+      "overall_status": "PASS",
+      "characteristic_status": "PASS"
+    },
+    "values": [
+      {
+        "actual_id": "142",
+        "item_id": "14",
+        "result_id": "138",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "144",
+        "item_id": "20",
+        "result_id": "138",
+        "value_si": "3.318",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "146",
+        "item_id": "26",
+        "result_id": "138",
+        "value_si": "3.32",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "148",
+        "item_id": "32",
+        "result_id": "138",
+        "value_si": "3.32",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "189",
+        "item_id": "14",
+        "result_id": "185",
+        "value_si": "3.325",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "191",
+        "item_id": "20",
+        "result_id": "185",
+        "value_si": "3.314",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "193",
+        "item_id": "26",
+        "result_id": "185",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "195",
+        "item_id": "32",
+        "result_id": "185",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "236",
+        "item_id": "14",
+        "result_id": "232",
+        "value_si": "3.246",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "238",
+        "item_id": "20",
+        "result_id": "232",
+        "value_si": "3.511",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "240",
+        "item_id": "26",
+        "result_id": "232",
+        "value_si": "3.336",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "242",
+        "item_id": "32",
+        "result_id": "232",
+        "value_si": "3.267",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "283",
+        "item_id": "14",
+        "result_id": "279",
+        "value_si": "3.305",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "285",
+        "item_id": "20",
+        "result_id": "279",
+        "value_si": "3.306",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "287",
+        "item_id": "26",
+        "result_id": "279",
+        "value_si": "3.305",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "289",
+        "item_id": "32",
+        "result_id": "279",
+        "value_si": "3.313",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "330",
+        "item_id": "14",
+        "result_id": "326",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "332",
+        "item_id": "20",
+        "result_id": "326",
+        "value_si": "3.311",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "334",
+        "item_id": "26",
+        "result_id": "326",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "336",
+        "item_id": "32",
+        "result_id": "326",
+        "value_si": "3.314",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "377",
+        "item_id": "14",
+        "result_id": "373",
+        "value_si": "3.308",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "379",
+        "item_id": "20",
+        "result_id": "373",
+        "value_si": "3.326",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "381",
+        "item_id": "26",
+        "result_id": "373",
+        "value_si": "3.31",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "383",
+        "item_id": "32",
+        "result_id": "373",
+        "value_si": "3.321",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "424",
+        "item_id": "14",
+        "result_id": "420",
+        "value_si": "3.308",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "426",
+        "item_id": "20",
+        "result_id": "420",
+        "value_si": "3.323",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "428",
+        "item_id": "26",
+        "result_id": "420",
+        "value_si": "3.325",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "430",
+        "item_id": "32",
+        "result_id": "420",
+        "value_si": "3.32",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "471",
+        "item_id": "14",
+        "result_id": "467",
+        "value_si": "3.316",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "473",
+        "item_id": "20",
+        "result_id": "467",
+        "value_si": "3.311",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "475",
+        "item_id": "26",
+        "result_id": "467",
+        "value_si": "3.316",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "477",
+        "item_id": "32",
+        "result_id": "467",
+        "value_si": "3.312",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "518",
+        "item_id": "14",
+        "result_id": "514",
+        "value_si": "3.314",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "520",
+        "item_id": "20",
+        "result_id": "514",
+        "value_si": "3.321",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "522",
+        "item_id": "26",
+        "result_id": "514",
+        "value_si": "3.311",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "524",
+        "item_id": "32",
+        "result_id": "514",
+        "value_si": "3.309",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "565",
+        "item_id": "14",
+        "result_id": "561",
+        "value_si": "3.303",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "567",
+        "item_id": "20",
+        "result_id": "561",
+        "value_si": "3.313",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "569",
+        "item_id": "26",
+        "result_id": "561",
+        "value_si": "3.314",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "571",
+        "item_id": "32",
+        "result_id": "561",
+        "value_si": "3.311",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "612",
+        "item_id": "14",
+        "result_id": "608",
+        "value_si": "3.316",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "614",
+        "item_id": "20",
+        "result_id": "608",
+        "value_si": "3.307",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "616",
+        "item_id": "26",
+        "result_id": "608",
+        "value_si": "3.318",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "618",
+        "item_id": "32",
+        "result_id": "608",
+        "value_si": "3.316",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "659",
+        "item_id": "14",
+        "result_id": "655",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "661",
+        "item_id": "20",
+        "result_id": "655",
+        "value_si": "3.313",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "663",
+        "item_id": "26",
+        "result_id": "655",
+        "value_si": "3.306",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "665",
+        "item_id": "32",
+        "result_id": "655",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "706",
+        "item_id": "14",
+        "result_id": "702",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "708",
+        "item_id": "20",
+        "result_id": "702",
+        "value_si": "3.322",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "710",
+        "item_id": "26",
+        "result_id": "702",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "712",
+        "item_id": "32",
+        "result_id": "702",
+        "value_si": "3.31",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "753",
+        "item_id": "14",
+        "result_id": "749",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "755",
+        "item_id": "20",
+        "result_id": "749",
+        "value_si": "3.32",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "757",
+        "item_id": "26",
+        "result_id": "749",
+        "value_si": "3.326",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "759",
+        "item_id": "32",
+        "result_id": "749",
+        "value_si": "3.319",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "800",
+        "item_id": "14",
+        "result_id": "796",
+        "value_si": "3.324",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "802",
+        "item_id": "20",
+        "result_id": "796",
+        "value_si": "3.323",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "804",
+        "item_id": "26",
+        "result_id": "796",
+        "value_si": "3.321",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "806",
+        "item_id": "32",
+        "result_id": "796",
+        "value_si": "3.318",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "847",
+        "item_id": "14",
+        "result_id": "843",
+        "value_si": "3.324",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "849",
+        "item_id": "20",
+        "result_id": "843",
+        "value_si": "3.309",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "851",
+        "item_id": "26",
+        "result_id": "843",
+        "value_si": "3.309",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "853",
+        "item_id": "32",
+        "result_id": "843",
+        "value_si": "3.317",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "894",
+        "item_id": "14",
+        "result_id": "890",
+        "value_si": "3.32",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "896",
+        "item_id": "20",
+        "result_id": "890",
+        "value_si": "3.312",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "898",
+        "item_id": "26",
+        "result_id": "890",
+        "value_si": "3.314",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "900",
+        "item_id": "32",
+        "result_id": "890",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "941",
+        "item_id": "14",
+        "result_id": "937",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "943",
+        "item_id": "20",
+        "result_id": "937",
+        "value_si": "3.315",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "945",
+        "item_id": "26",
+        "result_id": "937",
+        "value_si": "3.312",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "947",
+        "item_id": "32",
+        "result_id": "937",
+        "value_si": "3.326",
+        "within": false,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "988",
+        "item_id": "14",
+        "result_id": "984",
+        "value_si": "3.506",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "990",
+        "item_id": "20",
+        "result_id": "984",
+        "value_si": "3.493",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "992",
+        "item_id": "26",
+        "result_id": "984",
+        "value_si": "3.427",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "994",
+        "item_id": "32",
+        "result_id": "984",
+        "value_si": "3.536",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      }
+    ],
+    "physical_reuse_qualified": false,
+    "feature_localization_qualified": false
+  },
+  "counterfactual_family": {
+    "supported": true,
+    "source_characteristic_ids": [
+      "14",
+      "20",
+      "26",
+      "32"
+    ],
+    "incoming_characteristic_id": "33",
+    "basis": "researcher_unit_counterfactual",
+    "interval_si": [
+      "0.0031",
+      "0.0035"
+    ],
+    "source_value_count": 76,
+    "minimum_si": "0.003246",
+    "maximum_si": "0.003536",
+    "all_values_within": false,
+    "permutation_invariant": true,
+    "permutations_checked": 24,
+    "admissible_permutations_count": "24",
+    "invariance_proof": "universal conjunction under one common interval; finite family only",
+    "counterexample": {
+      "actual_id": "238",
+      "item_id": "20",
+      "result_id": "232",
+      "value_si": "0.003511",
+      "within": false,
+      "overall_status": "PASS",
+      "characteristic_status": "PASS"
+    },
+    "values": [
+      {
+        "actual_id": "142",
+        "item_id": "14",
+        "result_id": "138",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "144",
+        "item_id": "20",
+        "result_id": "138",
+        "value_si": "0.003318",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "146",
+        "item_id": "26",
+        "result_id": "138",
+        "value_si": "0.00332",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "148",
+        "item_id": "32",
+        "result_id": "138",
+        "value_si": "0.00332",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "189",
+        "item_id": "14",
+        "result_id": "185",
+        "value_si": "0.003325",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "191",
+        "item_id": "20",
+        "result_id": "185",
+        "value_si": "0.003314",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "193",
+        "item_id": "26",
+        "result_id": "185",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "195",
+        "item_id": "32",
+        "result_id": "185",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "236",
+        "item_id": "14",
+        "result_id": "232",
+        "value_si": "0.003246",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "238",
+        "item_id": "20",
+        "result_id": "232",
+        "value_si": "0.003511",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "240",
+        "item_id": "26",
+        "result_id": "232",
+        "value_si": "0.003336",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "242",
+        "item_id": "32",
+        "result_id": "232",
+        "value_si": "0.003267",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "283",
+        "item_id": "14",
+        "result_id": "279",
+        "value_si": "0.003305",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "285",
+        "item_id": "20",
+        "result_id": "279",
+        "value_si": "0.003306",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "287",
+        "item_id": "26",
+        "result_id": "279",
+        "value_si": "0.003305",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "289",
+        "item_id": "32",
+        "result_id": "279",
+        "value_si": "0.003313",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "330",
+        "item_id": "14",
+        "result_id": "326",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "332",
+        "item_id": "20",
+        "result_id": "326",
+        "value_si": "0.003311",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "334",
+        "item_id": "26",
+        "result_id": "326",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "336",
+        "item_id": "32",
+        "result_id": "326",
+        "value_si": "0.003314",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "377",
+        "item_id": "14",
+        "result_id": "373",
+        "value_si": "0.003308",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "379",
+        "item_id": "20",
+        "result_id": "373",
+        "value_si": "0.003326",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "381",
+        "item_id": "26",
+        "result_id": "373",
+        "value_si": "0.00331",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "383",
+        "item_id": "32",
+        "result_id": "373",
+        "value_si": "0.003321",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "424",
+        "item_id": "14",
+        "result_id": "420",
+        "value_si": "0.003308",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "426",
+        "item_id": "20",
+        "result_id": "420",
+        "value_si": "0.003323",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "428",
+        "item_id": "26",
+        "result_id": "420",
+        "value_si": "0.003325",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "430",
+        "item_id": "32",
+        "result_id": "420",
+        "value_si": "0.00332",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "471",
+        "item_id": "14",
+        "result_id": "467",
+        "value_si": "0.003316",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "473",
+        "item_id": "20",
+        "result_id": "467",
+        "value_si": "0.003311",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "475",
+        "item_id": "26",
+        "result_id": "467",
+        "value_si": "0.003316",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "477",
+        "item_id": "32",
+        "result_id": "467",
+        "value_si": "0.003312",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "518",
+        "item_id": "14",
+        "result_id": "514",
+        "value_si": "0.003314",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "520",
+        "item_id": "20",
+        "result_id": "514",
+        "value_si": "0.003321",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "522",
+        "item_id": "26",
+        "result_id": "514",
+        "value_si": "0.003311",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "524",
+        "item_id": "32",
+        "result_id": "514",
+        "value_si": "0.003309",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "565",
+        "item_id": "14",
+        "result_id": "561",
+        "value_si": "0.003303",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "567",
+        "item_id": "20",
+        "result_id": "561",
+        "value_si": "0.003313",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "569",
+        "item_id": "26",
+        "result_id": "561",
+        "value_si": "0.003314",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "571",
+        "item_id": "32",
+        "result_id": "561",
+        "value_si": "0.003311",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "612",
+        "item_id": "14",
+        "result_id": "608",
+        "value_si": "0.003316",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "614",
+        "item_id": "20",
+        "result_id": "608",
+        "value_si": "0.003307",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "616",
+        "item_id": "26",
+        "result_id": "608",
+        "value_si": "0.003318",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "618",
+        "item_id": "32",
+        "result_id": "608",
+        "value_si": "0.003316",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "659",
+        "item_id": "14",
+        "result_id": "655",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "661",
+        "item_id": "20",
+        "result_id": "655",
+        "value_si": "0.003313",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "663",
+        "item_id": "26",
+        "result_id": "655",
+        "value_si": "0.003306",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "665",
+        "item_id": "32",
+        "result_id": "655",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "706",
+        "item_id": "14",
+        "result_id": "702",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "708",
+        "item_id": "20",
+        "result_id": "702",
+        "value_si": "0.003322",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "710",
+        "item_id": "26",
+        "result_id": "702",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "712",
+        "item_id": "32",
+        "result_id": "702",
+        "value_si": "0.00331",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "753",
+        "item_id": "14",
+        "result_id": "749",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "755",
+        "item_id": "20",
+        "result_id": "749",
+        "value_si": "0.00332",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "757",
+        "item_id": "26",
+        "result_id": "749",
+        "value_si": "0.003326",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "759",
+        "item_id": "32",
+        "result_id": "749",
+        "value_si": "0.003319",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "800",
+        "item_id": "14",
+        "result_id": "796",
+        "value_si": "0.003324",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "802",
+        "item_id": "20",
+        "result_id": "796",
+        "value_si": "0.003323",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "804",
+        "item_id": "26",
+        "result_id": "796",
+        "value_si": "0.003321",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "806",
+        "item_id": "32",
+        "result_id": "796",
+        "value_si": "0.003318",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "847",
+        "item_id": "14",
+        "result_id": "843",
+        "value_si": "0.003324",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "849",
+        "item_id": "20",
+        "result_id": "843",
+        "value_si": "0.003309",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "851",
+        "item_id": "26",
+        "result_id": "843",
+        "value_si": "0.003309",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "853",
+        "item_id": "32",
+        "result_id": "843",
+        "value_si": "0.003317",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "894",
+        "item_id": "14",
+        "result_id": "890",
+        "value_si": "0.00332",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "896",
+        "item_id": "20",
+        "result_id": "890",
+        "value_si": "0.003312",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "898",
+        "item_id": "26",
+        "result_id": "890",
+        "value_si": "0.003314",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "900",
+        "item_id": "32",
+        "result_id": "890",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "941",
+        "item_id": "14",
+        "result_id": "937",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "943",
+        "item_id": "20",
+        "result_id": "937",
+        "value_si": "0.003315",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "945",
+        "item_id": "26",
+        "result_id": "937",
+        "value_si": "0.003312",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "947",
+        "item_id": "32",
+        "result_id": "937",
+        "value_si": "0.003326",
+        "within": true,
+        "overall_status": "FAIL",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "988",
+        "item_id": "14",
+        "result_id": "984",
+        "value_si": "0.003506",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "990",
+        "item_id": "20",
+        "result_id": "984",
+        "value_si": "0.003493",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "992",
+        "item_id": "26",
+        "result_id": "984",
+        "value_si": "0.003427",
+        "within": true,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      },
+      {
+        "actual_id": "994",
+        "item_id": "32",
+        "result_id": "984",
+        "value_si": "0.003536",
+        "within": false,
+        "overall_status": "PASS",
+        "characteristic_status": "PASS"
+      }
+    ],
+    "physical_reuse_qualified": false,
+    "feature_localization_qualified": false
+  }
+}

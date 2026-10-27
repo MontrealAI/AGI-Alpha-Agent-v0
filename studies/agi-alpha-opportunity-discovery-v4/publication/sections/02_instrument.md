@@ -1,0 +1,245 @@
+# The constructed instrument
+
+## Inputs, custody and supported semantics
+
+The reusable asset is an executable QIF 2.1 evidence reader, source-identity
+checker, numerical proof routine, CAD correspondence witness and repair-request
+generator. A request binds the useful mission to exact input hashes. Its output
+preserves literal values, source object identifiers and line references, formal
+SI quantities, parent inspection status, geometric candidates, conditional
+claims and unresolved evidence. Unknown purposes or unsupported versions fail
+closed. A successful CLI exit means that a report was produced, not that its
+claims have passed independent acceptance.
+
+The caller supplies a typed purpose and, for explicit family tests, the selected
+characteristic identifiers. The instrument does not infer unrestricted mission
+semantics from prose. The curator's stated obligations and independent checker
+establish the meaning of these bounded tests; supplied scope IDs are not credited
+as autonomous discovery.
+
+The bounded predicates concern diameter intervals and cylindrical-feature
+correspondence. Unsupported characteristic kinds remain visible source facts;
+they are not coerced into diameter logic. A negative geometric tolerance is
+reported literally. The code does not take its absolute value. Standard names,
+material-condition modifiers and specimen identifiers are compared without
+pretending that a matching nominal proves equivalent metrology.
+
+The two downloaded source archives are frozen by SHA256. Their sizes are
+248,727,407 bytes for the original NIST/MTC experiment and 10,680,120 bytes for
+the reference graphs/models archive. Compact per-experiment input packs preserve
+the actually used bytes. The original Cover incoming file and the reference
+version differ, unlike the matching Plate incoming copies. A byte difference
+invalidates exact cached identity; it does not by itself prove a semantically
+wrong graph. The current mission must inspect the difference and its relevance.
+
+Source schemas, public data, researcher-authored requests, executable constructions
+and simulated preferences have separate provenance. Source hashes establish
+byte identity, not correct scientific interpretation or rights. NIST notices and
+third-party schema terms remain attached to the relevant artifacts.
+
+## An actual requirement-to-geometry witness
+
+Plate development imported one valid AP242 solid with 261 faces, 722 edges and
+34 cylindrical faces. All 18 incoming cylindrical feature definitions had
+geometric candidates under the declared coordinate and unit policy. The frozen
+instrument constructed 17 incoming characteristic/feature traces, selecting an
+observed actual result for each supported pair. These are structural counts
+within one part, not independent trials.
+
+One complete trace is incoming definition 99, nominal 100, characteristic 101,
+feature 97, and actual 102. The linked CAD candidate includes face index 93;
+its raw STEP entities include advanced face #7281 and cylinder #7269. The actual
+diameter is 3.017 mm. Its encoded local interval is satisfied, while the containing
+inspection's overall status is FAIL. The source's local result therefore cannot
+be promoted into whole-part acceptance. The witness is useful precisely because
+it preserves both conclusions.
+
+The geometric computation uses installed OpenCascade through CadQuery. The
+independent reviewer uses a separate parser and direct OCP reimport, but shares
+the underlying geometric kernel. This is implementation separation, not an
+independent physical measurement or a second CAD kernel. Spatial proximity and
+compatible cylinder parameters support a candidate correspondence. They do not
+supply missing cross-provider specimen or feature identity.
+
+## Exact units change the answer
+
+The standards owner's archived QIF 2.1 `LinearValueType` and
+`ActualLinearValueType` rules default to meters
+when neither a value-level unit nor the applicable primary unit supplies a
+replacement. The FAIR files lack that metadata; incoming inspection explicitly
+uses millimeters. [10] A raw FAIR value such as 3.026 therefore cannot silently
+be interpreted as 3.026 mm simply because that seems plausible for the part.
+
+For the Plate development family, 60 recorded raw values lie between 3.026 and
+3.065. Under the formal source interpretation, they cannot support the incoming
+millimeter interval. Under an explicitly supplied millimeter-repair hypothesis,
+the source interval [2.75, 3.25] mm is contained in the destination interval
+[2.746, 3.254] mm and all selected values satisfy the latter. These are separate
+results. The second does not authorize a corrected export or establish what the
+producer intended.
+
+The unit ruling is appended to the selection history rather than replacing its
+preceding uncertainty. A qualified source owner could provide corrected metadata
+with revision provenance; a buyer could then authorize evaluation of that new
+source. The current instrument neither manufactures that evidence nor treats a
+researcher's guard label as an authenticated assertion.
+
+## The permutation formulation
+
+Let the exact selected records be a finite multiset
+$X=\{x_1,\ldots,x_n\}$ with an independently justified unit interpretation, and
+let the receiving predicate be membership in a single interval $I$.
+For every permutation $\pi$ of those same records,
+
+$$
+\bigwedge_{i=1}^{n}[x_i\in I]
+=\bigwedge_{i=1}^{n}[x_{\pi(i)}\in I].
+$$
+
+This familiar symmetry supplies an executable shortcut: checking the universal
+record statement does not require discovering an individual label permutation.
+If each source interval $J_i$ is contained in $I$, then every value allowed by
+those source intervals also satisfies $I$. The implemented witness reports both
+interval inclusion and the actual recorded-value check. Neither substitutes for
+the other: passing labels under a wider source interval do not establish a
+narrower destination requirement, and a theoretical inclusion claim cannot excuse
+an actual value outside the destination.
+
+For feature-specific work the claim changes. If two admissible correspondences
+associate a different source feature with the named target, an invariant family
+summary does not locate that target. The instrument constructs such assignment
+counterexamples. For physical-family work, a separate proof must establish that
+the selected source records cover the required destination members and specimens.
+A numerical statement over 400 selected records can be valid while that coverage
+is unknown. No cheaper evaluator is substituted for the original stronger task.
+
+The tool exposes five purposes: evidence audit, all selected recorded values,
+complete feature family, individual feature localization and physical release.
+The record-only purpose was made explicit during development because requiring a
+physical bijection for every numerical record query would be an impossible and
+irrelevant hurdle. The already curated stronger confirmation requests kept their
+original purposes. Any later record-only diagnostic is reported separately.
+
+## Transformation witnesses
+
+| Element | Universal recorded-value decision | Cross-provider physical substitution |
+|---|---|---|
+| Original useful purpose | Determine whether all exact selected recorded values satisfy a specified interval | Establish that another provider's evidence satisfies the buyer's physical obligations |
+| Binding restriction | Treating individual label reconstruction as necessary for a symmetric numerical predicate | Missing units, identity, coverage, semantics, measurement adequacy and authority |
+| Why removable or not | A permutation of the same finite records leaves a conjunction unchanged | These are material evidence requirements, not merely awkward representations |
+| Construction | Exact reader, interval check, inclusion witness and violating-value/assignment certificate | Typed missing-evidence plan; fresh qualified evidence would be required |
+| Realization | Source-bound calculation over actual records, keeping the stated unit hypothesis explicit | Current records remain blocked or refuted; a hypothetical correction is separate |
+| Falsifier | One missed value, unsound unit conversion, false universal claim, or a task that actually needs an individual identity | Any automatic physical admission from a numerical proof or cached graph entry |
+
+This is an instrument built with known mathematics. An established expert given
+the same formulation can compute the record predicate with ordinary interval
+checks. This mathematical comparison is not a timed solver experiment. It
+locates a potential source of value in selecting and applying the right question
+and preserving its boundaries; it does not demonstrate a superior new solver. The
+study does not establish that subsequent discovery campaigns invent better
+formulations more efficiently. Testing that would require multiple independent
+campaigns with frozen discovery policies and comparable opportunity-search costs.
+
+# Independent confirmation and fresh inheritance
+
+## Frozen development and independent checking
+
+Development used Plate only. Version 0.1.0 froze 116,202 bytes of runtime sources,
+schemas, policy and unit evidence. Its compact runtime ZIP is 26,848 bytes.
+Eleven targeted Plate tests passed. An earlier geometry-unit policy incorrectly
+rejected a valid millimeter model because an annotation also mentioned inches;
+that failed candidate and report remain preserved. The correction examined only
+the geometry context and preceded protected confirmation.
+
+A separate curator prepared eight main Box/Cover jobs and one reserved recipient
+mission without disclosing their answers to the core developer. The independent
+checker froze after 19 adversarial development tests. It independently parses
+XML, computes Decimal quantities and finite permutations, checks source references
+and status ancestry, and reimports CAD. It does not call the instrument's proof
+functions as its oracle. All fresh reports, failures and elapsed observations
+remain in the evidence companion.
+
+Protection was procedural: separate agent context and explicit file-access rules
+on a shared host. The source datasets are public and come from one historical
+assembly. This is retrospective unfamiliar-task evaluation, not an independent
+industrial sample, a blinded human trial or a guarantee against pretraining
+contamination. Thousands of checked fields are not thousands of independent
+examples.
+
+## First protected result: 5 of 8 accepted scoped audits
+
+The frozen version accepted no physical substitution or part release. It produced
+correctly bounded family, localization and release analyses, but the independent
+checker accepted only **5 of 8** complete scoped audits. Three unspecialized audit
+reports failed the predeclared actionability requirement: two repair entries
+lacked bindings to the affected source obligations. The program's own
+`supported_audit` label did not override the independent failure.
+
+| Original request | Independent result | Consequential finding |
+|---|---|---|
+| Box report comparability | Fail | Useful traces existed, but two repair requests lacked affected-object bindings |
+| Cover report comparability | Fail | Same actionability defect |
+| Box formal family | Pass as a refuting audit | Formal unit interpretation rejects the proposed numerical implication |
+| Box hypothetical millimeter family | Pass as a refuting audit | An actual recorded value still violates the receiving interval |
+| Cover hypothetical millimeter family | Pass as a bounded audit | Selected records pass numerically; complete physical-family coverage remains unproved |
+| Box feature localization | Pass as an insufficiency audit | Family reasoning cannot identify the individual cross-provider feature |
+| Cover physical release | Pass as a scope assessment | Physical release remains unsupported; no part was accepted |
+| Cover audit without CAD | Fail | Missing geometry is explicit, but two repair requests lack affected-object bindings |
+
+“Pass as an insufficiency audit” means the contracted research question was
+answered with a useful, checked reason. It does not mean that a customer buying
+physical substitution or release received its promised outcome. Blanket
+abstention would fail the useful-work requirements.
+
+The Box family makes the distinction tangible. Source characteristic IDs 14,
+20, 26 and 32 supply 76 recorded values. The incoming interval is [3.1, 3.5] mm.
+Even under the explicit millimeter hypothesis, the observed range reaches
+3.536 mm; actual 988, result set 984, records 3.506 mm, already outside the upper
+bound. A source PASS under its wider interval is insufficient.
+
+Cover supplies a different result. Twenty nominal-4.5 source characteristics
+produce 400 values, hypothetically 4.523–4.537 mm, all within the destination
+[4.2, 4.8] mm interval. Their universal recorded-value conclusion is invariant
+under permutation. The destination's represented family has four feature
+identifiers, however; the twenty source characteristics do not establish its
+physical coverage. The stronger family request remains blocked. These opposite
+outcomes were not supplied as convenient training labels to the core developer.
+
+## What the successor actually received
+
+The existing lifecycle moved a 43,242-byte transport bundle containing the
+116,202-byte application closure and its manifest. The recipient used 8,238,065
+bytes of separately bound public source data. Approximately 1.09 GB of installed
+native dependencies were rehashed and checked rather than transferred in the
+small application bundle. Receiving the wrapper therefore does not mean
+independently acquiring OpenCascade, a frontier model or a specialist's weights.
+
+The reserved Cover mission asked a process engineer to plan the additional exact
+evidence needed before combining provider results for investigation. It did not
+ask for a new measurement, a machining cause or release permission. A fresh
+local Ed25519 research grant bound the recipient, complete request, source
+manifest, runtime and dependency identities, scope, validity interval and nonce.
+The inherited native Journal recorded nonce consumption. The actual CLI ran in
+a separate process and the independent checker accepted the resulting acquisition
+audit. Physical reuse remained false.
+
+The transfer exercised 35 study controls, all passing, and the unchanged
+lifecycle's 29 controls. Mutated bytes, changed missions/dependencies/sources,
+expired or revoked grants, invalid signatures, absent execution rights and
+replayed authority were refused. These are finite conformance checks, not live
+ENS authentication or a proof of hostile-host security. Names ending in
+`.agent.agi.eth` are modeled identities in this fixture.
+
+The actual recipient CLI took 3.012 seconds; the recipient execution including
+dependency checks took 4.993 seconds. These narrow observations exclude model
+research, engineering, independent evaluation, maintenance and customer effort.
+They are not complete service latency or dollar cost. Six generic packaging and
+runtime-integrity cases were reused as zero repeated cases under exact identity;
+current source, mission, dependency and authority checks still ran.
+
+An ordinary library with identical content and permissions also produced an
+accepted, semantically identical report. Thus **graph-specific value was not
+established**. The concrete retained value is executable structure and fresh
+qualification, not the storage label. The native production capsule correctly
+rejected manufacturing as an unsupported scope. No runtime scope, Jobs validator
+role, governance rule, revocation mechanism or settlement interface was broadened.

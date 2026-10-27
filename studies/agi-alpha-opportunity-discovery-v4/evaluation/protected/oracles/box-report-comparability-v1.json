@@ -1,0 +1,48 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "box-report-comparability-v1",
+  "part": "Box",
+  "request_sha256": "9649f372670b46576c4adecd82237ec195fd6fb549a5869386e44bdecaafa0fe",
+  "request_canonical_sha256": "6add1d07b1bde3cd4f2cc5d72936b8957744c466ed3b225502132031c5539e47",
+  "mission": {
+    "id": "box-report-comparability-v1",
+    "purpose": "evidence_audit",
+    "statement": "Audit which cross-provider inspection claims the complete packet supports, contradicts or leaves unresolved."
+  },
+  "source_oracles": {
+    "source_qif": "Box_FAIR.json",
+    "incoming_qif": "Box_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "Box_step.json",
+    "brep": "Box_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions"
+}

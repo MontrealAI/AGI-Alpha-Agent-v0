@@ -1,0 +1,1542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This document is part of QIF 2.1, an open, industry-wide standard -->
+<!-- established by the Dimensional Metrology Standards Consortium.    -->
+<!-- This document shall not be used in any manner to claim any        -->
+<!-- proprietary rights to such information, such as rights to a       -->
+<!-- patent, trademark, or copyright.                                  -->
+
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://qifstandards.org/xsd/qif2"
+  xmlns:t="http://qifstandards.org/xsd/qif2"
+  targetNamespace="http://qifstandards.org/xsd/qif2"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  version="2.1.0">
+
+  <xs:include schemaLocation="../QIFLibrary/Primitives.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      The Units.xsd schema file defines types that describe physical units,
+      such as length, angle, and temperature.
+    </xs:documentation>
+    <xs:documentation>
+      One intent of this schema is that QIF will use SI units as the basis
+      for conversion factors from other units.
+    </xs:documentation>
+    <xs:documentation>
+      Another intent of this schema is to enable the identification of the
+      SI unit for any type of unit that is used. For example, if any length
+      unit is used in an instance file, that file may optionally also say
+      explicitly that the SI unit for length is meters.
+    </xs:documentation>
+    <xs:documentation>
+      Another intent of this schema is to make it easy for a user to use
+      non-SI units, but to require that an explicit conversion be given for
+      any non-SI unit.
+    </xs:documentation>
+    <xs:documentation>
+      Another intent of this schema is to allow the representation of
+      quantities in instance files to be very light weight (just numbers)
+      but still implicitly or explicitly have a specific unit of a specific
+      type. For example, the diameter of a circle might appear in an
+      instance file as 3.6 and it would be implicit that the units are
+      units of length in meters.
+    </xs:documentation>
+    <xs:documentation>
+      Another intent of this schema is to allow representing the precision
+      of numbers and the uncertainty in measured values.
+    </xs:documentation>
+    <xs:documentation>
+      additional unit types might be added, including, for example:
+        acceleration
+        angular velocity (e.g. rpm)
+        capacitance
+        current
+        resistance
+        voltage
+        volume
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="PositiveDecimalType">
+    <xs:annotation>
+      <xs:documentation>
+        The PositiveDecimalType is an xs:decimal that is positive.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NonNegativeDecimalType">
+    <xs:annotation>
+      <xs:documentation>
+        The NonNegativeDecimalType is an xs:decimal that is not negative.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="UnitConversionType">
+    <xs:annotation>
+      <xs:documentation>
+        The UnitConversionType defines the parameters for a conversion
+        from non-SI units to SI units. To convert a non-SI unit value X to
+        an SI unit S, use the equation: S = ((X plus Offset) times Factor).
+      </xs:documentation>
+      <xs:documentation>
+        Angle conversion to radians
+          degree            Factor=0.017453293  Offset=0
+        Area conversion to square meters
+          square inch       Factor=0.00064516   Offset=0
+          square foot       Factor=0.09290304   Offset=0
+          square millimeter Factor=0.000001     Offset=0
+        Force conversion to newtons
+          kilogram          Factor=9.80665      Offset=0
+          ounce             Factor=0.2780139    Offset=0
+          pound             Factor=4.448222     Offset=0
+        Length conversion to meters
+          foot              Factor=0.3048       Offset=0
+          inch              Factor=0.0254       Offset=0
+          millimeter        Factor=0.001        Offset=0
+        Mass conversion to kilograms
+          gram              Factor=0.001        Offset=0
+          ounce             Factor=0.02834952   Offset=0
+          pound             Factor=0.4535924    Offset=0
+        Pressure conversion to pascals
+          kilopascal        Factor=1000.0       Offset=0
+          psi               Factor=6894.757     Offset=0
+        Speed conversion to meters per second
+          feetPerSecond     Factor=0.3048       Offset=0
+          inchesPerSecond   Factor=0.0254       Offset=0
+          mmPerSecond       Factor=0.001        Offset=0
+        Temperature Conversion to kelvin
+          Fahrenheit        Factor=0.555555556  Offset=459.67
+          Celsius           Factor=1.0          Offset=273.15
+          Rankine           Factor=0.555555556  Offset=0
+        Time conversion to seconds
+          hour              Factor=3600.0       Offset=0
+          minute            Factor=  60.0       Offset=0
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Factor"
+        type="PositiveDecimalType">
+        <xs:annotation>
+          <xs:documentation>
+            The Factor element is the multiplicative factor for a
+            conversion from non-SI to SI units.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Offset"
+        type="xs:decimal"
+        default="0"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional Offset element is the offset value for a
+            conversion from non-SI to SI units.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SpecifiedDecimalType">
+    <xs:annotation>
+      <xs:documentation>
+        A SpecifiedDecimalType defines an xs:decimal type with two optional
+        attributes: significantFigures and decimalPlaces.
+
+        The optional decimalPlaces attribute represents the number of
+        places to the right of the decimal point to which the xs:decimal is
+        specified. The actual number of decimal places used may be greater
+        or less than the decimalPlaces attribute. If the value has more
+        decimal places, the extra ones are meaningless. If the value has
+        fewer decimal places, the missing decimal places are implicitly
+        zero.
+              
+        A value of xs:decimal type stored in an XML instance file might not
+        have the same number of decimal places as the original input
+        number.
+
+        The number of decimal place may be truncated because of trailing
+        zeros. For example a number like 10.000 from a part print might
+        appear in an instance file as {Value}10{/Value} -- using '{' and
+        '}' here instead of chevrons as would be used in an instance file.
+
+        The xs:decimal representation of a value may have many extra
+        decimal places because of intrinsic computer limitations in
+        representing floating point numbers. For example a number like 3.15
+        might appear in an instance file as 3.14999999999998.
+
+        In both cases the original format of the value can be communicated
+        using the optional decimalPlaces attribute: {Value
+        decimalPlaces="3"}10{/Value} means 10.000 {Value
+        decimalPlaces="2"}3.1499999999998{/Value} means 3.15. The value is
+        to be rounded to the number of decimal places indicated with the
+        decimalPlaces attribute.
+
+        The optional significantFigures attribute represents the number of
+        significant figures with which the xs:decimal is specified. The
+        actual number of digits may be greater or less than the
+        significantFigures attribute.
+
+        Unlike decimalPlaces, the significantFigures value does not affect
+        the format of a value, but rather its meaning. A value becomes
+        uncertain when the number of significant figures is exceeded. A
+        value of 2.3456789 with 4 significant figures indicates that the
+        real value is uncertain and lies anywhere in the range
+        2.345000... to 2.345999...
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="decimalPlaces"
+          type="xs:nonNegativeInteger">
+          <xs:annotation>
+            <xs:documentation>
+              See documentation of SpecifiedDecimalType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="significantFigures"
+          type="xs:nonNegativeInteger">
+          <xs:annotation>
+            <xs:documentation>
+              See documentation of SpecifiedDecimalType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualDecimalType">
+    <xs:annotation>
+      <xs:documentation>
+        An ActualDecimalType defines a SpecifiedDecimalType with two
+        additional optional attributes: meanError and combinedUncertainty.
+        These attributes should either both be used or both be omitted.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="combinedUncertainty"
+          type="NonNegativeDecimalType">
+          <xs:annotation>
+            <xs:documentation>
+              The optional combinedUncertainty attribute is a value
+              expressing the combined uncertainty assigned to the
+              SpecifiedDecimalType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="meanError"
+          type="NonNegativeDecimalType">
+          <xs:annotation>
+            <xs:documentation>
+              The optional meanError attribute is a value expressing the
+              mean error assigned to the SpecifiedDecimalType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- ANGLE -->
+
+  <xs:complexType name="AngularUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The AngularUnitType defines the units to be used in the
+        expression of angular values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="radian"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            angle. If the element is used, its value must be radian.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for the AngularUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how an angle
+            value in the named angle unit may be converted to a value
+            in radians.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AngularValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The AngularValueType is a SpecifiedDecimalType with an optional
+        angularUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when an angle value is given, the unit type is the AngularUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and radians if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="angularUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional angularUnit attribute defines the UnitName
+              for the AngularValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualAngularValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualAngularValueType is an ActualDecimalType with an optional
+        angularUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when an angle value is given, the unit type is the AngularUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and radians if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="angularUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional angularUnit attribute defines the unit used by
+              ActualAngularValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- AREA -->
+
+  <xs:complexType name="AreaUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The AreaUnitType defines the units to be used in the expression of
+        area values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="square meter"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            area. If the element is used, its value must be square meter.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for AreaUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how an area
+            value in the named area unit may be converted to a value
+            in square meters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AreaValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The AreaValueType is a SpecifiedDecimalType with an optional
+        areaUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when an area value is given, the unit type is the AreaUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and square meters if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="areaUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional areaUnit attribute defines the UnitName for
+              the AreaValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualAreaValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualAreaValueType is an ActualDecimalType with an optional
+        areaUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when an area value is given, the unit type is the AreaUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and square meters if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="areaUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional areaUnit attribute defines the unit used by
+              ActualAreaValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- FORCE -->
+
+  <xs:complexType name="ForceUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The ForceUnitType defines the units to be used in the expression of
+        force values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="newton"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            force. If the element is used, its value must be newton.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for ForceUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a force
+            value in the named force unit may be converted to a value
+            in newtons.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ForceValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ForceValueType is a SpecifiedDecimalType with an optional
+        forceUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a force value is given, the unit type is the ForceUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and newtons if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="forceUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional forceUnit attribute defines the UnitName for
+              the ForceValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualForceValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualForceValueType is an ActualDecimalType with an optional
+        forceUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a force value is given, the unit type is the ForceUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and newtons if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="forceUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional forceUnit attribute defines the unit used by
+              ActualForceValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- LENGTH -->
+
+  <xs:complexType name="LinearUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The LinearUnitType defines the units to be used in the expression
+        of length values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="meter"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            length. If the element is used, its value must be meter.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for LinearUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a length
+            value in the named length unit may be converted to a value
+            in meters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LinearValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The LinearValueType is a SpecifiedDecimalType with an optional
+        linearUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a length value is given, the unit type is the LinearUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and meters if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="linearUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional linearUnit attribute defines the UnitName for
+              the LinearValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualLinearValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualLinearValueType is an ActualDecimalType with an optional
+        linearUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a length value is given, the unit type is the LinearUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and meters if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="linearUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional linearUnit attribute defines the unit used by
+              LinearValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- MASS -->
+
+  <xs:complexType name="MassUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The MassUnitType defines the units to be used in the expression of
+        mass values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="kilogram"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            mass. If the element is used, its value must be kilogram.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for MassUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a mass
+            value in the named mass unit may be converted to a value
+            in kilograms.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MassValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The MassValueType is a SpecifiedDecimalType with an optional
+        massUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a mass value is given, the unit type is the MassUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and kilograms if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="massUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional massUnit attribute defines the UnitName for
+              the MassValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualMassValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualMassValueType is an ActualDecimalType with an optional
+        massUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a mass value is given, the unit type is the MassUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and kilograms if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="massUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional massUnit attribute defines the unit used by
+              ActualMassValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- PRESSURE -->
+
+  <xs:complexType name="PressureUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The PressureUnitType defines the units to be used in the expression
+        of pressure values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="pascal"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            pressure. If the element is used, its value must be pascal.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for PressureUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a pressure
+            value in the named pressure unit may be converted to a value
+            in pascals.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PressureValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The PressureValueType is a SpecifiedDecimalType with an optional
+        pressureUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a pressure value is given, the unit type is the
+        PressureUnit specified in the PrimaryUnits element of a FileUnits
+        element, if that specification exists, and pascals if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="pressureUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional pressureUnit attribute defines the UnitName
+              for the PressureValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualPressureValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualPressureValueType is an ActualDecimalType with an
+        optional pressureUnit attribute that identifies the unit being used
+        by its UnitName. If no value for the attribute is given in an
+        instance file when a pressure value is given, the unit type is the
+        PressureUnit specified in the PrimaryUnits element of a FileUnits
+        element, if that specification exists, and pascals if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="pressureUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional pressureUnit attribute defines the UnitName
+              for the ActualPressureValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- SPEED -->
+
+  <xs:complexType name="SpeedUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The SpeedUnitType defines the units to be used in the expression of
+        speed values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="meter per second"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            speed. If the element is used, its value must be meter per
+            second.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for SpeedUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element  specifies how a speed
+            value in the named speed unit may be converted to a value
+            in meters per second.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SpeedValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The SpeedValueType is a SpecifiedDecimalType with an optional
+        speedUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a speed value is given, the unit type is the SpeedUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and meters per second if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="speedUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional speedUnit attribute defines the UnitName for
+              the SpeedValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualSpeedValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualSpeedValueType is an ActualDecimalType with an optional
+        speedUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a speed value is given, the unit type is the SpeedUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and meters per second if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="speedUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional speedUnit attribute defines the UnitName for
+              the ActualSpeedValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- TEMPERATURE -->
+
+  <xs:complexType name="TemperatureUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The TemperatureUnitType defines the units to be used in the
+        expression of temperature values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="kelvin"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            temperature. If the element is used, its value must be kelvin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for TemperatureUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a temperature
+            value in the named temperature unit may be converted to a value
+            in kelvin.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TemperatureValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The TemperatureValueType is a SpecifiedDecimalType with an
+        optional temperatureUnit attribute that identifies the unit being
+        used by its UnitName. If no value for the attribute is given in an
+        instance file when a temperature value is given, the unit type is
+        the TemperatureUnit specified in the PrimaryUnits element of a
+        FileUnits element, if that specification exists, and kelvin if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="temperatureUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional temperatureUnit attribute defines the UnitName
+              for the TemperatureValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualTemperatureValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualTemperatureValueType is an ActualDecimalType with an
+        optional temperatureUnit attribute that identifies the unit being
+        used by its UnitName. If no value for the attribute is given in an
+        instance file when a temperature value is given, the unit type is
+        the TemperatureUnit specified in the PrimaryUnits element of a
+        FileUnits element, if that specification exists, and kelvin if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="temperatureUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional temperatureUnit attribute defines the UnitName
+              for the TemperatureValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- TIME (duration) -->
+
+  <xs:complexType name="TimeUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The TimeUnitType defines the units to be used in the expression of
+        time values.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SIUnitName"
+        type="xs:token"
+        fixed="second"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SIUnitName element is the name of the SI unit of
+            time. If the element is used, its value must be second.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for TimeUnitType.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitConversion"
+        type="UnitConversionType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UnitConversion element specifies how a time
+            value in the named time unit may be converted to a value
+            in seconds.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TimeValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The TimeValueType is a SpecifiedDecimalType with an optional
+        timeUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a time value is given, the unit type is the TimeUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and seconds if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="timeUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional timeUnit attribute defines the UnitName for
+              the TimeValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualTimeValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualTimeValueType is an ActualDecimalType with an optional
+        timeUnit attribute that identifies the unit being used by its
+        UnitName. If no value for the attribute is given in an instance
+        file when a time value is given, the unit type is the TimeUnit
+        specified in the PrimaryUnits element of a FileUnits element, if
+        that specification exists, and seconds if not.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="timeUnit"
+          type="xs:token">
+          <xs:annotation>
+            <xs:documentation>
+              The optional timeUnit attribute defines the UnitName for
+              the TimeValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- END OF UNIT TYPES -->
+
+  <xs:complexType name="PrimaryUnitsType">
+    <xs:annotation>
+      <xs:documentation>
+        The PrimaryUnitsType defines the primary units for various
+        quantities. All unit types are optional.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AreaUnit"
+        type="AreaUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional AreaUnit element is the primary units for area
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PMIAreaUnit"
+        type="AreaUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional PMIAreaUnit element is the primary units for PMI
+            area values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AngularUnit"
+        type="AngularUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional AngularUnit element is the primary units for angle
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PMIAngularUnit"
+        type="AngularUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional PMIAngularUnit element is the primary units for PMI
+            angle values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ForceUnit"
+        type="ForceUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional ForceUnit element is the primary units for force
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LinearUnit"
+        type="LinearUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional LinearUnit element is the primary units for length
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PMILinearUnit"
+        type="LinearUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional PMILinearUnit element is the primary units for PMI
+            length values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MassUnit"
+        type="MassUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional MassUnit element is the primary units for mass
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PressureUnit"
+        type="PressureUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional PressureUnit element is the primary units for
+            pressure values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpeedUnit"
+        type="SpeedUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional SpeedUnit element is the primary units for speed
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TemperatureUnit"
+        type="TemperatureUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional TemperatureUnit element is the primary units for
+            temperature values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeUnit"
+        type="TimeUnitType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional TimeUnit element is the primary units for time
+            values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OtherUnitsType">
+    <xs:annotation>
+      <xs:documentation>
+        The OtherUnitsType defines alternative units for various
+        quantities. All unit types are optional and may occur multiple
+        times so that many units of the same type (meters, inches, and
+        millimeters, for example) may co-exist in an instance file.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AreaUnit"
+        type="AreaUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional AreaUnit element defines alternative units for
+            area values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AngularUnit"
+        type="AngularUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional AngularUnit element defines alternative units for
+            angle values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ForceUnit"
+        type="ForceUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional ForceUnit element defines alternative units for
+            force values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LinearUnit"
+        type="LinearUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional LinearUnit element defines alternative units for
+            length values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MassUnit"
+        type="MassUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional MassUnit element defines alternative units for
+            mass values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PressureUnit"
+        type="PressureUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional PressureUnit element defines alternative units for
+            pressure values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpeedUnit"
+        type="SpeedUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional SpeedUnit element defines alternative units for
+            speed values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TemperatureUnit"
+        type="TemperatureUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional TemperatureUnit element defines alternative units
+            for temperature values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TimeUnit"
+        type="TimeUnitType"
+        minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each optional TimeUnit element defines alternative units for
+            time values.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="n"
+      type="NaturalType"
+      use="required">
+      <xs:annotation>
+        <xs:documentation>
+          The required n attribute is the number of unit definitions in the
+          set.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="UserDefinedUnitType">
+    <xs:annotation>
+      <xs:documentation>
+        The UserDefinedUnitType defines the units for user-defined
+        quantities that are not of any of the defined unit types.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WhatIsMeasured"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The WhatIsMeasured element describes the sort of quantity that
+            can be measured using this unit. For example 'electric
+            current', 'angular velocity', 'density of scratches', or
+            'number of widgets'.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UnitName"
+        type="xs:token">
+        <xs:annotation>
+          <xs:documentation>
+            The UnitName element is the name for the UserDefinedUnitType.
+            For example 'amperes','radians per second', 'scratches per door
+            panel', or 'widgets'.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StandardName"
+        type="xs:string"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional StandardName element provides the name of a
+            standard or document containing a more complete description of
+            the named unit. For SI units, it is suggested that the value be
+            "SI".
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UserDefinedUnitValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The UserDefinedUnitValueType defines a SpecifiedDecimalType with a
+        required unitName attribute that identifies the unit being used by
+        its UnitName. The units used in a UserDefinedUnitValueType must be
+        UserDefinedUnits.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="SpecifiedDecimalType">
+        <xs:attribute name="unitName"
+          type="xs:token"
+          use="required">
+          <xs:annotation>
+            <xs:documentation>
+              The (required) UnitName attribute is the unit name for the
+              UserDefinedUnitValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActualUserDefinedUnitValueType">
+    <xs:annotation>
+      <xs:documentation>
+        The ActualUserDefinedUnitValueType defines an ActualDecimalType
+        with a required unitName attribute that identifies the unit
+        being used by its UnitName. The units used in an
+        ActualUserDefinedUnitValueType must be UserDefinedUnits.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ActualDecimalType">
+        <xs:attribute name="unitName"
+          type="xs:token"
+          use="required">
+          <xs:annotation>
+            <xs:documentation>
+              The (required) UnitName attribute is the unit name for the
+              UserDefinedUnitValueType.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="UserDefinedUnitsType">
+    <xs:annotation>
+      <xs:documentation>
+        The UserDefinedUnitsType defines a set of user-defined units.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="UserDefinedUnit"
+        type="UserDefinedUnitType"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Each UserDefinedUnit element describes a single user-defined
+            unit.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="n"
+      type="NaturalType"
+      use="required">
+      <xs:annotation>
+        <xs:documentation>
+          The required n attribute is the number of user-defined units in
+          the set.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="FileUnitsType">
+    <xs:annotation>
+      <xs:documentation>
+        The FileUnitsType defines the units for quantities found in an
+        instance file. If an instance file includes a FileUnits element,
+        and any quantity of a given unit type appears in the instance file,
+        the corresponding data type must appear in the PrimaryUnits,
+        OtherUnits or UserDefinedUnits of the FileUnitsType. Common XML
+        file checkers will signal an error if this rule is violated.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PrimaryUnits"
+        type="PrimaryUnitsType">
+        <xs:annotation>
+          <xs:documentation>
+            The PrimaryUnits element describes the primary set of units.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OtherUnits"
+        type="OtherUnitsType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional OtherUnits element describes a set of other units
+            predefined by QIF types.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UserDefinedUnits"
+        type="UserDefinedUnitsType"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            The optional UserDefinedUnits element describes a set of
+            user-defined units.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="FileUnits"
+    type="FileUnitsType">
+    <xs:annotation>
+      <xs:documentation>
+        The global FileUnits element is the units to use in an instance
+        file.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

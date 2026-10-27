@@ -1,0 +1,50 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "cover-report-comparability-v1",
+  "part": "Cover",
+  "request_sha256": "be88382a4cd4f71f2bf3e0b89ae404aedbbde6606a84ac2a88b979c156e80554",
+  "request_canonical_sha256": "1ed2207719e8f246cf22c7706f3f4d95a5a575033f7a359cef4f6ccb50256f84",
+  "mission": {
+    "id": "cover-report-comparability-v1",
+    "purpose": "evidence_audit",
+    "statement": "Audit cross-provider requirement and measurement comparability without assuming label, graph or specimen identity."
+  },
+  "source_oracles": {
+    "source_qif": "Cover_FAIR.json",
+    "incoming_qif": "Cover_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "Cover_step.json",
+    "brep": "Cover_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [
+    "29"
+  ],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions"
+}

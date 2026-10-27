@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agi-alpha:inspection-audit:request:0.1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "mission", "assets"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "mission": {"type": "object", "additionalProperties": false,
+      "required": ["id", "purpose", "statement"], "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "purpose": {"enum": ["evidence_audit", "recorded_values_all", "family_all", "feature_localization", "physical_release"]},
+        "statement": {"type": "string", "minLength": 1}}},
+    "assets": {"type": "object", "additionalProperties": false,
+      "required": ["source_qif", "incoming_qif"], "properties": {
+        "source_qif": {"$ref": "#/$defs/asset"}, "incoming_qif": {"$ref": "#/$defs/asset"},
+        "cad_step": {"$ref": "#/$defs/asset"}, "reference_owl": {"$ref": "#/$defs/asset"}}},
+    "family": {"type": "object", "additionalProperties": false,
+      "required": ["source_characteristic_ids", "incoming_characteristic_id"], "properties": {
+        "source_characteristic_ids": {"type": "array", "minItems": 1, "maxItems": 128,
+          "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9]+$"}},
+        "incoming_characteristic_id": {"type": "string", "pattern": "^[0-9]+$"}}},
+    "counterfactual": {"type": "object", "additionalProperties": false,
+      "required": ["source_linear_unit"], "properties": {"source_linear_unit": {
+        "type": "object", "additionalProperties": false, "required": ["name", "factor_to_metre"],
+        "properties": {"name": {"type": "string", "minLength": 1},
+          "factor_to_metre": {"type": "string", "pattern": "^[+]?[0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?$"}}}}},
+    "guards": {"type": "object", "additionalProperties": false,
+      "properties": {"feature_set_identity": {"$ref": "#/$defs/guard"},
+        "specimen_scope": {"$ref": "#/$defs/guard"},
+        "requirement_requalification": {"$ref": "#/$defs/guard"},
+        "measurement_adequacy": {"$ref": "#/$defs/guard"},
+        "current_authority": {"$ref": "#/$defs/guard"}}}
+  },
+  "$defs": {
+    "asset": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
+    "guard": {"enum": ["unverified", "researcher_assumed", "externally_evidenced"]}
+  }
+}

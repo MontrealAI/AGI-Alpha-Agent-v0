@@ -1,0 +1,276 @@
+{
+  "schema": "first-protected-confirmation-v1",
+  "completed_utc": "2026-10-27T16:49:39.410523+00:00",
+  "instrument_freeze_sha256": "3526300d1499a58d6bae81bcebfde7252aeb42d625a7e463bcbf29766108fc64",
+  "evaluator_freeze_sha256": "b5e165a9b447a4953b402148e393e2b937f11da6237502af5ca0ad6b0d86b953",
+  "executed_jobs": 8,
+  "accepted_audits": 5,
+  "candidate_subprocess_calls": 8,
+  "retries": 0,
+  "rows": [
+    {
+      "job_id": "box-report-comparability-v1",
+      "purpose": "evidence_audit",
+      "accepted_audit": false,
+      "mission_result": {
+        "status": "supported_audit",
+        "reasons": [
+          "Source-grounded audit produced; no physical substitution admitted"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "0a3002dc2d5a14d2ec947217836664fbbb03fd174d0663b2c09f681c584f9a4f",
+      "core_wall_seconds": 5.150823919990216,
+      "checker_wall_seconds": 0.17037777100631502,
+      "failed_checks": {
+        "repairs": 2
+      },
+      "checker_error": null,
+      "findings": 12,
+      "traces": 23,
+      "geometry_status": "executed",
+      "family_proofs": [],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "cover-report-comparability-v1",
+      "purpose": "evidence_audit",
+      "accepted_audit": false,
+      "mission_result": {
+        "status": "supported_audit",
+        "reasons": [
+          "Source-grounded audit produced; no physical substitution admitted"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "58c184d271559187021bc0b2bea3a16be3938d67cf0d0b47b458da7d34849255",
+      "core_wall_seconds": 3.373147284000879,
+      "checker_wall_seconds": 0.15320991999760736,
+      "failed_checks": {
+        "repairs": 2
+      },
+      "checker_error": null,
+      "findings": 8,
+      "traces": 20,
+      "geometry_status": "executed",
+      "family_proofs": [],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "box-formal-family-v1",
+      "purpose": "family_all",
+      "accepted_audit": true,
+      "mission_result": {
+        "status": "refuted",
+        "reasons": [
+          "Supported numeric implication not established or is refuted under supplied formal interpretation"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "46b2a610159ea7e91529769be654f5328518cfbb94927c46f9523e939e1ffcfe",
+      "core_wall_seconds": 4.440014888008591,
+      "checker_wall_seconds": 0.24564519000705332,
+      "failed_checks": {},
+      "checker_error": null,
+      "findings": 12,
+      "traces": 23,
+      "geometry_status": "executed",
+      "family_proofs": [
+        {
+          "basis": "formal_source_interpretation",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": true,
+          "family_all_recorded_values_pass": false
+        }
+      ],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "box-counterfactual-family-v1",
+      "purpose": "family_all",
+      "accepted_audit": true,
+      "mission_result": {
+        "status": "refuted",
+        "reasons": [
+          "Supported numeric implication not established or is refuted under supplied formal interpretation"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "b76c71d3c6b1f35633878cb6e4c37d2446e9be951087b89a43c9414c905f4436",
+      "core_wall_seconds": 5.157041754995589,
+      "checker_wall_seconds": 0.2701746859966079,
+      "failed_checks": {},
+      "checker_error": null,
+      "findings": 22,
+      "traces": 23,
+      "geometry_status": "executed",
+      "family_proofs": [
+        {
+          "basis": "formal_source_interpretation",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": true,
+          "family_all_recorded_values_pass": false
+        },
+        {
+          "basis": "researcher_counterfactual",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": true,
+          "family_all_recorded_values_pass": false
+        }
+      ],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "cover-counterfactual-family-v1",
+      "purpose": "family_all",
+      "accepted_audit": true,
+      "mission_result": {
+        "status": "blocked",
+        "reasons": [
+          "Selected records pass numerically but do not establish complete receiving-feature family coverage"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "74501b5bde403295963dd1306de9b5a1f99fd2baa7338a8ed7e43f9834cd38b7",
+      "core_wall_seconds": 3.303822029993171,
+      "checker_wall_seconds": 0.16244316699157935,
+      "failed_checks": {},
+      "checker_error": null,
+      "findings": 8,
+      "traces": 20,
+      "geometry_status": "executed",
+      "family_proofs": [
+        {
+          "basis": "formal_source_interpretation",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": false,
+          "family_all_recorded_values_pass": false
+        },
+        {
+          "basis": "researcher_counterfactual",
+          "status": "proved_numeric_implication",
+          "all_source_intervals_subset": true,
+          "all_observed_values_satisfy_destination": true,
+          "family_cardinality_consistent": false,
+          "family_all_recorded_values_pass": false
+        }
+      ],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "box-feature-localization-v1",
+      "purpose": "feature_localization",
+      "accepted_audit": true,
+      "mission_result": {
+        "status": "blocked",
+        "reasons": [
+          "Individual cross-provider feature identity is not established; family proof is insufficient"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "c6e30623248b271ba971c88a7a19bba98cc7d1a00253d5b03780bdfe5440846f",
+      "core_wall_seconds": 4.44376387099328,
+      "checker_wall_seconds": 0.22945756999251898,
+      "failed_checks": {},
+      "checker_error": null,
+      "findings": 22,
+      "traces": 23,
+      "geometry_status": "executed",
+      "family_proofs": [
+        {
+          "basis": "formal_source_interpretation",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": true,
+          "family_all_recorded_values_pass": false
+        },
+        {
+          "basis": "researcher_counterfactual",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": true,
+          "family_all_recorded_values_pass": false
+        }
+      ],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "cover-physical-release-v1",
+      "purpose": "physical_release",
+      "accepted_audit": true,
+      "mission_result": {
+        "status": "unsupported",
+        "reasons": [
+          "Physical release is outside this instrument; audit cannot satisfy that different purpose"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "13ce6307f40b16877cc6ed722b3a215eaad5d97bcfa1c61ae0eccbc55b5152c1",
+      "core_wall_seconds": 3.2835678389965324,
+      "checker_wall_seconds": 0.26793603600526694,
+      "failed_checks": {},
+      "checker_error": null,
+      "findings": 8,
+      "traces": 20,
+      "geometry_status": "executed",
+      "family_proofs": [
+        {
+          "basis": "formal_source_interpretation",
+          "status": "refuted_numeric_implication",
+          "all_source_intervals_subset": false,
+          "all_observed_values_satisfy_destination": false,
+          "family_cardinality_consistent": false,
+          "family_all_recorded_values_pass": false
+        },
+        {
+          "basis": "researcher_counterfactual",
+          "status": "proved_numeric_implication",
+          "all_source_intervals_subset": true,
+          "all_observed_values_satisfy_destination": true,
+          "family_cardinality_consistent": false,
+          "family_all_recorded_values_pass": false
+        }
+      ],
+      "physical_reuse_admitted": false
+    },
+    {
+      "job_id": "cover-no-geometry-audit-v1",
+      "purpose": "evidence_audit",
+      "accepted_audit": false,
+      "mission_result": {
+        "status": "supported_audit",
+        "reasons": [
+          "Source-grounded audit produced; no physical substitution admitted"
+        ],
+        "physical_reuse_admitted": false
+      },
+      "report_sha256": "9288df8dacecd274ac86c57b399b1bc66dfe994854979700ee374ffea2c4243d",
+      "core_wall_seconds": 2.5969600579992402,
+      "checker_wall_seconds": 0.15092187299160287,
+      "failed_checks": {
+        "repairs": 2
+      },
+      "checker_error": null,
+      "findings": 8,
+      "traces": 20,
+      "geometry_status": "not_supplied",
+      "family_proofs": [],
+      "physical_reuse_admitted": false
+    }
+  ],
+  "reserved_recipient_job": "recipient-cover-evidence-acquisition-v1",
+  "actual_complete_cost": null,
+  "actual_tokens": null,
+  "actual_collections": 0,
+  "claim_scope": "retrospective public-source computational audit; no physical/customer acceptance"
+}

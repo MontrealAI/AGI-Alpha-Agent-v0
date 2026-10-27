@@ -1,0 +1,82 @@
+{
+  "schema": "independent-manufacturing-checker-0.1",
+  "accepted": false,
+  "job_id": "plate-development-audit",
+  "mission_result": {
+    "status": "supported_audit",
+    "reasons": [
+      "Source-grounded audit produced; no physical substitution admitted"
+    ],
+    "physical_reuse_admitted": false
+  },
+  "physical_release_accepted": false,
+  "request_sha256": "0d72427a8b86b923f5dcc20701a764703141cca5f5a94d8dffef66145e514338",
+  "report_sha256": "ea7c70a45c0b7be8e11fabb97405b8dc522ca45d19e0459f6fa36db1fb7eb448",
+  "oracle_sha256": "78224fe73cd7b222b5d3546cb06e1ff2e001368ebf977fe36f47e5f669e75a6a",
+  "checker_sha256": "bbaee9afde2c42781a62b3314de568e513e847e8d4b4bca1529f300894a3a4b0",
+  "checks_by_category": {
+    "freeze": 1,
+    "source_identity": 10,
+    "mission_identity": 3,
+    "formal_units": 5,
+    "semantics": 223,
+    "completeness": 6,
+    "source_facts": 2980,
+    "quantities": 2703,
+    "status_ancestry": 4260,
+    "no_fabrication": 1,
+    "references": 8954,
+    "proof_completeness": 3,
+    "guard_separation": 22,
+    "proof_soundness": 170,
+    "counterfactual": 1,
+    "geometry": 95,
+    "usefulness": 5,
+    "traces": 136,
+    "repairs": 6,
+    "purpose": 1,
+    "execution_scope": 1
+  },
+  "failed_checks_by_category": {
+    "mission_identity": 1,
+    "proof_soundness": 7
+  },
+  "failures": [
+    {
+      "category": "mission_identity",
+      "detail": "complete request hash"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "family cardinality incorrect"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "bijection certificate despite mismatched cardinality"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "invalid assignment counterexample"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "family cardinality incorrect"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "bijection certificate despite mismatched cardinality"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "physical-family record claim overpromoted"
+    },
+    {
+      "category": "proof_soundness",
+      "detail": "invalid assignment counterexample"
+    }
+  ],
+  "elapsed_seconds": 0.1589289099938469,
+  "complete_cost": null,
+  "independence": "standard-library XML/Expat and Decimal; source-derived oracle; direct OCP shared kernel",
+  "acceptance_scope": "useful, source-faithful computational evidence audit; no physical or live-authority acceptance"
+}

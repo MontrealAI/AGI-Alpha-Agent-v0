@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.1",
+  "mission": {
+    "id": "plate-development-audit",
+    "purpose": "evidence_audit",
+    "statement": "Determine supported incoming traces, incompatible source comparisons, and precise missing evidence for conditional requalification."
+  },
+  "assets": {
+    "cad_step": {
+      "path": "inputs/Plate_AP242.STP",
+      "sha256": "393e6ca99dc45b41c6f7d376f749f36247672d4f07e30e6c2814986a7f50edbf"
+    },
+    "reference_owl": {
+      "path": "inputs/Plate_integrated.owl",
+      "sha256": "8bb85ddfff0f7fab3ffe2d8731f67167073bf3f29a78b9e6a49a4e86ea7c108b"
+    },
+    "source_qif": {
+      "path": "inputs/Plate_FAIR.qif",
+      "sha256": "bc7d0ed1b7b45ac9618cd40a641604a6c16e668536115ef4921a87da49d74fa7"
+    },
+    "incoming_qif": {
+      "path": "inputs/Plate_incoming.qif",
+      "sha256": "dc0517cb271e0f0ddf2182e3ed494010a85bd98444ba915523e70d341cfdc82e"
+    }
+  },
+  "family": {
+    "source_characteristic_ids": [
+      "71",
+      "89",
+      "92"
+    ],
+    "incoming_characteristic_id": "101"
+  },
+  "counterfactual": {
+    "source_linear_unit": {
+      "name": "mm",
+      "factor_to_metre": "0.001"
+    }
+  },
+  "guards": {
+    "feature_set_identity": "unverified",
+    "specimen_scope": "unverified",
+    "requirement_requalification": "unverified",
+    "measurement_adequacy": "unverified",
+    "current_authority": "unverified"
+  }
+}

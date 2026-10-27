@@ -1,0 +1,67 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "box-position-modifier-evidence-v1",
+  "part": "Box",
+  "request_sha256": "df478c24bbfa6571c82d23ea4730fb6568f07376154e2591ab457adee1d6214a",
+  "request_canonical_sha256": "22be701c739ff63532208bb96f382732264fec19cb606c48fbc346aa158b55cb",
+  "mission": {
+    "id": "box-position-modifier-evidence-v1",
+    "purpose": "evidence_audit",
+    "statement": "Prepare the precise semantic and measurement evidence needed before a source Position6 report record80 can support incoming position obligation68. Identify affected source and receiving definitions and preserve their datum/material-condition fields; do not solve a GD&T interpretation by matching names."
+  },
+  "source_oracles": {
+    "source_qif": "../../protected/oracles/Box_FAIR.json",
+    "incoming_qif": "../../protected/oracles/Box_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "../../protected/oracles/Box_step.json",
+    "brep": "../../protected/oracles/Box_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions",
+  "prospective_requirements": {
+    "required_binding_topics": [
+      "feature_set_identity",
+      "measurement_adequacy"
+    ],
+    "source_characteristic_ids": [
+      "80"
+    ],
+    "incoming_characteristic_ids": [
+      "68"
+    ],
+    "binding_rule": "Each required repair must identify affected source/receiving obligations with source role or digest. Complete source-bound scope collections may include these IDs; such scope is not an inferred physical correspondence. Empty, unresolvable or fictitious identifiers fail.",
+    "additional_scope_checks": [
+      "Source80 and incoming68 retain their respective material-condition literals and definition references.",
+      "Additional standard, datum/modifier, identity and measurement evidence is requested; no equality from labels."
+    ],
+    "original_source_data_already_seen_by_v0_1_0": true,
+    "current_request_not_seen_before_repair": true
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "cover-signed-tolerance-export-evidence-v1",
+  "part": "Cover",
+  "request_sha256": "80120daba0425e934c20ab59e138ff5c9de517fa7465f0b988fa47b1069f25c0",
+  "request_canonical_sha256": "56b1f11918d4eab1288c46fd55818cb19cde88b1c5f8cd4e30cace9fc2e56c11",
+  "mission": {
+    "id": "cover-signed-tolerance-export-evidence-v1",
+    "purpose": "evidence_audit",
+    "statement": "Prepare an actionable correction/qualification request for source obligation11 and incoming obligation29 using only the supplied QIF files. Preserve signed tolerance literals, source identities and formal unit defaults; identify exact affected obligations and additional evidence needed. CAD and verified cross-provider geometry are not supplied."
+  },
+  "source_oracles": {
+    "source_qif": "../../protected/oracles/Cover_FAIR.json",
+    "incoming_qif": "../../protected/oracles/Cover_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": false,
+  "geometry_oracles": {},
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [
+    "29"
+  ],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions",
+  "prospective_requirements": {
+    "required_binding_topics": [
+      "feature_set_identity",
+      "measurement_adequacy"
+    ],
+    "source_characteristic_ids": [
+      "11"
+    ],
+    "incoming_characteristic_ids": [
+      "29"
+    ],
+    "binding_rule": "Each required repair must identify affected source/receiving obligations with source role or digest. Complete source-bound scope collections may include these IDs; such scope is not an inferred physical correspondence. Empty, unresolvable or fictitious identifiers fail.",
+    "additional_scope_checks": [
+      "Signed incoming tolerance remains negative; source positive tolerance remains unchanged.",
+      "No supplied geometry is invented; any correction is an authorized separately hashed export, not an automatic abs or unit rewrite."
+    ],
+    "original_source_data_already_seen_by_v0_1_0": true,
+    "current_request_not_seen_before_repair": true
+  }
+}

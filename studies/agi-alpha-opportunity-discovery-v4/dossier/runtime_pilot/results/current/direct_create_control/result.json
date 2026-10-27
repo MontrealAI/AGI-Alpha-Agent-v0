@@ -1,0 +1,72 @@
+{
+  "accepted": true,
+  "artifacts": [
+    {
+      "bytes": 876,
+      "path": "artifact.zip",
+      "sha256": "f78e9dd65bca50cf0341fd2ab60f7263ed87964df8fb7b5721c5e8b6f47fc52e"
+    }
+  ],
+  "close_returned": true,
+  "elapsed_seconds": 0.2597550990030868,
+  "mode": "direct_create_control",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "readback": {
+    "accepted": true,
+    "array_read": true,
+    "dtype": "int64",
+    "first_bad_member": null,
+    "shape": [
+      20
+    ],
+    "value_match": true,
+    "value_sha256": "f5c4cb24f4c9b43e624e0a83cb11934f932dbd5db24eee67fed696354ac88a61",
+    "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "zip_entries": [
+      "zarr.json",
+      "c/0"
+    ],
+    "zip_integrity": true
+  },
+  "readback_exit_code": 0,
+  "researcher_work": "execution wrapper, logs and independent-process readback; no proposed fix",
+  "schema": "bounded-zipstore-qualification/v1",
+  "source": "https://github.com/zarr-developers/zarr-python/issues/3516",
+  "source_deviation": "Python 3.12.14, rather than reported Python 3.11; exact reported array/write path retained; direct control reproduces published 20-element root-array workaround",
+  "source_sha256": {
+    "run_case.py": "f65fd7f885cad9c8cc2af33b5ed40dffd20058a177cf563a20b721efc1fca477",
+    "verify_store.py": "8c5978e30c370bf3ab65ae9f92bad8cd8d4de3e1c4beaea87c0a0dffab88f178"
+  },
+  "started_utc": "2026-10-27T16:23:06.951335+00:00",
+  "versions": {
+    "dask": "2026.8.0",
+    "numcodecs": "0.17.1",
+    "numpy": "2.5.4",
+    "zarr": "3.4.2"
+  },
+  "warnings": [],
+  "write_and_close_seconds": 0.006979269004659727,
+  "write_returned": true
+}

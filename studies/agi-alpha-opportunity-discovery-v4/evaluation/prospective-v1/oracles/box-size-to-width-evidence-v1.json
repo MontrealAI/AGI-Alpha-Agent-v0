@@ -1,0 +1,72 @@
+{
+  "schema": "independent-acceptance-v1",
+  "job_id": "box-size-to-width-evidence-v1",
+  "part": "Box",
+  "request_sha256": "2996de4a1c8af0a1e024094b46c3d82fbaf9e0f829eea9f583734a51d9ed24bb",
+  "request_canonical_sha256": "03197973a5aed58accf1b7e0a69a71a45e646413e14dbe40b0f5c4ef455df143",
+  "mission": {
+    "id": "box-size-to-width-evidence-v1",
+    "purpose": "evidence_audit",
+    "statement": "Prepare an exact evidence-acquisition plan before treating source size records38,41,44,47,50,53 as support for incoming obligation193. Preserve encoded characteristic types, formal units, identities and measurement conditions; do not infer feature correspondence from nominal similarity."
+  },
+  "source_oracles": {
+    "source_qif": "../../protected/oracles/Box_FAIR.json",
+    "incoming_qif": "../../protected/oracles/Box_incoming.json"
+  },
+  "required_checks": [
+    "mission_identity",
+    "source_identity",
+    "formal_units",
+    "source_facts",
+    "result_status_ancestry",
+    "source_references",
+    "guard_separation",
+    "specific_findings",
+    "actionable_repairs"
+  ],
+  "require_geometry": true,
+  "geometry_oracles": {
+    "raw_step": "../../protected/oracles/Box_step.json",
+    "brep": "../../protected/oracles/Box_brep.json"
+  },
+  "source_standard": "COMPANY",
+  "incoming_standard": "ASME-Y14.5-2009",
+  "source_features_absent": true,
+  "negative_tolerance_ids": [],
+  "physical_reuse_qualified": false,
+  "feature_localization_qualified": false,
+  "required_guard_topics": [
+    "feature_set_identity",
+    "specimen_scope",
+    "requirement_requalification",
+    "measurement_adequacy",
+    "current_authority"
+  ],
+  "release_supported": false,
+  "correct_claim_verdict_is_not_service_acceptance": true,
+  "claims_scope": "source evidence audit; no physical metrology or live permissions",
+  "prospective_requirements": {
+    "required_binding_topics": [
+      "feature_set_identity",
+      "measurement_adequacy"
+    ],
+    "source_characteristic_ids": [
+      "38",
+      "41",
+      "44",
+      "47",
+      "50",
+      "53"
+    ],
+    "incoming_characteristic_ids": [
+      "193"
+    ],
+    "binding_rule": "Each required repair must identify affected source/receiving obligations with source role or digest. Complete source-bound scope collections may include these IDs; such scope is not an inferred physical correspondence. Empty, unresolvable or fictitious identifiers fail.",
+    "additional_scope_checks": [
+      "Incoming193 retains its Width type and unsupported diameter-predicate status; source records retain Diameter types.",
+      "No diameter-to-width equivalence follows from a similar scalar nominal."
+    ],
+    "original_source_data_already_seen_by_v0_1_0": true,
+    "current_request_not_seen_before_repair": true
+  }
+}

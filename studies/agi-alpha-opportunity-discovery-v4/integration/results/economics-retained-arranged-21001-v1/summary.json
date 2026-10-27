@@ -1,0 +1,115 @@
+{
+  "actual_complete_research_cost_usd": null,
+  "actual_customer_collections_usd": 0,
+  "arm": "retained_arranged",
+  "authoritative_model": {
+    "ledger_sha256": "fc258cb68cc74183f871e9feddc5faf1d91770579df88b2579e2b0c3720968ec",
+    "realization": {
+      "accepted": 3,
+      "action": "produced",
+      "available_funds": 12189.926274199132,
+      "bad_debt_expense": 0.0,
+      "cash": 12189.926274199132,
+      "collections": 12000.0,
+      "earned_revenue": 12000.0,
+      "expenses": 5810.073725800867,
+      "obligations": 0.0,
+      "profit": 6189.926274199133,
+      "receivables": 0.0,
+      "refunds": 0.0,
+      "reserves": 0,
+      "withdrawn": 0
+    }
+  },
+  "bad_debt_double_counted": false,
+  "checks": [
+    {
+      "name": "identical-command-is-idempotent",
+      "passed": true
+    },
+    {
+      "name": "duplicate-activity-across-buckets-refused",
+      "passed": true,
+      "reason": "activity already charged; A, B and C cannot overlap"
+    },
+    {
+      "name": "native-scientific-capsule-refused",
+      "passed": true,
+      "reason": "supported_scope literal rejects scientific component"
+    },
+    {
+      "name": "revoked-accounting-authority-refused",
+      "passed": true,
+      "reason": "principal is not currently trusted for the required role"
+    },
+    {
+      "name": "native-settled-net-receipts",
+      "passed": true
+    },
+    {
+      "name": "each-original-paid-activity-charged-once",
+      "passed": true
+    },
+    {
+      "name": "native-settled-profit",
+      "passed": true
+    },
+    {
+      "name": "source-profit-within-quantization-bound",
+      "passed": true
+    },
+    {
+      "name": "native-cash-reconciles",
+      "passed": true
+    },
+    {
+      "name": "capital-not-revenue",
+      "passed": true
+    },
+    {
+      "name": "native-original-event-journal-valid",
+      "passed": true
+    },
+    {
+      "name": "actual-customer-collections-remain-zero",
+      "passed": true
+    }
+  ],
+  "money_basis": "all scenario USD amounts assumed/simulated; no market demand or real earned revenue",
+  "native_report": {
+    "available_funds": 12189926274,
+    "bucket_complete": {
+      "A": true,
+      "B": true,
+      "C": true
+    },
+    "cash": 12189926274,
+    "collected_revenue": 12000000000,
+    "complete": true,
+    "complete_cost_profit": 6189926274,
+    "costs": {
+      "A": 5310073726,
+      "B": 400000000,
+      "C": 100000000
+    },
+    "currency": "USD",
+    "delivery_profit": 6689926274,
+    "evidence_basis": "configured accounting signer attestations",
+    "known_obligations": 0,
+    "obligations": 0,
+    "reserve": 0,
+    "token_movements_included": false,
+    "unit": "micro_usd",
+    "unknown_costs": false
+  },
+  "passed": 12,
+  "rounding": "each projected cash activity rounded half-even to integer micro-USD; residual disclosed",
+  "rounding_profit_residual_usd": "-1.99133E-7",
+  "schema": "v4-simulated-settled-native-accounting/v1",
+  "scope": "settled terminal net-cash projection only; authoritative chronology, deposits, refunds, receivables and noncash writeoffs remain in original research ledger and signed event journal",
+  "seed": 21001,
+  "seed_or_unearned_deposit_counted_as_revenue": false,
+  "source_example_sha256": "573ba16db86899535b23228b227283002ca5638e778fdeae9871a8ea3759834d",
+  "source_file_sha256": "6d1168db0aeea3a2b85b6e8405bdeded6c28d07c34a8b4de532126839a788001",
+  "total": 12
+}

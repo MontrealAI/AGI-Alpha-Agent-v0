@@ -1,0 +1,49 @@
+{
+  "tool_calls": 7,
+  "definition": "Seven functions.exec invocations, each invoking one exec_command local shell execution.",
+  "calls": [
+    {
+      "number": 1,
+      "purpose": "Read HOSTED_PACKET.md"
+    },
+    {
+      "number": 2,
+      "purpose": "Inspect allowed source manifest, supplied unit schema, QIF sources, and supplied graphs; save inspection_log.txt",
+      "correction": "Output oversized and truncated; full log saved."
+    },
+    {
+      "number": 3,
+      "purpose": "Narrow QIF and graph inspection; save focused_log.txt",
+      "correction": "Output still oversized and truncated; full log saved."
+    },
+    {
+      "number": 4,
+      "purpose": "Compute Decimal family results and exact incoming diff; save calculation_log.txt and selected-record JSON logs"
+    },
+    {
+      "number": 5,
+      "purpose": "Save and execute analysis.py; trace component and graph changed object; save analysis_summary.json"
+    },
+    {
+      "number": 6,
+      "purpose": "Resolve empty graph feature-reference node and Box parent failure; save targeted_followup_log.txt"
+    },
+    {
+      "number": 7,
+      "purpose": "Save answer.md and resource_log.json; verify word count"
+    }
+  ],
+  "failed_executions": 0,
+  "retries_or_corrections": "Two output-truncation corrections; no source changes or unit repairs.",
+  "unexecuted_checks": [
+    "Full QIF schema validation",
+    "CAD registration and mapping",
+    "Graph requalification",
+    "Physical and specimen verification",
+    "Measurement uncertainty assessment",
+    "Current reuse authorization acquisition"
+  ],
+  "tokens": "Unknown",
+  "billing": "Unknown",
+  "word_count_whitespace": 1239
+}

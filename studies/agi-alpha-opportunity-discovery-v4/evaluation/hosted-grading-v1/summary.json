@@ -1,0 +1,56 @@
+{
+  "schema": "hosted-rubric-evaluation-v1",
+  "graded_utc": "2026-10-27T17:02:20.652527+00:00",
+  "frozen_rubric_sha256": "30d8f4c368faee425ed2a3281f9bce45869ce5cc70d9b8a6ef2fee3a8ebd405f",
+  "expertise_freeze_sha256": "a5320338c4bdcab566ee8f73390bc0478db8ce4327ede8ccb2533ddd26008679",
+  "grading_script_sha256": "1653abe05bd1adb0d8b470066c3b9f46cf900b21bcc53d7c1891bdffad7aae60",
+  "method": "Independent AI-assisted adjudication against unchanged mandatory criteria and fatal-error list, with answer-line evidence. Exact identifiers must remain unambiguous across an actionable answer.",
+  "rows": [
+    {
+      "arm": "U",
+      "answer_sha256": "9692e281021b7316c8bf8e681e1432351a6d10cb4a7e1a830c918e8b44c12127",
+      "accepted_jobs": 4,
+      "total_jobs": 4,
+      "mandatory_criteria_passed": 24,
+      "mandatory_criteria_total": 24,
+      "tool_calls_self_reported": 7,
+      "answer_words_whitespace": 1239,
+      "complete_cost": null
+    },
+    {
+      "arm": "E",
+      "answer_sha256": "196a7c16c4ddb6c3d3b7949bd41199613dfaeba860a9e2d185f6e5bca81fe3ed",
+      "accepted_jobs": 4,
+      "total_jobs": 4,
+      "mandatory_criteria_passed": 24,
+      "mandatory_criteria_total": 24,
+      "tool_calls_self_reported": 6,
+      "answer_words_whitespace": 1185,
+      "complete_cost": null
+    },
+    {
+      "arm": "Eplus",
+      "answer_sha256": "2c36ecb7716cc49c9ff807de58625c0b49e523b32f13690cc214a58f70252e94",
+      "accepted_jobs": 3,
+      "total_jobs": 4,
+      "mandatory_criteria_passed": 23,
+      "mandatory_criteria_total": 24,
+      "tool_calls_self_reported": 8,
+      "answer_words_whitespace": 1207,
+      "complete_cost": null
+    }
+  ],
+  "findings": [
+    "U 4/4 and E 4/4: no accepted-quality improvement established by E versus U in this packet.",
+    "Eplus 3/4 under strict exact-identifier criterion: no additional learned Alpha established.",
+    "Calls U 7 / E 6 / Eplus 8 are self-reported resource counts, not complete costs or causal efficiency estimates.",
+    "All answers meet the common 1,600-word ceiling; all self-report at most 8 tools.",
+    "One trial per arm on four correlated historical-source jobs cannot establish population superiority or method-caused harm."
+  ],
+  "criterion_H4_3_application": "The enhanced answer states the correct full serial once but later uses the component ID as a serial in its requested next action. Strict complete acceptance requires resolving that conflict; it was not corrected.",
+  "nonprimary_lenient_reading": "If the correct table entry alone were sufficient and the conflicting action ignored, Eplus would be 4/4. That is not the exact-identifier acceptance applied here; either reading establishes no additional accepted-quality gain.",
+  "new_fatal_categories_added": false,
+  "actual_collections": 0,
+  "actual_complete_cost": null,
+  "no_answer_revisions": true
+}
