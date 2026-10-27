@@ -171,6 +171,9 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[Profitable Work First\. Compounding Capability When Worthwhile\.](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/profitable-work-first.pdf)** · Under declared assumptions, a simulated coordination\-mechanism foundry produces positive mean Beta\-only surplus, including a stricter useful\-receipt\-only sensitivity\. These are conditional model results, not actual customer sales or qualified frontier\-model delivery\. Primary confirmation does not establish a positive additional enterprise benefit from retained Alpha or network sharing; capability compounding remains unproven\.
   Independent AI\-assisted research edition prepared for MONTREAL\.AI · 2026-10-26 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/ccf0a08d5b46edb135e144fd81b36b819255623a/studies/network-invented-economy-v1/README.md)
+- **[When Paid Work Teaches the Network](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/when-paid-work-teaches-the-network.pdf)** · Competent Beta is profitable under the modeled primary markets, with incomplete service\-quality qualification\. Selected retention policies keep nothing; a cheaper\-retention diagnostic supports useful peer reuse but remains uneconomic as a complete program\. This is not demonstrated profitable autonomy or a positive network flywheel\.
+  Prepared for Vincent Boucher / MONTREAL\.AI; research execution and manuscript prepared with ChatGPT · 2026-10-27 · English PDF.
+  [Read the edition and resources](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/when-paid-work-teaches-the-network/index.html)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
