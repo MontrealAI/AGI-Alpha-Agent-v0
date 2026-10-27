@@ -32,6 +32,7 @@ CANONICAL_SOURCES = (
     "scripts/templates/alpha-flywheel/app.js",
     "scripts/templates/alpha-flywheel/general-evidence.json",
     "scripts/templates/alpha-flywheel/specialist-evidence.json",
+    "scripts/templates/alpha-flywheel/enterprise-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -452,6 +453,23 @@ def browser_acceptance(
                 assert relay["summary"]["actual_admission"] == "do not admit"
                 assert not relay["summary"]["live_qualified"] and not relay["summary"]["net_alpha_positive"]
             checks.append("specialist-artifact-change-transfer-and-distinct-states-en-fr-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#enterprise-offering option")).to_have_count(2)
+                page.locator("#enterprise-offering").select_option("resilient-placement")
+                expect(page.locator("#enterprise-stages")).to_contain_text("commercially-assessed")
+                expect(page.locator("#enterprise-states")).to_contain_text("USD 0")
+                page.locator("#enterprise-offering").select_option("disruption-aware-rollout")
+                expect(page.locator("#enterprise-stages")).to_contain_text("hypothesis")
+                with page.expect_download() as enterprise_download:
+                    page.locator("#enterprise-export").click()
+                enterprise_file = output / ("enterprise-evidence-" + language + ".json")
+                enterprise_download.value.save_as(str(enterprise_file))
+                enterprise = json.loads(enterprise_file.read_bytes())
+                assert enterprise["summary"]["next_selected_action"] == "hold"
+                assert enterprise["summary"]["actual_admission"] == "rejected"
+                assert not enterprise["summary"]["live_qualified"]
+            checks.append("enterprise-offering-decision-qualification-en-fr-export-no-authority")
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)

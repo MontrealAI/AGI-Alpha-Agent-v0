@@ -83,6 +83,9 @@ def add_commands(commands: Any) -> None:
     execution_receipt = actions.add_parser("execution-receipt", help="Inspect a durable general mission or observation")
     execution_receipt.add_argument("operation_id")
     execution_receipt.add_argument("--event", help="Exact attempt label from the private mission receipt")
+    enterprise_receipt = actions.add_parser("enterprise-receipt", help="Inspect an offering, decision or launch")
+    enterprise_receipt.add_argument("kind", choices=("offering", "decision", "launch"))
+    enterprise_receipt.add_argument("identity")
     for action in (
         "configure",
         "plan",
@@ -97,6 +100,7 @@ def add_commands(commands: Any) -> None:
         "migrate",
         "gym-run",
         "general-acceptance",
+        "enterprise-command",
     ):
         sub = actions.add_parser(action, help="Apply a separately signed bounded " + action + " decision")
         sub.add_argument("signed", type=Path)
@@ -115,6 +119,7 @@ def add_commands(commands: Any) -> None:
     execution.add_argument("request", type=Path)
     execution.add_argument("profile", type=Path)
     execution.add_argument("signed", type=Path)
+    execution.add_argument("--enterprise-decision", help="Consume the exact offering/controller decision before I/O")
     environment = execution.add_mutually_exclusive_group(required=True)
     environment.add_argument("--tool-endpoint", type=Path, help="Private approved sandbox service contract")
     environment.add_argument("--computer-task", type=Path, help="Existing bounded ComputerTask")
@@ -136,7 +141,7 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "general_execution": {
                 "interface": "flywheel-execution/v1",
                 "command": "mission-run",
-                "transport": "Responses reasoning, strict function calls, computer actions and resulting screenshots",
+                "transport": ("Responses reasoning, strict function calls, computer actions and resulting screenshots"),
                 "live_qualified": False,
                 "dependencies": "separate signed permit, approved model account, budget and sandbox or browser image",
             },
@@ -157,7 +162,11 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         with service.journal.transaction() as cx:
             service._state(cx)
             result = service.journal.document(service.journal.latest(key, cx))
-    if action in {"status", "receipt", "execution-receipt"}:
+    if action == "enterprise-receipt":
+        from .flywheel_enterprise import Enterprise
+
+        result = Enterprise(service).inspect(args.kind, args.identity)
+    if action in {"status", "receipt", "execution-receipt", "enterprise-receipt"}:
         private_write(args.output, canonical({"action": action, "result": result}))
         return {"output": str(args.output.resolve()), "action": action, "qualified_live_operation": False}
     if signed is None:
@@ -219,14 +228,24 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
                 raise ValueError("installed runtime or custody changed; restart and requalify")
 
         try:
-            result = MissionExecutor(
+            executor = MissionExecutor(
                 service.journal, service.trust, service.costs, ResponsesTransport(service.journal), environment, qualify
-            ).run(task, profile, signed)
+            )
+            if args.enterprise_decision is not None:
+                from .flywheel_enterprise import Enterprise
+
+                result = Enterprise(service).run(args.enterprise_decision, executor, task, profile, signed)
+            else:
+                result = executor.run(task, profile, signed)
         finally:
             if browser is not None:
                 browser.close()
     elif action == "account":
         result = service.costs.apply(signed)
+    elif action == "enterprise-command":
+        from .flywheel_enterprise import Enterprise
+
+        result = Enterprise(service).apply(signed)
     elif action == "gym-run":
         from .flywheel_gym import GymCampaign
 
