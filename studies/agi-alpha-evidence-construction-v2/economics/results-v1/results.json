@@ -1,0 +1,503 @@
+{
+  "schema": "connected-economic-results/v1",
+  "protocol_sha256": "e66440d5542b93c9220916142a3496a6da766ad5c4b516789b31f495e518f13a",
+  "price_selection": {
+    "decision": "quote",
+    "selected_price_cents": 32500,
+    "selected_buyers": [
+      "b3",
+      "b4",
+      "b5"
+    ],
+    "human_outside_option_cents": 33200,
+    "buyer_caps_cents": [
+      17500,
+      27500,
+      33200,
+      33200,
+      33200
+    ],
+    "grid": [
+      {
+        "price_cents": 12500,
+        "buyers": [
+          "b1",
+          "b2",
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "-94615/2",
+        "expected_C_inclusive_contribution_cents": "-99615/2"
+      },
+      {
+        "price_cents": 17500,
+        "buyers": [
+          "b1",
+          "b2",
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "-48065/2",
+        "expected_C_inclusive_contribution_cents": "-53065/2"
+      },
+      {
+        "price_cents": 22500,
+        "buyers": [
+          "b2",
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "-606",
+        "expected_C_inclusive_contribution_cents": "-3106"
+      },
+      {
+        "price_cents": 27500,
+        "buyers": [
+          "b2",
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "18014",
+        "expected_C_inclusive_contribution_cents": "15514"
+      },
+      {
+        "price_cents": 30000,
+        "buyers": [
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "20493",
+        "expected_C_inclusive_contribution_cents": "17993"
+      },
+      {
+        "price_cents": 32500,
+        "buyers": [
+          "b3",
+          "b4",
+          "b5"
+        ],
+        "expected_E_contribution_cents": "54951/2",
+        "expected_C_inclusive_contribution_cents": "49951/2"
+      },
+      {
+        "price_cents": 37500,
+        "buyers": [],
+        "expected_E_contribution_cents": "0",
+        "expected_C_inclusive_contribution_cents": "-2500"
+      },
+      {
+        "price_cents": 45000,
+        "buyers": [],
+        "expected_E_contribution_cents": "0",
+        "expected_C_inclusive_contribution_cents": "-2500"
+      }
+    ],
+    "selection_uses": "Frozen E cost, frozen participation and success/collection assumptions only",
+    "future_worlds_used": false
+  },
+  "reference": {
+    "Hsuccess": {
+      "cash_cents": 97500,
+      "capital_cents": 100000,
+      "gross_collections_cents": 0,
+      "earned_collections_cents": 0,
+      "recognized_revenue_cents": 0,
+      "writeoffs_cents": 0,
+      "receivables_cents": 0,
+      "refundable_liability_cents": 0,
+      "payables_cents": 0,
+      "reserve_cents": 10000,
+      "available_cents": 87500,
+      "costs_cents": {
+        "A": 0,
+        "B": 0,
+        "C": 2500
+      },
+      "paid_costs_cents": 2500,
+      "refunds_cents": 0,
+      "collected_basis_profit_cents": -2500,
+      "accrual_profit_cents": -2500,
+      "used_capacity_units": 0,
+      "capacity_units": 900,
+      "accepted_packets": 0,
+      "fresh_deliveries": 0
+    },
+    "Usuccess": {
+      "cash_cents": 119202,
+      "capital_cents": 100000,
+      "gross_collections_cents": 97500,
+      "earned_collections_cents": 97500,
+      "recognized_revenue_cents": 97500,
+      "writeoffs_cents": 0,
+      "receivables_cents": 0,
+      "refundable_liability_cents": 0,
+      "payables_cents": 0,
+      "reserve_cents": 10000,
+      "available_cents": 109202,
+      "costs_cents": {
+        "A": 75798,
+        "B": 0,
+        "C": 2500
+      },
+      "paid_costs_cents": 78298,
+      "refunds_cents": 0,
+      "collected_basis_profit_cents": 19202,
+      "accrual_profit_cents": 19202,
+      "used_capacity_units": 348,
+      "capacity_units": 900,
+      "accepted_packets": 3,
+      "fresh_deliveries": 0
+    },
+    "Esuccess": {
+      "cash_cents": 154505,
+      "capital_cents": 100000,
+      "gross_collections_cents": 162500,
+      "earned_collections_cents": 162500,
+      "recognized_revenue_cents": 162500,
+      "writeoffs_cents": 0,
+      "receivables_cents": 0,
+      "refundable_liability_cents": 0,
+      "payables_cents": 0,
+      "reserve_cents": 10000,
+      "available_cents": 144505,
+      "costs_cents": {
+        "A": 105495,
+        "B": 0,
+        "C": 2500
+      },
+      "paid_costs_cents": 107995,
+      "refunds_cents": 0,
+      "collected_basis_profit_cents": 54505,
+      "accrual_profit_cents": 54505,
+      "used_capacity_units": 480,
+      "capacity_units": 900,
+      "accepted_packets": 5,
+      "fresh_deliveries": 2
+    },
+    "E+success": {
+      "cash_cents": 156835,
+      "capital_cents": 100000,
+      "gross_collections_cents": 162500,
+      "earned_collections_cents": 162500,
+      "recognized_revenue_cents": 162500,
+      "writeoffs_cents": 0,
+      "receivables_cents": 0,
+      "refundable_liability_cents": 0,
+      "payables_cents": 0,
+      "reserve_cents": 10000,
+      "available_cents": 146835,
+      "costs_cents": {
+        "A": 97165,
+        "B": 6000,
+        "C": 2500
+      },
+      "paid_costs_cents": 105665,
+      "refunds_cents": 0,
+      "collected_basis_profit_cents": 56835,
+      "accrual_profit_cents": 56835,
+      "used_capacity_units": 440,
+      "capacity_units": 900,
+      "accepted_packets": 5,
+      "fresh_deliveries": 2
+    },
+    "librarysuccess": {
+      "cash_cents": 156835,
+      "capital_cents": 100000,
+      "gross_collections_cents": 162500,
+      "earned_collections_cents": 162500,
+      "recognized_revenue_cents": 162500,
+      "writeoffs_cents": 0,
+      "receivables_cents": 0,
+      "refundable_liability_cents": 0,
+      "payables_cents": 0,
+      "reserve_cents": 10000,
+      "available_cents": 146835,
+      "costs_cents": {
+        "A": 97165,
+        "B": 6000,
+        "C": 2500
+      },
+      "paid_costs_cents": 105665,
+      "refunds_cents": 0,
+      "collected_basis_profit_cents": 56835,
+      "accrual_profit_cents": 56835,
+      "used_capacity_units": 440,
+      "capacity_units": 900,
+      "accepted_packets": 5,
+      "fresh_deliveries": 2
+    }
+  },
+  "factorial": {
+    "rows": [
+      {
+        "shared_core": false,
+        "coordinated": false,
+        "buyers": 1,
+        "A_cents": 21099,
+        "success_contribution_before_common_C_cents": 11401,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": false,
+        "coordinated": true,
+        "buyers": 3,
+        "A_cents": 65297,
+        "success_contribution_before_common_C_cents": 32203,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": true,
+        "coordinated": false,
+        "buyers": 1,
+        "A_cents": 29433,
+        "success_contribution_before_common_C_cents": 3067,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": true,
+        "coordinated": true,
+        "buyers": 3,
+        "A_cents": 65299,
+        "success_contribution_before_common_C_cents": 32201,
+        "positive_without_retention": true
+      }
+    ],
+    "unrestricted_expert_available_options": [
+      {
+        "shared_core": false,
+        "coordinated": false,
+        "buyers": 1,
+        "A_cents": 21099,
+        "success_contribution_before_common_C_cents": 11401,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": false,
+        "coordinated": true,
+        "buyers": 3,
+        "A_cents": 65297,
+        "success_contribution_before_common_C_cents": 32203,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": true,
+        "coordinated": false,
+        "buyers": 1,
+        "A_cents": 29433,
+        "success_contribution_before_common_C_cents": 3067,
+        "positive_without_retention": true
+      },
+      {
+        "shared_core": true,
+        "coordinated": true,
+        "buyers": 3,
+        "A_cents": 65299,
+        "success_contribution_before_common_C_cents": 32201,
+        "positive_without_retention": true
+      }
+    ],
+    "finding": "All four reference packages are profitable conditionally; neither complementarity nor novel market creation is required. Same shared package is available to unrestricted E.",
+    "supplied_core_compatibility_and_demand": true,
+    "autonomous_invention": false
+  },
+  "controls": {
+    "passed": 20,
+    "total": 20,
+    "controls": [
+      {
+        "name": "preserved-ledger-bytes",
+        "passed": true
+      },
+      {
+        "name": "all-cash-prefixes-conserve-and-protect-refunds",
+        "passed": true
+      },
+      {
+        "name": "capital-not-revenue",
+        "passed": true
+      },
+      {
+        "name": "all-nine-complete-cost-domains-covered",
+        "passed": true
+      },
+      {
+        "name": "price-grid-frozen-not-future-optimized",
+        "passed": true
+      },
+      {
+        "name": "ordinary-library-identical-content-cost-parity",
+        "passed": true
+      },
+      {
+        "name": "E-and-Eplus-both-qualify-no-new-offering-claim",
+        "passed": true
+      },
+      {
+        "name": "earnings-finance-fresh-work-without-seed-erosion",
+        "passed": true
+      },
+      {
+        "name": "no-transfer-gain-can-lose-versus-expert",
+        "passed": true
+      },
+      {
+        "name": "negative-transfer-not-waived",
+        "passed": true
+      },
+      {
+        "name": "delayed-collection-stops-surplus-funded-next-order",
+        "passed": true
+      },
+      {
+        "name": "default-keeps-loss-and-invoice-separate",
+        "passed": true
+      },
+      {
+        "name": "common-failure-no-accepted-sale",
+        "passed": true
+      },
+      {
+        "name": "withdrawal-retains-common-cost",
+        "passed": true
+      },
+      {
+        "name": "insufficient-opening-cash-stops-before-deposit",
+        "passed": true
+      },
+      {
+        "name": "capacity-shortage-stops-before-contract",
+        "passed": true
+      },
+      {
+        "name": "rejected-demand-does-not-refund-research-cost",
+        "passed": true
+      },
+      {
+        "name": "new-defaults-remove-admission",
+        "passed": true
+      },
+      {
+        "name": "A-B-C-double-charge-is-atomic-refusal",
+        "passed": true
+      },
+      {
+        "name": "conditional-events-never-create-actual-revenue",
+        "passed": true
+      }
+    ]
+  },
+  "urgent_frontier": {
+    "schema": "prospective-urgent-frontier/v1",
+    "evidence_type": "CONDITIONAL_ASSUMED_LABOR_NOT_MEASURED_GAIN",
+    "required_transfer_saving_minutes": 36,
+    "rows": [
+      {
+        "configuration": "expert",
+        "delivery_labor_minutes": 90,
+        "support_minutes": 6,
+        "total_provider_minutes": 96,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 21099,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": false
+      },
+      {
+        "configuration": "negative-transfer",
+        "delivery_labor_minutes": 100,
+        "support_minutes": 6,
+        "total_provider_minutes": 106,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 23183,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": false
+      },
+      {
+        "configuration": "no-transfer",
+        "delivery_labor_minutes": 90,
+        "support_minutes": 6,
+        "total_provider_minutes": 96,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 21099,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": false
+      },
+      {
+        "configuration": "partial-transfer",
+        "delivery_labor_minutes": 70,
+        "support_minutes": 6,
+        "total_provider_minutes": 76,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 16933,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": false
+      },
+      {
+        "configuration": "sufficient-transfer",
+        "delivery_labor_minutes": 50,
+        "support_minutes": 6,
+        "total_provider_minutes": 56,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 12766,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": true
+      },
+      {
+        "configuration": "ordinary-library-same-50min-content",
+        "delivery_labor_minutes": 50,
+        "support_minutes": 6,
+        "total_provider_minutes": 56,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 12766,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": true
+      },
+      {
+        "configuration": "expert-with-equivalent-available-tool",
+        "delivery_labor_minutes": 50,
+        "support_minutes": 6,
+        "total_provider_minutes": 56,
+        "provider_limit_minutes": 60,
+        "quote_cents": 32500,
+        "complete_variable_cost_cents": 12766,
+        "customer_minutes": 8,
+        "all_critical_facts_checked": "ASSUMED_TRUE_REQUIRED_FOR_ACCEPTANCE",
+        "conditionally_feasible": true
+      }
+    ],
+    "scope": "Fresh compatible packet after retained core construction and qualification; all fresh verification/correction and support retained",
+    "baseline_can_use_equivalent_tools": true,
+    "finding": "A50-minute delivery plus6-minute support fits60;70 and90 do not. If E already has an equivalent50-minute workflow it also qualifies. No observed new offering is established."
+  },
+  "fresh_summary": {
+    "worlds": 72,
+    "Eplus_better": 3,
+    "Eplus_equal": 57,
+    "Eplus_worse": 12,
+    "minimum_delta_cents": -41554,
+    "maximum_delta_cents": 43800,
+    "confidence_intervals_validate_assumptions": false
+  },
+  "retention_required_minutes_at_reference_rate_and_four_uses": 7.2,
+  "whole_five_order_campaign_required_transfer_minutes": 17.76,
+  "actual_customer_revenue_cents": 0,
+  "actual_complete_research_cost_cents": null,
+  "actual_profit_cents": null,
+  "actual_economic_admission": false
+}

@@ -1,0 +1,184 @@
+{
+  "schema": "prospective-capacity-and-price-diagnostics/v1.1",
+  "fresh_capacity_cases": 8,
+  "passed": 8,
+  "regression_paths": 17,
+  "regressions": [
+    {
+      "case": "Hsuccess",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 0,
+      "corrected_capacity_minutes": 0
+    },
+    {
+      "case": "Usuccess",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 348,
+      "corrected_capacity_minutes": 348
+    },
+    {
+      "case": "Esuccess",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 480,
+      "corrected_capacity_minutes": 480
+    },
+    {
+      "case": "E+success",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 440,
+      "corrected_capacity_minutes": 440
+    },
+    {
+      "case": "E+one-default",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 288,
+      "corrected_capacity_minutes": 288
+    },
+    {
+      "case": "E+withdrawal",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 212,
+      "corrected_capacity_minutes": 212
+    },
+    {
+      "case": "E+common-failure",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 288,
+      "corrected_capacity_minutes": 333
+    },
+    {
+      "case": "E+partial-delivery",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 288,
+      "corrected_capacity_minutes": 303
+    },
+    {
+      "case": "E+payment-delay",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 288,
+      "corrected_capacity_minutes": 288
+    },
+    {
+      "case": "E+support-overrun",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 288,
+      "corrected_capacity_minutes": 378
+    },
+    {
+      "case": "E+capacity-shortage",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 0,
+      "corrected_capacity_minutes": 0
+    },
+    {
+      "case": "E+no-transfer-gain",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 348,
+      "corrected_capacity_minutes": 348
+    },
+    {
+      "case": "E+negative-transfer",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 378,
+      "corrected_capacity_minutes": 378
+    },
+    {
+      "case": "E+model-obsolescence",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 348,
+      "corrected_capacity_minutes": 348
+    },
+    {
+      "case": "E+buyer-decline",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 0,
+      "corrected_capacity_minutes": 0
+    },
+    {
+      "case": "E+underfunded",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 0,
+      "corrected_capacity_minutes": 0
+    },
+    {
+      "case": "librarysuccess",
+      "economic_and_acceptance_fields_unchanged": true,
+      "old_capacity_minutes": 440,
+      "corrected_capacity_minutes": 440
+    }
+  ],
+  "corrected_reference_profit_cents": 56835,
+  "frozen_v1_price_unchanged": true,
+  "price_diagnostic": {
+    "formula": "p_accept * (deposit + p_collect * (price - deposit))",
+    "grid": [
+      {
+        "price_cents": 12500,
+        "participants": 5,
+        "prior_approximate_expected_contribution_cents": "-94615/2",
+        "corrected_expected_contribution_cents": "-93665/2",
+        "difference_cents": "475"
+      },
+      {
+        "price_cents": 17500,
+        "participants": 5,
+        "prior_approximate_expected_contribution_cents": "-48065/2",
+        "corrected_expected_contribution_cents": "-47115/2",
+        "difference_cents": "475"
+      },
+      {
+        "price_cents": 22500,
+        "participants": 4,
+        "prior_approximate_expected_contribution_cents": "-606",
+        "corrected_expected_contribution_cents": "-226",
+        "difference_cents": "380"
+      },
+      {
+        "price_cents": 27500,
+        "participants": 4,
+        "prior_approximate_expected_contribution_cents": "18014",
+        "corrected_expected_contribution_cents": "18394",
+        "difference_cents": "380"
+      },
+      {
+        "price_cents": 30000,
+        "participants": 3,
+        "prior_approximate_expected_contribution_cents": "20493",
+        "corrected_expected_contribution_cents": "20778",
+        "difference_cents": "285"
+      },
+      {
+        "price_cents": 32500,
+        "participants": 3,
+        "prior_approximate_expected_contribution_cents": "54951/2",
+        "corrected_expected_contribution_cents": "55521/2",
+        "difference_cents": "285"
+      },
+      {
+        "price_cents": 37500,
+        "participants": 0,
+        "prior_approximate_expected_contribution_cents": "0",
+        "corrected_expected_contribution_cents": "0",
+        "difference_cents": "0"
+      },
+      {
+        "price_cents": 45000,
+        "participants": 0,
+        "prior_approximate_expected_contribution_cents": "0",
+        "corrected_expected_contribution_cents": "0",
+        "difference_cents": "0"
+      }
+    ],
+    "corrected_best_price_cents": 32500,
+    "difference_per_reference_order_cents": "95",
+    "difference_three_reference_orders_cents": "285",
+    "old_price_selection_retained": true,
+    "retrospective_profit_recovery": false
+  },
+  "capacity_scope": "Internal provider A delivery/core/correction/support minutes. B/C fees explicitly assumed outsourced; their supplier capacity is not tested. This is not total labor or universal automation.",
+  "source_sha256": "e9140631370d2d8b3aede189ced3601c9ee0c38e6e3ee8ba618f49f91ccbcec7",
+  "original_source_unchanged": true,
+  "old72_worlds_replaced": false,
+  "actual_customer_revenue_cents": 0,
+  "actual_complete_cost_cents": null
+}

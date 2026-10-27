@@ -1,0 +1,208 @@
+{
+  "schema": "full-reader-qa/v1",
+  "utc": "2026-10-27T18:06:26.618110+00:00",
+  "sha256": "80ca3d6850f01b850dfc5c402bcae2711b38335f4705465182de8d36de48078a",
+  "views": [
+    {
+      "width": 390,
+      "javascript": true,
+      "tables": 6,
+      "math_elements": 8
+    },
+    {
+      "width": 768,
+      "javascript": true,
+      "tables": 6,
+      "math_elements": 8
+    },
+    {
+      "width": 1440,
+      "javascript": true,
+      "tables": 6,
+      "math_elements": 8
+    },
+    {
+      "width": 390,
+      "javascript": false,
+      "tables": 6,
+      "math_elements": 8
+    },
+    {
+      "width": 768,
+      "javascript": false,
+      "tables": 6,
+      "math_elements": 8
+    },
+    {
+      "width": 1440,
+      "javascript": false,
+      "tables": 6,
+      "math_elements": 8
+    }
+  ],
+  "errors": [],
+  "checks": [
+    {
+      "name": "390/True: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390/True: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "390/True: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "390/True: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "390/True: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "768/True: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "768/True: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "768/True: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "768/True: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "768/True: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "1440/True: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "1440/True: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "1440/True: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "1440/True: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "1440/True: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "True: local resources exist",
+      "passed": true
+    },
+    {
+      "name": "True: internal anchors resolve",
+      "passed": true
+    },
+    {
+      "name": "True: no external subresources",
+      "passed": true
+    },
+    {
+      "name": "390/False: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390/False: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "390/False: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "390/False: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "390/False: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "768/False: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "768/False: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "768/False: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "768/False: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "768/False: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "1440/False: no document overflow",
+      "passed": true
+    },
+    {
+      "name": "1440/False: six actual tables",
+      "passed": true
+    },
+    {
+      "name": "1440/False: three figures loaded",
+      "passed": true
+    },
+    {
+      "name": "1440/False: equations rendered MathML",
+      "passed": true
+    },
+    {
+      "name": "1440/False: complete adjudication text",
+      "passed": true
+    },
+    {
+      "name": "False: local resources exist",
+      "passed": true
+    },
+    {
+      "name": "False: internal anchors resolve",
+      "passed": true
+    },
+    {
+      "name": "False: no external subresources",
+      "passed": true
+    },
+    {
+      "name": "no browser errors",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "visual_inspection": {
+    "screenshots": [
+      "1440-js1-top.png",
+      "390-js0-assay.png"
+    ],
+    "result": "Legible title, abstract and mobile assay. Wide tables preserve horizontal scrolling with an explicit instruction. Scientific text unchanged by final witness-table layout commands."
+  },
+  "corrected_findings": [
+    "Display equations use an accessible horizontal scroll region",
+    "Bibliography commit hashes wrap at mobile width"
+  ],
+  "qa_script": "validation/reader-browser-check.py",
+  "qa_script_sha256": "7e118c51b171c293b2a1cbf51a48b2e616831ed7e3bc2b5afc66b749947e5645"
+}

@@ -1,0 +1,108 @@
+{
+  "versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "numpy": "2.3.2",
+    "scipy": "1.17.0"
+  },
+  "source_sha256": {
+    "A": "f014df30f2f5c6190dbd10160b037621c886dc574d7b6f4534678b804b4275de",
+    "B": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b"
+  },
+  "artifact_functions_invoked": [
+    "read_jats",
+    "cell_value",
+    "mean_difference"
+  ],
+  "A": {
+    "moments": [
+      {
+        "mean": 0.83,
+        "sd": 0.1,
+        "n": 30
+      },
+      {
+        "mean": 0.61,
+        "sd": 0.21,
+        "n": 30
+      }
+    ],
+    "difference": 0.21999999999999997,
+    "se": 0.04246567241117622,
+    "welch_df": 41.508741643477876,
+    "critical_t": 2.018789540207924,
+    "ci95": [
+      0.1342707447184212,
+      0.30572925528157874
+    ],
+    "mean_rounding_difference_bounds": [
+      0.21,
+      0.23
+    ],
+    "conditions": "Independent randomized participant groups; participant proportion SDs; fixed item set"
+  },
+  "B": {
+    "short": {
+      "value": 0.115,
+      "source_sha256": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b",
+      "table": "pone.0143177.t001",
+      "row": 1,
+      "column": 1,
+      "part": "mean",
+      "raw": "0.115 (0.04)",
+      "dispersion_kind": null
+    },
+    "long": {
+      "value": 0.122,
+      "source_sha256": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b",
+      "table": "pone.0143177.t001",
+      "row": 2,
+      "column": 1,
+      "part": "mean",
+      "raw": "0.122 (0.04)",
+      "dispersion_kind": null
+    },
+    "short_uncertainty": {
+      "value": 0.04,
+      "source_sha256": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b",
+      "table": "pone.0143177.t001",
+      "row": 1,
+      "column": 1,
+      "part": "dispersion",
+      "raw": "0.115 (0.04)",
+      "dispersion_kind": "UNQUALIFIED",
+      "qualified_kind": "SE"
+    },
+    "long_uncertainty": {
+      "value": 0.04,
+      "source_sha256": "e97c64d443a43481c5c7d68ee0298942c46bf7e736fd7e7e9e2ffd8d0ca91e7b",
+      "table": "pone.0143177.t001",
+      "row": 2,
+      "column": 1,
+      "part": "dispersion",
+      "raw": "0.122 (0.04)",
+      "dispersion_kind": "UNQUALIFIED",
+      "qualified_kind": "SE"
+    },
+    "contrast": {
+      "difference": 0.006999999999999992,
+      "se": null,
+      "status": "POINT_ONLY_COVARIANCE_MISSING"
+    },
+    "mean_rounding_difference_bounds": [
+      0.006,
+      0.008
+    ],
+    "variance_formula": "SE_L^2 + SE_S^2 - 2 Cov(L,S)",
+    "covariance_identified": false,
+    "ci95": null,
+    "hold": "Missing joint covariance of dependent estimators and outcome overlap; marginal SEs insufficient"
+  },
+  "mission_rechecks": [
+    "Public primary-source provenance and fixed target",
+    "A Experiment 1 correct responses, Feedback row only; SD footnote",
+    "A randomization between participants, 30 per cell; no actual yoking",
+    "B standardized within-student effects and matched crossover design",
+    "B outcome-specific missingness and common cohort",
+    "Semantic acceptance and production authority not conferred by engine flags"
+  ]
+}

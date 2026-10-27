@@ -1,0 +1,2331 @@
+{
+  "schema": "fresh-report-independent-adjudication-v1",
+  "adjudicated_utc": "2026-10-27T17:40:11.139740+00:00",
+  "status": "ACCEPTED_SCOPED_RESEARCH_RECONSTRUCTION",
+  "frozen_key_sha256": "0bbb2a669f7ef8622c484e0e98587b38ec0dfbe388b48f993e267edd593d59bb",
+  "key_freeze_utc": "2026-10-27T17:29:49.663963+00:00",
+  "key_unchanged": true,
+  "post_run_key_release": true,
+  "all_recipient_starts_after_freeze": true,
+  "observer": "Independent curator from construction/recipient execution; same AI evaluator prepared the key and adjudicated. Labels and study hypothesis were visible at adjudication. Not fully blind, not a human panel, and not independent-model validation.",
+  "scoring_policy": {
+    "primary": "Sum 20 binary criteria: each criterion scores 1 only if all materially required elements are correct; otherwise 0. Also report optional half-credit sensitivity, never replacing primary.",
+    "partial_sensitivity": "0.5 for substantially correct but incomplete content without contradictory claims; 0 for incorrect central identification, value, units, or dependence.",
+    "critical_errors": "Flag invented covariance, unsupported independence CI for B, arm/timepoint/outcome substitution, sample-unit inflation, and false scientific/customer/clinical validation separately. No post hoc weight changes.",
+    "provenance_equivalence": "Exact table row/column and PDF page plus method section is equivalent to XML XPath. Do not require exact wording or a particular library.",
+    "numerics": "Accept mathematically equivalent units and rounding. Derived A CI from clearly labeled normal or pooled-t approximation earns credit if assumption stated and interval within tolerance. Rounded-input reconstruction is target, not exact raw-data replication."
+  },
+  "conditions": {
+    "U": {
+      "binary_primary_total": 20,
+      "maximum": 20,
+      "optional_partial_total": 20,
+      "A_subtotal": 10,
+      "B_subtotal": 10,
+      "criteria": [
+        {
+          "criterion_id": "A01",
+          "label": "Report and experiment",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the correct Maraver report and Experiment 1; no substitution of Experiment 2.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 7,
+              "text": "**Report and target.** Maraver MJ, Lapa A, Garcia-Marques L, Carneiro P, Raposo A, *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [DOI: 10.1371/journal.pone.0272427](https://doi.org/10.1371/journal.pone.0272427). The target is Experiment 1, the **Correct responses** block of Table 3, **Feedback** row, **Retrieval** and **Restudy** columns under **Experiment 1**. The outcome is each participant’s proportion of correct answers on the final 30-sentence cued-recall test. Correct includes the original wording or synonyms preserving its meaning. The final test followed a one-minute distractor after the intermediate phase, within the same laboratory session; it supplied no feedback. [A1–A3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 3,
+              "text": "## Report A — Final correct recall in Maraver et al. (2022), Experiment 1"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A02",
+          "label": "Contrast and direction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses retrieval with feedback minus restudy with feedback, with the requested direction and no marginal/no-feedback substitution.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 5,
+              "text": "**Result:** Retrieval with corrective feedback minus restudy with corrective feedback is **+0.22 in proportion correct**, or **+22 percentage points**. A participant-level Welch reconstruction gives an approximate **95% CI of +0.134 to +0.306**, equivalent to **+13.4 to +30.6 percentage points**. These are derived quantities from the rounded published summaries."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 15,
+              "text": "| Retrieval, feedback | 0.83 | 0.10 | 30 |"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A03",
+          "label": "Outcome and timepoint",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies participant-level final cued-recall correct-response proportion, same-session test after a one-minute distractor, and distinguishes it from conditional error correction.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 7,
+              "text": "**Report and target.** Maraver MJ, Lapa A, Garcia-Marques L, Carneiro P, Raposo A, *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [DOI: 10.1371/journal.pone.0272427](https://doi.org/10.1371/journal.pone.0272427). The target is Experiment 1, the **Correct responses** block of Table 3, **Feedback** row, **Retrieval** and **Restudy** columns under **Experiment 1**. The outcome is each participant’s proportion of correct answers on the final 30-sentence cued-recall test. Correct includes the original wording or synonyms preserving its meaning. The final test followed a one-minute distractor after the intermediate phase, within the same laboratory session; it supplied no feedback. [A1–A3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 37,
+              "text": "**Interpretation and scope.** Retrieval followed by feedback improved immediate final correct recall relative to this particular restudy procedure with feedback. This is a simple effect within feedback, not the marginal retrieval effect or a conditional error-correction index. A selected Portuguese sentence task in university students does not establish durable classroom learning, product/customer value, or clinical benefit."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A04",
+          "label": "Population and sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Reports Lisbon university students, total N=120 and n=30 in each selected cell; keeps sentence/item counts separate from participant counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 9,
+              "text": "**Design and populations.** The report describes 120 University of Lisbon students, randomized to a 2 × 2 between-participant design: retrieval/restudy crossed with feedback/no feedback, with 30 participants per cell. Thus, 60 participants contribute to this target contrast. No participant exclusions are reported for Experiment 1; the reported overall ANOVA residual df of 116 is consistent with all 120 participants in four cells. The 30 sentences are repeated observations within a participant, not 30 independent participants; the participant’s aggregated proportion is the analysis unit. The study selected these sentences for high rates of pragmatic-inference errors. [A2–A4]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 9,
+              "text": "**Design and populations.** The report describes 120 University of Lisbon students, randomized to a 2 × 2 between-participant design: retrieval/restudy crossed with feedback/no feedback, with 30 participants per cell. Thus, 60 participants contribute to this target contrast. No participant exclusions are reported for Experiment 1; the reported overall ANOVA residual df of 116 is consistent with all 120 participants in four cells. The 30 sentences are repeated observations within a participant, not 30 independent participants; the participant’s aggregated proportion is the analysis unit. The study selected these sentences for high rates of pragmatic-inference errors. [A2–A4]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A05",
+          "label": "Values and uncertainty label",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts 0.83 with SD 0.10 and 0.61 with SD 0.21; explicitly qualifies the plus/minus quantities as participant SDs.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 15,
+              "text": "| Retrieval, feedback | 0.83 | 0.10 | 30 |"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 16,
+              "text": "| Restudy, feedback | 0.61 | 0.21 | 30 |"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 18,
+              "text": "Table 3’s footnote explicitly defines its entries as **mean ± standard deviations**, not standard errors. [A1]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A06",
+          "label": "Design and analysis unit",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Correctly describes a randomized 2-by-2 between-participant design and independent focal groups. Explicitly distinguishes constructed restudy errors from actual participant yoking and rejects item-level sample inflation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 9,
+              "text": "**Design and populations.** The report describes 120 University of Lisbon students, randomized to a 2 × 2 between-participant design: retrieval/restudy crossed with feedback/no feedback, with 30 participants per cell. Thus, 60 participants contribute to this target contrast. No participant exclusions are reported for Experiment 1; the reported overall ANOVA residual df of 116 is consistent with all 120 participants in four cells. The 30 sentences are repeated observations within a participant, not 30 independent participants; the participant’s aggregated proportion is the analysis unit. The study selected these sentences for high rates of pragmatic-inference errors. [A2–A4]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 11,
+              "text": "During retrieval, students attempted to complete missing sentence fragments. During restudy, they read a fixed mixture of 50% correct and 50% incorrect sentences, described to participants as another person’s recall output; sentence correctness was counterbalanced. This is not a reported pairing of participants for statistical analysis. Both target groups then saw the original correct sentence as feedback. The design therefore supports an independent-groups contrast of final participant proportions, despite repeated item responses and an earlier retrieval assessment. [A2–A3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 9,
+              "text": "**Design and populations.** The report describes 120 University of Lisbon students, randomized to a 2 × 2 between-participant design: retrieval/restudy crossed with feedback/no feedback, with 30 participants per cell. Thus, 60 participants contribute to this target contrast. No participant exclusions are reported for Experiment 1; the reported overall ANOVA residual df of 116 is consistent with all 120 participants in four cells. The 30 sentences are repeated observations within a participant, not 30 independent participants; the participant’s aggregated proportion is the analysis unit. The study selected these sentences for high rates of pragmatic-inference errors. [A2–A4]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A07",
+          "label": "Derived mean difference",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Derives +0.22 proportion correct, equivalently +22 percentage points, with correct sign and scale.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 5,
+              "text": "**Result:** Retrieval with corrective feedback minus restudy with corrective feedback is **+0.22 in proportion correct**, or **+22 percentage points**. A participant-level Welch reconstruction gives an approximate **95% CI of +0.134 to +0.306**, equivalent to **+13.4 to +30.6 percentage points**. These are derived quantities from the rounded published summaries."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 23,
+              "text": "\\widehat\\Delta=\\bar p_R-\\bar p_S=0.83-0.61=0.22,"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A08",
+          "label": "Derived uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses the participant-level Welch formula, SE 0.0424657, df about 41.51 and CI about [0.13427,0.30573]. States independent-participant and approximate sampling-distribution assumptions, unequal-variance allowance, rounded inputs, and fixed-material scope.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 24,
+              "text": "\\qquad SE(\\widehat\\Delta)=\\sqrt{0.10^2/30+0.21^2/30}=0.042466."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 33,
+              "text": "Hence \\(0.22\\pm t_{.975,41.509}(0.042466)=0.22\\pm0.085729\\). This assumes independent participants and a reasonable approximate t sampling distribution for the difference of mean proportions; equal variances are not required. It does not treat 900 item responses per group as independent binomial observations. The interval concerns participant variation for these study materials, without estimating uncertainty from sampling new sentences."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 5,
+              "text": "**Result:** Retrieval with corrective feedback minus restudy with corrective feedback is **+0.22 in proportion correct**, or **+22 percentage points**. A participant-level Welch reconstruction gives an approximate **95% CI of +0.134 to +0.306**, equivalent to **+13.4 to +30.6 percentage points**. These are derived quantities from the rounded published summaries."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Supplies exact Table 3 block/row/columns and caption/footnote plus identifiable XML method locations for participants, design and timing; separates reported inputs from derived results.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 41,
+              "text": "- **A1:** `//table-wrap[@id='pone.0272427.t003']`, caption “Memory performance at the final cued-recall test”; Correct responses → Experiment 1 → Feedback → Retrieval/Restudy; its `table-wrap-foot` defines SDs."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 37,
+              "text": "**Interpretation and scope.** Retrieval followed by feedback improved immediate final correct recall relative to this particular restudy procedure with feedback. This is a simple effect within feedback, not the marginal retrieval effect or a conditional error-correction index. A selected Portuguese sentence task in university students does not establish durable classroom learning, product/customer value, or clinical benefit."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A10",
+          "label": "Supported scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Limits the positive contrast to immediate laboratory performance with this sentence set/comparator and avoids conditional-error-correction, universal education, customer, or clinical claims.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 37,
+              "text": "**Interpretation and scope.** Retrieval followed by feedback improved immediate final correct recall relative to this particular restudy procedure with feedback. This is a simple effect within feedback, not the marginal retrieval effect or a conditional error-correction index. A selected Portuguese sentence task in university students does not establish durable classroom learning, product/customer value, or clinical benefit."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 37,
+              "text": "**Interpretation and scope.** Retrieval followed by feedback improved immediate final correct recall relative to this particular restudy procedure with feedback. This is a simple effect within feedback, not the marginal retrieval effect or a conditional error-correction index. A selected Portuguese sentence task in university students does not establish durable classroom learning, product/customer value, or clinical benefit."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[4]/p[8]",
+              "pdf_page": 17,
+              "description": "General discussion classroom-generalization caution"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B01",
+          "label": "Report and population",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the Sun report and Stanford introductory-statistics study across the autumn/winter cohorts; treats the analyzed outcomes as belonging to that study.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 50,
+              "text": "**Report and target.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI: 10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177). The setting is Stanford’s introductory statistics course in autumn and winter terms. The short-term effect concerns unit quizzes following completion of each unit and homework feedback. The longer-term effect concerns corresponding unit material on the comprehensive final examination in Week 11. [B1–B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 50,
+              "text": "**Report and target.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI: 10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177). The setting is Stanford’s introductory statistics course in autumn and winter terms. The short-term effect concerns unit quizzes following completion of each unit and homework feedback. The longer-term effect concerns corresponding unit material on the comprehensive final examination in Week 11. [B1–B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 50,
+              "text": "**Report and target.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI: 10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177). The setting is Stanford’s introductory statistics course in autumn and winter terms. The short-term effect concerns unit quizzes following completion of each unit and homework feedback. The longer-term effect concerns corresponding unit material on the comprehensive final examination in Week 11. [B1–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Section 1.1 Stats 60 Stanford"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B02",
+          "label": "Crossover and matching",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes matching and complementary randomized crossover sequences, with two treatment and two control units per participant; does not invent permanent independent arms.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 52,
+              "text": "**Design, intervention, and sizes.** Each student received treatment in two of four main units and control in the other two, assigned among TCTC, CTCT, TCCT, and CTTC. Matching first blocked students on gender, race, and previous statistics background, then paired students on other baseline covariates; paired students received complementary randomized sequences. Treatment involved scoring and commenting on three peers’ homework responses and receiving peer feedback. Control involved instructor grading without assessing peers; both groups received solution keys, rubrics, and feedback on the same schedule. Assessors of quizzes/exams were blinded. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 52,
+              "text": "**Design, intervention, and sizes.** Each student received treatment in two of four main units and control in the other two, assigned among TCTC, CTCT, TCCT, and CTTC. Matching first blocked students on gender, race, and previous statistics background, then paired students on other baseline covariates; paired students received complementary randomized sequences. Treatment involved scoring and commenting on three peers’ homework responses and receiving peer feedback. Control involved instructor grading without assessing peers; both groups received solution keys, rubrics, and feedback on the same schedule. Assessors of quizzes/exams were blinded. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 5,
+              "description": "Section 2.1 experimental design"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B03",
+          "label": "Treatment and control",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes giving and receiving peer feedback versus instructor feedback, with aligned feedback timing and solution resources; control is not absence of feedback.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 52,
+              "text": "**Design, intervention, and sizes.** Each student received treatment in two of four main units and control in the other two, assigned among TCTC, CTCT, TCCT, and CTTC. Matching first blocked students on gender, race, and previous statistics background, then paired students on other baseline covariates; paired students received complementary randomized sequences. Treatment involved scoring and commenting on three peers’ homework responses and receiving peer feedback. Control involved instructor grading without assessing peers; both groups received solution keys, rubrics, and feedback on the same schedule. Assessors of quizzes/exams were blinded. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 52,
+              "text": "**Design, intervention, and sizes.** Each student received treatment in two of four main units and control in the other two, assigned among TCTC, CTCT, TCCT, and CTTC. Matching first blocked students on gender, race, and previous statistics background, then paired students on other baseline covariates; paired students received complementary randomized sequences. Treatment involved scoring and commenting on three peers’ homework responses and receiving peer feedback. Control involved instructor grading without assessing peers; both groups received solution keys, rubrics, and feedback on the same schedule. Assessors of quizzes/exams were blinded. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[3]",
+              "pdf_page": 3,
+              "description": "Treatment and feedback control"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B04",
+          "label": "Timing and effect definition",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies unit quizzes versus the comprehensive Week-11 final and explains control-score standardization followed by averaging within-student treatment-minus-control contrasts; preserves standardized units.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 50,
+              "text": "**Report and target.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI: 10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177). The setting is Stanford’s introductory statistics course in autumn and winter terms. The short-term effect concerns unit quizzes following completion of each unit and homework feedback. The longer-term effect concerns corresponding unit material on the comprehensive final examination in Week 11. [B1–B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 56,
+              "text": "**Estimands and inputs.** The supplement standardizes each assessment using its control-group mean and **SD**, computes each student’s mean standardized score in treated units minus that in control units, and averages these within-student differences, pooling terms. The same approach is applied to final-exam material. These estimate standardized peer-assessment effects among the analyzed complying students, rather than an ordinary two-independent-arm Cohen’s d. [B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 56,
+              "text": "**Estimands and inputs.** The supplement standardizes each assessment using its control-group mean and **SD**, computes each student’s mean standardized score in treated units minus that in control units, and averages these within-student differences, pooling terms. The same approach is applied to final-exam material. These estimate standardized peer-assessment effects among the analyzed complying students, rather than an ordinary two-independent-arm Cohen’s d. [B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Final exam in Week 11"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B05",
+          "label": "Published values and uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts short 0.115, long 0.122 and both SEs 0.04 from Table 1; does not mislabel SE as SD.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 48,
+              "text": "**Result:** The published difference is **0.122 − 0.115 = +0.007 standardized effect units**. **Hold the confidence interval and test for this difference:** the necessary joint covariance is not identified by the supplied summaries and supplement."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 48,
+              "text": "**Result:** The published difference is **0.122 − 0.115 = +0.007 standardized effect units**. **Hold the confidence interval and test for this difference:** the necessary joint covariance is not identified by the supplied summaries and supplement."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 63,
+              "text": "The caption explicitly labels parentheses as **standard errors**. [B2] The derived difference, +0.007, is in standardized units; it is not a 0.7-percentage-point change in exam scores. With effects rounded to three decimals, their unrounded difference could be approximately 0.006–0.008. The supplement’s coarser Table 6 rounding is not substituted for Table 1."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/caption/p",
+              "pdf_page": 4,
+              "description": "SE caption"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B06",
+          "label": "Sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Separates 387 participants from outcome-specific 299 quiz and 320 final-exam analyses, discusses compliance/completion exclusions, and avoids treating these as independent arm counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 54,
+              "text": "The supplement distinguishes 150 autumn and 240 winter consent-form respondents from the 148 and 239 participants after three opt-outs: **387 participants total**. It reports **322** meeting its compliance criterion of at least 10 of 12 assigned peer-assessment questions. The main paper’s actual outcome-specific analyses use **299 students for quizzes** and **320 for the final exam**, after noncompliance and assessment-completion exclusions. These are repeated-measure student samples, not separate treatment/control arm sizes. Each unit quiz contained six questions; those items and the four units are not independent sample-size multipliers. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 54,
+              "text": "The supplement distinguishes 150 autumn and 240 winter consent-form respondents from the 148 and 239 participants after three opt-outs: **387 participants total**. It reports **322** meeting its compliance criterion of at least 10 of 12 assigned peer-assessment questions. The main paper’s actual outcome-specific analyses use **299 students for quizzes** and **320 for the final exam**, after noncompliance and assessment-completion exclusions. These are repeated-measure student samples, not separate treatment/control arm sizes. Each unit quiz contained six questions; those items and the four units are not independent sample-size multipliers. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 54,
+              "text": "The supplement distinguishes 150 autumn and 240 winter consent-form respondents from the 148 and 239 participants after three opt-outs: **387 participants total**. It reports **322** meeting its compliance criterion of at least 10 of 12 assigned peer-assessment questions. The main paper’s actual outcome-specific analyses use **299 students for quizzes** and **320 for the final exam**, after noncompliance and assessment-completion exclusions. These are repeated-measure student samples, not separate treatment/control arm sizes. Each unit quiz contained six questions; those items and the four units are not independent sample-size multipliers. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B07",
+          "label": "Descriptive reconstruction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Computes long minus short as +0.007 standardized effect units, labels it descriptive, and acknowledges rounding and distinct assessment standardizations.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 48,
+              "text": "**Result:** The published difference is **0.122 − 0.115 = +0.007 standardized effect units**. **Hold the confidence interval and test for this difference:** the necessary joint covariance is not identified by the supplied summaries and supplement."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 52,
+              "text": "**Design, intervention, and sizes.** Each student received treatment in two of four main units and control in the other two, assigned among TCTC, CTCT, TCCT, and CTTC. Matching first blocked students on gender, race, and previous statistics background, then paired students on other baseline covariates; paired students received complementary randomized sequences. Treatment involved scoring and commenting on three peers’ homework responses and receiving peer feedback. Control involved instructor grading without assessing peers; both groups received solution keys, rubrics, and feedback on the same schedule. Assessors of quizzes/exams were blinded. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B08",
+          "label": "Dependence and scoped uncertainty hold",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Retains the point difference while holding its unconditional CI/test because estimator covariance is unidentified; gives the covariance-dependent variance formula and explains overlapping/crossover data.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 48,
+              "text": "**Result:** The published difference is **0.122 − 0.115 = +0.007 standardized effect units**. **Hold the confidence interval and test for this difference:** the necessary joint covariance is not identified by the supplied summaries and supplement."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 54,
+              "text": "The supplement distinguishes 150 autumn and 240 winter consent-form respondents from the 148 and 239 participants after three opt-outs: **387 participants total**. It reports **322** meeting its compliance criterion of at least 10 of 12 assigned peer-assessment questions. The main paper’s actual outcome-specific analyses use **299 students for quizzes** and **320 for the final exam**, after noncompliance and assessment-completion exclusions. These are repeated-measure student samples, not separate treatment/control arm sizes. Each unit quiz contained six questions; those items and the four units are not independent sample-size multipliers. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 48,
+              "text": "**Result:** The published difference is **0.122 − 0.115 = +0.007 standardized effect units**. **Hold the confidence interval and test for this difference:** the necessary joint covariance is not identified by the supplied summaries and supplement."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Cites Table 1 named rows and SE caption, the method sample-size paragraph, and the supplement estimator pages/sections; reported and derived quantities remain distinct.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 78,
+              "text": "- **B2:** Same XML, `//table-wrap[@id='pone.0143177.t001']`: the two named rows and caption identifying SEs; `//sec[@id='sec003']/p[1]` confirms outcomes and df 298/319."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 68,
+              "text": "\\operatorname{Var}(\\Delta_B)=SE_L^2+SE_S^2-2\\operatorname{Cov}(\\hat d_L,\\hat d_S)."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B10",
+          "label": "Interpretation and scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Does not infer increased/equal effects from the small difference or separate significance tests; limits interpretation to course and analyzed compliant/completing samples without clinical/customer validation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 73,
+              "text": "**Interpretation and scope.** The printed longer-term estimate is descriptively 0.007 greater. These sources do not establish improvement, decline, or equality of effects across time. The measures use different assessments and somewhat different analyzed populations. Causal generalization remains conditional on compliance/exclusion, carryover, and standardization assumptions; crossover assignment alone does not prove that post-assignment exclusions are harmless. This course does not establish effects for all learners, educational products, or clinical populations. The two reports are not pooled."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 73,
+              "text": "**Interpretation and scope.** The printed longer-term estimate is descriptively 0.007 greater. These sources do not establish improvement, decline, or equality of effects across time. The measures use different assessments and somewhat different analyzed populations. Causal generalization remains conditional on compliance/exclusion, carryover, and standardization assumptions; crossover assignment alone does not prove that post-assignment exclusions are harmless. This course does not establish effects for all learners, educational products, or clinical populations. The two reports are not pooled."
+            },
+            {
+              "path": "assay/recipient_u/answer.md",
+              "line": 54,
+              "text": "The supplement distinguishes 150 autumn and 240 winter consent-form respondents from the 148 and 239 participants after three opt-outs: **387 participants total**. It reports **322** meeting its compliance criterion of at least 10 of 12 assigned peer-assessment questions. The main paper’s actual outcome-specific analyses use **299 students for quizzes** and **320 for the final exam**, after noncompliance and assessment-completion exclusions. These are repeated-measure student samples, not separate treatment/control arm sizes. Each unit quiz contained six questions; those items and the four units are not independent sample-size multipliers. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            }
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "answer_sha256": "01eed36400c90c6446d50028cd388f97dcd8f858e1a4e2fcf6f16755032f7667",
+      "worklog_sha256": "a6e104fc3d8be2ff105b57f149c1aa6a4401b7bdf5e0bd57939ea2c5d50151d5",
+      "worklog_resources": {
+        "tool_calls": 10,
+        "elapsed_seconds": 175.698486,
+        "start_utc": "2026-10-27T17:30:54Z",
+        "end_utc": "2026-10-27T17:33:49.698486+00:00",
+        "token_usage": "unknown",
+        "billed_cost": "unknown",
+        "within_shared_cap": true,
+        "operations_list_length_matches_count": true,
+        "timing_arithmetic_verified": true,
+        "provenance": "Recipient worklog records; not independently metered original process telemetry."
+      },
+      "replay": {
+        "code_sha256": "7c34730bb66655b8bd025800d81c12c92c9f655b06423dfc4d73e1f5c0f7be44",
+        "submitted_result_sha256": "b4b616628b461c6d325c826bcf220e6514e9720815292f1779a25c758a242ce2",
+        "returncode": 0,
+        "exact_json_match": true,
+        "observed_engine_calls": {},
+        "method": "Unmodified submitted code copied to temporary directory; profiler observed artifact functions; original recipient output preserved."
+      }
+    },
+    "E": {
+      "binary_primary_total": 20,
+      "maximum": 20,
+      "optional_partial_total": 20,
+      "A_subtotal": 10,
+      "B_subtotal": 10,
+      "criteria": [
+        {
+          "criterion_id": "A01",
+          "label": "Report and experiment",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the correct Maraver report and Experiment 1; no substitution of Experiment 2.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 11,
+              "text": "**Identity and target.** Maraver MJ, Lapa A, Garcia-Marques L, Carneiro P, Raposo A (2022), *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [DOI](https://doi.org/10.1371/journal.pone.0272427), **Experiment 1 only**. The outcome counts answers matching the original sentence or synonyms preserving its meaning, divided by all 30 sentences. Blank responses remain a distinct response category, rather than being removed from the denominator. This is overall final accuracy, not accuracy conditional on an earlier error. [A1, A2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 5,
+              "text": "For A, the population is Experiment 1's university participants; the outcome is each participant's proportion of correct final cued-recall responses; the permissible estimate is the retrieval-with-feedback minus restudy-with-feedback mean difference from Table 3, with design-supported uncertainty. For B, the population is the analyzed students in the two statistics-course cohorts; the outcomes are standardized unit-quiz and corresponding final-exam achievement; the permissible estimate is the published long-term effect minus short-term effect from Table 1. These are separate studies and are not pooled."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A02",
+          "label": "Contrast and direction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses retrieval with feedback minus restudy with feedback, with the requested direction and no marginal/no-feedback substitution.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 5,
+              "text": "For A, the population is Experiment 1's university participants; the outcome is each participant's proportion of correct final cued-recall responses; the permissible estimate is the retrieval-with-feedback minus restudy-with-feedback mean difference from Table 3, with design-supported uncertainty. For B, the population is the analyzed students in the two statistics-course cohorts; the outcomes are standardized unit-quiz and corresponding final-exam achievement; the permissible estimate is the published long-term effect minus short-term effect from Table 1. These are separate studies and are not pooled."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 21,
+              "text": "| Retrieval | 30 | 0.83 | 0.10 |"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A03",
+          "label": "Outcome and timepoint",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies participant-level final cued-recall correct-response proportion, same-session test after a one-minute distractor, and distinguishes it from conditional error correction.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 15,
+              "text": "All participants first encoded the sentences. Retrieval participants then attempted cued recall; restudy participants read 15 correct and 15 incorrect sentences, counterbalanced across participants. This was a constructed restudy sequence, not actual participant-level yoking to a retrieval partner. Both target groups then saw the original correct sentence as feedback. Following a one-minute distractor, everyone completed the final 30-item cued-recall test without feedback, within the same session. [A1]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 11,
+              "text": "**Identity and target.** Maraver MJ, Lapa A, Garcia-Marques L, Carneiro P, Raposo A (2022), *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [DOI](https://doi.org/10.1371/journal.pone.0272427), **Experiment 1 only**. The outcome counts answers matching the original sentence or synonyms preserving its meaning, divided by all 30 sentences. Blank responses remain a distinct response category, rather than being removed from the denominator. This is overall final accuracy, not accuracy conditional on an earlier error. [A1, A2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A04",
+          "label": "Population and sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Reports Lisbon university students, total N=120 and n=30 in each selected cell; keeps sentence/item counts separate from participant counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 13,
+              "text": "**Design and denominators.** The study recruited 120 University of Lisbon students. Both learning condition and corrective feedback were randomized between participants in a 2-by-2 design: 30 participants in each cell, including 30 retrieval-with-feedback and 30 restudy-with-feedback. The participants paragraph's parenthetical n values are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the reported ANOVA denominator df of 116 and the supplied data's four groups of 30. All 120 data rows have a nonempty final-correct-proportion field. No additional Experiment 1 exclusion is described in the inspected methods. The 30 sentence observations per person are not 30 independent participants. [A1, A3]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 13,
+              "text": "**Design and denominators.** The study recruited 120 University of Lisbon students. Both learning condition and corrective feedback were randomized between participants in a 2-by-2 design: 30 participants in each cell, including 30 retrieval-with-feedback and 30 restudy-with-feedback. The participants paragraph's parenthetical n values are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the reported ANOVA denominator df of 116 and the supplied data's four groups of 30. All 120 data rows have a nonempty final-correct-proportion field. No additional Experiment 1 exclusion is described in the inspected methods. The 30 sentence observations per person are not 30 independent participants. [A1, A3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A05",
+          "label": "Values and uncertainty label",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts 0.83 with SD 0.10 and 0.61 with SD 0.21; explicitly qualifies the plus/minus quantities as participant SDs.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 21,
+              "text": "| Retrieval | 30 | 0.83 | 0.10 |"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 22,
+              "text": "| Restudy | 30 | 0.61 | 0.21 |"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 24,
+              "text": "The table footnote explicitly labels the quantities after the plus/minus sign as **standard deviations**, not standard errors. These cells and the footnote agree with the rendered primary PDF, page 8. [A2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A06",
+          "label": "Design and analysis unit",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Correctly describes a randomized 2-by-2 between-participant design and independent focal groups. Explicitly distinguishes constructed restudy errors from actual participant yoking and rejects item-level sample inflation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 13,
+              "text": "**Design and denominators.** The study recruited 120 University of Lisbon students. Both learning condition and corrective feedback were randomized between participants in a 2-by-2 design: 30 participants in each cell, including 30 retrieval-with-feedback and 30 restudy-with-feedback. The participants paragraph's parenthetical n values are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the reported ANOVA denominator df of 116 and the supplied data's four groups of 30. All 120 data rows have a nonempty final-correct-proportion field. No additional Experiment 1 exclusion is described in the inspected methods. The 30 sentence observations per person are not 30 independent participants. [A1, A3]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 15,
+              "text": "All participants first encoded the sentences. Retrieval participants then attempted cued recall; restudy participants read 15 correct and 15 incorrect sentences, counterbalanced across participants. This was a constructed restudy sequence, not actual participant-level yoking to a retrieval partner. Both target groups then saw the original correct sentence as feedback. Following a one-minute distractor, everyone completed the final 30-item cued-recall test without feedback, within the same session. [A1]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 13,
+              "text": "**Design and denominators.** The study recruited 120 University of Lisbon students. Both learning condition and corrective feedback were randomized between participants in a 2-by-2 design: 30 participants in each cell, including 30 retrieval-with-feedback and 30 restudy-with-feedback. The participants paragraph's parenthetical n values are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the reported ANOVA denominator df of 116 and the supplied data's four groups of 30. All 120 data rows have a nonempty final-correct-proportion field. No additional Experiment 1 exclusion is described in the inspected methods. The 30 sentence observations per person are not 30 independent participants. [A1, A3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A07",
+          "label": "Derived mean difference",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Derives +0.22 proportion correct, equivalently +22 percentage points, with correct sign and scale.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 41,
+              "text": "Thus \\(0.22\\pm t_{.975,41.5087}(0.0424657)\\), with critical value 2.01879, gives an **approximate 95% CI of [0.1343, 0.3057] proportion units**: **22.0 percentage points, CI 13.4 to 30.6 points**, favoring retrieval with feedback. This assumes independent participants and an adequate approximation to the sampling distribution of their mean proportions; it does not require equal variances or assume independent sentence trials. It conditions on the selected stimulus set rather than estimating variation over all possible materials."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 29,
+              "text": "\\widehat\\Delta_A=0.83-0.61=0.22."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A08",
+          "label": "Derived uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses the participant-level Welch formula, SE 0.0424657, df about 41.51 and CI about [0.13427,0.30573]. States independent-participant and approximate sampling-distribution assumptions, unequal-variance allowance, rounded inputs, and fixed-material scope.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 35,
+              "text": "SE=\\sqrt{0.10^2/30+0.21^2/30}=0.0424657,"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 41,
+              "text": "Thus \\(0.22\\pm t_{.975,41.5087}(0.0424657)\\), with critical value 2.01879, gives an **approximate 95% CI of [0.1343, 0.3057] proportion units**: **22.0 percentage points, CI 13.4 to 30.6 points**, favoring retrieval with feedback. This assumes independent participants and an adequate approximation to the sampling distribution of their mean proportions; it does not require equal variances or assume independent sentence trials. It conditions on the selected stimulus set rather than estimating variation over all possible materials."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 43,
+              "text": "The displayed means and SDs have two decimals, so the reconstruction is approximate. Mean rounding alone allows roughly 0.21-0.23 for the underlying difference. The feedback marginal mean 0.72 matches the two target means' average. Elsewhere, the non-feedback total is printed as 0.28 although its two displayed equal-size cell means average 0.27; this off-target inconsistency is preserved and not used to repair the target. [A2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Supplies exact Table 3 block/row/columns and caption/footnote plus identifiable XML method locations for participants, design and timing; separates reported inputs from derived results.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 50,
+              "text": "- **A2:** Same XML, `//table-wrap[@id='pone.0272427.t003']`, Correct responses block, Feedback row, Experiment 1 Retrieval/Restudy columns, and table footnote; primary PDF page 8."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 49,
+              "text": "- **A1:** `pone.0272427.xml`, `/article/body/sec[2]` (Experiment 1), Methods: `sec[1]/sec[1]/p[1]` (Participants), `sec[1]/sec[3]/p` (Design), `sec[1]/sec[4]/p[2]` (Procedure), and `sec[1]/sec[5]/p[1]` (Statistical analyses/coding). Final-test ANOVA: `/article/body/sec[2]/sec[2]/sec[2]/p[2]`."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A10",
+          "label": "Supported scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Limits the positive contrast to immediate laboratory performance with this sentence set/comparator and avoids conditional-error-correction, universal education, customer, or clinical claims.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 45,
+              "text": "**Interpretation and limitation.** The specified laboratory comparison supports greater immediate final accuracy under retrieval plus feedback for these sentences and participants. Restudy included deliberately incorrect sentences, so this does not establish superiority to every ordinary restudy method. It does not establish durable educational gains, clinical benefit, or product/customer value."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 45,
+              "text": "**Interpretation and limitation.** The specified laboratory comparison supports greater immediate final accuracy under retrieval plus feedback for these sentences and participants. Restudy included deliberately incorrect sentences, so this does not establish superiority to every ordinary restudy method. It does not establish durable educational gains, clinical benefit, or product/customer value."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[4]/p[8]",
+              "pdf_page": 17,
+              "description": "General discussion classroom-generalization caution"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B01",
+          "label": "Report and population",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the Sun report and Stanford introductory-statistics study across the autumn/winter cohorts; treats the analyzed outcomes as belonging to that study.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 59,
+              "text": "There were 390 consent-form respondents enrolled for credit: 150 autumn and 240 winter. Three opted out, leaving 148 + 239 = **387 participants**. Main-report analyses used **299 students for quizzes** and **320 for final exams**, after compliance and assessment-completion exclusions. Supplement section 3.2 calls **322** the final sample under completion of at least 10 of 12 assigned peer-assessment questions. That compliance count must remain distinct from the main report's outcome-specific counts; losses are not fully tabulated by criterion. Six questions per unit quiz and 12 assigned peer-assessment questions are item/workload counts, not arm sizes. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Section 1.1 Stats 60 Stanford"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B02",
+          "label": "Crossover and matching",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes matching and complementary randomized crossover sequences, with two treatment and two control units per participant; does not invent permanent independent arms.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 57,
+              "text": "**Design and sample accounting.** Students crossed over between treatment and control for two units each, using TCTC, CTCT, TCCT, or CTTC sequences. Matching blocked on gender, race and prior statistics background, then paired similar students on other covariates; a coin flip assigned complementary sequences within pairs. The unit of the reported estimator is a student's within-person contrast, with repeated unit measurements and matched assignment, not independent permanent treatment/control arms. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 57,
+              "text": "**Design and sample accounting.** Students crossed over between treatment and control for two units each, using TCTC, CTCT, TCCT, or CTTC sequences. Matching blocked on gender, race and prior statistics background, then paired similar students on other covariates; a coin flip assigned complementary sequences within pairs. The unit of the reported estimator is a student's within-person contrast, with repeated unit measurements and matched assignment, not independent permanent treatment/control arms. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 5,
+              "description": "Section 2.1 experimental design"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B03",
+          "label": "Treatment and control",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes giving and receiving peer feedback versus instructor feedback, with aligned feedback timing and solution resources; control is not absence of feedback.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[3]",
+              "pdf_page": 3,
+              "description": "Treatment and feedback control"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B04",
+          "label": "Timing and effect definition",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies unit quizzes versus the comprehensive Week-11 final and explains control-score standardization followed by averaging within-student treatment-minus-control contrasts; preserves standardized units.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 61,
+              "text": "**Meaning and printed inputs.** Supplement section 2.2 standardizes each assessment using its control-group mean and **SD**, computes each student's average standardized treatment score minus average standardized control score, and averages those student contrasts. The same approach is applied to final-exam questions associated with the treated/control units. Main Table 1 reports **short term 0.115 (SE 0.04)** and **long term 0.122 (SE 0.04)**; its caption explicitly identifies parentheses as **standard errors**, not SDs. Supplement Table 6 gives the coarser 0.11 and 0.12; the requested reconstruction uses the more precise main-table entries. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 57,
+              "text": "**Design and sample accounting.** Students crossed over between treatment and control for two units each, using TCTC, CTCT, TCCT, or CTTC sequences. Matching blocked on gender, race and prior statistics background, then paired similar students on other covariates; a coin flip assigned complementary sequences within pairs. The unit of the reported estimator is a student's within-person contrast, with repeated unit measurements and matched assignment, not independent permanent treatment/control arms. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Final exam in Week 11"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B05",
+          "label": "Published values and uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts short 0.115, long 0.122 and both SEs 0.04 from Table 1; does not mislabel SE as SD.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 61,
+              "text": "**Meaning and printed inputs.** Supplement section 2.2 standardizes each assessment using its control-group mean and **SD**, computes each student's average standardized treatment score minus average standardized control score, and averages those student contrasts. The same approach is applied to final-exam questions associated with the treated/control units. Main Table 1 reports **short term 0.115 (SE 0.04)** and **long term 0.122 (SE 0.04)**; its caption explicitly identifies parentheses as **standard errors**, not SDs. Supplement Table 6 gives the coarser 0.11 and 0.12; the requested reconstruction uses the more precise main-table entries. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 61,
+              "text": "**Meaning and printed inputs.** Supplement section 2.2 standardizes each assessment using its control-group mean and **SD**, computes each student's average standardized treatment score minus average standardized control score, and averages those student contrasts. The same approach is applied to final-exam questions associated with the treated/control units. Main Table 1 reports **short term 0.115 (SE 0.04)** and **long term 0.122 (SE 0.04)**; its caption explicitly identifies parentheses as **standard errors**, not SDs. Supplement Table 6 gives the coarser 0.11 and 0.12; the requested reconstruction uses the more precise main-table entries. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 61,
+              "text": "**Meaning and printed inputs.** Supplement section 2.2 standardizes each assessment using its control-group mean and **SD**, computes each student's average standardized treatment score minus average standardized control score, and averages those student contrasts. The same approach is applied to final-exam questions associated with the treated/control units. Main Table 1 reports **short term 0.115 (SE 0.04)** and **long term 0.122 (SE 0.04)**; its caption explicitly identifies parentheses as **standard errors**, not SDs. Supplement Table 6 gives the coarser 0.11 and 0.12; the requested reconstruction uses the more precise main-table entries. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/caption/p",
+              "pdf_page": 4,
+              "description": "SE caption"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B06",
+          "label": "Sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Separates 387 participants from outcome-specific 299 quiz and 320 final-exam analyses, discusses compliance/completion exclusions, and avoids treating these as independent arm counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 59,
+              "text": "There were 390 consent-form respondents enrolled for credit: 150 autumn and 240 winter. Three opted out, leaving 148 + 239 = **387 participants**. Main-report analyses used **299 students for quizzes** and **320 for final exams**, after compliance and assessment-completion exclusions. Supplement section 3.2 calls **322** the final sample under completion of at least 10 of 12 assigned peer-assessment questions. That compliance count must remain distinct from the main report's outcome-specific counts; losses are not fully tabulated by criterion. Six questions per unit quiz and 12 assigned peer-assessment questions are item/workload counts, not arm sizes. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 59,
+              "text": "There were 390 consent-form respondents enrolled for credit: 150 autumn and 240 winter. Three opted out, leaving 148 + 239 = **387 participants**. Main-report analyses used **299 students for quizzes** and **320 for final exams**, after compliance and assessment-completion exclusions. Supplement section 3.2 calls **322** the final sample under completion of at least 10 of 12 assigned peer-assessment questions. That compliance count must remain distinct from the main report's outcome-specific counts; losses are not fully tabulated by criterion. Six questions per unit quiz and 12 assigned peer-assessment questions are item/workload counts, not arm sizes. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 59,
+              "text": "There were 390 consent-form respondents enrolled for credit: 150 autumn and 240 winter. Three opted out, leaving 148 + 239 = **387 participants**. Main-report analyses used **299 students for quizzes** and **320 for final exams**, after compliance and assessment-completion exclusions. Supplement section 3.2 calls **322** the final sample under completion of at least 10 of 12 assigned peer-assessment questions. That compliance count must remain distinct from the main report's outcome-specific counts; losses are not fully tabulated by criterion. Six questions per unit quiz and 12 assigned peer-assessment questions are item/workload counts, not arm sizes. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B07",
+          "label": "Descriptive reconstruction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Computes long minus short as +0.007 standardized effect units, labels it descriptive, and acknowledges rounding and distinct assessment standardizations.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 66,
+              "text": "\\widehat\\Delta_B=0.122-0.115=\\boxed{0.007}"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 57,
+              "text": "**Design and sample accounting.** Students crossed over between treatment and control for two units each, using TCTC, CTCT, TCCT, or CTTC sequences. Matching blocked on gender, race and prior statistics background, then paired similar students on other covariates; a coin flip assigned complementary sequences within pairs. The unit of the reported estimator is a student's within-person contrast, with repeated unit measurements and matched assignment, not independent permanent treatment/control arms. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B08",
+          "label": "Dependence and scoped uncertainty hold",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Retains the point difference while holding its unconditional CI/test because estimator covariance is unidentified; gives the covariance-dependent variance formula and explains overlapping/crossover data.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 55,
+              "text": "**Identity, intervention and outcomes.** Sun DL, Harris N, Walther G, Baiocchi M (2015), *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [DOI](https://doi.org/10.1371/journal.pone.0143177). The study covered two offerings of Stanford's introductory statistics course. Treatment involved scoring/commenting on peers' homework and receiving peer feedback; control homework was graded by instructors. Feedback timing and access to the solution key were aligned. Short-term learning was measured by unit quizzes after feedback; longer-term learning by the corresponding unit questions on the comprehensive week-11 final exam. Graders were blinded. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 57,
+              "text": "**Design and sample accounting.** Students crossed over between treatment and control for two units each, using TCTC, CTCT, TCCT, or CTTC sequences. Matching blocked on gender, race and prior statistics background, then paired similar students on other covariates; a coin flip assigned complementary sequences within pairs. The unit of the reported estimator is a student's within-person contrast, with repeated unit measurements and matched assignment, not independent permanent treatment/control arms. [B1, B2]"
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 71,
+              "text": "**Scoped uncertainty hold.** The appropriate variance is"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Cites Table 1 named rows and SE caption, the method sample-size paragraph, and the supplement estimator pages/sections; reported and derived quantities remain distinct.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 83,
+              "text": "- **B1:** `pone.0143177.xml`, `/article/body/sec[2]/p[1-5]` (Materials and Methods: design, matching, intervention, outcomes, samples), `/article/body/sec[3]/p[1]` (Results), and `//table-wrap[@id='pone.0143177.t001']`, both effect rows and SE caption; primary PDF page 4."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 61,
+              "text": "**Meaning and printed inputs.** Supplement section 2.2 standardizes each assessment using its control-group mean and **SD**, computes each student's average standardized treatment score minus average standardized control score, and averages those student contrasts. The same approach is applied to final-exam questions associated with the treated/control units. Main Table 1 reports **short term 0.115 (SE 0.04)** and **long term 0.122 (SE 0.04)**; its caption explicitly identifies parentheses as **standard errors**, not SDs. Supplement Table 6 gives the coarser 0.11 and 0.12; the requested reconstruction uses the more precise main-table entries. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B10",
+          "label": "Interpretation and scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Does not infer increased/equal effects from the small difference or separate significance tests; limits interpretation to course and analyzed compliant/completing samples without clinical/customer validation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 77,
+              "text": "The main article and supplement provide marginal SEs and separate significance tests, but no joint covariance, exact overlap membership, paired cross-outcome contrast variability, or joint randomization distribution. The outcomes share students, assignments and course contexts. Neither independent-arm precision nor treating the two effects as independent is justified. Consequently **a numerical CI or test for their difference is not identified by the supplied summaries**. Resolving it requires the covariance of the two actual estimators, or linked outcome data plus a joint analysis preserving crossover and matched-assignment dependence and outcome-specific missingness. Separate significant treatment effects do not establish a significant between-time difference."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 79,
+              "text": "**Interpretation and limitation.** The supported descriptive finding is 0.007, not evidence that benefits increased or were equivalent over time. Exclusions restrict applicability to the analyzed compliant/completing students; excluding noncompliers from both crossover periods alone does not eliminate every selection concern. A single course in two terms cannot establish broad educational, clinical, or customer outcomes."
+            },
+            {
+              "path": "assay/recipient_e/answer.md",
+              "line": 59,
+              "text": "There were 390 consent-form respondents enrolled for credit: 150 autumn and 240 winter. Three opted out, leaving 148 + 239 = **387 participants**. Main-report analyses used **299 students for quizzes** and **320 for final exams**, after compliance and assessment-completion exclusions. Supplement section 3.2 calls **322** the final sample under completion of at least 10 of 12 assigned peer-assessment questions. That compliance count must remain distinct from the main report's outcome-specific counts; losses are not fully tabulated by criterion. Six questions per unit quiz and 12 assigned peer-assessment questions are item/workload counts, not arm sizes. [B1, B2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            }
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "answer_sha256": "b04c94bbe949ce88ea5e4c7e7a5954ff96ace66285386f1de0602e71e6cb45ac",
+      "worklog_sha256": "3ef188c84a657cf29b009473fe37dda81f2c13575e1a672b1ae9baaf5222dbdf",
+      "worklog_resources": {
+        "tool_calls": 10,
+        "elapsed_seconds": 236.06095,
+        "start_utc": "2026-10-27T17:31:00+00:00",
+        "end_utc": "2026-10-27T17:34:56.060950+00:00",
+        "token_usage": "unknown",
+        "billed_cost": "unknown",
+        "within_shared_cap": true,
+        "operations_list_length_matches_count": true,
+        "timing_arithmetic_verified": true,
+        "provenance": "Recipient worklog records; not independently metered original process telemetry."
+      },
+      "replay": {
+        "code_sha256": "57be5e9d50ffc9d300d740776290c60d50849cd0080bf5fe65988b67bbf3e53e",
+        "submitted_result_sha256": "c4d3ae49c05c9581eb41dd2d044aad0503c5d9899ae77cf97d97361dab738f69",
+        "returncode": 0,
+        "exact_json_match": true,
+        "observed_engine_calls": {},
+        "method": "Unmodified submitted code copied to temporary directory; profiler observed artifact functions; original recipient output preserved."
+      }
+    },
+    "E+": {
+      "binary_primary_total": 20,
+      "maximum": 20,
+      "optional_partial_total": 20,
+      "A_subtotal": 10,
+      "B_subtotal": 10,
+      "criteria": [
+        {
+          "criterion_id": "A01",
+          "label": "Report and experiment",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the correct Maraver report and Experiment 1; no substitution of Experiment 2.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 5,
+              "text": "**Target fixed before extraction.** For the University of Lisbon student sample, estimate retrieval with corrective feedback minus restudy with corrective feedback in the participant-level proportion of correct responses on the final cued-recall test. The permissible estimate is a raw difference of the two Table 3 cell means, with participant-level sampling uncertainty. The report is *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [doi:10.1371/journal.pone.0272427](https://doi.org/10.1371/journal.pone.0272427)."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 3,
+              "text": "## Report A — Maraver et al. (2022), Experiment 1"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A02",
+          "label": "Contrast and direction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses retrieval with feedback minus restudy with feedback, with the requested direction and no marginal/no-feedback substitution.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 5,
+              "text": "**Target fixed before extraction.** For the University of Lisbon student sample, estimate retrieval with corrective feedback minus restudy with corrective feedback in the participant-level proportion of correct responses on the final cued-recall test. The permissible estimate is a raw difference of the two Table 3 cell means, with participant-level sampling uncertainty. The report is *Can we learn from errors? Retrieval facilitates the correction of false memories for pragmatic inferences*, [doi:10.1371/journal.pone.0272427](https://doi.org/10.1371/journal.pone.0272427)."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 13,
+              "text": "| Experiment 1, Correct responses, Feedback, Retrieval | 30 | 0.83 | 0.10 |"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A03",
+          "label": "Outcome and timepoint",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies participant-level final cued-recall correct-response proportion, same-session test after a one-minute distractor, and distinguishes it from conditional error correction.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 9,
+              "text": "All participants encoded 30 Portuguese sentences selected for pragmatic-inference potential. Retrieval required completing missing sentence fragments; restudy presented 50% correct sentences and 50% sentences containing pragmatic-inference errors, counterbalanced across participants. Both target groups then saw the original correct sentence as feedback. The final cued-recall test covered all 30 sentences after a one-minute distractor, in the same laboratory session, without feedback. Correct responses included original meanings and acceptable synonyms. Although restudy was described to participants as another person's output, its errors were experimentally constructed: this is not participant-paired yoking. The analysis unit is the participant's proportion, not 30 independent item observations per participant. [A2]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 38,
+              "text": "Thus retrieval with feedback averaged **22 percentage points more correct responses**, with an approximate **95% CI of 13.4–30.6 percentage points**. This uses independent randomized participants and an approximate t-based sampling distribution for bounded participant proportions; it does not treat individual items as independent trials. It is a direct two-cell reconstruction, not the paper's factorial main effect or conditional error-correction index."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A04",
+          "label": "Population and sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Reports Lisbon university students, total N=120 and n=30 in each selected cell; keeps sentence/item counts separate from participant counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 7,
+              "text": "**Design and population.** Experiment 1 enrolled 120 university students. Both factors—retrieval/restudy and feedback/no feedback—were randomized between participants in a 2×2 design, with 30 participants in each cell. The published participant paragraph's parenthetical counts are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the N=120 ANOVA with residual df=116 and by the supplied Experiment 1 CSV: four cells of 30, with no blank final-correct-proportion entries. No participant exclusion rule is reported for this experiment. [A2–A3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 7,
+              "text": "**Design and population.** Experiment 1 enrolled 120 university students. Both factors—retrieval/restudy and feedback/no feedback—were randomized between participants in a 2×2 design, with 30 participants in each cell. The published participant paragraph's parenthetical counts are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the N=120 ANOVA with residual df=116 and by the supplied Experiment 1 CSV: four cells of 30, with no blank final-correct-proportion entries. No participant exclusion rule is reported for this experiment. [A2–A3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A05",
+          "label": "Values and uncertainty label",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts 0.83 with SD 0.10 and 0.61 with SD 0.21; explicitly qualifies the plus/minus quantities as participant SDs.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 13,
+              "text": "| Experiment 1, Correct responses, Feedback, Retrieval | 30 | 0.83 | 0.10 |"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 14,
+              "text": "| Experiment 1, Correct responses, Feedback, Restudy | 30 | 0.61 | 0.21 |"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 16,
+              "text": "The table footnote explicitly defines the displayed “±” values as **standard deviations**, not SEs. XML and rendered publisher PDF agree. [A1]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A06",
+          "label": "Design and analysis unit",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Correctly describes a randomized 2-by-2 between-participant design and independent focal groups. Explicitly distinguishes constructed restudy errors from actual participant yoking and rejects item-level sample inflation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 7,
+              "text": "**Design and population.** Experiment 1 enrolled 120 university students. Both factors—retrieval/restudy and feedback/no feedback—were randomized between participants in a 2×2 design, with 30 participants in each cell. The published participant paragraph's parenthetical counts are awkwardly attached to factor labels; the four-cell interpretation is corroborated by the N=120 ANOVA with residual df=116 and by the supplied Experiment 1 CSV: four cells of 30, with no blank final-correct-proportion entries. No participant exclusion rule is reported for this experiment. [A2–A3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 9,
+              "text": "All participants encoded 30 Portuguese sentences selected for pragmatic-inference potential. Retrieval required completing missing sentence fragments; restudy presented 50% correct sentences and 50% sentences containing pragmatic-inference errors, counterbalanced across participants. Both target groups then saw the original correct sentence as feedback. The final cued-recall test covered all 30 sentences after a one-minute distractor, in the same laboratory session, without feedback. Correct responses included original meanings and acceptable synonyms. Although restudy was described to participants as another person's output, its errors were experimentally constructed: this is not participant-paired yoking. The analysis unit is the participant's proportion, not 30 independent item observations per participant. [A2]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 9,
+              "text": "All participants encoded 30 Portuguese sentences selected for pragmatic-inference potential. Retrieval required completing missing sentence fragments; restudy presented 50% correct sentences and 50% sentences containing pragmatic-inference errors, counterbalanced across participants. Both target groups then saw the original correct sentence as feedback. The final cued-recall test covered all 30 sentences after a one-minute distractor, in the same laboratory session, without feedback. Correct responses included original meanings and acceptable synonyms. Although restudy was described to participants as another person's output, its errors were experimentally constructed: this is not participant-paired yoking. The analysis unit is the participant's proportion, not 30 independent item observations per participant. [A2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A07",
+          "label": "Derived mean difference",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Derives +0.22 proportion correct, equivalently +22 percentage points, with correct sign and scale.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 38,
+              "text": "Thus retrieval with feedback averaged **22 percentage points more correct responses**, with an approximate **95% CI of 13.4–30.6 percentage points**. This uses independent randomized participants and an approximate t-based sampling distribution for bounded participant proportions; it does not treat individual items as independent trials. It is a direct two-cell reconstruction, not the paper's factorial main effect or conditional error-correction index."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 21,
+              "text": "\\widehat\\Delta=0.83-0.61=0.22,"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A08",
+          "label": "Derived uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Uses the participant-level Welch formula, SE 0.0424657, df about 41.51 and CI about [0.13427,0.30573]. States independent-participant and approximate sampling-distribution assumptions, unequal-variance allowance, rounded inputs, and fixed-material scope.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 22,
+              "text": "\\qquad SE(\\widehat\\Delta)=\\sqrt{0.10^2/30+0.21^2/30}=0.042466."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 38,
+              "text": "Thus retrieval with feedback averaged **22 percentage points more correct responses**, with an approximate **95% CI of 13.4–30.6 percentage points**. This uses independent randomized participants and an approximate t-based sampling distribution for bounded participant proportions; it does not treat individual items as independent trials. It is a direct two-cell reconstruction, not the paper's factorial main effect or conditional error-correction index."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 40,
+              "text": "Both means and SDs are printed to two decimals, so the interval is approximate. Under ordinary nearest-hundredth rounding, mean rounding alone permits an underlying contrast approximately 0.210–0.230; those bounds are not a confidence interval. The unused no-feedback marginal is printed as 0.28 although the two printed cell means average to 0.27. That discrepancy is preserved, not repaired or used to change the target cells. [A1]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/table-wrap-foot/fn[@id=\"t003fn001\"]/p",
+              "pdf_page": 8,
+              "description": "Table 3 footnote identifies mean +/- SD"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Supplies exact Table 3 block/row/columns and caption/footnote plus identifiable XML method locations for participants, design and timing; separates reported inputs from derived results.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 46,
+              "text": "- **A1:** `pone.0272427.pdf`, p. 8, Table 3, “Correct responses” block → “Experiment 1” → “Feedback” row → “Retrieval” and “Restudy” columns; table footnote. XML `//table-wrap[@id='pone.0272427.t003']`, including `table-wrap-foot/fn/p`. Engine-expanded coordinates are row 3, columns 1 and 2, zero-based."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 47,
+              "text": "- **A2:** `pone.0272427.xml`: Experiment 1, Participants `sec004/p[1]`; Materials `sec005/p`; Design `sec006/p`; Procedure `sec007/p[1–2]`; Statistical analyses `sec008/p[1–2]`; final-test results `sec011/p[2]`; Discussion `sec013/p[2]`."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[3]/p",
+              "pdf_page": 6,
+              "description": "Experiment 1 / Design"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[4]/p[2]",
+              "pdf_page": 7,
+              "description": "Intermediate phase and final cued-recall test; paragraph begins Afterwards"
+            }
+          ]
+        },
+        {
+          "criterion_id": "A10",
+          "label": "Supported scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Limits the positive contrast to immediate laboratory performance with this sentence set/comparator and avoids conditional-error-correction, universal education, customer, or clinical claims.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 42,
+              "text": "**Scope.** This supports an immediate laboratory comparison for this fixed sentence set and comparator. Restudy included externally presented misinformation, whereas retrieval generated participants' own responses; their error rates and sources differed. The authors acknowledge these limitations in Experiment 1's discussion. It does not establish lasting classroom benefits, clinical benefit, or product value. [A2]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 42,
+              "text": "**Scope.** This supports an immediate laboratory comparison for this fixed sentence set and comparator. Restudy included externally presented misinformation, whereas retrieval generated participants' own responses; their error rates and sources differed. The authors acknowledge these limitations in Experiment 1's discussion. It does not establish lasting classroom benefits, clinical benefit, or product value. [A2]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[2]/sec[1]/sec[1]/p[1]",
+              "pdf_page": 5,
+              "description": "Experiment 1 / Materials and methods / Participants"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "//table-wrap[@id=\"pone.0272427.t003\"]/alternatives/table/tbody/tr[4]",
+              "pdf_page": 8,
+              "description": "Table 3 / Correct responses / Experiment 1 / Feedback / Retrieval and Restudy; td[2] and td[3]"
+            },
+            {
+              "file": "pone.0272427.xml",
+              "xpath": "/article/body/sec[4]/p[8]",
+              "pdf_page": 17,
+              "description": "General discussion classroom-generalization caution"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B01",
+          "label": "Report and population",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies the Sun report and Stanford introductory-statistics study across the autumn/winter cohorts; treats the analyzed outcomes as belonging to that study.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 52,
+              "text": "**Target fixed before extraction.** Estimate the published long-term standardized peer-assessment effect minus the short-term effect, using Table 1, for the analyzed Stanford introductory-statistics students. The report is *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [doi:10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177)."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 52,
+              "text": "**Target fixed before extraction.** Estimate the published long-term standardized peer-assessment effect minus the short-term effect, using Table 1, for the analyzed Stanford introductory-statistics students. The report is *Peer Assessment Enhances Student Learning: The Results of a Matched Randomized Crossover Experiment in a College Statistics Class*, [doi:10.1371/journal.pone.0143177](https://doi.org/10.1371/journal.pone.0143177)."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Section 1.1 Stats 60 Stanford"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B02",
+          "label": "Crossover and matching",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes matching and complementary randomized crossover sequences, with two treatment and two control units per participant; does not invent permanent independent arms.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 54,
+              "text": "**Design, intervention, and missingness.** The ten-week course had an introductory unit and four experimental units. Every student received peer assessment in two units and control in two, following TCTC, CTCT, TCCT, or CTTC. Matching used baseline covariates; complementary sequences were randomized within matched pairs, after covariate blocking and optimal matching. Treatment combined grading/commenting on three peers' responses with receiving three peer reviews. Controls received instructor grading; feedback timing and solution resources were aligned. Instructors blind to assignment graded the outcome assessments. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 54,
+              "text": "**Design, intervention, and missingness.** The ten-week course had an introductory unit and four experimental units. Every student received peer assessment in two units and control in two, following TCTC, CTCT, TCCT, or CTTC. Matching used baseline covariates; complementary sequences were randomized within matched pairs, after covariate blocking and optimal matching. Treatment combined grading/commenting on three peers' responses with receiving three peer reviews. Controls received instructor grading; feedback timing and solution resources were aligned. Instructors blind to assignment graded the outcome assessments. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 5,
+              "description": "Section 2.1 experimental design"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B03",
+          "label": "Treatment and control",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Describes giving and receiving peer feedback versus instructor feedback, with aligned feedback timing and solution resources; control is not absence of feedback.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 54,
+              "text": "**Design, intervention, and missingness.** The ten-week course had an introductory unit and four experimental units. Every student received peer assessment in two units and control in two, following TCTC, CTCT, TCCT, or CTTC. Matching used baseline covariates; complementary sequences were randomized within matched pairs, after covariate blocking and optimal matching. Treatment combined grading/commenting on three peers' responses with receiving three peer reviews. Controls received instructor grading; feedback timing and solution resources were aligned. Instructors blind to assignment graded the outcome assessments. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 54,
+              "text": "**Design, intervention, and missingness.** The ten-week course had an introductory unit and four experimental units. Every student received peer assessment in two units and control in two, following TCTC, CTCT, TCCT, or CTTC. Matching used baseline covariates; complementary sequences were randomized within matched pairs, after covariate blocking and optimal matching. Treatment combined grading/commenting on three peers' responses with receiving three peer reviews. Controls received instructor grading; feedback timing and solution resources were aligned. Instructors blind to assignment graded the outcome assessments. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[3]",
+              "pdf_page": 3,
+              "description": "Treatment and feedback control"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B04",
+          "label": "Timing and effect definition",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Identifies unit quizzes versus the comprehensive Week-11 final and explains control-score standardization followed by averaging within-student treatment-minus-control contrasts; preserves standardized units.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 58,
+              "text": "**What the effects estimate.** Scores were standardized with the relevant control scores' mean and SD; each student's mean standardized performance under treatment was differenced against that student's mean under control, and these within-student differences were averaged across terms. Short-term performance came from quizzes following units; longer-term performance came from corresponding content on the comprehensive final exam in Week 11. The published effects concern the retained compliant/completing samples, rather than an unrestricted intention-to-treat population. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 58,
+              "text": "**What the effects estimate.** Scores were standardized with the relevant control scores' mean and SD; each student's mean standardized performance under treatment was differenced against that student's mean under control, and these within-student differences were averaged across terms. Short-term performance came from quizzes following units; longer-term performance came from corresponding content on the comprehensive final exam in Week 11. The published effects concern the retained compliant/completing samples, rather than an unrestricted intention-to-treat population. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 58,
+              "text": "**What the effects estimate.** Scores were standardized with the relevant control scores' mean and SD; each student's mean standardized performance under treatment was differenced against that student's mean under control, and these within-student differences were averaged across terms. Short-term performance came from quizzes following units; longer-term performance came from corresponding content on the comprehensive final exam in Week 11. The published effects concern the retained compliant/completing samples, rather than an unrestricted intention-to-treat population. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 1,
+              "description": "Final exam in Week 11"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B05",
+          "label": "Published values and uncertainty",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Extracts short 0.115, long 0.122 and both SEs 0.04 from Table 1; does not mislabel SE as SD.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 62,
+              "text": "| Short Term (unit quizzes) | 0.115 | 0.04 | 299 |"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 63,
+              "text": "| Long Term (final exam) | 0.122 | 0.04 | 320 |"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/caption/p",
+              "pdf_page": 4,
+              "description": "SE caption"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B06",
+          "label": "Sample-size roles",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Separates 387 participants from outcome-specific 299 quiz and 320 final-exam analyses, discusses compliance/completion exclusions, and avoids treating these as independent arm counts.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B07",
+          "label": "Descriptive reconstruction",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Computes long minus short as +0.007 standardized effect units, labels it descriptive, and acknowledges rounding and distinct assessment standardizations.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 65,
+              "text": "**Derived descriptive result:** \\(0.122-0.115=\\mathbf{0.007}\\) standardized units. The table caption identifies parentheses as **SEs**. The supplement's Table 6 displays coarser 0.11/0.12 estimates; those are not substituted for the requested main-table values. Under ordinary rounding to three decimals, mean rounding alone gives approximately 0.006–0.008, not a sampling interval. [B1, B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 65,
+              "text": "**Derived descriptive result:** \\(0.122-0.115=\\mathbf{0.007}\\) standardized units. The table caption identifies parentheses as **SEs**. The supplement's Table 6 displays coarser 0.11/0.12 estimates; those are not substituted for the requested main-table values. Under ordinary rounding to three decimals, mean rounding alone gives approximately 0.006–0.008, not a sampling interval. [B1, B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B08",
+          "label": "Dependence and scoped uncertainty hold",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Retains the point difference while holding its unconditional CI/test because estimator covariance is unidentified; gives the covariance-dependent variance formula and explains overlapping/crossover data.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 54,
+              "text": "**Design, intervention, and missingness.** The ten-week course had an introductory unit and four experimental units. Every student received peer assessment in two units and control in two, following TCTC, CTCT, TCCT, or CTTC. Matching used baseline covariates; complementary sequences were randomized within matched pairs, after covariate blocking and optimal matching. Treatment combined grading/commenting on three peers' responses with receiving three peer reviews. Controls received instructor grading; feedback timing and solution resources were aligned. Instructors blind to assignment graded the outcome assessments. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 67,
+              "text": "**Scoped uncertainty hold.** The sources do not supply the joint covariance needed for"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[1]",
+              "pdf_page": 2,
+              "description": "Four-unit crossover and assigned sequences; matching in p[2] on pp2-3"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 9,
+              "description": "Sections 2.4 and 3.1 / combining terms and short- versus long-term outcomes"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B09",
+          "label": "Auditable provenance",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Cites Table 1 named rows and SE caption, the method sample-size paragraph, and the supplement estimator pages/sections; reported and derived quantities remain distinct.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 80,
+              "text": "- **B1:** `pone.0143177.pdf`, p. 4, Table 1, both named effect rows and “Effect Size” column; caption. XML `//table-wrap[@id='pone.0143177.t001']`; expanded rows 1/2, column 1."
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 71,
+              "text": "=SE_L^2+SE_S^2-2\\operatorname{Cov}(\\hat d_L,\\hat d_S)."
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.s001.pdf",
+              "pdf_page": 7,
+              "description": "Section 2.2 / Effect size estimation: control-score standardization, within-person treatment-minus-control differences, mean across students"
+            }
+          ]
+        },
+        {
+          "criterion_id": "B10",
+          "label": "Interpretation and scope",
+          "binary_points": 1,
+          "optional_partial_points": 1,
+          "reason": "Does not infer increased/equal effects from the small difference or separate significance tests; limits interpretation to course and analyzed compliant/completing samples without clinical/customer validation.",
+          "recipient_evidence": [
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 76,
+              "text": "**Scope.** The estimates are descriptively very similar, but 0.007 does not demonstrate improvement or decay over time: instruments, standardizations, and retained samples differ. Compliance selection and possible carryover/spillover further limit broader causal interpretation. This is one course across two terms, not evidence of clinical benefit or commercial readiness. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 76,
+              "text": "**Scope.** The estimates are descriptively very similar, but 0.007 does not demonstrate improvement or decay over time: instruments, standardizations, and retained samples differ. Compliance selection and possible carryover/spillover further limit broader causal interpretation. This is one course across two terms, not evidence of clinical benefit or commercial readiness. [B2–B3]"
+            },
+            {
+              "path": "assay/recipient_eplus/answer.md",
+              "line": 56,
+              "text": "The supplement reports 150 autumn and 240 winter consent-form respondents, with two and one opting out: 148+239=387 participants. Its compliance rule was at least 10 of 12 assigned peer-assessment questions, yielding 322 compliant students. The main report gives **299 students for unit quizzes and 320 for final-exam outcomes**, after compliance and assessment-completion exclusions. These are outcome-specific student totals, not independent treatment/control arm sizes. The supplement belongs to the same study, not a separate replication to pool. [B2–B3]"
+            }
+          ],
+          "key_primary_source_locators": [
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[5]",
+              "pdf_page": 4,
+              "description": "Materials and Methods final paragraph"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "//table-wrap[@id=\"pone.0143177.t001\"]/alternatives/table/tbody",
+              "pdf_page": 4,
+              "description": "Table 1 / tbody tr[1] td[2] short term; tr[2] td[2] long term"
+            },
+            {
+              "file": "pone.0143177.xml",
+              "xpath": "/article/body/sec[2]/p[4]",
+              "pdf_page": 4,
+              "description": "Quizzes and final exam"
+            }
+          ]
+        }
+      ],
+      "critical_errors": [],
+      "answer_sha256": "0ea65d9b8691a4fc4d698f87de37668d464d7f8e99264e52605a2a248be54278",
+      "worklog_sha256": "f1a2c46d401bdcd132e7b73bdb73c43cf87913255ca3370f836d17efda79dfee",
+      "worklog_resources": {
+        "tool_calls": 9,
+        "elapsed_seconds": 235.150148,
+        "start_utc": "2026-10-27T17:32:17.910681+00:00",
+        "end_utc": "2026-10-27T17:36:13.060829+00:00",
+        "token_usage": "unknown",
+        "billed_cost": "unknown",
+        "within_shared_cap": true,
+        "operations_list_length_matches_count": true,
+        "timing_arithmetic_verified": true,
+        "provenance": "Recipient worklog records; not independently metered original process telemetry."
+      },
+      "replay": {
+        "code_sha256": "50ad8fa2bc4a46530d45173b8c0096a7d94d47aac30b771dd651be982620d2f5",
+        "submitted_result_sha256": "4a089810288a906d6a52cc4d4a02865f2aaf8490670955f15455d81a4a46516b",
+        "returncode": 0,
+        "exact_json_match": true,
+        "observed_engine_calls": {
+          "cell_value": 4,
+          "mean_difference": 2,
+          "read_jats": 2
+        },
+        "method": "Unmodified submitted code copied to temporary directory; profiler observed artifact functions; original recipient output preserved."
+      }
+    }
+  },
+  "findings": {
+    "accuracy_increment_eplus_minus_e": 0,
+    "accuracy_increment_eplus_minus_u": 0,
+    "functional_artifact_use_verified": true,
+    "artifact_functions_observed_on_replay": {
+      "cell_value": 4,
+      "mean_difference": 2,
+      "read_jats": 2
+    },
+    "resource_differences": {
+      "eplus_minus_e_elapsed_seconds": -0.9108019999999897,
+      "eplus_minus_u_elapsed_seconds": 59.451662,
+      "eplus_minus_e_tool_calls": -1,
+      "eplus_minus_u_tool_calls": -1
+    },
+    "interpretation": "All three meet all prespecified criteria on these two tasks. No graded accuracy advantage from E+ was observed. This ceiling result does not establish equivalence, no value elsewhere, reliable speed advantage, or economic benefit."
+  },
+  "limitations": [
+    "One completed run per condition on two reports; not a repeated or randomized efficacy estimate.",
+    "Strong common task instructions already specified central design and covariance pitfalls, reducing room for detectable incremental gain.",
+    "Tool count depends on underlying-tool convention; operations differ and wall-clock elapsed is noisy. All conditions had the same nominal cap, not identical realized resource use.",
+    "Token usage, billed costs, API/model telemetry, and value of downstream work were unavailable.",
+    "Replay confirms code behavior and saved-result agreement; original execution history is supported by worklogs and files rather than a separate trusted telemetry service.",
+    "Research artifact acceptance does not confer customer value, clinical efficacy, scientific novelty, or deployment authority."
+  ],
+  "publication": {
+    "source_subset": "assay/source_packet",
+    "receipt": "assay/source_packet/source_receipt.json",
+    "note": "assay/source_packet/PUBLICATION_NOTE.md",
+    "unlicensed_osf_raw_files_redistributed": false,
+    "signed_queries_in_publication_receipt": false,
+    "original_packet_mutated": false,
+    "key_in_recovered_capsule": false,
+    "frozen_verifier_caveat": "Frozen private_verify.py retained unchanged for audit; it expects original colocated sources and OSF count-check data. Published core numerical results can be reproduced without raw data through recipient calculation code and exact publisher tables."
+  }
+}
