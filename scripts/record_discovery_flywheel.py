@@ -517,6 +517,7 @@ def record() -> dict[str, Any]:
         ROOT / "tests/test_workflow_requalification.py",
         ROOT / "tests/test_flywheel_arrangements.py",
         ROOT / "tests/test_flywheel_discovery_ui.py",
+        ROOT / "tests/test_flywheel_verified_results.py",
         ROOT / "tests/browser/test_flywheel_discovery_browser.py",
         *sorted((ROOT / "tests/runtime").glob("test_flywheel_*.py")),
     ]

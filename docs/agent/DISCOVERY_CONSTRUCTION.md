@@ -172,6 +172,16 @@ experiments and stopping conditions stay visible. Populated fields never become
 discovered, constructed, accepted or sold outcomes automatically. Imported projects
 and evidence cannot restore authority. Recorded regression evidence is separate.
 
+The results layer now puts an actual checked origin artifact and downloadable
+workflow configuration before the planning form. Its counts come from the recorded
+dossier: twelve checked fresh results comprise three feasible placements and nine
+verified infeasibility results. It does not count them as twelve delivered jobs.
+The conventional expert's parity, unknown complete actual cost and lack of live or
+commercial qualification stay beside these results. Comparisons, full JSON and
+accounting remain inspectable; the initial discovery form needs only a beneficiary's
+need and the purpose to preserve. Investigation and construction fields expand as
+needed. All existing source exports and project histories keep their original format.
+
 ## Evidence boundaries, dependencies and rollback
 
 The source register binds the actual *Transformational Intelligence*, *Invent the

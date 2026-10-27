@@ -1,0 +1,29 @@
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+______________ test_146_complete_workers_and_predecessor_mixtures ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-235/test_146_complete_workers_and_0')
+
+    def test_146_complete_workers_and_predecessor_mixtures(tmp_path: Path) -> None:
+        raw = (ROOT / "tests/fixtures/capability-checkout-release-146-workers.json").read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == WORKERS_SHA256
+        fixture = json.loads(raw)
+        previous = json.loads((ROOT / "tests/fixtures/capability-checkout-release-145-workers.json").read_bytes())
+        catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
+        bodies = {
+            name: (ROOT / name).read_bytes()
+            for name in set(catalog["sources"]) | set(checkout.PROTECTED_FLYWHEEL_146_EXTRA_FILES)
+        }
+        assert len(bodies) == 61
+        for name, record in fixture["files"].items():
+            body = record["text"].encode()
+>           assert body == (ROOT / name).read_bytes()
+E           AssertionError: assert b'/* SPDX-Lic...  }));\n});\n' == b'/* SPDX-Lic...  }));\n});\n'
+E             
+E             At index 105 diff: b'6' != b'0'
+E             Use -v to get more diff
+
+tests/test_protected_flywheel_release.py:55: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_protected_flywheel_release.py::test_146_complete_workers_and_predecessor_mixtures
+1 failed, 1 passed in 0.20s
