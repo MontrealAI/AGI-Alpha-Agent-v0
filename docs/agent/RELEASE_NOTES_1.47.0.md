@@ -21,6 +21,12 @@ before releasing reservations; recovery cannot revive their authority. Separate 
 retain Operational Alpha (E versus U) and retained Alpha (E+ versus E), original mission accounting,
 missing cases and current supporting authorization. A declared model profile is not an executed trial.
 
+Production rechecks the exact commercial authorization's current controller at selection,
+dispatch and active execution checkpoints. Production and prototype execution also recheck the
+original decision controller, exact intent and existing expiry throughout the mission. Withdrawal
+stops later actions while preserving uncertain costs, consumed decisions and capacity reservations.
+An offering transition's already-consumed submission deadline does not become a new offering lease.
+
 The research-access checker constructs a finite obligation-preserving conditional path and refuses
 denied or incomplete cases. An independently authored conventional exact search matches all 23 complete
 comparisons; one deliberately node-limited case is incomplete in both arms. Five adverse witness probes
@@ -69,6 +75,12 @@ Cette candidate relie l’exécution, les spécialistes, les décisions d’entr
 la Nova-Seed de recherche et le compilateur FusionPlan existants. Le parcours bilingue conserve les
 obligations initiales, les essais manquants ou défavorables, les coûts incomplets et les refus.
 Les dépôts, les recettes d’un service accepté et les remboursements restent distincts.
+
+La production revérifie le contrôleur de l’autorisation commerciale à la sélection, au lancement
+et pendant l’exécution. Le prototype et la production revérifient aussi le contrôleur, l’intention
+et l’expiration de la décision initiale. Un retrait arrête les actions suivantes sans effacer les
+coûts incertains ni les réservations. L’échéance déjà consommée d’une commande de transition ne
+devient pas une nouvelle durée d’autorisation de l’offre.
 
 Le contrôle conventionnel égale les 23 comparaisons complètes du chemin d’accès ; un cas reste
 incomplet dans les deux méthodes. Ce résultat ne démontre aucune percée technique, supériorité de

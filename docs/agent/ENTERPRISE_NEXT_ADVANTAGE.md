@@ -57,6 +57,15 @@ one attempt. All alternative evidence and offering need records are rechecked in
 transaction. An old decision refuses after relevant source, capability, control,
 offering, capacity or ledger changes.
 
+Production rechecks the current controller of its exact recorded commercial authorization
+when selecting and dispatching work and at every active execution checkpoint. Both production
+and prototyping recheck the original decision signature, journal, consumed-operation binding,
+exact request and existing decision expiry before later actions. A failed check preserves the
+uncertain execution, costs and reservations; it does not renew authority or replay the decision.
+The commercial transition command's deadline was consumed when the transition was applied.
+It is not an undeclared offering lease: historical qualification remains inspectable, while
+current controller trust and separate current decision/execution permits govern future work.
+
 The native `mission-run --enterprise-decision` path executes that connection.
 The other actions continue through their existing separately signed lifecycle
 commands; this contribution does not autonomously dispatch Gym, admission or
@@ -215,6 +224,10 @@ net, avantage croissant ou réseau réel qualifié n’est établi.
 Les commandes gardent les signatures, permissions, coûts A/B/C, limites et
 procédures de récupération existants. Les décisions ne créent aucune vente ni
 autorité. Une activité Beta rentable reste valable sans entraînement ni rétention.
+La production revérifie le contrôleur de l’autorisation commerciale pendant les actions.
+Le prototype et la production revérifient la signature, l’intention et l’expiration de la décision
+initiale. Un échec conserve les coûts incertains et les réservations, sans réactiver une autorité.
+L’échéance déjà consommée de la commande de transition ne crée pas une nouvelle durée d’offre.
 Les ressources réelles et l’ingénierie de composition encore nécessaires sont
 précisées ci-dessus. La publication passe par les propriétaires et contrôles
 existants ; ce document ne certifie pas une mise en service.

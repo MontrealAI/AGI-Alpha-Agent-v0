@@ -33,6 +33,13 @@ def historical_sources() -> dict[str, bytes]:
     assert value["commit"] == "372e88f6274ae803c80f8b8c95c3810d52de01ca"
     files = {name: body.encode() for name, body in value["files"].items()}
     files["docs/flywheel/index.html"] = (ROOT / "tests/fixtures/frontier-delivery-147-page.html.txt").read_bytes()
+    archived = (ROOT / "tests/fixtures/delivery-guard-147-historical-source.json").read_bytes()
+    assert hashlib.sha256(archived).hexdigest() == "e421b6e8f8192dbc7ebf0ae784901fda75f8b932fb2bd9ce5e8d49a69b619346"
+    name = "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"
+    enterprise = json.loads(archived)["files"][name].encode()
+    assert hashlib.sha256(enterprise).hexdigest() == "fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1"
+    assert name not in files
+    files[name] = enterprise
     return files
 
 
@@ -45,6 +52,7 @@ def current_files() -> dict[str, bytes]:
 
 def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source(tmp_path: Path) -> None:
     value = fixture()
+    archived = historical_sources()
     assert value["version"] == "1.47.0" and len(value["predecessorProfiles"]) == 26
     assert value["orderedParents"] == ["4be5a593ac08275fc72a446f42502f6de80cd426"]
     for name, expected in value["predecessorProfiles"].items():
@@ -55,7 +63,7 @@ def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrat
         ("pageSha256", "docs/flywheel/index.html"),
         ("sourceManifestSha256", "docs/flywheel/sources.json"),
     ):
-        body = historical_sources().get(name, (ROOT / name).read_bytes())
+        body = archived[name] if name in archived else (ROOT / name).read_bytes()
         assert hashlib.sha256(body).hexdigest() == value[field]
     for name, row in value["files"].items():
         body = current_files()[name]
@@ -68,7 +76,7 @@ def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrat
     frozen = json.loads(raw)
     assert sum(name.startswith("alpha_factory_v1/core/runtime/") for name in frozen["sources"]) == 75
     for name, expected in frozen["sources"].items():
-        body = historical_sources().get(name, (ROOT / name).read_bytes())
+        body = archived[name] if name in archived else (ROOT / name).read_bytes()
         assert hashlib.sha256(body).hexdigest() == expected, name
     before = current_files()
     write_files(tmp_path, before)

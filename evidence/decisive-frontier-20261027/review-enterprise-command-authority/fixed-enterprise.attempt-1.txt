@@ -1,0 +1,168 @@
+...........................................F............................ [ 94%]
+....                                                                     [100%]
+=================================== FAILURES ===================================
+_________ test_missing_receipt_cannot_clear_a_merely_attempting_launch _________
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7791962780>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7791f663d0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7791961700>
+
+    def test_missing_receipt_cannot_clear_a_merely_attempting_launch(setup: dict[str, Any], monkeypatch: Any) -> None:
+        s.funding(setup)
+        register(setup)
+        decision(setup)
+        enterprise = Enterprise(setup["service"])
+        executor, mission, profile, permit = execution(setup)
+
+        def crash(*args: Any) -> None:
+            raise SystemExit("interrupted before the executor records its state")
+
+        monkeypatch.setattr(executor, "run", crash)
+        with pytest.raises(SystemExit):
+>           enterprise.run("first-decision", executor, mission, profile, permit)
+
+tests/runtime/test_flywheel_enterprise.py:538:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_enterprise.Enterprise object at 0x7f779196cbc0>
+decision_id = 'first-decision'
+executor = <alpha_factory_v1.core.runtime.successor.flywheel_execution.MissionExecutor object at 0x7f7791963e00>
+mission = ExecutionMission(schema_version=1, schema_name='flywheel-execution/v1', mission_id='placement-origin', beneficiary='In...': 'simulated', 'tools': 'executed-local'}, max_turns=24, max_actions=100, max_seconds=1800, max_history_bytes=1000000)
+profile = ExecutionProfile(schema_version=1, model_id='scripted-protocol-fixture/v1', model_revision=None, reasoning_mode='stand...', model_request_cap_micro_usd=None, tool_request_caps_micro_usd={}, max_output_tokens=16384, max_context_bytes=750000)
+permit = SignedEnvelope(domain='flywheel-execution-permit', principal='controller', payload={'journal_identity': 'urn:agialpha:...ma_version': 1}}, signature='XSconHfMpYJiy7XuNsNlUpPr1GirmA4ufvI7qyD+ZvYquTpv2Seg4VnYzaTwjgPAnNyG+oozoVyyispwWkNJAA==')
+
+    def run(
+        self,
+        decision_id: str,
+        executor: MissionExecutor,
+        mission: ExecutionMission,
+        profile: ExecutionProfile,
+        permit: SignedEnvelope,
+    ) -> dict[str, Any]:
+        """Consume one bounded production/prototype decision before actual I/O."""
+        mission = ExecutionMission.model_validate_json(canonical(mission))
+        profile = ExecutionProfile.model_validate_json(canonical(profile))
+        permit = SignedEnvelope.model_validate_json(canonical(permit))
+        raw = self.service.trust.verify(permit, "flywheel-execution-permit", "controller")
+        terms = ExecutionPermit.model_validate(raw["permit"])
+        if raw.get("journal_identity") != self.journal.identity or terms.operation_id != mission.mission_id:
+            raise ValueError("enterprise execution must bind the exact journal and mission identity")
+        if (
+            executor.journal is not self.journal
+            or executor.costs is not self.costs
+            or executor.trust is not self.service.trust
+        ):
+            raise ValueError("enterprise must use the existing authoritative executor")
+        with self.journal.transaction() as cx:
+            context = self._context(cx)
+            decision = self._read("decision", decision_id, cx)
+            if decision is None or decision["consumed"] or decision["context"] != context:
+                raise Conflict("decision consumed or operating context changed; reassess")
+            self._decision_authority(decision_id, decision, cx)
+            if self.journal.latest("@control", cx)["state"] != "ready":
+                raise Conflict("decision authority expired or enterprise stopped")
+            for frozen_row in decision["alternatives"]:
+                alternative = Alternative.model_validate(frozen_row["alternative"])
+                self._evidence(alternative.evidence, cx)
+                if alternative.offering_id is not None:
+                    current_offering = self._read("offering", alternative.offering_id, cx)
+                    if (current_offering["digest"] if current_offering else None) != frozen_row["offering_head"]:
+                        raise Conflict("alternative offering changed since decision; reassess")
+                    if current_offering is not None:
+                        self._evidence(Offering.model_validate(current_offering["spec"]).need_evidence, cx)
+                        if (
+                            frozen_row["eligible"]
+                            and alternative.action == "produce"
+                            and current_offering["stage"] == "authorized"
+                        ):
+                            self._commercial_evidence(current_offering, cx)
+            row = next(
+                x for x in decision["alternatives"] if x["alternative"]["alternative_id"] == decision["selected"]
+            )
+            choice = Alternative.model_validate(row["alternative"])
+            if choice.action not in {"produce", "prototype"} or not row["eligible"]:
+                raise ValueError("this decision requires another existing lifecycle command or no execution")
+            offering = self._read("offering", str(choice.offering_id), cx)
+            if offering is None or offering["digest"] != row["offering_head"]:
+                raise Conflict("offering changed since decision")
+            if choice.action == "produce":
+                self._commercial_authority(offering, cx)
+                self._technical_evidence(offering, cx)
+            spec = Offering.model_validate(offering["spec"])
+            if spec.required_capabilities:
+                raise ValueError(
+                    "Capability-dependent execution needs separately authenticated invocation; adapter unsupported"
+                )
+            tools = {t.get("name", "computer") for t in profile.tools}
+            expected_bucket = "A"
+            if (
+                mission.beneficiary != spec.beneficiary
+                or mission.goal != spec.useful_outcome
+                or mission.deliverable != spec.deliverable
+                or mission.acceptance_criteria != spec.acceptance_criteria
+                or mission.mode != spec.mode
+                or mission.max_seconds > min(choice.seconds, spec.turnaround_seconds)
+                or not tools <= set(spec.permitted_tools)
+                or terms.bucket != expected_bucket
+                or terms.max_authorized_micro_usd > choice.cash_cost_cap_micro_usd
+                or terms.expires_at <= int(time.time())
+                or terms.request_digest != digest("flywheel-execution-request", mission)
+                or terms.profile_digest != digest("flywheel-execution-profile", profile)
+                or terms.environment_digest
+                != digest("flywheel-execution-environment-contract", executor.environment.identity)
+            ):
+                raise ValueError("mission, permit or tools differ from the selected offering envelope")
+            if terms.config_digest != runtime_digest(self.journal.config.model_dump()):
+                raise ValueError("execution permit has stale runtime configuration")
+            if self._read("launch", terms.operation_id, cx) is not None:
+                raise Conflict("enterprise launch already attempted")
+            launch = {
+                "decision_id": decision_id,
+                "decision_digest": decision["digest"],
+                "offering_spec_digest": digest("enterprise-offering", spec),
+                "execution_permit_digest": digest("enterprise-execution-permit", permit),
+                "request_digest": terms.request_digest,
+                "profile_digest": terms.profile_digest,
+                "ledger_mission_id": mission.mission_id,
+                "source": context["source"],
+                "status": "attempting-or-uncertain",
+                "execution_digest": None,
+            }
+            pending = self.journal.append(cx, key("launch", terms.operation_id), launch)
+            active = self._read("active", "capacity", cx)
+            reservations = active["reservations"] if active else {}
+            if len(reservations) >= 64:
+                raise Conflict("capacity reservation bound reached; reconcile outstanding work")
+            reservations[terms.operation_id] = {
+                "slots": choice.slots,
+                "cash": choice.cash_cost_cap_micro_usd,
+                "offering_id": spec.offering_id,
+            }
+            self.journal.append(cx, key("active", "capacity"), {"reservations": reservations})
+            updated = self.journal.document(decision)
+            updated["consumed"] = True
+            self.journal.append(cx, key("decision", decision_id), updated)
+            self.service.checkpoint.advance(self.journal, cx)
+
+        def current_support() -> None:
+            # active() also runs inside the executor's writer transaction.
+            # Use one read-only snapshot, avoiding a nested writer lock.
+            with closing(sqlite3.connect(self.journal.path.as_uri() + "?mode=ro", uri=True)) as cx:
+                cx.execute("BEGIN")
+                self._decision_authority(decision_id, decision, cx)
+                if choice.action == "produce":
+                    current_offering = self._read("offering", spec.offering_id, cx)
+                    if current_offering is None or current_offering["digest"] != offering["digest"]:
+                        raise Conflict("offering changed during production; reassess")
+                    self._commercial_authority(current_offering, cx)
+                    self._technical_evidence(current_offering, cx)
+
+        try:
+>           result = executor.run(mission, profile, permit, support_check=current_support)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: test_missing_receipt_cannot_clear_a_merely_attempting_launch.<locals>.crash() got an unexpected keyword argument 'support_check'
+
+alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py:708: TypeError
+- generated xml file: /tmp/agi-alpha-commercial-fix-c516/evidence/decisive-frontier-20261027/review-enterprise-command-authority/fixed-enterprise.xml -
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_enterprise.py::test_missing_receipt_cannot_clear_a_merely_attempting_launch
+1 failed, 75 passed in 36.95s

@@ -201,6 +201,52 @@ class Enterprise:
         self._evidence(assessment.evidence, cx)
         return assessment
 
+    def _command_authority(self, signed: Any) -> EnterpriseCommand:
+        envelope = SignedEnvelope.model_validate_json(canonical(signed))
+        return EnterpriseCommand.model_validate(
+            self.costs.current_signature(envelope, "flywheel-enterprise-command", "controller")
+        )
+
+    def _decision_authority(self, identity: str, decision: dict[str, Any], cx: Any) -> None:
+        command = self._command_authority(decision["signed"])
+        operation = self._read("operation", command.operation_id, cx)
+        if (
+            command.action != "decide"
+            or command.expected_head is not None
+            or command.record != decision["request"]
+            or DecisionRequest.model_validate(command.record).decision_id != identity
+            or operation is None
+            or operation["target"] != key("decision", identity)
+            or operation["result"] != decision["digest"]
+        ):
+            raise ValueError("decision authority differs from the exact recorded intent")
+        if command.expires_at <= int(time.time()):
+            raise Conflict("decision authority expired")
+
+    def _commercial_authority(self, offering: dict[str, Any], cx: Any) -> None:
+        command = self._command_authority(offering["signed"])
+        spec = Offering.model_validate(offering["spec"])
+        history = offering.get("history")
+        if not isinstance(history, list) or not history or not isinstance(history[-1], dict):
+            raise ValueError("commercial authorization has no exact transition history")
+        last = history[-1]
+        operation = self._read("operation", command.operation_id, cx)
+        if (
+            offering["stage"] != "authorized"
+            or command.action != "advance"
+            or command.record
+            != {"offering_id": spec.offering_id, "stage": "authorized", "execution_operation": None, "commercial": None}
+            or last.get("stage") != "authorized"
+            or last.get("terms") != command.record
+            or last.get("from_digest") != command.expected_head
+            or operation is None
+            or operation["target"] != key("offering", spec.offering_id)
+            or operation["result"] != offering["digest"]
+        ):
+            raise ValueError("commercial authorization differs from the exact authorized offering")
+        # The transition deadline was consumed by apply(); it is not an offering lease.
+        # Current controller trust still governs every future production action.
+
     def _technical_evidence(self, offering: dict[str, Any], cx: Any) -> None:
         """Require the same qualified prototype to remain a currently accepted origin."""
         operation = offering.get("prototype_operation")
@@ -446,6 +492,10 @@ class Enterprise:
                         reasons.append("offering not currently authorized")
                     elif alternative.action == "produce":
                         try:
+                            self._commercial_authority(offering, cx)
+                        except (KeyError, ValueError):
+                            reasons.append("commercial authorization is no longer eligible")
+                        try:
                             self._technical_evidence(offering, cx)
                         except (KeyError, ValueError):
                             reasons.extend(
@@ -555,11 +605,8 @@ class Enterprise:
             decision = self._read("decision", decision_id, cx)
             if decision is None or decision["consumed"] or decision["context"] != context:
                 raise Conflict("decision consumed or operating context changed; reassess")
-            command = EnterpriseCommand.model_validate(decision["signed"]["payload"])
-            self.service.trust.verify(
-                SignedEnvelope.model_validate(decision["signed"]), "flywheel-enterprise-command", "controller"
-            )
-            if command.expires_at <= int(time.time()) or self.journal.latest("@control", cx)["state"] != "ready":
+            self._decision_authority(decision_id, decision, cx)
+            if self.journal.latest("@control", cx)["state"] != "ready":
                 raise Conflict("decision authority expired or enterprise stopped")
             for frozen_row in decision["alternatives"]:
                 alternative = Alternative.model_validate(frozen_row["alternative"])
@@ -586,6 +633,7 @@ class Enterprise:
             if offering is None or offering["digest"] != row["offering_head"]:
                 raise Conflict("offering changed since decision")
             if choice.action == "produce":
+                self._commercial_authority(offering, cx)
                 self._technical_evidence(offering, cx)
             spec = Offering.model_validate(offering["spec"])
             if spec.required_capabilities:
@@ -644,22 +692,20 @@ class Enterprise:
             self.service.checkpoint.advance(self.journal, cx)
 
         def current_support() -> None:
-            if choice.action == "produce":
-                # active() also runs inside the executor's writer transaction.
-                # Use one read-only snapshot, avoiding a nested writer lock.
-                with closing(sqlite3.connect(self.journal.path.as_uri() + "?mode=ro", uri=True)) as cx:
-                    cx.execute("BEGIN")
+            # active() also runs inside the executor's writer transaction.
+            # Use one read-only snapshot, avoiding a nested writer lock.
+            with closing(sqlite3.connect(self.journal.path.as_uri() + "?mode=ro", uri=True)) as cx:
+                cx.execute("BEGIN")
+                self._decision_authority(decision_id, decision, cx)
+                if choice.action == "produce":
                     current_offering = self._read("offering", spec.offering_id, cx)
                     if current_offering is None or current_offering["digest"] != offering["digest"]:
                         raise Conflict("offering changed during production; reassess")
+                    self._commercial_authority(current_offering, cx)
                     self._technical_evidence(current_offering, cx)
 
         try:
-            result = (
-                executor.run(mission, profile, permit, support_check=current_support)
-                if choice.action == "produce"
-                else executor.run(mission, profile, permit)
-            )
+            result = executor.run(mission, profile, permit, support_check=current_support)
         except Exception:
             self._finish(terms.operation_id, pending["digest"], "failed-or-uncertain")
             raise

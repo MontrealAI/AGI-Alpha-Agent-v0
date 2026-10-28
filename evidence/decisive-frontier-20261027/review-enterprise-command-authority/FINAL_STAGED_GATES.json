@@ -1,0 +1,50 @@
+{
+  "schema": "final-staged-named-gates/v1",
+  "at": "2026-10-28T04:55:22.002104+00:00",
+  "results": [
+    {
+      "check": "diff-whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.06409272300152224,
+      "output": "final-diff-whitespace.txt"
+    },
+    {
+      "check": "dp-scrubber",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "scripts/dp_scrubber.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.5649247260007542,
+      "output": "final-dp-scrubber.txt"
+    },
+    {
+      "check": "no-binary-diff",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "scripts/check_no_binary_diff.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.5654577709974546,
+      "output": "final-no-binary-diff.txt"
+    },
+    {
+      "check": "held-static",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "scripts/check_held_native_source.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.06426700900192373,
+      "output": "final-held-static.txt"
+    }
+  ],
+  "full_hook_campaign": false,
+  "private_classifier_scope": "Existing repository placeholder corpus check only; does not attest arbitrary secret absence."
+}

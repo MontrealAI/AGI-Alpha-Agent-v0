@@ -29,6 +29,7 @@ from tests.test_insight_frontier_review_authority_release import edition_files a
 
 FIXTURE = "tests/fixtures/capability-checkout-delivery-guard-147-workers.json"
 FIXTURE_SHA256 = "a5ec93aeb618dfd65b0c6692efec0d183e78f10e3370f781e6333403fab094c7"
+HISTORICAL_SOURCE_SHA256 = "e421b6e8f8192dbc7ebf0ae784901fda75f8b932fb2bd9ce5e8d49a69b619346"
 PREDECESSOR_NAMES = (
     *HISTORICAL_PROFILES,
     "INSIGHT_FRONTIER_147_EXTRA_FILES",
@@ -41,6 +42,18 @@ PREDECESSOR_NAMES = (
     "FRONTIER_DELIVERY_147_EXTRA_FILES",
 )
 PREDECESSOR_SHA256 = "b779423e2d5fb07e38d5c00c3d9e13843023e8b7bf24dc987210b1f3defcb47e"
+
+
+def historical_sources() -> dict[str, bytes]:
+    raw = (ROOT / "tests/fixtures/delivery-guard-147-historical-source.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == HISTORICAL_SOURCE_SHA256
+    value = json.loads(raw)
+    assert value["commit"] == "c5164a385f54b59a11b53d70cf491e5e21ad3b18"
+    files = {name: text.encode() for name, text in value["files"].items()}
+    page = (ROOT / value["page_fixture"]).read_bytes()
+    assert hashlib.sha256(page).hexdigest() == value["page_sha256"]
+    files["docs/flywheel/index.html"] = page
+    return files
 
 
 def fixture() -> dict:
@@ -56,31 +69,37 @@ def fixture() -> dict:
     assert (
         value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
     )
-    assert (
-        value["enterpriseModuleSha256"]
-        == hashlib.sha256(
-            (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
-        ).hexdigest()
-    )
+    enterprise = historical_sources()["alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"]
+    assert value["enterpriseModuleSha256"] == hashlib.sha256(enterprise).hexdigest()
     assert set(value["files"]) == set(WORKERS)
     return value
 
 
 def current_files() -> dict[str, bytes]:
-    catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
-    names = set(catalog["sources"]) | set(checkout.DELIVERY_GUARD_147_EXTRA_FILES)
-    assert len(names) == 61
-    return {name: (ROOT / name).read_bytes() for name in names}
+    files = frontier_edition_files()
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+    assert len(files) == 61
+    return files
 
 
-def test_reconciled_edition_matches_current_source_and_preserves_both_histories() -> None:
+def test_reconciled_edition_preserves_exact_historical_source_and_both_histories(tmp_path: Path) -> None:
     value = fixture()
     profiles = {name: getattr(checkout, name) for name in PREDECESSOR_NAMES}
     assert len(profiles) == 27
     assert hashlib.sha256(json.dumps(profiles, sort_keys=True, separators=(",", ":")).encode()).hexdigest() == (
         PREDECESSOR_SHA256
     )
-    assert value["pageSha256"] == hashlib.sha256((ROOT / "docs/flywheel/index.html").read_bytes()).hexdigest()
+    archived = historical_sources()
+    assert value["pageSha256"] == hashlib.sha256(archived["docs/flywheel/index.html"]).hexdigest()
+    for name, raw in archived.items():
+        if name.endswith("-evidence.json"):
+            packet = json.loads(raw)
+            for field in ("sources", "source_sha256"):
+                bindings = packet.get(field)
+                if isinstance(bindings, dict):
+                    for source, expected in bindings.items():
+                        body = archived[source] if source in archived else (ROOT / source).read_bytes()
+                        assert hashlib.sha256(body).hexdigest() == expected, source
     before = current_files()
     for name, record in value["files"].items():
         body = before[name]
@@ -88,7 +107,8 @@ def test_reconciled_edition_matches_current_source_and_preserves_both_histories(
         assert (len(body), hashlib.sha256(body).hexdigest()) == checkout.DELIVERY_GUARD_147_EXTRA_FILES[name]
         assert (record["bytes"], record["sha256"]) == checkout.DELIVERY_GUARD_147_EXTRA_FILES[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
-    report = checkout.refresh(ROOT)
+    write_files(tmp_path, before)
+    report = checkout.refresh(tmp_path)
     assert report["checked"] == 61 and report["needsRefresh"] == []
     assert report["applied"] is False and report["backupDirectory"] is None
     assert current_files() == before

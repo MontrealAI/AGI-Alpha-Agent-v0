@@ -377,6 +377,13 @@ DELIVERY_GUARD_147_EXTRA_FILES = FRONTIER_DELIVERY_147_EXTRA_FILES | {
     ),
 }
 
+# Complete current commercial-command authority edition; preserve all28 predecessors.
+ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES = DELIVERY_GUARD_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "5aeca3f233b79647232761891e41139b4e0454af3a3c617343852b910f5660c4"),
+    "docs/assets/service-worker.js": (24089, "6270bf90b223f76fb98b1c1289240704559dcfc0b2bce2f338996f858b076eb5"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (26729, "fa65f514c9995ba5c329ba61f5a925e13a634fc0ea8379cae655ee2e38a91fd4"),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -467,6 +474,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, CONNECTED_DELIVERY_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FRONTIER_DELIVERY_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, DELIVERY_GUARD_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

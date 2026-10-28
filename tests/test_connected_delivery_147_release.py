@@ -51,12 +51,10 @@ def fixture() -> dict:
     assert (
         value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
     )
-    assert (
-        value["enterpriseModuleSha256"]
-        == hashlib.sha256(
-            (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
-        ).hexdigest()
-    )
+    archived = (ROOT / "tests/fixtures/delivery-guard-147-historical-source.json").read_bytes()
+    assert hashlib.sha256(archived).hexdigest() == "e421b6e8f8192dbc7ebf0ae784901fda75f8b932fb2bd9ce5e8d49a69b619346"
+    enterprise = json.loads(archived)["files"]["alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"]
+    assert value["enterpriseModuleSha256"] == hashlib.sha256(enterprise.encode()).hexdigest()
     assert set(value["files"]) == set(WORKERS)
     return value
 

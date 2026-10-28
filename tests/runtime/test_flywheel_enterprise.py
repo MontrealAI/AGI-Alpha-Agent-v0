@@ -530,7 +530,8 @@ def test_missing_receipt_cannot_clear_a_merely_attempting_launch(setup: dict[str
     enterprise = Enterprise(setup["service"])
     executor, mission, profile, permit = execution(setup)
 
-    def crash(*args: Any) -> None:
+    def crash(*args: Any, support_check: Any) -> None:
+        assert callable(support_check)
         raise SystemExit("interrupted before the executor records its state")
 
     monkeypatch.setattr(executor, "run", crash)

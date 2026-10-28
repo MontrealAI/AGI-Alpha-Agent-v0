@@ -1,0 +1,140 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Independent bounded probes, with synthetic rights, costs and execution only."""
+from __future__ import annotations
+
+import copy
+from pathlib import Path
+import sqlite3
+from typing import Any
+
+import pytest
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
+from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import Enterprise, key
+from alpha_factory_v1.core.runtime.successor.flywheel_execution import operation_key
+from alpha_factory_v1.core.runtime.successor.trust import TrustAnchor
+import test_flywheel_enterprise as e
+import test_flywheel_enterprise_command_authority as authority
+
+
+@pytest.fixture
+def state(tmp_path: Path) -> dict[str, Any]:
+    return authority.setup.__wrapped__(tmp_path)
+
+
+@pytest.mark.parametrize('target,field', [('decision', 'target'), ('decision', 'result'), ('commercial', 'target'), ('commercial', 'result')])
+def test_consumed_operation_mapping_must_match_original_intent(state: dict[str, Any], target: str, field: str) -> None:
+    offered = authority.prepare(state, 'produce')
+    decided = authority.decision(state, 'produce')
+    signed = decided['signed'] if target == 'decision' else offered['signed']
+    operation = key('operation', signed['payload']['operation_id'])
+    with state['journal'].transaction() as cx:
+        state['service']._state(cx)
+        record = state['journal'].document(state['journal'].latest(operation, cx))
+        record[field] = '0' * 64 if field == 'result' else key('offering', 'different-actual-target')
+        state['journal'].append(cx, operation, record)
+        state['service'].checkpoint.advance(state['journal'], cx)
+    enterprise = Enterprise(state['service'])
+    executor, mission, profile, permit = e.execution(state, 'substitution-refused')
+    before = state['journal'].verify()
+    costs = state['costs'].snapshot()
+    with pytest.raises(ValueError, match='authority|authorization'):
+        enterprise.run('independent-decision', executor, mission, profile, permit)
+    assert state['journal'].verify() == before
+    assert state['costs'].snapshot() == costs
+    assert executor.transport.turn == 0
+    assert enterprise.inspect('decision', 'independent-decision') == decided
+    assert enterprise.inspect('offering', 'resilient-placement') == offered
+    with pytest.raises(KeyError):
+        enterprise.inspect('launch', 'substitution-refused')
+
+
+@pytest.mark.parametrize('action,principal', [('prototype', 'decision-controller'), ('produce', 'commercial-controller')])
+def test_role_only_withdrawal_during_a_response_stops_the_next_tool(state: dict[str, Any], action: str, principal: str) -> None:
+    authority.prepare(state, action)
+    authority.decision(state, action)
+    executor, mission, profile, permit = e.execution(state, 'role-only-withdrawal')
+    respond = executor.transport.respond
+    tools: list[str] = []
+    perform = executor.environment.perform
+
+    def model(*args: Any) -> dict[str, Any]:
+        value = respond(*args)
+        anchor = state['trust']._anchors[principal]
+        state['trust']._anchors[principal] = TrustAnchor(anchor.public_key, frozenset({'accounting'}))
+        return value
+
+    def tool(*args: Any) -> Any:
+        tools.append('bounded-local-tool')
+        return perform(*args)
+
+    executor.transport.respond, executor.environment.perform = model, tool
+    result = Enterprise(state['service']).run('independent-decision', executor, mission, profile, permit)
+    assert result['status'] == 'failed-or-uncertain'
+    assert result['pending'].startswith('model/')
+    assert result['actions'] == 0 and tools == []
+    assert state['costs'].snapshot()['charges']['execution/role-only-withdrawal']['accrued_micro_usd'] is None
+    assert Enterprise(state['service']).inspect('decision', 'independent-decision')['consumed']
+
+
+def test_key_rotation_requires_new_decision_and_accepts_a_fresh_current_one(state: dict[str, Any]) -> None:
+    authority.prepare(state, 'prototype')
+    old = authority.decision(state, 'prototype')
+    private = Ed25519PrivateKey.generate()
+    state['keys']['decision-controller'] = private
+    state['trust']._anchors['decision-controller'] = TrustAnchor(private.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw).hex(), frozenset({'controller'}))
+    enterprise = Enterprise(state['service'])
+    before = state['journal'].verify()
+    with pytest.raises(ValueError):
+        enterprise.run('independent-decision', *e.execution(state, 'old-key-refusal'))
+    assert state['journal'].verify() == before
+    fresh_request = copy.deepcopy(old['request'])
+    fresh_request['decision_id'] = 'current-rotated-decision'
+    fresh = enterprise.apply(e.command(state, 'decide', fresh_request, 'current-rotated-decision', principal='decision-controller'))
+    assert fresh['selected'] == 'deliver'
+    result = enterprise.run('current-rotated-decision', *e.execution(state, 'current-key-delivery'))
+    assert result['status'] == 'delivered-awaiting-independent-acceptance-and-costs'
+    assert enterprise.inspect('decision', 'independent-decision') == old
+    original_operation = enterprise._read('operation', 'current-rotated-decision', None)
+    consumed = enterprise.inspect('decision', 'current-rotated-decision')
+    assert consumed['consumed'] and consumed['digest'] != fresh['digest']
+    assert original_operation['result'] == fresh['digest']
+
+
+def test_shared_executor_keeps_run_local_support_and_readonly_wal_reader(state: dict[str, Any], monkeypatch: pytest.MonkeyPatch) -> None:
+    authority.prepare(state, 'prototype')
+    authority.decision(state, 'prototype')
+    executor, mission, profile, permit = e.execution(state)
+    prior: list[str] = []
+
+    def qualification() -> None:
+        prior.append('independent-current-environment')
+
+    executor.qualification_check = qualification
+    original_connect = sqlite3.connect
+    ro_checks: list[str] = []
+
+    def connect(database: Any, *args: Any, **kwargs: Any) -> Any:
+        cx = original_connect(database, *args, **kwargs)
+        if isinstance(database, str) and database.endswith('?mode=ro'):
+            assert cx.execute('PRAGMA journal_mode').fetchone()[0] == 'wal'
+            with pytest.raises(sqlite3.OperationalError, match='readonly'):
+                cx.execute('CREATE TABLE independent_write_must_fail (value TEXT)')
+            ro_checks.append('readonly-wal')
+        return cx
+
+    monkeypatch.setattr(sqlite3, 'connect', connect)
+    result = Enterprise(state['service']).run('independent-decision', executor, mission, profile, permit)
+    assert result['status'] == 'delivered-awaiting-independent-acceptance-and-costs'
+    assert ro_checks and prior and executor.qualification_check is qualification
+    assert 'support_check' not in vars(executor)
+    e.accept(state, state['journal'].latest(operation_key('placement-origin')))
+    state['trust'].revoke('decision-controller')
+    fresh_executor, fresh_mission, fresh_profile, fresh_permit = e.execution(state, 'direct-current-permit')
+    executor.transport = fresh_executor.transport
+    ro_before = len(ro_checks)
+    direct = executor.run(fresh_mission, fresh_profile, fresh_permit)
+    assert direct['status'] == 'delivered-awaiting-independent-acceptance-and-costs'
+    assert len(ro_checks) == ro_before
+    assert executor.qualification_check is qualification

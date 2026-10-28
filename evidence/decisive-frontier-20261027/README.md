@@ -2,6 +2,27 @@
 
 # Connected Insight engineering and decisive conventional challenge
 
+## Current enterprise-command correction
+
+The current candidate fixes the independently reproduced commercial/decision authority gap on C516.
+The original22-case suite has18failures and4valid controls. The correction passes76enterprise cases,
+8independent targeted probes and75-file strict runtime typing. Its complete minimal runtime selection
+passes1,711tests with one explicit unavailable-Docker-image skip. The current worker/publication
+campaign passes795cases without skips; local browser checks pass23preserved +54Insight +15comparison.
+These are overlapping named scopes, not a full repository or public-release verdict.
+
+[Current qualification](review-enterprise-command-authority/QUALIFICATION.json) retains exact inputs,
+original counterexamples, the crash-fixture compatibility correction, all later results and limits.
+One new complete worker edition preserves all28 predecessors and exact historical source/page/packets.
+Current commercial signer trust and active decision authority stop later actions without erasing unknown
+liabilities. Consumed offering-command deadlines do not become undeclared offering leases.
+
+Main/publication and the frozen canaries remain held for the corrected source's normal qualification.
+The cancelled older96 campaign is not a pass. The original MARK timeout and earlier root held-node
+selection incident remain explicit and unqualified where applicable. The sections below preserve earlier
+source checkpoints; they do not qualify this corrected source. Prior top-level bytes are retained in
+README_PRE_ENTERPRISE_COMMAND.md and QUALIFICATION_PRE_ENTERPRISE_COMMAND.json.
+
 The independently implemented ordinary planner matches all 23 complete comparisons; one bounded case
 remains incomplete in both methods. The technical-breakthrough claim stops. The 24 unique cases include
 22 new authored digital cases, not real customer contracts. Discovery advantage remains untested.
@@ -22,7 +43,7 @@ are unmeasured. No retention, live ENS, model quota, listing, token action or cu
 Lossless gzip packaging preserves customer evidence and exact exports within the unchanged 2 MB ceiling.
 The original English/French navigation defect and two mobile qualification failures were corrected.
 
-## Revised source qualification
+## Preserved mission-receipt source qualification
 
 The exact existing-owner #4976 mission-receipt guard is now reused. All 12 new cases fail before the
 guard; all 69 discovery cases pass afterward. The unchanged full minimal runtime selection passes
