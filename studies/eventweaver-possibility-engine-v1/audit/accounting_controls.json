@@ -1,0 +1,119 @@
+{
+  "schema": "possibility-engine.accounting-adversarial-controls.v1",
+  "scope": "Synthetic auditor controls; not extra commercial experiments.",
+  "observations": [
+    {
+      "name": "valid_balanced_lifecycle",
+      "expected_pass": true,
+      "observed_pass": true,
+      "passed": true,
+      "detected_errors": []
+    },
+    {
+      "name": "inflated_profit",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "full_profit: reported 501 versus independent 500.0"
+      ]
+    },
+    {
+      "name": "deposit_recognized_as_sales",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "Row1: revenue not tied to receivable milestone",
+        "Row4: deposit backing mismatch",
+        "Row5: negative restricted cash",
+        "Row5: deposit backing mismatch",
+        "Row6: negative restricted cash",
+        "Row6: deposit backing mismatch",
+        "net_revenue: reported 1000 versus independent 1400.0",
+        "full_profit: reported 500 versus independent 900.0",
+        "operating_contribution: reported 500 versus independent 900.0",
+        "required_capital: reported 500 versus independent 100.0",
+        "peak_restricted_cash: reported 400 versus independent 0.0",
+        "final_cash: reported 10500 versus independent 10900.0",
+        "Unclosed restricted_cash",
+        "Unclosed deposit_liability"
+      ]
+    },
+    {
+      "name": "restricted_deposit_spent",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "Row2: deposit backing mismatch",
+        "Row2: restricted cash funds expenses",
+        "Row3: deposit backing mismatch",
+        "Row5: negative restricted cash",
+        "Row5: deposit backing mismatch",
+        "Row6: negative restricted cash",
+        "Row6: deposit backing mismatch",
+        "expenses: reported 500 versus independent 400.0",
+        "full_profit: reported 500 versus independent 600.0",
+        "operating_contribution: reported 500 versus independent 600.0",
+        "required_capital: reported 500 versus independent 0.0",
+        "final_cash: reported 10500 versus independent 11000.0",
+        "Unclosed restricted_cash",
+        "Cash, debt, capital and profit do not reconcile"
+      ]
+    },
+    {
+      "name": "missing_final_collection",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "final_cash: reported 10500 versus independent 9900.0",
+        "Unclosed receivable",
+        "Cash, debt, capital and profit do not reconcile"
+      ]
+    },
+    {
+      "name": "changed_acceptance_price",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "net_revenue: reported 1000 versus independent 1001.0",
+        "full_profit: reported 500 versus independent 501.0",
+        "operating_contribution: reported 500 versus independent 501.0",
+        "Unclosed receivable",
+        "Cash, debt, capital and profit do not reconcile",
+        "B0: invoice changes agreed price"
+      ]
+    },
+    {
+      "name": "acceptance_without_execution",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "B0: accepted before execution"
+      ]
+    },
+    {
+      "name": "buyer_negative_participation",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "B0: negative declared buyer utility gain"
+      ]
+    },
+    {
+      "name": "inferior_outside_option",
+      "expected_pass": false,
+      "observed_pass": false,
+      "passed": true,
+      "detected_errors": [
+        "B0: inferior outside option selected"
+      ]
+    }
+  ],
+  "passed": true
+}

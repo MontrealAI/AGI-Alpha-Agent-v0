@@ -1,0 +1,122 @@
+{
+  "as_of": "2026-10-28",
+  "target": "Custom temporal-event instrument compiler, producing reference traces, synthesizable RTL and a finite functional acceptance dossier",
+  "scope": "Primary-source tool and prior-art evidence; no physical hardware, SDK integration, synthesis run or measurement executed by this source workstream.",
+  "sources": [
+    {
+      "id": "T01",
+      "title": "YoWASP Yosys",
+      "url": "https://pypi.org/project/yowasp-yosys/0.70.0.0.post1259/",
+      "refs": [
+        "turn19view0"
+      ],
+      "date": "2026-10-13",
+      "version": "0.70.0.0.post1259",
+      "wheel_sha256": "38a5ce6af95045b5b1ad795de7a73cfe88cf70c19f7b95f027f4a377a85310c0",
+      "summary": "WebAssembly build of Yosys packaged for Python; ISC license. Current opened page showed 0.70 despite stale search snippet showing 0.69.",
+      "installation": "python -m pip install --target <private_directory> yowasp-yosys==0.70.0.0.post1259",
+      "limits": "All transitive dependency versions and hashes must also be locked from the actual installation. Package inspection is not evidence it ran locally."
+    },
+    {
+      "id": "T02",
+      "title": "Amaranth HDL",
+      "url": "https://pypi.org/project/amaranth/0.5.10/",
+      "refs": [
+        "turn20view0",
+        "turn21view3"
+      ],
+      "date": "2026-09-10",
+      "version": "0.5.10",
+      "wheel_sha256": "f6423258fcb6ea645f27702731a8bbbe6f8f8ec244f4e076a412c0b4f6107157",
+      "commit": "4ce62de58b3235cb9a39721bf151cd0f02a5532f",
+      "summary": "Python HDL with simulator, build system and Verilog integration. Official installation supports builtin-yosys extra.",
+      "installation": "python -m pip install --target <private_directory> 'amaranth[builtin-yosys]==0.5.10'",
+      "limits": "Development docs say 0.6.0.dev; PyPI's accidental 0.6.0 release is yanked. Pin a deliberate released version."
+    },
+    {
+      "id": "T03",
+      "title": "Amaranth simulator",
+      "url": "https://amaranth-lang.org/docs/amaranth/v0.5.8/simulator.html",
+      "refs": [
+        "turn20view2",
+        "turn21view5"
+      ],
+      "version": "0.5.8 documentation",
+      "summary": "Simulates elaborated synchronous logic; add_testbench receives SimulatorContext with set/get/tick. Can record VCD and reset a simulator to amortize startup.",
+      "limits": "Functional RTL simulation does not establish place-and-route timing, power, data-link compatibility or board operation."
+    },
+    {
+      "id": "T04",
+      "title": "Yosys equivalence checking commands",
+      "url": "https://yosyshq.readthedocs.io/projects/yosys/en/v0.70/cmd/index_passes_equiv.html",
+      "refs": [
+        "turn21view0"
+      ],
+      "version": "0.70",
+      "summary": "equiv_make, equiv_simple and equiv_status support equivalence-check workflows. equiv_simple uses SAT; sequence depth and assumptions affect scope.",
+      "limits": "A bounded proof is not unbounded correctness. Report exact command, assumptions, reset semantics, proof status and depth; do not equate synthesis success with equivalence."
+    },
+    {
+      "id": "T05",
+      "title": "Swabian Conditional Filter",
+      "url": "https://www.swabianinstruments.com/static/documentation/TimeTagger/InDepthGuides/ConditionalFilter.html",
+      "refs": [
+        "turn20view4"
+      ],
+      "version": "Time Tagger Manual 2.22.6.0",
+      "summary": "Existing device-level hardware filter passes the next filtered event after a trigger. Documentation says independent trigger/filter groups cannot be configured separately; simultaneous trigger/filter behavior is unspecified.",
+      "inference": "Multiple independent temporal sequence/veto contracts with explicit same-tick semantics define a candidate gap beyond the built-in filter.",
+      "limits": "This gap is not unique scientific novelty or verified customer demand. The vendor offers custom software and FPGA alternatives."
+    },
+    {
+      "id": "T06",
+      "title": "Swabian raw time-tag stream access",
+      "url": "https://www.swabianinstruments.com/static/documentation/TimeTagger/InDepthGuides/RawTimeTagStreamAccess.html",
+      "refs": [
+        "turn19view2"
+      ],
+      "version": "Time Tagger Manual 2.22.6.0",
+      "summary": "TimeTagStream and CustomMeasurement support processing raw data; Time Tagger Virtual supports replay using the full API.",
+      "inference": "The practical alternative is a competent current-AI-assisted SDK implementation; for offline decisions a simple software oracle may satisfy the entire buyer need.",
+      "limits": "Availability of an SDK does not imply the study has the vendor binaries, hardware or authorization; standalone replay must be labeled compatible only with its own specified schema."
+    },
+    {
+      "id": "T07",
+      "title": "Swabian FPGA Link",
+      "url": "https://www.swabianinstruments.com/static/documentation/TimeTagger/InDepthGuides/FpgaLink.html",
+      "refs": [
+        "turn20view3"
+      ],
+      "version": "Time Tagger Manual 2.22.6.0",
+      "summary": "Time Tagger X can stream via Ethernet to an external FPGA for higher rate/lower latency than USB. Reference design and wire format are unstable; no retransmission; QSFP+ example needs licensed Xilinx IP.",
+      "inference": "A reusable temporal core could eventually plug into an adapter, but that interface is an unbuilt separate integration milestone.",
+      "limits": "Do not claim board compatibility, data-loss tolerance, achievable clock rate or real-time latency from generated RTL alone."
+    },
+    {
+      "id": "T08",
+      "title": "Swabian FPGA reference design",
+      "url": "https://github.com/swabianinstruments/TimeTagger-FPGALink-Reference/",
+      "refs": [
+        "turn21view1",
+        "turn21view2"
+      ],
+      "summary": "Vendor supplies a reference FPGA link design and instructions for modification.",
+      "limits": "This source is material prior art and a potential integration target, not code that this campaign has reused or validated."
+    }
+  ],
+  "recommended_contract": {
+    "input": "A normalized clock-tick stream with explicitly allowed simultaneous channel events; separate clock, reset and valid semantics.",
+    "semantics": [
+      "Define whether a start event resets an existing window or permits overlap.",
+      "Define inclusive/exclusive minimum and maximum delay boundaries.",
+      "Give veto/reset explicit priority over acceptance.",
+      "Define simultaneous start/stop ordering.",
+      "Specify overflow, out-of-order events, timestamp wrap and dropped-event handling.",
+      "Specify pulse length and whether multiple predicates can fire on the same tick."
+    ],
+    "acceptance": "Independent specification oracle versus actual RTL simulator on exhaustive small traces plus fresh seeded longer traces; include deliberately mutated designs to test rejection. Synthesis and formal checks are additional gates with exact limits.",
+    "strongest_comparator": "A separate AI-assisted engineer writes conventional FSM/HDL or SDK processing with the same specification, resources and acceptance oracle. Library reuse is included because it is ordinary competence.",
+    "successor": "Fresh mission adds independent predicates or a different temporal pattern. Compare retained compiler/core with a baseline and an ordinary library of the same components; charge validation/integration/upkeep.",
+    "frontier_causality": "The documented gap predates October 2026. A recent model release may reduce construction cost, but without a historical controlled comparison this study establishes a candidate newly economic route, not that no earlier team could have built it."
+  }
+}

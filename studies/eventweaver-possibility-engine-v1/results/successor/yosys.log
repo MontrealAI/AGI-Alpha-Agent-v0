@@ -1,0 +1,633 @@
+
+-- Running command `read_verilog data/successor/successor.v; hierarchy -check -top successor; synth -top successor -flatten; check -assert; tee -o results/successor/generic_statistics.json stat -json; write_json results/successor/netlist.json' --
+
+1. Executing Verilog-2005 frontend: data/successor/successor.v
+Parsing Verilog input from `data/successor/successor.v' to AST representation.
+Generating RTLIL representation for module `\successor_core_0'.
+Generating RTLIL representation for module `\successor_core_1'.
+Generating RTLIL representation for module `\successor'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \successor
+Used module:     \successor_core_1
+Used module:     \successor_core_0
+
+2.2. Analyzing design hierarchy..
+Top module:  \successor
+Used module:     \successor_core_1
+Used module:     \successor_core_0
+Removed 0 unused modules.
+
+3. Executing SYNTH pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \successor
+Used module:     \successor_core_1
+Used module:     \successor_core_0
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \successor
+Used module:     \successor_core_1
+Used module:     \successor_core_0
+Removed 0 unused modules.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$data/successor/successor.v:28$46 in module successor_core_1.
+Marked 1 switch rules as full_case in process $proc$data/successor/successor.v:3$1 in module successor_core_0.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~2 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\successor_core_1.$proc$data/successor/successor.v:28$46'.
+     1/10: $0\state[9:0] [9]
+     2/10: $0\state[9:0] [8]
+     3/10: $0\state[9:0] [7]
+     4/10: $0\state[9:0] [6]
+     5/10: $0\state[9:0] [5]
+     6/10: $0\state[9:0] [4]
+     7/10: $0\state[9:0] [3]
+     8/10: $0\state[9:0] [2]
+     9/10: $0\state[9:0] [1]
+    10/10: $0\state[9:0] [0]
+Creating decoders for process `\successor_core_0.$proc$data/successor/successor.v:3$1'.
+     1/15: $0\state[14:0] [14]
+     2/15: $0\state[14:0] [13]
+     3/15: $0\state[14:0] [12]
+     4/15: $0\state[14:0] [11]
+     5/15: $0\state[14:0] [10]
+     6/15: $0\state[14:0] [9]
+     7/15: $0\state[14:0] [8]
+     8/15: $0\state[14:0] [7]
+     9/15: $0\state[14:0] [6]
+    10/15: $0\state[14:0] [5]
+    11/15: $0\state[14:0] [4]
+    12/15: $0\state[14:0] [3]
+    13/15: $0\state[14:0] [2]
+    14/15: $0\state[14:0] [1]
+    15/15: $0\state[14:0] [0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\successor_core_1.\state' using process `\successor_core_1.$proc$data/successor/successor.v:28$46'.
+  created $dff cell `$procdff$151' with positive edge clock.
+Creating register for signal `\successor_core_0.\state' using process `\successor_core_0.$proc$data/successor/successor.v:3$1'.
+  created $dff cell `$procdff$152' with positive edge clock.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\successor_core_1.$proc$data/successor/successor.v:28$46'.
+Removing empty process `successor_core_1.$proc$data/successor/successor.v:28$46'.
+Found and cleaned up 1 empty switch in `\successor_core_0.$proc$data/successor/successor.v:3$1'.
+Removing empty process `successor_core_0.$proc$data/successor/successor.v:3$1'.
+Cleaned up 2 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+Optimizing module successor_core_1.
+Optimizing module successor_core_0.
+
+3.3. Executing CHECK pass (checking for obvious problems).
+Checking module successor...
+Checking module successor_core_1...
+Checking module successor_core_0...
+Found and reported 0 problems.
+
+3.4. Executing FLATTEN pass (flatten design).
+Deleting now unused module successor_core_1.
+Deleting now unused module successor_core_0.
+<suppressed ~2 debug messages>
+
+3.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.6. Executing CHECK pass (checking for obvious problems).
+Checking module successor...
+Found and reported 0 problems.
+
+3.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+Removed 0 unused cells and 50 unused wires.
+<suppressed ~1 debug messages>
+
+3.8. Executing OPT pass (performing simple optimizations).
+
+3.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 102 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Computing hashes of 79 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+<suppressed ~69 debug messages>
+Removed a total of 23 cells.
+
+3.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~50 debug messages>
+
+3.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 79 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+Removed 0 unused cells and 23 unused wires.
+<suppressed ~1 debug messages>
+
+3.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.8.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.8.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~50 debug messages>
+
+3.8.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.8.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 79 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.8.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.8.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.8.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.8.16. Finished fast OPT passes. (There is nothing left to do.)
+
+3.9. Executing FSM pass (extract and optimize FSM).
+
+3.9.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+3.9.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+3.9.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+3.9.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.9.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+3.9.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+3.9.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+3.9.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+3.10. Executing OPT pass (performing simple optimizations).
+
+3.10.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.10.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 79 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.10.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~50 debug messages>
+
+3.10.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.10.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 79 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.10.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $flatten\inst_0.$procdff$152 ($dff) from module successor (D = { $flatten\inst_0.$and$data/successor/successor.v:20$45_Y $flatten\inst_0.$and$data/successor/successor.v:19$43_Y $flatten\inst_0.$and$data/successor/successor.v:18$41_Y $flatten\inst_0.$and$data/successor/successor.v:17$37_Y $flatten\inst_0.$and$data/successor/successor.v:16$31_Y $flatten\inst_0.$and$data/successor/successor.v:15$25_Y $flatten\inst_0.$and$data/successor/successor.v:14$22_Y $flatten\inst_0.$and$data/successor/successor.v:13$20_Y $flatten\inst_0.$and$data/successor/successor.v:12$17_Y $flatten\inst_0.$and$data/successor/successor.v:11$15_Y $flatten\inst_0.$and$data/successor/successor.v:10$12_Y $flatten\inst_0.$and$data/successor/successor.v:9$10_Y $flatten\inst_0.$and$data/successor/successor.v:8$7_Y $flatten\inst_0.$and$data/successor/successor.v:7$5_Y $flatten\inst_0.$and$data/successor/successor.v:6$3_Y }, Q = \inst_0.state, rval = 15'000000000000000).
+Adding SRST signal on $flatten\inst_1.$procdff$151 ($dff) from module successor (D = { $flatten\inst_1.$and$data/successor/successor.v:40$75_Y $flatten\inst_1.$and$data/successor/successor.v:39$73_Y $flatten\inst_1.$and$data/successor/successor.v:38$69_Y $flatten\inst_1.$and$data/successor/successor.v:37$63_Y $flatten\inst_1.$and$data/successor/successor.v:36$60_Y $flatten\inst_1.$and$data/successor/successor.v:35$58_Y $flatten\inst_1.$and$data/successor/successor.v:34$55_Y $flatten\inst_1.$and$data/successor/successor.v:33$53_Y $flatten\inst_1.$and$data/successor/successor.v:32$50_Y $flatten\inst_1.$and$data/successor/successor.v:31$48_Y }, Q = \inst_1.state, rval = 10'0000000000).
+
+3.10.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+Removed 25 unused cells and 2 unused wires.
+<suppressed ~26 debug messages>
+
+3.10.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.10.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.10.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+3.10.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.10.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.10.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.10.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.10.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.10.16. Finished fast OPT passes. (There is nothing left to do.)
+
+3.11. Executing WREDUCE pass (reducing word size of cells).
+Removed top 4 bits (of 8) from wire successor.local_1.
+Removed top 4 bits (of 8) from wire successor.local_0.
+
+3.12. Executing PEEPOPT pass (run peephole optimizers).
+
+3.13. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+3.14. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module successor:
+  created 0 $alu and 0 $macc cells.
+
+3.15. Executing SHARE pass (SAT-based resource sharing).
+
+3.16. Executing OPT pass (performing simple optimizations).
+
+3.16.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.16.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.16.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+3.16.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.16.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.16.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.16.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.16.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.16.9. Finished fast OPT passes. (There is nothing left to do.)
+
+3.17. Executing MEMORY pass.
+
+3.17.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+3.17.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+3.17.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+3.17.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+3.17.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+3.17.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.17.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+3.17.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+3.17.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.17.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.19. Executing OPT pass (performing simple optimizations).
+
+3.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.19.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.19.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.19.5. Finished fast OPT passes.
+
+3.20. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+3.21. Executing OPT pass (performing simple optimizations).
+
+3.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.21.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \successor..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+3.21.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \successor.
+Performed a total of 0 changes.
+
+3.21.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 54 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.21.6. Executing OPT_SHARE pass.
+
+3.21.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.21.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.21.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.21.10. Finished fast OPT passes. (There is nothing left to do.)
+
+3.22. Executing TECHMAP pass (map to technology primitives).
+
+3.22.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+3.22.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $sdff.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $not.
+No more expansions possible.
+<suppressed ~129 debug messages>
+
+3.23. Executing OPT pass (performing simple optimizations).
+
+3.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 77 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+
+3.23.5. Finished fast OPT passes.
+
+3.24. Executing ABC pass (technology mapping using ABC).
+
+3.24.1. Summary of detected clock domains:
+  2 cells in clk={ }, en={ }, arst={ }, srst={ }
+  75 cells in clk=\clk, en={ }, arst={ }, srst=\rst
+
+3.24.2. Extracting gate netlist of module `\successor' to `<abc-temp-dir>/input.blif'..
+No matching clock domain found. Not extracting any FF cells.
+
+3.24.2.1. Executed ABC.
+Extracted 0 gates and 0 wires to a netlist network with 0 inputs and 0 outputs.
+Don't call ABC as there is nothing to map.
+Removing temp directory.
+
+3.24.3. Extracting gate netlist of module `\successor' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk, synchronously reset by \rst
+
+3.24.3.1. Executed ABC.
+Extracted 50 gates and 81 wires to a netlist network with 31 inputs and 25 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+
+3.24.3.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:       12
+ABC RESULTS:            ANDNOT cells:       15
+ABC RESULTS:               NOR cells:       10
+ABC RESULTS:                OR cells:        3
+ABC RESULTS:        internal signals:       25
+ABC RESULTS:           input signals:       31
+ABC RESULTS:          output signals:       25
+Removing temp directory.
+Removing global temp directory.
+
+3.25. Executing OPT pass (performing simple optimizations).
+
+3.25.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module successor.
+
+3.25.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\successor'.
+Computing hashes of 67 cells of `\successor'.
+Finding duplicate cells in `\successor'.
+Removed a total of 0 cells.
+
+3.25.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+3.25.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \successor..
+Removed 0 unused cells and 81 unused wires.
+<suppressed ~1 debug messages>
+
+3.25.5. Finished fast OPT passes.
+
+3.26. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `successor'. Setting top module to successor.
+
+3.26.1. Analyzing design hierarchy..
+Top module:  \successor
+
+3.26.2. Analyzing design hierarchy..
+Top module:  \successor
+Removed 0 unused modules.
+
+3.27. Printing statistics.
+
+=== successor ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       56 wires
+      107 wire bits
+       16 public wires
+       67 public wire bits
+        4 ports
+       12 port bits
+       67 cells
+       15   $_ANDNOT_
+       12   $_AND_
+       10   $_NOR_
+        3   $_OR_
+       25   $_SDFF_PP0_
+        2   $scopeinfo
+
+3.28. Executing CHECK pass (checking for obvious problems).
+Checking module successor...
+Found and reported 0 problems.
+
+4. Executing CHECK pass (checking for obvious problems).
+Checking module successor...
+Found and reported 0 problems.
+{
+   "creator": "Yosys 0.70 (git sha1 28ba3cb92, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+   "invocation": "stat -json ",
+   "modules": {
+      "\\successor": {
+         "num_wires":         56,
+         "num_wire_bits":     107,
+         "num_pub_wires":     16,
+         "num_pub_wire_bits": 67,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         67,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 15,
+            "$_AND_": 12,
+            "$_NOR_": 10,
+            "$_OR_": 3,
+            "$_SDFF_PP0_": 25,
+            "$scopeinfo": 2
+         }
+      }
+   },
+      "design": {
+         "num_wires":         56,
+         "num_wire_bits":     107,
+         "num_pub_wires":     16,
+         "num_pub_wire_bits": 67,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         67,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 15,
+            "$_AND_": 12,
+            "$_NOR_": 10,
+            "$_OR_": 3,
+            "$_SDFF_PP0_": 25,
+            "$scopeinfo": 2
+         }
+      }
+}
+
+5. Executing JSON backend.

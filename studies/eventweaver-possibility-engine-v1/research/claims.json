@@ -1,0 +1,586 @@
+{
+  "schema": "possibility_engine.claim_map.v1",
+  "edition": "2026-10-28",
+  "decision": "STOP standalone offering; NO FLAGSHIP EARNED",
+  "claims": [
+    {
+      "id": "TECH-01",
+      "claim": "A working bounded temporal-predicate compiler emits executable reference behavior and synthesizable Verilog. The two-predicate demonstration uses 29 state bits and 73 generic cells.",
+      "status": "executed_supported",
+      "values": {
+        "patterns": 2,
+        "state_bits": 29,
+        "generic_cells": 73,
+        "demo_ticks": 34
+      },
+      "evidence": [
+        {
+          "path": "results/construction.json"
+        },
+        {
+          "path": "src/eventweaver.py"
+        },
+        {
+          "path": "data/demo/eventweaver.v"
+        }
+      ],
+      "limits": [
+        "Generic synthesis only; no technology-mapped area, power or physical timing.",
+        "Measured local compilation is not measured human engineering time or model inference cost."
+      ]
+    },
+    {
+      "id": "TECH-02",
+      "claim": "Fresh main confirmation passed all 768 traces across 24 specifications, 52 directed actual-RTL cases, 14 invalid-request checks and 28 bounded equivalence checks.",
+      "status": "executed_supported",
+      "values": {
+        "specifications": 24,
+        "traces": 768,
+        "ticks": 196608,
+        "predicate_tick_decisions": 491520,
+        "accepted_traces": 768,
+        "positive_predicate_outputs": 630,
+        "directed_cases": 52,
+        "invalid_specs": 14
+      },
+      "evidence": [
+        {
+          "path": "results/technical_confirmation/summary.json"
+        },
+        {
+          "path": "results/technical_confirmation/traces.jsonl.gz"
+        },
+        {
+          "path": "protocol/technical_v1.json"
+        }
+      ],
+      "limits": [
+        "Equivalence is bounded under explicit reset, not a proof of every physical or software layer.",
+        "Independent workstreams shared a model family and campaign; not a blinded external laboratory."
+      ]
+    },
+    {
+      "id": "TECH-03",
+      "claim": "The conventional implementation tied on functional acceptance and was faster in the measured Python replay workload.",
+      "status": "executed_supported",
+      "values": {
+        "candidate_python_wall_s": 12.482040057977429,
+        "conventional_python_wall_s": 0.2760123398693395,
+        "ratio_candidate_to_conventional": 45.222760923972665
+      },
+      "evidence": [
+        {
+          "path": "results/technical_confirmation/summary.json",
+          "json_pointer": "/metrics"
+        },
+        {
+          "path": "src/conventional.py"
+        }
+      ],
+      "limits": [
+        "Single local runtime environment; no isolated hardware throughput comparison.",
+        "This defeats a broad candidate-speed or exclusive expert-agent advantage claim."
+      ]
+    },
+    {
+      "id": "TECH-04",
+      "claim": "Physical timing, calibration, optics, instrument efficacy and vendor-link integration were not established.",
+      "status": "not_established",
+      "evidence": [
+        {
+          "path": "protocol/technical_v1.json",
+          "json_pointer": "/claim_limits"
+        },
+        {
+          "path": "results/construction.json",
+          "json_pointer": "/limits"
+        }
+      ],
+      "limits": [
+        "No measured Fmax, power, real photon data or programmed FPGA is supplied."
+      ]
+    },
+    {
+      "id": "KER-01",
+      "claim": "Predeclared operator removals violate selected functional contracts: early acceptance permits a later-veto false positive; pooled groups cross-trigger; a disconnected virtual link removes the downstream decision.",
+      "status": "executed_supported_narrow_counterfactual",
+      "values": {
+        "fixtures": 6,
+        "ticks": 88,
+        "unexpected_errors": 0
+      },
+      "evidence": [
+        {
+          "path": "protocol/kernel_ablation_v1.json"
+        },
+        {
+          "path": "protocol/kernel_ablation_freeze.json"
+        },
+        {
+          "path": "results/kernel_ablation.json",
+          "json_pointer": "/cases"
+        },
+        {
+          "path": "src/kernel_ablation.py"
+        }
+      ],
+      "limits": [
+        "Postconfirmation diagnostic with deliberately chosen traces, not a random failure-rate estimate or blinded causal agent experiment.",
+        "The no-veto early-accept control differs in decision time while preserving match existence."
+      ]
+    },
+    {
+      "id": "KER-02",
+      "claim": "Removing our compiler while retaining competent conventional RTL preserves all six selected outcomes. Our implementation is not necessary for the offered functional outcome.",
+      "status": "exclusive_necessity_claim_refuted",
+      "values": {
+        "compiler_removal_ties": 6
+      },
+      "evidence": [
+        {
+          "path": "results/kernel_ablation.json",
+          "json_pointer": "/summary/compiler_removal_ties"
+        },
+        {
+          "path": "results/kernel_ablation.json",
+          "json_pointer": "/interpretation"
+        }
+      ],
+      "limits": [
+        "Semantic necessity for a specified contract does not establish implementation novelty, human-unforeseeability or newly feasible commercial value."
+      ]
+    },
+    {
+      "id": "SUC-01",
+      "claim": "A frozen predecessor artifact was retained unchanged while a new acyclic-network grammar and wrapper made a prior decision usable as a virtual event after one logical clock delay. The predecessor rejects that grammar.",
+      "status": "executed_supported",
+      "values": {
+        "demo_stages": 2,
+        "state_bits": 25,
+        "functional_generic_cells": 65
+      },
+      "evidence": [
+        {
+          "path": "src/successor.py"
+        },
+        {
+          "path": "protocol/successor_v1.json"
+        },
+        {
+          "path": "results/successor_construction.json"
+        },
+        {
+          "path": "results/successor_confirmation/summary.json",
+          "json_pointer": "/parent_rejects_virtual_channels"
+        }
+      ],
+      "limits": [
+        "New composition wrapper and grammar, not learned weights or autonomous scientific feedback.",
+        "Construction report is the preserved development snapshot; later confirmation evidence is in the separate confirmation report."
+      ]
+    },
+    {
+      "id": "SUC-02",
+      "claim": "Fresh successor confirmation passed 48 traces across six networks, with 10 directed cases and nine invalid networks checked.",
+      "status": "executed_supported",
+      "values": {
+        "networks": 6,
+        "traces": 48,
+        "ticks": 6144,
+        "accepted_traces": 48,
+        "positive_stage_outputs": 62,
+        "directed_cases": 10,
+        "invalid_specs": 9
+      },
+      "evidence": [
+        {
+          "path": "results/successor_confirmation/summary.json"
+        },
+        {
+          "path": "results/successor_confirmation/directed.json"
+        },
+        {
+          "path": "results/successor_confirmation/traces.jsonl.gz"
+        }
+      ],
+      "limits": [
+        "Digital functional composition only, with explicit reset and one-clock interface."
+      ]
+    },
+    {
+      "id": "SUC-03",
+      "claim": "Competent conventional network delivery and an ordinary library containing the byte-identical retained artifacts tied with the successor. Learned-specialist or economic compounding superiority is not established.",
+      "status": "superiority_claim_not_supported",
+      "values": {
+        "functional_conventional_tie": true,
+        "same_artifact_library_tie": true
+      },
+      "evidence": [
+        {
+          "path": "results/successor_confirmation/summary.json"
+        },
+        {
+          "path": "audit/successor_verifier.py"
+        }
+      ],
+      "limits": [
+        "Functional reuse may still be useful; it does not imply above-library specialist learning."
+      ]
+    },
+    {
+      "id": "SUC-04",
+      "claim": "Successor extension and retained-asset costs are an additional US$4,100 planning estimate, charged once and not presumed financed by commercial surplus.",
+      "status": "explicit_estimate_not_invoice",
+      "values": {
+        "currency": "USD",
+        "extension": 3500,
+        "retention_first_year": 600,
+        "total": 4100
+      },
+      "evidence": [
+        {
+          "path": "protocol/successor_v1.json"
+        },
+        {
+          "path": "results/successor_construction.json",
+          "json_pointer": "/cost_policy"
+        }
+      ],
+      "limits": [
+        "Human effort allocations and inference costs are planning estimates, not observed invoices.",
+        "No downstream revenue or asset uplift offsets this option cost."
+      ]
+    },
+    {
+      "id": "ECON-01",
+      "claim": "The frozen standalone policy loses complete-project money in all 1,024 base histories.",
+      "status": "model_conditional",
+      "values": {
+        "net_revenue": 9024.40802734375,
+        "expenses": 38652.82040039063,
+        "operating_contribution": -3928.412373046875,
+        "full_profit": -29628.412373046875,
+        "accepted": 7.943359375
+      },
+      "evidence": [
+        {
+          "path": "results/business_confirmation.json"
+        },
+        {
+          "path": "protocol/commercial_policy.json"
+        },
+        {
+          "path": "protocol/commercial_freeze.json"
+        }
+      ],
+      "limits": [
+        "No observed demand or willingness to pay; participants and monetary entries are simulated.",
+        "Policy was frozen after 15 development price-arrangement combinations; no-launch dominates the tested launch policies."
+      ]
+    },
+    {
+      "id": "ECON-02",
+      "claim": "Nine additional conditional scenarios also lose in every history; they are not a probability-weighted forecast.",
+      "status": "model_conditional",
+      "values": {
+        "scenarios": 10,
+        "histories_per_scenario": 1024
+      },
+      "evidence": [
+        {
+          "path": "results/business_confirmation.json"
+        },
+        {
+          "path": "results/business_confirmation.csv"
+        }
+      ],
+      "limits": [
+        "Scenario probabilities are unspecified. Model-generated buyer choices are not independent customer evidence."
+      ]
+    },
+    {
+      "id": "ECON-03",
+      "claim": "Revenue, customer cash, full-project profit and capital requirement are distinct.",
+      "status": "model_conditional",
+      "values": {
+        "net_customer_cash_usd": 8836.38130859375,
+        "capital_mean_usd": 32111.387666015624,
+        "capital_p95_usd": 36496.07,
+        "ratio_of_mean_profit_to_mean_cost": -0.7665265319874937,
+        "cash_shortfall_probability_under_base_model": {
+          "estimate": 0.0,
+          "wilson95": [
+            0,
+            0.003737540881785676
+          ],
+          "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+        }
+      },
+      "evidence": [
+        {
+          "path": "results/business_confirmation.json"
+        },
+        {
+          "path": "results/derived_economics.json"
+        },
+        {
+          "path": "audit/accounting_confirmation.json"
+        }
+      ],
+      "limits": [
+        "Refundable deposits are restricted. Initial capital is a modeled policy, not an actual contribution.",
+        "Zero sampled base shortfalls does not establish real-world financing sufficiency."
+      ]
+    },
+    {
+      "id": "ECON-04",
+      "claim": "An independent parser reconstructed the full histories and decisions without importing the simulator.",
+      "status": "executed_supported",
+      "values": {
+        "histories": 10240,
+        "journal_entries": 1265250,
+        "errors": 0,
+        "warnings": 7,
+        "passed": true
+      },
+      "evidence": [
+        {
+          "path": "audit/accounting_reconstruct.py"
+        },
+        {
+          "path": "audit/accounting_confirmation.json"
+        },
+        {
+          "path": "results/business_confirmation_journals.jsonl.gz"
+        },
+        {
+          "path": "audit/accounting_controls.json"
+        }
+      ],
+      "limits": [
+        "Arithmetic and policy reconstruction validate model execution, not demand assumptions or real sales.",
+        "Seven terminal stress insolvencies remain explicit creditor claims."
+      ]
+    },
+    {
+      "id": "ECON-05",
+      "claim": "Constant-mix break-even requirements exceed observed modeled demand and reserved capacity.",
+      "status": "derived_diagnostic",
+      "values": {
+        "break_even_accepted_at_constant_mix": 82,
+        "required_accepted_price_at_unchanged_demand": 4883.206529382837,
+        "max_orders_from_reserved_capacity_180days": 42,
+        "direct_cost_reduction_needed_for_break_even": 5.076255389173259
+      },
+      "evidence": [
+        {
+          "path": "results/derived_economics.json"
+        },
+        {
+          "path": "src/analyze_results.py"
+        },
+        {
+          "path": "results/business_development.json"
+        }
+      ],
+      "limits": [
+        "Holding customer mix fixed is a diagnostic, not a demand forecast.",
+        "Eight support-reserve hours per order are an aggregate proxy, not a calendar SLA."
+      ]
+    },
+    {
+      "id": "ECON-06",
+      "claim": "Human exceptions and buyer benefit are explicit modeled quantities, not measured human performance.",
+      "status": "model_conditional",
+      "values": {
+        "variable_service_hours_per_accepted": 9.165843803012095,
+        "interventions_per_accepted": 1.189574625030735,
+        "buyer_benefit_ex_ante_usd": 358.8271233069498,
+        "buyer_benefit_realized_model_usd": 474.843427180206
+      },
+      "evidence": [
+        {
+          "path": "results/business_confirmation.json"
+        },
+        {
+          "path": "results/derived_economics.json"
+        },
+        {
+          "path": "protocol/business_assumptions.json"
+        }
+      ],
+      "limits": [
+        "No customer time study or measured cost per human intervention was performed."
+      ]
+    },
+    {
+      "id": "ECON-07",
+      "claim": "The stylized strategic game favors no entry when exit is permitted.",
+      "status": "model_conditional",
+      "values": {
+        "independently_checked_payoff_cells": 324
+      },
+      "evidence": [
+        {
+          "path": "src/strategic_analysis.py"
+        },
+        {
+          "path": "results/strategic_game.json"
+        },
+        {
+          "path": "audit/strategic_reconstruct.py"
+        },
+        {
+          "path": "audit/strategic_confirmation.json"
+        }
+      ],
+      "limits": [
+        "Synthetic buyer distribution, finite prices, entrant fixed cost and incumbent advantage are assumptions.",
+        "This separate game does not convert the lifecycle bargaining heuristic into a market equilibrium."
+      ]
+    },
+    {
+      "id": "DECISION-01",
+      "claim": "Stop the tested standalone offering; no replacement earned flagship status in the bounded campaign.",
+      "status": "evidence_based_decision",
+      "values": {
+        "commercial_action": "STOP",
+        "replacement_flagship": null
+      },
+      "evidence": [
+        {
+          "path": "results/business_confirmation.json"
+        },
+        {
+          "path": "results/kernel_ablation.json"
+        },
+        {
+          "path": "research/return_to_search.json"
+        },
+        {
+          "path": "research/return_to_search_manifest.json"
+        }
+      ],
+      "limits": [
+        "A rejected modeled offering does not prove every related business impossible.",
+        "The experience-foundry opening is an unbuilt hypothesis with physical-transfer and buyer-evidence gates."
+      ]
+    },
+    {
+      "id": "FRONTIER-01",
+      "claim": "Exact named releases were checked against primary sources and separated from actual execution access.",
+      "status": "primary_source_desk_research",
+      "values": {},
+      "evidence": [
+        {
+          "path": "research/frontier.json"
+        },
+        {
+          "path": "research/technical_sources.json"
+        },
+        {
+          "path": "research/return_to_search.json"
+        },
+        {
+          "path": "research/bibliography.json"
+        }
+      ],
+      "limits": [
+        "Provider performance remains reported evidence. Terra was not separately benchmarked; internal mathematical model unavailable.",
+        "No reopened-search world model, robotics system, material assay or multi-owner experiment was executed."
+      ]
+    },
+    {
+      "id": "ECOSYSTEM-01",
+      "claim": "Prior source editions and native FusionPlan modules were inspected at a pinned repository revision.",
+      "status": "executed_and_source_supported",
+      "values": {},
+      "evidence": [
+        {
+          "path": "research/ecosystem.json"
+        },
+        {
+          "path": "research/source_editions/source_manifest.json"
+        },
+        {
+          "path": "results/native_alpha/fusion_plan.json"
+        },
+        {
+          "path": "results/native_alpha/verification.json"
+        }
+      ],
+      "limits": [
+        "Local work-plan compilation is not deployed MARK coordination, on-chain execution or a funded bounty.",
+        "Canonical release/Pages qualification remains with the existing repository owner."
+      ]
+    },
+    {
+      "id": "SCALE-01",
+      "claim": "No defensible billion-plus economic thesis was earned.",
+      "status": "evidence_based_limit",
+      "values": {
+        "hurdle_metric": "annual net incremental productive value in constant 2026 USD",
+        "hurdle_usd": 1000000000,
+        "horizon_year": 2031
+      },
+      "evidence": [
+        {
+          "path": "research/scaling_thesis.json"
+        },
+        {
+          "path": "results/derived_economics.json"
+        }
+      ],
+      "limits": [
+        "10,000 deployments times USD100,000 benefit is an unverified hurdle decomposition.",
+        "Industry revenue, enterprise revenue, profit, productive value and valuation are not interchangeable."
+      ]
+    }
+  ],
+  "evidence_sha256": {
+    "audit/accounting_confirmation.json": "df03d9c2ec3b9cde43b84e2ded1f7864cc3918c78d8e27499dfa0a9643414cd1",
+    "audit/accounting_controls.json": "2aed7123500f84e7a5d1870dc12f3bcd089150893b541f8af97c4f30a770f0b0",
+    "audit/accounting_reconstruct.py": "e1413569c662edb375598c928d94e11a9b9aef6d9aa0fb0416e6d1aa4111ab20",
+    "audit/strategic_confirmation.json": "318e68b9d0b4c821ce7963ece802b86b9cca0a3758fd9a1323b7b01fe9ac2599",
+    "audit/strategic_reconstruct.py": "d1b9461d627024ece46134ceb070a49e3653e7fab1ce29768f8ab1203c55da4f",
+    "audit/successor_verifier.py": "074bdbb575dc1bae2c5aa102d2c077e7180effd145539c9c1b7c92fba1d9f52a",
+    "data/demo/eventweaver.v": "a59b47d7db013453e8888a6bb21173c7e6c56ad1317f9cad7d2c7700ab7b63c2",
+    "protocol/business_assumptions.json": "b57042e25e75f59fa5edf1654f31a1f5f86ca9159c5d28a2bdbc2a8244c91b7c",
+    "protocol/commercial_freeze.json": "a695bf72c8bd8f2d93cf3f211b23cc4ee49f4248ea55484a5e25ceff3a0a1350",
+    "protocol/commercial_policy.json": "74602e9bf118859203c7c1c12640bec725e4845a85f73f2a044738350ad3b8bd",
+    "protocol/kernel_ablation_freeze.json": "a58eef2b7a7ca5ca34316ed77f68e99133e6a7d371c15cbcd0e99ec36e899c7f",
+    "protocol/kernel_ablation_v1.json": "9211850fa3b673661e287642de8f0271748bbad8d2cd3a95df2d0c6e2f149e31",
+    "protocol/successor_v1.json": "bc3f1ce30043f68fb1ee9d0af0c28c4eaa1fbc6be44881d5288f565c5dd5f262",
+    "protocol/technical_v1.json": "ee65e7d66b8dcce559b984534d0f727bc1ec9ba16199090fcd589f76fb52beb5",
+    "research/bibliography.json": "8dbcbf6b7d96bcfb7f403d5efbe9e30ca0f38b84f23e6bdec4212006a1bf7d1f",
+    "research/ecosystem.json": "822aa7e48088219d60b5d458723ac417475e0965d66bd36d931c6260b273bfe8",
+    "research/frontier.json": "f653e1d269068e9bb0379b37d83c264797ba3095f08806cc5c17cced937766af",
+    "research/return_to_search.json": "e66aa2173288293fffbcf5a02d63ed4f586d30f7c6166a8687ae8f3d98c37c0f",
+    "research/return_to_search_manifest.json": "1bf1ff54be32668ccd078e9f533047a9ae6b3964124e5f7a86579b1c1b5ff15f",
+    "research/scaling_thesis.json": "2a062411b60b153e0cc14e03b750ae7b86c3beedc6c20e4dd52fe384333d608a",
+    "research/source_editions/source_manifest.json": "31917c2c65d49274c57990259b6633fc3b2c8af4c80a219e5e5514e46e92185b",
+    "research/technical_sources.json": "d6fa063c06deef68f197970fbcdf2fb6d7b365656061be9b9e25b13cccdcf1f4",
+    "results/business_confirmation.csv": "8a31301ef8c35a254d1be0ade777fe388b5d1bbcae7349b79c2cc099c96b46e1",
+    "results/business_confirmation.json": "b3119cc5705ba92fc32ff1bffeb56026ebcb036e3cb700a72878c4b40ebfb8fa",
+    "results/business_confirmation_journals.jsonl.gz": "873c520a270327db192f2490b5192e2b5af8afbe5f01ca2ff0cf544cf5a9bb8b",
+    "results/business_development.json": "b536694f347de563943cac095b2c3620cab6ef9828b41309b98873848b1fdaee",
+    "results/construction.json": "16dc87789371c1102a9c2796a8a3def5d667f05b5c4eab6aad74e39b6e5a8a09",
+    "results/derived_economics.json": "ef57d87590ba649ec617c51e41ce3ab46d4ae7a7578e434e24d3b78980a39112",
+    "results/kernel_ablation.json": "529ce53c3ea5951dd8fe8de9d4fcabaaafeb3456b089ed626873dd07548cef0a",
+    "results/native_alpha/fusion_plan.json": "8021473f27e98805f5d469e7363328fdc9cbc0ae15277dfb94c7c5d6b165c8fa",
+    "results/native_alpha/verification.json": "0cc5760afa4efbe1cbbcde2ab93dfd9159c05797817a1f78bd4c475a2976240f",
+    "results/strategic_game.json": "8df01100853ead8e623172c8a42512722f32ad913e62e8e1a9bd3d8fa07c520f",
+    "results/successor_confirmation/directed.json": "2b58b51cb89bb927f323ea80ef9d52d48f035e807dc8a1170738eb6703e0fe85",
+    "results/successor_confirmation/summary.json": "8c30c8924e9179e134ff543e17971bb45ccc61bc23bec19e104ea540ecdc0fa2",
+    "results/successor_confirmation/traces.jsonl.gz": "a87f9022296d256feae4d418c028c458a7f7f466d6f8d58df904949760f35f0b",
+    "results/successor_construction.json": "b95a011d570ab0f8f6cdb98f477e136d1946be7cbd30dfb051acf6d724306ef6",
+    "results/technical_confirmation/summary.json": "37a60961945d862b3cdeb3a4d2b03ef86eb1b51a47bfd98fb1a6b98f79b7b2aa",
+    "results/technical_confirmation/traces.jsonl.gz": "362dfe933d23ee994979572642fb881d9798e0ba036e397c07d40baad1f661fd",
+    "src/analyze_results.py": "550dc929dec1b1c6257215afd79db0ff2e37eec92b988e776bb8fdb27a2a878b",
+    "src/conventional.py": "74d7978096016c6aaff77ae897995b839cfb7fd2c5e9167f090bc4a007fcbfe6",
+    "src/eventweaver.py": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+    "src/kernel_ablation.py": "60faffffda73c5342e1b1755917828b80a10bdf2e1564802851f226f9a12c7b4",
+    "src/strategic_analysis.py": "a1d786fc9457894b0fc2d3d880bcfcc7a0a374085b19c26d80f586e1ffc8f3e6",
+    "src/successor.py": "2778f4ff615abdeb153c085a706de051aa3f3251469e797a712f1a6468a9a350"
+  }
+}

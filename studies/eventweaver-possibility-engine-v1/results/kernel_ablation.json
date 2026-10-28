@@ -1,0 +1,635 @@
+{
+  "schema": "kernel.ablation.results.v1",
+  "started_at_utc": "2026-10-28T14:19:26.139917+00:00",
+  "freeze": {
+    "schema": "kernel.ablation.freeze.v1",
+    "frozen_at_utc": "2026-10-28T14:19:23.944775+00:00",
+    "protocol_sha256": "9211850fa3b673661e287642de8f0271748bbad8d2cd3a95df2d0c6e2f149e31",
+    "implementation_sha256": "60faffffda73c5342e1b1755917828b80a10bdf2e1564802851f226f9a12c7b4",
+    "run_started": false
+  },
+  "status": "PASS",
+  "errors": [],
+  "cases": [
+    {
+      "name": "late_veto_counterexample",
+      "operator_removed": "delayed_veto",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [],
+      "mutant_nonzero": [
+        {
+          "tick": 2,
+          "mask": 1
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": [
+        {
+          "tick": 2,
+          "full": 0,
+          "ablated": 1
+        }
+      ]
+    },
+    {
+      "name": "late_veto_positive_control",
+      "operator_removed": "delayed_veto",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        }
+      ],
+      "mutant_nonzero": [
+        {
+          "tick": 2,
+          "mask": 1
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": [
+        {
+          "tick": 2,
+          "full": 0,
+          "ablated": 1
+        },
+        {
+          "tick": 7,
+          "full": 1,
+          "ablated": 0
+        }
+      ]
+    },
+    {
+      "name": "cross_group_counterexample",
+      "operator_removed": "group_isolation",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [],
+      "mutant_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": [
+        {
+          "tick": 7,
+          "full": 0,
+          "ablated": 1
+        },
+        {
+          "tick": 8,
+          "full": 0,
+          "ablated": 2
+        }
+      ]
+    },
+    {
+      "name": "group_positive_control",
+      "operator_removed": "group_isolation",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ],
+      "mutant_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": []
+    },
+    {
+      "name": "virtual_link_counterexample",
+      "operator_removed": "virtual_link",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        },
+        {
+          "tick": 14,
+          "mask": 2
+        }
+      ],
+      "mutant_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": [
+        {
+          "tick": 14,
+          "full": 2,
+          "ablated": 0
+        }
+      ]
+    },
+    {
+      "name": "raw_stage_positive_control",
+      "operator_removed": "virtual_link",
+      "checks": {
+        "full_python_oracle_rtl_match": true,
+        "full_expected_match": true,
+        "mutant_python_rtl_match": true,
+        "mutant_expected_match": true,
+        "our_compiler_removed_conventional_rtl_tie": true
+      },
+      "full_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ],
+      "mutant_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ],
+      "full_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "conventional_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mutant_rtl_outputs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "contract_discrepancies": []
+    }
+  ],
+  "interpretation": {
+    "operator_necessity": "Selected traces require delayed veto, isolated groups and the virtual-event link to satisfy their specified contracts. Removing those capabilities changes an accepted or rejected outcome.",
+    "compiler_necessity": "Our compiler is not necessary. An independently implemented conventional RTL design can deliver the same outcomes.",
+    "commercial_inference": "No new commercial feasibility, exclusive novelty, expert-agent advantage or willingness to pay is established by these selected semantic counterexamples. The study supports an implemented functional construction, with a conventional alternative."
+  },
+  "baseline_build": {
+    "cxxrtl_generation_s": 0.4150087839952903,
+    "cxxrtl_native_compile_s": 0.9081627940031467
+  },
+  "successor_build": {
+    "cxxrtl_generation_s": 0.25478109899995616,
+    "native_compile_s": 0.8712466290016891,
+    "proof_s": 0.4605553939982201,
+    "depth": 16,
+    "proof": "PASS"
+  },
+  "mutant_build": {
+    "cxxrtl_generation_s": 0.23685841800033813,
+    "native_compile_s": 1.202396934000717,
+    "rtl_sha256": "911b8575137f8ed9d251aae2d76d31dbf4870aa4d141aa7ae78ae234278d5bd4",
+    "validation": "Yosys check -assert and CXXRTL execution; these mutants intentionally violate the full contract, and no equivalence claim is made."
+  },
+  "all_frozen_sources_unchanged": true,
+  "summary": {
+    "fixtures": 6,
+    "ticks": 88,
+    "unexpected_errors": 0,
+    "compiler_removal_ties": 6,
+    "intended_counterexamples": [
+      "late_veto_counterexample",
+      "late_veto_positive_control",
+      "cross_group_counterexample",
+      "virtual_link_counterexample"
+    ]
+  },
+  "finished_at_utc": "2026-10-28T14:19:30.511977+00:00"
+}

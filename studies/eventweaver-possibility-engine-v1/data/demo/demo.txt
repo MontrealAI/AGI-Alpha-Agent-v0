@@ -1,0 +1,11 @@
+EventWeaver functional design demonstration
+
+Two independent patterns, eight normalized input channels. Every row is one logical tick. Outputs are delayed until each anchor deadline so a late veto can cancel an otherwise complete sequence.
+
+Tick 8: heralded_probe accepts the anchor at tick 1.
+Tick 9: heralded_probe accepts overlapping anchor at tick 2; independent_control accepts anchor at tick 1.
+Tick 19: a veto at the deadline cancels the heralded_probe anchor at tick 12.
+Tick 20: independent_control accepts its tick-12 anchor unaffected by the other group veto.
+Tick 24: synchronous reset dominates a C event and clears a pending anchor.
+
+These are clocked digital samples, not measured photons, physical time or board feedback.

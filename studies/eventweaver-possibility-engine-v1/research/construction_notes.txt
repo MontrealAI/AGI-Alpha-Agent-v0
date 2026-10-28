@@ -1,0 +1,40 @@
+EVENTWEAVER V1 — CONSTRUCTION AND REPRODUCTION
+
+Deliverable
+The compiler consumes one to four bounded A→B→C predicates with an inclusive veto interval. It emits synthesizable synchronous Verilog, a JSON intermediate representation, and an optional standalone C++ stream processor. A Python engine executes that same intermediate representation. Inputs are exactly the eight-channel logical samples specified by protocol/technical_v1.json; no physical interface or timestamp interpretation is hidden in the construction.
+
+First experience
+A beneficiary states independent channel groups, allowed first/second delays, and final decision deadlines. Validation rejects malformed configurations. Compilation produces the functional kernel and replay artifacts. An independent evaluator compares outputs with a separate mathematical oracle and separately constructed conventional RTL. A failure is a rejected delivery requiring correction and a fresh version; no result may be changed by relaxing acceptance.
+
+What was constructed
+Each pattern has three families of Boolean state:
+  P[k], 0 <= k < u1: an alive anchor of age k.
+  Q[b,r], l1 <= b <= u1 and 0 <= r < u2: an alive A-B prefix, with first gap b and age r since B.
+  M[k], l1+l2 <= k <= deadline: an already complete A-B-C path with anchor age k.
+Each clock step advances these ages. A veto clears every state for its pattern. Reset clears every pattern and takes priority over events. Complete paths remain cancellable until their deadline; the output is the M[deadline] bit. Multiple paths for the same anchor merge through Boolean OR, so they cannot double count. Different anchors occupy different ages; no busy-window approximation discards overlaps.
+
+The pre-synthesis state-count formula per pattern is
+  u1 + (u1-l1+1)*u2 + deadline-l1-l2+1.
+The two-pattern demo has 15+14 = 29 state bits. This representation is useful, but it is not promised to dominate the conventional history representation for every specification. Independent synthesis comparisons decide that question.
+
+Invariant argument (reasoned, not a universal mechanized proof)
+After a sample t, P[k] represents A(t-k) and absence of veto from t-k through t. Q[b,r] represents A(t-b-r), B(t-r), and absence of veto across that anchor interval. M[k] represents an anchor at t-k, at least one eligible B-C path completed by t, and absence of veto through t. The compiler's simultaneous next-state transitions preserve these meanings by induction from reset. For M[k], either an already matched M[k-1] advances, or C(t) completes an eligible Q prefix; both are gated by absence of the current veto. The final M[deadline] is therefore the contract. The independent automated checks have their own reported scope and remain necessary evidence against implementation mistakes.
+
+Commands from the package root
+  python src/eventweaver.py inspect --spec data/demo/spec.json
+  python src/eventweaver.py compile --spec data/demo/spec.json --output data/demo/eventweaver.v
+  python src/eventweaver.py compile --spec data/demo/spec.json --format cxx --output data/demo/eventweaver.cpp
+  python src/eventweaver.py simulate --spec data/demo/spec.json --trace data/demo/trace.json --output results/demo_outputs.json
+  python -m unittest discover -s tests -p test_development.py -v
+  python src/build_demo.py
+
+build_demo.py uses local .deps/bin/yowasp-yosys when present, otherwise a PATH-installed yosys or yowasp-yosys. It regenerates the demo and construction report, compiles and executes the generated C++ if g++ is present, and performs real Yosys synthesis. It does not silently call an absent tool a pass. The report records NOT_RUN if a tool is absent. Successful acceptance of the full research release additionally requires the independent verifier results.
+
+Executed development evidence
+Seven unittest groups passed, including explicit boundary, overlap, duplicate path, endpoint veto, reset, group isolation and malformed-spec cases. The 34-tick demo produced output mask 1 at tick 8, mask 3 at tick 9, and mask 2 at tick 20. Generated C++ reproduced these outputs. Yosys 0.70 (git 28ba3cb92) parsed, checked, synthesized and emitted a netlist: 73 generic cells, including 29 synchronous-reset DFFs and 44 logic cells, with no latches or unresolved modules. These are actual local tool results, not simulator assumptions about an unbuilt compiler. Independent oracle, RTL execution and formal comparison results belong to audit/technical_verifier.py and its records.
+
+Source and environment
+The compiler and engine require Python standard library only. Optional synthesis used yowasp-yosys 0.70.0.0.post1259; optional C++ replay used g++ 13.3.0; Python was 3.12.14. Full environment pins are to be preserved by the release owner. Yosys cache is disposable and not part of the scientific artifact. No data, secrets, API keys or paid services are required by the construction.
+
+Limits
+Simulation ticks are logical clocks, not calibrated picoseconds. No FPGA was programmed. No optical event stream, TDC, synchronization crossing, packet interface, metastability, power, physical area, real-time maximum frequency or link data loss was tested. The first offering is a functional firmware design pack. Board integration and timing qualification are separate deliverables with their own costs and acceptance gates. Computer-use and coding model price announcements are motivation; this experiment does not measure an old-vs-new model causal effect.

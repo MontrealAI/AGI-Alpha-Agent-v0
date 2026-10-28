@@ -1,0 +1,80 @@
+{
+  "scope": "Failures preserved without removing observations or changing frozen acceptance after confirmation",
+  "failures": [
+    {
+      "id": "F-01",
+      "phase": "development",
+      "kind": "verification harness timing",
+      "observation": "18of32development traces initially appeared one tick late although candidate and conventional RTL agreed",
+      "cause": "CXXRTL state was sampled before combinational settling",
+      "correction": "Same-clock settling evaluation added before freeze; no extra rising edge, product semantic change or acceptance relaxation",
+      "evidence": "audit/failures/cxxrtl_sampling_v1/",
+      "status": "Corrected before fresh confirmation; original verifier and failed observations preserved"
+    },
+    {
+      "id": "F-02",
+      "phase": "business development",
+      "kind": "accounting assertion",
+      "observation": "Initial cash/debt/equity bridge failed on a development history",
+      "cause": "Signed debt balance subtracted where it must be added under debit-positive convention",
+      "correction": "Cash plus signed debt minus contributed equity equals full-project profit",
+      "evidence": "audit/business_development_v0.py",
+      "status": "Corrected before commercial freeze; independent reconstruction later covers all10240histories"
+    },
+    {
+      "id": "F-03",
+      "phase": "pre-freeze independent review",
+      "kind": "economic modeling repairs",
+      "observation": "Private reservation used by seller, pooled batch time omitted, prospect chronology and runoff accounting incomplete",
+      "correction": "Observed buyer bid; booked batch time; calendar-sorted prospect decisions; fixed capital commitment limit; runoff costs; explicit renewal alternatives; detail-capture invariance",
+      "evidence": "audit/economic_review.txt and audit/accounting_development.json",
+      "status": "Corrected before commercial freeze"
+    },
+    {
+      "id": "F-04",
+      "phase": "fresh technical confirmation",
+      "kind": "negative performance result",
+      "observation": "EventWeaver Python engine about45times slower than conventional history implementation on fresh cases",
+      "evidence": "results/technical_confirmation/summary.json",
+      "status": "Retained; no general speed advantage claimed"
+    },
+    {
+      "id": "F-05",
+      "phase": "fresh commercial confirmation",
+      "kind": "commercial failure",
+      "observation": "All1024basehistories lose full-project money; everyotherconditional scenario also loses inall1024histories",
+      "evidence": "results/business_confirmation.json",
+      "status": "STOP standalone expansion"
+    },
+    {
+      "id": "F-06",
+      "phase": "financing runoff",
+      "kind": "terminal insolvency",
+      "observation": "Sevenstresshistories end with unpaid creditprincipal; receivables/deposits closed but financingnotfullyrepaid",
+      "evidence": "audit/accounting_confirmation.json and results/terminal_insolvencies.json",
+      "status": "Unresolved simulated losses retained; no debt forgiveness or new success claim"
+    },
+    {
+      "id": "F-08",
+      "phase": "postconfirmation counterfactual",
+      "kind": "implementation-specific necessity rejected",
+      "observation": "All six full outcomes remain when our compiler is replaced with competent conventional RTL. Removing three specified semantic operators breaks the relevant contracts.",
+      "evidence": "results/kernel_ablation.json",
+      "status": "Semantic usefulness retained; no exclusive implementation necessity or new commercial feasibility claimed."
+    },
+    {
+      "id": "F-09",
+      "phase": "return to discovery",
+      "kind": "no replacement flagship earned",
+      "observation": "Three consequential reopening hypotheses lack the essential physical or institutional demonstration and an evidenced commercial bridge.",
+      "evidence": "research/return_to_search.json",
+      "status": "No new flagship promoted; strongest conditional opening is calibrated counterfactual robot experience."
+    }
+  ],
+  "historical_failures_preserved_by_reference": [
+    "Out-Evolve failed operator/coalition integration",
+    "Transformational Autonomous Enterprises lineage repair and direct-specialist tie",
+    "OpenAI math history sign-error withdrawals",
+    "Existing AGI Alpha publisher readiness failure"
+  ]
+}

@@ -1,0 +1,206 @@
+\section{Assumptions and the complete estimated bill}
+All monetary inputs below are documented estimates or reference anchors. Executed runtimes, source hashes, test counts and journal arithmetic are measured outputs. No synthetic acceptance rate is inferred from a vendor benchmark or from an agent-generated testimonial.
+
+\begin{longtable}{L{0.48\textwidth}L{0.43\textwidth}}
+\caption{Principal commercial inputs frozen before confirmation. The complete machine-readable record is \protect\path{protocol/business_assumptions.json}.}\\
+\toprule Input & Frozen value or interpretation\\
+\midrule\endfirsthead
+\toprule Input & Value / interpretation\\\midrule\endhead
+Currency / tax & Nominal 2026 USD; pre-tax results; no valuation or token return.\\
+Acquisition / permitted runoff & 180 days / 730 days.\\
+Base prospects / inquiry probability & 180 / 18\%; assumptions, not a verified lead list.\\
+Qualification probability & 62\%; scope, interface, authority and budget can fail.\\
+Gross successful-outcome value & Lognormal median US\$6,500; constrained by outside alternatives.\\
+Internal/current-AI work & 6--16 design hours plus 4--8 review hours; estimated.\\
+Buyer common review & Three hours; supported-library route adds four setup hours.\\
+Competitor quote & US\$1,500--3,300 before scenario responses; not an actual supplier quote.\\
+Specialist cost & US\$135/hour base; US\$110--180 sensitivity range; source-anchored estimate.\\
+Supplier reservation / capacity & US\$180/hour maximum; 18 delivery hours weekly plus six sales hours.\\
+Support capacity reserve & Eight hours/order, aggregate proxy rather than a calendar guarantee.\\
+Posted fee / bargaining floor & US\$1,200 / 92\% of posted fee; public bid rule and seller cost gate.\\
+Deposit / invoice terms & 40\% restricted refundable deposit; net 60 days after acceptance.\\
+Warranty / maximum delivery delay & 45 days / 42 days from contract, including correction.\\
+First review / correction & 90\% initial acceptance; 65\% correction success, both modeled.\\
+Base commercial default & 3.5\%, with common-mode and scenario additions.\\
+Common-mode occurrence & 12\% project probability; higher in stress scenarios.\\
+Per-order inference / compute-tools & US\$25 / US\$15; estimated intake/exception allocations.\\
+Equity / credit / annual interest & US\$45,000 / US\$15,000 / 12\%.\\
+Renewal service & US\$450; buyer chooses against internal, competitor and no-action utilities.\\
+Pool formation & Three orders within 28 days, otherwise deposit refunds.\\
+Scenario weights & None; ten conditional models are reported separately.\\
+\bottomrule
+\end{longtable}
+
+The labor anchor uses a May 2025 US electronics-engineer median wage of US\$130,220, divided by 2,080 hours and an illustrative 0.685 full-time compensation share, yielding about US\$91.4/hour before specialist and business overhead. Combining occupation-specific wages with a broader compensation share is an estimate. It is not a quoted specialist price or a measurement of how many hours this buyer needs.\cite{bls,ecec}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{L{0.64\textwidth}r}
+\toprule Startup item, allocated once & US\$\\
+\midrule
+Discovery & 2,500\\
+Failed attempts & 1,500\\
+Core development & 8,000\\
+Independent verification & 4,000\\
+Tools, data and compute & 600\\
+Estimated development inference & 400\\
+Contract design & 1,400\\
+Predecessor artifact extraction/validation & 500\\
+Successor extension and retention option & 4,100\\
+\midrule
+Startup total & 23,000\\
+Six acquisition-window overhead months & 2,700\\
+\bottomrule
+\end{tabular}
+\caption{The successor's US\$600 retention cost is inside its US\$4,100 option; it is not charged a second time. Runoff administration, sales, support, correction and financing remain outside this fixed table and inside full-project costs.}
+\end{table}
+
+In base confirmation, mean acquisition, qualification, quotation and contracting costs are US\$1,269, 1,935, 1,863 and 1,296 respectively. Mean direct delivery is US\$3,408; support is US\$1,093; correction, warranty and common repair add about US\$605. Mean bad debt is US\$188 and runoff administration US\$754. These estimated-cost outputs explain why counting compiler runtime alone would misprice the service.
+
+\section{Accounting identities, audits and terminal exceptions}
+Let $R$ be recognized revenue less refunds, $C_v$ all variable commercial costs including bad debt, $C_f$ fixed campaign costs, and $I$ financing expense. Then
+\begin{equation}
+\Pi_{\mathrm{operating}}=R-C_v,\qquad
+\Pi_{\mathrm{full}}=R-C_v-C_f-I.
+\end{equation}
+With no residual customer receivables or deposits, unrestricted cash, signed debt and contributed equity reconcile to full-project profit. Under the auditor's debit-positive convention,
+\begin{equation}
+\text{cash}+\text{signed debt}-\text{contributed equity}=\Pi_{\mathrm{full}}.
+\end{equation}
+Financing draws are liabilities, not revenue. Principal repayment is not an expense. Refundable deposits remain restricted. A support obligation cannot be erased merely because the customer does not renew.
+
+The independent auditor streams every confirmation history and reconstructs accounts from postings, rather than importing the simulator. It checks chronology, positive integer-cent amounts, double entry, restricted custody, revenue/collection separation, final receivables, buyer participation, seller and funding gates, lifecycle ordering, and scenario summary arithmetic. Nine corruption controls establish that the auditor rejects deliberately broken records.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{L{0.68\textwidth}r}
+\toprule Independent reconstruction coverage & Count\\
+\midrule
+Complete modeled histories & 10,240\\
+Journal entries & 1,265,250\\
+Buyer outside-option choices & 201,298\\
+Independently recomputed utility values & 1,006,490\\
+Seller / funding admission gates & 58,184\\
+Contracts & 49,296\\
+Initial accepted deliveries & 47,442\\
+Renewals & 3,696\\
+Arithmetic / checked-decision errors & 0\\
+Terminal financing exceptions & 7\\
+\bottomrule
+\end{tabular}
+\caption{A passing accounting audit does not certify the realism of behavioral inputs or erase the seven insolvencies. Full records are in \protect\path{audit/accounting_confirmation.json} and the compressed journal archive.}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{L{0.40\textwidth}rr}
+\toprule Scenario & Seed & Unpaid debt (US\$)\\
+\midrule
+No collection recourse & 700589 & 2,524.62\\
+High demand & 700282 & 18.39\\
+High demand & 700291 & 1,344.52\\
+High demand & 700441 & 94.89\\
+High demand & 700616 & 2,734.31\\
+High demand & 700687 & 1,532.25\\
+High demand & 700925 & 560.75\\
+\bottomrule
+\end{tabular}
+\caption{All seven unresolved lender balances are retained after available-cash repayment. Frequencies are 1/1,024 in the no-recourse scenario and 6/1,024 in high demand; scenarios have no assigned common probability.}
+\end{table}
+
+\section{Frozen protocols and reproduction}
+The main technical freeze preceded entropy seed \texttt{7681855347690480531}; the successor freeze preceded seed \texttt{8894635963115229189}. Commercial confirmation used disjoint seeds 700001--701024 after a 96-seed development campaign, with 1,024 runs for each of ten scenarios. The price and arrangement were not changed after seeing confirmation.
+
+\begin{description}
+\item[Main freeze SHA-256] \path{a26478f69dd25a1333e8cbb6026f8863105d93350328b7df9c081f7a5747855d}
+\item[Successor freeze SHA-256] \path{de1c253e25cf18d82ef580d859ccf2b14b9bbe1ab285c4eb710eb97d8e5fca63}
+\item[Commercial freeze SHA-256] \path{a695bf72c8bd8f2d93cf3f211b23cc4ee49f4248ea55484a5e25ceff3a0a1350}
+\item[Retained compiler SHA-256] \path{756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73}
+\item[AGI Alpha source commit] \path{12770c22b4a9f90f2013bbfb64242f912ba5071e}
+\item[OpenAI mathematics source commit] \path{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}
+\end{description}
+
+The standard compiler and basic replay use Python's standard library. Actual verification used YoWASP Yosys \texttt{0.70.0.0.post1259}, Yosys source identifier \texttt{28ba3cb92}, and g++ 13.3.0. Installed transitive versions are recorded. Rebuilding graphs and the browser edition additionally uses the declared scientific/document toolchain. Public model family names are source-verified; an immutable internal authoring checkpoint and actual per-task billing were not exposed and therefore cannot be pinned.
+
+From the companion root, the basic construction can be rerun with:
+\begin{verbatim}
+python src/eventweaver.py inspect --spec data/demo/spec.json
+python src/eventweaver.py simulate --spec data/demo/spec.json \
+  --trace data/demo/trace.json --output results/demo_outputs.json
+python -m unittest discover -s tests -p test_development.py
+python src/build_demo.py
+\end{verbatim}
+The developer handoff gives exact confirmation commands, seed preservation, optional tool requirements and output locations. Verification drivers reproduce the main and successor campaigns without generating a new scientific claim. Business confirmation can be reproduced with:
+\begin{verbatim}
+python src/business.py confirm --runs 1024
+python audit/accounting_reconstruct.py \
+  results/business_confirmation_journals.jsonl.gz \
+  --summary results/business_confirmation.json \
+  --output audit/accounting_reproduced.json
+\end{verbatim}
+Use a separate output copy when reproducing, so the released observations remain unchanged. Gzip metadata or measured wall times may differ even when uncompressed records and decisions match; byte identity, semantic equality and runtime reproducibility are separate checks. The package's file manifest identifies the released bytes.
+
+\section{Failure and correction register}
+\begin{longtable}{L{0.20\textwidth}L{0.34\textwidth}L{0.37\textwidth}}
+\caption{Failures preserved alongside successes.}\label{tab:failures}\\
+\toprule Phase & Observation & Treatment\\
+\midrule\endfirsthead
+\toprule Phase & Observation & Treatment\\\midrule\endhead
+Technical development & 18/32 apparent RTL timing mismatches & CXXRTL observation/settling defect corrected before freeze; original driver and traces retained.\\
+Accounting development & Cash/debt/equity assertion failed & Corrected signed-debt identity before freeze; original simulator source retained.\\
+Independent economic review & Hidden reservation information, omitted batch time, chronological and runoff gaps & Corrected observed-bid decisions, capacity bookkeeping, chronological processing, renewal choices and full runoff before freeze.\\
+Fresh main confirmation & Candidate Python model about 45 times slower & Preserved; no general speed advantage claimed.\\
+Conventional comparison & All functional acceptance ties & Business opportunity and exclusive advantage answered separately.\\
+Succession & Ordinary library ties retained-artifact route & Productive reuse established; learned-specialist superiority not established.\\
+Commercial confirmation & Every history in every tested scenario loses & STOP standalone expansion, with no post-hoc price/value rescue.\\
+Financing runoff & Seven unpaid terminal balances & Retained as insolvencies; no implicit forgiveness.\\
+Physical and customer gates & No board calibration, timing qualification or observed buyer payment & Explicitly outside the executed claim; not hidden in simulated delivery.\\
+\bottomrule
+\end{longtable}
+
+The study also inherits and preserves prior failures by pinned reference: Out-Evolve's failed combined operator/coalition experiment, the autonomous-enterprise lineage repair and conventional ties, the mathematics collection's withdrawn results, and the existing publisher's readiness failure. Preserving a failure does not require repeating it or changing its original files.
+
+\section{Claim-to-evidence map}
+\begin{longtable}{L{0.28\textwidth}L{0.34\textwidth}L{0.29\textwidth}}
+\caption{Principal claims, evidence and boundaries. A machine-readable map accompanies the paper.}\\
+\toprule Claim & Evidence & Boundary\\
+\midrule\endfirsthead
+\toprule Claim & Evidence & Boundary\\\midrule\endhead
+Independent delayed-veto logic works & \path{results/technical_confirmation/summary.json}; trace/proof records & Frozen digital grammar; bounded proof depths.\\
+Executable source was built & \path{src/eventweaver.py}; demo RTL/C++; synthesis logs & Generic cells, not physical PPA.\\
+Conventional route ties & \path{src/conventional.py}; \path{src/reference_oracle.py} & Separate AI-assisted workflow, not human RCT.\\
+Python model is slower & Per-spec runtime records in main confirmation & This workload/host; not a hardware result.\\
+New successor grammar works & \path{results/successor_confirmation/summary.json} & Virtual-event network only; physical feedback untested.\\
+Ordinary-library reuse ties & Isolated copy/subprocess records and exact hashes & No learned specialist superiority.\\
+Required semantics matter; our compiler is substitutable & \path{results/kernel_ablation.json}; separate protocol/freeze & Six predeclared removal fixtures; not a blind discovery or commercial experiment.\\
+Selected commercial policy loses & \path{results/business_confirmation.json}; full journal archive & Conditional assumptions, no observed demand calibration.\\
+Accounts reconstruct & \path{audit/accounting_confirmation.json} & Arithmetic/decision consistency, not market truth.\\
+Seven terminal insolvencies & \path{results/terminal_insolvencies.json} & Debt remains unpaid; later interest and creditor recovery unmodeled.\\
+Native FusionPlan reused & \path{results/native_alpha/verification.json} & Local unchanged modules; no deployed runtime/funds.\\
+Billion-plus criterion not earned & \path{research/scaling_thesis.json} & Broad industry figures do not establish eligibility/adoption/value.\\
+Browser demonstrates exact semantics & \path{results/browser_qa.json} & UI parity and offline behavior, not instrument calibration.\\
+No replacement flagship earned & \path{research/return_to_search.json} & Bounded desk investigation; physical and institutional constructions unexecuted.\\
+\bottomrule
+\end{longtable}
+
+\section{What the actual foundation editions contributed}
+Seventeen retrieved repository source files were checked against their original Git blob identities. The relevant full editions were inspected, and their hashes and pinned URLs are preserved in the source manifest. Out-Evolve's TeX at the pin is a split-source wrapper with missing referenced sections, so its exact 29-page PDF was used. An unavailable Out-Reflect source was not represented as read.
+
+\begin{longtable}{L{0.27\textwidth}L{0.64\textwidth}}
+\caption{Continuity is methodological and source-bound, not a claim that earlier synthetic examples validate today's market.}\\
+\toprule Edition & Lesson carried into this campaign\\
+\midrule\endfirsthead
+\toprule Edition & Lesson\\\midrule\endhead
+Transformational Intelligence & Construct a representation or intervention that preserves the original purpose. Its declared causal example has an unrestricted conventional-planner tie.\\
+Invent the Economy & Jointly test means, voluntary participation and cash. Its hypothetical pooled gain depends on assumed qualification and prefunding; route burden can reverse the result.\\
+Transformational Autonomous Enterprises & Source-bound reusable checks can reduce generic work while a direct specialist remains cheaper. An ordinary-library control is essential.\\
+Out-Learn & Calibration and observation contracts determine which knowledge is reusable; changed physical timing cannot inherit digital qualification.\\
+Out-Think & A replacement representation must preserve future updates as well as current answers; explicit temporal semantics matter.\\
+Out-Design & Freed capacity matters only when it releases the actually scarce resource. Generic state counts cannot substitute for a physical or commercial bottleneck test.\\
+Out-Strategise & Purpose-specific construction can avoid unnecessary hidden-state discovery, but a stronger successor needs fresh acceptance.\\
+Out-Execute & Reuse is justified by unchanged boundary contracts; instance-specific verification remains fresh.\\
+Out-Evolve & Build means that support another productive mission; preserve failed integrations and competent-optimizer parity. A conditional mathematical law is not physical industrial validation.\\
+\bottomrule
+\end{longtable}
+
+The full companion provides these readings, the opportunity search record, the actual compiler and the failed observations as a continuation of the ecosystem. It offers a small working instrument and a complete commercial refusal, leaving the next investigator an executable starting point and a clear reason not to scale the present offer.

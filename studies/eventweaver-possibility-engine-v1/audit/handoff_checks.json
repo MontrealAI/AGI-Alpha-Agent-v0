@@ -1,0 +1,265 @@
+{
+  "schema": "possibility-engine.handoff-checks.v1",
+  "scope": "Read-only freeze verification and documented lightweight CLI examples. This is documentation validation, not a new technical or commercial confirmation. All generated outputs are in an excluded internal cache.",
+  "original_manifest_bindings": 18,
+  "distinct_original_files": 15,
+  "bindings": [
+    {
+      "manifest": "technical_freeze.json",
+      "path": "protocol/technical_v1.json",
+      "expected_sha256": "ee65e7d66b8dcce559b984534d0f727bc1ec9ba16199090fcd589f76fb52beb5",
+      "match": true
+    },
+    {
+      "manifest": "technical_freeze.json",
+      "path": "src/eventweaver.py",
+      "expected_sha256": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+      "match": true
+    },
+    {
+      "manifest": "technical_freeze.json",
+      "path": "src/conventional.py",
+      "expected_sha256": "74d7978096016c6aaff77ae897995b839cfb7fd2c5e9167f090bc4a007fcbfe6",
+      "match": true
+    },
+    {
+      "manifest": "technical_freeze.json",
+      "path": "src/reference_oracle.py",
+      "expected_sha256": "90110b4a8969cc16ce6eaccd648253fa93e6b18ab9b9569fbc59a7837287af73",
+      "match": true
+    },
+    {
+      "manifest": "technical_freeze.json",
+      "path": "audit/technical_verifier.py",
+      "expected_sha256": "a4a1330678ca79f5b850ca04c765ba07da9c3471917bbead8a6b96ef1385ff41",
+      "match": true
+    },
+    {
+      "manifest": "technical_freeze.json",
+      "path": "tests/comparator/test_contract.py",
+      "expected_sha256": "7fa81f773fe7f8374e96c31938aa5b44feda1971750e086fb9262369a546559a",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "protocol/successor_v1.json",
+      "expected_sha256": "bc3f1ce30043f68fb1ee9d0af0c28c4eaa1fbc6be44881d5288f565c5dd5f262",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "src/successor.py",
+      "expected_sha256": "2778f4ff615abdeb153c085a706de051aa3f3251469e797a712f1a6468a9a350",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "src/conventional_network.py",
+      "expected_sha256": "42d60cbb58b5d3e14011f3fb14eaf48de8aa934b5724fdfa339825b3e345a65b",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "audit/successor_verifier.py",
+      "expected_sha256": "074bdbb575dc1bae2c5aa102d2c077e7180effd145539c9c1b7c92fba1d9f52a",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "src/eventweaver.py",
+      "expected_sha256": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "src/conventional.py",
+      "expected_sha256": "74d7978096016c6aaff77ae897995b839cfb7fd2c5e9167f090bc4a007fcbfe6",
+      "match": true
+    },
+    {
+      "manifest": "successor_freeze.json",
+      "path": "src/reference_oracle.py",
+      "expected_sha256": "90110b4a8969cc16ce6eaccd648253fa93e6b18ab9b9569fbc59a7837287af73",
+      "match": true
+    },
+    {
+      "manifest": "commercial_freeze.json",
+      "path": "protocol/business_assumptions.json",
+      "expected_sha256": "b57042e25e75f59fa5edf1654f31a1f5f86ca9159c5d28a2bdbc2a8244c91b7c",
+      "match": true
+    },
+    {
+      "manifest": "commercial_freeze.json",
+      "path": "protocol/commercial_policy.json",
+      "expected_sha256": "74602e9bf118859203c7c1c12640bec725e4845a85f73f2a044738350ad3b8bd",
+      "match": true
+    },
+    {
+      "manifest": "commercial_freeze.json",
+      "path": "src/business.py",
+      "expected_sha256": "eb277aa613da6f5e0e90a3dd80736014dde7deb07400a2ff7da50a0fd7a51fc8",
+      "match": true
+    },
+    {
+      "manifest": "commercial_freeze.json",
+      "path": "audit/accounting_reconstruct.py",
+      "expected_sha256": "e1413569c662edb375598c928d94e11a9b9aef6d9aa0fb0416e6d1aa4111ab20",
+      "match": true
+    },
+    {
+      "manifest": "commercial_freeze.json",
+      "path": "protocol/tool_versions.json",
+      "expected_sha256": "77a5d875d535fab4f1246df5f6a81b3a4b785c6480b7e152896a2ccbd8e372a7",
+      "match": true
+    }
+  ],
+  "technical_alias_identical": true,
+  "kernel_freeze_matches": true,
+  "return_to_search_manifest_matches": true,
+  "cli_examples": [
+    {
+      "argv": [
+        "python",
+        "src/eventweaver.py",
+        "inspect",
+        "--spec",
+        "data/demo/spec.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/eventweaver.py",
+        "compile",
+        "--spec",
+        "data/demo/spec.json",
+        "--format",
+        "verilog",
+        "--module",
+        "eventweaver",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/eventweaver.v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/eventweaver.py",
+        "compile",
+        "--spec",
+        "data/demo/spec.json",
+        "--format",
+        "ir",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/ir.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/eventweaver.py",
+        "compile",
+        "--spec",
+        "data/demo/spec.json",
+        "--format",
+        "cxx",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/eventweaver.cpp"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/eventweaver.py",
+        "simulate",
+        "--spec",
+        "data/demo/spec.json",
+        "--trace",
+        "data/demo/trace.json",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/demo.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/conventional.py",
+        "compile",
+        "--spec",
+        "data/demo/spec.json",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/conventional.v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/conventional.py",
+        "simulate",
+        "--spec",
+        "data/demo/spec.json",
+        "--trace",
+        "data/demo/trace.json",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/conventional.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/successor.py",
+        "inspect",
+        "--spec",
+        "data/successor/spec.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/successor.py",
+        "compile",
+        "--spec",
+        "data/successor/spec.json",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/successor.v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "src/successor.py",
+        "simulate",
+        "--spec",
+        "data/successor/spec.json",
+        "--trace",
+        "data/successor/trace.json",
+        "--output",
+        "/workspace/scratch/39bb00c10dbc/possibility_engine/.cache/handoff_cli/successor.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "node",
+        "research/native_alpha/compile.mjs",
+        "research/native_alpha/jobs_eventweaver.json"
+      ],
+      "exit_code": 0,
+      "recorded_plan_match": true
+    }
+  ],
+  "demo_ticks": 34,
+  "successor_demo_ticks": 33,
+  "native_plan_exact_record_match": true,
+  "external_writes": 0,
+  "passed": true
+}

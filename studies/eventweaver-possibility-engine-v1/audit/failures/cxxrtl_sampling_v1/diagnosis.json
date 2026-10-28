@@ -1,0 +1,8 @@
+{
+  "failure": "CXXRTL sampled combinational ports immediately after register commit without a settling evaluation",
+  "affected": "18 of 32 development trace comparisons",
+  "evidence": "Both RTL methods matched each other and emitted their pulse one tick late relative to two independent Python models; all four bounded RTL equivalence checks passed",
+  "fix": "Second top.step() at unchanged high clock before output sampling; no extra rising edge",
+  "semantic_changes": false,
+  "implementation_changes": false
+}

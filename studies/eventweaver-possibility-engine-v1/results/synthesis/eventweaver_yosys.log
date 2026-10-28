@@ -1,0 +1,703 @@
+
+-- Running command `read_verilog data/demo/eventweaver.v; hierarchy -check -top eventweaver; proc; opt; check -assert; tee -o results/synthesis/rtl_statistics.json stat -json; synth -top eventweaver; check -assert; tee -o results/synthesis/generic_statistics.json stat -json; write_json results/synthesis/eventweaver_netlist.json' --
+
+1. Executing Verilog-2005 frontend: data/demo/eventweaver.v
+Parsing Verilog input from `data/demo/eventweaver.v' to AST representation.
+Generating RTLIL representation for module `\eventweaver'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \eventweaver
+
+2.2. Analyzing design hierarchy..
+Top module:  \eventweaver
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$data/demo/eventweaver.v:3$1 in module eventweaver.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~1 debug messages>
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\eventweaver.$proc$data/demo/eventweaver.v:3$1'.
+     1/29: $0\state[28:0] [28]
+     2/29: $0\state[28:0] [27]
+     3/29: $0\state[28:0] [26]
+     4/29: $0\state[28:0] [25]
+     5/29: $0\state[28:0] [24]
+     6/29: $0\state[28:0] [23]
+     7/29: $0\state[28:0] [22]
+     8/29: $0\state[28:0] [21]
+     9/29: $0\state[28:0] [20]
+    10/29: $0\state[28:0] [19]
+    11/29: $0\state[28:0] [18]
+    12/29: $0\state[28:0] [17]
+    13/29: $0\state[28:0] [16]
+    14/29: $0\state[28:0] [15]
+    15/29: $0\state[28:0] [14]
+    16/29: $0\state[28:0] [13]
+    17/29: $0\state[28:0] [12]
+    18/29: $0\state[28:0] [11]
+    19/29: $0\state[28:0] [10]
+    20/29: $0\state[28:0] [9]
+    21/29: $0\state[28:0] [8]
+    22/29: $0\state[28:0] [7]
+    23/29: $0\state[28:0] [6]
+    24/29: $0\state[28:0] [5]
+    25/29: $0\state[28:0] [4]
+    26/29: $0\state[28:0] [3]
+    27/29: $0\state[28:0] [2]
+    28/29: $0\state[28:0] [1]
+    29/29: $0\state[28:0] [0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\eventweaver.\state' using process `\eventweaver.$proc$data/demo/eventweaver.v:3$1'.
+  created $dff cell `$procdff$170' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\eventweaver.$proc$data/demo/eventweaver.v:3$1'.
+Removing empty process `eventweaver.$proc$data/demo/eventweaver.v:3$1'.
+Cleaned up 1 empty switch.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+4. Executing OPT pass (performing simple optimizations).
+
+4.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+4.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 111 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Computing hashes of 84 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+<suppressed ~81 debug messages>
+Removed a total of 27 cells.
+
+4.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~58 debug messages>
+
+4.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+4.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 84 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+4.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:34$82_Y, Q = \state [28], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:33$80_Y, Q = \state [27], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:32$78_Y, Q = \state [26], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:31$76_Y, Q = \state [25], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:30$72_Y, Q = \state [24], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:29$66_Y, Q = \state [23], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:28$63_Y, Q = \state [22], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:27$61_Y, Q = \state [21], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:26$59_Y, Q = \state [20], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:25$56_Y, Q = \state [19], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:24$54_Y, Q = \state [18], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:23$52_Y, Q = \state [17], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:22$49_Y, Q = \state [16], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:21$47_Y, Q = \state [15], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:20$45_Y, Q = \state [14], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:19$43_Y, Q = \state [13], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:18$41_Y, Q = \state [12], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:17$37_Y, Q = \state [11], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:16$31_Y, Q = \state [10], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:15$25_Y, Q = \state [9], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:14$22_Y, Q = \state [8], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:13$20_Y, Q = \state [7], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:12$17_Y, Q = \state [6], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:11$15_Y, Q = \state [5], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:10$12_Y, Q = \state [4], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:9$10_Y, Q = \state [3], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:8$7_Y, Q = \state [2], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:7$5_Y, Q = \state [1], rval = 1'0).
+Adding SRST signal on $procdff$170 ($dff) from module eventweaver (D = $and$data/demo/eventweaver.v:6$3_Y, Q = \state [0], rval = 1'0).
+
+4.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+Removed 29 unused cells and 86 unused wires.
+<suppressed ~30 debug messages>
+
+4.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+4.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+4.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+4.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+4.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+4.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+4.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+4.16. Finished fast OPT passes. (There is nothing left to do.)
+
+5. Executing CHECK pass (checking for obvious problems).
+Checking module eventweaver...
+Found and reported 0 problems.
+{
+   "creator": "Yosys 0.70 (git sha1 28ba3cb92, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+   "invocation": "stat -json ",
+   "modules": {
+      "\\eventweaver": {
+         "num_wires":         59,
+         "num_wire_bits":     95,
+         "num_pub_wires":     5,
+         "num_pub_wire_bits": 41,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         83,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$and": 44,
+            "$not": 2,
+            "$or": 8,
+            "$sdff": 29
+         }
+      }
+   },
+      "design": {
+         "num_wires":         59,
+         "num_wire_bits":     95,
+         "num_pub_wires":     5,
+         "num_pub_wire_bits": 41,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         83,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$and": 44,
+            "$not": 2,
+            "$or": 8,
+            "$sdff": 29
+         }
+      }
+}
+
+6. Executing SYNTH pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \eventweaver
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \eventweaver
+Removed 0 unused modules.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.3. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.4. Executing CHECK pass (checking for obvious problems).
+Checking module eventweaver...
+Found and reported 0 problems.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.6. Executing OPT pass (performing simple optimizations).
+
+6.6.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.6.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+6.6.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.6.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.6.9. Finished fast OPT passes. (There is nothing left to do.)
+
+6.7. Executing FSM pass (extract and optimize FSM).
+
+6.7.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+6.7.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+6.7.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+6.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.7.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+6.7.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+6.7.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+6.7.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+6.8. Executing OPT pass (performing simple optimizations).
+
+6.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+6.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.8.9. Finished fast OPT passes. (There is nothing left to do.)
+
+6.9. Executing WREDUCE pass (reducing word size of cells).
+
+6.10. Executing PEEPOPT pass (run peephole optimizers).
+
+6.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.12. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module eventweaver:
+  created 0 $alu and 0 $macc cells.
+
+6.13. Executing SHARE pass (SAT-based resource sharing).
+
+6.14. Executing OPT pass (performing simple optimizations).
+
+6.14.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.14.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.14.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.14.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+6.14.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.14.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.14.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.14.9. Finished fast OPT passes. (There is nothing left to do.)
+
+6.15. Executing MEMORY pass.
+
+6.15.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+6.15.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+6.15.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+6.15.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+6.15.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+6.15.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.15.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+6.15.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+6.15.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.15.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.17. Executing OPT pass (performing simple optimizations).
+
+6.17.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.17.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.17.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.17.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.17.5. Finished fast OPT passes.
+
+6.18. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+6.19. Executing OPT pass (performing simple optimizations).
+
+6.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.19.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \eventweaver..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.19.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \eventweaver.
+Performed a total of 0 changes.
+
+6.19.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.19.6. Executing OPT_SHARE pass.
+
+6.19.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.19.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.19.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.19.10. Finished fast OPT passes. (There is nothing left to do.)
+
+6.20. Executing TECHMAP pass (map to technology primitives).
+
+6.20.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+6.20.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $sdff.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $not.
+No more expansions possible.
+<suppressed ~160 debug messages>
+
+6.21. Executing OPT pass (performing simple optimizations).
+
+6.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 83 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.21.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.21.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+
+6.21.5. Finished fast OPT passes.
+
+6.22. Executing ABC pass (technology mapping using ABC).
+
+6.22.1. Summary of detected clock domains:
+  83 cells in clk=\clk, en={ }, arst={ }, srst=\rst
+
+6.22.2. Extracting gate netlist of module `\eventweaver' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk, synchronously reset by \rst
+
+6.22.2.1. Executed ABC.
+Extracted 54 gates and 89 wires to a netlist network with 35 inputs and 29 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+
+6.22.2.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:       12
+ABC RESULTS:            ANDNOT cells:       19
+ABC RESULTS:               NOR cells:       10
+ABC RESULTS:                OR cells:        3
+ABC RESULTS:        internal signals:       25
+ABC RESULTS:           input signals:       35
+ABC RESULTS:          output signals:       29
+Removing temp directory.
+Removing global temp directory.
+
+6.23. Executing OPT pass (performing simple optimizations).
+
+6.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module eventweaver.
+
+6.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\eventweaver'.
+Computing hashes of 73 cells of `\eventweaver'.
+Finding duplicate cells in `\eventweaver'.
+Removed a total of 0 cells.
+
+6.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \eventweaver..
+Removed 0 unused cells and 89 unused wires.
+<suppressed ~1 debug messages>
+
+6.23.5. Finished fast OPT passes.
+
+6.24. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `eventweaver'. Setting top module to eventweaver.
+
+6.24.1. Analyzing design hierarchy..
+Top module:  \eventweaver
+
+6.24.2. Analyzing design hierarchy..
+Top module:  \eventweaver
+Removed 0 unused modules.
+
+6.25. Printing statistics.
+
+=== eventweaver ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       49 wires
+       85 wire bits
+        5 public wires
+       41 public wire bits
+        4 ports
+       12 port bits
+       73 cells
+       19   $_ANDNOT_
+       12   $_AND_
+       10   $_NOR_
+        3   $_OR_
+       29   $_SDFF_PP0_
+
+6.26. Executing CHECK pass (checking for obvious problems).
+Checking module eventweaver...
+Found and reported 0 problems.
+
+7. Executing CHECK pass (checking for obvious problems).
+Checking module eventweaver...
+Found and reported 0 problems.
+{
+   "creator": "Yosys 0.70 (git sha1 28ba3cb92, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+   "invocation": "stat -json ",
+   "modules": {
+      "\\eventweaver": {
+         "num_wires":         49,
+         "num_wire_bits":     85,
+         "num_pub_wires":     5,
+         "num_pub_wire_bits": 41,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         73,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 19,
+            "$_AND_": 12,
+            "$_NOR_": 10,
+            "$_OR_": 3,
+            "$_SDFF_PP0_": 29
+         }
+      }
+   },
+      "design": {
+         "num_wires":         49,
+         "num_wire_bits":     85,
+         "num_pub_wires":     5,
+         "num_pub_wire_bits": 41,
+         "num_ports":         4,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         73,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 19,
+            "$_AND_": 12,
+            "$_NOR_": 10,
+            "$_OR_": 3,
+            "$_SDFF_PP0_": 29
+         }
+      }
+}
+
+8. Executing JSON backend.

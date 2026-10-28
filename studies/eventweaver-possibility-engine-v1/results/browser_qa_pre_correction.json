@@ -1,0 +1,19 @@
+{
+  "status": "FAIL",
+  "phase": "First complete-paper browser acceptance, before reference normalization fix",
+  "html_sha256": "0f9579ee366879339752dfc4ae95933cd6cf44d8dbef4fbc14c789189763adc8",
+  "observed_failure": "Internal-anchor assertion failed",
+  "missing_internal_anchors": [
+    "#eq:contract",
+    "#eq:utility"
+  ],
+  "cause": "Pandoc preserved equation labels inside MathML TeX annotation but did not create DOM anchors or resolve numeric equation references.",
+  "correction": "Browser builder now retains all seven numbered equations, emits explicit anchors and visible equation numbers, and resolves references. LaTeX source and frozen research files unchanged.",
+  "second_observation": {
+    "html_sha256": "cf22a67ac181b8c31b1fedb45d3324668c7cad3de5c7ef6b5e07c02f085308a2",
+    "viewport_width": 390,
+    "document_scroll_width": 402,
+    "cause": "Two plain-text pinned commit hashes in bibliography paragraphs did not wrap at mobile width.",
+    "correction": "References paragraphs now wrap long tokens without clipping or removing content."
+  }
+}

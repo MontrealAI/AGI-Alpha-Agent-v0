@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-28",
+  "researcher": "frontier workstream",
+  "scope": "Primary-source frontier investigation; vendor benchmarks are reported claims, not reproduced measurements. No model calls, purchases or live paid experiments were made by this workstream.",
+  "actual_access": {
+    "authoring_model": "GPT-6 Astra family in this session, as described by runtime; immutable checkpoint not exposed",
+    "tool_access": [
+      "web search",
+      "GitHub read connector",
+      "local Python",
+      "local shell",
+      "SciPy",
+      "NumPy"
+    ],
+    "listed_but_not_tested_models": [
+      "gpt-6.1-terra",
+      "gpt-6.1-sol",
+      "gpt-6-luna"
+    ],
+    "unavailable_or_unproven_access": [
+      "unnamed internal OpenAI mathematics model",
+      "Google AlphaEvolve service",
+      "Anthropic models",
+      "DeepSeek model weights/inference",
+      "production buyer systems"
+    ],
+    "metering": "Per-model inference tokens and invoices are not exposed; any operating costs in business model must be estimates, not measured invoices.",
+    "local_model_evidence": "Runtime model catalog lists gpt-6-astra and gpt-6.1-terra. No credentials or private account content were inspected.",
+    "network_constraint": "Direct Python HTTPS calls failed with Operation not permitted. Research continued through web and GitHub connectors."
+  },
+  "advances": [
+    {
+      "id": "F01",
+      "title": "OpenAI mathematical research collection",
+      "date": "2026-10-06",
+      "revision_date": "2026-10-26",
+      "urls": [
+        "https://openai.com/index/sharing-ai-progress-in-mathematics/",
+        "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/README.md"
+      ],
+      "refs": [
+        "turn1view1",
+        "turn5view0"
+      ],
+      "pin": {
+        "repository": "openai/math",
+        "commit": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+        "readme_blob": "cc5b0a03bca6c742f045d683b6647a6f44ef2cae"
+      },
+      "demonstrated": "Published repository reports 721 manuscripts in 373 families; approximately 42% of top-line results formalized. This is evidence of accessible research artifacts, not a reproduced proof of every result.",
+      "limitations": "Mixed verification stages; an unnamed internal, unreleased model generated most results. Repository status and accepted scientific understanding are separate.",
+      "availability": "Public manuscript/proof artifacts; generating model not publicly established as available.",
+      "study_access": "Read README, history, formalization and comparator descriptions; did not compile full Lean corpus or claim independent validation.",
+      "constraint_relaxed": "Access to candidate mathematical constructions and some machine-checkable evidence.",
+      "smallest_commercial_test": "Choose a single relevant theorem, verify its exact hypotheses and proof status, implement its constructive content, then benchmark a paid-use outcome against an existing solver.",
+      "excerpt": "This collection includes results at different stages of verification."
+    },
+    {
+      "id": "F02",
+      "title": "Working with academic communities to build scientific understanding",
+      "date": "2026-10-26",
+      "urls": [
+        "https://openai.com/index/building-scientific-understanding-with-academic-communities/"
+      ],
+      "refs": [
+        "turn1view0",
+        "turn2view5"
+      ],
+      "demonstrated": "OpenAI announced local smoothing/Kakeya, ETH-refutation and QCD-existence work. Math and computer-science artifacts were made public; physics release was deferred to an external collaboration.",
+      "limitations": "Manuscripts are characterized as raw research data. ETH's practical algorithmic consequences explicitly require further research; an asymptotic claim is not evidence of a faster commercial SAT solver.",
+      "availability": "Public math/CS artifacts; physics artifacts withheld; internal generating model.",
+      "study_access": "Announcement and public scope documentation read; no proof rerun, physics artifact access or new algorithm benchmark.",
+      "constraint_relaxed": "More candidates for mechanism discovery and independent scrutiny.",
+      "smallest_commercial_test": "Extract one concrete finite-instance algorithm and measure crossover with a mature free baseline before selling any improvement.",
+      "excerpt": "Finding such algorithms, and turning theoretical advances into practical improvements, will require significant further research."
+    },
+    {
+      "id": "F03",
+      "title": "GPT-6.1 Terra and computer use",
+      "date": "2026-10-26",
+      "urls": [
+        "https://openai.com/index/introducing-gpt-6-1-terra/",
+        "https://openai.com/research/index/"
+      ],
+      "refs": [
+        "turn1view2",
+        "turn0search2"
+      ],
+      "demonstrated": "Provider reports improved visual/computer-use performance, including 15 percentage points over GPT-5.6 Terra on Agents' Last Exam at medium effort and about one-third its task cost.",
+      "limitations": "Benchmark settings, task mix and production success differ. Published gains do not establish acceptance on this offering. Errors remain and verification must be charged.",
+      "availability": "Public ChatGPT Work/Codex and OpenAI API model gpt-6.1-terra.",
+      "study_access": "Listed in runtime catalog; not separately invoked or benchmarked in this workstream.",
+      "prices_usd_per_million_tokens": {
+        "input": 1,
+        "cached_input": 0.05,
+        "output": 5
+      },
+      "constraint_relaxed": "Cost and latency of visual interpretation and routine tool operation.",
+      "smallest_commercial_test": "Route repeated low-risk extraction/operation tasks to Terra under the same acceptance checker; compare accepted-outcome cost, escalation and repair with Astra."
+    },
+    {
+      "id": "F04",
+      "title": "GPT-6 Astra",
+      "date": "2026-09-03",
+      "urls": [
+        "https://openai.com/index/gpt-6-astra/",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "refs": [
+        "turn1view3",
+        "turn2view3",
+        "turn8view0"
+      ],
+      "demonstrated": "Provider reports strong reasoning, scientific coding and computer use. Astra supports multistep work across tools; official API changelog verifies the September 3 release.",
+      "limitations": "Research evaluations can differ from production ChatGPT because of prompts, tools and safeguards. Benchmark performance cannot stand in for domain acceptance or human equivalence.",
+      "availability": "Public paid ChatGPT plans and API gpt-6-astra; enterprise enablement and product conditions apply.",
+      "study_access": "Session authoring/research and tool orchestration; no exposed immutable model checkpoint or measured token invoice.",
+      "prices_usd_per_million_tokens": {
+        "input": 10,
+        "output": 50
+      },
+      "constraint_relaxed": "Construction and debugging of missing domain tools within a bounded campaign.",
+      "smallest_commercial_test": "Require an executable deliverable and independent verifier; compare against a competent AI-assisted engineer using the same free tools."
+    },
+    {
+      "id": "F05",
+      "title": "AlphaEvolve commercial and scientific applications",
+      "date": "2026-05-07",
+      "urls": [
+        "https://deepmind.google/blog/alphaevolve-impact/"
+      ],
+      "refs": [
+        "turn12view2",
+        "turn3search2"
+      ],
+      "demonstrated": "Google reports evaluator-driven algorithm search across scientific and infrastructure workloads, including AC-OPF feasibility, hardware design and commercial computational lithography.",
+      "limitations": "Reported results are workload-specific and were not reproduced here. AlphaEvolve service access and commercial terms are not established in this study.",
+      "availability": "Public descriptions and selected artifacts; Google Cloud commercialization reported, not equivalent to study entitlement.",
+      "study_access": "Read primary report only.",
+      "constraint_relaxed": "Evidence that agent-created algorithms can produce useful domain improvements when paired with executable evaluation.",
+      "smallest_commercial_test": "Build a bounded search with independent held-out evaluation; compare to ordinary optimization, search and skilled current-AI use."
+    },
+    {
+      "id": "F06",
+      "title": "Claude Opus 5.5",
+      "date": "2026-09-22",
+      "urls": [
+        "https://www.anthropic.com/claude-opus-5-5"
+      ],
+      "refs": [
+        "turn12view1"
+      ],
+      "demonstrated": "Anthropic reports improvements in coding, computer use and professional work, alongside lower typical task cost than Opus 5.",
+      "limitations": "Provider notes benchmark margins can be poor guides to real-world differences. This campaign has not run Claude; cannot claim Astra or an enterprise-specific routing system beats it.",
+      "availability": "Public product/API release; some biology/cyber workflows use verified-access programs.",
+      "study_access": "Primary documentation only; no credentials or model invocation.",
+      "prices_usd_per_million_tokens": {
+        "input": 4,
+        "cached_input": 0.2,
+        "output": 20
+      },
+      "constraint_relaxed": "Competitors and buyers also gain cheaper capable AI.",
+      "smallest_commercial_test": "Include competent competitor delivery and falling rival costs in economics; a head-to-head model test requires separate access."
+    },
+    {
+      "id": "F07",
+      "title": "OpenEvolve open-source evolutionary coding",
+      "date": "2026-10-27",
+      "urls": [
+        "https://github.com/algorithmicsuperintelligence/openevolve/tree/bcf63da435ed6e89b751bddaf01dbfc0744a5320"
+      ],
+      "refs": [
+        "turn12view0"
+      ],
+      "pin": {
+        "repository": "algorithmicsuperintelligence/openevolve",
+        "commit": "bcf63da435ed6e89b751bddaf01dbfc0744a5320"
+      },
+      "demonstrated": "Public evolutionary coding framework uses candidate generation and task evaluators; current commit rejects non-finite outputs in selected evaluators.",
+      "limitations": "Framework availability is not free inference, correct evaluation, or proof of commercial advantage. Evaluator errors and overfitting remain material.",
+      "availability": "Apache-2.0 source; depends on chosen model and execution resources.",
+      "study_access": "Repository and current commit inspected, not installed or used for construction.",
+      "constraint_relaxed": "A conventional team can obtain automated code search without inventing a proprietary agent framework.",
+      "smallest_commercial_test": "Use as a practical search baseline or reproduce equivalent bounded generate-test-select procedure with identical budget and untouched holdout."
+    },
+    {
+      "id": "F08",
+      "title": "DeepSeek-Prover-V2",
+      "date": "2025-04-30",
+      "revision_date": "2025-07-18",
+      "urls": [
+        "https://arxiv.org/abs/2504.21801",
+        "https://github.com/deepseek-ai/DeepSeek-Prover-V2/tree/e598a57ea3284997d4a2a168a069fdd5064afbc8"
+      ],
+      "refs": [
+        "turn14academia12",
+        "turn3search3"
+      ],
+      "pin": {
+        "repository": "deepseek-ai/DeepSeek-Prover-V2",
+        "commit": "e598a57ea3284997d4a2a168a069fdd5064afbc8"
+      },
+      "demonstrated": "Open proof models combine informal decomposition and Lean proof search. The paper reports benchmark gains and releases 7B/671B versions.",
+      "limitations": "Historical enabling baseline, not a new October 2026 release. Formal proofs establish encoded statements only; domain modeling and economic value remain separate.",
+      "availability": "Public code/weights and papers; compute required.",
+      "study_access": "Paper and repository read; weights not downloaded or run.",
+      "constraint_relaxed": "Independent formal-checking approaches need not rely on the newest proprietary model.",
+      "smallest_commercial_test": "Verify a small domain invariant with an available checker, then test whether formalization cost is justified by buyer requirements."
+    },
+    {
+      "id": "F09",
+      "title": "HiGHS and SciPy MILP as free competent alternatives",
+      "date": "2026-10-28",
+      "date_basis": "Current documentation checked; not claimed as a newly released method.",
+      "urls": [
+        "https://highs.dev/",
+        "https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html"
+      ],
+      "refs": [
+        "turn10view0",
+        "turn10view1"
+      ],
+      "demonstrated": "HiGHS provides LP/MIP/QP solvers under MIT license; SciPy exposes deterministic MILP solving with explicit status, bounds and gaps.",
+      "limitations": "A solver guarantees only the posed model within numerical tolerances; it does not validate physics, demand or omitted constraints.",
+      "availability": "Free source; SciPy installed in local environment.",
+      "study_access": "Documentation read and SciPy availability confirmed; exact experiment runtime version should be recorded by construction workstream.",
+      "constraint_relaxed": "Sophisticated conventional decision algorithms are available at negligible license cost.",
+      "smallest_commercial_test": "Implement the strongest correct mathematical formulation as baseline; compare outcome acceptance and total engineering/delivery cost."
+    }
+  ],
+  "preserved_failure": {
+    "source_url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/history.md",
+    "source_ref": "turn8view1",
+    "blob_sha": "ff52ee4dba7ac9a2f145b934f282f582525a4c0d",
+    "finding": "October 7 history records three withdrawn manuscripts after a sign error, 14 manuscript revisions and updates to dependent citations. October 26 includes comparator fixes. This motivates exact-version, dependency and failure preservation.",
+    "excluded_claim": "No proof or advertised scientific discovery was independently reproduced by this source investigation."
+  },
+  "routing_hypothesis": {
+    "formula": "Expected accepted-outcome cost = (routine model cost + escalation probability * specialist cost + verification + repair + human exceptions) / acceptance probability.",
+    "illustration": "At published standard prices, 100,000 uncached input plus 20,000 output tokens cost $0.20 on Terra or $2.00 on Astra, excluding tools, retries and verification. These are arithmetic examples, not measured workloads or invoices.",
+    "operating_stack": "Deterministic parsing/solvers/checkers first; low-cost model for bounded extraction and routine operation; specialist model for ambiguous construction and repair; independent acceptance checks; human review at domain and commercial authority boundaries.",
+    "test_required": "Randomized comparable tasks with token/latency/error metering before adopting routing savings. No future model improvement is required for the current commercial base case."
+  },
+  "frontier_crossing": "Previously, tailored domain constructions could be dominated by expensive translation, implementation and checking. Recent public models lower the cost of tool construction and operation; free verifiers/solvers supply strong checks. The missing means is a domain-specific representation, executable acceptance contract and complete delivery process. The new commercial outcome must be measured at that boundary; a recent announcement alone does not prove the outcome was previously impossible.",
+  "candidate_suggestions": [
+    {
+      "name": "Proof-carrying custom digital instruments",
+      "beneficiary": "Small hardware/design firms needing niche synthesizable arithmetic or control datapaths",
+      "construction": "Parameterized HDL generation, equivalence/property checks, reproducible synthesis, evidence package",
+      "first_outcome": "Licensable block that passes a buyer-defined functional contract and implementation estimate",
+      "alternative": "Skilled engineer using current AI, Yosys/ABC and SMT",
+      "next": "Composable formally specified instruments built from retained verified components",
+      "main_risk": "Physical timing/power and buyer willingness to pay cannot be inferred from software synthesis alone"
+    },
+    {
+      "name": "Pooled flexible-load capacity contracts",
+      "beneficiary": "Constrained electrification projects and flexible industrial load owners",
+      "construction": "Joint capacity envelope, feasible dispatch, individual participation/settlement terms, independent constraint checker",
+      "first_outcome": "Verifiable feasibility and contracting dossier linking complementary loads/storage",
+      "alternative": "Power engineer plus free optimization tools and existing aggregators",
+      "next": "Multi-party capacity procurement and more complex resilient infrastructure design",
+      "main_risk": "Utility permission, metering, true network model and site evidence; not a deployable electricity guarantee from a toy simulation"
+    }
+  ],
+  "recheck_instruction": "Immediately before protocol freeze, re-open the Terra/Astra primary pages and current math repository head; record any change. Freeze actual used source versions and local package versions. Source citation refs are session-local; root should open URLs before citing."
+}

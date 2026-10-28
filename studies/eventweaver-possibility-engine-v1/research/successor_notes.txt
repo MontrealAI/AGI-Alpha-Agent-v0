@@ -1,0 +1,32 @@
+SUCCESSOR Ω — INSTRUMENT NETWORK EXTENSION
+
+The predecessor accepts independent predicates over eight raw channels. It cannot consume an accepted predicate decision as an event source; virtual references are deliberately rejected. The successor adds a separate acyclic network grammar and a composition wrapper while keeping the original compiler byte-identical. This is an implemented representational extension, not another choice of the predecessor's timing parameters.
+
+Fresh mission
+A heralded-probe event sequence is accepted by the first instrument. That accepted decision becomes the anchor for a second predicate, which requires later raw calibration events and remains cancellable by its own veto through its deadline. The first useful construction therefore becomes a component from which a different instrument can be built.
+
+Contract
+Each stage has the parent's A-B-C/veto temporal fields, but source references are raw:0 through raw:7 or stage:<exact name>. Four source references within a stage must be distinct. One to four stages, unique names, resolved references and an acyclic dependency graph are required. Stage order need not be topological. All stage outputs remain available in declared order.
+
+Interface timing
+At logical tick t the consumer reads producer output(t-1). The executable network snapshots every prior output before stepping any stage. The emitted Verilog wires a producer's registered-state output directly into a consumer's synchronous input. Because both evaluate their transitions at the same edge using pre-edge values, this is exactly one tick of interface delay. Adding another register would incorrectly create two ticks. Synchronous reset clears every stage and dominates both raw and virtual events.
+
+Executed own development
+Seven groups pass: new mission; mandatory interface tick; deadline veto; reset erasing a pending virtual anchor; unsorted stage declarations; invalid/unknown/cyclic references; and predecessor rejection of the new grammar. The 33-tick demonstration emits the first-stage bit at tick 8, the conditioned second-stage bit at tick 14, and another first-stage bit at tick 23. A deadline veto at tick 29 cancels the second conditioned result. Real Yosys synthesis produces 25 flip-flops and 40 generic logic cells, plus two nonfunctional scope-metadata cells. This does not establish physical FPGA performance.
+
+Reproduction from package root
+  python src/successor.py inspect --spec data/successor/spec.json
+  python src/successor.py compile --spec data/successor/spec.json --output data/successor/successor.v
+  python src/successor.py simulate --spec data/successor/spec.json --trace data/successor/trace.json --output results/successor_demo_outputs.json
+  python -m unittest discover -s tests -p test_successor_development.py -v
+
+The independent network oracle, conventional RTL, CXXRTL execution, bounded formal equivalence and fresh confirmation are owned by the independent evaluator and are reported separately. Own development is not substituted for that confirmation.
+
+Retained asset and comparison
+The parent compiler SHA-256 is enforced by the new wrapper. A conventional network uses the independently implemented history cores. The successor uses retained EventWeaver cores. An ordinary library contains exactly the same EventWeaver artifact and wrapper; its functional result is expected to tie. No learned model weights or new specialist intelligence are claimed. All three can open the composed-instrument capability; what this experiment can establish is productive reuse and an executable extension.
+
+Cost and funding
+Before testing, successor_v1.json records a USD 3,500 planning estimate for extension design/integration, independent validation, fixtures, tool/inference use and failure allowance. Extraction, validation, integration, and first-year storage/upkeep add USD 600. These are explicit estimates, not invoices or measured human labor. The full USD 4,100 is additional research expenditure and must be accounted once. The identical library pays the same retention costs. We do not assume the predecessor earns surplus or that the research option deserves commercial funding. Physical integration remains a separate buyer-backed decision.
+
+Conclusion boundary
+A predecessor artifact becomes a functioning component of a new kind of instrument. That is a concrete succession link. It does not by itself prove a viable enterprise, learned superiority, increasing economic returns, real-world calibration or profitable compounding.

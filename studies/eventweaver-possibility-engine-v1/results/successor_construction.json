@@ -1,0 +1,76 @@
+{
+  "edition": "EventWeaver successor network v1",
+  "status": "DEVELOPMENT_PASS_PENDING_INDEPENDENT_CONFIRMATION",
+  "parent_sha256": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+  "successor_source_sha256": "2778f4ff615abdeb153c085a706de051aa3f3251469e797a712f1a6468a9a350",
+  "protocol_sha256": "bc3f1ce30043f68fb1ee9d0af0c28c4eaa1fbc6be44881d5288f565c5dd5f262",
+  "new_capability": "A prior accepted instrument decision becomes a virtual channel for a different temporal predicate; acyclic staged composition with one logical clock delay",
+  "parent_rejects_virtual_refs": true,
+  "stages": 2,
+  "state_bits": 25,
+  "development_tests": 7,
+  "demo_ticks": 33,
+  "demo_nonzero_outputs": [
+    {
+      "tick": 8,
+      "mask": 1
+    },
+    {
+      "tick": 14,
+      "mask": 2
+    },
+    {
+      "tick": 23,
+      "mask": 1
+    }
+  ],
+  "synthesis": {
+    "status": "PASS",
+    "seconds": 0.2786490849975962,
+    "generic_cells": 67,
+    "cells_by_type": {
+      "$_ANDNOT_": 15,
+      "$_AND_": 12,
+      "$_NOR_": 10,
+      "$_OR_": 3,
+      "$_SDFF_PP0_": 25,
+      "$scopeinfo": 2
+    },
+    "no_latches": true,
+    "unresolved_modules": 0,
+    "command": "read_verilog data/successor/successor.v; hierarchy -check -top successor; synth -top successor -flatten; check -assert; tee -o results/successor/generic_statistics.json stat -json; write_json results/successor/netlist.json",
+    "metadata_cells": 2,
+    "functional_generic_cells": 65
+  },
+  "cost_policy": {
+    "currency": "USD",
+    "classification": "Explicit planning estimates, not billed or observed engineering invoices",
+    "one_time_extension": {
+      "grammar_design_and_integration_hours": 16,
+      "rate_per_hour": 100,
+      "independent_validation_hours": 8,
+      "verification_rate_per_hour": 125,
+      "fixtures_hours": 4,
+      "fixture_rate_per_hour": 100,
+      "inference_and_tools": 100,
+      "failure_allowance": 400,
+      "total": 3500
+    },
+    "retained_asset": {
+      "extraction": 150,
+      "validation": 250,
+      "integration": 100,
+      "storage_and_upkeep_first_year": 100,
+      "total": 600
+    },
+    "accounting": "Successor exploration is an additional $4,100 unfunded research option. Do not count its costs inside the predecessor project twice; do not presume commercial surplus exists or finances it. Identical library incurs the same retention costs. No economic superiority is inferred from functional equivalence.",
+    "stop": "Do not fund physical integration without a buyer-backed acceptance gate and separate capital allocation."
+  },
+  "comparison_status": "Independent conventional/retained/identical-library comparison owned by audit workstream; no claimed superiority",
+  "limits": [
+    "No new learned weights or independently learned specialist superiority",
+    "No physical hardware or optical feedback test",
+    "Functional network extension does not establish willingness to pay",
+    "Main commercial confirmation remains separate from this extension"
+  ]
+}

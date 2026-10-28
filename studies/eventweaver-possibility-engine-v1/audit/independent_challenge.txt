@@ -1,0 +1,25 @@
+INDEPENDENT CHALLENGE RECORD — EVENTWEAVER v1
+
+Role and independence
+The comparator author received the frozen semantic contract and public interfaces, but did not inspect EventWeaver's implementation before writing the conventional history-formula RTL and the offline reference oracle. Both workstreams had current AI assistance and the same local free toolchain. This is not a controlled human-versus-agent trial and provides no causal estimate of frontier-model improvement. Conventional code is reusable and is a competent free substitute for this narrow grammar.
+
+Frozen fresh confirmation
+Technical freeze SHA-256: a26478f69dd25a1333e8cbb6026f8863105d93350328b7df9c081f7a5747855d.
+The independent evaluator generated OS-entropy seed 7681855347690480531 after the freeze and saved it before generating cases. The source hash check passed both before and after execution. The frozen verifier requires a file named development_freeze.json, so that file is an exact byte-copy alias of technical_freeze.json; this is recorded in the seed manifest. No technical source or semantic change occurred after freeze.
+
+Observed result
+24 specifications, each with 32 traces of 256 ticks: all 768 trace comparisons passed. The test stream contains 196608 ticks, 491520 predicate-tick decisions and 630 positive predicate outputs. Five execution paths agreed: offline mathematical oracle, conventional Python history model, EventWeaver Python model, conventional actual RTL executed through Yosys CXXRTL, and EventWeaver actual RTL through the same toolchain. Fifty-two directed cases also passed through actual RTL, and fourteen malformed specifications were rejected by both compilers. Fourteen separate known-answer unit tests cover deadline timing, lower/upper bounds, reset dominance, endpoint vetoes, group isolation and overlapping anchors.
+
+The 24 fresh designs and four distinct directed designs passed Yosys bounded equivalence checks at their recorded depths (range 8–22 sequential steps). The SAT check sets reset on the first step, skips the pre-reset assertion and allows arbitrary defined input masks and reset values thereafter. This is bounded equivalence under a single logical clock abstraction, not an all-time proof, physical clock/timing proof, calibration result or FPGA board test.
+
+Observed limitation
+Across fresh test cases, Python EventWeaver execution consumed 12.482 seconds wall time; the conventional Python history model consumed 0.276 seconds and the offline oracle 0.181 seconds. Thus this measurement favors the conventional Python implementation. Their algorithms and short-circuit behavior differ; this result must not be reported as FPGA throughput or a model-quality causal effect. Paired actual-RTL replay took 0.677 seconds in one combined model, so isolated hardware speed differences were not measured. Code generation, native compilation and formal checks have separately recorded actual runtimes.
+
+Preserved development failure
+The first development harness sampled CXXRTL combinational outputs immediately after a state commit, before an additional same-clock evaluation settled them. It flagged 18 of 32 traces as one tick late, while both RTL designs agreed with each other and their bounded equivalence checks passed. The original verifier, failed records and diagnosis are retained in audit/failures/cxxrtl_sampling_v1/. The driver was corrected before freeze by adding a settling evaluation without another rising clock edge. Both product implementations and the acceptance semantics remained unchanged.
+
+Commercial implication
+A useful bounded firmware design pack was built and executed. That result neither establishes exclusive technical advantage nor validates customer demand. Existing NIST, BrightEyes, Swabian and quTAG capabilities and prior temporal-logic-to-FPGA research constrain novelty. A buyer already served by standard coincidence or filtering functions should be disqualified. A credible prospect needs a genuinely unsupported pattern, an existing lossless logical-bin interface, someone authorized to accept design artifacts, and an integration plan whose costs remain attractive against a current-AI-assisted conventional engineer. Physical qualification must have its own acceptance and budget.
+
+Detailed evidence
+results/technical_confirmation/summary.json contains per-specification runtimes and source metrics. traces.jsonl.gz contains the complete stimulus and all outputs. Each spec_*/equivalence.log preserves the proof command and result. directed.json, invalid.json, failures.json and audit/technical_confirmation_integrity.json complete the record. No trace or failed development attempt was removed to improve the result.
