@@ -1,0 +1,76 @@
+% SPDX-License-Identifier: Apache-2.0
+\documentclass[11pt,letterpaper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVuSerif.ttf}[Path=fonts/,BoldFont=DejaVuSerif-Bold.ttf,ItalicFont=DejaVuSerif-Italic.ttf,BoldItalicFont=DejaVuSerif-BoldItalic.ttf]
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=.78]
+\usepackage[margin=.83in,top=.78in,bottom=.80in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\setstretch{1.13}
+\usepackage[dvipsnames,table]{xcolor}
+\definecolor{AlphaInk}{HTML}{261336}
+\definecolor{AlphaPurple}{HTML}{572B84}
+\definecolor{AlphaViolet}{HTML}{B99ADF}
+\definecolor{AlphaPale}{HTML}{F5F0FA}
+\definecolor{AlphaMuted}{HTML}{74677F}
+\definecolor{AlphaTeal}{HTML}{167E77}
+\usepackage{graphicx}
+\usepackage{longtable,booktabs,array,calc}
+\usepackage{etoolbox}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{needspace}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{colorlinks=true,linkcolor=AlphaPurple,urlcolor=AlphaPurple,
+  pdftitle={AGI ALPHA FLYWHEEL — When Capability Creates Opportunity},
+  pdfauthor={Vincent Boucher — President of MONTREAL.AI},
+  pdfsubject={A bounded discovery study, nominal CAD construction and conditional commercial decision model},
+  pdfkeywords={AGI ALPHA, portable production, nominal CAD, evidence, commercial decision}}
+\urlstyle{tt}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>.64\textheight .64\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\makeatletter
+\renewcommand*{\l@section}{\@dottedtocline{1}{0pt}{0pt}}
+\makeatother
+\titleformat{\section}{\sffamily\color{AlphaPurple}\Large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\sffamily\color{AlphaInk}\large\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}{\sffamily\color{AlphaInk}\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{23pt}{10pt}
+\titlespacing*{\subsection}{0pt}{17pt}{7pt}
+\titlespacing*{\subsubsection}{0pt}{12pt}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{7pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.22}
+\AtBeginEnvironment{longtable}{\small\sffamily\setlength{\parskip}{3pt}}
+\AtEndEnvironment{longtable}{\normalsize}
+\captionsetup{font={small,sf},labelformat=empty,textfont={color=AlphaMuted},skip=8pt}
+\setlist{leftmargin=1.4em,itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize\color{AlphaPurple}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\sffamily\footnotesize\color{AlphaMuted}PORTABLE PRODUCTION · EDITION 01}
+\fancyfoot[L]{\sffamily\scriptsize\color{AlphaMuted}Research draft · 27 October 2026}
+\fancyfoot[R]{\sffamily\footnotesize\color{AlphaPurple}\thepage}
+\renewcommand{\headrulewidth}{.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\widowpenalty=10000
+\clubpenalty=10000
+\begin{document}
+@@COVER@@
+\color{AlphaInk}
+@@CONTENTS@@
+@@BODY@@
+\end{document}

@@ -1,0 +1,151 @@
+{
+  "schema": "agi-alpha-fresh-confirmation-v1",
+  "frozen_at_utc": "2026-10-28T01:38:02.912825+00:00",
+  "time_note": "Host timestamp; not an independent timestamp attestation. Written before first execution.",
+  "constructor_sha256": "5c2be43b6e014a34465eb249d6f30e5e278c9a0975f0d8fc59a6ccc8cf4b058e",
+  "case_origin": "New researcher-specified parametric requests after constructor freeze; no customer data and no population generalization.",
+  "acceptance": {
+    "valid_solids": 1,
+    "volume_tolerance": "max(1e-6, abs(reference_volume)*1e-8) model-unit cubed",
+    "linear_tolerance": 1e-07,
+    "reference": "Independently authored native CadQuery hole operations, same OpenCascade kernel",
+    "requirements": [
+      "one valid solid",
+      "exact nominal bounding dimensions within numerical tolerance",
+      "independent analytic net volume",
+      "Boolean symmetric difference against independent native construction",
+      "STEP roundtrip",
+      "all feature centers and hole apertures checked by point membership"
+    ]
+  },
+  "cases": [
+    {
+      "id": "fresh_mixed_plate",
+      "source_units": "mm explicitly assigned by this new hypothetical request",
+      "stock": [
+        100,
+        70,
+        14
+      ],
+      "corner_radius": 5,
+      "holes": [
+        {
+          "id": "h1",
+          "kind": "through",
+          "x": -30,
+          "y": -18,
+          "diameter": 7
+        },
+        {
+          "id": "h2",
+          "kind": "counterbore",
+          "x": 27,
+          "y": -18,
+          "diameter": 4.2,
+          "counterbore_diameter": 8,
+          "counterbore_depth": 2.5
+        },
+        {
+          "id": "h3",
+          "kind": "countersink",
+          "x": -24,
+          "y": 18,
+          "diameter": 4,
+          "countersink_diameter": 8,
+          "included_angle_deg": 100
+        },
+        {
+          "id": "h4",
+          "kind": "through",
+          "x": 28,
+          "y": 19,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "id": "fresh_metric_bracket",
+      "source_units": "mm explicitly assigned by this new hypothetical request",
+      "stock": [
+        37.2,
+        24.8,
+        6.5
+      ],
+      "corner_radius": 1.1,
+      "holes": [
+        {
+          "id": "h1",
+          "kind": "countersink",
+          "x": -11.3,
+          "y": -6.2,
+          "diameter": 2.2,
+          "countersink_diameter": 4.8,
+          "included_angle_deg": 90
+        },
+        {
+          "id": "h2",
+          "kind": "counterbore",
+          "x": 10.4,
+          "y": -6.2,
+          "diameter": 2.8,
+          "counterbore_diameter": 5.6,
+          "counterbore_depth": 1.9
+        },
+        {
+          "id": "h3",
+          "kind": "through",
+          "x": 0.7,
+          "y": 7.1,
+          "diameter": 3.5
+        }
+      ]
+    },
+    {
+      "id": "fresh_thin_shim",
+      "source_units": "mm explicitly assigned by this new hypothetical request",
+      "stock": [
+        120,
+        90,
+        0.8
+      ],
+      "corner_radius": 0,
+      "holes": [
+        {
+          "id": "h1",
+          "kind": "through",
+          "x": -43,
+          "y": -28,
+          "diameter": 6.3
+        },
+        {
+          "id": "h2",
+          "kind": "through",
+          "x": 38,
+          "y": -28,
+          "diameter": 6.3
+        },
+        {
+          "id": "h3",
+          "kind": "through",
+          "x": 2,
+          "y": 29,
+          "diameter": 12.7
+        }
+      ]
+    }
+  ],
+  "negative_cases": [
+    "overlapping hole envelopes",
+    "hole at exterior boundary",
+    "hole in rounded-corner envelope",
+    "infinite counterbore depth",
+    "unsupported blind-hole kind",
+    "zero stock thickness"
+  ],
+  "exploratory_adversarial_cases": [
+    "duplicate feature identifiers",
+    "missing feature identifier"
+  ],
+  "separation": "Exploratory schema cases do not retroactively change geometric acceptance. Any failure remains in the report. A corrected version needs a new freeze and new confirmation.",
+  "permissions": "Offline construction and local file output only. No customer or machine operation. Source code execution limited to the already frozen public examples for historical reproduction."
+}
