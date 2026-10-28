@@ -19,6 +19,20 @@ def digest(data: bytes) -> str:
 
 
 def main() -> None:
+    if MANIFEST.exists():
+        required_paths = [line.split("  ", 1)[1] for line in MANIFEST.read_text().splitlines() if line]
+        missing = [path for path in required_paths if not (ROOT / path).is_file() or (ROOT / path).is_symlink()]
+        if missing:
+            raise SystemExit(
+                f"Cannot repackage: {len(missing)} existing manifest members are absent. "
+                "Extract the full companion into a new directory first; "
+                "the archive, manifest and receipt have not been changed."
+            )
+    elif ARCHIVE.exists():
+        raise SystemExit(
+            "Cannot repackage an existing archive without its manifest. "
+            "Extract the full companion into a new directory first."
+        )
     files = sorted(
         p for p in ROOT.rglob("*")
         if p.is_file() and not p.is_symlink()

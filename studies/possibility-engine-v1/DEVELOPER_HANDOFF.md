@@ -104,9 +104,16 @@ estimated demand, cost or behavioral inputs.
 
 The frozen scientific source passed the scoped Ruff E/F check. The recorded strict-mypy run remained **failed**
 because two SciPy imports lack stubs; it is not a full typing pass. The full repository setup, test suite, coverage,
-complete pre-commit/security/integrity hooks, representative platform campaign, hosted integration, package/Pages
-publication, native installation and live served-byte acceptance were not performed for this study.
-See `evidence/qualification/prior_checks.json` for the exact qualification boundary.
+complete pre-commit/security/integrity hooks, representative platform campaign, main-branch integration, canonical
+package/Pages publication, native installation and installed-release acceptance remain unqualified by this study.
+See `evidence/qualification/prior_checks.json` for the prepublication qualification checkpoint.
+
+The subsequent draft source contribution is [PR 5008](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/5008).
+Its first hosted Ruff attempt found 36 formatting violations in three nonfrozen publication builders. The additive
+repair preserves the original log and sources, and an independent isolated check verifies identical paper text,
+browser editions and PNG figures with unchanged PDFs, frozen files and seeds; see
+`verification/publication_ci_repair_review.json`. Consult the exact PR head for current hosted check results.
+Draft-source publication and byte-verified research downloads do not establish canonical runtime release acceptance.
 
 ## Integration and ownership
 
