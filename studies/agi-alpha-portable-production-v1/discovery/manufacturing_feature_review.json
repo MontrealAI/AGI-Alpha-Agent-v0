@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "reviewed_on_local_date": "2026-10-27",
+  "proposal": "Real public STEP parts -> editable regeneration plus machine-readable production/inspection intent checked against actual geometry",
+  "conclusion": "Useful engineering construction may remain, but the broad transformation is already served. Treat it as a bounded conventional capability test unless a buyer-relevant activity is shown to become newly economical or feasible. Do not force a flagship designation.",
+  "strongest_reformulation_challenger": "Direct/synchronous modeling edits imported geometry without recreating its construction history. The comparator must be allowed to remove the need for history reconstruction entirely.",
+  "prior_art": [
+    {
+      "title": "Synchronous Technology",
+      "url": "https://solidedge.siemens.com/en/solutions/products/3d-design/synchronous-technology/",
+      "access": "Opened successfully",
+      "retrieval_ref": "turn31view0",
+      "paraphrase": "Siemens documents editing imported CAD directly, adding dimensions and reusing details across formats without recovering the original history."
+    },
+    {
+      "title": "CAD-Recode: Reverse Engineering CAD Code from Point Clouds",
+      "url": "https://cad-recode.github.io/",
+      "access": "Opened successfully",
+      "retrieval_ref": "turn30view0",
+      "paraphrase": "The authors generate executable, editable CadQuery scripts from point clouds and demonstrate subsequent language-guided edits. Code-based reconstruction and editable output are established."
+    },
+    {
+      "title": "CADReasoner: Iterative Program Editing for CAD Reverse Engineering",
+      "url": "https://arxiv.org/abs/2603.29847",
+      "access": "Opened successfully; page reports v2 revised October 6, 2026",
+      "retrieval_ref": "turn30view4",
+      "paraphrase": "The model iteratively refines executable CadQuery programs using observed geometric discrepancy. A generate-check-repair loop is close prior art."
+    },
+    {
+      "title": "Analysis Situs: Recognize CNC milling features",
+      "url": "https://www.analysissitus.org/features/features_recognize-cnc-milling-features.html",
+      "access": "Opened successfully",
+      "retrieval_ref": "turn30view1",
+      "paraphrase": "The software connects B-Rep features to machining operations, with open geometric analysis components and a commercial manufacturing-feature SDK. Recognition depends on available tooling and setup."
+    },
+    {
+      "title": "CAx Interoperability Forum",
+      "url": "https://www.mbx-if.org/home/cax/",
+      "access": "Opened successfully",
+      "retrieval_ref": "turn30view3",
+      "paraphrase": "STEP AP242 includes geometry and product/manufacturing information; semantic PMI supports automated downstream use. Persistent identifiers link design and inspection through STEP and QIF."
+    }
+  ],
+  "distinctions_that_must_be_preserved": [
+    "Shape equivalence is not recovery of original design intent. Multiple construction histories can yield the same solid.",
+    "Geometry alone does not identify actual tolerances, material, finish, load case, datum scheme or inspection responsibility. Missing items must be unknown or explicitly proposed, not recovered.",
+    "Existing semantic PMI must be extracted and preserved. Proposed inspection rules must be labeled separately from source requirements.",
+    "A regenerated model can be valid and geometrically close while its editable dependencies are wrong.",
+    "Machine-readable machining suggestions do not prove manufacturability on a specific machine, fixturing plan or physical conformity.",
+    "A public STEP part is an actual geometry input but not evidence of an actual customer order, accepted outcome or new demand."
+  ],
+  "potentially_meaningful_remaining_capability": "A supplier-independent, user-editable production representation that preserves supplied constraints through specified edits and remains useful to a downstream user without the originating agent. This is a candidate offering, not a new algorithmic claim.",
+  "buyer_usable_milestone": {
+    "buyer": "A small manufacturer or product engineer with a named legacy STEP part and a real requested change",
+    "frozen_scope": "One supported geometric feature family, a specified change contract, supplied source PMI or explicit absence, output format, independent geometry and semantic checks, correction obligations and price",
+    "delivery": "Executable editable model, regenerated STEP, source-to-output feature map, supplied requirements preserved with provenance, proposed/unknown manufacturing information separated, and a verified requested variation",
+    "standalone_value": "The engineer can make the agreed future edits and inspect the new geometry without the originating agent.",
+    "enterprise_test": "Does the first artifact create low-cost repeated parameterized product variants or supplier migration that the competent direct-edit baseline cannot provide as economically?"
+  },
+  "decisive_experiment": {
+    "freeze_before_run": [
+      "Public source files and licenses",
+      "Supported feature family and explicit unsupported geometry",
+      "Requested change contracts and source PMI",
+      "Model/tool versions and agent instructions",
+      "Scope, correctness thresholds and correction obligations",
+      "Cost ledger rules and stopping criteria"
+    ],
+    "cases": "Use representative actual STEP parts with different feature interactions. Include at least one thin wall, intersecting features, repeated holes, a rotated/translated frame and an explicitly unsupported case. Select fresh confirmation parts after construction is frozen, retaining failed cases.",
+    "conditions": [
+      "A: competent direct/synchronous editing or equivalent conventional CAD workflow, same requested output and information",
+      "B: competent scripted CAD/OpenCascade feature recognition and ordinary library, same available reusable assets",
+      "C: proposed frontier-agent reconstruction/check/repair workflow with the same tools",
+      "D, only if warranted: fresh recipient use against its own competent baseline and the same assets in an ordinary library"
+    ],
+    "geometry_acceptance": [
+      "Valid B-Rep and required number of solids",
+      "Independent checks of volume, mass properties and bounding dimensions as secondary diagnostics",
+      "Boolean symmetric-difference volume or independent robust geometric comparison for equality within declared numeric tolerance",
+      "Feature-specific constraints: hole centers/axes/radii, wall thickness, clearance, pocket dimensions and topology",
+      "At least two predeclared parameter changes that test preserved dependencies, not just a regeneration of the source shape",
+      "Reject import-the-original-solid wrappers as editable reconstruction when the edit contract requires genuine parameters"
+    ],
+    "semantic_acceptance": [
+      "Every actual tolerance/material/finish/PMI claim points to a supplied source",
+      "Do not infer an obligation from a geometric coincidence",
+      "Unknown source requirements remain unknown",
+      "Supplied datum and feature identity survive the edit where the contract requires it",
+      "Production/inspection suggestions are explicitly proposed and require the buyer's engineering acceptance"
+    ],
+    "economic_measurement": "Measure complete accepted-delivery cost including failed reconstruction, manual corrections, interpretation, independent validation, packaging, support, acquisition allocation and tool expenses. If actual human labor is unobserved, label transparent estimated reference labor and do not call a time saving measured.",
+    "fresh_confirmation": "Use newly selected parts and previously frozen criteria. Do not fix the test set or generator after seeing failures without a new version and preserved earlier results.",
+    "stop_criteria": [
+      "If direct editing satisfies the buyer objective at equivalent or lower complete cost, reject reconstruction as the indispensable enabling capability.",
+      "If ordinary scripted CAD with the same asset performs equally, reject exclusive or retained-Alpha claims.",
+      "If the program reconstructs only the source and cannot preserve stated relations through edits, fail the core acceptance.",
+      "If source PMI is absent and the offering depends on recovering it, stop that offering rather than hallucinating intent.",
+      "If there is no actual buyer decision or verified economic threshold shift, label the result a useful engineering construction and stop flagship promotion."
+    ]
+  },
+  "economic_boundary": {
+    "currency": "USD",
+    "metric": "Incremental customer net value from newly economical production variants or supplier migration",
+    "horizon": "10 years",
+    "billion_hurdle": 1000000000,
+    "formula": "sum(newly_enabled_order_or_product_value - all_incremental_design_manufacture_inspection_switching_costs) >= 1e9",
+    "interpretation": "The market size of CAD/manufacturing is insufficient. The measured per-case threshold shift and eligible population must support the expansion mechanism.",
+    "current_status": "No measured threshold shift, accepted customer scope or demand evidence established by this review."
+  }
+}
+

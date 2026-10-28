@@ -1,0 +1,27 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+# Prior-art comparison and the surviving question
+
+This is a bounded primary-source review, not a freedom-to-operate opinion or an exhaustive novelty search. Source access occurred on 27 October 2026 local time. The discovery JSON retains the revised formulations and explicit ten-year scale thresholds. None is admitted as a billion-scale enterprise.
+
+| Construction | Serious conventional or published challenger | Consequence for this study | Falsifying comparison still needed |
+|---|---|---|---|
+| Component-family resurrection | [Siemens FPGA retargeting/equivalence](https://resources.sw.siemens.com/en-GB/white-paper-questa-equivalent-fpga-retargeting-flow/); [supplier-reported obsolete-part replacement](https://www.emergentautomata.com/obsolete-part-replacement) | Emulation, component substitution and equivalence are established. No target-specific implementation or hardware qualification was executed here. | Same objective, IP, behavioral contracts and hardware budget; does the new arrangement make a fleet viable after complete electrical, timing, support and qualification cost? |
+| Mechanical-response compilation | [ExMech plate-lattice discovery](https://pmc.ncbi.nlm.nih.gov/articles/PMC13128949/), Nature Communications 17,3933 (2026) | An autonomous experimental platform and fresh physical testing already exist. An offline fit would be weaker than this prior art. | A new fabricated, tested response against conventional parametric design/active learning with the same material and physical budget. |
+| Telecom atmospheric instrument | [2020 microwave-link drop-size inversion](https://doi.org/10.5194/amt-13-1797-2020); [CoMMon paired data](https://doi.org/10.5194/essd-13-4219-2021) | The non-obvious sensing connection and the specific drop-size formulation are established. Data convenience is not novelty. | Held-out whole weather events and actual decision value relative to the published inverse method, radar, gauges and no purchase. |
+| Legacy deployment slice | [DARPA TRACTOR](https://www.darpa.mil/research/programs/translating-all-c-to-rust); [Galois CRISP/CLEAR](https://www.galois.com/project/crisp-clear) | General automated C-to-Rust and combined symbolic/AI approaches are existing program directions. Development goals are not treated as accomplished universal translation. | A specific useful downstream function still unavailable under a real deployment constraint; strongest maintained implementation/translation receives the same information and resources. |
+| Constructive manufacturing interoperability | [Siemens direct/synchronous modeling](https://solidedge.siemens.com/en/solutions/products/3d-design/synchronous-technology/); [CAD-Recode](https://cad-recode.github.io/); [Analysis Situs features](https://www.analysissitus.org/features/features_recognize-cnc-milling-features.html); [NIST semantic PMI and conformance](https://www.nist.gov/ctl/smart-connected-systems-division/smart-connected-manufacturing-systems-group/mbe-pmi-validation); free native CadQuery examples | Recovering a history is not always needed to edit geometry. Executable reconstruction and feature recognition are established. The free source produced every tested central solid and retains relationships lost in the new recipe. | A real recipient cannot achieve an accepted transfer within a binding cost/deadline using those alternatives. Required semantics and authority must survive the first instance. No such case was established. |
+
+## Executed conventional comparison
+
+The nominal-CAD constructor and the native upstream programs were both executed against the same frozen three examples and the same OpenCascade/CadQuery environment. All corrected native/constructed comparisons had zero measured Boolean symmetric-difference volume under the numerical rubric. The fresh checker used separately authored native construction and analytic volume for three explicit requests; export/bounding helpers were reused. This is a geometric comparison, not a timed or priced human-service competition.
+
+The original native pillow-block program derives hole locations from stock dimensions. The new recipe stores fixed coordinates. Changing source length80 to90 changes source x coordinates from±34 to±39, while a stock-only recipe edit does not. The new package is therefore not evidence of recovered or superior design intent. New tables and evidence packaging can still have value; no buyer assessed that value.
+
+## Important corrections
+
+- A historical [NIST project page](https://pages.nist.gov/CAD-PMI-Testing/models.html) says some test cases were not modeled within that project. It does not establish a present missing artifact. Some associated drawings also rely on model-derived dimensions. No missing dimensions were invented.
+- The source's Ex003 comment and executable edge inset differ. Executable geometry was preserved and the discrepancy disclosed.
+- Ex019 lacks a physical-unit declaration. Millimeter-tagged STEP export is a representation convention, not source design intent.
+- A conventional provider receives the revised formulation, reusable asset and information in the economic comparison. Its equality with the proposed arrangement is imposed by matching those assumptions, not measured model-operation equivalence.
+
+The unresolved question is a specific, buyer-relevant production boundary. A new experiment should acquire that case before elaborating another generic compiler or infrastructure layer.

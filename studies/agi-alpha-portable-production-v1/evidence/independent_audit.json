@@ -1,0 +1,218 @@
+{
+  "schema": "agi-alpha-independent-audit-v1",
+  "auditor": "Same-session separate discovery/review agent; not an external peer reviewer",
+  "scope": "Initial read-only review of experimental constructor, protocols, provenance and results by a separate same-session agent. Hashes and local Git blob identities were independently recomputed. After identifying additive-wrapper defects, the root assigned this reviewer to repair those wrappers, preserve their failed versions and run a semantic replay. Frozen experimental code, inputs and original reports were not changed.",
+  "verdict": "SUPPORTING_NOMINAL_GEOMETRY_ONLY",
+  "observed_results": {
+    "historical_v1": "0/3 accepted; failures retained",
+    "measurement_v1_1": "3/3 same-source reproduction accepted; no fresh-evidence claim",
+    "scope_v1_2": "3/3 same-source reproduction accepted",
+    "fresh_confirmation": "3/3 researcher-specified new nominal programs accepted, 6/6 specified geometric negatives refused",
+    "exploratory_schema": "Duplicate and missing feature identifiers were accepted by validate(); both failures remain recorded",
+    "current_freeze": "All three files listed in FRESH_FREEZE.json match their current recorded SHA-256 values",
+    "historical_preservation": "Current bytes of produce_v1_failed.py, produce_v1_1_measurement.py and produce.py match their corresponding result-record constructor hashes",
+    "provenance": "All four packaged public inputs match recorded SHA-256, Git blob SHA-1 and byte length. This verifies internal content identity; the auditor did not independently fetch the remote commit tree."
+  },
+  "meaningful_checks": [
+    "Valid single-solid checks reject invalid topology and component counts for the evaluated shapes.",
+    "Analytic net volume is separate arithmetic from the solid kernel; it is valid only under the admitted disjoint-feature assumptions.",
+    "Native-reference Boolean symmetric difference checks shape agreement and is materially stronger than matching bounding box and volume alone.",
+    "Independent fresh native code uses hole/cboreHole/cskHole against the constructor's primitive cuts; shared OpenCascade remains a common-cause limitation.",
+    "Fresh point-membership probes check local hole centers, lower walls and top recesses, although they are finite samples and share the same kernel.",
+    "Geometric negative cases exercise known scope restrictions, but six cases do not characterize all malformed inputs or establish general robustness."
+  ],
+  "findings": [
+    {
+      "id": "A01",
+      "severity": "blocking_for_automatic_freeze_claim",
+      "finding": "Fresh checker validates constructor hash against the protocol's embedded digest, but does not read FRESH_FREEZE.json or reject a changed protocol or checker itself.",
+      "evidence": "verify_confirmation.py main(): digest(produce.py) != data['constructor_sha256']; protocol/checker hashes are recorded only.",
+      "implication": "Current frozen bytes match, but a changed request could run and report new hashes under the same output directory unless a separate guard compares the frozen identities.",
+      "status": "Planned additive wrapper remediation pending at this audit snapshot.",
+      "resolution": "Remediated on the additive verify_study.py/reproduce.py route: immutable expected protocol/checker/constructor hashes and freeze declarations are verified. Raw frozen checker remains unchanged."
+    },
+    {
+      "id": "A02",
+      "severity": "blocking_for_automatic_gate_claim",
+      "finding": "Fresh checker writes FAIL_FROZEN_CONFIRMATION without making that status a nonzero process exit.",
+      "evidence": "verify_confirmation.py final main body prints the result and returns normally regardless of result['status'].",
+      "implication": "A caller that trusts exit status alone can mistake failed geometric confirmation for a successful gate.",
+      "status": "Planned wrapper derives failure from report conditions; pending.",
+      "resolution": "Remediated by additive report reconstruction and nonzero failure exit. Disposable changed-protocol subprocess actually returned exit1 and statusFAIL. Raw frozen checker still should not be used as a standalone gate."
+    },
+    {
+      "id": "A03",
+      "severity": "blocking_for_feature_identity_claim",
+      "finding": "Missing and duplicate feature IDs are not rejected by validate().",
+      "evidence": "src/produce.py validate() checks coordinates and geometry but does not require unique IDs; fresh exploratory_schema_cases both have refused=false.",
+      "implication": "Feature table identities are not a dependable key. Missing identifiers can lead to blank CSV IDs or a later checker KeyError; duplicates are ambiguous for downstream joins.",
+      "status": "Open and preserved. No frozen source fix requested."
+    },
+    {
+      "id": "A04",
+      "severity": "claim_scope_limitation",
+      "finding": "Original STEP roundtrip acceptance checks solid validity, count, volume and dimensions but not Boolean geometry difference or feature probes on the reimport.",
+      "evidence": "src/produce.py checks['step_roundtrip']; verify_confirmation.py checks['step_roundtrip'].",
+      "implication": "Those checks alone do not rule out equal-volume relocation of an internal hole or other same-box geometry changes.",
+      "status": "Planned retrospective supplementary symmetric-difference check pending; original criterion remains accurately described.",
+      "resolution": "Supplemented retrospectively: all six known-case STEP reimports have Boolean symmetric difference zero, valid single solids and accepted dimensions. Original frozen criterion is unchanged; no new scientific confirmation."
+    },
+    {
+      "id": "A05",
+      "severity": "blocking_for_design_intent_or_edit_relation_claim",
+      "finding": "Feature recipes preserve nominal coordinates but not all upstream parametric dependencies.",
+      "evidence": "Ex003 source constructs hole centers from rect(length-cbore_inset,width-cbore_inset), whereas feature_program.json stores x=+/-34,y=+/-44 explicitly.",
+      "implication": "Changing source length 80 to 90 with inset12 moves source x coordinates to +/-39; changing stock length alone in the new recipe leaves x at +/-34. Both are editable, but preserved original design dependencies are not demonstrated.",
+      "status": "Claim stopped; root confirms no parametric-edit-relation claim. Fresh cases are new supplied nominal requests."
+    },
+    {
+      "id": "A06",
+      "severity": "blocking_for_untrusted_input_service_claim",
+      "finding": "Historical runner does not restrict spec['source_file'] to members of the verified source manifest, and output case IDs are used as paths without path confinement.",
+      "evidence": "runpy.run_path(a.source_dir/spec['source_file']); folder=a.output/spec['id'].",
+      "implication": "The program is suitable only for trusted frozen inputs in this study. It is not an admitted arbitrary-upload or network-facing service. No adversarial path was executed.",
+      "status": "Open scope boundary; no untrusted service claimed."
+    },
+    {
+      "id": "A07",
+      "severity": "blocking_for_source_refreeze_prevention_claim",
+      "finding": "Historical runner verifies files against the manifest read at runtime, but the manifest identity and feature-program identity are only recorded, not pinned against an external expected freeze.",
+      "evidence": "src/produce.py reads SOURCE_MANIFEST.json and loops its files, then records source_manifest_sha256/program_sha256.",
+      "implication": "A simultaneous data+manifest change is internally consistent and not automatically refused without a separately anchored guard.",
+      "status": "Planned additive wrapper pinning public-source bytes/manifest pending.",
+      "resolution": "Remediated on wrapper route: expected source manifest and feature-program digests are constants and source file hashes/sizes are checked."
+    },
+    {
+      "id": "A08",
+      "severity": "production_blocker",
+      "finding": "Physical units are unresolved for Ex019; the exporter tags numeric coordinates in its representation convention and does not establish source physical intent.",
+      "evidence": "FROZEN_PROTOCOL.md, source Ex019 and per-case source_units explicitly state unknown units; features.csv supplies no physical tolerance or material.",
+      "implication": "Numeric acceptance is not manufacturing acceptance. Source-unit uncertainty and absent material/tolerance/datum requirements prevent physical production approval.",
+      "status": "Correctly disclosed; no production claim."
+    },
+    {
+      "id": "A09",
+      "severity": "reproducibility_packaging",
+      "finding": "Frozen constructor default source path is external research_inputs; packaged source copy is data/public.",
+      "evidence": "DEFAULT_INPUTS = ROOT.parents[1]/'research_inputs'; SAMPLE_DELIVERABLE.md default command expects repository root research_inputs.",
+      "implication": "A standalone extracted study needs the documented --source-dir or an additive wrapper. The frozen file should not be silently edited.",
+      "status": "Planned additive reproduce wrapper pending.",
+      "resolution": "Remediated by reproduce.py using packaged data/public in a new destination. Fresh-directory semantic replay completed exit0."
+    },
+    {
+      "id": "A10",
+      "severity": "blocking_for_complete_evidence_gate",
+      "finding": "Supplementary report_status trusts summary counts and vacuous all() over empty detailed evidence.",
+      "evidence": "A pure-function probe with accepted_cases=3, refused_negative_cases=6 and empty cases/negative_cases returned True.",
+      "implication": "The standalone wrapper can accept absent detailed confirmation evidence.",
+      "status": "Root informed; additive preservation and correction pending.",
+      "resolution": "Corrected in supplementary verifier v2. Exact case/negative/check IDs, boolean types and reconstructed counts are required; the formerly accepted empty-evidence mutation is rejected. Prior verifier and failure probe are archived."
+    },
+    {
+      "id": "A11",
+      "severity": "blocking_for_output_identity_claim",
+      "finding": "Supplementary STEP loop accepts the output directories that happen to exist and reads their recipes rather than binding each recipe to the frozen source program or fresh request.",
+      "evidence": "verify_study.py iterates results folder directories and calls producer.build on each local feature_program.json.",
+      "implication": "Missing case directories or jointly changed recipe+STEP content are not explicitly rejected.",
+      "status": "Root informed; exact expected case/directory/check sets and recipe binding requested.",
+      "resolution": "Corrected in supplementary verifier v2. Exact expected directory and artifact sets, per-case recipe equality, CSV content and historical artifact receipt hashes are checked before geometric comparison. Missing-case and changed-recipe probes are rejected."
+    }
+  ],
+  "source_classification": {
+    "historical": "Three upstream CadQuery educational code examples, manually interpreted by an assistant. They are not customer-supplied STEP parts, industrial benchmarks or autonomous STEP interpretation.",
+    "fresh": "Three hypothetical parametric requests specified by the root researcher after constructor freeze. They are new requests within a deliberately limited family; not customer demand, production observations or population-generalization evidence.",
+    "license": "Packaged CadQuery Apache-2.0 license and file identities are present. No private design was observed.",
+    "source_comment_discrepancy": "Ex003 cbore_inset comment conflicts with executable half-rectangle geometry; discrepancy is explicitly preserved."
+  },
+  "stopped_claims": [
+    "Transformational flagship admission",
+    "Newly feasible commercially accepted productive activity",
+    "Actual buyer acceptance, demand, receipts or profit",
+    "Automatic drawing/STEP-to-program interpretation",
+    "Recovered original design intent or manufacturing requirements",
+    "Preserved original parametric dependencies under arbitrary edits",
+    "Physical component conformity, manufacturability or machine release",
+    "Strongest-conventional-baseline superiority or measured engineering-labor reduction",
+    "Operational Alpha, retained Alpha, trained specialist or compounding",
+    "Independent physical or independent-kernel confirmation",
+    "Complete adversarial input robustness",
+    "Live ENS authentication or execution authority"
+  ],
+  "pending_additive_remediation": "Completed for the additive wrapper route. Remaining feature-ID and parametric-dependency limitations are deliberately preserved; no deployment admission.",
+  "recommended_public_wording": "A conventional nominal-geometry package was built from three public educational examples. After preserving an initial measurement failure and two documented corrections, three fresh researcher-specified requests passed the narrow geometric rubric. Six specified invalid geometric requests were refused; two feature-identifier defects remain. The work does not establish a new commercial capability or transformational flagship.",
+  "audited_at_utc": "2026-10-28T01:40:18.896600+00:00",
+  "inspected_hashes": {
+    "src/produce.py": "5c2be43b6e014a34465eb249d6f30e5e278c9a0975f0d8fc59a6ccc8cf4b058e",
+    "src/feature_program.json": "0beb58c9cb2890afa653cb64dc33b87f5dd154986de83fa76352f6eded2174c8",
+    "verify_confirmation.py": "38f49c711fe0d03e74972d6e85ae2adfc40a705f3d3ef8d84500082fee24674c",
+    "protocol/FRESH_FREEZE.json": "680e9f170723ace35ae9dc5429ba8586cb5842fd17d2721b6b50b5c702eb458e",
+    "protocol/FRESH_CONFIRMATION.json": "df7002de8eb4f66446aa9e23d7875b213140d91fd39e65275d105c116c03321e",
+    "results/fresh_confirmation/acceptance.json": "ba5d80725cddd1ade056c575234d252cc20962ef23ee38dd961248b3eb941dfd",
+    "data/public/SOURCE_MANIFEST.json": "641f7cb5293d0d919c6b1b2e39dd072d4be184e4f0d1a103458d3af61477475f"
+  },
+  "supplementary_wrapper_audit_v1": {
+    "audited_at_utc": "2026-10-28T01:41:38.706097+00:00",
+    "verify_study_sha256": "0e63552c94007cc0c011d0a4017920dfe8c25467202198b42b66b8750ccf7f58",
+    "reproduce_sha256": "117a763417eef59f8672a690fd71ee7d24f575ae87c22d22986d10aaa5f33a75",
+    "observed_report": "evidence/final_verification.json",
+    "observed_step_results": "All six recorded retrospective STEP symmetric differences equal zero.",
+    "source_binding": "FIXED constants pin manifest, feature program, protocol, constructor and fresh checker; declaration entries and public source file digests are compared.",
+    "concrete_probe": {
+      "input": {
+        "status": "PASS_GEOMETRY_ONLY",
+        "accepted_cases": 3,
+        "refused_negative_cases": 6,
+        "cases": [],
+        "negative_cases": []
+      },
+      "actual_report_status": true,
+      "expected_report_status": false,
+      "method": "Executed pure-function call; no study inputs or results mutated."
+    },
+    "verdict": "Wrapper completeness false positive; correction needed before broad integrity claim."
+  },
+  "supplementary_wrapper_audit_v2": {
+    "audited_at_utc": "2026-10-28T01:46:00.114860+00:00",
+    "verify_study_sha256": "5f50127b0318a754b8042d445bd0ae0d059ee9946781298a9adcc27a65ae6241",
+    "reproduce_sha256": "05b3af953a862c636372d3ea92cea53f9c86887d36f9f04f7ed73dffced3fa2e",
+    "verdict": "PASS",
+    "errors": [],
+    "step_roundtrips_accepted": 6,
+    "step_roundtrip_count": 6,
+    "all_six_symmetric_differences_zero": true,
+    "recipe_csv_cases": 6,
+    "mutation_probes_rejected": 6,
+    "mutation_probe_count": 6,
+    "subprocess_failure_exit_probe": {
+      "case": "changed frozen protocol bytes in disposable copy",
+      "exit_code": 1,
+      "expected": "nonzero",
+      "rejected": true,
+      "reported_status": "FAIL",
+      "scope": "Retrospective wrapper gate test; original experiment files unchanged."
+    },
+    "replay": {
+      "started_at_utc": "2026-10-28T01:45:10.166140+00:00",
+      "finished_at_utc": "2026-10-28T01:45:19.262539+00:00",
+      "exit_code": 0,
+      "destination": "/tmp/agi-alpha-audited-replay-v2-dzntn1hn/replay",
+      "scope": "Semantic replay of the already disclosed known cases; not fresh scientific evidence.",
+      "reproduction": {
+        "status": "PASS",
+        "destination": "/tmp/agi-alpha-audited-replay-v2-dzntn1hn/replay/study",
+        "verifier_sha256": "5f50127b0318a754b8042d445bd0ae0d059ee9946781298a9adcc27a65ae6241",
+        "reproducer_sha256": "05b3af953a862c636372d3ea92cea53f9c86887d36f9f04f7ed73dffced3fa2e",
+        "historical_archive": "Preserved records sealed after original execution; no preregistration claim.",
+        "interpretation": "Reproduction of known public and disclosed fresh cases, not a new prospective trial. STEP headers and elapsed times may vary; semantic checks are the reproducibility target."
+      }
+    },
+    "preserved_prior_wrapper": "evidence/history/verify_study_v1.py",
+    "preserved_false_positive": "evidence/history/empty_evidence_probe_v1.json",
+    "historical_seal": "evidence/HISTORICAL_SEAL.json",
+    "seal_phase": "POST_EXECUTION, not preregistration",
+    "meaning": "Repairs support trusted-package reproducibility and evidence identity. They do not add customer, physical, novelty or economic-enabling evidence."
+  },
+  "original_inspected_files_unchanged": true,
+  "final_verdict": "PASS_FOR_REPRODUCIBLE_SUPPORTING_NOMINAL_GEOMETRY; FLAGSHIP_STOP",
+  "repair_authorship_disclosure": "The reviewer authored the corrected supplementary verifier and adapted reproduce.py. Its repair checks are self-checks, not an independent review of the corrected wrapper. The initial constructor critique was by a separate agent; no external peer review or organizational independence is claimed."
+}
