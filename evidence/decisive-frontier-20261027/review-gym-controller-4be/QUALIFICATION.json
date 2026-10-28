@@ -1,0 +1,88 @@
+{
+  "schema": "gym-current-controller-qualification/v1",
+  "base_commit": "4be5a593ac08275fc72a446f42502f6de80cd426",
+  "base_tree": "385859d51343e16a6c607887b8054d245180c14f",
+  "worktree": "/tmp/agi-alpha-child-4be",
+  "review_comment_id": 6458203277,
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py": "d4a80b68fab2baaa2b02c6951470f72a24d624793ad848caadd96b6025bc3311",
+    "tests/runtime/test_gym_current_controller_4be_regression.py": "8f275e2463792fc60e9a73bee4ac18b8a53305e94f608e6e04f6323b540b21d5"
+  },
+  "before": {
+    "failed": 12,
+    "positive_controls_passed": 3,
+    "seconds": 10.26,
+    "source_sha256": "a648f5214206dec4f3911ff325da21dc222a2e81e67d459a23d0090f7da163da",
+    "raw": "original-tests.json"
+  },
+  "after": {
+    "passed": 37,
+    "directed": 15,
+    "preserved_specialist_tests": 22,
+    "seconds": 11.42,
+    "raw": "corrected-tests.txt",
+    "raw_sha256": "8db8233611509d75a53c99e3cb4e1763fbe9822dee56a3141782040b56bf5ae7"
+  },
+  "change": "Snapshot the verified Gym payload binding; reverify its current signature/domain/controller/journal/exact payload inside recurring active checkpoints and perform a final checkpoint before freezing. No shared callback changes.",
+  "negative_cases": {
+    "authority_withdrawal": [
+      "revocation",
+      "controller role withdrawal",
+      "configured public key replacement"
+    ],
+    "checkpoints": [
+      "before first action",
+      "within first action",
+      "after first completed trial",
+      "before freeze"
+    ]
+  },
+  "preservation": [
+    "failed-or-uncertain state",
+    "partial logical work and completed trials",
+    "original signed plan and original workflow",
+    "original unknown optional C activity and mission identity",
+    "no automatic retry under a fresh trusted operator signature"
+  ],
+  "controls": [
+    "current original controller",
+    "unrelated controller revoked",
+    "caller mutates original supplied envelope after snapshot"
+  ],
+  "checks": {
+    "native_strict_mypy": "pass;1module under unchanged runtime config",
+    "ruff_lint": "pass;2owned files",
+    "ruff_format": "pass;2owned files",
+    "whitespace": "pass;owned source/test",
+    "held_source": "all5original regular-file pins exact before/after; inert bytes only",
+    "held_behavior": "none of the4held nodes imported, run or qualified",
+    "operator_preflight": "agent/offline profile pass"
+  },
+  "scope_boundaries": {
+    "primary_checkout_modified": false,
+    "shared_callbacks_modified": false,
+    "cost_reservation_owner_work_changed": false,
+    "root_guard_test_included": false,
+    "model_api_calls": 0,
+    "frozen_canaries_run": false,
+    "live_authority": false,
+    "actual_customer_collections_micro_usd": 0,
+    "actual_complete_cost_micro_usd": null,
+    "push_merge_ref_changes": false,
+    "final_owner_combined_qualification": "required separately after applying reservation/guard patches"
+  },
+  "evidence_sha256": {
+    "BEFORE.json": "b8ca3f24ac67070f5a4b226eb0e1b117995148d30501eab52235d25749bf4f37",
+    "ORIGINAL_SOURCE.py.txt": "a648f5214206dec4f3911ff325da21dc222a2e81e67d459a23d0090f7da163da",
+    "SOURCE_PATCH.json": "3ead03daa4f18a66c5db166d54d8e11291c62b93c788e1fdcbdac0a2fc7e5c2f",
+    "TOOLS.json": "ee260f43ee2a7419b026246221a88047ba005bac3c67648cf0a38c23c7d08aab",
+    "corrected-tests.txt": "8db8233611509d75a53c99e3cb4e1763fbe9822dee56a3141782040b56bf5ae7",
+    "environment.txt": "509363d8ffa03a2beb990087e3a443f98ff10a2f82c9ace84a1785ab319d8ee1",
+    "format.txt": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "held-after.json": "6911a2534bc0790e23e419e6d0884b3c173168d1aad134ecfc031572cfee26fd",
+    "held-before.json": "6911a2534bc0790e23e419e6d0884b3c173168d1aad134ecfc031572cfee26fd",
+    "lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "original-tests.json": "6009388e2aca7302917fca1ca582a68a8410f549b29f8915573e3d1c29f536c5",
+    "typing.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  }
+}

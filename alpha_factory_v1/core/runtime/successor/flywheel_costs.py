@@ -95,6 +95,7 @@ class CostLedger:
         self.checkpoint: DurableCheckpoint | None = None
         self.custody_check: Callable[[], None] | None = None
         self.general_delivery_check: Callable[[str, Any], dict[str, Any]] | None = None
+        self.invocation_reservation_check: Callable[[Charge, Any], None] | None = None
         with journal.transaction() as cx:
             try:
                 journal.latest(KEY, cx)
@@ -137,6 +138,19 @@ class CostLedger:
         from .flywheel_execution import ExecutionPermit, operation_key
 
         charge = Charge.model_validate({name: row[name] for name in Charge.model_fields})
+        if row["signed"] is None:
+            if (
+                set(row) != {*Charge.model_fields, "signed"}
+                or charge.bucket != "B"
+                or charge.category != "compute"
+                or charge.activity_id != "reuse/" + charge.mission_id
+                or charge.accrued_micro_usd is not None
+                or charge.paid_micro_usd != 0
+                or self.invocation_reservation_check is None
+            ):
+                raise ValueError("unsigned cost requires its exact protected invocation reservation")
+            self.invocation_reservation_check(charge, cx)
+            return
         signed = SignedEnvelope.model_validate(row["signed"])
         if signed.domain == "flywheel-cost-command":
             payload = self.current_signature(signed.model_dump(), "flywheel-cost-command", "accounting")
@@ -186,6 +200,8 @@ class CostLedger:
         else:
             raise ValueError("cost signature has an unsupported authority domain")
         if "original" in row:
+            if any(row[name] != row["original"][name] for name in ("activity_id", "mission_id", "bucket", "category")):
+                raise ValueError("cost reconciliation differs from its original reservation")
             self._current_charge(row["original"], cx, depth + 1)
 
     def require_current_evidence(self, mission_id: str, buckets: list[str], cx: Any) -> None:

@@ -1,0 +1,22 @@
+--- before/tests/runtime/test_flywheel_invocation_cost_ancestry.py
++++ after/tests/runtime/test_flywheel_invocation_cost_ancestry.py
+@@ -82,10 +82,18 @@
+         for rpc in setup["rpc"]:
+             rpc.owners[protected.namehash("two.agent.agi.eth").hex()] = "0x" + "12" * 20
+     before = setup["costs"].snapshot()
++    history = setup["costs"].report(request.mission_id)
++    journal_before = setup["journal"].verify()
+     calls = [len(rpc.calls) for rpc in setup["rpc"]]
+-    current_costs(setup, request.mission_id)
++    if change in {"expiry", "capsule-revocation"}:
++        with pytest.raises((ValueError, Conflict)):
++            current_costs(setup, request.mission_id)
++    else:
++        current_costs(setup, request.mission_id)
+     assert [len(rpc.calls) for rpc in setup["rpc"]] == calls
+     assert setup["costs"].snapshot() == before
++    assert setup["costs"].report(request.mission_id) == history
++    assert setup["journal"].verify() == journal_before
+     fresh = request.model_copy(update={"mission_id": "not-authorized-again"})
+     token = protected.proof(setup, ident, "invoke", digest("flywheel-invocation", fresh))
+     with pytest.raises((ValueError, Conflict)):

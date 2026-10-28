@@ -1,0 +1,171 @@
+{
+  "schema": "combined-invocation-current-authority-qualification/v1",
+  "scope": "Local single callback path with narrow #5002 guards and explicitly reconciled current eligibility policy. No release or publication qualification is supplied by this subpacket.",
+  "incoming_source": "372e88f6274ae803c80f8b8c95c3810d52de01ca",
+  "production_guards": [
+    "A resolved charge and its original must share activity_id, mission_id, bucket and category before ancestry validation.",
+    "The consumed resource challenge revision must precede the durable invocation revision.",
+    "The resource challenge payload must have exactly the existing protocol fields."
+  ],
+  "single_path": "CostLedger continues using the explicitly wired ProtectedLibrary callback; no second reservation validator was added.",
+  "counterexamples": {
+    "passed": 1,
+    "failed": 3,
+    "deselected": 21,
+    "seconds": 3.7,
+    "exit_code": 1,
+    "log": "before-probes.txt",
+    "classification": [
+      "One genuine missing guard: a different valid original reservation was accepted before the identity link was added.",
+      "Two explicit policy conflicts: untouched incoming tests expected current qualification after expiry/capsule revocation. The current support policy correctly refused, and only those expectations were adapted while preserving historical costs."
+    ]
+  },
+  "test_policy_reconciliation": "All 25 incoming cases remain. Only expiry/capsule-revocation current_costs expectations now require refusal; snapshot/report/journal identities remain unchanged and no ENS calls occur during inspection. ENS-owner history still validates without regrant, while fresh invocation remains refused.",
+  "final_tests": {
+    "passed": 122,
+    "failed": 0,
+    "seconds": 62.51,
+    "exit_code": 0,
+    "authority_cases": 48,
+    "unchanged_child_authority_cases": 23,
+    "incoming_authority_cases": 25,
+    "comparison_cases": 74,
+    "log": "final-tests.txt"
+  },
+  "typing": {
+    "strict": true,
+    "cache_disabled": true,
+    "source_files": 2,
+    "exit_code": 0,
+    "log": "final-strict.txt"
+  },
+  "ruff": [
+    {
+      "version": "0.12.5",
+      "exit_code": 0,
+      "source_and_test_files": 4,
+      "log": "final-ruff-modern.txt"
+    },
+    {
+      "version": "0.2.1",
+      "exit_code": 0,
+      "source_and_test_files": 4,
+      "log": "final-ruff-021.txt"
+    }
+  ],
+  "preservation": {
+    "incoming_before_test_is_exact_git_372_bytes": true,
+    "child_23_case_test_unchanged": true,
+    "historical_logical_files_match_git_372": 7,
+    "historical_container_layout_migration_by_root": "archive-root-migration.json",
+    "initial_changed_container_observation_retained": "archive-observation.json",
+    "archived_sources_executed_or_imported": false,
+    "agent_staging_or_commits": false
+  },
+  "final_sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": {
+      "bytes": 36453,
+      "sha256": "491404d61f96a99290a67b424255cee7c3e94335c19c8d5f993a350ec91031a3"
+    },
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": {
+      "bytes": 78953,
+      "sha256": "ac25cae8822ca3b4a111c50803c9169216b4dc0eca965db16309b63eedee16f8"
+    },
+    "tests/runtime/test_flywheel_invocation_cost_ancestry.py": {
+      "bytes": 9669,
+      "sha256": "fca5945fdfb3109ffb8f53699727ff2856974cd079c94ec01b20ab3283637c52"
+    },
+    "tests/runtime/test_flywheel_invocation_cost_authority.py": {
+      "bytes": 12424,
+      "sha256": "10d8a9c0082a0a376770e5c9185e15a0b960b5df31da3d04a8fd1d4f691576eb"
+    },
+    "tests/fixtures/frontier-delivery-147-historical-source.json": {
+      "bytes": 159411,
+      "sha256": "3cb8c56d952fff4c7d527365eee54da0fa2ad37e47da44556566ef12cb87eb48"
+    }
+  },
+  "separate_historical_page": {
+    "path": "tests/fixtures/frontier-delivery-147-page.html.txt",
+    "bytes": 1607465,
+    "sha256": "3262777ff56d80b60c56e4756819a2c82d02e0dab496c560ad5b66129fb24655"
+  },
+  "evidence": {
+    "BEFORE.json": {
+      "bytes": 911,
+      "sha256": "30a87852d5f09e359188580212b621976fb7cda92cf6e7fd29b14f44e120fa8e"
+    },
+    "archive-observation.json": {
+      "bytes": 612,
+      "sha256": "e4bc489e9980059442a41c0d1181590d368d1968447bf5c4cafc64a489c872c4"
+    },
+    "archive-root-migration.json": {
+      "bytes": 2246,
+      "sha256": "3d8530959e01ef7f305b55b4fa28b5fe4605f76e59e64d77e03ecd7a4c6322c0"
+    },
+    "before-command.json": {
+      "bytes": 327,
+      "sha256": "a11e9e383dc51087ba1ab5f986f344fdecd457782cae81f6e55074b881e07498"
+    },
+    "before-probes.txt": {
+      "bytes": 10572,
+      "sha256": "14daaf36374f833ab5cc21e9118a3090959a6ebb1168dc0809f1916be4ebb147"
+    },
+    "final-ruff-021-command.json": {
+      "bytes": 426,
+      "sha256": "539eba7e20aad75336dc714d8fa002296692990a9e09ee84be9b2841947cc7c9"
+    },
+    "final-ruff-021.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-ruff-modern-command.json": {
+      "bytes": 399,
+      "sha256": "6e3468ff1e7f4a945521105d870fce6bdd434d76b556c781aaa7e40b81fa14e7"
+    },
+    "final-ruff-modern.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "final-strict-command.json": {
+      "bytes": 333,
+      "sha256": "33a7498dfe8a58a118b8635a3978b2e8d779618c7ab79f28e1b9ef9d3166b4ec"
+    },
+    "final-strict.txt": {
+      "bytes": 43,
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    "final-tests-command.json": {
+      "bytes": 365,
+      "sha256": "830cf9b7639edb08e4c58869293a85c37831bb77e60ec0bfc4a15837128a4348"
+    },
+    "final-tests.txt": {
+      "bytes": 191,
+      "sha256": "fa94c92607b687b9fabfcb3c08776a8513d468ede062cca54917c38f20b5519e"
+    },
+    "flywheel_capsules.before.txt": {
+      "bytes": 78550,
+      "sha256": "d752d6815dbc6fc9b0278d9832f97e3ce4dc7f25eef1c3588a31917c4e85bba0"
+    },
+    "flywheel_capsules.patch": {
+      "bytes": 1163,
+      "sha256": "0f35375a715ed33adc1581212e9506ad2074d4d4ef3dbf6b3bfea35d9590669f"
+    },
+    "flywheel_costs.before.txt": {
+      "bytes": 36239,
+      "sha256": "c9d332966c2ea29f195f22450fea326ba1cd77c8b7b02733ddebef59a348b8b2"
+    },
+    "flywheel_costs.patch": {
+      "bytes": 666,
+      "sha256": "f1f1ea14fc5e9fd7fab1b98d83c85160c3fe7d28317497a8cad2e99d11813fc6"
+    },
+    "test_flywheel_invocation_cost_ancestry.before.txt": {
+      "bytes": 9277,
+      "sha256": "9cf0671156d70895cbb5ffbf47b061f4b1889e3a6f6f28c93d255908607d2d79"
+    },
+    "test_flywheel_invocation_cost_ancestry.patch": {
+      "bytes": 1192,
+      "sha256": "920bc154fff1f6c50cc9bd3d9ea65476c97aae49ce81723b5aaf1ec1e769aa5f"
+    }
+  },
+  "qualification_boundary": "The preceding 558-pass/89.95% campaign remains historical. Root owns the new combined full-runtime, coverage, 75-file typing, fresh recorders, hosted review/release and public verification."
+}

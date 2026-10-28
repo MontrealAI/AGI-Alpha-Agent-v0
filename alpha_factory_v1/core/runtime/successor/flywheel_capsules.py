@@ -263,6 +263,7 @@ class ProtectedLibrary:
         self.costs.checkpoint = checkpoint
         self.costs.custody_check = self._check_custody_files
         self.costs.general_delivery_check = self._customer_general_delivery
+        self.costs.invocation_reservation_check = self._current_invocation_reservation
         self._boot_execution_digest = self._execution_binding()
         with self.journal.transaction() as cx:
             state = self.library.snapshot()
@@ -284,6 +285,120 @@ class ProtectedLibrary:
 
         self._state(cx)
         return accepted_general_origin(self, operation, cx)[0]
+
+    def _current_invocation_reservation(self, charge: Charge, cx: Any) -> None:
+        """Inspect existing invocation support without issuing or consuming authority."""
+        from eth_account import Account
+        from eth_account.messages import encode_defunct
+        from eth_keys.exceptions import BadSignature
+
+        _, network = self._state(cx)
+        stored = self.journal.latest(self._invocation_key(charge.mission_id), cx)
+        if stored.get("legacy_unqualified"):
+            raise ValueError("legacy invocation cannot qualify current cost evidence")
+        request = stored["request"]
+        invocation: Invocation | PlacementInvocation = (
+            PlacementInvocation.model_validate(request) if "problem" in request else Invocation.model_validate(request)
+        )
+        receipt = stored["receipt"]
+        ident = receipt["candidate_digest"]
+        entry = self._eligible(network, ident, cx)
+        self._dependencies(network, entry, cx=cx)
+        request_hash = digest("flywheel-invocation", invocation)
+        attempt = digest(
+            "flywheel-invocation-attempt",
+            {"candidate_digest": ident, "mission_id": invocation.mission_id, "request_digest": request_hash},
+        )
+        expected = Charge(
+            activity_id="reuse/" + invocation.mission_id,
+            mission_id=invocation.mission_id,
+            bucket="B",
+            category="compute",
+            accrued_micro_usd=None,
+            paid_micro_usd=0,
+            basis="unknown",
+            evidence_digest=attempt,
+            note="Durably reserved before bounded execution, including crashes; all-resource reconciliation remains required",
+        )
+        document = invocation.problem if isinstance(invocation, PlacementInvocation) else invocation.document
+        if (
+            charge != expected
+            or receipt["request_digest"] != request_hash
+            or receipt["attempt_digest"] != attempt
+            or receipt["input_digest"] != input_digest(document)
+            or receipt["beta_digest"] != invocation.beta_digest
+            or invocation.beta_digest != network["beta_digest"]
+            or receipt["policy_digest"] != invocation.policy_digest
+            or invocation.policy_digest != network["policy_digest"]
+            or receipt["recipient_capabilities_digest"] != invocation.recipient_capabilities_digest
+            or receipt["cost_cap_micro_usd"] != invocation.cost_cap_micro_usd
+            or receipt["execution_digest"] != self.execution_digest
+            or receipt["qualification_digest"] != digest("flywheel-plan", entry["plan"])
+            or (entry["manifest"]["supported_scope"] == "resilient-placement/v1")
+            != isinstance(invocation, PlacementInvocation)
+            or not set(entry["manifest"]["prerequisites"]) <= set(invocation.prerequisite_digests)
+        ):
+            raise ValueError("cost reservation differs from its exact currently qualified invocation")
+
+        authority = receipt["authorization"]
+        challenge = self.journal.latest("@flywheel-challenge:" + authority["challenge_id"], cx)
+        payload = challenge["payload"]
+        message = (
+            "AGI Alpha resource authorization v1\n"
+            + canonical(payload).decode()
+            + "\nNo spending, settlement, deployment or external-system authority."
+        )
+        proof = AccessRequest(challenge_id=authority["challenge_id"], signature=challenge["signature"])
+        if (
+            set(payload)
+            != {
+                "service",
+                "journal_identity",
+                "name",
+                "wallet",
+                "resource",
+                "action",
+                "request_digest",
+                "issued_at",
+                "expires_at",
+                "nonce",
+            }
+            or challenge["used"] is not True
+            or digest("flywheel-challenge", payload) != proof.challenge_id
+            or challenge["message"] != message
+            or challenge["authorization"] != authority
+            or challenge["revision"] >= stored["revision"]
+            or payload["service"] != self.access.service.model_dump()
+            or payload["journal_identity"] != self.journal.identity
+            or payload["resource"] != ident
+            or payload["action"] != "invoke"
+            or payload["request_digest"] != request_hash
+            or payload["name"] != direct_name(authority["name"])
+            or payload["wallet"] != address(authority["wallet"])
+            or authority["request_committed_at"] != payload["issued_at"]
+            or authority["pins"] != self.access.authority.pins.model_dump()
+            or authority["chain_id"] != 1
+            or authority["rules"] != "ensv1-direct-registry-or-wrapped-owner/v1"
+            or not all(
+                _is_exact_type(value, int)
+                for value in (
+                    payload["issued_at"],
+                    payload["expires_at"],
+                    authority["checked_at"],
+                    receipt["started_at"],
+                )
+            )
+            or not payload["issued_at"] <= authority["checked_at"] < payload["expires_at"]
+            or authority["checked_at"] > receipt["started_at"]
+        ):
+            raise ValueError("invocation reservation lacks its exact consumed resource authorization")
+        # Expiry limits the original grant, not inspection of its consumed history.
+        try:
+            recovered = address(Account.recover_message(encode_defunct(text=message), signature=proof.signature))
+        except (BadSignature, TypeError, ValueError) as exc:
+            raise ValueError("consumed invocation wallet signature is invalid") from exc
+        if recovered != payload["wallet"]:
+            raise ValueError("consumed invocation wallet differs from its signed authorization")
 
     def _check_custody_files(self) -> None:
         for name, expected in self._custody_files.items():

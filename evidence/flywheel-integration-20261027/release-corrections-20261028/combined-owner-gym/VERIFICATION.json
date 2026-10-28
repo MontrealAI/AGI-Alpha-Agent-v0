@@ -1,0 +1,75 @@
+{
+  "schema": "agi-alpha.combined-owner-gym-qualification.v1",
+  "working_head": "4be5a593ac08275fc72a446f42502f6de80cd426",
+  "owner_handoff": {
+    "commit": "d41fc0d2687a9b44079b3c88206cf0fa2c97d59d",
+    "meaning": "Data-only handoff; its embedded qualified module, not the commit runtime tree, is applied here.",
+    "import_verification": "evidence/gym-ci-guards-handoff-20261028-1602/IMPORT_VERIFICATION.json",
+    "module_matches_exact_owner_payload": true
+  },
+  "prior_local_module_sha256": "7b2eaf6a78a5359854df9ae9a6f7311d3f59aa9d82476d86c16ba1b07447f4c2",
+  "frozen_sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py": "d4a80b68fab2baaa2b02c6951470f72a24d624793ad848caadd96b6025bc3311",
+    "tests/runtime/test_gym_current_controller_4be_regression.py": "8f275e2463792fc60e9a73bee4ac18b8a53305e94f608e6e04f6323b540b21d5",
+    "tests/runtime/test_flywheel_gym_authority.py": "8e4c17a44ab30fcdf061b860180b60da385403d56acba71677f9b89d3b64110f",
+    "tests/runtime/test_flywheel_specialists.py": "80612316bfa53a7de0a181223420712b4abd876f2d542957843c8be0670ffaf9"
+  },
+  "change": "Use owner canonical-byte original authorization binding and explicit exact journal/plan schema at each current controller checkpoint, including final freeze. Existing reservation, history, cancellation, liability and no-retry paths are retained.",
+  "independent_before_evidence": [
+    {
+      "path": "evidence/decisive-frontier-20261027/review-gym-controller-4be",
+      "negative_cases": 12,
+      "controls": 3
+    },
+    {
+      "path": "evidence/flywheel-integration-20261027/release-corrections-20261028/gym-authority",
+      "negative_cases": 8,
+      "controls": 2
+    }
+  ],
+  "focused_tests": {
+    "command": "python -m pytest tests/runtime/test_gym_current_controller_4be_regression.py tests/runtime/test_flywheel_gym_authority.py tests/runtime/test_flywheel_specialists.py --confcutdir=tests/runtime -q -o addopts= --basetemp=/workspace/scratch/9c7b9ec78746/combined-owner-gym-tests",
+    "exit_code": 0,
+    "passed": 47,
+    "seconds": 14.96,
+    "owner_new_cases": 15,
+    "our_new_cases": 10,
+    "existing_specialist_cases": 22,
+    "cases_omitted": 0
+  },
+  "strict_types": {
+    "command": "python -m mypy --strict --config-file mypy-runtime.ini --cache-dir=/dev/null alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+    "exit_code": 0,
+    "source_files": 1,
+    "config_sha256": "12e4d0eafab196e0a2cf0321b02b2774e36dde1c22311795a9f78194782fa321"
+  },
+  "ruff": [
+    {
+      "version": "0.12.5",
+      "command": "python -m ruff check alpha_factory_v1/core/runtime/successor/flywheel_gym.py tests/runtime/test_gym_current_controller_4be_regression.py tests/runtime/test_flywheel_gym_authority.py",
+      "exit_code": 0
+    },
+    {
+      "version": "0.2.1",
+      "command": "/workspace/scratch/9c7b9ec78746/pinned-ruff-021/bin/ruff check alpha_factory_v1/core/runtime/successor/flywheel_gym.py tests/runtime/test_gym_current_controller_4be_regression.py tests/runtime/test_flywheel_gym_authority.py",
+      "exit_code": 0
+    }
+  ],
+  "python": "3.12.14",
+  "evidence_sha256": {
+    "tests.txt": "23e9de2fdec0ed6769a69a76e570517a48ef97ce17b2fe5c86ac08de4747af63",
+    "types.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+    "ruff-current.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "ruff-pinned.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "boundaries": {
+    "held_nodes_run": false,
+    "new_ledger_or_registry": false,
+    "live_provider_or_ENS_calls": false,
+    "spending": false,
+    "branch_or_staging_changed": false,
+    "complete_resulting_source_qualified": false,
+    "merge_or_publication": false
+  },
+  "qualification_limit": "This new source replaces the earlier local Gym freeze. The prior 558-case campaign remains historical and is not relabeled as qualification of this module. Resulting-source native tests, types, replays, review and release gates remain with root."
+}

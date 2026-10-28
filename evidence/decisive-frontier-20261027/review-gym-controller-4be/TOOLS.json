@@ -1,0 +1,61 @@
+{
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py": "d4a80b68fab2baaa2b02c6951470f72a24d624793ad848caadd96b6025bc3311",
+    "tests/runtime/test_gym_current_controller_4be_regression.py": "8f275e2463792fc60e9a73bee4ac18b8a53305e94f608e6e04f6323b540b21d5"
+  },
+  "checks": [
+    {
+      "name": "typing",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy-runtime.ini",
+        "--cache-dir=/tmp/gym-controller-4be-tests/mypy-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_gym.py"
+      ],
+      "exit_code": 0,
+      "seconds": 12.265160890000516
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+        "tests/runtime/test_gym_current_controller_4be_regression.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.033955844000047364
+    },
+    {
+      "name": "format",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+        "tests/runtime/test_gym_current_controller_4be_regression.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.0334848869997586
+    },
+    {
+      "name": "held-after",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "scripts.check_held_native_source"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04037855499973375
+    }
+  ]
+}

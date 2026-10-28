@@ -1,0 +1,77 @@
+{
+  "schema": "agi-alpha.gym-current-authority-correction.v1",
+  "parent_source": "4be5a593ac08275fc72a446f42502f6de80cd426",
+  "review_comments": [
+    6458203277,
+    6458302425
+  ],
+  "sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py": "7b2eaf6a78a5359854df9ae9a6f7311d3f59aa9d82476d86c16ba1b07447f4c2",
+    "tests/runtime/test_flywheel_gym_authority.py": "8e4c17a44ab30fcdf061b860180b60da385403d56acba71677f9b89d3b64110f"
+  },
+  "source_policy": {
+    "python": "3.12.14",
+    "mypy_runtime_config_sha256": "12e4d0eafab196e0a2cf0321b02b2774e36dde1c22311795a9f78194782fa321"
+  },
+  "change": "Every active checkpoint revalidates the snapshotted signed Gym plan with the current controller role, original journal and exact plan commitment; candidate freeze has a final active check. No registry, ledger, authority or publication path added.",
+  "counterexamples": {
+    "source_before": "before-source.json",
+    "exit_code": 1,
+    "failed": 8,
+    "passed_controls": 2,
+    "cases": "Revocation and controller-role loss before first task, during a bounded step, after a completed outcome and at candidate selection. Before the fix all eight cases continued or froze after authority loss."
+  },
+  "focused_qualification": {
+    "command": "python -m pytest tests/runtime/test_flywheel_gym_authority.py tests/runtime/test_flywheel_specialists.py --confcutdir=tests/runtime -q -o addopts= --basetemp=/workspace/scratch/9c7b9ec78746/gym-authority-final",
+    "exit_code": 0,
+    "passed": 32,
+    "elapsed_seconds": 11.22,
+    "new_tests": 10,
+    "existing_specialist_tests": 22
+  },
+  "strict_types": {
+    "command": "python -m mypy --strict --config-file mypy-runtime.ini --cache-dir=/dev/null alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+    "exit_code": 0,
+    "source_files": 1
+  },
+  "ruff": [
+    {
+      "version": "0.2.1",
+      "binary": "/workspace/scratch/9c7b9ec78746/pinned-ruff-021/bin/ruff",
+      "exit_code": 0
+    },
+    {
+      "version": "0.12.5",
+      "binary": "python -m ruff",
+      "exit_code": 0
+    }
+  ],
+  "asserted_boundaries": [
+    "original signed plan is retained unchanged",
+    "failed-or-uncertain terminal record survives revocation and role loss",
+    "no subsequent training steps or candidate freeze after a failed checkpoint",
+    "completed trial facts remain visible",
+    "one unknown C compute liability remains, paid amount zero, no A/B charges or additional reservation",
+    "revoked or role-less plan cannot retry or acquire a new journal event",
+    "normal and unrelated-evaluator-revocation controls still complete frozen training"
+  ],
+  "test_maintenance": "After pre-fix reproduction, Ruff formatting changed only layout of the new test; all ten cases and assertions were retained.",
+  "scope": "Actual local synthetic workflow execution, signatures and durable records. No actual provider calls, customer acceptance, live ENS authentication, payments or held native-source probes.",
+  "not_qualified_here": [
+    "complete resulting source",
+    "hosted exact-source CI or review",
+    "merge",
+    "release",
+    "deployed canary",
+    "market profitability",
+    "retained Alpha"
+  ],
+  "evidence_sha256": {
+    "before-source.json": "3931917e42063c4c06035ce83a29d056dd3ac4ee58dd3e5a277d5238849610b5",
+    "before.txt": "7b43c3e648823cc1f6d5a64b61c6cd201eabdb384f41ff3ae3dcad614a2000b2",
+    "final.txt": "ca212cefa35d176995973c05fd7a4fe174558ba24c6cc65f66a2e336149b0ce6",
+    "ruff-current.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "ruff-pinned.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "types.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  }
+}

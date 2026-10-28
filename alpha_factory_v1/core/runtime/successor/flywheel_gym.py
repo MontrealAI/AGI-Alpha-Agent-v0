@@ -46,20 +46,15 @@ class GymTask(StrictModel):
 
 class MissionEnvironment(Protocol[TaskT]):
     @property
-    def identity(self) -> dict[str, Any]:
-        ...
+    def identity(self) -> dict[str, Any]: ...
 
-    def reset(self, task: TaskT) -> dict[str, Any]:
-        ...
+    def reset(self, task: TaskT) -> dict[str, Any]: ...
 
-    def observe(self) -> dict[str, Any]:
-        ...
+    def observe(self) -> dict[str, Any]: ...
 
-    def step(self, action: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]:
-        ...
+    def step(self, action: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]: ...
 
-    def outcome(self) -> dict[str, Any]:
-        ...
+    def outcome(self) -> dict[str, Any]: ...
 
 
 class ToolEnvironmentTask(StrictModel):
@@ -320,6 +315,7 @@ class GymCampaign:
         payload = self.costs.trust.verify(signed, "flywheel-gym-plan", "controller")
         if set(payload) != {"journal_identity", "plan"} or payload["journal_identity"] != self.journal.identity:
             raise ValueError("Gym authorization belongs to another journal or schema")
+        authorization_binding = canonical(payload)
         plan = GymPlan.model_validate(copy.deepcopy(payload["plan"]))
         if self.current_environment() != self.environment_digest:
             raise Conflict("Gym runtime changed; requalify before training")
@@ -370,6 +366,13 @@ class GymCampaign:
         def active() -> bool:
             if self.current_environment() != self.environment_digest:
                 raise Conflict("Gym runtime changed during training; preserve its uncertain attempt")
+            authority = self.costs.trust.verify(signed, "flywheel-gym-plan", "controller")
+            if (
+                set(authority) != {"journal_identity", "plan"}
+                or authority["journal_identity"] != self.journal.identity
+                or canonical(authority) != authorization_binding
+            ):
+                raise ValueError("Gym authorization changed during training; preserve its uncertain attempt")
             return (
                 time.monotonic() - started < plan.max_seconds
                 and int(time.time()) < plan.expires_at
@@ -420,6 +423,8 @@ class GymCampaign:
                 scores.append((-correct, units, canonical(candidate), candidate))
             winner_score = min(scores, key=lambda item: item[:3])
             winner = winner_score[3]
+            if not active():
+                raise InterruptedError("Gym stopped before candidate freeze")
             if winner_score[:2] >= scores[0][:2]:
                 state.update(status="no-improvement", candidate=None)
             else:

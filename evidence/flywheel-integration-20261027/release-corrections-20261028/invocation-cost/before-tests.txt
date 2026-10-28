@@ -1,0 +1,100 @@
+FFF................                                                      [100%]
+=================================== FAILURES ===================================
+_ test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[False-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7ff4ee493920>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7ff4ee2b1070>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff4edc26f60>
+fail = False, expired = False
+
+    @pytest.mark.parametrize("fail,expired", [(False, False), (True, False), (False, True)])
+    def test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, fail: bool, expired: bool
+    ) -> None:
+        _, request, receipt = invocation(setup, fail=fail)
+        challenge_key = "@flywheel-challenge:" + receipt["authorization"]["challenge_id"]
+        challenge = setup["journal"].latest(challenge_key)
+        assert challenge["used"] is True
+        if expired:
+            monkeypatch.setattr(time, "time", lambda: challenge["payload"]["expires_at"] + 1)
+        rpc_calls = [list(reader.calls) for reader in setup["rpc"]]
+    
+        def refuse_new_authority(*args: Any, **kwargs: Any) -> None:
+            pytest.fail("cost inspection must not issue, prepare, consume, or renew resource authority")
+    
+        for name in ("challenge", "prepare", "consume"):
+            monkeypatch.setattr(setup["access"], name, refuse_new_authority)
+        monkeypatch.setattr(setup["access"].authority, "verify", refuse_new_authority)
+        before = setup["journal"].verify()
+        costs = copy.deepcopy(setup["costs"].snapshot())
+        current = report(setup, request.mission_id)
+>       assert current["historical_complete"] and current["current_evidence_valid"] and current["complete"]
+E       assert (True and False)
+
+tests/runtime/test_flywheel_invocation_cost_authority.py:93: AssertionError
+_ test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[True-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7ff4ed597080>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7ff4d442d370>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff4d4422750>
+fail = True, expired = False
+
+    @pytest.mark.parametrize("fail,expired", [(False, False), (True, False), (False, True)])
+    def test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, fail: bool, expired: bool
+    ) -> None:
+        _, request, receipt = invocation(setup, fail=fail)
+        challenge_key = "@flywheel-challenge:" + receipt["authorization"]["challenge_id"]
+        challenge = setup["journal"].latest(challenge_key)
+        assert challenge["used"] is True
+        if expired:
+            monkeypatch.setattr(time, "time", lambda: challenge["payload"]["expires_at"] + 1)
+        rpc_calls = [list(reader.calls) for reader in setup["rpc"]]
+    
+        def refuse_new_authority(*args: Any, **kwargs: Any) -> None:
+            pytest.fail("cost inspection must not issue, prepare, consume, or renew resource authority")
+    
+        for name in ("challenge", "prepare", "consume"):
+            monkeypatch.setattr(setup["access"], name, refuse_new_authority)
+        monkeypatch.setattr(setup["access"].authority, "verify", refuse_new_authority)
+        before = setup["journal"].verify()
+        costs = copy.deepcopy(setup["costs"].snapshot())
+        current = report(setup, request.mission_id)
+>       assert current["historical_complete"] and current["current_evidence_valid"] and current["complete"]
+E       assert (True and False)
+
+tests/runtime/test_flywheel_invocation_cost_authority.py:93: AssertionError
+_ test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[False-True] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7ff4d4469010>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7ff4d442d7d0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff4d4468b30>
+fail = False, expired = True
+
+    @pytest.mark.parametrize("fail,expired", [(False, False), (True, False), (False, True)])
+    def test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, fail: bool, expired: bool
+    ) -> None:
+        _, request, receipt = invocation(setup, fail=fail)
+        challenge_key = "@flywheel-challenge:" + receipt["authorization"]["challenge_id"]
+        challenge = setup["journal"].latest(challenge_key)
+        assert challenge["used"] is True
+        if expired:
+            monkeypatch.setattr(time, "time", lambda: challenge["payload"]["expires_at"] + 1)
+        rpc_calls = [list(reader.calls) for reader in setup["rpc"]]
+    
+        def refuse_new_authority(*args: Any, **kwargs: Any) -> None:
+            pytest.fail("cost inspection must not issue, prepare, consume, or renew resource authority")
+    
+        for name in ("challenge", "prepare", "consume"):
+            monkeypatch.setattr(setup["access"], name, refuse_new_authority)
+        monkeypatch.setattr(setup["access"].authority, "verify", refuse_new_authority)
+        before = setup["journal"].verify()
+        costs = copy.deepcopy(setup["costs"].snapshot())
+        current = report(setup, request.mission_id)
+>       assert current["historical_complete"] and current["current_evidence_valid"] and current["complete"]
+E       assert (True and False)
+
+tests/runtime/test_flywheel_invocation_cost_authority.py:93: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_invocation_cost_authority.py::test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[False-False]
+FAILED tests/runtime/test_flywheel_invocation_cost_authority.py::test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[True-False]
+FAILED tests/runtime/test_flywheel_invocation_cost_authority.py::test_real_reconciled_invocation_costs_keep_current_support_without_reconsuming[False-True]
+3 failed, 16 passed in 14.83s
