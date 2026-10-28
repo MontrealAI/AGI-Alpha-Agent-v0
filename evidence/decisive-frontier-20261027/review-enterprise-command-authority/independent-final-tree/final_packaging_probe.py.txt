@@ -1,0 +1,18 @@
+import base64,gzip,hashlib,json,subprocess
+from pathlib import Path
+root=Path('/tmp/agi-alpha-commercial-fix-c516');base=root/'evidence/decisive-frontier-20261027/review-enterprise-command-authority';out=Path('/tmp/final-corrected-c516-review')
+for args in (['git','diff','--cached','--quiet','378273f53da18c3aeb7d8172a945243564733ee5'],['git','diff','--quiet']):subprocess.run(args,cwd=root,check=True)
+verified={}
+for relative in ('FILES.json','worker-edition/FILES.json'):
+ p=base/relative;d=json.loads(p.read_text());count=0
+ for name,record in d['files'].items():
+  raw=(p.parent/name).read_bytes();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256'],name;count+=1
+ verified[relative]=count
+pack=json.loads((base/'worker-edition/SCREENSHOT_PACKAGING.json').read_text())
+for row in pack['screenshots']:
+ raw=Path(row['local_path']).read_bytes();assert (len(raw),hashlib.sha256(raw).hexdigest())==(row['bytes'],row['sha256'])
+textpack=json.loads((base/'worker-edition/TEXT_PACKAGING.json').read_text());archive=json.loads((base/'worker-edition'/textpack['exact_original_archive']).read_text())
+assert archive['encoding']=='gzip+base64'
+raw=gzip.decompress(base64.b64decode(archive['content'],validate=True));assert len(raw)==textpack['raw_bytes'] and hashlib.sha256(raw).hexdigest()==textpack['raw_sha256']
+result={'status':'PASS','finalStagedTree':'378273f53da18c3aeb7d8172a945243564733ee5','indexMatchesTree':True,'workingTreeMatchesIndex':True,'evidenceInventoriesVerified':verified,'retainedLocalRawScreenshotsVerified':len(pack['screenshots']),'originalXmlRoundtripVerified':True,'xmlRawBytes':len(raw),'xmlRawSha256':hashlib.sha256(raw).hexdigest(),'qualificationScope':'Presentation/custody corrections only, no additional observed browser/test outcome claimed'}
+(out/'final-packaging-results.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

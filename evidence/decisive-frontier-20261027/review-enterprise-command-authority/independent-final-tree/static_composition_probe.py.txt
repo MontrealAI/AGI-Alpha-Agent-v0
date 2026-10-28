@@ -1,0 +1,66 @@
+import ast,hashlib,json,subprocess,sys
+from pathlib import Path
+root=Path('/tmp/agi-alpha-commercial-fix-c516');sys.path.insert(0,str(root))
+from scripts import refresh_capability_checkout as checkout
+out=Path('/tmp/final-corrected-c516-review')
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def gitbody(name):return subprocess.check_output(['git','show','c5164a385f54b59a11b53d70cf491e5e21ad3b18:'+name],cwd=root)
+archive=json.loads((root/'tests/fixtures/delivery-guard-147-historical-source.json').read_bytes())
+archived=[]
+for name,body in archive['files'].items():
+ raw=body.encode();assert raw==gitbody(name),name;archived.append(name)
+page=(root/archive['page_fixture']).read_bytes();assert page==gitbody('docs/flywheel/index.html')
+assert sha(page)==archive['page_sha256']
+new=json.loads((root/'tests/fixtures/capability-checkout-enterprise-command-authority-147-workers.json').read_bytes())
+assert new['sourceBase']=='c5164a385f54b59a11b53d70cf491e5e21ad3b18'
+for name,expected in new['runtimeSources'].items():assert sha((root/name).read_bytes())==expected,name
+source_binding_count=0
+for name,record in new['packetIdentities'].items():
+ raw=(root/name).read_bytes();assert len(raw)==record['bytes'] and sha(raw)==record['sha256'],name
+ packet=json.loads(raw)
+ packet_bindings={}
+ for field in ('sources','source_sha256'):
+  if isinstance(packet.get(field),dict):packet_bindings.update(packet[field])
+ assert packet_bindings==record['sourceBindings'],name
+ for source,expected in record['sourceBindings'].items():assert sha((root/source).read_bytes())==expected,source;source_binding_count+=1
+oldscript=gitbody('scripts/refresh_capability_checkout.py').decode();newscript=(root/'scripts/refresh_capability_checkout.py').read_text()
+def definitions(src):
+ rows={}
+ for node in ast.parse(src).body:
+  if isinstance(node,ast.Assign):
+   for target in node.targets:
+    if isinstance(target,ast.Name) and target.id.endswith('_EXTRA_FILES'):rows[target.id]=ast.dump(node,include_attributes=False)
+ return rows
+olddefs,newdefs=definitions(oldscript),definitions(newscript)
+for name,value in olddefs.items():assert newdefs[name]==value,name
+assert len(newdefs)==len(olddefs)+1
+assert set(newdefs)-set(olddefs)=={'ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES'}
+oldall={}
+newall={}
+for src,target in ((oldscript,oldall),(newscript,newall)):
+ for node in ast.parse(src).body:
+  if isinstance(node,ast.Assign):
+   for name in node.targets:
+    if isinstance(name,ast.Name):target[name.id]=ast.dump(node,include_attributes=False)
+for name in new['predecessorProfiles']:
+ assert oldall[name]==newall[name],name
+current_worker_names=list(new['files'])
+for name,record in new['files'].items():
+ raw=(root/name).read_bytes();assert raw==record['text'].encode(),name
+ assert (len(raw),sha(raw))==tuple(checkout.ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES[name]),name
+matches=[]
+catalog=(root/checkout.CATALOG).read_bytes()
+for _,_,_,profile in checkout._source_profiles(catalog):
+ if all(tuple(profile[name])==(len((root/name).read_bytes()),sha((root/name).read_bytes())) for name in current_worker_names):matches.append(profile)
+assert len(matches)==1 and matches[0]==checkout.ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES
+mixture_results=[]
+profiles=checkout._source_profiles(catalog)
+for mask in range(1,7):
+ identities={name:(len((root/name).read_bytes()),sha((root/name).read_bytes())) if mask&(1<<i) else (len(gitbody(name)),sha(gitbody(name))) for i,name in enumerate(current_worker_names)}
+ matched=[profile for _,_,_,profile in profiles if all(tuple(profile[name])==row for name,row in identities.items())]
+ assert not matched,mask
+ mixture_results.append({'mask':mask,'matchingCompleteProfiles':len(matched)})
+check=checkout.refresh(root)
+assert check['needsRefresh']==[] and check['applied'] is False and check['backupDirectory'] is None and check['checked']==61
+result={'status':'PASS','archivedSourcesExactlyMatchC516':len(archived),'archivedPageExactlyMatchesC516':True,'currentRuntimeBindings':len(new['runtimeSources']),'packetIdentities':len(new['packetIdentities']),'currentPacketSourceBindings':source_binding_count,'predecessorProfileDefinitionsUnchanged':len(olddefs),'predecessorProfilesUnchanged':len(new['predecessorProfiles']),'newProfiles':len(newdefs)-len(olddefs),'allSixCurrentHistoricalPartialWorkerMixturesRefuse':mixture_results,'uniqueCurrentWorkerProfile':True,'readOnlyCheckoutClosure':check}
+(out/'static-composition-results.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
