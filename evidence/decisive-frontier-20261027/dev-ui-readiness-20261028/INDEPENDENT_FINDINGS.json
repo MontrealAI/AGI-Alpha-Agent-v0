@@ -1,0 +1,106 @@
+{
+  "schema": "independent-dev-ui-diagnostics-source-review/v1",
+  "completedAt": "2026-10-28T06:50:40.625598+00:00",
+  "status": "FINDINGS",
+  "source": {
+    "root": "/tmp/agi-alpha-dev-ui-diagnostics-12770",
+    "baseCommit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+    "baseTree": "e334beeaa54ab4979999e4bb2352b885a3501aec",
+    "workingPatchUncommitted": true,
+    "reviewedFiles": {
+      "scripts/validate_legacy_compose.py": {
+        "bytes": 14873,
+        "sha256": "7d6a330339ca1e81107a7462dccaa40d09d03dc30e2c7dd5d00e956f06801a07"
+      },
+      "tests/test_legacy_dev_ui_diagnostics.py": {
+        "bytes": 13975,
+        "sha256": "20b8209a256649706620aed90c7079fd8d35db5a0d005bb9e74bbdfdbef1afd2"
+      },
+      "evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/FREEZE.json": {
+        "bytes": 2283,
+        "sha256": "006ab618a1f766267e0bca7abf11db89f44408e7d7ab99dc435e714b585a4934"
+      }
+    },
+    "allReviewedIdentitiesUnchanged": true
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "title": "Redact credentials across truncation and JSON decoding boundaries",
+      "path": "scripts/validate_legacy_compose.py",
+      "lines": [
+        62,
+        64,
+        78,
+        106,
+        118,
+        122
+      ],
+      "details": "Raw bytes are tail-trimmed before known credential redaction, so a credential crossing the cutoff is partially retained without matching the complete credential. Inspect output is also redacted before JSON decoding; quote/backslash escapes can prevent matching a complete known credential that is subsequently restored and written inside State.Error or health Output.",
+      "independentCounterexamples": [
+        {
+          "case": "Known fictional 31-byte API_TOKEN crosses 16KiB cutoff",
+          "result": "27 credential bytes retained with no redaction marker"
+        },
+        {
+          "case": "Fictional API_TOKEN containing a quote is JSON-escaped in inspect Error",
+          "result": "Entire known credential survives into the saved report State.Error"
+        }
+      ],
+      "evidence": [
+        "results.json",
+        "cancellation-results.json"
+      ],
+      "suggestion": "Match credentials with sufficient truncation overlap and prevent partial boundary exposure; redact decoded selected inspect strings before serialization. Use a single bounded replacement pass rather than repeatedly processing inserted markers."
+    },
+    {
+      "id": "R2",
+      "priority": "P2",
+      "title": "Terminate the diagnostic process group when cancellation follows leader exit",
+      "path": "scripts/validate_legacy_compose.py",
+      "lines": [
+        70,
+        71,
+        73,
+        77
+      ],
+      "details": "The finally block skips killpg when timeout has not elapsed and the group leader already exited. A descendant that retains the pipe remains alive if selector processing is interrupted.",
+      "independentCounterexample": "A short local parent forked a pipe-holding child and exited. KeyboardInterrupt during selector wait preserved the interruption but left the child sleeping; the independent probe explicitly killed its own process group afterward.",
+      "evidence": [
+        "cancellation-results.json",
+        "probe_cancellation.py"
+      ],
+      "suggestion": "On exceptional/cancelled capture, terminate the process group even if its leader has already exited; preserve the primary exception and close the pipe in a nested finally."
+    }
+  ],
+  "verification": {
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/dev-ui-diagnostics-independent-review/probe.py",
+        "exitCode": 0,
+        "raw": "raw.txt",
+        "results": "results.json"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/dev-ui-diagnostics-independent-review/probe_cancellation.py",
+        "exitCode": 0,
+        "raw": "cancellation-raw.txt",
+        "results": "cancellation-results.json"
+      }
+    ],
+    "controls": [
+      "Ordinary diagnostic timeout with exited leader and pipe-holding descendant killed the group in approximately 0.151 seconds.",
+      "Startup KeyboardInterrupt still invokes Compose down; cleanup failure preserves the original cancellation.",
+      "Source inspection shows successful telemetry assertions, startup/cleanup deadlines and success report remain unchanged.",
+      "Diagnostic commands request logs and State only; selected State/Health keys omit Config/Env. The redaction boundary findings are separate from command selection."
+    ]
+  },
+  "scope": [
+    "Read current AGENTS.md and FAST_RELEASE_POLICY.md relevant requirements, FREEZE.json, full validator source, focused regression source and patch diff.",
+    "No repository edits, Docker/network/model/paid/privileged/publisher/merge actions. Local short standard-library child processes only.",
+    "No held test node/helper or reserved canary executed. FREEZE unchanged.",
+    "Existing 16-test/Ruff successes were supplied context, not rerun or attributed to this reviewer.",
+    "Underlying original dev UI unhealthy cause remains unknown. Current main release remains blocked pending normal exact-main qualification."
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "dev-ui-diagnostic-final-readiness/v1",
+  "observed_at": "2026-10-28T11:11:11.617342+00:00",
+  "base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "source": {
+    "scripts/validate_legacy_compose.py": "73f03cd43984227cad3a9f71e51329210338ff399db9c17ede63f36a92a4dbc3",
+    "tests/test_legacy_dev_ui_diagnostics.py": "96cf1de6e64597f25deb05ab0253dd19c117266af62e82b9769de071853c7850"
+  },
+  "checks": [
+    {
+      "name": "final-ready-tests",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "tests/test_legacy_dev_ui_diagnostics.py",
+        "-q",
+        "--junitxml=evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/final-ready-tests.xml"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 2.32,
+      "output": "final-ready-tests.txt",
+      "sha256": "0356aeeddccd0f9bb32678c1c0972eac4c3055134e256b3bcc30344456d4f539"
+    },
+    {
+      "name": "final-ready-ruff",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/validate_legacy_compose.py",
+        "tests/test_legacy_dev_ui_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.034,
+      "output": "final-ready-ruff.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "final-ready-types",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy.ini",
+        "--python-executable",
+        "/tmp/dev-ui-diagnostic-typecheck/bin/python",
+        "scripts/validate_legacy_compose.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.508,
+      "output": "final-ready-types.txt",
+      "sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+    }
+  ],
+  "all_passed": true,
+  "toolchain_notes": [
+    "Python3.12.14. Tests and Ruff use the existing decisive-agent-venv. Strict source mypy uses a separate typecheck Python with types-PyYAML installed; the existing test interpreter initially lacked those third-party stubs. No ignored diagnostic was added.",
+    "Required check_python_deps.py and check_env.py --auto-install completed with All required packages available and Environment OK in this verification session; stdout was observed through process output, not retained as a raw artifact."
+  ],
+  "review_conclusion": "No remaining finding in the scoped diagnostic source after annotation correction. This is observability repair qualification only, not startup root cause, Docker or release qualification.",
+  "next_discriminating_test": "Normal reviewed exact-head PR followed by one new resulting-main Agent runtime3.12 campaign with existing readiness and all release gates unchanged. On failure retain legacy-compose-failure.json and startup log before normal cleanup, then repair only evidence-supported cause.",
+  "scope_limits": [
+    "No Docker executable available locally.",
+    "No held native behavior, operating canary, public-byte install or release publication executed.",
+    "A healthy fresh run would not establish the historical unhealthy root cause.",
+    "Exact-main Creator and all required hosted release jobs remain separate blocking gates."
+  ],
+  "additional_static_check": {
+    "argv": [
+      "/tmp/decisive-agent-venv/bin/python",
+      "-m",
+      "scripts.validate_legacy_compose",
+      "--output",
+      "evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/final-ready-compose-static.json"
+    ],
+    "exit_code": 0,
+    "artifact": "final-ready-compose-static.json",
+    "sha256": "e6d57707cf2581897bb84dbf4145c9392d93607c18660c2eb249aa20b9b6db13",
+    "scope": "Static shared build/COPY checks only; Compose parsing and UI module readiness explicitly false."
+  },
+  "source_unchanged_after_tests": true
+}

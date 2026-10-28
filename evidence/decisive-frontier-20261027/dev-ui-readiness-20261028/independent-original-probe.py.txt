@@ -1,0 +1,30 @@
+import datetime,hashlib,importlib.util,json,os,subprocess,sys,tempfile,time
+from pathlib import Path
+from unittest.mock import patch
+root=Path('/tmp/agi-alpha-dev-ui-diagnostics-12770');out=Path('/tmp/dev-ui-diagnostics-independent-review');sys.path.insert(0,str(root))
+from scripts import validate_legacy_compose as v
+files=['scripts/validate_legacy_compose.py','tests/test_legacy_dev_ui_diagnostics.py','evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/FREEZE.json']
+before={n:{'bytes':len((root/n).read_bytes()),'sha256':hashlib.sha256((root/n).read_bytes()).hexdigest()} for n in files};(out/'before.json').write_text(json.dumps(before,indent=2)+'\n')
+rows=[]
+secret='FICTIONAL_CREDENTIAL_0123456789'
+with patch.dict(os.environ,{'API_TOKEN':secret},clear=True):
+ # The raw 16KiB tail starts inside a complete known credential emitted by the command.
+ pad=16384-(len(secret)-4)
+ code='import os;os.write(1,'+repr((secret+'z'*pad).encode())+')'
+ result=v._diagnostic_command([sys.executable,'-c',code],{},timeout=2)
+ leaked=result['tail'].startswith(secret[4:])
+ rows.append({'case':'known-credential-crosses-tail-boundary','status':result['status'],'bytes':len(result['tail'].encode()),'truncated':result['truncated'],'knownSecretSuffixBytesExposed':len(secret)-4 if leaked else 0,'redactionMarkerPresent':'[REDACTED]' in result['tail']})
+ # Exact JSON-escaped credentials are not matched before inspect data is decoded.
+ quoted='FICTIONAL-QUOTE-"-PASSWORD'
+ os.environ['API_TOKEN']=quoted
+ raw=json.dumps({'Error':quoted})
+ result=v._diagnostic_command([sys.executable,'-c','import os;os.write(1,'+repr(raw.encode())+')'],{},timeout=2)
+ restored=json.loads(result['tail'])['Error']
+ rows.append({'case':'known-credential-json-escaped-inspect-state','entireKnownCredentialSurvivesJsonDecode':restored==quoted,'redactionMarkerPresent':'[REDACTED]' in result['tail']})
+# One independently scoped cancellation scenario: parent exits while child holds its output pipe.
+with tempfile.TemporaryDirectory(prefix='dev-ui-diagnostic-review-') as tmp:
+ pidpath=Path(tmp)/'pid'; code='import os,time; p=os.fork();\nif p==0:\n open('+repr(str(pidpath))+',"w").write(str(os.getpid()));time.sleep(3)\nelse: os._exit(0)'
+ start=time.monotonic();result=v._diagnostic_command([sys.executable,'-c',code],{},timeout=.15)
+ pid=int(pidpath.read_text());p=Path('/proc')/str(pid)/'stat';state=p.read_text().split()[2] if p.exists() else 'absent'
+ rows.append({'case':'exited-leader-descendant-holds-pipe-timeout','status':result['status'],'elapsedSeconds':round(time.monotonic()-start,3),'descendantStateAfter':'terminated' if state in ('Z','absent') else state})
+print(json.dumps(rows,indent=2));(out/'results.json').write_text(json.dumps(rows,indent=2)+'\n')

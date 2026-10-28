@@ -1,0 +1,45 @@
+import contextlib,hashlib,io,json,os,signal,subprocess,sys,tempfile,time
+from pathlib import Path
+from unittest.mock import patch
+root=Path('/tmp/agi-alpha-dev-ui-diagnostics-12770');out=Path('/tmp/dev-ui-diagnostics-independent-review');sys.path.insert(0,str(root))
+from scripts import validate_legacy_compose as v
+rows=[]
+with tempfile.TemporaryDirectory(prefix='diagnostic-cancel-review-') as tmp:
+ pidpath=Path(tmp)/'descendant.json'
+ code='import os,time,json; p=os.fork();\nif p==0:\n open('+repr(str(pidpath))+',"w").write(json.dumps({"pid":os.getpid(),"group":os.getpgrp()}));time.sleep(2)\nelse: os._exit(0)'
+ real_selector=v.selectors.DefaultSelector
+ cancellation=KeyboardInterrupt('fictional review cancellation')
+ class InterruptSelector(real_selector):
+  def select(self,timeout=None):
+   events=super().select(timeout)
+   raise cancellation
+ try:
+  with patch.object(v.selectors,'DefaultSelector',InterruptSelector):
+   v._diagnostic_command([sys.executable,'-c',code],{},timeout=1)
+ except KeyboardInterrupt as exc:
+  assert exc is cancellation
+ record=json.loads(pidpath.read_text());statefile=Path('/proc')/str(record['pid'])/'stat';state=statefile.read_text().split()[2] if statefile.exists() else 'absent'
+ rows.append({'case':'cancel-after-leader-exits-while-descendant-holds-pipe','originalCancellationPreserved':True,'descendantStillRunning':state not in ('Z','absent'),'descendantState':state})
+ try:os.killpg(record['group'],signal.SIGKILL)
+ except ProcessLookupError:pass
+ # Confirm cancellation still reaches Compose cleanup even when it fails.
+ original=KeyboardInterrupt('fixture operator interruption');seen=[]
+ def run(command,**kwargs):
+  seen.append('up' if 'up' in command else 'down')
+  if 'up' in command:raise original
+  raise subprocess.CalledProcessError(3,['fixture-cleanup'])
+ with patch.object(v.subprocess,'run',run),contextlib.redirect_stderr(io.StringIO()):
+  try:v.validate_dev_ui(root,Path(tmp)/'failure.json')
+  except KeyboardInterrupt as exc:assert exc is original
+ rows.append({'case':'startup-cancellation-cleanup-failure','originalCancellationPreserved':True,'calls':seen,'failureEvidenceWritten':(Path(tmp)/'failure.json').exists()})
+ # Complete inspect extraction path, reporting no credential bytes to this probe's output.
+ fictional='FICTIONAL-QUOTE-"-PASSWORD'
+ with patch.dict(os.environ,{'API_TOKEN':fictional},clear=True):
+  body=json.dumps({'Error':fictional}).encode()
+  captured=v._diagnostic_command([sys.executable,'-c','import os;os.write(1,'+repr(body)+')'],{},timeout=2)
+  def diagnostic(command,env,timeout=8):
+   return dict(captured) if command[1]=='inspect' else {'status':'ok','returncode':0,'truncated':False,'tail':'safe fictional log'}
+  failure=Path(tmp)/'failure-state.json'
+  with patch.object(v,'_diagnostic_command',diagnostic),contextlib.redirect_stderr(io.StringIO()):v._dev_ui_failure(root,['docker','compose'],{},ValueError('fixture primary failure'),failure)
+  report=json.loads(failure.read_text());rows.append({'case':'full-inspect-extraction-secret-redaction','entireKnownCredentialInSavedStateError':report['container_state']['state']['Error']==fictional})
+print(json.dumps(rows,indent=2));(out/'cancellation-results.json').write_text(json.dumps(rows,indent=2)+'\n')

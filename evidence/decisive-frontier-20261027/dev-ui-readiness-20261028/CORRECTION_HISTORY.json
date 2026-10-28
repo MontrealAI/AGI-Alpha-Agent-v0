@@ -1,0 +1,50 @@
+{
+  "schema": "dev-ui-correction-negative-evidence/v1",
+  "imports": [
+    {
+      "file": "independent-original-probe.py.txt",
+      "bytes": 2754,
+      "sha256": "085e6e59739473a99ac9777301d7b29e977ca09770e65f5a77e4655fa61b9eb3"
+    },
+    {
+      "file": "independent-original-results.json",
+      "bytes": 528,
+      "sha256": "d003566e98d2da833b78abe8434bcff2b9f11e2f4f47aa1ebf656e678ee6acf3"
+    },
+    {
+      "file": "independent-original-raw.txt",
+      "bytes": 528,
+      "sha256": "d003566e98d2da833b78abe8434bcff2b9f11e2f4f47aa1ebf656e678ee6acf3"
+    },
+    {
+      "file": "independent-original-probe_cancellation.py.txt",
+      "bytes": 3258,
+      "sha256": "ac9370b70e5b0ebf8cd5bdbe5eb848b7473f286525f028a7e0e37121916ff297"
+    },
+    {
+      "file": "independent-original-cancellation-results.json",
+      "bytes": 490,
+      "sha256": "e8637d8d170e151f754eba9ccb1d19d1b8875fcd32818ce1b897633883517178"
+    },
+    {
+      "file": "independent-original-cancellation-raw.txt",
+      "bytes": 490,
+      "sha256": "e8637d8d170e151f754eba9ccb1d19d1b8875fcd32818ce1b897633883517178"
+    },
+    {
+      "file": "intermediate-review-fix-final2-results.txt",
+      "bytes": 2663,
+      "sha256": "895815aabf63a19adfb6d76e84fc54f651c7cc5e873798f5ef6f53fcc4ea9a92"
+    },
+    {
+      "file": "intermediate-review-fix-final2-results.xml",
+      "bytes": 7491,
+      "sha256": "9d7418fc118ca69940dcd74d85ae82304c22886d5e2a905d136acd0795181ced"
+    }
+  ],
+  "notes": [
+    "The final2 intermediate local run recorded30passes/1failure because a test expected a more specific redaction marker; current assertion requires the safe generic marker. Raw failure is preserved. That intermediate run does not qualify the final source.",
+    "JSON_KEY_ORIGINAL_RUN.json has an erroneous case field -q from the command argument offset; json-key-original.txt/xml identify the actual failing test_decoded_json_credentials_in_keys_are_redacted. The recorded exit1 and source archive are unchanged.",
+    "The post-original-review correction additionally masks decoded JSON keys; fictional credential only. Final source earns its own32-case result."
+  ]
+}

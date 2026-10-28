@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.184" timestamp="2026-10-28T03:11:42.821038-04:00" hostname="c88d71100384"><testcase classname="tests.test_legacy_dev_ui_diagnostics" name="test_decoded_json_credentials_in_keys_are_redacted" time="0.018"><failure message="assert 'FICTIONAL-JSON-KEY-&quot;-CREDENTIAL' not in {'Error': '[REDACTED]', 'ExitCode': 0, 'FICTIONAL-JSON-KEY-&quot;-CREDENTIAL': 'public value'}">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f113a1eef60&gt;
+
+    def test_decoded_json_credentials_in_keys_are_redacted(monkeypatch: pytest.MonkeyPatch) -&gt; None:
+        secret = 'FICTIONAL-JSON-KEY-"-CREDENTIAL'
+        monkeypatch.setenv("API_TOKEN", secret)
+        body = json.dumps({secret: "public value", "Error": secret, "ExitCode": 0}).encode()
+        result = validator._diagnostic_command(
+            [sys.executable, "-c", "import os;os.write(1," + repr(body) + ")"], {}, timeout=2
+        )
+        decoded = json.loads(result["tail"])
+&gt;       assert secret not in decoded
+E       assert 'FICTIONAL-JSON-KEY-"-CREDENTIAL' not in {'Error': '[REDACTED]', 'ExitCode': 0, 'FICTIONAL-JSON-KEY-"-CREDENTIAL': 'public value'}
+
+tests/test_legacy_dev_ui_diagnostics.py:520: AssertionError</failure></testcase></testsuite></testsuites>

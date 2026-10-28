@@ -1,0 +1,42 @@
+{
+  "schema": "dev-ui-diagnostics-local-qualification/v1",
+  "observed_at": "2026-10-28T07:21:13.816062+00:00",
+  "base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "source": {
+    "scripts/validate_legacy_compose.py": "36a82e732ec9577f072a937cd70516965fbb5fb1e04aa31653f015167b3c7a07",
+    "tests/test_legacy_dev_ui_diagnostics.py": "96cf1de6e64597f25deb05ab0253dd19c117266af62e82b9769de071853c7850"
+  },
+  "checks": [
+    {
+      "name": "corrected-results",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "tests/test_legacy_dev_ui_diagnostics.py",
+        "-q",
+        "--junitxml=/tmp/agi-alpha-dev-ui-diagnostics-12770/evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/corrected-results.xml"
+      ],
+      "exit_code": 0,
+      "output": "corrected-results.txt"
+    },
+    {
+      "name": "corrected-ruff",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/validate_legacy_compose.py",
+        "tests/test_legacy_dev_ui_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "output": "corrected-ruff.txt"
+    }
+  ],
+  "docker_available": false,
+  "scope": "Pure Python checks only; no held node, frozen canary, live model, network or Docker acceptance executed."
+}

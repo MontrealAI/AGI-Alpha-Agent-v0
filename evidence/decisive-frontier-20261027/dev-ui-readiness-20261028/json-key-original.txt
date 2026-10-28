@@ -1,0 +1,22 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_decoded_json_credentials_in_keys_are_redacted ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f113a1eef60>
+
+    def test_decoded_json_credentials_in_keys_are_redacted(monkeypatch: pytest.MonkeyPatch) -> None:
+        secret = 'FICTIONAL-JSON-KEY-"-CREDENTIAL'
+        monkeypatch.setenv("API_TOKEN", secret)
+        body = json.dumps({secret: "public value", "Error": secret, "ExitCode": 0}).encode()
+        result = validator._diagnostic_command(
+            [sys.executable, "-c", "import os;os.write(1," + repr(body) + ")"], {}, timeout=2
+        )
+        decoded = json.loads(result["tail"])
+>       assert secret not in decoded
+E       assert 'FICTIONAL-JSON-KEY-"-CREDENTIAL' not in {'Error': '[REDACTED]', 'ExitCode': 0, 'FICTIONAL-JSON-KEY-"-CREDENTIAL': 'public value'}
+
+tests/test_legacy_dev_ui_diagnostics.py:520: AssertionError
+- generated xml file: /tmp/agi-alpha-dev-ui-diagnostics-12770/evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/json-key-original.xml -
+=========================== short test summary info ============================
+FAILED tests/test_legacy_dev_ui_diagnostics.py::test_decoded_json_credentials_in_keys_are_redacted
+1 failed in 0.18s
