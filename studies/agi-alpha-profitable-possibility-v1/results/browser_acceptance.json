@@ -1,0 +1,198 @@
+{
+  "tested_at_utc": "2026-10-28T14:49:05.902Z",
+  "engine": "139.0.7258.5",
+  "output": "/tmp/agi-alpha-worlds-qa-iMGd3h",
+  "checks": [
+    {
+      "name": "Browser/Python canonical artifact identity",
+      "detail": {
+        "count": "20322",
+        "sha256": "c746311e4ff2bc8afe54bfbb9a59f453172738347034e7cb54dcd7529d643b1d"
+      },
+      "passed": true
+    },
+    {
+      "name": "Seed replay, independent feasibility verification, acceptance and all four exports",
+      "detail": {
+        "worlds": 32
+      },
+      "passed": true
+    },
+    {
+      "name": "Successor tail reuses the unchanged artifact and invalidates previous acceptance",
+      "detail": {
+        "threshold": 8,
+        "tailWorlds": 297
+      },
+      "passed": true
+    },
+    {
+      "name": "Exhaustive family and every attainable tail: transparent_2x2",
+      "detail": {
+        "worlds": 3,
+        "distribution": [
+          [
+            0,
+            "1"
+          ],
+          [
+            2,
+            "2"
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Exhaustive family and every attainable tail: asymmetric_future_caps",
+      "detail": {
+        "worlds": 18,
+        "distribution": [
+          [
+            0,
+            "2"
+          ],
+          [
+            1,
+            "5"
+          ],
+          [
+            2,
+            "5"
+          ],
+          [
+            3,
+            "6"
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Exhaustive family and every attainable tail: bounded_3x4",
+      "detail": {
+        "worlds": 88,
+        "distribution": [
+          [
+            0,
+            "12"
+          ],
+          [
+            1,
+            "28"
+          ],
+          [
+            2,
+            "24"
+          ],
+          [
+            3,
+            "24"
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Exhaustive family and every attainable tail: zero_mass",
+      "detail": {
+        "worlds": 1,
+        "distribution": [
+          [
+            0,
+            "1"
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Binary preset honestly reports a constant concentration statistic",
+      "detail": {
+        "worlds": 1860
+      },
+      "passed": true
+    },
+    {
+      "name": "BigInt counts above 2^53 and Unicode canonicalization",
+      "detail": {
+        "count": "3776577900841430197548750"
+      },
+      "passed": true
+    },
+    {
+      "name": "Explicit refusal leaves no accepted artifact",
+      "detail": {
+        "cases": [
+          "json",
+          "totals",
+          "empty",
+          "dimensions",
+          "caps",
+          "margins"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Cancellation discards partial construction",
+      "detail": {},
+      "passed": true
+    },
+    {
+      "name": "Responsive English/French workflow",
+      "detail": {
+        "widths": [
+          1440,
+          1024,
+          390,
+          360
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "Offline file:// execution",
+      "detail": {
+        "pageErrors": 0,
+        "httpRequests": 0
+      },
+      "passed": true
+    }
+  ],
+  "product_path": "product/index.html",
+  "product_sha256": "fcc8fbe02541b9140d3d72f71537b148d19b7c7caa68f1c843aced0599e71176",
+  "full_suite_product_sha256": null,
+  "full_suite_scope_note": "The original full-suite timestamp and checks refer to the UI before the final copy revisions. That report did not record the product-file SHA. Subsequent changes were explanatory wording and the commercial-price hypothesis from USD450 to USD449 in copy and receipt metadata. The Worker and counting, ranking, sampling, verification and export algorithms were unchanged. The product_sha256 identifies the final delivered HTML; its focused checks are recorded separately below.",
+  "final_copy_render_check": {
+    "tested_at_utc": "2026-10-28T14:51:32.360Z",
+    "engine": "139.0.7258.5",
+    "checks": [
+      {
+        "name": "Final EN wording and responsive render",
+        "passed": true,
+        "widths": [
+          1440,
+          360
+        ]
+      },
+      {
+        "name": "Final FR wording and responsive render",
+        "passed": true,
+        "widths": [
+          1440,
+          360
+        ]
+      },
+      {
+        "name": "Receipt price hypothesis matches frozen USD449 scenario; evaluation amount remains zero",
+        "passed": true
+      },
+      {
+        "name": "Local file execution has no page errors or HTTP requests",
+        "passed": true
+      }
+    ]
+  },
+  "screenshots_included": false
+}

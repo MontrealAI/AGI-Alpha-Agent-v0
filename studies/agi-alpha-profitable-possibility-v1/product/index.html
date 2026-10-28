@@ -1,0 +1,480 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AGI ALPHA Exact Worlds. Build, inspect and export exact constrained table families locally in your browser.">
+    <meta name="theme-color" content="#f5f3ec">
+    <title>AGI ALPHA — Exact Worlds</title>
+    <style>
+        :root{--paper:#f5f3ec;--white:#fffef9;--ink:#102824;--muted:#65726a;--teal:#166d61;--mint:#d5e8dc;--line:#d9ddd2;--amber:#b57926;--pale:#eceee5;--red:#9d3b2d;--serif:Georgia,"Times New Roman",serif;--sans:Inter,"Segoe UI",Arial,sans-serif}
+        *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.43}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d2a14c;outline-offset:4px}a{color:inherit;text-underline-offset:4px}button{color:inherit}h1,h2,h3,p{margin:0}h1,h2,h3{font-weight:400}button svg{width:16px;height:16px;vertical-align:middle}svg{flex:none}.wrap{max-width:1304px;margin:0 auto;padding:0 44px}.topbar{height:104px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:24px}.brand{display:flex;align-items:center;gap:13px;text-decoration:none}.brand-mark{width:34px;height:34px}.wordmark{font-size:15px;font-weight:750;letter-spacing:2.7px}.brand-sub{padding-left:17px;margin-left:4px;border-left:1px solid #bac3b7;font:italic 18px var(--serif);letter-spacing:0}.nav{display:flex;align-items:center;gap:27px;font-size:12px}.nav>a{text-decoration:none}.preview{display:flex;align-items:center;gap:7px;color:var(--muted);white-space:nowrap}.dot{height:6px;width:6px;background:var(--amber);border-radius:50%;display:inline-block;flex:none}.language{display:flex;border:1px solid #cbd2c6;border-radius:5px;padding:3px;gap:2px}.language button{border:0;border-radius:3px;background:transparent;padding:4px 7px;font-size:10px;font-weight:700;letter-spacing:.5px}.language button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}.hero{padding:68px 0 57px;display:grid;grid-template-columns:1fr 292px;gap:78px;align-items:end}.eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700}.eyebrow .small-dash{display:inline-block;width:25px;height:1px;background:var(--teal);vertical-align:middle;margin-right:10px}.hero h1{font:400 clamp(42px,4.8vw,68px)/1.04 var(--serif);letter-spacing:-2.6px;max-width:760px;margin:23px 0 24px}.hero h1 em{color:var(--teal);font-weight:400}.hero-lede{max-width:552px;color:var(--muted);font-size:15px;line-height:1.75}.hero-aside{border-top:1px solid var(--ink);padding-top:17px;margin-bottom:5px}.hero-aside h2{font:italic 23px/1.3 var(--serif);margin-bottom:17px}.promise{display:flex;gap:16px;align-items:baseline;padding:11px 0;border-top:1px solid var(--line);font-size:12px}.promise span:first-child{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--teal)}.studio-heading{padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);gap:20px}.studio-heading h2{font:26px/1.2 var(--serif)}.local-note{color:var(--muted);font-size:11px;display:flex;align-items:center;gap:8px}.local-note svg{height:14px;width:14px}.studio{display:grid;grid-template-columns:326px minmax(0,1fr);gap:20px;align-items:start}.studio>*{min-width:0}.successor>*{min-width:0}.request{background:var(--white);border:1px solid var(--line);border-radius:9px;overflow:hidden}.card-title{padding:23px 24px 17px;display:flex;align-items:center;justify-content:space-between}.card-title h3{font-size:13px;font-weight:650}.section-number{font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:1px;color:var(--muted)}.request-body{padding:0 24px 24px}.field-label{display:block;font-size:11px;font-weight:650;margin-bottom:8px}.preset-list{display:grid;gap:7px}.preset{border:1px solid var(--line);background:transparent;text-align:left;padding:12px 13px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;gap:8px}.preset strong{font-size:12px;font-weight:600;display:block}.preset small{font-size:10px;display:block;color:var(--muted);margin-top:3px}.preset .radio{width:14px;height:14px;border:1px solid #bac7bd;border-radius:50%;flex:none}.preset[aria-pressed="true"]{border-color:var(--teal);background:#f0f6ee}.preset[aria-pressed="true"] .radio{border:4px solid var(--teal);background:var(--white)}.custom{margin:16px 0 0;border-top:1px solid var(--line);padding-top:14px}.custom summary{cursor:pointer;font-size:11px;color:var(--teal);font-weight:600;display:flex;justify-content:space-between;align-items:center;list-style:none}.custom summary::after{content:"+";font-size:16px;font-weight:400}.custom[open] summary::after{content:"−"}.custom summary::-webkit-details-marker{display:none}textarea{width:100%;min-height:190px;padding:12px;margin:12px 0 0;resize:vertical;background:#f6f7f1;border:1px solid var(--line);border-radius:4px;color:var(--ink);font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.hint{font-size:10px;line-height:1.65;color:var(--muted);margin-top:9px}.input-row{display:grid;grid-template-columns:1fr 72px;gap:12px;margin-top:22px}input,select{max-width:100%;width:100%;border:1px solid #ccd4c8;background:var(--white);border-radius:4px;padding:9px 11px;color:var(--ink);font-size:12px;height:38px}input[type="number"]{padding-right:4px}.quote{margin-top:22px;padding-top:17px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.quote-title{font-size:11px;font-weight:600}.quote-price{font:26px var(--serif);letter-spacing:-1px}.quote p{font-size:10px;color:var(--muted);margin-top:2px}.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 15px;border:1px solid transparent;border-radius:4px;font-size:11px;line-height:1.4;font-weight:600;text-decoration:none;min-height:39px;transition:background .15s,border-color .15s}.button.primary{background:var(--teal);color:var(--white)}.button.primary:hover:not(:disabled){background:#10564c}.button.outline{border-color:#c7d0c2;background:transparent}.button.outline:hover:not(:disabled){background:#e9eee4}.button.light{background:var(--paper);color:var(--ink)}.build{width:100%;margin-top:16px;justify-content:space-between;padding:13px 15px;font-size:12px}.build svg{width:19px;height:19px}.cancel{margin-top:10px;background:none;border:0;font-size:11px;text-decoration:underline;width:100%}.budget{border-top:1px solid var(--line);padding:15px 24px;background:#f0f1e8;font-size:10px;line-height:1.7;color:var(--muted)}.status{display:flex;gap:9px;border:1px solid var(--line);background:#ecefe6;padding:12px 15px;border-radius:6px;font-size:11px;line-height:1.6;margin-bottom:12px;min-height:44px;align-items:center}.status[data-tone="error"]{background:#fff0e9;border-color:#e3c4b5;color:var(--red)}.status[data-tone="success"]{background:#eaf3e8;border-color:#c8d9c9}.status[data-tone="busy"] .status-dot{animation:pulse 1s infinite}.status-dot{background:currentColor;width:5px;height:5px;border-radius:50%;flex:none}.result{border:1px solid var(--line);background:var(--white);border-radius:9px;overflow:hidden}.result-head{padding:24px 27px 20px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);gap:20px}.result-head h3{font:24px var(--serif);letter-spacing:-.5px}.result-head p{font-size:10px;color:var(--muted);margin-top:5px}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #d3dacd;border-radius:20px;padding:4px 9px;font-size:9px;font-weight:650;white-space:nowrap}.badge.verified{color:var(--teal);background:#edf4e9;border-color:#c2d5c1}.count-line{padding:23px 27px 5px;display:flex;align-items:baseline;justify-content:space-between;gap:16px}.world-count{font:clamp(28px,3.6vw,48px)/1.1 var(--serif);letter-spacing:-1.5px;overflow-wrap:anywhere}.count-label{font-size:10px;color:var(--muted);margin-top:7px}.dimension{color:var(--teal);font:11px ui-monospace,SFMono-Regular,monospace;white-space:nowrap}.matrix-area{padding:21px 27px 9px;overflow-x:auto;min-height:235px}.matrix{width:100%;border-collapse:separate;border-spacing:5px;table-layout:fixed;min-width:330px}.matrix th{font-size:9px;line-height:1.3;color:var(--muted);font-weight:500;text-align:center;height:23px}.matrix th:first-child{width:30px;text-align:left}.matrix th:last-child{width:38px}.matrix td{text-align:center;height:39px;border:1px solid #dbe2d5;border-radius:3px;font:15px/1 ui-monospace,SFMono-Regular,Consolas,monospace;background:#edf2e8;color:var(--ink)}.matrix td.excluded{background:repeating-linear-gradient(135deg,#f2f1e9,#f2f1e9 4px,#e8e8dd 4px,#e8e8dd 5px)!important;color:#969d90!important;border-color:#e0e2d7}.matrix td.sum{font-size:10px;border:0;background:transparent!important;color:var(--teal)!important;font-weight:600}.matrix .bottom th{color:var(--teal);height:25px}.matrix.preview-map td{font-size:12px;opacity:.75}.matrix-caption{display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:9px;padding:0 31px 19px;align-items:center}.legend{display:flex;align-items:center;gap:6px}.legend-dot{display:inline-block;height:9px;width:9px;background:#d9e6d6;border:1px solid #bfd1bc;border-radius:1px}.legend-dot.hatch{background:repeating-linear-gradient(135deg,#f2f1e9,#f2f1e9 2px,#c9cdbf 2px,#c9cdbf 3px)}.world-controls{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:12px 27px;gap:12px}.pager{display:flex;align-items:center;gap:13px;font-size:10px;font-variant-numeric:tabular-nums}.icon-button{width:28px;height:28px;background:transparent;border:1px solid var(--line);border-radius:3px;font-size:15px;display:grid;place-items:center}.rank{color:var(--muted);font-size:9px;text-align:right;max-width:55%;overflow-wrap:anywhere}.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:#f0f3ea}.metric{padding:17px 20px;border-right:1px solid var(--line)}.metric:last-child{border:0}.metric strong{display:block;font:20px/1.2 var(--serif);font-variant-numeric:tabular-nums}.metric span{display:block;font-size:9px;color:var(--muted);margin-top:5px}.delivery{margin-top:14px;padding:17px 0 0}.delivery-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.delivery h3{font-size:12px;font-weight:600}.delivery-actions{display:flex;gap:7px;flex-wrap:wrap}.verify-line{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.6}.downloads{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:13px}.text-button{padding:0;background:none;border:0;color:var(--teal);font-size:10px;text-decoration:underline;text-underline-offset:3px}.receipt{margin-top:15px;padding:20px;border:1px dashed #aabfae;background:#edf2e7;border-radius:5px}.receipt-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.receipt h4{font-size:12px;margin:0;font-weight:650}.receipt dl{margin:13px 0;display:grid;grid-template-columns:auto 1fr;gap:7px 18px;font-size:10px}.receipt dt{color:var(--muted)}.receipt dd{margin:0;text-align:right;overflow-wrap:anywhere}.receipt-note{font-size:10px;color:var(--muted)}.successor{margin-top:38px;background:var(--ink);color:var(--paper);border-radius:9px;display:grid;grid-template-columns:1fr 1.4fr;gap:40px;padding:34px 35px}.successor .eyebrow{color:#9caf9b;font-size:9px}.successor h2{font:34px/1.13 var(--serif);letter-spacing:-.7px;margin:17px 0 16px;max-width:290px}.successor p{font-size:12px;line-height:1.75;color:#b7c8b8;max-width:340px}.formula{font:italic 17px var(--serif);color:#dce9d8;margin:20px 0 7px}.formula-note{font-size:10px!important}.chart-header{display:flex;justify-content:space-between;align-items:baseline;gap:15px;font-size:10px;color:#bacbb9;margin-bottom:15px}.chart-header strong{color:var(--paper);font-weight:500}.chart{height:122px;display:flex;align-items:flex-end;gap:5px;padding-top:6px;border-bottom:1px solid #3c5046}.chart-empty{height:100%;width:100%;display:flex;align-items:center;justify-content:center;font:italic 17px var(--serif);color:#9cad9d;background:repeating-linear-gradient(0deg,transparent,transparent 29px,#233b32 29px,#233b32 30px)}.bar{flex:1;min-width:0;background:#466354;border:0;border-radius:3px 3px 0 0;padding:0;position:relative;transition:background .15s}.bar.selected{background:#b6cda6}.bar:hover{background:#e1bd79}.bar:focus-visible{outline-offset:2px}.chart-labels{display:flex;justify-content:space-between;font:9px ui-monospace,SFMono-Regular,monospace;color:#acbdab;margin-top:7px}.tail-controls{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;margin-top:20px}.tail-controls label{color:#b7c8b8;font-size:10px;margin-bottom:7px}.tail-controls select{background:#213c31;color:var(--paper);border-color:#45604e}.tail-controls .button{height:38px}.tail-facts{display:flex;justify-content:space-between;gap:16px;font-size:10px;color:#b7c8b8;margin-top:15px;flex-wrap:wrap}.tail-facts strong{color:#e9f0df;font-weight:500}.scope{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:46px;margin:43px 0 41px;padding-top:26px;border-top:1px solid var(--line)}.scope h3{font:22px/1.2 var(--serif);margin-bottom:13px}.scope p{font-size:11px;color:var(--muted);line-height:1.8}.scope .eyebrow{font-size:8px;color:var(--teal);margin-bottom:12px}.scope a{color:var(--teal)}.footer{border-top:1px solid var(--line);padding:23px 0 30px;display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:10px;color:var(--muted)}.footer-links{display:flex;gap:20px;flex-wrap:wrap}.footer a{text-decoration:none}.footer .brand-text{font-size:10px;letter-spacing:1.8px;font-weight:700;color:var(--ink)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}@keyframes pulse{50%{opacity:.25}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+        @media(max-width:1050px){.wrap{padding:0 28px}.nav>a{display:none}.hero{gap:35px;grid-template-columns:1fr 240px}.hero h1{font-size:54px}.studio{grid-template-columns:285px minmax(0,1fr)}.request-body{padding:0 19px 20px}.card-title{padding:20px 19px 16px}.budget{padding:14px 19px}.result-head{padding:21px}.count-line{padding:22px 21px 5px}.matrix-area{padding:18px 16px 9px}.matrix-caption{padding:0 21px 16px}.metric{padding:15px 14px}.successor{gap:30px;padding:30px}.scope{gap:28px}.brand-sub{display:none}.world-count{font-size:35px}}
+        @media(max-width:760px){.wrap{padding:0 20px}.topbar{height:78px}.wordmark{font-size:12px;letter-spacing:2.4px}.brand-mark{width:28px;height:28px}.nav{gap:12px}.preview{font-size:9px}.hero{display:block;padding:42px 0 31px}.hero h1{font-size:49px;letter-spacing:-2px;max-width:580px}.hero-lede{font-size:13px;max-width:500px}.hero-aside{display:none}.studio-heading{align-items:flex-start;padding:19px 0;gap:15px}.studio-heading h2{font-size:23px}.local-note{font-size:9px;max-width:145px;line-height:1.5}.studio{grid-template-columns:1fr}.request-body{padding:0 20px 21px}.card-title{padding:19px 20px 15px}.preset-list{grid-template-columns:repeat(3,1fr);gap:6px}.preset{padding:10px;align-items:flex-start}.preset strong{font-size:10px}.preset small{font-size:8px}.preset .radio{width:11px;height:11px;margin-top:2px}.preset[aria-pressed="true"] .radio{border-width:3px}.custom{margin-top:13px}.input-row{margin-top:17px;grid-template-columns:1fr 90px}.quote{margin-top:16px}.quote-price{font-size:23px}.build{margin-top:13px}.budget{padding:12px 20px}.result-head h3{font-size:23px}.world-count{font-size:40px}.matrix-area{min-height:226px}.matrix td{height:40px}.successor{grid-template-columns:1fr;gap:25px;padding:27px 23px;margin-top:30px}.successor h2{font-size:32px;max-width:none;margin:12px 0}.successor p{max-width:none}.formula{margin-top:13px}.successor .chart{height:130px}.scope{grid-template-columns:1fr;gap:27px;margin:34px 0;padding-top:26px}.scope h3{font-size:23px;margin-bottom:9px}.scope p{font-size:12px;max-width:600px}.scope .eyebrow{margin-bottom:9px}.footer{align-items:flex-start;gap:18px;flex-direction:column}.footer-links{gap:17px}.delivery-top{align-items:flex-start}.delivery h3{padding-top:9px}.delivery-actions{justify-content:flex-end}.button{font-size:10px}.rank{max-width:48%}}
+        @media(max-width:390px){.wrap{padding:0 15px}.preview{display:none}.hero h1{font-size:44px}.preset-list{grid-template-columns:1fr}.preset strong{font-size:11px}.preset small{display:inline;margin-left:6px;font-size:9px}.preset>span:first-child{display:flex;align-items:baseline;flex-wrap:wrap}.tail-controls{grid-template-columns:1fr}.delivery-top{display:block}.delivery-actions{justify-content:flex-start;margin-top:10px}.matrix{min-width:310px}.world-count{font-size:35px}}
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header class="topbar">
+        <a class="brand" href="#" aria-label="AGI ALPHA — Exact Worlds">
+            <svg class="brand-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M2 32V2h30v30H2Z" stroke="currentColor"/><path d="M2 12h30M2 22h30M12 2v30M22 2v30" stroke="currentColor" opacity=".25"/><path d="M2 32 32 2M2 22 22 2M12 32 32 12" stroke="currentColor"/><rect x="12" y="12" width="10" height="10" fill="#166d61"/></svg>
+            <span class="wordmark">AGI ALPHA</span><span class="brand-sub">Exact Worlds</span>
+        </a>
+        <nav class="nav" aria-label="Main">
+            <a href="#studio" data-i18n="navStudio">The instrument</a><a href="#method" data-i18n="navMethod">The method</a>
+            <span class="preview"><span class="dot"></span><span data-i18n="preview">Research preview</span></span>
+            <div class="language" aria-label="Language / Langue"><button type="button" id="en" lang="en" aria-pressed="true">EN</button><button type="button" id="fr" lang="fr" aria-pressed="false">FR</button></div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero" aria-labelledby="heroTitle">
+            <div><div class="eyebrow"><span class="small-dash"></span><span data-i18n="heroEyebrow">Exact Worlds / a computational studio</span></div>
+                <h1 id="heroTitle" data-i18n-html="heroTitle">Build the worlds your tests <em>cannot wait for.</em></h1>
+                <p class="hero-lede" data-i18n="heroLede">Turn fixed totals, cell limits and forbidden combinations into an exact, reusable family of test worlds.</p>
+            </div>
+            <aside class="hero-aside"><h2 data-i18n="promiseTitle">A constraint is a promise.</h2>
+                <div class="promise"><span>01</span><span data-i18n="promise1">Your totals stay fixed.</span></div><div class="promise"><span>02</span><span data-i18n="promise2">Impossible cells stay empty.</span></div><div class="promise"><span>03</span><span data-i18n="promise3">Every feasible table has one rank.</span></div>
+            </aside>
+        </section>
+        <section id="studio" aria-labelledby="studioTitle">
+            <div class="studio-heading"><h2 id="studioTitle" data-i18n="studioTitle">Your constraints. Every feasible world.</h2><span class="local-note"><svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="4" y="8" width="10" height="7" rx="1" stroke="currentColor"/><path d="M6 8V5a3 3 0 0 1 6 0v3" stroke="currentColor"/></svg><span data-i18n="localNote">Computed here, in your browser.</span></span></div>
+            <div class="studio">
+                <aside class="request">
+                    <div class="card-title"><h3 data-i18n="requestTitle">Define your world</h3><span class="section-number">01 / 03</span></div>
+                    <div class="request-body">
+                        <span class="field-label" data-i18n="presetLabel">Start with a constraint set</span>
+                        <div class="preset-list" id="presets">
+                            <button class="preset" data-preset="capacity" aria-pressed="true"><span><strong data-i18n="presetCapacity">Capacity allocation</strong><small data-i18n="presetCapacitySub">4 × 8 · limits + exclusions</small></span><span class="radio" aria-hidden="true"></span></button>
+                            <button class="preset" data-preset="binary" aria-pressed="false"><span><strong data-i18n="presetBinary">Network incidence</strong><small data-i18n="presetBinarySub">4 × 6 · binary connections</small></span><span class="radio" aria-hidden="true"></span></button>
+                            <button class="preset" data-preset="tiny" aria-pressed="false"><span><strong data-i18n="presetTiny">A transparent example</strong><small data-i18n="presetTinySub">2 × 2 · exactly three worlds</small></span><span class="radio" aria-hidden="true"></span></button>
+                        </div>
+                        <details class="custom" id="customDetails"><summary data-i18n="customTitle">Edit the constraints as JSON</summary><label class="sr-only" for="problemInput" data-i18n="customLabel">Constraint JSON: rows, cols, caps</label><textarea id="problemInput" spellcheck="false"></textarea><p class="hint" data-i18n="customHint">rows and cols are fixed totals. caps sets the maximum in each cell; 0 forbids it. Row and column totals must agree.</p></details>
+                        <div class="input-row"><div><label for="seed" class="field-label" data-i18n="seedLabel">Reproducible seed</label><input id="seed" type="text" maxlength="120" value="alpha-2026" autocomplete="off" spellcheck="false"></div><div><label for="sampleSize" class="field-label" data-i18n="batchLabel">Worlds</label><input id="sampleSize" type="number" min="1" max="128" step="1" value="32"></div></div><p class="hint" data-i18n="seedHint">The same seed replays the same batch. Change it for another draw.</p>
+                        <div class="quote"><div><span class="quote-title" data-i18n="evaluation">Local evaluation</span><p data-i18n="quoteNote">No account. No payment.</p></div><strong class="quote-price">$0</strong></div>
+                        <button id="build" class="button primary build"><span data-i18n="build">Build instrument</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg></button>
+                        <button id="cancel" class="cancel" hidden data-i18n="cancel">Cancel construction</button>
+                    </div>
+                    <p class="budget" data-i18n="budget">Browser budget: 8 × 24 cells, caps ≤ 8, total ≤ 256. Up to 25,000 states, 250,000 transitions and 10 seconds. Unsupported or empty families are refused.</p>
+                </aside>
+                <div>
+                    <div id="status" class="status" role="status" aria-live="polite" data-tone="neutral"><span class="status-dot"></span><span id="statusText"></span></div>
+                    <div class="result">
+                        <div class="result-head"><div><h3 id="resultTitle" data-i18n="resultTitle">A family of feasible worlds.</h3><p id="resultSubtitle"></p></div><span class="badge" id="resultBadge"></span></div>
+                        <div class="count-line"><div><div class="world-count" id="worldCount">—</div><p class="count-label" id="countLabel" data-i18n="countLabel">feasible labeled tables, counted exactly</p></div><span class="dimension" id="dimension">4 × 8</span></div>
+                        <div class="matrix-area"><table class="matrix preview-map" id="matrix" aria-label="Constraint map"></table></div>
+                        <div class="matrix-caption"><span id="matrixCaption"></span><span class="legend"><i class="legend-dot hatch" aria-hidden="true"></i><span data-i18n="excluded">Excluded cell</span></span></div>
+                        <div class="world-controls"><div class="pager"><button class="icon-button" id="previous" disabled aria-label="Previous world">←</button><span id="pageLabel"></span><button class="icon-button" id="next" disabled aria-label="Next world">→</button></div><div class="rank" id="rankLabel"></div></div>
+                        <div class="metrics"><div class="metric"><strong id="compileTime">—</strong><span data-i18n="compileMetric">instrument construction</span></div><div class="metric"><strong id="stateCount">—</strong><span data-i18n="stateMetric">reusable quotient states</span></div><div class="metric"><strong id="sampleTime">—</strong><span data-i18n="sampleMetric">current batch generation</span></div></div>
+                    </div>
+                    <div class="delivery">
+                        <div class="delivery-top"><h3 data-i18n="deliveryTitle">02 / Verify the delivery</h3><div class="delivery-actions"><button class="button outline" id="resample" disabled data-i18n="resample">New batch</button><button class="button primary" id="verify" disabled data-i18n="verify">Verify constraints</button><button class="button outline" id="accept" disabled data-i18n="accept">Accept evaluation</button></div></div>
+                        <p class="verify-line" id="verifyLine"></p>
+                        <div class="downloads"><button class="text-button" id="downloadInstrument" disabled data-i18n="downloadInstrument">Instrument .json</button><button class="text-button" id="downloadJson" disabled data-i18n="downloadJson">Worlds .json</button><button class="text-button" id="downloadCsv" disabled data-i18n="downloadCsv">Worlds .csv</button><button class="text-button" id="downloadReceipt" disabled data-i18n="downloadReceipt">Receipt .json</button></div>
+                        <section class="receipt" id="receipt" hidden aria-labelledby="receiptTitle"><div class="receipt-head"><h4 id="receiptTitle" data-i18n="receiptTitle">03 / Evaluation accepted</h4><span class="badge" data-i18n="simulated">Simulated</span></div><dl id="receiptFields"></dl><p class="receipt-note" data-i18n="receiptNote">This local receipt records your acceptance of a checked sample batch. It is not an invoice, purchase or independent certificate.</p></section>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="successor" aria-labelledby="successorTitle">
+            <div><div class="eyebrow" data-i18n="successorEyebrow">A successor from the same instrument</div><h2 id="successorTitle" data-i18n="successorTitle">Build once.<br>Ask a sharper question.</h2><p data-i18n="successorText">Generate worlds where more units share the same cells. The concentration query inherits the compiled transitions; it does not rebuild the family.</p><div class="formula">K = ∑ x(x − 1) / 2</div><p class="formula-note" data-i18n="formulaNote">K counts pairs of units in the same cell.</p></div>
+            <div><div class="chart-header"><span data-i18n="distributionLabel">Exact concentration distribution</span><strong id="distributionStatus"></strong></div><div class="chart" id="chart"><div class="chart-empty" data-i18n="chartEmpty">Your instrument becomes the starting point.</div></div><div class="chart-labels"><span id="minK">K —</span><span data-i18n="chartAxis">concentration K →</span><span id="maxK">—</span></div><div class="tail-controls"><div><label for="threshold" class="field-label" data-i18n="thresholdLabel">Keep worlds with concentration at least</label><select id="threshold" disabled><option>—</option></select></div><button class="button light" id="condition" disabled data-i18n="condition">Generate tail worlds ↗</button></div><div class="tail-facts"><span id="tailSize"></span><span id="queryTime"></span></div></div>
+        </section>
+        <section class="scope" id="method" aria-label="Method and scope">
+            <div><div class="eyebrow" data-i18n="scopeEyebrow1">What you receive</div><h3 data-i18n="scopeTitle1">A reusable exact instrument.</h3><p data-i18n="scopeText1">A complete count graph, fixed constraints, integer ranks and a SHA-256 integrity digest. Download the instrument and the generated tables. Seeded draws use a deterministic generator with rejection of out-of-range ranks.</p></div>
+            <div><div class="eyebrow" data-i18n="scopeEyebrow2">The meaning of exact</div><h3 data-i18n="scopeTitle2">A law you can name.</h3><p data-i18n="scopeText2">The target is uniform over feasible integer tables; each table corresponds to one rank. Uniform ranks give this law; seeded draws are pseudorandom. This is not the Fisher conditional-independence law. Exact constraints do not establish population realism, privacy or scientific suitability.</p></div>
+            <div><div class="eyebrow" data-i18n="scopeEyebrow3">Research, with its limits</div><h3 data-i18n="scopeTitle3">Open method. Honest scope.</h3><p><span data-i18n="scopeText3">Built on established exact counting and symmetry methods. No general algorithmic novelty or commercial demand is established. </span><a href="https://arxiv.org/abs/1301.6635" target="_blank" rel="noopener" data-i18n="priorArt">Read the prior art ↗</a></p><p style="margin-top:10px" data-i18n="commercialResearchOutcome">The commercial stress test did not qualify a launch. This free research preview remains usable.</p><p style="margin-top:10px" data-i18n="commercialHypothesis">Commercial scenario: $449 USD per instrument is an unvalidated model assumption. This evaluation is free; no service is offered for sale here.</p></div>
+        </section>
+    </main>
+    <footer class="footer"><div><span class="brand-text">AGI ALPHA</span><span> · Exact Worlds</span></div><div class="footer-links"><a href="../publication/AGI_ALPHA_Profitable_Possibility_Engine.pdf" data-i18n="paper">Read the paper ↗</a><a href="../kernel.py" data-i18n="source">Kernel source ↗</a><a href="../scientific_review.md" data-i18n="review">Scientific review ↗</a></div><span data-i18n="footerNote">Local computation. No purchase or payment.</span></footer>
+</div>
+<script>
+'use strict';
+/* The worker implements the same future-cap-signature quotient recurrence as
+   ../kernel.py. Counts and ranks remain BigInt; no floating-point sampling. */
+function instrumentWorker() {
+    'use strict';
+    const LIMITS = {rows:8, cols:24, cap:8, mass:256, states:25000, edges:250000, ms:10000};
+    const sum = a => a.reduce((x,y) => x+y,0);
+    const fail = code => { throw new Error(code); };
+    function problem(data) {
+        if (!data || typeof data !== 'object' || !Array.isArray(data.rows) || !Array.isArray(data.cols) || !Array.isArray(data.caps)) fail('arrays');
+        const {rows,cols,caps} = data;
+        if (!rows.length || rows.length>LIMITS.rows || !cols.length || cols.length>LIMITS.cols) fail('dimensions');
+        if ([...rows,...cols].some(x=>!Number.isSafeInteger(x)||x<0||x>LIMITS.mass)) fail('margins');
+        if (caps.length!==rows.length || caps.some(r=>!Array.isArray(r)||r.length!==cols.length)) fail('capShape');
+        if (caps.flat().some(x=>!Number.isSafeInteger(x)||x<0||x>LIMITS.cap)) fail('caps');
+        if (sum(rows)!==sum(cols)) fail('totals');
+        if (sum(rows)>LIMITS.mass) fail('mass');
+        const name = data.name===undefined ? 'custom' : data.name;
+        if (typeof name!=='string'||name.length>180) fail('name');
+        return {rows,cols,caps,name};
+    }
+    function compare(a,b) {
+        const x=a[0],y=b[0];
+        for(let i=0;i<Math.min(x.length,y.length);i++) if(x[i]!==y[i]) return x[i]-y[i];
+        return x.length-y.length || a[1]-b[1];
+    }
+    function group(p,row,residual) {
+        const buckets = new Map();
+        residual.forEach((q,j)=>{
+            const sig=p.caps.slice(row).map(r=>r[j]), key=JSON.stringify([sig,q]);
+            if(!buckets.has(key)) buckets.set(key,{sig,q,labels:[]});
+            buckets.get(key).labels.push(j);
+        });
+        const list=[...buckets.values()].sort((a,b)=>compare([a.sig,a.q],[b.sig,b.q]));
+        return {groups:list.map(g=>[g.sig,g.q,g.labels.length]),labels:list.map(g=>g.labels)};
+    }
+    const facts=[1n];
+    function fact(n) { for(let i=facts.length;i<=n;i++) facts.push(facts[i-1]*BigInt(i)); return facts[n]; }
+    function multinomial(counts) { return counts.reduce((n,c)=>n/fact(c),fact(sum(counts))); }
+    function multisetUnrank(counts,rank) {
+        const choices=counts.slice(), out=[];
+        if(rank<0n||rank>=multinomial(choices)) fail('rank');
+        while(sum(choices)) for(let x=0;x<choices.length;x++) {
+            if(!choices[x]) continue;
+            choices[x]--;const block=multinomial(choices);
+            if(rank<block){out.push(x);break;}
+            rank-=block;choices[x]++;
+        }
+        return out;
+    }
+    function multisetRank(values,counts) {
+        const choices=counts.slice();let rank=0n;
+        for(const actual of values) {
+            if(!choices[actual]) fail('invariant');
+            for(let x=0;x<actual;x++) if(choices[x]) {choices[x]--;rank+=multinomial(choices);choices[x]++;}
+            choices[actual]--;
+        }
+        if(choices.some(Boolean)) fail('invariant');return rank;
+    }
+    function occupancies(n,lo,hi,budget,check) {
+        const out=[],counts=Array(hi+1).fill(0);let steps=0;
+        function walk(value,left,mass) {
+            if(++steps%256===0) check();
+            if(mass+value*left>budget) return;
+            if(value===hi){counts[value]=left;out.push([counts.slice(),mass+value*left,multinomial(counts)]);return;}
+            for(let number=0;number<=left;number++){counts[value]=number;walk(value+1,left-number,mass+value*number);}
+        }
+        walk(lo,n,0);return out;
+    }
+    class Fiber {
+        constructor(p){this.problem=p;this.nodes=[];this.memo=new Map();this.attempted=0;this.polynomials=new Map();this.start=performance.now();}
+        check(){if(this.nodes.length>=LIMITS.states||this.attempted>=LIMITS.edges) fail('budget');if(performance.now()-this.start>LIMITS.ms) fail('time');}
+        compile(){this.root=this.visit(0,group(this.problem,0,this.problem.cols).groups);this.compileMs=performance.now()-this.start;if(!this.count) fail('empty');return this;}
+        get count(){return this.nodes[this.root].count;}
+        visit(row,groups){
+            const key=JSON.stringify([row,groups]);if(this.memo.has(key)) return this.memo.get(key);
+            this.check();const id=this.nodes.length,node={row,groups,count:0n,edges:[]};this.memo.set(key,id);this.nodes.push(node);
+            if(groups.some(([sig,q])=>q<0||q>sum(sig))||sum(groups.map(([,q,n])=>q*n))!==sum(this.problem.rows.slice(row))) return id;
+            if(row===this.problem.rows.length){node.count=1n;return id;}
+            const target=this.problem.rows[row],options=[],mins=[],maxs=[];
+            for(const [sig,q,n] of groups){
+                const lo=Math.max(0,q-sum(sig.slice(1))),hi=Math.min(q,sig[0]);if(lo>hi) return id;
+                options.push(occupancies(n,lo,hi,target,()=>this.check()));mins.push(n*lo);maxs.push(n*hi);
+            }
+            if(target<sum(mins)||target>sum(maxs)) return id;
+            const combine=(g,mass,mult,allocated)=>{
+                if(g===groups.length){
+                    if(mass!==target) return;
+                    this.attempted++;if(this.attempted%128===0) this.check();
+                    const next=new Map();let collisions=0;
+                    groups.forEach(([sig,q],index)=>allocated[index].forEach((number,x)=>{
+                        if(number){const s=sig.slice(1),k=JSON.stringify([s,q-x]);if(!next.has(k)) next.set(k,[s,q-x,0]);next.get(k)[2]+=number;collisions+=number*x*(x-1)/2;}
+                    }));
+                    const child=this.visit(row+1,[...next.values()].sort(compare)),childCount=this.nodes[child].count;
+                    if(childCount){node.edges.push({allocations:allocated,child,multiplicity:mult,collisions});node.count+=mult*childCount;}return;
+                }
+                const lo=sum(mins.slice(g+1)),hi=sum(maxs.slice(g+1));
+                for(const [counts,value,permutations] of options[g]) if(mass+value+lo<=target&&target<=mass+value+hi) combine(g+1,mass+value,mult*permutations,[...allocated,counts]);
+            };
+            combine(0,0,1n,[]);return id;
+        }
+        decode(rank,target=null){
+            let id=this.root,remaining=target;const residual=this.problem.cols.slice(),table=[];
+            const total=target===null?this.count:(this.polynomials.get(id)?.get(target)||0n);
+            if(rank<0n||rank>=total) fail('rank');
+            while(this.nodes[id].row<this.problem.rows.length){
+                const node=this.nodes[id],{groups,labels}=group(this.problem,node.row,residual);
+                if(JSON.stringify(groups)!==JSON.stringify(node.groups)) fail('invariant');
+                let chosen=null,childCount=0n;
+                for(const edge of node.edges){
+                    childCount=target===null?this.nodes[edge.child].count:(this.polynomials.get(edge.child)?.get(remaining-edge.collisions)||0n);
+                    const block=edge.multiplicity*childCount;
+                    if(rank<block){chosen=edge;break;}rank-=block;
+                }
+                if(!chosen||!childCount) fail('invariant');
+                let permutation=rank/childCount;rank%=childCount;
+                const radices=chosen.allocations.map(multinomial),ranks=Array(radices.length).fill(0n);
+                for(let g=radices.length-1;g>=0;g--){ranks[g]=permutation%radices[g];permutation/=radices[g];}
+                const values=Array(residual.length).fill(0);
+                labels.forEach((indices,g)=>multisetUnrank(chosen.allocations[g],ranks[g]).forEach((x,k)=>{values[indices[k]]=x;residual[indices[k]]-=x;}));
+                table.push(values);if(target!==null) remaining-=chosen.collisions;id=chosen.child;
+            }
+            if(residual.some(Boolean)||(target!==null&&remaining!==0)) fail('invariant');return table;
+        }
+        rank(table){
+            const residual=this.problem.cols.slice();
+            const visit=id=>{
+                const node=this.nodes[id];if(node.row===this.problem.rows.length) return 0n;
+                const {labels}=group(this.problem,node.row,residual);let offset=0n;
+                for(const edge of node.edges){
+                    let fits=true,arrangement=0n;
+                    for(let g=0;g<labels.length;g++){
+                        const values=labels[g].map(j=>table[node.row][j]),counts=edge.allocations[g],actual=counts.map((_,x)=>values.filter(y=>y===x).length);
+                        if(values.some(x=>x<0||x>=counts.length)||actual.some((n,x)=>n!==counts[x])){fits=false;break;}
+                        arrangement=arrangement*multinomial(counts)+multisetRank(values,counts);
+                    }
+                    if(fits){table[node.row].forEach((x,j)=>residual[j]-=x);return offset+arrangement*this.nodes[edge.child].count+visit(edge.child);}
+                    offset+=edge.multiplicity*this.nodes[edge.child].count;
+                }
+                fail('invariant');
+            };
+            return visit(this.root);
+        }
+        spectrum(){
+            const start=performance.now();let work=0;
+            const visit=id=>{
+                if(this.polynomials.has(id)) return this.polynomials.get(id);
+                const node=this.nodes[id],out=new Map();
+                if(node.row===this.problem.rows.length){if(node.count) out.set(0,node.count);}
+                else for(const edge of node.edges) for(const [k,n] of visit(edge.child)){
+                    out.set(k+edge.collisions,(out.get(k+edge.collisions)||0n)+edge.multiplicity*n);
+                    if(++work%1024===0&&performance.now()-start>LIMITS.ms) fail('time');
+                }
+                this.polynomials.set(id,out);return out;
+            };
+            const distribution=[...visit(this.root)].sort((a,b)=>a[0]-b[0]);
+            if(distribution.reduce((n,[,c])=>n+c,0n)!==this.count) fail('invariant');
+            return {distribution:distribution.map(([k,n])=>[k,n.toString()]),ms:performance.now()-start};
+        }
+        export(){return {schema:'agi-alpha-fiber-v1',problem:this.problem,root:this.root,nodes:this.nodes.map(n=>({row:n.row,groups:n.groups,count:n.count.toString(),edges:n.edges.map(e=>({...e,multiplicity:e.multiplicity.toString()}))}))};}
+    }
+    function seeded(seed){
+        const mask=(1n<<64n)-1n;let x=14695981039346656037n;
+        for(const byte of new TextEncoder().encode(seed)) x=((x^BigInt(byte))*1099511628211n)&mask;
+        return ()=>{x=(x+0x9e3779b97f4a7c15n)&mask;let z=x;z=((z^(z>>30n))*0xbf58476d1ce4e5b9n)&mask;z=((z^(z>>27n))*0x94d049bb133111ebn)&mask;return (z^(z>>31n))&mask;};
+    }
+    function drawBelow(n,rng){
+        if(n===1n) return 0n;const bits=(n-1n).toString(2).length,mask=(1n<<BigInt(bits))-1n;
+        for(;;){let r=0n;for(let b=0;b<bits;b+=64) r=(r<<64n)|rng();r&=mask;if(r<n) return r;}
+    }
+    const concentration=table=>sum(table.flat().map(x=>x*(x-1)/2));
+    let fiber=null;
+    self.onmessage=event=>{
+        const {id,type,payload}=event.data;
+        try{
+            let result;
+            if(type==='compile'){
+                fiber=null;const built=new Fiber(problem(payload.problem)).compile();fiber=built;
+                result={body:fiber.export(),count:fiber.count.toString(),ms:fiber.compileMs,states:fiber.nodes.length,edges:fiber.nodes.reduce((n,s)=>n+s.edges.length,0),attempted:fiber.attempted};
+            }else{
+                if(!fiber) fail('notBuilt');
+                if(type==='spectrum') result=fiber.spectrum();
+                else if(type==='sample'){
+                    if(!Number.isInteger(payload.size)||payload.size<1||payload.size>128) fail('sampleSize');
+                    if(typeof payload.seed!=='string'||payload.seed.length>120) fail('seed');
+                    const start=performance.now(),rng=seeded(payload.seed),threshold=payload.threshold??null;
+                    let parts=null,total=fiber.count;
+                    if(threshold!==null){
+                        if(!Number.isSafeInteger(threshold)||threshold<0) fail('threshold');
+                        if(!fiber.polynomials.has(fiber.root)) fiber.spectrum();
+                        parts=[...fiber.polynomials.get(fiber.root)].filter(([k])=>k>=threshold).sort((a,b)=>a[0]-b[0]);
+                        total=parts.reduce((n,[,c])=>n+c,0n);if(!total) fail('emptyTail');
+                    }
+                    const samples=[];
+                    for(let i=0;i<payload.size;i++){
+                        const drawRank=drawBelow(total,rng);let localRank=drawRank,target=null;
+                        if(parts) for(const [k,n] of parts){if(localRank<n){target=k;break;}localRank-=n;}
+                        const table=fiber.decode(localRank,target),rank=parts?fiber.rank(table):drawRank;
+                        samples.push({table,rank:rank.toString(),draw_rank:drawRank.toString(),concentration:concentration(table)});
+                    }
+                    result={samples,count:total.toString(),ms:performance.now()-start,seed:payload.seed,threshold,rng:'splitmix64-fnv1a64-rejection-v1'};
+                }else if(type==='enumerate'){
+                    const threshold=payload.threshold??null;let parts=null,total=fiber.count;
+                    if(threshold!==null){
+                        if(!Number.isSafeInteger(threshold)||threshold<0) fail('threshold');
+                        if(!fiber.polynomials.has(fiber.root)) fiber.spectrum();
+                        parts=[...fiber.polynomials.get(fiber.root)].filter(([k])=>k>=threshold).sort((a,b)=>a[0]-b[0]);
+                        total=parts.reduce((n,[,c])=>n+c,0n);
+                    }
+                    if(total>10000n) fail('enumeration');
+                    result=[];for(let rank=0n;rank<total;rank++){
+                        let localRank=rank,target=null;
+                        if(parts) for(const [k,n] of parts){if(localRank<n){target=k;break;}localRank-=n;}
+                        const table=fiber.decode(localRank,target);
+                        result.push({rank:rank.toString(),roundtrip:fiber.rank(table).toString(),table,concentration:concentration(table)});
+                    }
+                }else fail('operation');
+            }
+            self.postMessage({id,ok:true,result});
+        }catch(error){self.postMessage({id,ok:false,error:error.message||'unknown'});}
+    };
+}
+
+const translations={
+    en:{
+        navLabel:'Main navigation',methodLabel:'Method and scope',navStudio:'The instrument',navMethod:'The method',preview:'Research preview',heroEyebrow:'Exact Worlds / a computational studio',heroTitle:'Build the worlds your tests <em>cannot wait for.</em>',heroLede:'Turn fixed totals, cell limits and forbidden combinations into an exact, reusable family of test worlds.',promiseTitle:'A constraint is a promise.',promise1:'Your totals stay fixed.',promise2:'Impossible cells stay empty.',promise3:'Every feasible table has one rank.',studioTitle:'Your constraints. Every feasible world.',localNote:'Computed here, in your browser.',requestTitle:'Define your world',presetLabel:'Start with a constraint set',presetCapacity:'Capacity allocation',presetCapacitySub:'4 × 8 · limits + exclusions',presetBinary:'Network incidence',presetBinarySub:'4 × 6 · binary connections',presetTiny:'A transparent example',presetTinySub:'2 × 2 · exactly three worlds',customTitle:'Edit the constraints as JSON',customLabel:'Constraint JSON: rows, cols, caps',customHint:'rows and cols are fixed totals. caps sets the maximum in each cell; 0 forbids it. Row and column totals must agree.',seedLabel:'Reproducible seed',seedHint:'The same seed replays the same batch. Change it for another draw.',batchLabel:'Worlds',evaluation:'Local evaluation',quoteNote:'No account. No payment.',build:'Build instrument',cancel:'Cancel construction',budget:'Browser budget: 8 × 24 cells, caps ≤ 8, total ≤ 256. Up to 25,000 states, 250,000 transitions and 10 seconds. Unsupported or empty families are refused.',resultTitle:'A family of feasible worlds.',countLabel:'feasible labeled tables, counted exactly',tailCountLabel:'tables in the selected concentration tail',excluded:'Excluded cell',compileMetric:'instrument construction',stateMetric:'reusable quotient states',sampleMetric:'current batch generation',deliveryTitle:'02 / Verify the delivery',resample:'New batch',verify:'Verify constraints',accept:'Accept evaluation',downloadInstrument:'Instrument .json',downloadJson:'Worlds .json',downloadCsv:'Worlds .csv',downloadReceipt:'Receipt .json',receiptTitle:'03 / Evaluation accepted',simulated:'Simulated',receiptNote:'This local receipt records your acceptance of a checked sample batch. It is not an invoice, purchase or independent certificate.',successorEyebrow:'A successor from the same instrument',successorTitle:'Build once.<br>Ask a sharper question.',successorText:'Generate worlds where more units share the same cells. The concentration query inherits the compiled transitions; it does not rebuild the family.',formulaNote:'K counts pairs of units in the same cell.',distributionLabel:'Exact concentration distribution',chartEmpty:'Your instrument becomes the starting point.',chartAxis:'concentration K →',thresholdLabel:'Keep worlds with concentration at least',condition:'Generate tail worlds ↗',scopeEyebrow1:'What you receive',scopeTitle1:'A reusable exact instrument.',scopeText1:'A complete count graph, fixed constraints, integer ranks and a SHA-256 integrity digest. Download the instrument and the generated tables. Seeded draws use a deterministic generator with rejection of out-of-range ranks.',scopeEyebrow2:'The meaning of exact',scopeTitle2:'A law you can name.',scopeText2:'The target is uniform over feasible integer tables; each table corresponds to one rank. Uniform ranks give this law; seeded draws are pseudorandom. This is not the Fisher conditional-independence law. Exact constraints do not establish population realism, privacy or scientific suitability.',scopeEyebrow3:'Research, with its limits',scopeTitle3:'Open method. Honest scope.',scopeText3:'Built on established exact counting and symmetry methods. No general algorithmic novelty or commercial demand is established. ',priorArt:'Read the prior art ↗',commercialResearchOutcome:'The commercial stress test did not qualify a launch. This free research preview remains usable.',commercialHypothesis:'Commercial scenario: $449 USD per instrument is an unvalidated model assumption. This evaluation is free; no service is offered for sale here.',paper:'Read the paper ↗',source:'Kernel source ↗',review:'Scientific review ↗',footerNote:'Local computation. No purchase or payment.',
+        ready:'Choose your constraints, then build the complete family.',draft:'Constraint preview',built:'Instrument ready',verified:'Batch verified',accepted:'Evaluation accepted',baseLaw:'Uniform table family · reproducible pseudorandom draws',tailLaw:'Uniform concentration tail · K ≥ {k}',previewCaption:'Constraint map · numbers show cell limits',previewCaptionDirty:'Previous constraint map · build to apply your edited JSON',worldCaption:'Generated table · each number is a cell allocation',noWorld:'No world generated',worldPage:'World {n} / {total}',rankLabel:'Rank {rank} · K = {k}',unverified:'Check every delivered table against the requested cell bounds and both margins before accepting.',verification:'{n} / {n} tables pass all cell limits and row/column totals{tail}. This checks feasibility, not realism or the sampling law.',tailCheck:', with K ≥ {k}',building:'Compiling every feasible transition within the declared browser budget…',sampling:'Constructing tables from reproducible integer ranks…',spectrum:'Deriving the concentration distribution from the compiled graph…',builtMessage:'Instrument built. {n} feasible tables; {batch} generated worlds are ready to inspect and verify.',sampledMessage:'{n} new worlds generated. Verify this batch before accepting it.',verifiedMessage:'All {n} delivered worlds satisfy the requested constraints.',acceptedMessage:'Evaluation accepted locally. Your simulated receipt is ready to download.',refused:'Request refused: {reason}',cancelled:'Construction cancelled. No instrument was delivered.',dirty:'Constraints changed. Build a new instrument to apply them.',levels:'{n} attainable levels',tailCount:'{n} worlds · ≈ {pct}% of the family',queryTiming:'Inherited query: {time}',queryEmpty:'Build an instrument to derive this query.',constantK:'One attainable level; this query cannot select a rarer tail.',receiptTime:'Accepted at (UTC)',receiptAmount:'Amount paid',receiptTables:'Verified worlds',receiptLaw:'Requested law',receiptDigest:'Instrument SHA-256',receiptSeed:'Seed',receiptModeBase:'Uniform feasible tables',receiptModeTail:'Uniform tail, K ≥ {k}',seconds:'s',previous:'Previous world',next:'Next world',matrixAria:'Generated world with fixed row and column margins',previewAria:'Input cell limits with fixed row and column margins',column:'Column',row:'Row',sum:'Total',barLabel:'K = {k}: {n} tables. Select this lower bound.',
+        errors:{arrays:'rows, cols and caps must be JSON arrays.',dimensions:'use 1–8 rows and 1–24 columns.',margins:'margins must be integers from 0 to 256.',capShape:'the caps matrix must match the row and column dimensions.',caps:'cell limits must be integers from 0 to 8.',totals:'row and column totals differ.',mass:'total mass exceeds 256.',name:'the name must be a string of at most 180 characters.',budget:'the state or transition budget was exceeded. Try a smaller family.',time:'the 10-second construction/query budget was exceeded. Try a smaller family.',empty:'no table satisfies all of these constraints.',rank:'the requested rank is outside this family.',invariant:'an internal consistency check failed. No delivery is accepted.',notBuilt:'build an instrument first.',sampleSize:'request between 1 and 128 worlds.',seed:'use a seed of at most 120 characters.',threshold:'the concentration threshold must be a nonnegative integer.',emptyTail:'no world reaches this concentration threshold.',enumeration:'full inspection is limited to 10,000 worlds.',operation:'unsupported operation.',json:'the constraint JSON is not valid.',worker:'this browser could not start the local computation worker.',crypto:'this browser does not provide the SHA-256 function required for export.',validation:'at least one table failed independent constraint verification.',unknown:'the computation did not complete.'}
+    },
+    fr:{
+        navLabel:'Navigation principale',methodLabel:'Méthode et périmètre',navStudio:'L’instrument',navMethod:'La méthode',preview:'Aperçu de recherche',heroEyebrow:'Exact Worlds / un atelier de calcul',heroTitle:'Créez les mondes que vos tests <em>ne peuvent attendre.</em>',heroLede:'Transformez des totaux fixes, des limites par cellule et des combinaisons interdites en une famille exacte et réutilisable de mondes de test.',promiseTitle:'Une contrainte est une promesse.',promise1:'Vos totaux restent fixes.',promise2:'Les cellules interdites restent vides.',promise3:'Chaque tableau admissible a son rang.',studioTitle:'Vos contraintes. Tous les mondes admissibles.',localNote:'Calculé ici, dans votre navigateur.',requestTitle:'Définissez votre monde',presetLabel:'Choisissez un jeu de contraintes',presetCapacity:'Allocation de capacités',presetCapacitySub:'4 × 8 · limites et exclusions',presetBinary:'Incidence de réseau',presetBinarySub:'4 × 6 · connexions binaires',presetTiny:'Un exemple transparent',presetTinySub:'2 × 2 · exactement trois mondes',customTitle:'Modifier les contraintes en JSON',customLabel:'Contraintes JSON : rows, cols, caps',customHint:'rows et cols fixent les totaux. caps fixe le maximum par cellule ; 0 l’interdit. Les totaux des lignes et des colonnes doivent coïncider.',seedLabel:'Graine reproductible',seedHint:'Une même graine reproduit le même lot. Changez-la pour un autre tirage.',batchLabel:'Mondes',evaluation:'Évaluation locale',quoteNote:'Sans compte. Sans paiement.',build:'Construire l’instrument',cancel:'Annuler la construction',budget:'Budget du navigateur : 8 × 24 cellules, limites ≤ 8, total ≤ 256. Au plus 25 000 états, 250 000 transitions et 10 secondes. Les familles hors périmètre ou vides sont refusées.',resultTitle:'Une famille de mondes admissibles.',countLabel:'tableaux étiquetés admissibles, dénombrés exactement',tailCountLabel:'tableaux dans la queue de concentration choisie',excluded:'Cellule interdite',compileMetric:'construction de l’instrument',stateMetric:'états de quotient réutilisables',sampleMetric:'génération du lot actuel',deliveryTitle:'02 / Vérifier la livraison',resample:'Nouveau lot',verify:'Vérifier les contraintes',accept:'Accepter l’évaluation',downloadInstrument:'Instrument .json',downloadJson:'Mondes .json',downloadCsv:'Mondes .csv',downloadReceipt:'Reçu .json',receiptTitle:'03 / Évaluation acceptée',simulated:'Simulation',receiptNote:'Ce reçu local consigne votre acceptation d’un lot vérifié. Ce n’est ni une facture, ni un achat, ni une certification indépendante.',successorEyebrow:'Un successeur issu du même instrument',successorTitle:'Construisez une fois.<br>Posez une question plus précise.',successorText:'Générez des mondes où davantage d’unités partagent les mêmes cellules. La requête de concentration hérite des transitions compilées ; elle ne reconstruit pas la famille.',formulaNote:'K compte les paires d’unités dans une même cellule.',distributionLabel:'Distribution exacte de la concentration',chartEmpty:'Votre instrument devient le point de départ.',chartAxis:'concentration K →',thresholdLabel:'Conserver les mondes de concentration au moins',condition:'Générer ces mondes ↗',scopeEyebrow1:'Ce que vous recevez',scopeTitle1:'Un instrument exact et réutilisable.',scopeText1:'Un graphe de dénombrement complet, des contraintes fixes, des rangs entiers et une empreinte d’intégrité SHA-256. Téléchargez l’instrument et les tableaux produits. Les tirages utilisent un générateur déterministe avec rejet des rangs hors domaine.',scopeEyebrow2:'Le sens du mot exact',scopeTitle2:'Une loi bien définie.',scopeText2:'La cible est la loi uniforme sur les tableaux entiers admissibles ; chaque tableau correspond à un rang. Des rangs uniformes donnent cette loi ; les tirages par graine sont pseudoaléatoires. Ce n’est pas la loi d’indépendance conditionnelle de Fisher. Des contraintes exactes ne garantissent ni réalisme, ni confidentialité, ni pertinence scientifique.',scopeEyebrow3:'La recherche et ses limites',scopeTitle3:'Méthode ouverte. Périmètre clair.',scopeText3:'Fondé sur des méthodes établies de dénombrement exact et de symétrie. Aucune nouveauté algorithmique générale ni demande commerciale n’est établie. ',priorArt:'Lire les travaux antérieurs ↗',commercialResearchOutcome:'Le test de résistance commercial n’a pas validé le lancement. Cet aperçu de recherche gratuit reste utilisable.',commercialHypothesis:'Scénario commercial : 449 $ US par instrument est une hypothèse de modèle non validée. Cette évaluation est gratuite ; aucun service n’est proposé à la vente ici.',paper:'Lire l’article ↗',source:'Code du noyau ↗',review:'Examen scientifique ↗',footerNote:'Calcul local. Aucun achat ni paiement.',
+        ready:'Choisissez vos contraintes, puis construisez la famille complète.',draft:'Aperçu des contraintes',built:'Instrument prêt',verified:'Lot vérifié',accepted:'Évaluation acceptée',baseLaw:'Famille uniforme · tirages pseudoaléatoires reproductibles',tailLaw:'Queue de concentration uniforme · K ≥ {k}',previewCaption:'Carte des contraintes · les nombres indiquent les limites',previewCaptionDirty:'Carte précédente · construisez pour appliquer le JSON modifié',worldCaption:'Tableau généré · chaque nombre est une allocation',noWorld:'Aucun monde généré',worldPage:'Monde {n} / {total}',rankLabel:'Rang {rank} · K = {k}',unverified:'Vérifiez les limites par cellule et les totaux des deux marges de chaque tableau avant d’accepter.',verification:'{n} / {n} tableaux respectent les limites et les totaux des lignes et colonnes{tail}. Ce contrôle vérifie la faisabilité, pas le réalisme ni la loi d’échantillonnage.',tailCheck:', avec K ≥ {k}',building:'Compilation de toutes les transitions admissibles dans le budget annoncé…',sampling:'Construction des tableaux à partir de rangs entiers reproductibles…',spectrum:'Calcul de la distribution de concentration à partir du graphe compilé…',builtMessage:'Instrument construit. {n} tableaux admissibles ; {batch} mondes générés à examiner et vérifier.',sampledMessage:'{n} nouveaux mondes générés. Vérifiez ce lot avant de l’accepter.',verifiedMessage:'Les {n} mondes livrés respectent toutes les contraintes demandées.',acceptedMessage:'Évaluation acceptée localement. Votre reçu simulé peut être téléchargé.',refused:'Demande refusée : {reason}',cancelled:'Construction annulée. Aucun instrument n’a été livré.',dirty:'Contraintes modifiées. Construisez un nouvel instrument pour les appliquer.',levels:'{n} niveaux possibles',tailCount:'{n} mondes · ≈ {pct} % de la famille',queryTiming:'Requête héritée : {time}',queryEmpty:'Construisez un instrument pour dériver cette requête.',constantK:'Un seul niveau possible ; cette requête ne peut pas isoler une queue plus rare.',receiptTime:'Accepté le (UTC)',receiptAmount:'Montant payé',receiptTables:'Mondes vérifiés',receiptLaw:'Loi demandée',receiptDigest:'SHA-256 de l’instrument',receiptSeed:'Graine',receiptModeBase:'Tableaux admissibles uniformes',receiptModeTail:'Queue uniforme, K ≥ {k}',seconds:'s',previous:'Monde précédent',next:'Monde suivant',matrixAria:'Monde généré avec totaux fixes par ligne et colonne',previewAria:'Limites par cellule avec totaux fixes par ligne et colonne',column:'Colonne',row:'Ligne',sum:'Total',barLabel:'K = {k} : {n} tableaux. Choisir cette borne inférieure.',
+        errors:{arrays:'rows, cols et caps doivent être des tableaux JSON.',dimensions:'utilisez 1 à 8 lignes et 1 à 24 colonnes.',margins:'les marges doivent être des entiers de 0 à 256.',capShape:'la matrice caps doit correspondre aux dimensions des marges.',caps:'les limites doivent être des entiers de 0 à 8.',totals:'les totaux des lignes et des colonnes diffèrent.',mass:'le total dépasse 256.',name:'le nom doit être une chaîne de 180 caractères au plus.',budget:'le budget d’états ou de transitions est dépassé. Essayez une famille plus petite.',time:'le budget de construction ou de requête de 10 secondes est dépassé. Réduisez la famille.',empty:'aucun tableau ne satisfait toutes ces contraintes.',rank:'le rang demandé est hors de cette famille.',invariant:'un contrôle interne de cohérence a échoué. Aucune livraison n’est acceptée.',notBuilt:'construisez d’abord un instrument.',sampleSize:'demandez entre 1 et 128 mondes.',seed:'utilisez une graine de 120 caractères au plus.',threshold:'le seuil de concentration doit être un entier positif ou nul.',emptyTail:'aucun monde n’atteint ce seuil de concentration.',enumeration:'l’inspection complète est limitée à 10 000 mondes.',operation:'opération non prise en charge.',json:'les contraintes ne forment pas un JSON valide.',worker:'ce navigateur n’a pas pu démarrer le calcul local.',crypto:'ce navigateur ne fournit pas la fonction SHA-256 nécessaire à l’export.',validation:'au moins un tableau a échoué au contrôle indépendant des contraintes.',unknown:'le calcul n’a pas abouti.'}
+    }
+};
+const presets={
+    capacity:{name:'capacity_4x8',rows:[4,4,4,4],cols:[2,2,2,2,2,2,2,2],caps:[[0,2,2,2,0,2,2,2],[2,0,2,2,2,0,2,2],[2,2,0,2,2,2,0,2],[2,2,2,0,2,2,2,0]]},
+    binary:{name:'network_4x6',rows:[3,3,3,3],cols:[2,2,2,2,2,2],caps:Array.from({length:4},()=>Array(6).fill(1))},
+    tiny:{name:'transparent_2x2',rows:[2,2],cols:[2,2],caps:[[2,2],[2,2]]}
+};
+const $=id=>document.getElementById(id);
+const state={lang:'en',phase:'draft',busy:false,problem:presets.capacity,asset:null,stats:null,batch:null,distribution:[],threshold:null,queryMs:null,previewMatchesInput:true,selected:0,verification:null,receipt:null,status:{key:'ready',params:{},tone:'neutral'},generation:0};
+let worker=null,workerUrl=null,requestId=0;const pending=new Map();
+function t(key,params={}){let value=translations[state.lang][key]??key;return value.replace(/\{(\w+)\}/g,(_,k)=>String(params[k]??''));}
+function count(value){return BigInt(value).toLocaleString(state.lang==='fr'?'fr-FR':'en-US');}
+function duration(ms){return ms<1000?`${ms.toLocaleString(state.lang==='fr'?'fr-FR':'en-US',{maximumFractionDigits:2,minimumFractionDigits:2})} ms`:`${(ms/1000).toLocaleString(state.lang==='fr'?'fr-FR':'en-US',{maximumFractionDigits:3})} s`;}
+function setStatus(key,params={},tone='neutral'){state.status={key,params,tone};renderStatus();}
+function renderStatus(){const {key,params,tone}=state.status;$('status').dataset.tone=tone;const p={...params};if(key==='builtMessage') p.n=count(params.n);if(key==='refused') p.reason=translations[state.lang].errors[params.code]||translations[state.lang].errors.unknown;$('statusText').textContent=t(key,p);}
+function disposeWorker(){if(worker) worker.terminate();if(workerUrl) URL.revokeObjectURL(workerUrl);worker=null;workerUrl=null;for(const {reject,timer} of pending.values()){clearTimeout(timer);reject(new Error('cancelled'));}pending.clear();}
+function ensureWorker(){
+    if(worker) return;
+    try{workerUrl=URL.createObjectURL(new Blob([`(${instrumentWorker.toString()})();`],{type:'text/javascript'}));worker=new Worker(workerUrl);}
+    catch{throw new Error('worker');}
+    worker.onmessage=({data})=>{const entry=pending.get(data.id);if(!entry) return;pending.delete(data.id);clearTimeout(entry.timer);data.ok?entry.resolve(data.result):entry.reject(new Error(data.error));};
+    worker.onerror=()=>{for(const {reject,timer} of pending.values()){clearTimeout(timer);reject(new Error('worker'));}pending.clear();};
+}
+function rpc(type,payload={}){
+    ensureWorker();const id=++requestId;
+    return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{pending.delete(id);reject(new Error('time'));disposeWorker();},12000);pending.set(id,{resolve,reject,timer});worker.postMessage({id,type,payload});});
+}
+function stable(value){if(Array.isArray(value)) return value.map(stable);if(value&&typeof value==='object') return Object.fromEntries(Object.keys(value).sort().map(k=>[k,stable(value[k])]));return value;}
+function canonical(value){return JSON.stringify(stable(value)).replace(/[\u007f-\uffff]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));}
+async function digest(value){if(!globalThis.crypto?.subtle) throw new Error('crypto');const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(value)));return [...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function resetDelivery(){state.asset=null;state.stats=null;state.batch=null;state.distribution=[];state.threshold=null;state.queryMs=null;state.selected=0;state.verification=null;state.receipt=null;state.phase='draft';}
+function sampleRequest(threshold=null){const size=Number($('sampleSize').value);if(!Number.isInteger(size)||size<1||size>128) throw new Error('sampleSize');return {seed:$('seed').value,size,threshold};}
+async function build(){
+    if(state.busy) return;
+    let p,request;try{p=JSON.parse($('problemInput').value);request=sampleRequest();}catch(e){state.generation++;disposeWorker();resetDelivery();setStatus('refused',{code:e instanceof SyntaxError?'json':e.message},'error');render();return;}
+    const generation=++state.generation;disposeWorker();resetDelivery();state.busy=true;setStatus('building',{},'busy');render();
+    try{
+        const built=await rpc('compile',{problem:p});if(generation!==state.generation) return;
+        const sha256=await digest(built.body);if(generation!==state.generation) return;
+        state.problem=built.body.problem;state.previewMatchesInput=true;state.asset={...built.body,sha256};state.stats={ms:built.ms,states:built.states,edges:built.edges,attempted:built.attempted,count:built.count};
+        setStatus('sampling',{},'busy');state.batch=await rpc('sample',request);if(generation!==state.generation) return;
+        setStatus('spectrum',{},'busy');const query=await rpc('spectrum');if(generation!==state.generation) return;
+        state.distribution=query.distribution;state.queryMs=query.ms;state.threshold=query.distribution[Math.floor((query.distribution.length-1)*.75)][0];state.phase='built';
+        setStatus('builtMessage',{n:built.count,batch:state.batch.samples.length},'success');
+    }catch(e){if(generation!==state.generation) return;resetDelivery();setStatus('refused',{code:e.message},'error');}
+    finally{if(generation===state.generation){state.busy=false;render();}}
+}
+async function sample(threshold=null){
+    if(!state.asset||state.busy) return;let request;
+    try{request=sampleRequest(threshold);}catch(e){setStatus('refused',{code:e.message},'error');return;}
+    const generation=state.generation;state.busy=true;setStatus('sampling',{},'busy');render();
+    try{const batch=await rpc('sample',request);if(generation!==state.generation) return;state.batch=batch;state.verification=null;state.receipt=null;state.phase='built';state.selected=0;setStatus('sampledMessage',{n:batch.samples.length},'success');}
+    catch(e){if(generation===state.generation) setStatus('refused',{code:e.message},'error');}
+    finally{if(generation===state.generation){state.busy=false;render();}}
+}
+/* This verifier deliberately does not use the worker's recurrence or metadata. */
+function validateTable(p,table,threshold=null){
+    const issues=[];
+    if(!Array.isArray(table)||table.length!==p.rows.length||table.some(r=>!Array.isArray(r)||r.length!==p.cols.length)) return ['shape'];
+    let k=0;
+    for(let i=0;i<p.rows.length;i++){
+        let total=0;
+        for(let j=0;j<p.cols.length;j++){const x=table[i][j];if(!Number.isSafeInteger(x)||x<0||x>p.caps[i][j]) issues.push(`cell:${i}:${j}`);total+=x;k+=x*(x-1)/2;}
+        if(total!==p.rows[i]) issues.push(`row:${i}`);
+    }
+    for(let j=0;j<p.cols.length;j++) if(table.reduce((n,r)=>n+r[j],0)!==p.cols[j]) issues.push(`column:${j}`);
+    if(threshold!==null&&k<threshold) issues.push('concentration');return issues;
+}
+function verify(){
+    if(!state.batch||state.busy) return;
+    const start=performance.now(),failures=state.batch.samples.flatMap((s,i)=>validateTable(state.problem,s.table,state.batch.threshold).map(issue=>({world:i,issue})));
+    state.verification={passed:failures.length===0,worlds:state.batch.samples.length,failures,ms:performance.now()-start,scope:'cell bounds, integer entries, fixed row/column margins, requested concentration threshold'};state.receipt=null;
+    if(failures.length){state.phase='built';setStatus('refused',{code:'validation'},'error');}else{state.phase='verified';setStatus('verifiedMessage',{n:state.batch.samples.length},'success');}render();return state.verification;
+}
+async function accept(){
+    if(!state.verification?.passed||state.busy) return;
+    const generation=state.generation,batch=state.batch;state.busy=true;render();
+    try{
+        const batchSha=await digest(batch.samples);if(generation!==state.generation||state.batch!==batch) return;
+        state.receipt={schema:'agi-alpha-evaluation-receipt-v1',status:'SIMULATED_ACCEPTED',brand:'AGI ALPHA',product:'Exact Worlds',accepted_at_utc:new Date().toISOString(),amount_paid_usd:0,commercial_price_hypothesis_usd:449,commercial_status:'Unvalidated model assumption; no purchase, payment, invoice or service contract',instrument_sha256:state.asset.sha256,batch_sha256:batchSha,problem:state.problem,law:batch.threshold===null?{kind:'uniform_feasible_integer_tables'}:{kind:'uniform_concentration_tail',minimum_concentration:batch.threshold},rng:batch.rng,seed:batch.seed,worlds:batch.samples.length,verification:state.verification,measured_timings_ms:{construction:state.stats.ms,inherited_concentration_query:state.queryMs,batch_generation:batch.ms},evidence_limits:'Direct verification establishes sample feasibility only. SHA-256 is an integrity digest, not proof of completeness. Pseudorandom draws are reproducible; uniformity is the target law under uniform ranks. No realism, privacy, demand, novelty or profit is established.'};
+        state.phase='accepted';setStatus('acceptedMessage',{},'success');
+    }catch(e){setStatus('refused',{code:e.message},'error');}
+    finally{if(generation===state.generation){state.busy=false;render();}}
+}
+function renderMatrix(){
+    const p=state.problem,generated=!!state.batch,s=state.batch?.samples[state.selected],values=s?s.table:p.caps;
+    const table=$('matrix');table.classList.toggle('preview-map',!generated);table.setAttribute('aria-label',t(generated?'matrixAria':'previewAria'));table.replaceChildren();table.style.minWidth=`${Math.max(330,p.cols.length*30+80)}px`;
+    const header=table.createTHead().insertRow();let th=document.createElement('th');th.scope='col';header.append(th);
+    p.cols.forEach((_,j)=>{const cell=document.createElement('th');cell.scope='col';cell.textContent=`C${String(j+1).padStart(2,'0')}`;cell.title=`${t('column')} ${j+1}`;header.append(cell);});
+    th=document.createElement('th');th.scope='col';th.textContent='Σ';th.title=t('sum');header.append(th);
+    const body=table.createTBody(),max=Math.max(1,...p.caps.flat());
+    p.rows.forEach((total,i)=>{const row=body.insertRow(),label=document.createElement('th');label.scope='row';label.textContent=`R${String(i+1).padStart(2,'0')}`;label.title=`${t('row')} ${i+1}`;row.append(label);
+        p.cols.forEach((_,j)=>{const cell=row.insertCell(),x=values[i][j];cell.textContent=p.caps[i][j]===0?'×':String(x);if(p.caps[i][j]===0){cell.className='excluded';cell.title=t('excluded');}else{const ratio=x/max;cell.style.background=`hsl(143 23% ${95-ratio*48}%)`;cell.style.color=ratio>.7?'#fffef9':'#183c30';cell.title=`${x} / ${p.caps[i][j]}`;}});
+        const cell=row.insertCell();cell.className='sum';cell.textContent=String(total);
+    });
+    const footer=table.createTFoot().insertRow();footer.className='bottom';const first=document.createElement('th');first.textContent='Σ';first.scope='row';footer.append(first);
+    [...p.cols,p.rows.reduce((n,x)=>n+x,0)].forEach(x=>{const c=document.createElement('th');c.textContent=String(x);footer.append(c);});
+    $('dimension').textContent=`${p.rows.length} × ${p.cols.length}`;$('matrixCaption').textContent=t(generated?'worldCaption':state.previewMatchesInput?'previewCaption':'previewCaptionDirty');
+    $('pageLabel').textContent=s?t('worldPage',{n:String(state.selected+1).padStart(2,'0'),total:state.batch.samples.length}):t('noWorld');
+    $('rankLabel').textContent=s?t('rankLabel',{rank:count(s.rank),k:s.concentration}):'';
+    $('previous').disabled=!s||state.selected===0;$('next').disabled=!s||state.selected>=state.batch.samples.length-1;
+}
+function renderDistribution(){
+    const chart=$('chart'),select=$('threshold');chart.replaceChildren();select.replaceChildren();
+    if(!state.distribution.length){const empty=document.createElement('div');empty.className='chart-empty';empty.textContent=t('chartEmpty');chart.append(empty);select.add(new Option('—',''));$('distributionStatus').textContent='';$('minK').textContent='K —';$('maxK').textContent='—';$('tailSize').textContent=t('queryEmpty');$('queryTime').textContent='';return;}
+    chart.style.gap=`${Math.min(5,120/state.distribution.length)}px`;
+    const max=state.distribution.reduce((a,[,n])=>BigInt(n)>a?BigInt(n):a,0n);let tail=0n;
+    state.distribution.forEach(([k,n])=>{const button=document.createElement('button');button.className='bar'+(k>=state.threshold?' selected':'');button.style.height=`${Math.max(2,Number(BigInt(n)*10000n/max)/100)}%`;button.title=`K = ${k} · ${count(n)}`;button.setAttribute('aria-label',t('barLabel',{k,n:count(n)}));button.onclick=()=>{state.threshold=k;renderDistribution();};button.disabled=state.busy;chart.append(button);select.add(new Option(`K ≥ ${k}`,String(k)));if(k>=state.threshold) tail+=BigInt(n);});
+    select.value=String(state.threshold);$('distributionStatus').textContent=t('levels',{n:state.distribution.length});$('minK').textContent=`K ${state.distribution[0][0]}`;$('maxK').textContent=String(state.distribution.at(-1)[0]);
+    const pct=(Number(tail*1000000n/BigInt(state.stats.count))/10000).toLocaleString(state.lang==='fr'?'fr-FR':'en-US',{maximumFractionDigits:4});
+    $('tailSize').textContent=state.distribution.length===1?t('constantK'):t('tailCount',{n:count(tail),pct});$('queryTime').textContent=t('queryTiming',{time:duration(state.queryMs)});
+}
+function renderReceipt(){
+    $('receipt').hidden=!state.receipt;if(!state.receipt) return;
+    const r=state.receipt,fields=[['receiptTime',r.accepted_at_utc.replace('T',' ').replace('Z','')],['receiptAmount','$0 USD'],['receiptTables',String(r.worlds)],['receiptLaw',t(r.law.kind==='uniform_concentration_tail'?'receiptModeTail':'receiptModeBase',{k:r.law.minimum_concentration})],['receiptSeed',r.seed],['receiptDigest',r.instrument_sha256]];
+    $('receiptFields').replaceChildren();for(const [key,value] of fields){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=t(key);dd.textContent=value;$('receiptFields').append(dt,dd);}
+}
+function render(){
+    document.documentElement.lang=state.lang;document.querySelector('.nav').setAttribute('aria-label',t('navLabel'));$('method').setAttribute('aria-label',t('methodLabel'));document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));document.querySelectorAll('[data-i18n-html]').forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
+    $('successorTitle').innerHTML=t('successorTitle');$('en').setAttribute('aria-pressed',String(state.lang==='en'));$('fr').setAttribute('aria-pressed',String(state.lang==='fr'));
+    $('previous').setAttribute('aria-label',t('previous'));$('next').setAttribute('aria-label',t('next'));
+    $('build').disabled=state.busy;$('cancel').hidden=!state.busy||state.phase!=='draft';$('problemInput').disabled=state.busy;
+    document.querySelectorAll('.preset').forEach(el=>el.disabled=state.busy);
+    $('resultBadge').textContent=t(state.phase);$('resultBadge').classList.toggle('verified',['verified','accepted'].includes(state.phase));
+    $('resultSubtitle').textContent=state.batch?t(state.batch.threshold===null?'baseLaw':'tailLaw',{k:state.batch.threshold}):t('draft');
+    $('worldCount').textContent=state.batch?count(state.batch.count):'—';$('countLabel').textContent=t(state.batch?.threshold!=null?'tailCountLabel':'countLabel');$('compileTime').textContent=state.stats?duration(state.stats.ms):'—';$('stateCount').textContent=state.stats?count(state.stats.states):'—';$('sampleTime').textContent=state.batch?duration(state.batch.ms):'—';
+    for(const id of ['resample','verify','downloadInstrument','downloadJson','downloadCsv']) $(id).disabled=!state.batch||state.busy;
+    $('accept').disabled=!state.verification?.passed||state.busy||!!state.receipt;$('downloadReceipt').disabled=!state.receipt||state.busy;
+    $('condition').disabled=!state.distribution.length||state.busy;$('threshold').disabled=!state.distribution.length||state.busy;
+    $('verifyLine').textContent=state.verification?.passed?t('verification',{n:state.verification.worlds,tail:state.batch.threshold===null?'':t('tailCheck',{k:state.batch.threshold})}):t('unverified');
+    renderStatus();renderMatrix();renderDistribution();renderReceipt();
+}
+function selectPreset(key){
+    if(state.busy) return;state.generation++;disposeWorker();resetDelivery();state.previewMatchesInput=true;state.problem=structuredClone(presets[key]);$('problemInput').value=JSON.stringify(state.problem,null,2);document.querySelectorAll('.preset').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.preset===key)));setStatus('ready');render();
+}
+function download(name,data,type='application/json'){
+    const url=URL.createObjectURL(new Blob([typeof data==='string'?data:JSON.stringify(data,null,2)+'\n'],{type})),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function batchExport(){return {schema:'agi-alpha-worlds-v1',instrument_sha256:state.asset.sha256,problem:state.problem,law:state.batch.threshold===null?{kind:'uniform_feasible_integer_tables'}:{kind:'uniform_concentration_tail',minimum_concentration:state.batch.threshold},rng:state.batch.rng,seed:state.batch.seed,verification:state.verification,samples:state.batch.samples};}
+$('en').onclick=()=>{state.lang='en';render();};$('fr').onclick=()=>{state.lang='fr';render();};
+document.querySelectorAll('.preset').forEach(el=>el.onclick=()=>selectPreset(el.dataset.preset));
+$('problemInput').addEventListener('input',()=>{if(state.busy) return;state.generation++;disposeWorker();resetDelivery();state.previewMatchesInput=false;document.querySelectorAll('.preset').forEach(el=>el.setAttribute('aria-pressed','false'));setStatus('dirty');render();});
+$('build').onclick=build;$('resample').onclick=()=>sample();$('verify').onclick=verify;$('accept').onclick=accept;
+$('cancel').onclick=()=>{state.generation++;disposeWorker();resetDelivery();state.busy=false;setStatus('cancelled');render();};
+$('previous').onclick=()=>{if(state.selected>0){state.selected--;renderMatrix();}};$('next').onclick=()=>{if(state.batch&&state.selected+1<state.batch.samples.length){state.selected++;renderMatrix();}};
+$('threshold').onchange=()=>{state.threshold=Number($('threshold').value);renderDistribution();};$('condition').onclick=()=>sample(state.threshold);
+$('downloadInstrument').onclick=()=>{if(state.asset) download('AGI_ALPHA_Exact_Worlds_instrument.json',state.asset);};
+$('downloadJson').onclick=()=>{if(state.batch) download('AGI_ALPHA_Exact_Worlds_tables.json',batchExport());};
+$('downloadCsv').onclick=()=>{if(!state.batch) return;const columns=['world','rank','draw_rank','concentration',...state.problem.rows.flatMap((_,i)=>state.problem.cols.map((_,j)=>`r${i+1}_c${j+1}`))];const lines=state.batch.samples.map((s,i)=>[i+1,s.rank,s.draw_rank,s.concentration,...s.table.flat()].join(','));download('AGI_ALPHA_Exact_Worlds_tables.csv',[columns.join(','),...lines].join('\r\n')+'\r\n','text/csv;charset=utf-8');};
+$('downloadReceipt').onclick=()=>{if(state.receipt) download('AGI_ALPHA_Exact_Worlds_receipt.json',state.receipt);};
+window.ExactWorlds=Object.freeze({get state(){return state;},build,sample,verify,accept,rpc,validateTable,canonical,digest,selectPreset,batchExport});
+selectPreset('capacity');
+</script>
+</body>
+</html>

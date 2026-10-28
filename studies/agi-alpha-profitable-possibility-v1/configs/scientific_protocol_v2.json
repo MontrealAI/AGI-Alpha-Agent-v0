@@ -1,0 +1,42 @@
+{
+  "schema": "agi-alpha-science-protocol-v2",
+  "time_utc": "2026-10-28T14:43:55Z",
+  "source_sha256": {
+    "kernel.py": "ec15ddbdbb59f5a098a34fad08dccb385cc539e112386c9f02da98da666a9ced",
+    "independent_reference.py": "3cd8da809cf04ee3320c2c938db43d6935797251a6ee3634edffcf5eb0553c3d",
+    "campaign.py": "2156b50dade22fe722a3df7d46fe203ceca6b75f672e96165398100d60272338",
+    "vendor/miller_harrison_exact.py": "50a6da2c96c3b38e588fead00b6ac9ca2eb84bfe88e48b1cf232e99221660f16"
+  },
+  "small_cases": 128,
+  "small_seed": 872161029,
+  "performance_seed": 918361029,
+  "performance_cases": 12,
+  "performance_seconds": 30,
+  "state_budget": 100000,
+  "transition_budget": 1500000,
+  "successor_columns": [
+    14,
+    18
+  ],
+  "successor_targets": [
+    0,
+    1
+  ],
+  "sample_count": 100,
+  "successor_sample_count": 100,
+  "max_enumerated_small_tables": 100000,
+  "comparators": [
+    "exhaustive cell recursion",
+    "labeled cell DP",
+    "independent conventional orbit DP",
+    "authors EXACT v0.3 Python3 port on its supported binary domain",
+    "direct statistic-conditioned orbit DP",
+    "direct all-statistics orbit DP",
+    "conventional reuse of the same inherited asset"
+  ],
+  "acceptance": "Exact count equality; exhaustive bijection on small cases; cell checks and rank round trips.",
+  "frontier_claim": "Only a declared measured resource envelope; no global impossibility or novelty inference.",
+  "statistics": "Generated cases are software challenges, not a sampled industrial population.",
+  "timing": "Local elapsed wall time; includes explicit cold load, structural validation, and query times.",
+  "new_model_causality": "Not tested: no old/new model comparison, no model-price estimate substituted for usage."
+}

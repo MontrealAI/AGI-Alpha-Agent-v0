@@ -1,0 +1,25 @@
+{
+  "source_sha256": "a8d55274da35d8c6ef8f85d02075bc1afa0e9b4269f75c45cb3625d070f8b053",
+  "config_sha256": "0ddcc6d0884f24bce7608fce863e3d1b03e0b5df24cdac6e8c788617fd61ea97",
+  "created_unix": 1793198670,
+  "selection_rule": "Among policies with positive mean after-tax full-project profit, loss frequency <=0.25 and insolvency frequency <=0.05 on base training worlds, maximize the tenth-percentile full-project profit. Tie-break by mean then lexicographic policy name. If none qualify, select stop. Always evaluate the highest-mean active policy on holdout as a diagnostic, regardless of stop selection.",
+  "training_seed_interval": [
+    141000,
+    141063
+  ],
+  "confirmation_seed_interval": [
+    3000000,
+    3000255
+  ],
+  "worlds_override": null,
+  "scenarios": [
+    "base",
+    "competitive_pressure",
+    "demand_shortfall",
+    "supplier_disruption",
+    "cost_inflation",
+    "late_payments",
+    "combined_downside"
+  ],
+  "note": "Source/config frozen before training; holdout seeds were not used to select policy"
+}

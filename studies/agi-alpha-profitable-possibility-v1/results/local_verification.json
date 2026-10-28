@@ -1,0 +1,122 @@
+{
+  "schema": "agi-alpha-local-verification-v1",
+  "date": "2026-10-28",
+  "scientific_methods_unchanged_since_completed_freeze": true,
+  "scientific_source_sha256": {
+    "kernel.py": "ec15ddbdbb59f5a098a34fad08dccb385cc539e112386c9f02da98da666a9ced",
+    "independent_reference.py": "3cd8da809cf04ee3320c2c938db43d6935797251a6ee3634edffcf5eb0553c3d",
+    "campaign.py": "2156b50dade22fe722a3df7d46fe203ceca6b75f672e96165398100d60272338",
+    "vendor/miller_harrison_exact.py": "50a6da2c96c3b38e588fead00b6ac9ca2eb84bfe88e48b1cf232e99221660f16"
+  },
+  "runtime_scientific_acceptance": "results/confirmation_v2/scientific_summary.json",
+  "independent_review": "results/kernel_independent_review.json",
+  "economic_verification": [
+    "economics/corrected_decimal_audit_v2.json",
+    "economics/optimized_python_audit_v2.json",
+    "economics/final_reference_replay.json",
+    "economics/native_cash_audit.json"
+  ],
+  "browser_verification": "results/browser_acceptance.json",
+  "additional_delivery": "results/delivery_example/delivery_acceptance.json",
+  "dependency_checks": [
+    {
+      "command": "python scripts/check_python_deps.py",
+      "status": "passed earlier in this execution"
+    },
+    {
+      "command": "python check_env.py --auto-install --wheelhouse wheels",
+      "status": "passed earlier in this execution; Environment OK"
+    }
+  ],
+  "ruff": {
+    "status": "passed",
+    "scope": [
+      "kernel.py",
+      "campaign.py",
+      "independent_reference.py",
+      "economy.py",
+      "assemble_evidence.py",
+      "restore_compressed_artifacts.py",
+      "package_artifacts.py",
+      "publication/build_report.py",
+      "publication/build_science_figures.py",
+      "publication/build_economic_figures.py"
+    ]
+  },
+  "mypy_strict": {
+    "status": "failed",
+    "scope": [
+      "kernel.py",
+      "campaign.py",
+      "independent_reference.py",
+      "economy.py",
+      "assemble_evidence.py"
+    ],
+    "diagnostics": [
+      {
+        "file": "kernel.py",
+        "line": 267,
+        "code": "arg-type",
+        "message": "int receives int | None in private _decode conditional branch"
+      },
+      {
+        "file": "kernel.py",
+        "line": 278,
+        "code": "arg-type",
+        "message": "int receives int | None in private _decode conditional branch"
+      },
+      {
+        "file": "kernel.py",
+        "line": 361,
+        "code": "no-redef",
+        "message": "result annotation repeated after assignment in another branch"
+      }
+    ],
+    "disposition": "Frozen scientific source bytes are preserved; no clean strict-typecheck claim. Functional confirmation results remain separate."
+  },
+  "pdf": {
+    "pages": 21,
+    "bytes": 274956,
+    "metadata": {
+      "format": "PDF 1.5",
+      "title": "AGI ALPHA FLYWHEEL: The Profitable Possibility Engine",
+      "author": "Vincent Boucher, President of MONTREAL.AI",
+      "subject": "An executed bounded exact-world campaign, adversarial enterprise economics, and successor challenge",
+      "keywords": "",
+      "creator": "LaTeX with hyperref",
+      "producer": "xdvipdfmx (20220710)",
+      "creationDate": "D:20261028",
+      "modDate": "D:20261028",
+      "trapped": "",
+      "encryption": null
+    },
+    "outside_page_text": [],
+    "compiler_warnings": [],
+    "sha256": "b1d8e5ba23b8a960fa283adb82b6e97a74f0dc716a17a8c5f60504e2e1ecb1c0",
+    "all_pages_rendered_and_visually_inspected": true,
+    "key_figures_and_cover_inspected_at_full_page_size": true,
+    "screenshots_included_in_deliverable": false,
+    "source": "publication/AGI_ALPHA_Profitable_Possibility_Engine.tex",
+    "compiler": "XeLaTeX; final cross-references resolved"
+  },
+  "repository": {
+    "base_sha": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+    "full_pre_commit": "not run; draft submission permitted under AGENTS.md and CONTRIBUTING.md, no installed hook disabled",
+    "full_coverage_campaign": "not run; isolated study functional experiments are not complete repository coverage",
+    "hosted_current_change_checks": "not yet run at local assembly",
+    "canonical_main_release": {
+      "run": 40640285041,
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40640285041"
+    },
+    "merge_or_deployment_claim": false
+  },
+  "financial_scope": {
+    "real_customers": 0,
+    "actual_revenue_usd": 0,
+    "actual_complete_cost_usd": null,
+    "actual_profit_usd": null,
+    "real_outreach_or_purchases": []
+  }
+}

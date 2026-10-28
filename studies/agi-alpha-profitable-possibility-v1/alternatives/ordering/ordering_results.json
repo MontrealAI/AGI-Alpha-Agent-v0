@@ -1,0 +1,502 @@
+{
+  "protocol": {
+    "declared_at": "2026-10-28T14:51:01.942624+00:00",
+    "status": "post-confirmation diagnostic; neither held-out nor a new algorithm",
+    "case": "capacity_20_variant_2",
+    "orders": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        3,
+        2
+      ],
+      [
+        0,
+        2,
+        1,
+        3
+      ],
+      [
+        0,
+        2,
+        3,
+        1
+      ],
+      [
+        0,
+        3,
+        1,
+        2
+      ],
+      [
+        0,
+        3,
+        2,
+        1
+      ],
+      [
+        1,
+        0,
+        2,
+        3
+      ],
+      [
+        1,
+        0,
+        3,
+        2
+      ],
+      [
+        1,
+        2,
+        0,
+        3
+      ],
+      [
+        1,
+        2,
+        3,
+        0
+      ],
+      [
+        1,
+        3,
+        0,
+        2
+      ],
+      [
+        1,
+        3,
+        2,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        3
+      ],
+      [
+        2,
+        0,
+        3,
+        1
+      ],
+      [
+        2,
+        1,
+        0,
+        3
+      ],
+      [
+        2,
+        1,
+        3,
+        0
+      ],
+      [
+        2,
+        3,
+        0,
+        1
+      ],
+      [
+        2,
+        3,
+        1,
+        0
+      ],
+      [
+        3,
+        0,
+        1,
+        2
+      ],
+      [
+        3,
+        0,
+        2,
+        1
+      ],
+      [
+        3,
+        1,
+        0,
+        2
+      ],
+      [
+        3,
+        1,
+        2,
+        0
+      ],
+      [
+        3,
+        2,
+        0,
+        1
+      ],
+      [
+        3,
+        2,
+        1,
+        0
+      ]
+    ],
+    "per_order_wall_seconds": 3.5,
+    "total_challenge_wall_seconds": 89.0,
+    "selection": "Exhaustively try all 24 row permutations in lexicographic order with equal execution budgets.",
+    "fair_cost": "Order-search cost is the sum of all attempts, not the best successful attempt.",
+    "max_states": 1000000,
+    "reference_source_sha256": "0305e5fabb51b0ef649662257dd643792fa4149a3b0b795bbfccaff23eef3fe9",
+    "harness_source_sha256": "4b5e3f544c473184a243c32e49b348b3e01466b5800a6334c8e2c753fd098672"
+  },
+  "summary": {
+    "completed": 8,
+    "timeouts": 16,
+    "not_run": 0,
+    "all_completed_counts_agree": true,
+    "independent_corroboration_count": "37877767916",
+    "best_execution": {
+      "count": "37877767916",
+      "states": 1891,
+      "transitions": 106689,
+      "seconds": 1.724347758005024,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "wall_seconds": 1.7243869810044998
+    },
+    "same_input_order_execution": {
+      "status": "timeout",
+      "order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "wall_seconds": 3.500078871002188
+    },
+    "total_search_wall_seconds": 75.17710192600498,
+    "compiler_confirmation_seconds": 1.8897933389962418,
+    "original_conventional_confirmation_status": {
+      "status": "timeout",
+      "seconds": 30,
+      "count": null
+    },
+    "fixed_general_heuristic_selected": false,
+    "fresh_cases_required": false,
+    "limits": "This adaptive all-order diagnostic measures order sensitivity on the already observed failure; it establishes no held-out speedup or general heuristic."
+  },
+  "attempts": [
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "wall_seconds": 3.500078871002188
+    },
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        1,
+        3,
+        2
+      ],
+      "wall_seconds": 3.500150562998897
+    },
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "wall_seconds": 3.5000689449952915
+    },
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        2,
+        3,
+        1
+      ],
+      "wall_seconds": 3.500066740998591
+    },
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "wall_seconds": 3.5000637409975752
+    },
+    {
+      "status": "timeout",
+      "order": [
+        0,
+        3,
+        2,
+        1
+      ],
+      "wall_seconds": 3.500066661996243
+    },
+    {
+      "count": "37877767916",
+      "states": 2237,
+      "transitions": 148384,
+      "seconds": 3.290716555995459,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        1,
+        0,
+        2,
+        3
+      ],
+      "wall_seconds": 3.2907566809954005
+    },
+    {
+      "count": "37877767916",
+      "states": 2240,
+      "transitions": 148387,
+      "seconds": 3.4720285029980005,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "wall_seconds": 3.4720710780020454
+    },
+    {
+      "status": "timeout",
+      "order": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "wall_seconds": 3.500069068999437
+    },
+    {
+      "status": "timeout",
+      "order": [
+        1,
+        2,
+        3,
+        0
+      ],
+      "wall_seconds": 3.500067676999606
+    },
+    {
+      "status": "timeout",
+      "order": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "wall_seconds": 3.500068346998887
+    },
+    {
+      "status": "timeout",
+      "order": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "wall_seconds": 3.5000708579973434
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "wall_seconds": 3.5000661649974063
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "wall_seconds": 3.500077300996054
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "wall_seconds": 3.5001871589993243
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        1,
+        3,
+        0
+      ],
+      "wall_seconds": 3.5000682280006004
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "wall_seconds": 3.5000679769946146
+    },
+    {
+      "status": "timeout",
+      "order": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "wall_seconds": 3.500075376003224
+    },
+    {
+      "count": "37877767916",
+      "states": 1893,
+      "transitions": 106691,
+      "seconds": 1.8143210040070699,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "wall_seconds": 1.8143657269974938
+    },
+    {
+      "count": "37877767916",
+      "states": 1891,
+      "transitions": 106689,
+      "seconds": 1.724347758005024,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "wall_seconds": 1.7243869810044998
+    },
+    {
+      "count": "37877767916",
+      "states": 2057,
+      "transitions": 131989,
+      "seconds": 2.5960413290013094,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        1,
+        0,
+        2
+      ],
+      "wall_seconds": 2.5961462750055944
+    },
+    {
+      "count": "37877767916",
+      "states": 2055,
+      "transitions": 131987,
+      "seconds": 2.6191126519988757,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "wall_seconds": 2.619152617000509
+    },
+    {
+      "count": "37877767916",
+      "states": 1348,
+      "transitions": 90764,
+      "seconds": 1.8480771339964122,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "wall_seconds": 1.8481158729991876
+    },
+    {
+      "count": "37877767916",
+      "states": 1348,
+      "transitions": 90764,
+      "seconds": 1.7518983420013683,
+      "algorithm": "independent conventional cap-signature orbit dynamic program",
+      "collision_target": null,
+      "status": "complete",
+      "agrees_with_compiler": true,
+      "order": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "wall_seconds": 1.7519605370034697
+    }
+  ]
+}

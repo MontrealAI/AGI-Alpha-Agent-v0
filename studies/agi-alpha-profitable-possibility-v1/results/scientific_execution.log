@@ -1,0 +1,64 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/campaign.py", line 324, in <module>
+    main()
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/campaign.py", line 320, in main
+    run(args.protocol, args.output)
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/campaign.py", line 291, in run
+    summary["published"] = run_published(output)
+                           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/campaign.py", line 273, in run_published
+    instrument = Fiber(problem).compile()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 189, in compile
+    self.root = self._visit(0, initial)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 253, in _visit
+    combine(0, 0, 1, [])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  [Previous line repeated 4 more times]
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 242, in combine
+    child = self._visit(row + 1, next_groups)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 253, in _visit
+    combine(0, 0, 1, [])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  [Previous line repeated 6 more times]
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 242, in combine
+    child = self._visit(row + 1, next_groups)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 253, in _visit
+    combine(0, 0, 1, [])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  [Previous line repeated 5 more times]
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 242, in combine
+    child = self._visit(row + 1, next_groups)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 253, in _visit
+    combine(0, 0, 1, [])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 251, in combine
+    combine(g + 1, mass + value, mult * permutations, allocated + [counts])
+  [Previous line repeated 5 more times]
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 233, in combine
+    self._check_budget()
+  File "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/kernel.py", line 180, in _check_budget
+    raise ResourceLimit("construction state/transition budget exceeded")
+kernel.ResourceLimit: construction state/transition budget exceeded
