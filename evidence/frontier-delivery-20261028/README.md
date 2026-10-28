@@ -35,7 +35,7 @@ and current source are separately frozen; mixed editions refuse before backup.
 
 Actual customer collections are **USD0**. Complete actual authoring, review, infrastructure and model
 costs are **unknown**, so actual profit is unknown. Conditional contributions are not realized profit.
-The equally capable conventional execution control ties all23 complete owner cases, with one bounded
+The equally capable conventional execution control ties all 23 complete owner cases, with one bounded
 incomplete case. The broader venture and additional expansion remain unvalidated separately from the
 existence of this bounded planning sample.
 
@@ -56,7 +56,7 @@ Use a new output path for each replay. Controlled model API calls: **0**; live E
 **not run**. Session authoring and delegated reviews are not metered frontier-model comparison arms.
 SourceFreeze binds runtime, policies, tests and lockfiles; changing those bytes cannot pass this freeze.
 
-Final qualification commands, actual results and remaining gates will be retained in `QUALIFICATION.json`.
+[Final qualification](QUALIFICATION.json) records 1,641 native passes/one explicit Docker skip, 550 affected passes at 90.15% coverage across seven modules, 95 focused passes, 303 publication passes and 388 release-contract passes. Strict typing covers 75 runtime files; eight replay packets have 430 matching source bindings; browser checks pass 23 flagship + 54 Insight with eight clean accessibility audits. The exact-parent counterexample campaign preserves 8 failures/17 controls; all 25 final reservation regressions pass. Commands are in `COMMANDS.json`.
 Local full hooks, exact-head hosted checks, resulting-main security/coverage/platform/package/public
 installation and actual served-byte acceptance remain separate required release gates. The original
 five held source pins and four unqualified behavior outcomes remain unchanged.

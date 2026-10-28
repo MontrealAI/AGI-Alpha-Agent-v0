@@ -51,7 +51,10 @@ initializing official Semgrep; no full-hook/Actionlint/Semgrep pass is claimed.
 Required hosted security/integrity, exact-main coverage/platform/package/public
 installation and served-byte acceptance remain blocking publication gates.
 The unchanged five held-source identities are checked statically; four held
-behavior outcomes remain explicitly unexecuted and unqualified.
+behavior outcomes were not executed in this composed-source campaign and remain
+unqualified. The earlier root selection incident remains preserved in
+`evidence/decisive-frontier-20261027/review-enterprise-integrated/HELD_SELECTION_INCIDENT.json`;
+that earlier invocation is unqualified and grants no authority.
 
 After the qualified release, run the already-frozen native allocation/schedule
 and conditional research-access missions against a verified clean public install.
@@ -63,3 +66,9 @@ No persistent credentials, spending, wallet action or customer outreach occurs.
 Rollback remains the existing release/Pages procedure: stop admission, preserve
 unknown obligations/history, redeploy the previous qualified artifact and verify
 its identities and served bytes. A version rollback cannot reverse external effects.
+
+A later metadata-only append preserves the child’s final6dd615 evidence packet.
+All313 combined source files, runtime, tests, workers, held pins and selections are
+byte-identical to3299037; its actual local results retain that source attribution.
+No6dd historical test result is promoted to the combined source. Exact-head review
+and required hosted checks still apply to the final metadata commit.
