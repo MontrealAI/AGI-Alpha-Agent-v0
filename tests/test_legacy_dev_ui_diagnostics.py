@@ -519,3 +519,79 @@ def test_decoded_json_credentials_in_keys_are_redacted(monkeypatch: pytest.Monke
     decoded = json.loads(result["tail"])
     assert secret not in decoded
     assert decoded == {"[REDACTED]": "public value", "Error": "[REDACTED]", "ExitCode": 0}
+
+
+@pytest.mark.parametrize(
+    ("secret", "invalid_utf8"),
+    [
+        ("FICTIONAL-a\ufffdb-END", b"FICTIONAL-a\xffb-END"),
+        ("\ufffd", b"\xff"),
+        ("FICTIONAL-\ufffd\ufffd\ufffd-CREDENTIAL", b"FICTIONAL-\xed\xa0\x80-CREDENTIAL"),
+    ],
+)
+@pytest.mark.parametrize("chunked", [False, True])
+def test_invalid_utf8_decoding_cannot_reintroduce_known_credentials(
+    monkeypatch: pytest.MonkeyPatch, secret: str, invalid_utf8: bytes, chunked: bool
+) -> None:
+    monkeypatch.setenv("API_TOKEN", secret)
+    body = invalid_utf8 + b"/PUBLIC-END"
+    split = max(1, len(invalid_utf8) // 2)
+    code = (
+        "import os,time;os.write(1," + repr(body[:split]) + ");time.sleep(.02);os.write(1," + repr(body[split:]) + ")"
+        if chunked
+        else "import os;os.write(1," + repr(body) + ")"
+    )
+    result = validator._diagnostic_command([sys.executable, "-c", code], {}, timeout=2)
+    assert result["status"] == "ok"
+    assert result["tail"] == "[REDACTED]/PUBLIC-END"
+    assert secret not in result["tail"]
+    assert len(result["tail"].encode()) <= 16_384
+
+
+@pytest.mark.parametrize(
+    ("body", "expected"),
+    [
+        (b'{"Error":"FICTIONAL-a\xffb-END","ExitCode":0}', {"Error": "[REDACTED]", "ExitCode": 0}),
+        (b'{"FICTIONAL-a\xffb-END":"public","ExitCode":0}', {"[REDACTED]": "public", "ExitCode": 0}),
+    ],
+)
+def test_invalid_utf8_json_strings_and_keys_are_redacted_without_erasing_state(
+    monkeypatch: pytest.MonkeyPatch, body: bytes, expected: dict[str, object]
+) -> None:
+    secret = "FICTIONAL-a\ufffdb-END"
+    monkeypatch.setenv("API_TOKEN", secret)
+    monkeypatch.setenv("API_SECRET", "0")
+    result = validator._diagnostic_command(
+        [sys.executable, "-c", "import os;os.write(1," + repr(body) + ")"], {}, timeout=2
+    )
+    assert result["status"] == "ok"
+    assert json.loads(result["tail"]) == expected
+    assert secret not in result["tail"]
+
+
+def test_invalid_utf8_at_eof_cannot_reintroduce_a_known_credential_prefix(monkeypatch: pytest.MonkeyPatch) -> None:
+    secret = "FICTIONAL-a\ufffdb-END"
+    monkeypatch.setenv("API_TOKEN", secret)
+    result = validator._diagnostic_command(
+        [sys.executable, "-c", "import os;os.write(1,b'public/FICTIONAL-a\\xff')"], {}, timeout=2
+    )
+    assert result["status"] == "ok"
+    assert result["tail"] == "public/[REDACTED]"
+
+
+@pytest.mark.parametrize(
+    ("credentials", "body"),
+    [
+        (("FOO", "X[REDACTED]Y", "L[REDACTED]R"), b"LXFOOYR"),
+        (("FOO", "X[REDACTED]Y"), b'{"Error":"XFOOY","ExitCode":0}'),
+        (("FOO", "X[REDACTED]Y"), b'{"XFOOY":"public","ExitCode":0}'),
+    ],
+)
+def test_redaction_marker_adjacency_withholds_recreated_known_values(
+    monkeypatch: pytest.MonkeyPatch, credentials: tuple[str, ...], body: bytes
+) -> None:
+    monkeypatch.setattr(validator, "_credentials", lambda: credentials)
+    result = validator._diagnostic_command(
+        [sys.executable, "-c", "import os;os.write(1," + repr(body) + ")"], {}, timeout=2
+    )
+    assert result["status"] == "output-withheld" and result["tail"] == ""

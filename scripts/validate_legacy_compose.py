@@ -71,6 +71,20 @@ def _redact_values(value: object, credentials: tuple[str, ...]) -> object:
     return value
 
 
+def _contains_credential(value: object, credentials: tuple[str, ...]) -> bool:
+    """Check remaining strings and keys without treating typed state as secrets."""
+    if isinstance(value, str):
+        return any(credential in value for credential in credentials)
+    if isinstance(value, dict):
+        return any(
+            _contains_credential(name, credentials) or _contains_credential(item, credentials)
+            for name, item in value.items()
+        )
+    if isinstance(value, list):
+        return any(_contains_credential(item, credentials) for item in value)
+    return False
+
+
 def _masked_tail(raw: bytes, patterns: list[bytes], head_truncated: bool, limit: int) -> bytes:
     """Mask overlapping credentials and unsafe capture/EOF boundaries before trimming."""
     spans: list[tuple[int, int]] = []
@@ -174,21 +188,31 @@ def _diagnostic_command(command: list[str], env: dict[str, str], timeout: float 
         except BaseException:
             if not abnormal:
                 raise
+    normalization_truncated = False
     if withheld:
         text = b""
     else:
         text = _masked_tail(bytes(tail), patterns, total > capture_limit, limit)
+        structured_json = False
         if total <= capture_limit:
             try:
-                decoded = json.loads(tail)
+                decoded = json.loads(tail.decode("utf-8", errors="replace"))
             except (UnicodeError, ValueError):
                 pass
             else:
-                text = json.dumps(_redact_values(decoded, credentials), ensure_ascii=False).encode("utf-8")
-                if len(text) > limit:
+                structured_json = True
+                redacted = _redact_values(decoded, credentials)
+                text = json.dumps(redacted, ensure_ascii=False).encode("utf-8")
+                if len(text) > limit or _contains_credential(redacted, credentials):
                     withheld = True
                     text = b""
-        text = text.decode("utf-8", errors="replace").encode("utf-8")
+        # Replacement decoding can synthesize a known U+FFFD-containing credential.
+        rendered = text.decode("utf-8", errors="replace").encode("utf-8")
+        normalization_truncated = len(rendered) > limit
+        text = rendered if structured_json else _masked_tail(rendered, patterns, False, limit)
+        if not structured_json and _contains_credential(text.decode("utf-8", errors="ignore"), credentials):
+            withheld = True
+            text = b""
     return {
         "status": "output-withheld"
         if withheld
@@ -198,7 +222,7 @@ def _diagnostic_command(command: list[str], env: dict[str, str], timeout: float 
         if process.returncode == 0
         else "command-failed",
         "returncode": process.returncode,
-        "truncated": total > limit or len(text) > limit,
+        "truncated": total > limit or normalization_truncated or len(text) > limit,
         "tail": text[-limit:].decode("utf-8", errors="ignore"),
     }
 
