@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/runtime",
+    "--confcutdir=tests/runtime",
+    "--ignore=tests/runtime/test_budget_browser.py",
+    "--ignore=tests/runtime/test_ecosystem_browser.py",
+    "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    "-q",
+    "-o",
+    "addopts=",
+    "--junitxml=/workspace/scratch/b90e50262d61/combined-confirmation/runtime.xml"
+  ],
+  "elapsed_seconds": 541.6353347301483,
+  "errors": 0,
+  "exitcode": 0,
+  "failed_cases": [],
+  "failures": 0,
+  "head": "3299037f9680682d5b10fe3a13130b73bd2c7e72",
+  "passed": 1689,
+  "skipped": 1,
+  "skips": [
+    {
+      "case": {
+        "classname": "tests.runtime.test_successor_computer",
+        "name": "test_real_container_keyboard_screenshot_and_cleanup",
+        "time": "0.000"
+      },
+      "reason": {
+        "message": "real Docker image must be explicitly provided",
+        "type": "pytest.skip"
+      }
+    }
+  ],
+  "source_count": 75,
+  "sources_unchanged": true,
+  "tests": 1690,
+  "tracked_source_status": "",
+  "tree": "277dba35d74e9da388502eb5b38d717455c23a16"
+}
