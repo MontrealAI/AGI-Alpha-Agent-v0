@@ -65,17 +65,19 @@ def current_files() -> dict[str, bytes]:
     catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
     names = set(catalog["sources"]) | set(checkout.CONNECTED_DELIVERY_147_EXTRA_FILES)
     assert len(names) == 61
-    return {name: (ROOT / name).read_bytes() for name in names}
+    rows = fixture()["files"]
+    return {name: rows[name]["text"].encode() if name in rows else (ROOT / name).read_bytes() for name in names}
 
 
-def test_reconciled_edition_matches_current_source_and_preserves_both_histories() -> None:
+def test_connected_historical_edition_preserves_its_frozen_source_and_both_histories() -> None:
     value = fixture()
     profiles = {name: getattr(checkout, name) for name in PREDECESSOR_NAMES}
     assert len(profiles) == 25
     assert hashlib.sha256(json.dumps(profiles, sort_keys=True, separators=(",", ":")).encode()).hexdigest() == (
         PREDECESSOR_SHA256
     )
-    assert value["pageSha256"] == hashlib.sha256((ROOT / "docs/flywheel/index.html").read_bytes()).hexdigest()
+    historical_page = ROOT / "tests/fixtures/connected-delivery-147-page.html.txt"
+    assert value["pageSha256"] == hashlib.sha256(historical_page.read_bytes()).hexdigest()
     before = current_files()
     for name, record in value["files"].items():
         body = before[name]

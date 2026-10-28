@@ -105,7 +105,7 @@ def test_identity_guard_precedes_agent_invocation_without_weakening_it() -> None
         "regression",
         "Offline regression including notebooks (four held native tests excluded)",
         "evidence",
-        90,
+        120,
     )
 
 

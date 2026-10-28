@@ -131,12 +131,109 @@ class CostLedger:
             raise ValueError("supporting signature belongs to a different journal")
         return dict(payload)
 
+    def _invocation_reservation(self, row: dict[str, Any], charge: Charge, cx: Any) -> None:
+        from eth_account import Account
+        from eth_account.messages import encode_defunct
+        from eth_keys.exceptions import BadSignature
+
+        from ..chain import address
+        from .flywheel_access import AccessRequest, ServiceIdentity, direct_name
+        from .flywheel_capsules import Invocation, input_digest
+        from .flywheel_specialists import PlacementInvocation
+
+        if (
+            charge.activity_id != "reuse/" + charge.mission_id
+            or charge.bucket != "B"
+            or charge.category != "compute"
+            or charge.accrued_micro_usd is not None
+            or charge.paid_micro_usd != 0
+            or charge.basis != "unknown"
+            or "original" in row
+        ):
+            raise ValueError("unsigned cost row is not an original protected invocation reservation")
+        stored = self.journal.latest("@flywheel-invocation:" + charge.mission_id, cx)
+        raw, receipt = stored["request"], stored["receipt"]
+        request = PlacementInvocation.model_validate(raw) if "problem" in raw else Invocation.model_validate(raw)
+        request_hash = digest("flywheel-invocation", request)
+        attempt_hash = digest(
+            "flywheel-invocation-attempt",
+            {
+                "candidate_digest": receipt["candidate_digest"],
+                "mission_id": request.mission_id,
+                "request_digest": request_hash,
+            },
+        )
+        document = request.problem if isinstance(request, PlacementInvocation) else request.document
+        if (
+            request.mission_id != charge.mission_id
+            or receipt["request_digest"] != request_hash
+            or receipt["attempt_digest"] != attempt_hash
+            or charge.evidence_digest != attempt_hash
+            or receipt["input_digest"] != input_digest(document)
+            or any(
+                receipt[name] != getattr(request, name)
+                for name in ("beta_digest", "policy_digest", "recipient_capabilities_digest", "cost_cap_micro_usd")
+            )
+        ):
+            raise ValueError("cost reservation differs from its durable invocation request")
+        authority = receipt["authorization"]
+        challenge = self.journal.latest("@flywheel-challenge:" + authority["challenge_id"], cx)
+        payload = challenge["payload"]
+        proof = AccessRequest(challenge_id=authority["challenge_id"], signature=challenge["signature"])
+        message = (
+            "AGI Alpha resource authorization v1\n"
+            + canonical(payload).decode()
+            + "\nNo spending, settlement, deployment or external-system authority."
+        )
+        if (
+            set(payload)
+            != {
+                "service",
+                "journal_identity",
+                "name",
+                "wallet",
+                "resource",
+                "action",
+                "request_digest",
+                "issued_at",
+                "expires_at",
+                "nonce",
+            }
+            or ServiceIdentity.model_validate(payload["service"]).model_dump() != payload["service"]
+            or digest("flywheel-challenge", payload) != proof.challenge_id
+            or challenge["message"] != message
+            or challenge["used"] is not True
+            or challenge["authorization"] != authority
+            or challenge["revision"] >= stored["revision"]
+            or payload["journal_identity"] != self.journal.identity
+            or payload["resource"] != receipt["candidate_digest"]
+            or payload["action"] != "invoke"
+            or payload["request_digest"] != request_hash
+            or direct_name(payload["name"]) != authority["name"]
+            or payload["wallet"] != authority["wallet"]
+            or authority["request_committed_at"] != payload["issued_at"]
+            or type(authority["checked_at"]) is not int
+            or not payload["issued_at"] <= authority["checked_at"] < payload["expires_at"]
+            or type(receipt["started_at"]) is not int
+            or receipt["started_at"] < authority["checked_at"]
+        ):
+            raise ValueError("invocation cost lacks its exact consumed historical authorization")
+        try:
+            signer = address(Account.recover_message(encode_defunct(text=message), signature=proof.signature))
+        except (ValueError, TypeError, BadSignature) as exc:
+            raise ValueError("historical invocation wallet signature is invalid") from exc
+        if signer != payload["wallet"]:
+            raise ValueError("historical invocation wallet signature differs from the consumed challenge")
+
     def _current_charge(self, row: dict[str, Any], cx: Any, depth: int = 0) -> None:
         if depth > 1:
             raise ValueError("cost reconciliation has unsupported ancestry")
         from .flywheel_execution import ExecutionPermit, operation_key
 
         charge = Charge.model_validate({name: row[name] for name in Charge.model_fields})
+        if row["signed"] is None:
+            self._invocation_reservation(row, charge, cx)
+            return
         signed = SignedEnvelope.model_validate(row["signed"])
         if signed.domain == "flywheel-cost-command":
             payload = self.current_signature(signed.model_dump(), "flywheel-cost-command", "accounting")
@@ -186,6 +283,8 @@ class CostLedger:
         else:
             raise ValueError("cost signature has an unsupported authority domain")
         if "original" in row:
+            if any(row[name] != row["original"][name] for name in ("activity_id", "mission_id", "bucket", "category")):
+                raise ValueError("cost reconciliation differs from its original reservation")
             self._current_charge(row["original"], cx, depth + 1)
 
     def require_current_evidence(self, mission_id: str, buckets: list[str], cx: Any) -> None:

@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Exact integrated edition, with historical profiles and source bindings retained."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+import pytest
+
+from scripts import refresh_capability_checkout as checkout
+from tests.test_connected_delivery_147_release import current_files as reconciled_files
+from tests.test_insight_frontier_enterprise_acceptance_release import edition_files as owner_files
+from tests.test_insight_frontier_release import ROOT, WORKERS, snapshot, write_files
+
+FIXTURE = "tests/fixtures/capability-checkout-frontier-delivery-147-workers.json"
+FIXTURE_SHA256 = "6c8e7c28b34ac46dd73d140afd65e9330b0ffc4d08a73c3e3d7bcb07ca1e2943"
+SOURCE_FREEZE_SHA256 = "3b1a803175d33910ec3f1b9b0534c5a0c56125cc35b1556c724c4f194d0e4df9"
+
+
+def fixture() -> dict:
+    raw = (ROOT / FIXTURE).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+    return json.loads(raw)
+
+
+def current_files() -> dict[str, bytes]:
+    catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
+    names = set(catalog["sources"]) | set(checkout.FRONTIER_DELIVERY_147_EXTRA_FILES)
+    return {name: (ROOT / name).read_bytes() for name in names}
+
+
+def test_final_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source() -> None:
+    value = fixture()
+    assert value["version"] == "1.47.0" and len(value["predecessorProfiles"]) == 26
+    assert value["orderedParents"] == ["4be5a593ac08275fc72a446f42502f6de80cd426"]
+    for name, expected in value["predecessorProfiles"].items():
+        raw = json.dumps(getattr(checkout, name), sort_keys=True, separators=(",", ":")).encode()
+        assert hashlib.sha256(raw).hexdigest() == expected
+    for field, name in (
+        ("generatorSha256", "scripts/build_service_worker.py"),
+        ("pageSha256", "docs/flywheel/index.html"),
+        ("sourceManifestSha256", "docs/flywheel/sources.json"),
+    ):
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == value[field]
+    for name, row in value["files"].items():
+        body = (ROOT / name).read_bytes()
+        assert body == row["text"].encode()
+        assert (len(body), hashlib.sha256(body).hexdigest()) == (row["bytes"], row["sha256"])
+        assert (row["bytes"], row["sha256"]) == checkout.FRONTIER_DELIVERY_147_EXTRA_FILES[name]
+        assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == row["gitBlob"]
+    raw = (ROOT / "evidence/frontier-delivery-20261028/SOURCE_FREEZE.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == SOURCE_FREEZE_SHA256
+    frozen = json.loads(raw)
+    assert sum(name.startswith("alpha_factory_v1/core/runtime/") for name in frozen["sources"]) == 75
+    for name, expected in frozen["sources"].items():
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected, name
+    before = current_files()
+    report = checkout.refresh(ROOT)
+    assert report["checked"] == 61 and report["needsRefresh"] == [] and report["applied"] is False
+    assert before == current_files()
+
+
+@pytest.mark.parametrize("predecessor", ["owner", "reconciled"])
+@pytest.mark.parametrize("mask", range(8))
+def test_final_and_historical_editions_work_while_partial_mixtures_refuse(
+    tmp_path: Path, predecessor: str, mask: int
+) -> None:
+    old = {"owner": owner_files, "reconciled": reconciled_files}[predecessor]()
+    files = current_files()
+    for index, name in enumerate(WORKERS):
+        if not mask & (1 << index):
+            files[name] = old[name]
+    root, backups = tmp_path / "checkout", tmp_path / "backups"
+    backups.mkdir()
+    write_files(root, files)
+    before = snapshot(root)
+    if mask in {0, 7}:
+        report = checkout.refresh(root)
+        assert report["needsRefresh"] == [] and report["applied"] is False
+    else:
+        with pytest.raises(ValueError, match="unexpected capability bytes"):
+            checkout.refresh(root, apply=True, backup_parent=backups)
+    assert snapshot(root) == before and list(backups.iterdir()) == []
+
+
+@pytest.mark.parametrize("name", WORKERS)
+def test_unknown_worker_refuses_before_backup(tmp_path: Path, name: str) -> None:
+    files = current_files()
+    files[name] = b"!" + files[name][1:]
+    root, backups = tmp_path / "checkout", tmp_path / "backups"
+    backups.mkdir()
+    write_files(root, files)
+    before = snapshot(root)
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        checkout.refresh(root, apply=True, backup_parent=backups)
+    assert snapshot(root) == before and list(backups.iterdir()) == []
