@@ -1,0 +1,565 @@
+................................F..................FFFFFFFF              [100%]
+=================================== FAILURES ===================================
+_ test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes[source] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3f27f3140>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc29b430>, ...}, ...}
+change = 'source'
+
+    @pytest.mark.parametrize("change", ["source", "controller-revocation", "acceptor-revocation"])
+    def test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes(
+        setup: dict[str, Any], change: str
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial)
+        if change == "source":
+            from alpha_factory_v1.core.runtime.successor.flywheel_discovery import key
+
+            rewrite(setup, key("comparison", spec.comparison_id), lambda value: value.update(source="1" * 64))
+        else:
+            setup["trust"].revoke("controller" if change == "controller-revocation" else "acceptor")
+        value = report(setup, spec)
+>       assert all(arm["historical_acceptance_recorded"] == 1 for arm in value["arms"].values())
+E       assert False
+E        +  where False = all(<generator object test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes.<locals>.<genexpr> at 0x7fe3f53bb5e0>)
+
+tests/runtime/test_flywheel_comparisons.py:500: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[operation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3c1df0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc12b130>, ...}, ...}
+attack = 'operation'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...29eebacc791a'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[execution] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3cc4d0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc129a70>, ...}, ...}
+attack = 'execution'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...ac3a3da619ad'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[output] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3ce2a0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc1c4950>, ...}, ...}
+attack = 'output'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...a6c8d3f822cd'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[journal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc36aa80>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc12b850>, ...}, ...}
+attack = 'journal'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...c52da4aedef1'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[signature] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3ce060>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc1c4c10>, ...}, ...}
+attack = 'signature'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...cda87777cee6'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[receipt] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3bf560>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc129990>, ...}, ...}
+attack = 'receipt'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...1470689a4441'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[role] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3c2540>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc1c4eb0>, ...}, ...}
+attack = 'role'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...3a9cd805cc5d'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+_ test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[key] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fe3dc3bec60>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fe3dc129690>, ...}, ...}
+attack = 'key'
+
+    @pytest.mark.parametrize(
+        "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+    )
+    def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+        setup: dict[str, Any], attack: str
+    ) -> None:
+        from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial)
+        original = report(setup, spec)
+        assert original["cells"][0]["historical_acceptance_recorded"]
+        journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+        def change(value: dict[str, Any]) -> None:
+            envelope = value["acceptance"]
+            payload = envelope["payload"]
+            if attack == "operation":
+                payload["record"]["operation_id"] = "another-operation"
+            elif attack == "execution":
+                payload["record"]["execution_record_digest"] = "1" * 64
+            elif attack == "output":
+                payload["record"]["output_digest"] = "1" * 64
+            elif attack == "journal":
+                payload["journal_identity"] = "another-journal"
+            elif attack == "receipt":
+                value["record_digest"] = "1" * 64
+            elif attack == "signature":
+                envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+                return
+            else:
+                return
+            value["acceptance"] = sign_record(
+                setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+            ).model_dump()
+
+        if attack == "role":
+            anchor = setup["trust"]._anchors["acceptor"]
+            setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+        elif attack == "key":
+            del setup["trust"]._anchors["acceptor"]
+        else:
+            rewrite(setup, journal_key, change)
+        value = report(setup, spec)
+        cell = value["cells"][0]
+        assert not cell["historical_acceptance_recorded"]
+        assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+        assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+>       assert cell["historical_acceptance_evidence"] == {
+            "journal_key": journal_key,
+            "record_digest": setup["journal"].latest(journal_key)["digest"],
+        }
+E       AssertionError: assert {'journal_key...a_version': 1} == {'journal_key...ee9f97201ea6'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Left contains 1 more item:
+E         {'schema_version': 1}
+E         Use -v to get more diff
+
+tests/runtime/test_flywheel_comparisons.py:777: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes[source]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[operation]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[execution]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[output]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[journal]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[signature]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[receipt]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[role]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[key]
+9 failed, 50 passed in 25.76s

@@ -1,0 +1,40 @@
+{
+  "schema": "insight-current-construction-acceptance-qualification/v1",
+  "review_thread": "PRRT_kwDONwDjTc6w7Ibp",
+  "scope": "Existing construction assessment and seed/plan inheritance guards; no new trust root, authority, ledger or runtime",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_insight.py": "7296269d835d09047bad9018542d739c46a41c9c03e02c7246064608804de5bf",
+    "tests/runtime/test_flywheel_insight.py": "8d077f0ed46e6bc53b11bec6242047287f27456aaca9f8d5e48317b176aede77"
+  },
+  "pre_fix": {
+    "failed": 3,
+    "passing_controls": 3,
+    "source": "pre-fix.json",
+    "original_harness_error": "harness-key-attempt.json; wrong test key repaired before decisive reproduction"
+  },
+  "final": {
+    "test": "test_construction_authority_rechecked_at_qualification_boundary",
+    "cases": 6,
+    "boundaries": [
+      "assessment",
+      "seed",
+      "plan"
+    ],
+    "controls": [
+      "current acceptance",
+      "revoked acceptance"
+    ],
+    "evidence": "../review-integrated/full-runtime.json",
+    "full_runtime_passed": 1551,
+    "full_runtime_skipped": 2,
+    "source_stable": true,
+    "strict_runtime_files": 75,
+    "types_evidence": "../review-integrated/runtime-types.txt"
+  },
+  "behavior": "Current acceptance is rechecked for the exact selected execution and digest. Revocation downgrades fresh assessment and refuses propagation of an old bounded disposition; historical observation, acceptance, cost records and unsuccessful inheritance remain unchanged.",
+  "claims": {
+    "live_identity_qualified": false,
+    "actual_customer_acceptance": false,
+    "retained_alpha_measured": false
+  }
+}

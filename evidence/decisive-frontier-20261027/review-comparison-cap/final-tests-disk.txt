@@ -1,0 +1,26 @@
+..........................F........................                      [100%]
+=================================== FAILURES ===================================
+_ test_original_mission_cost_identity_is_used_even_when_operation_text_differs _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb05dc55e50>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb04718b490>, ...}, ...}
+
+    def test_original_mission_cost_identity_is_used_even_when_operation_text_differs(setup: dict[str, Any]) -> None:
+        raw = plan(setup, 1).model_dump()
+        raw["cases"][0]["trials"][0]["operation_id"] = "different-operation-namespace"
+        spec = freeze(setup, ComparisonPlan.model_validate(raw))
+        trial = spec.cases[0].trials[0]
+        run_trial(setup, trial, accept=False)
+        s.seal(setup, trial.mission.mission_id, "A")
+        value = report(setup, spec)
+        assert value["arms"]["U"]["known_costs_micro_usd"]["A"] == "1"
+        assert value["cells"][0]["ledger_mission_id"] == trial.mission.mission_id
+>       assert value["cells"][0]["status"] == "acceptance-invalid-or-unsupported"
+E       AssertionError: assert 'acceptance-unassessed' == 'acceptance-i...r-unsupported'
+E
+E         - acceptance-invalid-or-unsupported
+E         + acceptance-unassessed
+
+tests/runtime/test_flywheel_comparisons.py:414: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_original_mission_cost_identity_is_used_even_when_operation_text_differs
+1 failed, 50 passed in 24.20s

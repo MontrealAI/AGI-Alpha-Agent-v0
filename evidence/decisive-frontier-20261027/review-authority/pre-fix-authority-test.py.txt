@@ -1,0 +1,263 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Current authority regressions using fictional signers, providers and ENS only."""
+
+from __future__ import annotations
+
+import copy
+import time
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from alpha_factory_v1.core.runtime.successor.flywheel_execution import MissionExecutor, operation_key
+from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY, accepted_general_origin
+from alpha_factory_v1.core.runtime.successor.flywheel_specialists import PlacementInvocation, PlacementWorkflow
+from alpha_factory_v1.core.runtime.successor.protocol import digest
+from alpha_factory_v1.core.runtime.successor.trust import sign_record
+import test_flywheel_execution as e
+import test_flywheel_protected as f
+import test_flywheel_specialists as s
+
+
+@pytest.fixture
+def setup(tmp_path: Path) -> dict[str, Any]:
+    return f.setup.__wrapped__(tmp_path)
+
+
+@pytest.mark.parametrize("phase", ["after-model", "before-tool", "after-tool", "before-next-model"])
+def test_revoked_execution_controller_stops_every_subsequent_action(setup: dict[str, Any], phase: str) -> None:
+    state, task, profile, environment = setup, e.mission(), e.profile(), e.LocalExperiment()
+    transport = e.ScriptedTransport(
+        [e.response([{"type": "function_call", "name": "experiment", "call_id": "first", "arguments": "{}"}]), e.done()]
+    )
+    original_model, original_tool = transport.respond, environment.perform
+
+    def model(payload: Any, active: Any, remaining: float) -> dict[str, Any]:
+        value = original_model(payload, active, remaining)
+        if phase == "after-model":
+            state["trust"].revoke("controller")
+        return value
+
+    def tool(name: str, arguments: Any, active: Any) -> dict[str, Any]:
+        value = original_tool(name, arguments, active)
+        if phase == "after-tool":
+            state["trust"].revoke("controller")
+        return value
+
+    checks = 0
+
+    def qualified() -> None:
+        nonlocal checks
+        checks += 1
+        if (phase == "before-tool" and checks == 5) or (phase == "before-next-model" and checks == 8):
+            state["trust"].revoke("controller")
+
+    transport.respond = model
+    environment.perform = tool
+    signed = e.permit(state, task, profile, environment)
+    executor = MissionExecutor(
+        state["journal"], state["trust"], state["costs"], transport, environment, qualification_check=qualified
+    )
+    result = executor.run(task, profile, signed)
+    assert result["status"] == "failed-or-uncertain"
+    assert len(transport.requests) == 1
+    assert len(environment.calls) == (1 if phase in {"after-tool", "before-next-model"} else 0)
+    assert result["acceptance"] == "unqualified"
+    assert state["costs"].report(task.mission_id)["unknown_costs"]
+    assert state["journal"].latest(operation_key("fixture-run"))["status"] == "failed-or-uncertain"
+    before = state["costs"].report()
+    with pytest.raises(ValueError, match="not currently trusted"):
+        executor.run(task, profile, signed)
+    assert len(transport.requests) == 1 and state["costs"].report() == before
+
+
+@pytest.mark.parametrize("change", ["revocation", "role"])
+def test_accepted_origin_rechecks_current_execution_controller(setup: dict[str, Any], change: str) -> None:
+    state = setup
+    record = s.origin(state)
+    history = state["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+    before, costs = state["journal"].verify(), state["costs"].report()
+    if change == "revocation":
+        state["trust"].revoke("controller")
+    else:
+        anchor = state["trust"]._anchors["controller"]
+        state["trust"]._anchors["controller"] = f.TrustAnchor(anchor.public_key, frozenset())
+    with pytest.raises(ValueError, match="not currently trusted"):
+        with state["journal"].transaction() as cx:
+            accepted_general_origin(state["service"], "placement-origin", cx)
+    assert state["journal"].latest(ACCEPTANCE_KEY + "placement-origin") == history
+    assert state["journal"].latest(operation_key("placement-origin")) == record
+    assert state["journal"].verify() == before and state["costs"].report() == costs
+
+
+def test_completed_origin_survives_historical_execution_permit_expiry(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = setup
+    record = s.origin(state)
+    expiry = record["permit"]["payload"]["permit"]["expires_at"]
+    monkeypatch.setattr(time, "time", lambda: expiry + 1)
+    with state["journal"].transaction() as cx:
+        current, _ = accepted_general_origin(state["service"], "placement-origin", cx)
+    assert current == record
+
+
+def separately_accepted_origin(state: dict[str, Any]) -> dict[str, Any]:
+    """Install a separate out-of-band fixture signer; never grant live authority."""
+    key = f.Ed25519PrivateKey.generate()
+    state["keys"]["origin-acceptor"] = key
+    state["trust"]._anchors["origin-acceptor"] = f.TrustAnchor(
+        key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({"acceptance"})
+    )
+    s.funding(state)
+    record = s.execute(state, s.problem(2100), PlacementWorkflow(version=1), "placement-origin")
+    s.seal(state, "placement-origin", "A")
+    state["service"].accept_general_origin(
+        f.signed(
+            state,
+            "general-acceptance",
+            "origin-acceptor",
+            {
+                "operation_id": "placement-origin",
+                "execution_record_digest": record["digest"],
+                "output_digest": digest("general-delivered-output", record["result"]),
+                "rights_evidence": f.ZERO,
+            },
+            "distinct-origin-acceptance",
+        )
+    )
+    state["service"].configure(
+        f.signed(
+            state, "configure", "controller", {"beta_digest": f.BETA, "policy_digest": f.POLICY}, "placement-config"
+        )
+    )
+    return record
+
+
+def placement_invocation() -> PlacementInvocation:
+    return PlacementInvocation(
+        mission_id="current-authority-peer",
+        problem=s.problem(2300, hosts=5),
+        beta_digest=f.BETA,
+        policy_digest=f.POLICY,
+        recipient_capabilities_digest=f.ZERO,
+        prerequisite_digests=[],
+        logical_limit=100_000,
+        cost_cap_micro_usd=100,
+    )
+
+
+def reuse_approval(state: dict[str, Any], task: PlacementInvocation, receipt: dict[str, Any]) -> Any:
+    """Fully reconcile the fictional comparison so revocation is the sole refusal."""
+    baseline = {
+        "candidate_digest": None,
+        "input_digest": receipt["input_digest"],
+        "output_digest": f.ZERO,
+        "beta_digest": f.BETA,
+        "model_id": "FICTIONAL-FRONTIER-CONFORMANCE",
+        "reasoning_mode": "standard",
+        "reasoning_effort": "max",
+        "tools_digest": f.ZERO,
+        "resource_rules_digest": f.ZERO,
+        "recipient_capabilities_digest": f.ZERO,
+        "provider_response_digest": f.ZERO,
+        "billing_evidence_digest": f.ZERO,
+        "actual_cost_micro_usd": 20,
+        "usage": {"fictional_tokens": 1},
+        "started_at": int(time.time()),
+        "finished_at": int(time.time()),
+        "evidence_basis": "configured-executor-attestation",
+    }
+    beta = sign_record(state["keys"]["executor"], "executor", "flywheel-frontier-run", baseline)
+    f.account(
+        state,
+        "charge",
+        {
+            "activity_id": "comparison/" + task.mission_id,
+            "mission_id": task.mission_id,
+            "bucket": "B",
+            "category": "model",
+            "accrued_micro_usd": 20,
+            "paid_micro_usd": 0,
+            "basis": "attested",
+            "evidence_digest": digest("flywheel-frontier-run-record", beta.model_dump()),
+            "note": "FICTIONAL complete comparison; no actual frontier call or payment",
+        },
+        "comparison-charge",
+    )
+    s.seal(state, task.mission_id, "B")
+    return f.signed(
+        state,
+        "reuse-acceptance",
+        "acceptor",
+        {
+            "mission_id": task.mission_id,
+            "receipt_digest": digest("flywheel-reuse-receipt", receipt),
+            "beta_run": beta.model_dump(),
+            "candidate_correct": True,
+            "beta_correct": True,
+            "independent_tests_digest": f.ZERO,
+            "residual_interventions_digest": f.ZERO,
+            "limitations": "Synthetic authority regression only; no real frontier trial",
+        },
+        "accept-authority-peer",
+    )
+
+
+@pytest.mark.parametrize("action", ["manifest", "catalog", "invoke", "reuse"])
+def test_origin_acceptance_revocation_removes_placement_eligibility(setup: dict[str, Any], action: str) -> None:
+    state = setup
+    record = separately_accepted_origin(state)
+    ident = s.retain(state, record, PlacementWorkflow(version=1))
+    assert s.assess(state, ident, synthetic_saving=20) == "assessed"
+    f.control(state, ident, "validate")
+    f.control(state, ident, "admit")
+    task = placement_invocation()
+    approval = None
+    if action == "reuse":
+        receipt = state["service"].invoke(
+            ident, task, f.proof(state, ident, "invoke", digest("flywheel-invocation", task))
+        )
+        approval = reuse_approval(state, task, receipt)
+    history = state["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+    costs = state["costs"].report()
+    before = state["journal"].verify()
+    entry = copy.deepcopy(f.entry(state, ident))
+    state["trust"].revoke("origin-acceptor")
+    if action == "catalog":
+        resource = state["service"].catalog_resource()
+        result = state["service"].catalog(
+            f.proof(state, resource, "discover", digest("flywheel-catalog-request", {"resource": resource}))
+        )
+        assert result["manifests"] == []
+    else:
+        with pytest.raises(ValueError, match="not currently trusted"):
+            if action == "manifest":
+                state["service"].manifest(
+                    ident, f.proof(state, ident, "discover", digest("flywheel-discover", {"candidate_digest": ident}))
+                )
+            elif action == "invoke":
+                state["service"].invoke(
+                    ident, task, f.proof(state, ident, "invoke", digest("flywheel-invocation", task))
+                )
+            else:
+                state["service"].accept_reuse(approval)
+        assert state["journal"].verify() == before
+    assert state["journal"].latest(ACCEPTANCE_KEY + "placement-origin") == history
+    assert f.entry(state, ident) == entry
+    assert state["costs"].report() == costs
+
+
+def test_independent_origin_signer_validity_allows_fully_reconciled_reuse(setup: dict[str, Any]) -> None:
+    state = setup
+    record = separately_accepted_origin(state)
+    ident = s.retain(state, record, PlacementWorkflow(version=1))
+    assert s.assess(state, ident, synthetic_saving=20) == "assessed"
+    f.control(state, ident, "validate")
+    f.control(state, ident, "admit")
+    task = placement_invocation()
+    receipt = state["service"].invoke(ident, task, f.proof(state, ident, "invoke", digest("flywheel-invocation", task)))
+    result = state["service"].accept_reuse(reuse_approval(state, task, receipt))
+    assert result["successful_peer_reuse"] is True
+    assert state["costs"].report()["collected_revenue"] == 0

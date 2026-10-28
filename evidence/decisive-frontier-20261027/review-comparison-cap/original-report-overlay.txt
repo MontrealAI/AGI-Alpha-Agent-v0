@@ -1,0 +1,197 @@
+FFF...FFF                                                                [100%]
+=================================== FAILURES ===================================
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[U-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1fb1d1fe60>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1fb1ca14d0>, ...}, ...}
+role = 'U', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1f98b76390>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1f98a97db0>, ...}, ...}
+role = 'E', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E+-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1fb1d28680>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1f98978ad0>, ...}, ...}
+role = 'E+', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+__ test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1faefdae10>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1fb1e5fa70>, ...}, ...}
+
+    def test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial(setup: dict[str, Any]) -> None:
+        spec = freeze(setup)
+        target = spec.cases[1].trials[1]
+        for case in spec.cases:
+            for trial in case.trials:
+                if trial != target:
+                    run_trial(setup, trial)
+        target_record = run_trial(setup, target, accept=False)
+        for stage in ("unknown", "resolved-unsealed", "complete-overcap"):
+            if stage == "resolved-unsealed":
+                reconcile_trial_cost(setup, target, 1001)
+            elif stage == "complete-overcap":
+                seal_and_accept(setup, target, target_record)
+            value = report(setup, spec)
+            cell = next(row for row in value["cells"] if row["operation_id"] == target.operation_id)
+            assert len(value["cells"]) == 6 and value["arms"]["E"]["planned"] == 2
+            assert cell["phase"] == "fresh-recipient" and cell["execution_digest"] == target_record["digest"]
+>           assert not cell["within_observed_limits"], stage
+E           AssertionError: unknown
+E           assert not True
+
+tests/runtime/test_flywheel_comparisons.py:634: AssertionError
+____ test_known_under_cap_amount_without_completeness_is_not_a_budget_pass _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1f98bc98e0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1f98a95870>, ...}, ...}
+
+    def test_known_under_cap_amount_without_completeness_is_not_a_budget_pass(setup: dict[str, Any]) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[1]
+        record = run_trial(setup, trial, accept=False)
+        reconcile_trial_cost(setup, trial, 1000)
+        before = report(setup, spec)
+        assert before["arms"]["E"]["known_costs_micro_usd"]["A"] == "1000"
+>       assert not before["cells"][1]["within_observed_limits"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:648: AssertionError
+_ test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f1f98bc9c40>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f1f98884350>, ...}, ...}
+
+    def test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun(setup: dict[str, Any]) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        target = spec.cases[0].trials[1]
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, 1001 if trial == target else 1)
+            seal_and_accept(setup, trial, record)
+        f.account(
+            setup,
+            "customer-deposit",
+            {
+                "receipt_id": "comparison-fictional-deposit",
+                "mission_id": target.mission.mission_id,
+                "amount_micro_usd": 2000,
+                "purpose": "service",
+                "service_price_micro_usd": 2000,
+                "mode": "synthetic",
+                "evidence_digest": digest("comparison-fixture-deposit", {}),
+                "note": "Fictional receipt only; no actual collection or execution funds",
+            },
+            "comparison-deposit",
+        )
+        f.account(
+            setup,
+            "customer-refund",
+            {
+                "event_id": "comparison-fictional-refund",
+                "receipt_id": "comparison-fictional-deposit",
+                "amount_micro_usd": 2000,
+                "allocation": "unearned",
+                "evidence_digest": digest("comparison-fixture-refund", {}),
+                "reason": "Full fictional refund; incurred delivery cost remains incurred",
+            },
+            "comparison-refund",
+        )
+        before = setup["costs"].snapshot()
+        with pytest.raises(ValueError):
+            f.account(
+                setup,
+                "charge",
+                {
+                    "activity_id": "refused-negative-expense",
+                    "mission_id": "negative-expense-fixture",
+                    "bucket": "A",
+                    "category": "correction",
+                    "accrued_micro_usd": -1001,
+                    "paid_micro_usd": 0,
+                    "basis": "attested",
+                    "evidence_digest": f.ZERO,
+                    "note": "Forbidden negative expense cannot cancel another mission's cost",
+                },
+                "comparison-negative-expense",
+            )
+        assert before == setup["costs"].snapshot()
+        value = report(setup, spec)
+        assert value["arms"]["E"]["accepted"] == 1
+        assert value["arms"]["E"]["known_costs_micro_usd"]["A"] == "1001"
+>       assert not value["cells"][1]["within_observed_limits"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:713: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[U-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E+-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial
+FAILED tests/runtime/test_flywheel_comparisons.py::test_known_under_cap_amount_without_completeness_is_not_a_budget_pass
+FAILED tests/runtime/test_flywheel_comparisons.py::test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun
+6 failed, 3 passed, 42 deselected in 7.35s

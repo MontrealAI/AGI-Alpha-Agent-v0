@@ -838,7 +838,7 @@ class ProtectedLibrary:
                     self.library._distinct(signed.principal, role, entry["evidence"]["principal"], "verifier")
                     if entry["validation"]["payload"]["record"]["expires_at"] <= int(time.time()):
                         raise ValueError("validation expired")
-                    self._dependencies(network, entry)
+                    self._dependencies(network, entry, cx=cx)
                     entry.update(state="admitted", admission=signed.model_dump())
                     network["active"][entry["manifest"]["skill_id"]] = ident
             self._commit(cx, state)
@@ -850,6 +850,7 @@ class ProtectedLibrary:
         *,
         checked: set[str] | None = None,
         deadline_ns: int | None = None,
+        cx: Any = None,
     ) -> None:
         checked = set() if checked is None else checked
         deadline_ns = time.monotonic_ns() + 1_000_000_000 if deadline_ns is None else deadline_ns
@@ -867,12 +868,12 @@ class ProtectedLibrary:
                 raise ValueError("cyclic capsule dependencies are unsupported")
             if ident in checked:
                 continue
-            child = self._eligible(network, ident)
+            child = self._eligible(network, ident, cx) if cx is not None else self._eligible(network, ident)
             visiting.add(ident)
             stack.append((ident, True))
             stack.extend((dep, False) for dep in reversed(child["manifest"]["dependency_digests"]))
 
-    def _eligible(self, network: dict[str, Any], ident: str) -> dict[str, Any]:
+    def _eligible(self, network: dict[str, Any], ident: str, cx: Any = None) -> dict[str, Any]:
         entry = network["entries"][ident]
         if entry["state"] != "admitted" or network["active"].get(entry["manifest"]["skill_id"]) != ident:
             raise Conflict("capsule is not currently admitted and active")
@@ -885,6 +886,10 @@ class ProtectedLibrary:
         if plan["beta_digest"] != network["beta_digest"] or plan["policy_digest"] != network["policy_digest"]:
             raise Conflict("capsule requires fresh Beta/policy requalification")
         self.trust.anchor(entry["producer"], "producer")
+        if entry["manifest"]["supported_scope"] == "resilient-placement/v1":
+            origin, _ = accepted_general_origin(self, entry["manifest"]["origin_mission"], cx)
+            if origin["digest"] != entry["manifest"]["origin_record_digest"]:
+                raise ValueError("originating delivery changed since candidate retention")
         for field, role, domain in (
             ("evidence", "verifier", "evidence"),
             ("validation", "verifier", "validate"),
@@ -908,8 +913,8 @@ class ProtectedLibrary:
         )
         with self.journal.transaction() as cx:
             _, network = self._state(cx)
-            entry = self._eligible(network, ident)
-            self._dependencies(network, entry)
+            entry = self._eligible(network, ident, cx)
+            self._dependencies(network, entry, cx=cx)
             authorization = self.access.consume(prepared, cx)
             self.checkpoint.advance(self.journal, cx)
             return {
@@ -939,8 +944,8 @@ class ProtectedLibrary:
                 if time.monotonic_ns() >= deadline:
                     raise Conflict("catalog verification budget exhausted; no partial disclosure")
                 try:
-                    entry = network["entries"][ident] if ident in checked else self._eligible(network, ident)
-                    self._dependencies(network, entry, checked=checked, deadline_ns=deadline)
+                    entry = network["entries"][ident] if ident in checked else self._eligible(network, ident, cx)
+                    self._dependencies(network, entry, checked=checked, deadline_ns=deadline, cx=cx)
                     checked.add(ident)
                 except (KeyError, ValueError, Conflict):
                     continue
@@ -987,8 +992,8 @@ class ProtectedLibrary:
         )
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            entry = self._eligible(network, ident)
-            self._dependencies(network, entry)
+            entry = self._eligible(network, ident, cx)
+            self._dependencies(network, entry, cx=cx)
             if (entry["manifest"]["supported_scope"] == "resilient-placement/v1") != isinstance(
                 invocation, PlacementInvocation
             ):
@@ -1142,8 +1147,8 @@ class ProtectedLibrary:
             if stored.get("legacy_unqualified"):
                 raise Conflict("legacy unqualified receipt cannot become qualified reuse")
             receipt = stored["receipt"]
-            entry = self._eligible(network, receipt["candidate_digest"])
-            self._dependencies(network, entry)
+            entry = self._eligible(network, receipt["candidate_digest"], cx)
+            self._dependencies(network, entry, cx=cx)
             current_plan = entry["plan"]["payload"]["record"]
             if (
                 receipt["beta_digest"] != current_plan["beta_digest"]

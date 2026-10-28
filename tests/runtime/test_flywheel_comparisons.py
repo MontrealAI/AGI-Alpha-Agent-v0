@@ -28,6 +28,7 @@ from alpha_factory_v1.core.runtime.successor.flywheel_execution import (
     operation_key,
 )
 from alpha_factory_v1.core.runtime.successor.flywheel_experiments import PlacementProblem
+from alpha_factory_v1.core.runtime.successor.flywheel_costs import Charge
 from alpha_factory_v1.core.runtime.successor.protocol import digest
 from alpha_factory_v1.core.runtime.successor.trust import TrustAnchor, sign_record
 from scripts.record_general_flywheel import ScriptedModel, SystemsTool
@@ -197,22 +198,33 @@ def run_trial(
     )
     record = dict(state["journal"].latest(operation_key(trial.operation_id)))
     if accept and not fail:
-        s.seal(state, trial.mission.mission_id, "A")
-        state["service"].accept_general_origin(
-            f.signed(
-                state,
-                "general-acceptance",
-                "acceptor",
-                {
-                    "operation_id": trial.operation_id,
-                    "execution_record_digest": record["digest"],
-                    "output_digest": digest("general-delivered-output", record["result"]),
-                    "rights_evidence": f.ZERO,
-                },
-                "accept/" + trial.operation_id,
-            )
-        )
+        seal_and_accept(state, trial, record)
     return record
+
+
+def seal_and_accept(state: dict[str, Any], trial: ComparisonTrial, record: dict[str, Any]) -> None:
+    s.seal(state, trial.mission.mission_id, "A")
+    state["service"].accept_general_origin(
+        f.signed(
+            state,
+            "general-acceptance",
+            "acceptor",
+            {
+                "operation_id": trial.operation_id,
+                "execution_record_digest": record["digest"],
+                "output_digest": digest("general-delivered-output", record["result"]),
+                "rights_evidence": f.ZERO,
+            },
+            "accept/" + trial.operation_id,
+        )
+    )
+
+
+def reconcile_trial_cost(state: dict[str, Any], trial: ComparisonTrial, amount: int) -> None:
+    row = state["costs"].snapshot()["charges"]["execution/" + trial.operation_id]
+    raw = {field: row[field] for field in Charge.model_fields}
+    raw.update(accrued_micro_usd=amount, basis="attested", note="Fictional cost reconciliation, not a provider bill")
+    f.account(state, "resolve", raw, "resolve/" + row["activity_id"])
 
 
 def report(state: dict[str, Any], spec: ComparisonPlan) -> dict[str, Any]:
@@ -485,6 +497,10 @@ def test_requalification_does_not_inherit_current_evidence_after_source_or_trust
     else:
         setup["trust"].revoke("controller" if change == "controller-revocation" else "acceptor")
     value = report(setup, spec)
+    if change != "source":
+        assert all(arm["historical_acceptance_recorded"] == 1 for arm in value["arms"].values())
+        assert all(cell["historical_acceptance_recorded"] for cell in value["cells"])
+        assert all(arm["accepted"] == 0 for arm in value["arms"].values())
     assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
     assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
 
@@ -548,10 +564,16 @@ def test_revoked_supporting_signer_withholds_current_qualification_without_erasi
     setup["trust"].revoke(principal)
     after = report(setup, spec)
     assert not after["current_evidence_valid"]
-    assert all(arm["planned"] == arm["accepted"] == 1 for arm in after["arms"].values())
+    assert all(arm["planned"] == 1 for arm in after["arms"].values())
+    assert all(arm["accepted"] == (0 if support == "execution" else 1) for arm in after["arms"].values())
     assert [cell["execution_digest"] for cell in after["cells"]] == [
         cell["execution_digest"] for cell in before["cells"]
     ]
+    assert [cell["acceptance_digest"] for cell in after["cells"]] == [
+        cell["acceptance_digest"] for cell in before["cells"]
+    ]
+    assert all(arm["historical_acceptance_recorded"] == 1 for arm in after["arms"].values())
+    assert all(cell["historical_acceptance_recorded"] for cell in after["cells"])
     assert all(not contrast["complete_matched_outcomes"] for contrast in after["contrasts"].values())
     assert all(contrast["cost_saving_micro_usd"] is None for contrast in after["contrasts"].values())
 
@@ -575,3 +597,187 @@ def test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells
         "simulated-model-protocol-fixture" if attempt == "bound-fixture" else "no-executions"
     )
     assert not value["commercial_profit_established"]
+
+
+@pytest.mark.parametrize(
+    "role,amount,within",
+    [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+)
+def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+    setup: dict[str, Any], role: str, amount: int, within: bool
+) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    for trial in spec.cases[0].trials:
+        record = run_trial(setup, trial, accept=False)
+        reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+        seal_and_accept(setup, trial, record)
+    value = report(setup, spec)
+    target = next(cell for cell in value["cells"] if cell["role"] == role)
+    assert target["accepted"] and target["outcome_known"]
+    assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+    assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+    assert value["current_evidence_valid"]
+    assert target["within_observed_limits"] is within
+    for name, roles in (("operational", {"U", "E"}), ("retained", {"E", "E+"})):
+        assert value["contrasts"][name]["complete_matched_outcomes"] is (within or role not in roles)
+        if not within and role in roles:
+            assert value["contrasts"][name]["cost_saving_micro_usd"] is None
+
+
+def test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial(setup: dict[str, Any]) -> None:
+    spec = freeze(setup)
+    target = spec.cases[1].trials[1]
+    for case in spec.cases:
+        for trial in case.trials:
+            if trial != target:
+                run_trial(setup, trial)
+    target_record = run_trial(setup, target, accept=False)
+    for stage in ("unknown", "resolved-unsealed", "complete-overcap"):
+        if stage == "resolved-unsealed":
+            reconcile_trial_cost(setup, target, 1001)
+        elif stage == "complete-overcap":
+            seal_and_accept(setup, target, target_record)
+        value = report(setup, spec)
+        cell = next(row for row in value["cells"] if row["operation_id"] == target.operation_id)
+        assert len(value["cells"]) == 6 and value["arms"]["E"]["planned"] == 2
+        assert cell["phase"] == "fresh-recipient" and cell["execution_digest"] == target_record["digest"]
+        assert not cell["within_observed_limits"], stage
+        assert not value["contrasts"]["operational"]["complete_matched_outcomes"], stage
+        assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+    assert value["arms"]["E"]["accepted"] == 2
+    assert value["arms"]["E"]["known_costs_micro_usd"]["A"] == "1002"
+
+
+def test_known_under_cap_amount_without_completeness_is_not_a_budget_pass(setup: dict[str, Any]) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    trial = spec.cases[0].trials[1]
+    record = run_trial(setup, trial, accept=False)
+    reconcile_trial_cost(setup, trial, 1000)
+    before = report(setup, spec)
+    assert before["arms"]["E"]["known_costs_micro_usd"]["A"] == "1000"
+    assert not before["cells"][1]["within_observed_limits"]
+    assert before["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+    seal_and_accept(setup, trial, record)
+    after = report(setup, spec)
+    assert after["cells"][1]["within_observed_limits"]
+    assert after["cells"][1]["accepted"]
+
+
+def test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun(setup: dict[str, Any]) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    target = spec.cases[0].trials[1]
+    for trial in spec.cases[0].trials:
+        record = run_trial(setup, trial, accept=False)
+        reconcile_trial_cost(setup, trial, 1001 if trial == target else 1)
+        seal_and_accept(setup, trial, record)
+    f.account(
+        setup,
+        "customer-deposit",
+        {
+            "receipt_id": "comparison-fictional-deposit",
+            "mission_id": target.mission.mission_id,
+            "amount_micro_usd": 2000,
+            "purpose": "service",
+            "service_price_micro_usd": 2000,
+            "mode": "synthetic",
+            "evidence_digest": digest("comparison-fixture-deposit", {}),
+            "note": "Fictional receipt only; no actual collection or execution funds",
+        },
+        "comparison-deposit",
+    )
+    f.account(
+        setup,
+        "customer-refund",
+        {
+            "event_id": "comparison-fictional-refund",
+            "receipt_id": "comparison-fictional-deposit",
+            "amount_micro_usd": 2000,
+            "allocation": "unearned",
+            "evidence_digest": digest("comparison-fixture-refund", {}),
+            "reason": "Full fictional refund; incurred delivery cost remains incurred",
+        },
+        "comparison-refund",
+    )
+    before = setup["costs"].snapshot()
+    with pytest.raises(ValueError):
+        f.account(
+            setup,
+            "charge",
+            {
+                "activity_id": "refused-negative-expense",
+                "mission_id": "negative-expense-fixture",
+                "bucket": "A",
+                "category": "correction",
+                "accrued_micro_usd": -1001,
+                "paid_micro_usd": 0,
+                "basis": "attested",
+                "evidence_digest": f.ZERO,
+                "note": "Forbidden negative expense cannot cancel another mission's cost",
+            },
+            "comparison-negative-expense",
+        )
+    assert before == setup["costs"].snapshot()
+    value = report(setup, spec)
+    assert value["arms"]["E"]["accepted"] == 1
+    assert value["arms"]["E"]["known_costs_micro_usd"]["A"] == "1001"
+    assert not value["cells"][1]["within_observed_limits"]
+    assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
+    assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+
+
+@pytest.mark.parametrize(
+    "attack", ["operation", "execution", "output", "journal", "signature", "receipt", "role", "key"]
+)
+def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature(
+    setup: dict[str, Any], attack: str
+) -> None:
+    from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
+
+    spec = freeze(setup, plan(setup, 1))
+    trial = spec.cases[0].trials[0]
+    run_trial(setup, trial)
+    original = report(setup, spec)
+    assert original["cells"][0]["historical_acceptance_recorded"]
+    journal_key = ACCEPTANCE_KEY + trial.operation_id
+
+    def change(value: dict[str, Any]) -> None:
+        envelope = value["acceptance"]
+        payload = envelope["payload"]
+        if attack == "operation":
+            payload["record"]["operation_id"] = "another-operation"
+        elif attack == "execution":
+            payload["record"]["execution_record_digest"] = "1" * 64
+        elif attack == "output":
+            payload["record"]["output_digest"] = "1" * 64
+        elif attack == "journal":
+            payload["journal_identity"] = "another-journal"
+        elif attack == "receipt":
+            value["record_digest"] = "1" * 64
+        elif attack == "signature":
+            envelope["signature"] = ("A" if envelope["signature"][0] != "A" else "B") + envelope["signature"][1:]
+            return
+        else:
+            return
+        value["acceptance"] = sign_record(
+            setup["keys"]["acceptor"], "acceptor", envelope["domain"], payload
+        ).model_dump()
+
+    if attack == "role":
+        anchor = setup["trust"]._anchors["acceptor"]
+        setup["trust"]._anchors["acceptor"] = TrustAnchor(anchor.public_key, frozenset())
+    elif attack == "key":
+        del setup["trust"]._anchors["acceptor"]
+    else:
+        rewrite(setup, journal_key, change)
+    value = report(setup, spec)
+    cell = value["cells"][0]
+    assert not cell["historical_acceptance_recorded"]
+    assert value["arms"]["U"]["historical_acceptance_recorded"] == 0
+    assert value["arms"]["U"]["planned"] == 1 and len(value["cells"]) == 3
+    assert cell["historical_acceptance_evidence"] == {
+        "schema_version": 1,
+        "journal_key": journal_key,
+        "record_digest": setup["journal"].latest(journal_key)["digest"],
+    }
+    assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
+    assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None

@@ -58,7 +58,7 @@ def edition_files() -> dict[str, bytes]:
     return files
 
 
-def test_post_guard_workers_match_current_source_and_preserve_all_twenty_predecessors() -> None:
+def test_historical_post_guard_workers_preserve_their_own_source_and_all_twenty_predecessors(tmp_path: Path) -> None:
     fixture = worker_fixture()
     names = (*HISTORICAL_PROFILES, "INSIGHT_FRONTIER_147_EXTRA_FILES")
     assert len(names) == len(set(names)) == 20
@@ -75,7 +75,7 @@ def test_post_guard_workers_match_current_source_and_preserve_all_twenty_predece
     records = {}
     for name, record in fixture["files"].items():
         body = record["text"].encode()
-        assert body == (ROOT / name).read_bytes()
+        # A later separately pinned candidate must not rewrite this complete edition.
         assert b"agialpha-gallery-84e195a76403cf05" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == (record["bytes"], record["sha256"]) == current[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
@@ -87,7 +87,8 @@ def test_post_guard_workers_match_current_source_and_preserve_all_twenty_predece
     ]
     assert matches == [current]
     assert len(edition_files()) == 61
-    report = checkout.refresh(ROOT)
+    write_files(tmp_path, edition_files())
+    report = checkout.refresh(tmp_path)
     assert report["checked"] == 61 and report["needsRefresh"] == []
     assert report["applied"] is False and report["backupDirectory"] is None
 
@@ -187,6 +188,9 @@ def test_post_guard_symlink_worker_refuses_before_backup(tmp_path: Path, name: s
         pytest.skip(f"OS cannot create this test symlink: {error}")
     before = snapshot(root)
     with pytest.raises(ValueError, match="bounded regular file"):
+        checkout._read(root, name)
+    # Later candidates can report a different earlier byte mismatch; refusal stays mandatory.
+    with pytest.raises(ValueError):
         checkout.refresh(root, apply=True, backup_parent=backups)
     assert link.is_symlink() and link.readlink() == outside
     assert snapshot(root) == before and outside.read_bytes() == body and list(backups.iterdir()) == []

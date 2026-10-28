@@ -1,0 +1,50 @@
+{
+  "schema": "insight-worker-review-authority-local-qualification/v1",
+  "version": "1.47.0",
+  "edition": "review-authority-current-evidence",
+  "scope": "Exact local byte-edition identity and refusal qualification only; not public release, full runtime, live authorization or model performance",
+  "source_sha256": {
+    "scripts/refresh_capability_checkout.py": "182c950a27df8f630f621d9d712d5e9d44f67465e9415c58dd002de14869963d",
+    "tests/fixtures/capability-checkout-insight-frontier-147-review-authority-workers.json": "659c8f56ea2d09051a92f7c2de81ca7f83b59fb868df2ab8ec0dd5d17b13b06b",
+    "tests/test_capability_publication_edition.py": "7e9a04a24438e6581ffae79c985d59707bfb88d84a5de794a3bf0cadeaf088a6",
+    "tests/test_insight_frontier_post_guard_release.py": "be2c2e6036dce82debddecfb0d291f92e80792e1c87a93583e91fa19fa4c2f3a",
+    "tests/test_insight_frontier_review_authority_release.py": "ac11716fbf13a67515b8ae2fab430426a91d2bb239b9b543d44c60159e239314"
+  },
+  "source_capture": "CAPTURE.json",
+  "observed": {
+    "selected_unique_cases": 165,
+    "new_authority_review_cases": 40,
+    "retained_cases": 125,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "case_counts_by_file": {
+      "tests.test_insight_frontier_review_authority_release": 40,
+      "tests.test_insight_frontier_post_guard_release": 32,
+      "tests.test_insight_frontier_release": 22,
+      "tests.test_paper_reader_release": 1,
+      "tests.test_capability_publication_edition": 39,
+      "tests.test_capability_checkout_release_versions": 25,
+      "tests.test_flywheel_release": 2,
+      "tests.test_protected_flywheel_release": 4
+    },
+    "ruff": "pass",
+    "format_affected_test_files": "pass",
+    "strict_types_affected_test_files": "pass; --strict --follow-imports=silent",
+    "predecessor_profiles_preserved": 21,
+    "scientific_sources_preserved": 53,
+    "complete_closure_files": 61,
+    "nonworker_extras_unchanged": 5,
+    "successful_own_temporary_copies": "removed"
+  },
+  "migration": "The post-guard positive test loads its immutable fixture-backed closure. Exact symlink rejection is checked at _read, and public refresh must still refuse before any backup/mutation while preserving bytes, link and outside test file. Original147 and postguard fixtures/profiles/pins remain unchanged.",
+  "source_base_meaning": "6010e19b is the preceding review candidate, not a claim that its uncorrected commit is this corrected source; CAPTURE binds all five fixed runtime modules and the current page/worker bytes separately.",
+  "not_qualified": [
+    "configured review of the new combined source",
+    "full resulting-source runtime/release/platform qualification",
+    "released installation",
+    "public served bytes",
+    "direct broad helper typing: five pre-existing diagnostics retained in original147 packet"
+  ],
+  "authority_granted": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "comparison-cap-correction-attempts/v1",
+  "attempts": [
+    {
+      "record": "original-regressions.txt",
+      "outcome": "6 failed,3 passed,42 deselected",
+      "interpretation": "Five cap/completeness assertions fail on original code; one fresh-reconciliation fixture tried starting another mission while its preceding cost was unknown, and existing funding enforcement correctly refused. That fixture is corrected by executing the unresolved target last, without changing funding guards."
+    },
+    {
+      "record": "corrected-tests.txt",
+      "outcome": "2 failed,49 passed",
+      "interpretation": "One inherited receipt case correctly refused a mid-test runtime source change while another workstream edited shared execution files; the same unresolved-cost fixture also refused. The original source/cost guards and assertions are preserved; only fixture ordering changes."
+    },
+    {
+      "record": "final-tests-disk.txt",
+      "outcome": "1 failed,50 passed; runtime sources stable",
+      "interpretation": "Metadata inspection changed the order of missing-acceptance versus unsupported-scope checks. Original current-check ordering is restored; unsupported cases retain their original status."
+    },
+    {
+      "record": "final-history-tests.txt",
+      "outcome": "9 failed,50 passed; runtime sources stable",
+      "interpretation": "Eight new EvidenceRef assertions omitted its required schema_version1; typed references include it. One new historical assertion also covered a deliberately rewritten comparison revision; the required history assertions now apply to genuine controller/acceptor revocation, while a rewritten plan remains unbound. No runtime or acceptance guard was relaxed."
+    }
+  ],
+  "authority_integration": {
+    "scope": "Preserve strict current origin-eligibility denial introduced by the execution authority workstream; keep existing historical acceptance journal digest visible even when current eligibility fails. Comparison revocation regression now expects0current eligible acceptances after executor revocation, while exact execution and acceptance digests stay unchanged. No acceptance guard is bypassed."
+  }
+}

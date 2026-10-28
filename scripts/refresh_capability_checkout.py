@@ -308,6 +308,16 @@ INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES = INSIGHT_FRONTIER_147_EXTRA_FILES |
     ),
 }
 
+# Exact current-authority review candidate; retain all earlier complete byte editions.
+INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES = INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "357308e5afd03495e75cfe557ccff8fc42c6c008e8c1b2b814138b92642eade9"),
+    "docs/assets/service-worker.js": (24089, "0b0f9987d46e5c652d54f961b631cc68db78688da30321ff6b1b6e9b645183dd"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "e8a05eaf3ccfbeea86ea9318bc66f2f382682c483a40792d76f9087eb2d32f65",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -391,6 +401,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

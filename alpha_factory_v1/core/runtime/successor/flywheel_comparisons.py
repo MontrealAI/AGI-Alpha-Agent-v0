@@ -3,14 +3,19 @@
 
 from __future__ import annotations
 
+import base64
 from typing import Any
+
+from cryptography.exceptions import InvalidSignature
 
 from ..store import Conflict, digest as runtime_digest
 from .flywheel_costs import KEY as COST_KEY
 from .flywheel_discovery import ComparisonPlan, ComparisonTrial, key
+from .flywheel_enterprise import EvidenceRef
 from .flywheel_execution import ExecutionPermit, ExecutionProfile, operation_key
-from .flywheel_learning import ACCEPTANCE_KEY, accepted_general_origin
+from .flywheel_learning import ACCEPTANCE_KEY, GeneralOriginAcceptance, accepted_general_origin, check_general_output
 from .protocol import digest
+from .signatures import verify_ed25519
 from .trust import SignedEnvelope
 
 ROLES = ("U", "E", "E+")
@@ -87,6 +92,43 @@ def _execution(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, fro
     return record
 
 
+def _recorded_acceptance(discovery: Any, trial: ComparisonTrial, record: Any, cx: Any) -> tuple[bool, Any]:
+    """Inspect signed historical terms; this flag never grants current eligibility."""
+    try:
+        accepted = discovery.journal.latest(ACCEPTANCE_KEY + trial.operation_id, cx)
+    except KeyError:
+        return False, None
+    reference = EvidenceRef(journal_key=ACCEPTANCE_KEY + trial.operation_id, record_digest=accepted["digest"])
+    try:
+        signed = SignedEnvelope.model_validate(accepted["acceptance"])
+        payload = signed.payload
+        terms = GeneralOriginAcceptance.model_validate(payload["record"])
+        # Read only the independently installed public key, including revoked keys.
+        # Current eligibility still goes through accepted_general_origin below.
+        anchor = discovery.service.trust._anchors.get(signed.principal)
+        if (
+            anchor is None
+            or "acceptance" not in anchor.roles
+            or signed.domain != "flywheel-general-acceptance"
+            or payload["journal_identity"] != discovery.journal.identity
+            or terms.operation_id != trial.operation_id
+            or accepted["record_digest"] != record["digest"]
+            or terms.execution_record_digest != record["digest"]
+            or terms.output_digest != digest("general-delivered-output", record["result"])
+        ):
+            raise ValueError("historical acceptance does not bind this exact delivery")
+        commitment = digest(signed.domain, {"principal": signed.principal, "payload": payload})
+        verify_ed25519(
+            bytes.fromhex(anchor.public_key),
+            base64.b64decode(signed.signature, validate=True),
+            bytes.fromhex(commitment),
+        )
+        check_general_output(discovery.service, trial.operation_id, cx)
+    except (Conflict, InvalidSignature, KeyError, TypeError, ValueError):
+        return False, reference.model_dump()
+    return True, reference.model_dump()
+
+
 def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: dict[str, Any], cx: Any) -> Any:
     cell: dict[str, Any] = {
         "role": trial.role,
@@ -99,6 +141,8 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
         "execution_digest": None,
         "execution_authority_current": None,
         "acceptance_digest": None,
+        "historical_acceptance_recorded": False,
+        "historical_acceptance_evidence": None,
         "elapsed_ms": None,
         "tokens": None,
         "usage_complete": False,
@@ -147,16 +191,18 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
     if record["status"] != "delivered-awaiting-independent-acceptance-and-costs":
         cell.update(status=record["status"], outcome_known=True)
         return cell
+    historical, reference = _recorded_acceptance(discovery, trial, record, cx)
+    cell.update(historical_acceptance_recorded=historical, historical_acceptance_evidence=reference)
+    if reference is not None:
+        cell["acceptance_digest"] = reference["record_digest"]
     try:
         accepted_general_origin(discovery.service, trial.operation_id, cx)
-        acceptance = discovery.journal.latest(ACCEPTANCE_KEY + trial.operation_id, cx)
     except KeyError:
         cell["status"] = "acceptance-unassessed"
     except (ValueError, Conflict):
         cell["status"] = "acceptance-invalid-or-unsupported"
     else:
         cell.update(status="accepted-finite-placement", accepted=True, outcome_known=True)
-        cell["acceptance_digest"] = acceptance["digest"]
     return cell
 
 
@@ -200,6 +246,7 @@ def _costs(discovery: Any, mission_id: str, buckets: list[str], cx: Any) -> dict
         "known_micro_usd": {bucket: str(report["costs"][bucket]) for bucket in buckets},
         "complete": historical_complete and signatures_current,
         "historical_complete": historical_complete,
+        "historical_bucket_complete": report["bucket_complete"],
         "supporting_signatures_current": signatures_current,
         "basis": report["evidence_basis"],
     }
@@ -240,6 +287,23 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 row = _costs(discovery, trial.mission.mission_id, sorted(present | {"A"}), cx)
                 row.update(role=trial.role, case_id=case.case_id, allocation="existing-delivery-costs")
                 cost_rows.append(row)
+                cap = next(arm.resource_budget.cost_cap_micro_usd for arm in plan.arms if arm.role == trial.role)
+                known_delivery_cost = int(row["known_micro_usd"]["A"])
+                delivery_cost_complete = row["historical_bucket_complete"]["A"] and row["supporting_signatures_current"]
+                cost_status = (
+                    "over-cap"
+                    if known_delivery_cost > cap
+                    else "within-cap"
+                    if delivery_cost_complete
+                    else "incomplete"
+                )
+                cell.update(
+                    known_delivery_cost_micro_usd=str(known_delivery_cost),
+                    delivery_cost_cap_micro_usd=str(cap),
+                    delivery_cost_complete=delivery_cost_complete,
+                    delivery_cost_status=cost_status,
+                    within_observed_limits=cell["within_observed_limits"] and cost_status == "within-cap",
+                )
         for scope in plan.additional_costs:
             row = _costs(discovery, scope.mission_id, [scope.bucket], cx)
             row.update(role=scope.role, case_id=None, allocation="additional-not-already-charged")
@@ -257,6 +321,7 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 "planned": len(observed),
                 "execution_records": sum(cell["execution_digest"] is not None for cell in observed),
                 "accepted": sum(cell["accepted"] for cell in observed),
+                "historical_acceptance_recorded": sum(cell["historical_acceptance_recorded"] for cell in observed),
                 "known_outcomes": sum(cell["outcome_known"] for cell in observed),
                 "failed": sum(cell["outcome_known"] and not cell["accepted"] for cell in observed),
                 "unassessed": sum(not cell["outcome_known"] for cell in observed),
@@ -314,6 +379,7 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
             "human_reference": plan.human_reference.model_dump(),
             "human_reference_role": "commercial reference only; not another measured arm",
             "arms": summaries,
+            "accepted_count_basis": "current-origin-eligibility; authenticated historical receipts counted separately",
             "contrasts": contrasts,
             "cells": cells,
             "cost_allocations": cost_rows,
@@ -337,6 +403,7 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 "Distinct prospective inputs do not by themselves prove absence of training exposure",
                 "Only the existing finite placement acceptance adapter is supported here",
                 "Trial costs and declared additional scopes count once; completeness remains signer-attested",
+                "Each trial's current complete A accrual must fit its frozen monetary cap; receipts and refunds do not net delivery costs",
                 "Historical observations remain visible; current qualification rechecks execution and accounting signers",
                 "Retained cost contrasts require explicit B accounting, including an attested zero where justified",
                 "A declared retained input proves neither payload use, transfer nor incremental benefit",

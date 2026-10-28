@@ -233,7 +233,7 @@ jobs:
     needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     # Allow the complete locked suite plus cold strict-type checks to finish.
-    timeout-minutes: 90
+    timeout-minutes: 120
     outputs:
       artifact-name: ${{ steps.regression-name.outputs.name }}
     steps:

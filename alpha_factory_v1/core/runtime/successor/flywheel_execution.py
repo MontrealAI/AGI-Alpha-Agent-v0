@@ -191,8 +191,7 @@ class ModelTransport(Protocol):
     """Provider calls and deterministic modeled calls share the same loop."""
 
     @property
-    def component(self) -> Literal["live", "simulated"]:
-        ...
+    def component(self) -> Literal["live", "simulated"]: ...
 
     def respond(self, payload: dict[str, Any], active: Callable[[], bool], remaining: float) -> dict[str, Any]:
         """Return a Responses envelope without retrying uncertain requests."""
@@ -202,12 +201,10 @@ class ExecutionEnvironment(Protocol):
     """A preauthorized sandbox or fixed tool set, with no imported authority."""
 
     @property
-    def component(self) -> Literal["live", "executed-local", "simulated"]:
-        ...
+    def component(self) -> Literal["live", "executed-local", "simulated"]: ...
 
     @property
-    def identity(self) -> dict[str, Any]:
-        ...
+    def identity(self) -> dict[str, Any]: ...
 
     def perform(self, name: str, arguments: dict[str, Any], active: Callable[[], bool]) -> dict[str, Any]:
         """Execute one permitted call and return actual results or observations."""
@@ -582,6 +579,7 @@ class MissionExecutor:
 
         def active() -> bool:
             self.qualification_check()
+            self.trust.verify(signed, "flywheel-execution-permit", "controller")
             if (
                 digest("flywheel-execution-environment-contract", self.environment.identity)
                 != permit.environment_digest
@@ -628,8 +626,7 @@ class MissionExecutor:
                 basis="unknown",
                 evidence_digest=digest("flywheel-execution-reservation", state),
                 note=(
-                    "Model charges unknown, including interrupted work; "
-                    "tool/compute costs require separate categories."
+                    "Model charges unknown, including interrupted work; tool/compute costs require separate categories."
                 ),
             )
             costs["charges"][activity] = {**charge.model_dump(), "signed": signed.model_dump()}
