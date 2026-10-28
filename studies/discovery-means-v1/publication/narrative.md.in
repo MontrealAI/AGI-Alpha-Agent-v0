@@ -1,0 +1,141 @@
+---
+title: "AGI ALPHA FLYWHEEL"
+subtitle: "THE ENTERPRISE THAT INVENTS THE MEANS OF DISCOVERING ITS NEXT ECONOMY"
+author: "Vincent Boucher"
+institute: "President of MONTREAL.AI"
+date: "28 October 2026 · Research edition v1"
+lang: en
+---
+
+::: {.abstract}
+An enterprise may know which observation it wants next yet lack a justified investigation that it can complete within its resources. This edition constructs a bounded investigative means inside AGI ALPHA: an adaptive policy over finite hypotheses and set-valued observations, with a checked worst-case path budget. The inspected native predecessor proposes one immediately affordable, greedily selected read; a recent research instrument constructs static robust measurement portfolios. The new operation makes observation-dependent continuation explicit, while preserving the separation between computational evidence and permission to act. @@ABSTRACT_RESULT@@ The cases are independently authored within the same research team, not field measurements or evidence of autonomous scientific discovery. Conventional adaptive optimization is the primary comparator. Three downstream possibilities remain HOLD; this campaign executes no commercial exchange and establishes no profit-funded successor. The contribution is a source-bound investigative operation and its bounded evaluation, with the larger economic chain stated at the stage the evidence reaches.
+:::
+
+**TRANSFORMATIONAL INTELLIGENCE: LEARNING TO CHANGE THE GAME.**
+
+*Discover the limit. Invent the missing means. Deliver the value. Expand what comes next.*
+
+# The next useful observation is a construction problem
+
+Consider a scientific or operational question with several explanations still possible. One permissible test may be cheap and informative, but lead to a branch on which all remaining useful tests exceed the budget. Another first test may separate fewer pairs immediately while leaving a complete, affordable investigation on every branch. Selecting an attractive next observation and constructing an investigation that can finish are different operations.
+
+This difference matters before a proposed capability can become a reliable input to production. A material classification, an equipment diagnosis or the interpretation of an interrupted operation may require a decision under bounded measurement ambiguity. The enterprise needs to know both what a measurement could resolve and what remains possible after an unfavorable observation. A policy that succeeds only on its preferred branch does not discharge that obligation.
+
+The present construction addresses this finite interface gap. It receives supplied hypotheses, allowed probes, possible observations and explicit resource limits. It constructs a contingent policy, or reports that no policy was found within the stated finite model and limits. It does not discover the physical hypotheses, calibrate a sensor or determine that the question is commercially valuable. Those remain separate investigations.
+
+The scope is deliberately concrete: one additional native means of investigation, one frozen authored evaluation, retained competent alternatives, and a publication tied to the executed source. The ambition remains an enterprise whose useful constructions expand its subsequent opportunities. This edition does not infer that whole enterprise from a successful planning calculation.
+
+# What the preceding chapters actually established
+
+The sources were read at repository revision `12770c22b4a9f90f2013bbfb64242f912ba5071e`. Four LaTeX sources and the actual *Out-Evolve* PDF were preserved with Git-blob identity checks. Their findings motivate this chapter; they are not new measurements performed here.
+
+*Transformational Intelligence* separates the user's purpose, a problem formulation and the instrument used to assess it. Its exact causal example distinguishes a passive information ceiling from an authorized intervention; an unrestricted optimal planner matches the active result. The example therefore establishes a formulation-dependent mechanism, not a new causal algorithm or measured frontier-agent superiority [@ti]. This edition keeps the same distinction: a new native interface need not beat a conventional algorithm that already expresses it.
+
+*Out-Evolve*, revised 20 October 2026, makes construction of useful structural assumptions central. Its conditional response-family example reduces the number of exact scalar calibrations from 1,048,576 to 211 only after a degree-two restriction is justified. Calibration agreement alone cannot establish that restriction, and bounded errors can amplify by a factor of 721. Its retained exact laboratories use supplied grammars; unrestricted competent alternatives tie, and a proposed attempt to join the laboratories failed [@outevolve]. We inherit its requirement to state uncertainty and construction costs, without presenting a finite response table as qualified physics. The repository's LaTeX wrapper references sibling inputs that were not obtained here; the actual PDF, rather than that incomplete wrapper, supports this reading.
+
+*Invent the Economy* joins a capability to a voluntary commercial arrangement and a feasible financing schedule. Its supplied four-buyer reference can have positive expected contribution yet require substantial prefunding; its successor example can remain profitable but unaffordable from earned surplus. Ordinary unrestricted enumeration matches the reference decisions [@economy]. We retain the distinction between opportunity, accepted exchange, accounting profit and available cash. No fictional buyer is introduced to turn this study into a business result.
+
+The 23 October *Transformational Autonomous Enterprises* edition studies mission-relative revalidation. Reusing generic module checks reduces repeated checking while fresh semantic acceptance and separate authority remain necessary. A direct specialist matches quality and has lower pooled CPU cost in the reported finite workload [@tae]. Its historical byline is MONTREAL.AI / Writer #4; that identity is preserved. This edition's byline is Vincent Boucher, President of MONTREAL.AI.
+
+The immediate software predecessors add sharper constraints. Native `flywheel_probe.py` maps each hypothesis and probe to one exact observation string, then selects the next read by separated cross-result pairs per query unit. It checks immediate affordability and binds the observation epoch and source. It does not produce a complete contingent tree or a worst-case path-cost certificate. PR #5008 already constructs static robust experiment portfolios, with bounded gain/error, terminal outages and independent circuit comparisons [@portfolio]. Merely adding noise or selecting a portfolio would duplicate that work. The new investigated dimension is conditional continuation under set-valued observations.
+
+# The instrument and its native boundary
+
+@@ARCHITECTURE@@
+
+The input names a finite hypothesis set $H$, a finite set of experiments $E$, a positive integer cost $c_e$ for each experiment, a permission flag, and a nonempty set $O_e(h)$ of possible observations for every hypothesis-experiment pair. A hypothesis is a supplied model alternative, not an empirically established description of the world. Different hypotheses may permit the same observation.
+
+At a node, the remaining hypothesis set is $S\subseteq H$. After performing experiment $e$ and observing $o$, the compatible set becomes
+
+$$S_{e,o}=\{h\in S:o\in O_e(h)\}.$$
+
+Every possible observation branch must be covered. The uncertainty semantics are adversarial and memoryless within the stated table: any observation permitted by the true hypothesis may occur at an invocation. No experiment is repeated along a path. This model can be conservative when physical errors have additional correlation structure; it can also be wrong if the supplied observation sets omit actual behavior.
+
+For available experiments $A$ and remaining depth $d$, the minimum worst-case cost obeys the finite Bellman recurrence
+
+$$V(S,A,d)=\min_{e\in A\,\text{allowed}}\left[c_e+\max_{o\in\bigcup_{h\in S}O_e(h)}V(S_{e,o},A\setminus\{e\},d-1)\right].$$
+
+A singleton has cost zero. An unresolved set with no admissible continuation has infinite cost. The implementation's declared limits additionally bound search states, path cost and depth; exhaustion of a computational cap is distinct from proved infeasibility. The objective is minimum worst-case cost under a hard depth cap. Reported policy depth is descriptive, not a claim of globally minimum depth among all minimum-cost policies. A pre-data review exposed that tie distinction; the prospective protocol amendment and original formulation are retained.
+
+This is conventional finite robust decision-tree optimization, implemented as an investigative operation. Diagnosis trees with worst-case and expected testing costs have established algorithmic literature [@cicalese]. No new Bellman principle or optimal-experiment-design theorem is claimed, and the cited approximation algorithm is not reproduced here. The useful artifact is a checkable policy with its original inputs, costs and branch obligations. A separate checker traverses the policy against the original observation sets, recomputes every compatible set, verifies permissions and no-repeat constraints, and checks all terminal conclusions and path caps. Agreement with another optimizer and correctness of an offered certificate answer related but different questions.
+
+@@IMPLEMENTATION@@
+
+The policy does not grant execution authority. It does not convert a declared experiment into a physical measurement, reset a failed commercial obligation or permit a retry of an uncertain external side effect. Existing mission evidence, custody and authorization remain separate. Unsupported observations require reassessment of the model; they are not silently assigned to the nearest convenient branch.
+
+# A bounded campaign with protected completion resources
+
+The instrument was chartered before any downstream application qualified. The charter allowed one instrument, up to two development revisions, 24 confirmation cases and six invalid-input probes. Its additional elapsed-time ceiling was 75 minutes, allocated as 35 minutes for construction, 20 for evaluation and 20 protected for evidence and publication. Three downstream possibilities could be considered; the side-probe allowance and unadmitted application-construction allowance were both zero. No new expenditure or external paid model call was authorized.
+
+The common finite comparison permits at most 100,000 search states per solve. The independently authored confirmation family uses at most four hypotheses and six experiments. The generator and protocol were fixed before instrument-source access; the evaluator generated a seed only after the construction was frozen. All cases, source identities and results are retained. Once the bank is published, rerunning it is reproduction, not fresh confirmation.
+
+The task families test adaptive branching, overlapping observations, permission restrictions, irreducible pairs, cost caps and depth caps. These were designed to expose the specified mechanisms. They are not an IID draw from a real scientific or commercial population. The evaluation reports all denominators; a confidence interval over these authored cases would not establish prevalence or real-world effectiveness.
+
+The primary comparator is an independently implemented exact adaptive solver with the same case bytes, allowable probes and per-path caps. A static robust portfolio solver tests whether committing to every selected experiment can be more costly than an observation-dependent route. The native singleton predecessor applies only where its actual contract accepts the input. Its inability to represent set-valued uncertainty is not a substitute for comparison with a competent unrestricted method. Ordinary-library reuse, frontier-generalist and prompt-only evidence receive their own explicit status below.
+
+Two diagnostic ablations change an assumption and then judge the proposed policy against the original case. One ignores permission restrictions. The other replaces each possible-observation set with its lexically first member. An apparently successful policy under an easier altered model counts as invalid when it violates the original permissions or misses an original branch. These controls test whether a favorable answer was purchased by weakening the task.
+
+# What the executed comparison supports
+
+@@RESULTS@@
+
+@@COMPARATORS@@
+
+@@VALIDATION@@
+
+The decisive interpretation is at the correct level. A contingent tree can expose an affordable investigative action unavailable through the inspected next-read interface, and a static portfolio may pay for branches that a contingent policy never visits together. Neither observation proves a discovery advantage over an equally equipped adaptive solver. If the conventional solver ties, that tie belongs in the result. Better access to a known operation can still be useful engineering; it does not by itself establish a new economy.
+
+\newpage
+
+# Three possible consequences, each separately held
+
+@@DOWNSTREAM@@
+
+These are substantially different productive horizons: materials qualification, mathematical tooling and distributed production. None is admitted merely because it can be encoded as a finite table. The unchanged downstream gate requires a consequential useful outcome, a substantiated predecessor limitation, an essential construction, a credible alternative comparison and an executable evidence path. The material and distributed-production cases still lack independently supplied acceptance requirements and physical or operational observations. The mathematical case faces established formal verification and counterexample tools, without evidence here of a new accepted downstream capability.
+
+Recent primary-source work reinforces the need for a strong comparison. LLM-IDEA investigates identifiability-driven experimental agents and distinguishes inadequate search from limitations of a declared design class [@llmidea]. Autonomous Science Bench separates budgeted experimental selection from subsequent prediction and ranking [@asbench]. These are relevant precedents and potential evaluation resources, not experiments reproduced by this campaign. The selected LLM-IDEA diagnostics were retrieved with their source and licensing information; retrieving code is not executing its agent. Public mathematical manuscripts and vendor computer-use announcements likewise do not establish that their capabilities have been invoked successfully on this task [@openaimath; @science].
+
+# Economics and the successor boundary
+
+This campaign executes **zero real commercial transactions and zero simulated commercial transactions**. Actual customer revenue and collections are zero. It does not build a payment mechanism, claim buyer acceptance or operate a commercial accounting campaign. The actual native research CostLedger retains incomplete costs; it is not evidence of enterprise profit. No downstream application passed admission, and the separately bounded side-probe allowance was zero.
+
+Measured program execution time, search-state counts and problem-declared query units belong to different categories. Query units are synthetic inputs to the finite planning problem. Runtime observations concern the executed programs. Complete billed model tokens, research construction cost, tool charges and attributable monetary profit are not exposed by the available meter and remain unknown. Existing session resources are research support, not retained earnings. No profit-funded investment or paid successor construction follows.
+
+The inherited accounting requirements remain explicit even where no new financial component makes them executable here. In particular, positive accounting profit with inadequate unrestricted cash must defer investment without changing the profit result; refundable deposits and escrow must remain restricted; and opening equity or debt cannot be described as earned-profit funding. The R01–R37 appendix records applicability and actual evidence status, rather than claiming passes from an unexecuted commercial system.
+
+The next successor could reuse the policy representation and checker when confronted with a separately qualified investigation. That is a prospective option. A claim of retained value would require fresh accepted work, a competent ordinary-reuse comparator, actual construction and lifecycle cost, and a valid funding account. No such successor-value result is established in this edition.
+
+# Use, reproduce and inspect
+
+@@QUICKSTART@@
+
+@@EXAMPLE@@
+
+The user journey is to specify a meaningful finite investigation, inspect the declared hypotheses and observation uncertainty, set permitted experiments and resource caps, construct a policy, and inspect the policy and independent evidence before taking any separately authorized action. The first useful output is an artifact that explains what can and cannot be resolved under the supplied model. A browser reader describes that executed path; it is not a second implementation of the product.
+
+@@SOURCE_IDENTITY@@
+
+Publication is an additive review edition. The existing preceding editions, source identities and publication owner are preserved. Code and HTML make this a mixed contribution requiring the normal full software qualification route; a passive-paper lane cannot qualify it. The local source/evidence package does not imply a main merge, installed production release or canonical Pages deployment. Stable public reading links for this edition are pending the authorized publication route and served-byte verification.
+
+# The frontier left by this construction
+
+@@CHAIN_STATUS@@
+
+The most useful next experiment begins with an independently supplied investigation whose uncertainty table and resource limits can be defended against actual measurements. It should include cases where adaptivity saves useful resources, cases where static or direct methods suffice, and cases where the finite model is inadequate. Acceptance should measure the resulting scientific or productive decision and the complete cost of reaching it.
+
+The wider ambition is an enterprise that constructs the means to discover its next worthwhile activity. This edition contributes only the bounded links its evidence establishes. Its instrument cannot manufacture an absent buyer, a justified physical model, a favorable economy or permission to deploy. Its value is that the next investigation can begin with an explicit, checkable policy and with the remaining uncertainty visible.
+
+# Appendix: inherited regression requirements
+
+The following matrix preserves all 37 inherited intents. PASS refers only to the stated executed component or documentary evidence procedure. NOT APPLICABLE does not establish system-wide compliance. NOT RUN, BLOCKED and FAIL retain their reasons. Supplemental instrument checks do not replace these requirements.
+
+@@REGRESSIONS@@
+
+# Appendix: exact-source reading and evidence index
+
+@@EVIDENCE_INDEX@@
+
+# References
+
+::: {#refs}
+:::

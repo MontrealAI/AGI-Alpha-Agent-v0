@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "check": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "privacy",
+      "command": [
+        "python",
+        "scripts/dp_scrubber.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "binary_policy",
+      "command": [
+        "python",
+        "scripts/check_no_binary_diff.py"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/check_no_binary_diff.py\", line 484, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/check_no_binary_diff.py\", line 450, in main\n    catalog = load_catalog(Path.cwd())\n              ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/research_papers.py\", line 281, in load_catalog\n    path = ordinary_path(root, CATALOG)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/research_papers.py\", line 276, in ordinary_path\n    raise ValueError(\"Paper rendering requires ordinary non-executable files\")\nValueError: Paper rendering requires ordinary non-executable files\n"
+    },
+    {
+      "check": "scoped_ruff",
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "contrib/discovery_means_v1",
+        "studies/discovery-means-v1"
+      ],
+      "returncode": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    }
+  ],
+  "additive_only": true,
+  "staged_file_count_before_receipt": 106,
+  "scope": "Local source review only; full native locked install, security/platform/coverage and hosted qualification pending.",
+  "qualification_notes": [
+    "Binary policy hook could not load full existing catalog/assets in sparse checkout; its nonzero exit is BLOCKED, not a pass.",
+    "Separate staged numstat has no binary entries; no binary/rendered artifacts are included in the source PR. This narrow fact does not replace the hook.",
+    "Local pre-commit/full-repository suite were not run after incomplete locked setup; existing merge/release gates remain unchanged."
+  ]
+}

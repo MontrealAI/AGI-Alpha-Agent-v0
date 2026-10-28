@@ -1,0 +1,3803 @@
+{
+  "instrument_path": "/workspace/scratch/b31fc52d32fa/agi-alpha/contrib/discovery_means_v1/instrument.py",
+  "instrument_sha256": "fd876e0967a4b4a311449e597d47a7da58bb3926895cdd004ece58dcf78d1da5",
+  "rows": [
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 12,
+                "depth": 2,
+                "hypothesis": "hyp_f2de59bc",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_98089f5a"
+                  ],
+                  [
+                    "probe_c20fac57",
+                    "obs_105da738"
+                  ]
+                ]
+              },
+              {
+                "cost": 12,
+                "depth": 2,
+                "hypothesis": "hyp_379d551f",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_98089f5a"
+                  ],
+                  [
+                    "probe_c20fac57",
+                    "obs_9d87bee7"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_94e28c9a",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_d79d1ec4"
+                  ],
+                  [
+                    "probe_2f2a72c1",
+                    "obs_5590c992"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_e668dab5",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_d79d1ec4"
+                  ],
+                  [
+                    "probe_2f2a72c1",
+                    "obs_ea729a37"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 12,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 12,
+                "depth": 2,
+                "hypothesis": "hyp_f2de59bc",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_98089f5a"
+                  ],
+                  [
+                    "probe_c20fac57",
+                    "obs_105da738"
+                  ]
+                ]
+              },
+              {
+                "cost": 12,
+                "depth": 2,
+                "hypothesis": "hyp_379d551f",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_98089f5a"
+                  ],
+                  [
+                    "probe_c20fac57",
+                    "obs_9d87bee7"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_94e28c9a",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_d79d1ec4"
+                  ],
+                  [
+                    "probe_2f2a72c1",
+                    "obs_5590c992"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_e668dab5",
+                "path": [
+                  [
+                    "probe_6791ca56",
+                    "obs_d79d1ec4"
+                  ],
+                  [
+                    "probe_2f2a72c1",
+                    "obs_ea729a37"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 12,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-01",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 12,
+            "depth": 2,
+            "hypothesis": "hyp_f2de59bc",
+            "path": [
+              [
+                "probe_6791ca56",
+                "obs_98089f5a"
+              ],
+              [
+                "probe_c20fac57",
+                "obs_105da738"
+              ]
+            ]
+          },
+          {
+            "cost": 12,
+            "depth": 2,
+            "hypothesis": "hyp_379d551f",
+            "path": [
+              [
+                "probe_6791ca56",
+                "obs_98089f5a"
+              ],
+              [
+                "probe_c20fac57",
+                "obs_9d87bee7"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_94e28c9a",
+            "path": [
+              [
+                "probe_6791ca56",
+                "obs_d79d1ec4"
+              ],
+              [
+                "probe_2f2a72c1",
+                "obs_5590c992"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_e668dab5",
+            "path": [
+              [
+                "probe_6791ca56",
+                "obs_d79d1ec4"
+              ],
+              [
+                "probe_2f2a72c1",
+                "obs_ea729a37"
+              ]
+            ]
+          }
+        ],
+        "nodes": 7,
+        "worst_cost": 12,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "adaptive_advantage",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_98089f5a": {
+              "branches": {
+                "obs_105da738": {
+                  "hypothesis": "hyp_f2de59bc",
+                  "kind": "leaf"
+                },
+                "obs_9d87bee7": {
+                  "hypothesis": "hyp_379d551f",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_c20fac57",
+              "kind": "probe"
+            },
+            "obs_d79d1ec4": {
+              "branches": {
+                "obs_5590c992": {
+                  "hypothesis": "hyp_94e28c9a",
+                  "kind": "leaf"
+                },
+                "obs_ea729a37": {
+                  "hypothesis": "hyp_e668dab5",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_2f2a72c1",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_6791ca56",
+          "kind": "probe"
+        },
+        "policy_bytes": 445,
+        "policy_nodes": 7,
+        "problem_digest": "d640f157cc1ad53cf1464c2691234458bb6228b0def6826a9036244c59fff4b2",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 15,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 12,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_98089f5a": {
+              "branches": {
+                "obs_105da738": {
+                  "hypothesis": "hyp_f2de59bc",
+                  "kind": "leaf"
+                },
+                "obs_9d87bee7": {
+                  "hypothesis": "hyp_379d551f",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_c20fac57",
+              "kind": "probe"
+            },
+            "obs_d79d1ec4": {
+              "branches": {
+                "obs_5590c992": {
+                  "hypothesis": "hyp_94e28c9a",
+                  "kind": "leaf"
+                },
+                "obs_ea729a37": {
+                  "hypothesis": "hyp_e668dab5",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_2f2a72c1",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_6791ca56",
+          "kind": "probe"
+        },
+        "search_states": 23,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 12,
+        "worst_cost": 12,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.000751033000000012,
+        "instrument_wall": 0.0007505859975935891,
+        "oracle_cpu": 0.00020789799999998415,
+        "oracle_wall": 0.00021938799181953073
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 14,
+                "depth": 2,
+                "hypothesis": "hyp_f6319ad1",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_164942c9"
+                  ],
+                  [
+                    "probe_6e0709a5",
+                    "obs_7cabb637"
+                  ]
+                ]
+              },
+              {
+                "cost": 14,
+                "depth": 2,
+                "hypothesis": "hyp_a2aaf6b3",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_164942c9"
+                  ],
+                  [
+                    "probe_6e0709a5",
+                    "obs_ad19502d"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_91bb1dd2",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_e0e0232d"
+                  ],
+                  [
+                    "probe_f70a642f",
+                    "obs_62ca116a"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_24aec161",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_e0e0232d"
+                  ],
+                  [
+                    "probe_f70a642f",
+                    "obs_b21a05ee"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 14,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 14,
+                "depth": 2,
+                "hypothesis": "hyp_f6319ad1",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_164942c9"
+                  ],
+                  [
+                    "probe_6e0709a5",
+                    "obs_7cabb637"
+                  ]
+                ]
+              },
+              {
+                "cost": 14,
+                "depth": 2,
+                "hypothesis": "hyp_a2aaf6b3",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_164942c9"
+                  ],
+                  [
+                    "probe_6e0709a5",
+                    "obs_ad19502d"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_91bb1dd2",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_e0e0232d"
+                  ],
+                  [
+                    "probe_f70a642f",
+                    "obs_62ca116a"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_24aec161",
+                "path": [
+                  [
+                    "probe_2fb65143",
+                    "obs_e0e0232d"
+                  ],
+                  [
+                    "probe_f70a642f",
+                    "obs_b21a05ee"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 14,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-02",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 14,
+            "depth": 2,
+            "hypothesis": "hyp_f6319ad1",
+            "path": [
+              [
+                "probe_2fb65143",
+                "obs_164942c9"
+              ],
+              [
+                "probe_6e0709a5",
+                "obs_7cabb637"
+              ]
+            ]
+          },
+          {
+            "cost": 14,
+            "depth": 2,
+            "hypothesis": "hyp_a2aaf6b3",
+            "path": [
+              [
+                "probe_2fb65143",
+                "obs_164942c9"
+              ],
+              [
+                "probe_6e0709a5",
+                "obs_ad19502d"
+              ]
+            ]
+          },
+          {
+            "cost": 9,
+            "depth": 2,
+            "hypothesis": "hyp_91bb1dd2",
+            "path": [
+              [
+                "probe_2fb65143",
+                "obs_e0e0232d"
+              ],
+              [
+                "probe_f70a642f",
+                "obs_62ca116a"
+              ]
+            ]
+          },
+          {
+            "cost": 9,
+            "depth": 2,
+            "hypothesis": "hyp_24aec161",
+            "path": [
+              [
+                "probe_2fb65143",
+                "obs_e0e0232d"
+              ],
+              [
+                "probe_f70a642f",
+                "obs_b21a05ee"
+              ]
+            ]
+          }
+        ],
+        "nodes": 7,
+        "worst_cost": 14,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "adaptive_advantage",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_164942c9": {
+              "branches": {
+                "obs_7cabb637": {
+                  "hypothesis": "hyp_f6319ad1",
+                  "kind": "leaf"
+                },
+                "obs_ad19502d": {
+                  "hypothesis": "hyp_a2aaf6b3",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_6e0709a5",
+              "kind": "probe"
+            },
+            "obs_e0e0232d": {
+              "branches": {
+                "obs_62ca116a": {
+                  "hypothesis": "hyp_91bb1dd2",
+                  "kind": "leaf"
+                },
+                "obs_b21a05ee": {
+                  "hypothesis": "hyp_24aec161",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_f70a642f",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_2fb65143",
+          "kind": "probe"
+        },
+        "policy_bytes": 445,
+        "policy_nodes": 7,
+        "problem_digest": "396ee4eee1cb230dde71e5fdd20231d3432040963d29d22eb0d45c763c3d52e0",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 17,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 14,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_164942c9": {
+              "branches": {
+                "obs_7cabb637": {
+                  "hypothesis": "hyp_f6319ad1",
+                  "kind": "leaf"
+                },
+                "obs_ad19502d": {
+                  "hypothesis": "hyp_a2aaf6b3",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_6e0709a5",
+              "kind": "probe"
+            },
+            "obs_e0e0232d": {
+              "branches": {
+                "obs_62ca116a": {
+                  "hypothesis": "hyp_91bb1dd2",
+                  "kind": "leaf"
+                },
+                "obs_b21a05ee": {
+                  "hypothesis": "hyp_24aec161",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_f70a642f",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_2fb65143",
+          "kind": "probe"
+        },
+        "search_states": 23,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 14,
+        "worst_cost": 14,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.00044597000000001774,
+        "instrument_wall": 0.0004457379982341081,
+        "oracle_cpu": 0.00021748299999999054,
+        "oracle_wall": 0.00021770699822809547
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 17,
+                "depth": 2,
+                "hypothesis": "hyp_0b1d68e0",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_0b447e15"
+                  ],
+                  [
+                    "probe_3db28931",
+                    "obs_73e7f127"
+                  ]
+                ]
+              },
+              {
+                "cost": 17,
+                "depth": 2,
+                "hypothesis": "hyp_14fafb89",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_0b447e15"
+                  ],
+                  [
+                    "probe_3db28931",
+                    "obs_ff35b4a3"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_78751a68",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_e942abce"
+                  ],
+                  [
+                    "probe_92e47743",
+                    "obs_46e98596"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_cd8e0a96",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_e942abce"
+                  ],
+                  [
+                    "probe_92e47743",
+                    "obs_c82b84fd"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 17,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 17,
+                "depth": 2,
+                "hypothesis": "hyp_0b1d68e0",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_0b447e15"
+                  ],
+                  [
+                    "probe_3db28931",
+                    "obs_73e7f127"
+                  ]
+                ]
+              },
+              {
+                "cost": 17,
+                "depth": 2,
+                "hypothesis": "hyp_14fafb89",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_0b447e15"
+                  ],
+                  [
+                    "probe_3db28931",
+                    "obs_ff35b4a3"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_78751a68",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_e942abce"
+                  ],
+                  [
+                    "probe_92e47743",
+                    "obs_46e98596"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_cd8e0a96",
+                "path": [
+                  [
+                    "probe_24c94737",
+                    "obs_e942abce"
+                  ],
+                  [
+                    "probe_92e47743",
+                    "obs_c82b84fd"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 17,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-03",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 17,
+            "depth": 2,
+            "hypothesis": "hyp_0b1d68e0",
+            "path": [
+              [
+                "probe_24c94737",
+                "obs_0b447e15"
+              ],
+              [
+                "probe_3db28931",
+                "obs_73e7f127"
+              ]
+            ]
+          },
+          {
+            "cost": 17,
+            "depth": 2,
+            "hypothesis": "hyp_14fafb89",
+            "path": [
+              [
+                "probe_24c94737",
+                "obs_0b447e15"
+              ],
+              [
+                "probe_3db28931",
+                "obs_ff35b4a3"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_78751a68",
+            "path": [
+              [
+                "probe_24c94737",
+                "obs_e942abce"
+              ],
+              [
+                "probe_92e47743",
+                "obs_46e98596"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_cd8e0a96",
+            "path": [
+              [
+                "probe_24c94737",
+                "obs_e942abce"
+              ],
+              [
+                "probe_92e47743",
+                "obs_c82b84fd"
+              ]
+            ]
+          }
+        ],
+        "nodes": 7,
+        "worst_cost": 17,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "adaptive_advantage",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_0b447e15": {
+              "branches": {
+                "obs_73e7f127": {
+                  "hypothesis": "hyp_0b1d68e0",
+                  "kind": "leaf"
+                },
+                "obs_ff35b4a3": {
+                  "hypothesis": "hyp_14fafb89",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_3db28931",
+              "kind": "probe"
+            },
+            "obs_e942abce": {
+              "branches": {
+                "obs_46e98596": {
+                  "hypothesis": "hyp_78751a68",
+                  "kind": "leaf"
+                },
+                "obs_c82b84fd": {
+                  "hypothesis": "hyp_cd8e0a96",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_92e47743",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_24c94737",
+          "kind": "probe"
+        },
+        "policy_bytes": 445,
+        "policy_nodes": 7,
+        "problem_digest": "e17dd0395a060344268a3a5eef57e7b212f70d5300fcda2c2bce4a065e99fca3",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 17,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 17,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_0b447e15": {
+              "branches": {
+                "obs_73e7f127": {
+                  "hypothesis": "hyp_0b1d68e0",
+                  "kind": "leaf"
+                },
+                "obs_ff35b4a3": {
+                  "hypothesis": "hyp_14fafb89",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_3db28931",
+              "kind": "probe"
+            },
+            "obs_e942abce": {
+              "branches": {
+                "obs_46e98596": {
+                  "hypothesis": "hyp_78751a68",
+                  "kind": "leaf"
+                },
+                "obs_c82b84fd": {
+                  "hypothesis": "hyp_cd8e0a96",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_92e47743",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_24c94737",
+          "kind": "probe"
+        },
+        "search_states": 23,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 17,
+        "worst_cost": 17,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.00046068899999998636,
+        "instrument_wall": 0.0004605710128089413,
+        "oracle_cpu": 0.00013285599999998676,
+        "oracle_wall": 0.00013350500375963748
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 4,
+                "depth": 2,
+                "hypothesis": "hyp_146f49c2",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_a75f6ec5"
+                  ],
+                  [
+                    "probe_f784d89e",
+                    "obs_0bef953f"
+                  ]
+                ]
+              },
+              {
+                "cost": 4,
+                "depth": 2,
+                "hypothesis": "hyp_5edde65a",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_a75f6ec5"
+                  ],
+                  [
+                    "probe_f784d89e",
+                    "obs_663d4649"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_b92e9c02",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_eb781f1a"
+                  ],
+                  [
+                    "probe_b246bcd5",
+                    "obs_67c2d334"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_d61c4cc1",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_eb781f1a"
+                  ],
+                  [
+                    "probe_b246bcd5",
+                    "obs_f5ad8244"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 4,
+                "depth": 2,
+                "hypothesis": "hyp_146f49c2",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_a75f6ec5"
+                  ],
+                  [
+                    "probe_f784d89e",
+                    "obs_0bef953f"
+                  ]
+                ]
+              },
+              {
+                "cost": 4,
+                "depth": 2,
+                "hypothesis": "hyp_5edde65a",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_a75f6ec5"
+                  ],
+                  [
+                    "probe_f784d89e",
+                    "obs_663d4649"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_b92e9c02",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_eb781f1a"
+                  ],
+                  [
+                    "probe_b246bcd5",
+                    "obs_67c2d334"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_d61c4cc1",
+                "path": [
+                  [
+                    "probe_28d1fdcb",
+                    "obs_eb781f1a"
+                  ],
+                  [
+                    "probe_b246bcd5",
+                    "obs_f5ad8244"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 7,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-04",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 4,
+            "depth": 2,
+            "hypothesis": "hyp_146f49c2",
+            "path": [
+              [
+                "probe_28d1fdcb",
+                "obs_a75f6ec5"
+              ],
+              [
+                "probe_f784d89e",
+                "obs_0bef953f"
+              ]
+            ]
+          },
+          {
+            "cost": 4,
+            "depth": 2,
+            "hypothesis": "hyp_5edde65a",
+            "path": [
+              [
+                "probe_28d1fdcb",
+                "obs_a75f6ec5"
+              ],
+              [
+                "probe_f784d89e",
+                "obs_663d4649"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_b92e9c02",
+            "path": [
+              [
+                "probe_28d1fdcb",
+                "obs_eb781f1a"
+              ],
+              [
+                "probe_b246bcd5",
+                "obs_67c2d334"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_d61c4cc1",
+            "path": [
+              [
+                "probe_28d1fdcb",
+                "obs_eb781f1a"
+              ],
+              [
+                "probe_b246bcd5",
+                "obs_f5ad8244"
+              ]
+            ]
+          }
+        ],
+        "nodes": 7,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "adaptive_advantage",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_a75f6ec5": {
+              "branches": {
+                "obs_0bef953f": {
+                  "hypothesis": "hyp_146f49c2",
+                  "kind": "leaf"
+                },
+                "obs_663d4649": {
+                  "hypothesis": "hyp_5edde65a",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_f784d89e",
+              "kind": "probe"
+            },
+            "obs_eb781f1a": {
+              "branches": {
+                "obs_67c2d334": {
+                  "hypothesis": "hyp_b92e9c02",
+                  "kind": "leaf"
+                },
+                "obs_f5ad8244": {
+                  "hypothesis": "hyp_d61c4cc1",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_b246bcd5",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_28d1fdcb",
+          "kind": "probe"
+        },
+        "policy_bytes": 445,
+        "policy_nodes": 7,
+        "problem_digest": "3209f1ddaeb03a74f94328957f494a0d0ea09ebc0b79805311a8eb49de483c86",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 17,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_a75f6ec5": {
+              "branches": {
+                "obs_0bef953f": {
+                  "hypothesis": "hyp_146f49c2",
+                  "kind": "leaf"
+                },
+                "obs_663d4649": {
+                  "hypothesis": "hyp_5edde65a",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_f784d89e",
+              "kind": "probe"
+            },
+            "obs_eb781f1a": {
+              "branches": {
+                "obs_67c2d334": {
+                  "hypothesis": "hyp_b92e9c02",
+                  "kind": "leaf"
+                },
+                "obs_f5ad8244": {
+                  "hypothesis": "hyp_d61c4cc1",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_b246bcd5",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_28d1fdcb",
+          "kind": "probe"
+        },
+        "search_states": 23,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 7,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0004885149999999949,
+        "instrument_wall": 0.0004883600049652159,
+        "oracle_cpu": 0.00014271100000001757,
+        "oracle_wall": 0.00014276200090534985
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 2,
+                "depth": 1,
+                "hypothesis": "hyp_45bc3e38",
+                "path": [
+                  [
+                    "probe_4eaa07ff",
+                    "obs_64ab24f5"
+                  ]
+                ]
+              },
+              {
+                "cost": 6,
+                "depth": 2,
+                "hypothesis": "hyp_417b6cce",
+                "path": [
+                  [
+                    "probe_4eaa07ff",
+                    "obs_e74222e4"
+                  ],
+                  [
+                    "probe_d78ed9cf",
+                    "obs_810fcca1"
+                  ]
+                ]
+              },
+              {
+                "cost": 6,
+                "depth": 2,
+                "hypothesis": "hyp_d51e5be7",
+                "path": [
+                  [
+                    "probe_4eaa07ff",
+                    "obs_e74222e4"
+                  ],
+                  [
+                    "probe_d78ed9cf",
+                    "obs_fed32421"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 6,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": false,
+            "nodes": 1,
+            "reason": "branch coverage differs from complete possible observations"
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-05",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 2,
+            "depth": 1,
+            "hypothesis": "hyp_45bc3e38",
+            "path": [
+              [
+                "probe_4eaa07ff",
+                "obs_64ab24f5"
+              ]
+            ]
+          },
+          {
+            "cost": 6,
+            "depth": 2,
+            "hypothesis": "hyp_417b6cce",
+            "path": [
+              [
+                "probe_4eaa07ff",
+                "obs_e74222e4"
+              ],
+              [
+                "probe_d78ed9cf",
+                "obs_810fcca1"
+              ]
+            ]
+          },
+          {
+            "cost": 6,
+            "depth": 2,
+            "hypothesis": "hyp_d51e5be7",
+            "path": [
+              [
+                "probe_4eaa07ff",
+                "obs_e74222e4"
+              ],
+              [
+                "probe_d78ed9cf",
+                "obs_fed32421"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 6,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "overlapping_observations",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_64ab24f5": {
+              "hypothesis": "hyp_45bc3e38",
+              "kind": "leaf"
+            },
+            "obs_e74222e4": {
+              "branches": {
+                "obs_810fcca1": {
+                  "hypothesis": "hyp_417b6cce",
+                  "kind": "leaf"
+                },
+                "obs_fed32421": {
+                  "hypothesis": "hyp_d51e5be7",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_d78ed9cf",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_4eaa07ff",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "03d156f0411a42e19e700b281ffba6234aa77f483577f2fddc19bbf312fe3238",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 31,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 6,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_64ab24f5": {
+              "hypothesis": "hyp_45bc3e38",
+              "kind": "leaf"
+            },
+            "obs_e74222e4": {
+              "branches": {
+                "obs_810fcca1": {
+                  "hypothesis": "hyp_417b6cce",
+                  "kind": "leaf"
+                },
+                "obs_fed32421": {
+                  "hypothesis": "hyp_d51e5be7",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_d78ed9cf",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_4eaa07ff",
+          "kind": "probe"
+        },
+        "search_states": 38,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 6,
+        "worst_cost": 6,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.001100991999999995,
+        "instrument_wall": 0.0011002810060745105,
+        "oracle_cpu": 0.0003036519999999876,
+        "oracle_wall": 0.0003038119903067127
+      },
+      "static": {
+        "cost": 6,
+        "count": 2,
+        "selected": [
+          "probe_4eaa07ff",
+          "probe_d78ed9cf"
+        ],
+        "status": "optimal",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 3,
+                "depth": 1,
+                "hypothesis": "hyp_8815efac",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_6f915a30"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_d6f17565",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_8d63483a"
+                  ],
+                  [
+                    "probe_fbe98e2e",
+                    "obs_98cb706a"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_bbc913d5",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_8d63483a"
+                  ],
+                  [
+                    "probe_fbe98e2e",
+                    "obs_b4ec3936"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 3,
+                "depth": 1,
+                "hypothesis": "hyp_8815efac",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_6f915a30"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_d6f17565",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_8d63483a"
+                  ],
+                  [
+                    "probe_fbe98e2e",
+                    "obs_98cb706a"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_bbc913d5",
+                "path": [
+                  [
+                    "probe_44950ce3",
+                    "obs_8d63483a"
+                  ],
+                  [
+                    "probe_fbe98e2e",
+                    "obs_b4ec3936"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-06",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 3,
+            "depth": 1,
+            "hypothesis": "hyp_8815efac",
+            "path": [
+              [
+                "probe_44950ce3",
+                "obs_6f915a30"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_d6f17565",
+            "path": [
+              [
+                "probe_44950ce3",
+                "obs_8d63483a"
+              ],
+              [
+                "probe_fbe98e2e",
+                "obs_98cb706a"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_bbc913d5",
+            "path": [
+              [
+                "probe_44950ce3",
+                "obs_8d63483a"
+              ],
+              [
+                "probe_fbe98e2e",
+                "obs_b4ec3936"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "overlapping_observations",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_6f915a30": {
+              "hypothesis": "hyp_8815efac",
+              "kind": "leaf"
+            },
+            "obs_8d63483a": {
+              "branches": {
+                "obs_98cb706a": {
+                  "hypothesis": "hyp_d6f17565",
+                  "kind": "leaf"
+                },
+                "obs_b4ec3936": {
+                  "hypothesis": "hyp_bbc913d5",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_fbe98e2e",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_44950ce3",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "f706e88d97653b0fe85a462bed265fe75212d2f9300af08c25b01a6786e74e6c",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 31,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_6f915a30": {
+              "hypothesis": "hyp_8815efac",
+              "kind": "leaf"
+            },
+            "obs_8d63483a": {
+              "branches": {
+                "obs_98cb706a": {
+                  "hypothesis": "hyp_d6f17565",
+                  "kind": "leaf"
+                },
+                "obs_b4ec3936": {
+                  "hypothesis": "hyp_bbc913d5",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_fbe98e2e",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_44950ce3",
+          "kind": "probe"
+        },
+        "search_states": 39,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 7,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0008449490000000115,
+        "instrument_wall": 0.0008448610024061054,
+        "oracle_cpu": 0.00020803199999999689,
+        "oracle_wall": 0.00020825299725402147
+      },
+      "static": {
+        "cost": 7,
+        "count": 2,
+        "selected": [
+          "probe_44950ce3",
+          "probe_fbe98e2e"
+        ],
+        "status": "optimal",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 2,
+                "depth": 1,
+                "hypothesis": "hyp_dd26365d",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_019c0f83"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_21dd2e75",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_17e60067"
+                  ],
+                  [
+                    "probe_c5b606d6",
+                    "obs_5c6098d4"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_7ccc10fd",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_17e60067"
+                  ],
+                  [
+                    "probe_c5b606d6",
+                    "obs_7533ffe5"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 2,
+                "depth": 1,
+                "hypothesis": "hyp_dd26365d",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_019c0f83"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_21dd2e75",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_17e60067"
+                  ],
+                  [
+                    "probe_c5b606d6",
+                    "obs_5c6098d4"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_7ccc10fd",
+                "path": [
+                  [
+                    "probe_f8d7c151",
+                    "obs_17e60067"
+                  ],
+                  [
+                    "probe_c5b606d6",
+                    "obs_7533ffe5"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-07",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 5,
+            "depth": 1,
+            "hypothesis": "hyp_21dd2e75",
+            "path": [
+              [
+                "probe_c5b606d6",
+                "obs_5c6098d4"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_dd26365d",
+            "path": [
+              [
+                "probe_c5b606d6",
+                "obs_7533ffe5"
+              ],
+              [
+                "probe_f8d7c151",
+                "obs_019c0f83"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_7ccc10fd",
+            "path": [
+              [
+                "probe_c5b606d6",
+                "obs_7533ffe5"
+              ],
+              [
+                "probe_f8d7c151",
+                "obs_17e60067"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "overlapping_observations",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_5c6098d4": {
+              "hypothesis": "hyp_21dd2e75",
+              "kind": "leaf"
+            },
+            "obs_7533ffe5": {
+              "branches": {
+                "obs_019c0f83": {
+                  "hypothesis": "hyp_dd26365d",
+                  "kind": "leaf"
+                },
+                "obs_17e60067": {
+                  "hypothesis": "hyp_7ccc10fd",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_f8d7c151",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_c5b606d6",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "2f7db575ffecca00e8ca442792776843114bd2b6613d932d65d2ac96974f62be",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 31,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_019c0f83": {
+              "hypothesis": "hyp_dd26365d",
+              "kind": "leaf"
+            },
+            "obs_17e60067": {
+              "branches": {
+                "obs_5c6098d4": {
+                  "hypothesis": "hyp_21dd2e75",
+                  "kind": "leaf"
+                },
+                "obs_7533ffe5": {
+                  "hypothesis": "hyp_7ccc10fd",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_c5b606d6",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_f8d7c151",
+          "kind": "probe"
+        },
+        "search_states": 39,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 7,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0007138610000000101,
+        "instrument_wall": 0.0007137689972296357,
+        "oracle_cpu": 0.00031805700000001047,
+        "oracle_wall": 0.00031783799931872636
+      },
+      "static": {
+        "cost": 7,
+        "count": 2,
+        "selected": [
+          "probe_c5b606d6",
+          "probe_f8d7c151"
+        ],
+        "status": "optimal",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_3c6098d1",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_7686914c"
+                  ],
+                  [
+                    "probe_9fcc907a",
+                    "obs_82f137a8"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_e94d587f",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_7686914c"
+                  ],
+                  [
+                    "probe_9fcc907a",
+                    "obs_ef0afd23"
+                  ]
+                ]
+              },
+              {
+                "cost": 3,
+                "depth": 1,
+                "hypothesis": "hyp_4f94a30d",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_cf73fcd9"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 9,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_3c6098d1",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_7686914c"
+                  ],
+                  [
+                    "probe_9fcc907a",
+                    "obs_82f137a8"
+                  ]
+                ]
+              },
+              {
+                "cost": 9,
+                "depth": 2,
+                "hypothesis": "hyp_e94d587f",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_7686914c"
+                  ],
+                  [
+                    "probe_9fcc907a",
+                    "obs_ef0afd23"
+                  ]
+                ]
+              },
+              {
+                "cost": 3,
+                "depth": 1,
+                "hypothesis": "hyp_4f94a30d",
+                "path": [
+                  [
+                    "probe_c5c9f278",
+                    "obs_cf73fcd9"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 9,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-08",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 9,
+            "depth": 2,
+            "hypothesis": "hyp_3c6098d1",
+            "path": [
+              [
+                "probe_9fcc907a",
+                "obs_82f137a8"
+              ],
+              [
+                "probe_c5c9f278",
+                "obs_7686914c"
+              ]
+            ]
+          },
+          {
+            "cost": 9,
+            "depth": 2,
+            "hypothesis": "hyp_4f94a30d",
+            "path": [
+              [
+                "probe_9fcc907a",
+                "obs_82f137a8"
+              ],
+              [
+                "probe_c5c9f278",
+                "obs_cf73fcd9"
+              ]
+            ]
+          },
+          {
+            "cost": 6,
+            "depth": 1,
+            "hypothesis": "hyp_e94d587f",
+            "path": [
+              [
+                "probe_9fcc907a",
+                "obs_ef0afd23"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 9,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "overlapping_observations",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_82f137a8": {
+              "branches": {
+                "obs_7686914c": {
+                  "hypothesis": "hyp_3c6098d1",
+                  "kind": "leaf"
+                },
+                "obs_cf73fcd9": {
+                  "hypothesis": "hyp_4f94a30d",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_c5c9f278",
+              "kind": "probe"
+            },
+            "obs_ef0afd23": {
+              "hypothesis": "hyp_e94d587f",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "probe_9fcc907a",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "777b113f45b2b662865db6f01c83a9c8233ef4d702d38ad68b012958d438f865",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 31,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 9,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_7686914c": {
+              "branches": {
+                "obs_82f137a8": {
+                  "hypothesis": "hyp_3c6098d1",
+                  "kind": "leaf"
+                },
+                "obs_ef0afd23": {
+                  "hypothesis": "hyp_e94d587f",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_9fcc907a",
+              "kind": "probe"
+            },
+            "obs_cf73fcd9": {
+              "hypothesis": "hyp_4f94a30d",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "probe_c5c9f278",
+          "kind": "probe"
+        },
+        "search_states": 37,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 9,
+        "worst_cost": 9,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0006614090000000017,
+        "instrument_wall": 0.0006613540026592091,
+        "oracle_cpu": 0.0003036810000000001,
+        "oracle_wall": 0.00030312399030663073
+      },
+      "static": {
+        "cost": 9,
+        "count": 2,
+        "selected": [
+          "probe_9fcc907a",
+          "probe_c5c9f278"
+        ],
+        "status": "optimal",
+        "subsets_checked": 11
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": false,
+            "nodes": 1,
+            "reason": "unauthorized experiment"
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 5,
+                "depth": 1,
+                "hypothesis": "hyp_9719ea49",
+                "path": [
+                  [
+                    "probe_aa8c47d6",
+                    "obs_32286b81"
+                  ]
+                ]
+              },
+              {
+                "cost": 8,
+                "depth": 2,
+                "hypothesis": "hyp_b2c23ff1",
+                "path": [
+                  [
+                    "probe_aa8c47d6",
+                    "obs_8208d247"
+                  ],
+                  [
+                    "probe_6c7a9ab5",
+                    "obs_bb84ffbc"
+                  ]
+                ]
+              },
+              {
+                "cost": 8,
+                "depth": 2,
+                "hypothesis": "hyp_b89b977e",
+                "path": [
+                  [
+                    "probe_aa8c47d6",
+                    "obs_8208d247"
+                  ],
+                  [
+                    "probe_6c7a9ab5",
+                    "obs_e4c64d58"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 8,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-09",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 3,
+            "depth": 1,
+            "hypothesis": "hyp_b2c23ff1",
+            "path": [
+              [
+                "probe_6c7a9ab5",
+                "obs_bb84ffbc"
+              ]
+            ]
+          },
+          {
+            "cost": 8,
+            "depth": 2,
+            "hypothesis": "hyp_9719ea49",
+            "path": [
+              [
+                "probe_6c7a9ab5",
+                "obs_e4c64d58"
+              ],
+              [
+                "probe_aa8c47d6",
+                "obs_32286b81"
+              ]
+            ]
+          },
+          {
+            "cost": 8,
+            "depth": 2,
+            "hypothesis": "hyp_b89b977e",
+            "path": [
+              [
+                "probe_6c7a9ab5",
+                "obs_e4c64d58"
+              ],
+              [
+                "probe_aa8c47d6",
+                "obs_8208d247"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 8,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "permission_constraints",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_bb84ffbc": {
+              "hypothesis": "hyp_b2c23ff1",
+              "kind": "leaf"
+            },
+            "obs_e4c64d58": {
+              "branches": {
+                "obs_32286b81": {
+                  "hypothesis": "hyp_9719ea49",
+                  "kind": "leaf"
+                },
+                "obs_8208d247": {
+                  "hypothesis": "hyp_b89b977e",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_aa8c47d6",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_6c7a9ab5",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "7614ad77d438d6a10fc90211ae8b0736d4f51db71c13cdafe0a9a57985485801",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 8,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 8,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_32286b81": {
+              "hypothesis": "hyp_9719ea49",
+              "kind": "leaf"
+            },
+            "obs_8208d247": {
+              "branches": {
+                "obs_bb84ffbc": {
+                  "hypothesis": "hyp_b2c23ff1",
+                  "kind": "leaf"
+                },
+                "obs_e4c64d58": {
+                  "hypothesis": "hyp_b89b977e",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_6c7a9ab5",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_aa8c47d6",
+          "kind": "probe"
+        },
+        "search_states": 14,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 8,
+        "worst_cost": 8,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003055730000000034,
+        "instrument_wall": 0.000305515990476124,
+        "oracle_cpu": 7.057600000001663e-05,
+        "oracle_wall": 7.069400453474373e-05
+      },
+      "static": {
+        "cost": 8,
+        "count": 2,
+        "selected": [
+          "probe_6c7a9ab5",
+          "probe_aa8c47d6"
+        ],
+        "status": "optimal",
+        "subsets_checked": 4
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": false,
+            "nodes": 1,
+            "reason": "unauthorized experiment"
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 16,
+                "depth": 2,
+                "hypothesis": "hyp_de4bb241",
+                "path": [
+                  [
+                    "probe_8f0447c8",
+                    "obs_21b2ce60"
+                  ],
+                  [
+                    "probe_aa4587df",
+                    "obs_5102c3af"
+                  ]
+                ]
+              },
+              {
+                "cost": 16,
+                "depth": 2,
+                "hypothesis": "hyp_e4a9c114",
+                "path": [
+                  [
+                    "probe_8f0447c8",
+                    "obs_21b2ce60"
+                  ],
+                  [
+                    "probe_aa4587df",
+                    "obs_8aa299b4"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 1,
+                "hypothesis": "hyp_dbe8d82d",
+                "path": [
+                  [
+                    "probe_8f0447c8",
+                    "obs_a6ef9748"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 16,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-10",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 16,
+            "depth": 2,
+            "hypothesis": "hyp_de4bb241",
+            "path": [
+              [
+                "probe_8f0447c8",
+                "obs_21b2ce60"
+              ],
+              [
+                "probe_aa4587df",
+                "obs_5102c3af"
+              ]
+            ]
+          },
+          {
+            "cost": 16,
+            "depth": 2,
+            "hypothesis": "hyp_e4a9c114",
+            "path": [
+              [
+                "probe_8f0447c8",
+                "obs_21b2ce60"
+              ],
+              [
+                "probe_aa4587df",
+                "obs_8aa299b4"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 1,
+            "hypothesis": "hyp_dbe8d82d",
+            "path": [
+              [
+                "probe_8f0447c8",
+                "obs_a6ef9748"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 16,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "permission_constraints",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_21b2ce60": {
+              "branches": {
+                "obs_5102c3af": {
+                  "hypothesis": "hyp_de4bb241",
+                  "kind": "leaf"
+                },
+                "obs_8aa299b4": {
+                  "hypothesis": "hyp_e4a9c114",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_aa4587df",
+              "kind": "probe"
+            },
+            "obs_a6ef9748": {
+              "hypothesis": "hyp_dbe8d82d",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "probe_8f0447c8",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "026e476620a11ab1f2838ff70792d1dafad77cec988c752a80948fbebd8b3f5e",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 8,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 16,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_21b2ce60": {
+              "branches": {
+                "obs_5102c3af": {
+                  "hypothesis": "hyp_de4bb241",
+                  "kind": "leaf"
+                },
+                "obs_8aa299b4": {
+                  "hypothesis": "hyp_e4a9c114",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_aa4587df",
+              "kind": "probe"
+            },
+            "obs_a6ef9748": {
+              "hypothesis": "hyp_dbe8d82d",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "probe_8f0447c8",
+          "kind": "probe"
+        },
+        "search_states": 12,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 16,
+        "worst_cost": 16,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003066439999999948,
+        "instrument_wall": 0.0003065759956371039,
+        "oracle_cpu": 6.774399999998071e-05,
+        "oracle_wall": 6.798900722060353e-05
+      },
+      "static": {
+        "cost": 16,
+        "count": 2,
+        "selected": [
+          "probe_8f0447c8",
+          "probe_aa4587df"
+        ],
+        "status": "optimal",
+        "subsets_checked": 4
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": false,
+            "nodes": 1,
+            "reason": "unauthorized experiment"
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 4,
+                "depth": 1,
+                "hypothesis": "hyp_e5dcf43f",
+                "path": [
+                  [
+                    "probe_98004f97",
+                    "obs_cb30cfe5"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_e61abf97",
+                "path": [
+                  [
+                    "probe_98004f97",
+                    "obs_f228aeb7"
+                  ],
+                  [
+                    "probe_edfe8c26",
+                    "obs_d9dd4310"
+                  ]
+                ]
+              },
+              {
+                "cost": 7,
+                "depth": 2,
+                "hypothesis": "hyp_f41fc8ef",
+                "path": [
+                  [
+                    "probe_98004f97",
+                    "obs_f228aeb7"
+                  ],
+                  [
+                    "probe_edfe8c26",
+                    "obs_f6b83884"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 7,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-11",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 4,
+            "depth": 1,
+            "hypothesis": "hyp_e5dcf43f",
+            "path": [
+              [
+                "probe_98004f97",
+                "obs_cb30cfe5"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_e61abf97",
+            "path": [
+              [
+                "probe_98004f97",
+                "obs_f228aeb7"
+              ],
+              [
+                "probe_edfe8c26",
+                "obs_d9dd4310"
+              ]
+            ]
+          },
+          {
+            "cost": 7,
+            "depth": 2,
+            "hypothesis": "hyp_f41fc8ef",
+            "path": [
+              [
+                "probe_98004f97",
+                "obs_f228aeb7"
+              ],
+              [
+                "probe_edfe8c26",
+                "obs_f6b83884"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "permission_constraints",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_cb30cfe5": {
+              "hypothesis": "hyp_e5dcf43f",
+              "kind": "leaf"
+            },
+            "obs_f228aeb7": {
+              "branches": {
+                "obs_d9dd4310": {
+                  "hypothesis": "hyp_e61abf97",
+                  "kind": "leaf"
+                },
+                "obs_f6b83884": {
+                  "hypothesis": "hyp_f41fc8ef",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_edfe8c26",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_98004f97",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "92d3afaf133cdcec344d95c4723c2c8f93f773dd1e91799779fdf89be9dd729d",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 8,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_cb30cfe5": {
+              "hypothesis": "hyp_e5dcf43f",
+              "kind": "leaf"
+            },
+            "obs_f228aeb7": {
+              "branches": {
+                "obs_d9dd4310": {
+                  "hypothesis": "hyp_e61abf97",
+                  "kind": "leaf"
+                },
+                "obs_f6b83884": {
+                  "hypothesis": "hyp_f41fc8ef",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_edfe8c26",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_98004f97",
+          "kind": "probe"
+        },
+        "search_states": 13,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 7,
+        "worst_cost": 7,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.00030389899999999637,
+        "instrument_wall": 0.00030375599453691393,
+        "oracle_cpu": 7.238100000001024e-05,
+        "oracle_wall": 7.254000229295343e-05
+      },
+      "static": {
+        "cost": 7,
+        "count": 2,
+        "selected": [
+          "probe_98004f97",
+          "probe_edfe8c26"
+        ],
+        "status": "optimal",
+        "subsets_checked": 4
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": {
+            "accepted": false,
+            "nodes": 1,
+            "reason": "unauthorized experiment"
+          },
+          "status_in_altered_model": "optimal"
+        },
+        "no_noise": {
+          "original_case_audit": {
+            "accepted": true,
+            "leaves": [
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_ae0fad51",
+                "path": [
+                  [
+                    "probe_b7e052cd",
+                    "obs_63c3073f"
+                  ],
+                  [
+                    "probe_3ccffe7b",
+                    "obs_80ea055d"
+                  ]
+                ]
+              },
+              {
+                "cost": 11,
+                "depth": 2,
+                "hypothesis": "hyp_4daf72f9",
+                "path": [
+                  [
+                    "probe_b7e052cd",
+                    "obs_63c3073f"
+                  ],
+                  [
+                    "probe_3ccffe7b",
+                    "obs_db97cfee"
+                  ]
+                ]
+              },
+              {
+                "cost": 3,
+                "depth": 1,
+                "hypothesis": "hyp_05ffa8cd",
+                "path": [
+                  [
+                    "probe_b7e052cd",
+                    "obs_fd129336"
+                  ]
+                ]
+              }
+            ],
+            "nodes": 5,
+            "worst_cost": 11,
+            "worst_depth": 2
+          },
+          "status_in_altered_model": "optimal"
+        }
+      },
+      "case_id": "case-12",
+      "certificate_audit": {
+        "accepted": true,
+        "leaves": [
+          {
+            "cost": 8,
+            "depth": 1,
+            "hypothesis": "hyp_ae0fad51",
+            "path": [
+              [
+                "probe_3ccffe7b",
+                "obs_80ea055d"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_4daf72f9",
+            "path": [
+              [
+                "probe_3ccffe7b",
+                "obs_db97cfee"
+              ],
+              [
+                "probe_b7e052cd",
+                "obs_63c3073f"
+              ]
+            ]
+          },
+          {
+            "cost": 11,
+            "depth": 2,
+            "hypothesis": "hyp_05ffa8cd",
+            "path": [
+              [
+                "probe_3ccffe7b",
+                "obs_db97cfee"
+              ],
+              [
+                "probe_b7e052cd",
+                "obs_fd129336"
+              ]
+            ]
+          }
+        ],
+        "nodes": 5,
+        "worst_cost": 11,
+        "worst_depth": 2
+      },
+      "correct": true,
+      "error": null,
+      "family": "permission_constraints",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": {
+          "branches": {
+            "obs_80ea055d": {
+              "hypothesis": "hyp_ae0fad51",
+              "kind": "leaf"
+            },
+            "obs_db97cfee": {
+              "branches": {
+                "obs_63c3073f": {
+                  "hypothesis": "hyp_4daf72f9",
+                  "kind": "leaf"
+                },
+                "obs_fd129336": {
+                  "hypothesis": "hyp_05ffa8cd",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_b7e052cd",
+              "kind": "probe"
+            }
+          },
+          "experiment": "probe_3ccffe7b",
+          "kind": "probe"
+        },
+        "policy_bytes": 311,
+        "policy_nodes": 5,
+        "problem_digest": "8ef0f395a55ccfa19e363230c7d18c492851d6c67fb53b0ec25c4f78259e7577",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 8,
+        "status": "optimal",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": 11,
+        "worst_depth": 2
+      },
+      "oracle": {
+        "policy": {
+          "branches": {
+            "obs_63c3073f": {
+              "branches": {
+                "obs_80ea055d": {
+                  "hypothesis": "hyp_ae0fad51",
+                  "kind": "leaf"
+                },
+                "obs_db97cfee": {
+                  "hypothesis": "hyp_4daf72f9",
+                  "kind": "leaf"
+                }
+              },
+              "experiment": "probe_3ccffe7b",
+              "kind": "probe"
+            },
+            "obs_fd129336": {
+              "hypothesis": "hyp_05ffa8cd",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "probe_b7e052cd",
+          "kind": "probe"
+        },
+        "search_states": 13,
+        "status": "optimal",
+        "unconstrained_cost_under_depth": 11,
+        "worst_cost": 11,
+        "worst_depth": 2
+      },
+      "seconds": {
+        "instrument_cpu": 0.000311666000000016,
+        "instrument_wall": 0.00031160199432633817,
+        "oracle_cpu": 6.38820000000151e-05,
+        "oracle_wall": 6.384900189004838e-05
+      },
+      "static": {
+        "cost": 11,
+        "count": 2,
+        "selected": [
+          "probe_3ccffe7b",
+          "probe_b7e052cd"
+        ],
+        "status": "optimal",
+        "subsets_checked": 4
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-13",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "irreducible_pair",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "81c5b6c44d7d637710208a52fb68ed797d533ca69d116852cf54e08dcfbaeda2",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 34,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [
+          [
+            "hyp_62e2e1e2",
+            "hyp_e52d152a"
+          ]
+        ],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 91,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0007506290000000027,
+        "instrument_wall": 0.0007504359964514151,
+        "oracle_cpu": 0.0006599860000000013,
+        "oracle_wall": 0.0006597850006073713
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-14",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "irreducible_pair",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "ed01437fa1f05bc7895907b7b52b277e51dbe88bece6e99bda1891cbf42a4271",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 28,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [
+          [
+            "hyp_5e63335d",
+            "hyp_fee1e4f8"
+          ]
+        ],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 75,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.000667949000000001,
+        "instrument_wall": 0.0006678630015812814,
+        "oracle_cpu": 0.00037627800000000766,
+        "oracle_wall": 0.00037679600063711405
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-15",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "irreducible_pair",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "043de86adbece3e27b362e49a13ee5f7668a42162ed9a1e72c6d7e650b6fe364",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 28,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [
+          [
+            "hyp_615dac8d",
+            "hyp_796f399f"
+          ]
+        ],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 75,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0006942380000000137,
+        "instrument_wall": 0.0006941280007595196,
+        "oracle_cpu": 0.00039569999999999883,
+        "oracle_wall": 0.0003958710003644228
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-16",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "irreducible_pair",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "002dae4cfb4f2f8303d9a9db56d73a33288f0b8ab8da06e95dcbf7cd4e97997d",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 34,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [
+          [
+            "hyp_1ad37519",
+            "hyp_90f4fa46"
+          ]
+        ],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 91,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0007367430000000119,
+        "instrument_wall": 0.0007367209909716621,
+        "oracle_cpu": 0.0008657440000000016,
+        "oracle_wall": 0.000865381007315591
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-17",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "cost_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "a261a4729b08ed3fc8bc80e74b046b6ac75a9630f8ca37f2919774fb207fdd5f",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 7,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 103,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": 7,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003232130000000166,
+        "instrument_wall": 0.0003231839946238324,
+        "oracle_cpu": 0.0010693989999999987,
+        "oracle_wall": 0.001069252990419045
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-18",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "cost_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "04bc141d743bfcb20a4754bac73c19c81aa845be5de0c3a9e977aa09bcf20d10",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 18,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 103,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": 9,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0004759389999999808,
+        "instrument_wall": 0.0004758849972859025,
+        "oracle_cpu": 0.001123548000000002,
+        "oracle_wall": 0.0011232499964535236
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-19",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "cost_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "d0943b68258fd37026fb5950dcca5f7e906bfbf856cbd9f403bda82ce559c01d",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 11,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 103,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": 12,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003637320000000055,
+        "instrument_wall": 0.0003636839974205941,
+        "oracle_cpu": 0.0010329669999999957,
+        "oracle_wall": 0.0010329070064472035
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-20",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "cost_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "1781369b368cb1fd5b17683672e020d0d6b68bb7582b2649a1cdd7e7626980e1",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 10,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 103,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": 14,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.00035670199999998653,
+        "instrument_wall": 0.0003566810046322644,
+        "oracle_cpu": 0.0011556620000000017,
+        "oracle_wall": 0.0011556129902601242
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 16
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-21",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "depth_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "58b4dafbc3608d3f85532a3f77ec02cf8a588c24c97f46b8c97be62b0d556d50",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 5,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 6,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003075089999999836,
+        "instrument_wall": 0.00030746399716008455,
+        "oracle_cpu": 3.25939999999969e-05,
+        "oracle_wall": 3.266299609094858e-05
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 5
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-22",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "depth_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "0de2d2de8417590eb7b9152d2c549a8b2e4c9947812dfc3c36319e09c575a9e3",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 5,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 6,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0003199179999999746,
+        "instrument_wall": 0.00031984999077394605,
+        "oracle_cpu": 2.5322000000049805e-05,
+        "oracle_wall": 2.529300400055945e-05
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 5
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-23",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "depth_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "0903f88f3756a02ae63d11e0cea53365c6b72d9a550b552720376ddcb9cceb5d",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 5,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 6,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.0002928890000000184,
+        "instrument_wall": 0.0002928260073531419,
+        "oracle_cpu": 2.942200000000117e-05,
+        "oracle_wall": 2.941199636552483e-05
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 5
+      }
+    },
+    {
+      "ablations": {
+        "ignore_permissions": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        },
+        "no_noise": {
+          "original_case_audit": null,
+          "status_in_altered_model": "infeasible"
+        }
+      },
+      "case_id": "case-24",
+      "certificate_audit": null,
+      "correct": true,
+      "error": null,
+      "family": "depth_cap",
+      "instrument": {
+        "authority_granted": false,
+        "complete": true,
+        "coverage_qualified": false,
+        "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+        "policy": null,
+        "policy_bytes": null,
+        "policy_nodes": null,
+        "problem_digest": "a709a1d4b291a48d366ceb132e05965b662b99101600c41ef800b826e98d41be",
+        "schema": "discovery-means-adaptive/v1",
+        "scope": "finite supplied observation sets; no physical or customer acceptance",
+        "search_states": 5,
+        "status": "infeasible",
+        "stopping_reason": "exhaustive finite search completed",
+        "unresolved_pairs": [],
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "oracle": {
+        "policy": null,
+        "search_states": 6,
+        "status": "infeasible",
+        "unconstrained_cost_under_depth": null,
+        "worst_cost": null,
+        "worst_depth": null
+      },
+      "seconds": {
+        "instrument_cpu": 0.00028416700000000183,
+        "instrument_wall": 0.000284068999462761,
+        "oracle_cpu": 2.9837000000032532e-05,
+        "oracle_wall": 2.9852002626284957e-05
+      },
+      "static": {
+        "cost": null,
+        "count": null,
+        "selected": [],
+        "status": "infeasible",
+        "subsets_checked": 5
+      }
+    }
+  ],
+  "summary": {
+    "case_count": 24,
+    "correct": 24,
+    "instrument_solved": 12,
+    "oracle_solved": 12,
+    "static_solved": 8,
+    "validation_rejected": 6
+  },
+  "task_manifest_sha256": "95a6181c8bb85fc03b57577dcc1050420a03a139ed25bdfc5c667fff6ac0f0e3",
+  "validation": [
+    {
+      "probe": "duplicate_hypothesis",
+      "reason": "ValueError: hypotheses requires unique entries",
+      "rejected": true
+    },
+    {
+      "probe": "duplicate_experiment",
+      "reason": "ValueError: experiment ids requires unique entries",
+      "rejected": true
+    },
+    {
+      "probe": "empty_outcome_set",
+      "reason": "ValueError: outcomes requires 1 through 8 entries",
+      "rejected": true
+    },
+    {
+      "probe": "missing_hypothesis_outcomes",
+      "reason": "ValueError: every experiment must define every hypothesis",
+      "rejected": true
+    },
+    {
+      "probe": "boolean_cost",
+      "reason": "ValueError: cost requires an exact integer in [1, 1000000]",
+      "rejected": true
+    },
+    {
+      "probe": "zero_cost",
+      "reason": "ValueError: cost requires an exact integer in [1, 1000000]",
+      "rejected": true
+    }
+  ]
+}

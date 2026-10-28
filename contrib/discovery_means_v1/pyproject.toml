@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agi-discovery-means"
+version = "0.1.0"
+description = "Bounded adaptive investigation add-on for AGI ALPHA"
+requires-python = ">=3.11,<3.14"
+license = "Apache-2.0"
+dependencies = ["alpha-factory-v1==1.47.0"]
+
+[project.scripts]
+discovery-means = "discovery_means.cli:main"
+
+[tool.setuptools]
+packages = ["discovery_means"]
+
+[tool.setuptools.package-dir]
+discovery_means = "."

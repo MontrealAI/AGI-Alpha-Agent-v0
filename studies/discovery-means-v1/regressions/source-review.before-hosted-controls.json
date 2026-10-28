@@ -1,0 +1,98 @@
+{
+  "review_version": "post-native-custody-3",
+  "reviewed_at_utc": "2026-10-28T22:33:39.642529+00:00",
+  "method": "Independent same-team read-only manual review plus hashing/receipt reconciliation; no instrument or native tests run by reviewer.",
+  "scope": "Finite set-valued adaptive policy constructor, feasibility verifier, continuation, add-on CLI and draft native bridge.",
+  "source_files": [
+    {
+      "path": "contrib/discovery_means_v1/instrument.py",
+      "sha256": "fd876e0967a4b4a311449e597d47a7da58bb3926895cdd004ece58dcf78d1da5",
+      "lines": 269
+    },
+    {
+      "path": "contrib/discovery_means_v1/native_bridge.py",
+      "sha256": "38fc5bae7827313212de1bc6ee9506611c2278049fa35dc33156fdc720b6daff",
+      "lines": 121
+    },
+    {
+      "path": "contrib/discovery_means_v1/cli.py",
+      "sha256": "bc92dd90de0dafe7418315014a97198d19cc1a27976e173a80476884ac49c536",
+      "lines": 36
+    },
+    {
+      "path": "contrib/discovery_means_v1/pyproject.toml",
+      "sha256": "1ab55aa9d09867a4df008bbd4d656921a1fb4c351be4fa7b23fb7c71478080e5",
+      "lines": 20
+    },
+    {
+      "path": "contrib/discovery_means_v1/test_instrument.py",
+      "sha256": "783e520a4a5be17e6b651beed4e51142661a5242b0a9db680161f4d4c4486180",
+      "lines": 110
+    },
+    {
+      "path": "contrib/discovery_means_v1/native_run.py",
+      "sha256": "722330d7a9afdc0d36dba92f8f5d4ba27dd8ebba676c723c1ba6f6e0efe6f05c",
+      "lines": 281
+    }
+  ],
+  "findings": [
+    {
+      "id": "SR01",
+      "severity": "high for resource claims",
+      "status": "CORRECTED_BEFORE_FREEZE",
+      "subject": "Cached search-state cap does not bound expanded certificate size or serialization work",
+      "evidence": "instrument.solve caches child trees by state, inserts shared child trees per symbol and recursively serializes candidate trees for tie comparison; repeated synonymous symbols can expand many copies despite bounded cached state count. CLI serializes full result.",
+      "impact": "Declared finite input/state limits do not establish20CPU-second or70MiB campaign bounds; runner hard limit and honest bounded materialization needed.",
+      "suggestion": "Enforce output/policy-node and computation limits with incomplete status, avoid repeated full canonical expansion or use compact DAG tie key, and run in externally bounded subprocess.",
+      "executed_reproducer": false,
+      "resolution": "Cached summaries bound expanded policy to5000nodes/250000canonical bytes, deterministic local ID tie removes recursive tree serialization,20CPU guard returns incomplete.12-test saved receipt includes expanded-output stress rejection.",
+      "resolution_receipt": "contrib/discovery_means_v1/evidence/development-tests.txt",
+      "residual_limit": "CPU expiry itself not stress-tested; external environment memory and full campaign budgets not proven."
+    },
+    {
+      "id": "SR02",
+      "severity": "qualification boundary",
+      "status": "SUPERSEDED_BY_NARROW_ACTUAL_NATIVE_CUSTODY",
+      "subject": "Native bridge is unsubmitted schema/helper compatibility smoke, not full operating invocation",
+      "evidence": "native_bridge.native_receipt creates ExplorationBundle draft, explicitly native_bundle_submitted=False, and executes fixed two-hypothesis predecessor example independent from supplied adaptive problem. Later4case native predecessor comparison remains helper-level, not runtime submission.",
+      "impact": "Cannot qualify native operating integration or matched predecessor improvement from this receipt.",
+      "suggestion": "Keep full native qualification BLOCKED and smoke scope explicit. Do not bypass owner/permit/runtime boundaries.",
+      "resolution": "New native_run.py actually calls installed Discovery.apply and protected library journal/cost/checkpoint services. Local artifact stored, readback matched, replay refused. Full native execution remains unqualified: generic executor unused, cost buckets incomplete, no customer acceptance or real execution authority.",
+      "resolution_receipt": "contrib/discovery_means_v1/evidence/native-journey.json"
+    },
+    {
+      "id": "SR03",
+      "severity": "claim precision",
+      "status": "RESOLVED_IN_CURRENT_SCOPE",
+      "subject": "Verifier establishes policy feasibility, not optimizer optimality or model adequacy",
+      "evidence": "verify docstring and optimality_checked=False explicitly separate claims; authority_granted=False and coverage_qualified=False required.",
+      "impact": "Independent exhaustive oracle still necessary for optimality; finite authored observations do not establish real-world adequacy or beneficiary value."
+    }
+  ],
+  "positive_inspection_observations": [
+    "Exact integer checks reject bool costs and negative/out-of-range values.",
+    "Closed input fields and bounded inert identifiers avoid executable experiment definitions.",
+    "All hypotheses require nonempty bounded prediction sets; IDs unique.",
+    "Solver returns incomplete on exhausted state budget rather than false infeasible.",
+    "Verifier traverses every possible branch and rejects repeats/disallowed probes/budget or leaf inconsistency/tampered problem.",
+    "Continuation rejects out-of-model and out-of-order observations, and never grants real execution authority."
+  ],
+  "supplemental_tests_recommended": [
+    "Worst-case policy/canonical expansion with synonymous outcomes; ensure bounded honest incomplete result and timeout receipt.",
+    "Duplicate IDs, empty outcomes, unknown/missing hypothesis predictions, overlong names/input and bool/noninteger cost validation.",
+    "Tampered branch missing/extra, repeated probe, disallowed probe, false leaf, budget/depth and report totals.",
+    "Changed problem commitment and out-of-model transcript refusal.",
+    "Independent oracle feasibility/minimax-cost comparison on frozen fresh cases; full denominator and incomplete cases retained.",
+    "Document schema/helper compatibility smoke separately from actual native runtime qualification."
+  ],
+  "solver_sha256": "fd876e0967a4b4a311449e597d47a7da58bb3926895cdd004ece58dcf78d1da5",
+  "receipt_hashes": {
+    "evidence/evaluation/results.json": "894da46616fcd90fee499ddc05dc6447d3438f0fca0f1a34dde8cb08ee2c12ce",
+    "evidence/evaluation/summary.json": "71707dc4ab21226edd4551fdee36129f8c46f5e5c62c59db61c0db842f3255a0",
+    "evidence/evaluation/native_predecessor_results.json": "e3f505625bd371604187a0cf4556a99cdeb5c67cbd7dbaedcfc4f75d77ab9c22",
+    "agi-alpha/contrib/discovery_means_v1/evidence/development-tests.txt": "e1338056e089fb171aabf1d62d848a7b5b0823bbfb83d27cfcf7ea4c755a815c",
+    "agi-alpha/contrib/discovery_means_v1/evidence/ruff.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "agi-alpha/contrib/discovery_means_v1/evidence/mypy.txt": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8",
+    "agi-alpha/contrib/discovery_means_v1/evidence/native-journey.json": "25bd21f2295a2be905664cffdbf27c290c239ce53b8b6ef2dda28621cc7fd51f"
+  }
+}

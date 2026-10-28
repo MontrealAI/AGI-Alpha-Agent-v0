@@ -1,0 +1,53 @@
+{
+  "checks": [
+    {
+      "check": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "privacy",
+      "command": [
+        "python",
+        "scripts/dp_scrubber.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "binary_policy",
+      "command": [
+        "python",
+        "scripts/check_no_binary_diff.py"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/check_no_binary_diff.py\", line 484, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/dev/shm/agi-campaign-b31fc52d/agi-alpha/scripts/check_no_binary_diff.py\", line 441, in main\n    from scripts.research_papers import (\nModuleNotFoundError: No module named 'scripts.research_papers'\n"
+    },
+    {
+      "check": "scoped_ruff",
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "contrib/discovery_means_v1",
+        "studies/discovery-means-v1"
+      ],
+      "returncode": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    }
+  ],
+  "additive_only": null,
+  "staged_file_count_before_receipt": 0,
+  "scope": "Initial attempt only: staging failed due sparse checkout; checks over zero staged files do not qualify changes."
+}

@@ -1,0 +1,157 @@
+{
+  "as_of": "2026-10-28",
+  "scope": "Primary-source read-only frontier review; no source-paper experiment was independently reproduced by this subtask.",
+  "lead_verification": [
+    {
+      "url": "https://github.com/openai/math",
+      "ref": "turn0view0",
+      "status": "RESOLVES",
+      "finding": "The repository describes manuscripts from an unreleased internal model as raw research data and explicitly notes uneven verification. Its history records corrections and withdrawals. Public availability of manuscripts does not establish model access, practical algorithm value, or campaign-level discovery."
+    },
+    {
+      "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/",
+      "date": "2026-10-26",
+      "ref": "turn0view1",
+      "status": "RESOLVES",
+      "finding": "OpenAI announces AI-produced mathematics/computer-science/physics results and external examination arrangements. Treat reported formalization and community stewardship as source claims; this campaign has not checked the proofs."
+    },
+    {
+      "url": "https://openai.com/index/introducing-gpt-6-1-terra/",
+      "ref": "turn0view2",
+      "status": "RESOLVES",
+      "finding": "Official announcement states gpt-6.1-terra availability through OpenAI API and ChatGPT Work/Codex. Listed standard prices: input $1, cached input $0.05, output $5 per million tokens. Availability is not an invocation receipt; vendor benchmarks do not establish task-specific advantage.",
+      "cost_use": "Use only for labeled rate scenarios unless actual metered usage exists."
+    }
+  ],
+  "recent_primary_sources": [
+    {
+      "title": "LLM-IDEA: Identifiability-Driven Experimental Agent for Autonomous Discovery of Mechanistic World Models",
+      "authors": [
+        "Surya Shetty",
+        "Ulisses Braga-Neto"
+      ],
+      "date": "2026-10-08",
+      "edition": "arXiv:2610.11253v1",
+      "url": "https://arxiv.org/html/2610.11253v1",
+      "ref": "turn3view0",
+      "finding": "Direct prior art for a diagnostic that distinguishes inadequate search from a resolvable design and exhaustion within a declared design class. The paper tests local sensitivity, symbolic exhaustion, regular-point restrictions and conventional design criteria. Its ranker is not uniformly superior; it recommends established A-optimal design for precision. Reported agent lift carries prompt and memory confounds. An identifiability gate or rank-restoring selector alone is not a new invention.",
+      "reuse": "https://github.com/Suraskey/llm-idea",
+      "qualification": "Preprint claims, not independently reproduced here."
+    },
+    {
+      "title": "Autonomous Science Bench: Evaluating AI Agents for Autonomous Scientific Discovery",
+      "authors": [
+        "Yibo Wen",
+        "Han Liu"
+      ],
+      "date": "2026-10-13",
+      "edition": "arXiv:2610.18449v1",
+      "url": "https://arxiv.org/html/2610.18449v1",
+      "ref": "turn3view1",
+      "finding": "Separates measured-design discovery from held-out design ranking across budgeted campaigns grounded in published experiments. A useful external evaluation template; replayed measurements are not new wet-lab work. Paper reports six campaigns, while current repository table has seven rows, so exact versions and denominators must be pinned.",
+      "reuse": "https://github.com/Yibo-Wen/as-bench",
+      "qualification": "No benchmark trial executed here."
+    },
+    {
+      "title": "When Does Feedback Help? Auditing Learned Voltage-Clamp Experimental Design",
+      "authors": [
+        "Rayan Nyaupane",
+        "Abhiram Bhupatiraju"
+      ],
+      "date": "2026-10-20",
+      "edition": "arXiv:2610.27632",
+      "url": "https://arxiv.org/abs/2610.27632",
+      "ref": "turn3academia8",
+      "finding": "Primary arXiv search result reports that learned feedback policies can tie fixed or Bayesian controls. Useful reason to separate action changes, accepted downstream outcomes, and advantage over simpler adaptive policies.",
+      "qualification": "Primary abstract retrieved by search; direct paper open failed (DisabledError). No full-text claim or reproduced result."
+    },
+    {
+      "title": "Accelerating the search for antimicrobial peptides with Google Antigravity",
+      "authors": [
+        "Pengfei Tian",
+        "Maxwell L. Bileschi",
+        "Zoi Tsangalidou",
+        "Sukhdeep Singh",
+        "Lucy J. Colwell"
+      ],
+      "date": "2026-10-15",
+      "url": "https://deepmind.google/blog/accelerating-antimicrobial-discovery/",
+      "ref": "turn6view1",
+      "finding": "Vendor walkthrough connects an agentic workbench with protein annotation and candidate prioritization. Its lead is undergoing wet-lab validation. This supports examining workflow capability while preserving the gap between predicted and experimentally established function.",
+      "qualification": "Not evidence of successful treatment or autonomous completed science."
+    }
+  ],
+  "reuse_feasibility": {
+    "llm_idea": {
+      "commit": "ae02b8a7bb4f381fb8e9c09f47e17eb0e66e1f80",
+      "license": "Apache-2.0; exact LICENSE and NOTICE copied with selected source",
+      "python": ">=3.11,<3.14",
+      "full_dependencies": [
+        "numpy>=2.0",
+        "scipy>=1.14",
+        "sympy>=1.13",
+        "mpmath>=1.3",
+        "pysindy>=2.1"
+      ],
+      "minimal_feasible_component": "src/ascension/diagnostics/identifiability.py imports only NumPy and stdlib; optimal_design.py imports that component plus NumPy/stdlib.",
+      "interface": "practical_identifiability(predict, theta, sensitivity=analytic_matrix, param_names=...) returns rank, conditioning and null directions; rank_designs_by_identifiability accepts candidate predictor closures or matrices.",
+      "limits": "The component does not construct candidate modalities; local first-order rank alone is not a global exhaustion proof. Full agent proposer and integer-sequence adapter are not released. Calling the diagnostic is not reproducing their live agent.",
+      "files": "evidence/external/manifest.json",
+      "status": "EXACT_SOURCE_RETRIEVED_NOT_RUN"
+    },
+    "as_bench": {
+      "license": "Apache-2.0 per public repository",
+      "python": ">=3.13,<3.14",
+      "dependencies": [
+        "numpy==2.2.6",
+        "scipy==1.15.3",
+        "scikit-learn==1.6.1",
+        "biopython==1.85",
+        "deno==2.9.4",
+        "pytest==8.4.1"
+      ],
+      "runner": "tools/run_local.py launches a local lab service; supports only oracle/nop; explicitly a development aid without container isolation.",
+      "adapter": "A native Alpha adapter would need to issue budgeted asb measurements and submit held-out prediction artifacts, with inaccessible ground-truth and verifier separation. Running oracle is fixture qualification, not agent discovery.",
+      "blockers": "Current checked interpreter is Python3.12.14; Deno/Docker absent. Do not silently substitute a different runner or call oracle output fresh discovery.",
+      "status": "SOURCE_INSPECTED_NOT_RUN",
+      "pyproject_blob": "420ecf442d890151bd7c67901a17951804bf513f",
+      "runner_blob": "f9eb913159dc6f684c2729b3178e1d6576d7ccff"
+    }
+  },
+  "candidate_possibilities": [
+    {
+      "id": "P1",
+      "domain": "Circular industrial materials",
+      "possibility": "Use heterogeneous reclaimed material streams for higher-value production when bulk measurements hide composition or contamination distinctions.",
+      "missing_means": "A constraint-aware instrument that constructs an admissible perturbation and measurement protocol, produces a separating witness between plausible material hypotheses, and independently validates the inference under noise.",
+      "decisive_test": "Frozen material hypotheses; previously indistinguishable observations; physical or qualified measured reference confirming the constructed protocol changes an actual acceptance decision at complete cost.",
+      "competent_comparator": "Conventional experimental design, inverse-problem solvers, exhaustive feasible protocol search and optimal design libraries with identical access.",
+      "status": "HOLD: no source-bound industrial limitation, rights-cleared task, physical validation or buyer case obtained by this review."
+    },
+    {
+      "id": "P2",
+      "domain": "Mathematical research",
+      "possibility": "Convert large collections of AI-produced mathematical results into reusable, precisely scoped mathematical tools whose dependencies and formal statements can be checked.",
+      "missing_means": "A theorem-to-executable-specification bridge that detects mismatch between natural-language claim, formal hypotheses and downstream computational use; counterexample construction for rejected finite instances.",
+      "decisive_test": "Independent fresh statements, frozen claim mapping, exact checker output, admitted downstream construction and comparison with existing theorem-checking tools.",
+      "competent_comparator": "Lean, mathlib and the OpenAI collection's Comparator process; conventional proof review and counterexample search.",
+      "status": "HOLD: verification automation is established; no evidence of a consequential newly enabled tool or superiority over competent existing checking."
+    },
+    {
+      "id": "P3",
+      "domain": "Distributed production",
+      "possibility": "Make complementary small industrial capabilities jointly productive when consumables, quantities and original obligations prevent naive capability recombination.",
+      "missing_means": "An executable experiment or production witness that tests newly constructed resource transformations and exposes which capability change is necessary to make the target feasible.",
+      "decisive_test": "New authorized task with conserved input/output quantities, actual execution receipts, independent replay, and accepted artifact; all retained obligations preserved.",
+      "competent_comparator": "Conventional mixed-integer planning, constraint programming, Petri-net reachability and exact finite search.",
+      "status": "HOLD: possible native integration family, not a fresh admitted application; prior repository constructions must be read and reused before claiming any advance."
+    }
+  ],
+  "recommendation": "Construct a native action that the existing enterprise cannot invoke, with exact constraints and a checkable resulting experiment; reuse numerical diagnostics as a comparator or subcomponent. Do not rename established rank/identifiability analysis as an invention. Keep action-set expansion, discovery improvement, commercial value and novelty separate. An exact finite separating witness can support a bounded engineering result without implying global science or a new economy.",
+  "retrieval_limits": [
+    "Nature review direct open redirected to inaccessible identity provider.",
+    "arXiv 2610.22032 and full 2610.27632 could not be directly fetched; no inferred full-text conclusions.",
+    "Fresh public model claims were not benchmarked in this campaign.",
+    "No spending, external messages, live experiments or real financial activity."
+  ]
+}
