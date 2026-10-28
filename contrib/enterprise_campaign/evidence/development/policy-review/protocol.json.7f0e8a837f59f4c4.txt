@@ -1,0 +1,232 @@
+{
+  "schema": "alpha-catalog-protocol/v1",
+  "campaign_id": "alpha-catalog-20261028-v1",
+  "reference_seed": 20261028,
+  "reference_seed_basis": "Date-derived before the first reference world, not selected from results.",
+  "boundaries": "All buyers, contracts, prices, invoices, financing, revenue, payments and defaults are simulated. Every production attempt that reaches artifact construction executes catalog code and an independent checker. A supplier outage before artifact production is simulated and marked. Actual complete AI cost is unknown; modeled normalized resource charges are separate.",
+  "blue_sky": "HOLD",
+  "main_flagship_allocation_authorized": false,
+  "hold_probe_investment_cap_usd": 15,
+  "opening_capital_usd": 1000,
+  "protected_closeout_usd": 25,
+  "arrivals_per_period": 30,
+  "period_capacity": 24,
+  "trading_periods": 3,
+  "period_days": 60,
+  "cutoff_day": 240,
+  "cutoff_policy": "No forced collection. Net75 invoices issued after day165 remain receivable at cutoff240. Retain every pending settlement, reserve and obligation. No new work during60day runoff.",
+  "candidate_prices_usd": [
+    9,
+    19,
+    29
+  ],
+  "training_seeds": [
+    41001,
+    41002,
+    41003,
+    41004,
+    41005,
+    41006,
+    41007,
+    41008,
+    41009,
+    41010,
+    41011,
+    41012
+  ],
+  "resource_rates": {
+    "currency": "USD",
+    "input_token_micro_usd": 1,
+    "output_token_micro_usd": 5,
+    "model_rate_source": "https://openai.com/index/introducing-gpt-6-1-terra/",
+    "model_rate_scope": "Published Terra rates $1/M input and $5/M output are a normalized counterfactual consumption scenario, not a claim that this session used that model, had that API access or incurred that bill. No paid provider call is made by campaign code.",
+    "compute_cpu_hour_usd": 0.04,
+    "compute_basis": "Explicit price assumption; quantity includes deterministic tooling, independent checks, development retries and packaging. Sensitivity supplier disruption4x, punitive cost100x; actual host invoices unknown.",
+    "data_tools_infrastructure": "Synthetic generated data and stdlib local files: zero incremental license/API expense by construction; tools/verification/maintenance consume the separately estimated model and compute units. No monthly allowance or human labor rate is charged.",
+    "storage_quantity": "Per-artifact exact bytes and CPU ns are recorded in artifact events. All240day storage/runoff included conservatively in development compute allowance; no cloud storage or networking purchase occurs. Storage price is zero marginal included local capacity in this operating condition, not universal hosting cost.",
+    "cost_sensitivity": "Scenarios include4x supplier charges and100x all per-delivery charges; development/scoped construction are separately inspectable. Unknown actual usage does not become actual zero."
+  },
+  "development_resources": {
+    "failed_discovery_and_canon": {
+      "input_tokens": 240000,
+      "output_tokens": 60000,
+      "compute_millicpu_hours": 2000,
+      "basis": "Three candidate probes and source reading: bounded AI-native consumption estimate, including failures; not metered."
+    },
+    "base_engineering": {
+      "input_tokens": 500000,
+      "output_tokens": 120000,
+      "compute_millicpu_hours": 4000,
+      "basis": "One base instrument, CLI and tests with two repair rounds; bounded consumption estimate, not metered."
+    },
+    "independent_verification": {
+      "input_tokens": 240000,
+      "output_tokens": 80000,
+      "compute_millicpu_hours": 2000,
+      "basis": "Separate checker, controls and accounting reconstruction; bounded estimate, not metered."
+    },
+    "acquisition_policy": {
+      "input_tokens": 160000,
+      "output_tokens": 40000,
+      "compute_millicpu_hours": 1000,
+      "basis": "Automated discovery, pricing training and private simulated buyer workflow; no real outreach; bounded estimate."
+    },
+    "packaging_installation_publication_review": {
+      "input_tokens": 180000,
+      "output_tokens": 50000,
+      "compute_millicpu_hours": 3000,
+      "basis": "Source, EN/FR interface, installation, replay and handoff; bounded estimate, no real paid commitment."
+    }
+  },
+  "construction_resources": {
+    "1": {
+      "input_tokens": 150000,
+      "output_tokens": 40000,
+      "compute_millicpu_hours": 2000,
+      "requirement_share": 0.22,
+      "choice_probability": 0.25,
+      "capability": "Composite-key catalogs with duplicate SKU across locales; same SKU rows no longer collapse."
+    },
+    "2": {
+      "input_tokens": 180000,
+      "output_tokens": 50000,
+      "compute_millicpu_hours": 2500,
+      "requirement_share": 0.2,
+      "choice_probability": 0.25,
+      "capability": "Explicit supplier header aliases and decimal equivalence, preserving existing numeric formatting on equal value."
+    }
+  },
+  "human_market": {
+    "source": "https://www.upwork.com/hire/data-analysts/cost/",
+    "source_range_usd_hour": [
+      20,
+      50
+    ],
+    "modeled_midpoint_usd_hour": 35,
+    "equivalent_hours": [
+      0.25,
+      1.0
+    ],
+    "hours_basis": "Unmeasured equivalent task-hour assumption for matched catalog comparison, patch review and rollback; not claimed observed or experimentally established. Value gap H-C is not revenue.",
+    "free_alternatives": [
+      "pandas merge/update plus snapshot backup",
+      "OpenRefine",
+      "CSV replace plus original snapshot rollback",
+      "internal manual provision"
+    ],
+    "frontier_alternative": "Direct frontier AI plus independent buyer checking; consumption$0.04 and0.12-0.55 buyer-hours are uncertain assumptions. No production AI reliability is inferred from announcements."
+  },
+  "commercial_qualification": {
+    "positive_profit_fraction": 0.8,
+    "minimum_unrestricted_cash_usd": 25,
+    "scope": "Each predeclared scenario separately; conditional commercial GO requires >=80% sampled full-project profits positive, no incurred unpaid liability and every world's unrestricted cash>=25. Report min profit/downside, receivables and acceptance. Failure in adverse scenarios does not erase reference-scenario profitability. This is not observed demand."
+  },
+  "strategic_model": {
+    "buyers": "Observe price, declared features, measured deterministic artifact acceptance and offered alternatives; minimize all-in disutility including their uncertain participation effort, delay and expected error loss. Can decline, negotiate, default, claim warranty or switch. No-purchase pays forgone value, not enterprise revenue.",
+    "competitors": "Start with heterogeneous supplied quality/price, adopt same AI each period, improve quality and lower price in response to observed enterprise share down to their stated floor. These response rules are scenario assumptions, not calibrated equilibrium.",
+    "suppliers": "Finite period capacity, distinct outages and charge multipliers. New discretionary orders refuse if protected closeout capacity is threatened. Every failed attempt retains incurred costs.",
+    "default_incentive": "Reference collection-compliance is assumed, not an equilibrium theorem. Strategic-default stress gives buyers a high chance to withhold payment after receiving the artifact; warranty and normal costs still remain. Strongest pure-payment deviation can destroy enterprise viability and is reported separately.",
+    "online_policy": "NPV forecasts use frozen requirement shares/choice probabilities; no refitting to final outcomes. Funding additionally requires cumulative profit, unrestricted cash above opening capital, reserve cover and the separately bounded HOLD-probe allowance.",
+    "equal_tool_parity": "Adversarial same-artifact competitor at USD0.05, perfect modeled quality and zero switching cost; competent conventional participation effort0.02hours and direct AI0.01hours. Tests whether packaging supports a positive price once equivalent instruments are easily accessible."
+  },
+  "scenarios": {
+    "reference": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 19,
+      "competitor_floor": 4,
+      "competitor_quality": 0.94,
+      "adoption_response": 20,
+      "quality_adoption": 0.02,
+      "supplier_price_multiplier": 1.0,
+      "supplier_failure": 0.03,
+      "default_rate": 0.03,
+      "warranty_rate": 0.02
+    },
+    "competitive_race": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 9,
+      "competitor_floor": 1,
+      "competitor_quality": 0.99,
+      "adoption_response": 35,
+      "quality_adoption": 0.01,
+      "supplier_price_multiplier": 1.0,
+      "supplier_failure": 0.03,
+      "default_rate": 0.03,
+      "warranty_rate": 0.02
+    },
+    "thin_demand": {
+      "demand_factor": 0.12,
+      "value_factor": 0.65,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 15,
+      "competitor_floor": 3,
+      "competitor_quality": 0.95,
+      "adoption_response": 15,
+      "quality_adoption": 0.02,
+      "supplier_price_multiplier": 1.0,
+      "supplier_failure": 0.03,
+      "default_rate": 0.08,
+      "warranty_rate": 0.03
+    },
+    "supplier_disruption": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 0.35,
+      "competitor_initial_price": 19,
+      "competitor_floor": 4,
+      "competitor_quality": 0.94,
+      "adoption_response": 20,
+      "quality_adoption": 0.02,
+      "supplier_price_multiplier": 4.0,
+      "supplier_failure": 0.35,
+      "default_rate": 0.08,
+      "warranty_rate": 0.05
+    },
+    "strategic_default": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 19,
+      "competitor_floor": 4,
+      "competitor_quality": 0.94,
+      "adoption_response": 20,
+      "quality_adoption": 0.02,
+      "supplier_price_multiplier": 1.0,
+      "supplier_failure": 0.03,
+      "default_rate": 1.0,
+      "warranty_rate": 0.02
+    },
+    "punitive_cost": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 19,
+      "competitor_floor": 4,
+      "competitor_quality": 0.94,
+      "adoption_response": 20,
+      "quality_adoption": 0.02,
+      "supplier_price_multiplier": 100.0,
+      "supplier_failure": 0.03,
+      "default_rate": 0.03,
+      "warranty_rate": 0.02
+    },
+    "equal_tool_parity": {
+      "demand_factor": 1.0,
+      "value_factor": 1.0,
+      "capacity_factor": 1.0,
+      "competitor_initial_price": 0.05,
+      "competitor_floor": 0.02,
+      "competitor_quality": 1.0,
+      "adoption_response": 0,
+      "quality_adoption": 0,
+      "supplier_price_multiplier": 1.0,
+      "supplier_failure": 0.03,
+      "default_rate": 0.03,
+      "warranty_rate": 0.02
+    }
+  }
+}

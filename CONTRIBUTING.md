@@ -8,6 +8,19 @@ All participants are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md
 
 Please read **AGENTS.md** carefully before opening issues or submitting pull requests.
 
+## Contribute to the possibility engine / contribuer au moteur des possibles
+
+Follow the [Blue Sky mission and admission gate](AGENTS.md#mission-admit-the-possibility-before-building-the-flagship)
+before substantial flagship work. Compare three consequential possibilities, name the strongest accessible
+alternative, construct the missing means and define independent acceptance before fresh evaluation. Reuse the
+existing discovery and project history. Report candidate admission, actual construction and commercial evidence
+as separate states; a completed form or profitable bounded probe does not establish a transformational flagship.
+
+En français : comparer trois possibilités, préciser la contrainte et le moyen manquant, puis construire et tester
+un résultat utile. Distinguer l’admission Blue Sky, la construction démontrée et la qualification commerciale.
+Une sonde sous HOLD garde un budget et une condition d’arrêt séparés. Les règles de sécurité et de publication
+restent applicables. [Commencer / start here](docs/agent/START_HERE.md).
+
 ## Dependency Policy
 
 Avoid introducing third-party subscription services such as Chainlink VRF. New code and examples should remain self-contained without external subscription-based dependencies.

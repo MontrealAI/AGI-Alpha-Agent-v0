@@ -1,0 +1,414 @@
+{
+  "id": "generation2-independent-fresh-acceptance/v1",
+  "nonce": "d880d15b92083645bfb78d7190ba3980",
+  "source_sha256": "e58154f18ff488dfd93c189f38d008a95022c9decdda702c98cad814513c15ef",
+  "baseline_sha256": "58daae946a786a9cced9aeb44a525b436dde834f6cf9629d590b22148aec77f0",
+  "cases": [
+    {
+      "case": 0,
+      "before_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-5,fr,Pièce Ω 5,6.00\n",
+      "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 5,SKU-5,fr\n5.0,Nouveau d880d1,SKU-4,en\n4.0,Pièce Ω 3,SKU-3,fr\n3.0,Pièce Ω 2,SKU-2,en\n2.0,Pièce Ω 1,SKU-1,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 2,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "prix": "price",
+            "label": "name",
+            "code": "sku"
+          },
+          "update_fields": null
+        },
+        "before_sha256": "e2f10b7eba5fca09d3bba6846fb785f6ca4adcd5b2b3058d29b5bc821e65b418",
+        "after_sha256": "6938eb3dfca10bd3c771216cd8313c613e081c5fb9ca45c1d4b725612439ba8f",
+        "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 5,SKU-5,fr\n5.0,Nouveau d880d1,SKU-4,en\n4.0,Pièce Ω 3,SKU-3,fr\n3.0,Pièce Ω 2,SKU-2,en\n2.0,Pièce Ω 1,SKU-1,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+        "output_sha256": "da086291a90aefde04d81ef028973e57e4a23b11daabe4b6e84d9cde17ac3b66",
+        "output_csv": "sku,locale,name,price\nSKU-5,fr,Pièce Ω 5,555.50\nSKU-4,en,Nouveau d880d1,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-5,fr,Pièce Ω 5,6.00\n",
+        "safe_preview_csv": "sku,locale,name,price\nSKU-5,fr,Pièce Ω 5,555.50\nSKU-4,en,Nouveau d880d1,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,'-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "Édition, \"2026\"",
+              "12.5"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "name",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "Pièce Ω 4",
+              "5.00"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "Nouveau d880d1",
+              "5.00"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "Pièce Ω 5",
+              "6.00"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "Pièce Ω 5",
+              "555.50"
+            ],
+            "fields": [
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 6,
+          "after_rows": 7,
+          "changed_keys": 3,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "047a1434571f133cfa6daa4417af458b314ef89ca01032864c8c37b1f3ebcf5d"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "da086291a90aefde04d81ef028973e57e4a23b11daabe4b6e84d9cde17ac3b66",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 82847,
+          "output_sha256": "da086291a90aefde04d81ef028973e57e4a23b11daabe4b6e84d9cde17ac3b66",
+          "output_rows": 7,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "da086291a90aefde04d81ef028973e57e4a23b11daabe4b6e84d9cde17ac3b66",
+        "rows_verified": 7
+      },
+      "gen1_refused": true,
+      "product_cpu_ns": 261148,
+      "conventional_cpu_ns": 82632,
+      "direct_frontier_code_cpu_ns": 147129,
+      "direct_frontier_output": {
+        "output_csv": "sku,locale,name,price\nSKU-5,fr,Pièce Ω 5,555.50\nSKU-4,en,Nouveau d880d1,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-5,fr,Pièce Ω 5,6.00\n"
+      },
+      "conventional_tie": true,
+      "direct_frontier_tie": true,
+      "ordinary_library_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    },
+    {
+      "case": 1,
+      "before_csv": "sku,locale,name,price\r\nSKU-0,en,Pièce Ω 0,-0.00\r\nSKU-1,fr,Pièce Ω 1,2.00\r\nSKU-2,en,Pièce Ω 2,3.00\r\nSKU-3,fr,Pièce Ω 3,4.00\r\nSKU-4,en,Pièce Ω 4,5.00\r\nSKU-5,fr,Pièce Ω 5,6.00\r\nSKU-6,en,Pièce Ω 6,7.00\r\nSKU-7,fr,Pièce Ω 7,8.00\r\nSKU-8,en,Pièce Ω 8,9.00\r\nSKU-9,fr,Pièce Ω 9,10.00\r\nSKU-10,en,Pièce Ω 10,11.00\r\nSKU-11,fr,Pièce Ω 11,12.00\r\nSKU-12,en,Pièce Ω 12,13.00\r\n",
+      "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 12,SKU-12,en\n12.0,Nouveau d880d1,SKU-11,fr\n11.0,Pièce Ω 10,SKU-10,en\n10.0,Pièce Ω 9,SKU-9,fr\n9.0,Pièce Ω 8,SKU-8,en\n8.0,Pièce Ω 7,SKU-7,fr\n7.0,Pièce Ω 6,SKU-6,en\n6.0,Pièce Ω 5,SKU-5,fr\n5.0,Pièce Ω 4,SKU-4,en\n4.0,Pièce Ω 3,SKU-3,fr\n3.0,Pièce Ω 2,SKU-2,en\n2.0,Pièce Ω 1,SKU-1,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 2,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "prix": "price",
+            "label": "name",
+            "code": "sku"
+          },
+          "update_fields": null
+        },
+        "before_sha256": "cce36fb3e71d56cb52059ea6e9da9e96d32cc1a72c86a9d4da8b7993d780343f",
+        "after_sha256": "3b8496b2aa5cc3eed5711ae4650242d869cb850ad62f61dcca02f83391760cd3",
+        "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 12,SKU-12,en\n12.0,Nouveau d880d1,SKU-11,fr\n11.0,Pièce Ω 10,SKU-10,en\n10.0,Pièce Ω 9,SKU-9,fr\n9.0,Pièce Ω 8,SKU-8,en\n8.0,Pièce Ω 7,SKU-7,fr\n7.0,Pièce Ω 6,SKU-6,en\n6.0,Pièce Ω 5,SKU-5,fr\n5.0,Pièce Ω 4,SKU-4,en\n4.0,Pièce Ω 3,SKU-3,fr\n3.0,Pièce Ω 2,SKU-2,en\n2.0,Pièce Ω 1,SKU-1,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+        "output_sha256": "ccb43777190a05a3e19d32dd7a06fe468033b82c7bf86b1fa58c577f8e21222f",
+        "output_csv": "sku,locale,name,price\nSKU-12,en,Pièce Ω 12,555.50\nSKU-11,fr,Nouveau d880d1,12.00\nSKU-10,en,Pièce Ω 10,11.00\nSKU-9,fr,Pièce Ω 9,10.00\nSKU-8,en,Pièce Ω 8,9.00\nSKU-7,fr,Pièce Ω 7,8.00\nSKU-6,en,Pièce Ω 6,7.00\nSKU-5,fr,Pièce Ω 5,6.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\r\nSKU-0,en,Pièce Ω 0,-0.00\r\nSKU-1,fr,Pièce Ω 1,2.00\r\nSKU-2,en,Pièce Ω 2,3.00\r\nSKU-3,fr,Pièce Ω 3,4.00\r\nSKU-4,en,Pièce Ω 4,5.00\r\nSKU-5,fr,Pièce Ω 5,6.00\r\nSKU-6,en,Pièce Ω 6,7.00\r\nSKU-7,fr,Pièce Ω 7,8.00\r\nSKU-8,en,Pièce Ω 8,9.00\r\nSKU-9,fr,Pièce Ω 9,10.00\r\nSKU-10,en,Pièce Ω 10,11.00\r\nSKU-11,fr,Pièce Ω 11,12.00\r\nSKU-12,en,Pièce Ω 12,13.00\r\n",
+        "safe_preview_csv": "sku,locale,name,price\nSKU-12,en,Pièce Ω 12,555.50\nSKU-11,fr,Nouveau d880d1,12.00\nSKU-10,en,Pièce Ω 10,11.00\nSKU-9,fr,Pièce Ω 9,10.00\nSKU-8,en,Pièce Ω 8,9.00\nSKU-7,fr,Pièce Ω 7,8.00\nSKU-6,en,Pièce Ω 6,7.00\nSKU-5,fr,Pièce Ω 5,6.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,'-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "Édition, \"2026\"",
+              "12.5"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "name",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-11"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-11",
+              "fr",
+              "Pièce Ω 11",
+              "12.00"
+            ],
+            "after": [
+              "SKU-11",
+              "fr",
+              "Nouveau d880d1",
+              "12.00"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-12"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-12",
+              "en",
+              "Pièce Ω 12",
+              "13.00"
+            ],
+            "after": [
+              "SKU-12",
+              "en",
+              "Pièce Ω 12",
+              "555.50"
+            ],
+            "fields": [
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 13,
+          "after_rows": 14,
+          "changed_keys": 3,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "f4e9065a90fc2ab79bd96e7af5e4c1f37fd6789247f7ab5edbff75756661595a"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "ccb43777190a05a3e19d32dd7a06fe468033b82c7bf86b1fa58c577f8e21222f",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 110646,
+          "output_sha256": "ccb43777190a05a3e19d32dd7a06fe468033b82c7bf86b1fa58c577f8e21222f",
+          "output_rows": 14,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "ccb43777190a05a3e19d32dd7a06fe468033b82c7bf86b1fa58c577f8e21222f",
+        "rows_verified": 14
+      },
+      "gen1_refused": true,
+      "product_cpu_ns": 249909,
+      "conventional_cpu_ns": 119420,
+      "direct_frontier_code_cpu_ns": 181195,
+      "direct_frontier_output": {
+        "output_csv": "sku,locale,name,price\nSKU-12,en,Pièce Ω 12,555.50\nSKU-11,fr,Nouveau d880d1,12.00\nSKU-10,en,Pièce Ω 10,11.00\nSKU-9,fr,Pièce Ω 9,10.00\nSKU-8,en,Pièce Ω 8,9.00\nSKU-7,fr,Pièce Ω 7,8.00\nSKU-6,en,Pièce Ω 6,7.00\nSKU-5,fr,Pièce Ω 5,6.00\nSKU-4,en,Pièce Ω 4,5.00\nSKU-3,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\r\nSKU-0,en,Pièce Ω 0,-0.00\r\nSKU-1,fr,Pièce Ω 1,2.00\r\nSKU-2,en,Pièce Ω 2,3.00\r\nSKU-3,fr,Pièce Ω 3,4.00\r\nSKU-4,en,Pièce Ω 4,5.00\r\nSKU-5,fr,Pièce Ω 5,6.00\r\nSKU-6,en,Pièce Ω 6,7.00\r\nSKU-7,fr,Pièce Ω 7,8.00\r\nSKU-8,en,Pièce Ω 8,9.00\r\nSKU-9,fr,Pièce Ω 9,10.00\r\nSKU-10,en,Pièce Ω 10,11.00\r\nSKU-11,fr,Pièce Ω 11,12.00\r\nSKU-12,en,Pièce Ω 12,13.00\r\n"
+      },
+      "conventional_tie": true,
+      "direct_frontier_tie": true,
+      "ordinary_library_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    },
+    {
+      "case": 2,
+      "before_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-9,en,Pièce Ω 18,19.00\nSKU-9,fr,Pièce Ω 19,20.00\n",
+      "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 19,SKU-9,fr\n19.0,Nouveau d880d1,SKU-9,en\n18.0,Pièce Ω 17,SKU-8,fr\n17.0,Pièce Ω 16,SKU-8,en\n16.0,Pièce Ω 15,SKU-7,fr\n15.0,Pièce Ω 14,SKU-7,en\n14.0,Pièce Ω 13,SKU-6,fr\n13.0,Pièce Ω 12,SKU-6,en\n12.0,Pièce Ω 11,SKU-5,fr\n11.0,Pièce Ω 10,SKU-5,en\n10.0,Pièce Ω 9,SKU-4,fr\n9.0,Pièce Ω 8,SKU-4,en\n8.0,Pièce Ω 7,SKU-3,fr\n7.0,Pièce Ω 6,SKU-3,en\n6.0,Pièce Ω 5,SKU-2,fr\n5.0,Pièce Ω 4,SKU-2,en\n4.0,Pièce Ω 3,SKU-1,fr\n3.0,Pièce Ω 2,SKU-1,en\n2.0,Pièce Ω 1,SKU-0,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 2,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "prix": "price",
+            "label": "name",
+            "code": "sku"
+          },
+          "update_fields": null
+        },
+        "before_sha256": "ae6be5c131f48f899fcb7c70a3cc9bc06640263205989ff44b64d3a321352f14",
+        "after_sha256": "23d02bc3f99cde9211b2054d161158938594eb0cd2e3a18ca23649c6e9c51096",
+        "after_csv": "prix,label,code,locale\n555.50,Pièce Ω 19,SKU-9,fr\n19.0,Nouveau d880d1,SKU-9,en\n18.0,Pièce Ω 17,SKU-8,fr\n17.0,Pièce Ω 16,SKU-8,en\n16.0,Pièce Ω 15,SKU-7,fr\n15.0,Pièce Ω 14,SKU-7,en\n14.0,Pièce Ω 13,SKU-6,fr\n13.0,Pièce Ω 12,SKU-6,en\n12.0,Pièce Ω 11,SKU-5,fr\n11.0,Pièce Ω 10,SKU-5,en\n10.0,Pièce Ω 9,SKU-4,fr\n9.0,Pièce Ω 8,SKU-4,en\n8.0,Pièce Ω 7,SKU-3,fr\n7.0,Pièce Ω 6,SKU-3,en\n6.0,Pièce Ω 5,SKU-2,fr\n5.0,Pièce Ω 4,SKU-2,en\n4.0,Pièce Ω 3,SKU-1,fr\n3.0,Pièce Ω 2,SKU-1,en\n2.0,Pièce Ω 1,SKU-0,fr\n-0.0,Pièce Ω 0,SKU-0,en\n12.5,\"Édition, \"\"2026\"\"\",NEW,fr\n",
+        "output_sha256": "9e6e3116198c195d343e45d31227f141ed9a344237e708c770c24dca809a3c9b",
+        "output_csv": "sku,locale,name,price\nSKU-9,fr,Pièce Ω 19,555.50\nSKU-9,en,Nouveau d880d1,19.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-9,en,Pièce Ω 18,19.00\nSKU-9,fr,Pièce Ω 19,20.00\n",
+        "safe_preview_csv": "sku,locale,name,price\nSKU-9,fr,Pièce Ω 19,555.50\nSKU-9,en,Nouveau d880d1,19.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,'-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "Édition, \"2026\"",
+              "12.5"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "name",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-9",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-9",
+              "en",
+              "Pièce Ω 18",
+              "19.00"
+            ],
+            "after": [
+              "SKU-9",
+              "en",
+              "Nouveau d880d1",
+              "19.00"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-9",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-9",
+              "fr",
+              "Pièce Ω 19",
+              "20.00"
+            ],
+            "after": [
+              "SKU-9",
+              "fr",
+              "Pièce Ω 19",
+              "555.50"
+            ],
+            "fields": [
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 20,
+          "after_rows": 21,
+          "changed_keys": 3,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "9853da84b03efa6d43d84128ec5471c397d0b4da76b4ab5924a94a6db0052556"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "9e6e3116198c195d343e45d31227f141ed9a344237e708c770c24dca809a3c9b",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 154715,
+          "output_sha256": "9e6e3116198c195d343e45d31227f141ed9a344237e708c770c24dca809a3c9b",
+          "output_rows": 21,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "9e6e3116198c195d343e45d31227f141ed9a344237e708c770c24dca809a3c9b",
+        "rows_verified": 21
+      },
+      "gen1_refused": true,
+      "product_cpu_ns": 340437,
+      "conventional_cpu_ns": 195131,
+      "direct_frontier_code_cpu_ns": 259000,
+      "direct_frontier_output": {
+        "output_csv": "sku,locale,name,price\nSKU-9,fr,Pièce Ω 19,555.50\nSKU-9,en,Nouveau d880d1,19.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-0,en,Pièce Ω 0,-0.00\nNEW,fr,\"Édition, \"\"2026\"\"\",12.5\n",
+        "rollback_csv": "sku,locale,name,price\nSKU-0,en,Pièce Ω 0,-0.00\nSKU-0,fr,Pièce Ω 1,2.00\nSKU-1,en,Pièce Ω 2,3.00\nSKU-1,fr,Pièce Ω 3,4.00\nSKU-2,en,Pièce Ω 4,5.00\nSKU-2,fr,Pièce Ω 5,6.00\nSKU-3,en,Pièce Ω 6,7.00\nSKU-3,fr,Pièce Ω 7,8.00\nSKU-4,en,Pièce Ω 8,9.00\nSKU-4,fr,Pièce Ω 9,10.00\nSKU-5,en,Pièce Ω 10,11.00\nSKU-5,fr,Pièce Ω 11,12.00\nSKU-6,en,Pièce Ω 12,13.00\nSKU-6,fr,Pièce Ω 13,14.00\nSKU-7,en,Pièce Ω 14,15.00\nSKU-7,fr,Pièce Ω 15,16.00\nSKU-8,en,Pièce Ω 16,17.00\nSKU-8,fr,Pièce Ω 17,18.00\nSKU-9,en,Pièce Ω 18,19.00\nSKU-9,fr,Pièce Ω 19,20.00\n"
+      },
+      "conventional_tie": true,
+      "direct_frontier_tie": true,
+      "ordinary_library_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    }
+  ],
+  "accepted": 3,
+  "gen1_refusals": 3,
+  "conventional_ties": 3,
+  "direct_frontier_code_ties": 3,
+  "ordinary_library_ties": 3,
+  "verdict": "Useful constructed expansion over gen1; conventional, independent frontier-AI-authored code, and ordinary identical asset reuse tie on these cases. CPU samples are finite local observations; model effort/cost remain unknown."
+}

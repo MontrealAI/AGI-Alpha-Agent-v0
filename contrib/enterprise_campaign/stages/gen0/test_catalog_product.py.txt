@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: Apache-2.0
+import copy
+import hashlib
+import json
+import unittest
+
+from contrib.enterprise_campaign.catalog_product import apply_patch, reconcile, rollback, verify_package
+
+
+class CatalogProductTests(unittest.TestCase):
+    def test_patch_and_exact_rollback(self) -> None:
+        before = '\ufeffsku,title,price\r\nA,"Thé, vert",2.00\r\nB,Café,3.50\r\n'
+        after = 'sku,title,price\nA,"Thé, vert",2.50\nC,Chocolat,4.00\n'
+        package = reconcile(before, after, ["sku"])
+        self.assertEqual([item["kind"] for item in package["changes"]], ["update", "delete", "insert"])
+        self.assertEqual(package["changes"][0]["fields"], ["price"])
+        self.assertTrue(verify_package(package, before))
+        output = apply_patch(before, package, authorized=True)
+        self.assertEqual(output, after)
+        self.assertEqual(rollback(output, package, authorized=True), before)
+
+    def test_stale_sources_and_revoked_authority(self) -> None:
+        before = "sku,title\nA,Thé\n"
+        package = reconcile(before, "sku,title\nA,Café\n", ["sku"])
+        with self.assertRaises(PermissionError):
+            apply_patch(before, package)
+        with self.assertRaises(PermissionError):
+            apply_patch(before, package, authorized=1)
+        with self.assertRaises(ValueError):
+            apply_patch(before + "\n", package, authorized=True)
+        with self.assertRaises(ValueError):
+            rollback("sku,title\nA,Autre\n", package, authorized=True)
+
+    def test_tamper_refusal_even_after_digest_recalculation(self) -> None:
+        before = "sku,title\nA,Thé\n"
+        package = reconcile(before, "sku,title\nA,Café\n", ["sku"])
+        for field, value in [("changes", []), ("output_csv", "sku,title\nA,WRONG\n"), ("generation", 99)]:
+            altered = copy.deepcopy(package)
+            altered[field] = value
+            with self.assertRaises(ValueError):
+                verify_package(altered, before)
+            payload = {key: item for key, item in altered.items() if key != "proof_digest"}
+            raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+            altered["proof_digest"] = hashlib.sha256(raw.encode()).hexdigest()
+            with self.assertRaises(ValueError):
+                verify_package(altered, before)
+
+    def test_duplicate_and_malformed_inputs_refuse(self) -> None:
+        cases = ["sku,title\nA,x\nA,y\n", "sku,sku\nA,B\n", "sku,title\n,x\n", "sku,title\nA\n",
+                 'sku,title\nA,x"y\n', 'sku,title\nA,"x"junk\n', 'sku,title\nA,"unclosed\n', "sku,title\nA,x\0\n"]
+        for bad in cases:
+            with self.subTest(csv=bad), self.assertRaises(ValueError):
+                reconcile(bad, "sku,title\nA,x\n", ["sku"])
+
+    def test_formula_text_preserved_and_preview_escaped(self) -> None:
+        package = reconcile("sku,title\nA,x\n", "sku,title\nA,=2+2\n", ["sku"])
+        self.assertIn("A,=2+2", package["output_csv"])
+        self.assertIn("A,'=2+2", package["safe_preview_csv"])
+        self.assertEqual(rollback(package["output_csv"], package, authorized=True), "sku,title\nA,x\n")
+
+    def test_bounds_and_future_capabilities_refuse(self) -> None:
+        valid = "sku,title\nA,x\n"
+        for generation in (-1, 1, True, 4):
+            with self.subTest(generation=generation), self.assertRaises(ValueError):
+                reconcile(valid, valid, ["sku"], generation)
+        for bad in ["a,b\n" + "x,y\n" * 1501, "sku,title\nA," + "x" * 4097 + "\n", "x" * 200001]:
+            with self.assertRaises(ValueError):
+                reconcile(bad, valid, ["sku"])
+        with self.assertRaises(ValueError):
+            reconcile(valid, valid, ["sku", "title"])
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,1053 @@
+{
+  "id": "gen0-independent-fresh-control/v1",
+  "nonce": "1fad00a362e5104900b2a3ce03b3936f",
+  "source_sha256": "aa30981e2a702cf208866d14d365eb244e9c8910df798b85c18030248f72ca28",
+  "acceptance_source_sha256": "30a484ffda2e94f12f8956b87e349178aca70e7b12b4d9dcb67ee510d7c28f6f",
+  "cases": [
+    {
+      "case": 0,
+      "before_csv": "id,text,value\nΩ-0-0,\"Montréal, QC\",0\nΩ-0-1,\"quoted \"\"thing\"\"\",1\nΩ-0-2,\"line\nbreak\",2\nΩ-0-3,=1+1,3\nΩ-0-4,,4\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-7,\"line\nbreak\",7\n",
+      "after_csv": "id,text,value\nΩ-0-7,Nouveau 1fad,7\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-4,,4\nΩ-0-3,=1+1,3\nΩ-0-2,\"line\nbreak\",2\nΩ-0-1,\"quoted \"\"thing\"\"\",0.00\nNEW-0,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "a604d5ea6d27f4d570ec76f25d7bf7544024a519aba9a4191ead7a73125cffe5",
+        "after_sha256": "0c7084ceebf5f9a60b4524c40cb709ee28c06750e077f91945254c3164fafc99",
+        "after_csv": "id,text,value\nΩ-0-7,Nouveau 1fad,7\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-4,,4\nΩ-0-3,=1+1,3\nΩ-0-2,\"line\nbreak\",2\nΩ-0-1,\"quoted \"\"thing\"\"\",0.00\nNEW-0,français α,42\n",
+        "output_sha256": "0c7084ceebf5f9a60b4524c40cb709ee28c06750e077f91945254c3164fafc99",
+        "output_csv": "id,text,value\nΩ-0-7,Nouveau 1fad,7\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-4,,4\nΩ-0-3,=1+1,3\nΩ-0-2,\"line\nbreak\",2\nΩ-0-1,\"quoted \"\"thing\"\"\",0.00\nNEW-0,français α,42\n",
+        "rollback_csv": "id,text,value\nΩ-0-0,\"Montréal, QC\",0\nΩ-0-1,\"quoted \"\"thing\"\"\",1\nΩ-0-2,\"line\nbreak\",2\nΩ-0-3,=1+1,3\nΩ-0-4,,4\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-7,\"line\nbreak\",7\n",
+        "safe_preview_csv": "id,text,value\nΩ-0-7,Nouveau 1fad,7\nΩ-0-6,\"quoted \"\"thing\"\"\",6\nΩ-0-5,\"Montréal, QC\",5\nΩ-0-4,,4\nΩ-0-3,'=1+1,3\nΩ-0-2,\"line\nbreak\",2\nΩ-0-1,\"quoted \"\"thing\"\"\",0.00\nNEW-0,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-0"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-0",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-0-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-0-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-0-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-0-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-0-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-0-7"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-0-7",
+              "line\nbreak",
+              "7"
+            ],
+            "after": [
+              "Ω-0-7",
+              "Nouveau 1fad",
+              "7"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 8,
+          "after_rows": 8,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "cf032c4141412934165352bf9cad501a60194565fe4a498fd2684b79e1a268cf"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "0c7084ceebf5f9a60b4524c40cb709ee28c06750e077f91945254c3164fafc99",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 129718,
+          "output_sha256": "0c7084ceebf5f9a60b4524c40cb709ee28c06750e077f91945254c3164fafc99",
+          "output_rows": 8,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "0c7084ceebf5f9a60b4524c40cb709ee28c06750e077f91945254c3164fafc99",
+        "rows_verified": 8
+      },
+      "product_ns": 327773,
+      "conventional_ns": 258604,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 1,
+      "before_csv": "id,text,value\r\nΩ-1-0,\"Montréal, QC\",0\r\nΩ-1-1,\"quoted \"\"thing\"\"\",1\r\nΩ-1-2,\"line\nbreak\",2\r\nΩ-1-3,=1+1,3\r\nΩ-1-4,,4\r\nΩ-1-5,\"Montréal, QC\",5\r\nΩ-1-6,\"quoted \"\"thing\"\"\",6\r\nΩ-1-7,\"line\nbreak\",7\r\nΩ-1-8,=1+1,8\r\nΩ-1-9,,9\r\nΩ-1-10,\"Montréal, QC\",10\r\n",
+      "after_csv": "id,text,value\nΩ-1-10,Nouveau 1fad,10\nΩ-1-9,,9\nΩ-1-8,=1+1,8\nΩ-1-7,\"line\nbreak\",7\nΩ-1-6,\"quoted \"\"thing\"\"\",6\nΩ-1-5,\"Montréal, QC\",5\nΩ-1-4,,4\nΩ-1-3,=1+1,3\nΩ-1-2,\"line\nbreak\",2\nΩ-1-1,\"quoted \"\"thing\"\"\",0.00\nNEW-1,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "53772c123963c42b10f65393158b7fa771dce946b0dd121b20f9a5cfa89740b4",
+        "after_sha256": "bdb4ad65a99893f901f5cc645a71242835f163f4a9026f755fe9c271ee98b193",
+        "after_csv": "id,text,value\nΩ-1-10,Nouveau 1fad,10\nΩ-1-9,,9\nΩ-1-8,=1+1,8\nΩ-1-7,\"line\nbreak\",7\nΩ-1-6,\"quoted \"\"thing\"\"\",6\nΩ-1-5,\"Montréal, QC\",5\nΩ-1-4,,4\nΩ-1-3,=1+1,3\nΩ-1-2,\"line\nbreak\",2\nΩ-1-1,\"quoted \"\"thing\"\"\",0.00\nNEW-1,français α,42\n",
+        "output_sha256": "bdb4ad65a99893f901f5cc645a71242835f163f4a9026f755fe9c271ee98b193",
+        "output_csv": "id,text,value\nΩ-1-10,Nouveau 1fad,10\nΩ-1-9,,9\nΩ-1-8,=1+1,8\nΩ-1-7,\"line\nbreak\",7\nΩ-1-6,\"quoted \"\"thing\"\"\",6\nΩ-1-5,\"Montréal, QC\",5\nΩ-1-4,,4\nΩ-1-3,=1+1,3\nΩ-1-2,\"line\nbreak\",2\nΩ-1-1,\"quoted \"\"thing\"\"\",0.00\nNEW-1,français α,42\n",
+        "rollback_csv": "id,text,value\r\nΩ-1-0,\"Montréal, QC\",0\r\nΩ-1-1,\"quoted \"\"thing\"\"\",1\r\nΩ-1-2,\"line\nbreak\",2\r\nΩ-1-3,=1+1,3\r\nΩ-1-4,,4\r\nΩ-1-5,\"Montréal, QC\",5\r\nΩ-1-6,\"quoted \"\"thing\"\"\",6\r\nΩ-1-7,\"line\nbreak\",7\r\nΩ-1-8,=1+1,8\r\nΩ-1-9,,9\r\nΩ-1-10,\"Montréal, QC\",10\r\n",
+        "safe_preview_csv": "id,text,value\nΩ-1-10,Nouveau 1fad,10\nΩ-1-9,,9\nΩ-1-8,'=1+1,8\nΩ-1-7,\"line\nbreak\",7\nΩ-1-6,\"quoted \"\"thing\"\"\",6\nΩ-1-5,\"Montréal, QC\",5\nΩ-1-4,,4\nΩ-1-3,'=1+1,3\nΩ-1-2,\"line\nbreak\",2\nΩ-1-1,\"quoted \"\"thing\"\"\",0.00\nNEW-1,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-1"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-1",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-1-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-1-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-1-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-1-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-1-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-1-10"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-1-10",
+              "Montréal, QC",
+              "10"
+            ],
+            "after": [
+              "Ω-1-10",
+              "Nouveau 1fad",
+              "10"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 11,
+          "after_rows": 11,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "ca30719430d34f313bd24481d13961791558fc70b70bfa500831d81ca925ba10"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "bdb4ad65a99893f901f5cc645a71242835f163f4a9026f755fe9c271ee98b193",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 188133,
+          "output_sha256": "bdb4ad65a99893f901f5cc645a71242835f163f4a9026f755fe9c271ee98b193",
+          "output_rows": 11,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "bdb4ad65a99893f901f5cc645a71242835f163f4a9026f755fe9c271ee98b193",
+        "rows_verified": 11
+      },
+      "product_ns": 310551,
+      "conventional_ns": 206905,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 2,
+      "before_csv": "id,text,value\nΩ-2-0,\"Montréal, QC\",0\nΩ-2-1,\"quoted \"\"thing\"\"\",1\nΩ-2-2,\"line\nbreak\",2\nΩ-2-3,=1+1,3\nΩ-2-4,,4\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-7,\"line\nbreak\",7\nΩ-2-8,=1+1,8\nΩ-2-9,,9\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-12,\"line\nbreak\",12\nΩ-2-13,=1+1,13\n",
+      "after_csv": "id,text,value\nΩ-2-13,Nouveau 1fad,13\nΩ-2-12,\"line\nbreak\",12\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-9,,9\nΩ-2-8,=1+1,8\nΩ-2-7,\"line\nbreak\",7\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-4,,4\nΩ-2-3,=1+1,3\nΩ-2-2,\"line\nbreak\",2\nΩ-2-1,\"quoted \"\"thing\"\"\",0.00\nNEW-2,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "1a8e9750bbe107b5ce4d390e7218ac7d7936372cf00bb3f663baf9b1d55e56d7",
+        "after_sha256": "892368c6ed4ca8ab39f8ff7fa6e5f2daea5932bc06aef2b7ca4fabf92703ba9a",
+        "after_csv": "id,text,value\nΩ-2-13,Nouveau 1fad,13\nΩ-2-12,\"line\nbreak\",12\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-9,,9\nΩ-2-8,=1+1,8\nΩ-2-7,\"line\nbreak\",7\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-4,,4\nΩ-2-3,=1+1,3\nΩ-2-2,\"line\nbreak\",2\nΩ-2-1,\"quoted \"\"thing\"\"\",0.00\nNEW-2,français α,42\n",
+        "output_sha256": "892368c6ed4ca8ab39f8ff7fa6e5f2daea5932bc06aef2b7ca4fabf92703ba9a",
+        "output_csv": "id,text,value\nΩ-2-13,Nouveau 1fad,13\nΩ-2-12,\"line\nbreak\",12\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-9,,9\nΩ-2-8,=1+1,8\nΩ-2-7,\"line\nbreak\",7\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-4,,4\nΩ-2-3,=1+1,3\nΩ-2-2,\"line\nbreak\",2\nΩ-2-1,\"quoted \"\"thing\"\"\",0.00\nNEW-2,français α,42\n",
+        "rollback_csv": "id,text,value\nΩ-2-0,\"Montréal, QC\",0\nΩ-2-1,\"quoted \"\"thing\"\"\",1\nΩ-2-2,\"line\nbreak\",2\nΩ-2-3,=1+1,3\nΩ-2-4,,4\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-7,\"line\nbreak\",7\nΩ-2-8,=1+1,8\nΩ-2-9,,9\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-12,\"line\nbreak\",12\nΩ-2-13,=1+1,13\n",
+        "safe_preview_csv": "id,text,value\nΩ-2-13,Nouveau 1fad,13\nΩ-2-12,\"line\nbreak\",12\nΩ-2-11,\"quoted \"\"thing\"\"\",11\nΩ-2-10,\"Montréal, QC\",10\nΩ-2-9,,9\nΩ-2-8,'=1+1,8\nΩ-2-7,\"line\nbreak\",7\nΩ-2-6,\"quoted \"\"thing\"\"\",6\nΩ-2-5,\"Montréal, QC\",5\nΩ-2-4,,4\nΩ-2-3,'=1+1,3\nΩ-2-2,\"line\nbreak\",2\nΩ-2-1,\"quoted \"\"thing\"\"\",0.00\nNEW-2,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-2"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-2",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-2-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-2-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-2-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-2-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-2-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-2-13"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-2-13",
+              "=1+1",
+              "13"
+            ],
+            "after": [
+              "Ω-2-13",
+              "Nouveau 1fad",
+              "13"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 14,
+          "after_rows": 14,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "887105c1aab930cc5a5293dc19924e4384edda49adbbd77bc111a7f52f8015ec"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "892368c6ed4ca8ab39f8ff7fa6e5f2daea5932bc06aef2b7ca4fabf92703ba9a",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 172339,
+          "output_sha256": "892368c6ed4ca8ab39f8ff7fa6e5f2daea5932bc06aef2b7ca4fabf92703ba9a",
+          "output_rows": 14,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "892368c6ed4ca8ab39f8ff7fa6e5f2daea5932bc06aef2b7ca4fabf92703ba9a",
+        "rows_verified": 14
+      },
+      "product_ns": 409643,
+      "conventional_ns": 233875,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 3,
+      "before_csv": "id,text,value\r\nΩ-3-0,\"Montréal, QC\",0\r\nΩ-3-1,\"quoted \"\"thing\"\"\",1\r\nΩ-3-2,\"line\nbreak\",2\r\nΩ-3-3,=1+1,3\r\nΩ-3-4,,4\r\nΩ-3-5,\"Montréal, QC\",5\r\nΩ-3-6,\"quoted \"\"thing\"\"\",6\r\nΩ-3-7,\"line\nbreak\",7\r\nΩ-3-8,=1+1,8\r\nΩ-3-9,,9\r\nΩ-3-10,\"Montréal, QC\",10\r\nΩ-3-11,\"quoted \"\"thing\"\"\",11\r\nΩ-3-12,\"line\nbreak\",12\r\nΩ-3-13,=1+1,13\r\nΩ-3-14,,14\r\nΩ-3-15,\"Montréal, QC\",15\r\nΩ-3-16,\"quoted \"\"thing\"\"\",16\r\n",
+      "after_csv": "id,text,value\nΩ-3-16,Nouveau 1fad,16\nΩ-3-15,\"Montréal, QC\",15\nΩ-3-14,,14\nΩ-3-13,=1+1,13\nΩ-3-12,\"line\nbreak\",12\nΩ-3-11,\"quoted \"\"thing\"\"\",11\nΩ-3-10,\"Montréal, QC\",10\nΩ-3-9,,9\nΩ-3-8,=1+1,8\nΩ-3-7,\"line\nbreak\",7\nΩ-3-6,\"quoted \"\"thing\"\"\",6\nΩ-3-5,\"Montréal, QC\",5\nΩ-3-4,,4\nΩ-3-3,=1+1,3\nΩ-3-2,\"line\nbreak\",2\nΩ-3-1,\"quoted \"\"thing\"\"\",0.00\nNEW-3,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "e17e6a7f19e6b4109fbb640f02388a5f3e8046cb65e25c0cda1b4727366f2c91",
+        "after_sha256": "8d5bf05dba2af8091c39ad0deced7184fada128799fe7ab9cef10b75228116b4",
+        "after_csv": "id,text,value\nΩ-3-16,Nouveau 1fad,16\nΩ-3-15,\"Montréal, QC\",15\nΩ-3-14,,14\nΩ-3-13,=1+1,13\nΩ-3-12,\"line\nbreak\",12\nΩ-3-11,\"quoted \"\"thing\"\"\",11\nΩ-3-10,\"Montréal, QC\",10\nΩ-3-9,,9\nΩ-3-8,=1+1,8\nΩ-3-7,\"line\nbreak\",7\nΩ-3-6,\"quoted \"\"thing\"\"\",6\nΩ-3-5,\"Montréal, QC\",5\nΩ-3-4,,4\nΩ-3-3,=1+1,3\nΩ-3-2,\"line\nbreak\",2\nΩ-3-1,\"quoted \"\"thing\"\"\",0.00\nNEW-3,français α,42\n",
+        "output_sha256": "8d5bf05dba2af8091c39ad0deced7184fada128799fe7ab9cef10b75228116b4",
+        "output_csv": "id,text,value\nΩ-3-16,Nouveau 1fad,16\nΩ-3-15,\"Montréal, QC\",15\nΩ-3-14,,14\nΩ-3-13,=1+1,13\nΩ-3-12,\"line\nbreak\",12\nΩ-3-11,\"quoted \"\"thing\"\"\",11\nΩ-3-10,\"Montréal, QC\",10\nΩ-3-9,,9\nΩ-3-8,=1+1,8\nΩ-3-7,\"line\nbreak\",7\nΩ-3-6,\"quoted \"\"thing\"\"\",6\nΩ-3-5,\"Montréal, QC\",5\nΩ-3-4,,4\nΩ-3-3,=1+1,3\nΩ-3-2,\"line\nbreak\",2\nΩ-3-1,\"quoted \"\"thing\"\"\",0.00\nNEW-3,français α,42\n",
+        "rollback_csv": "id,text,value\r\nΩ-3-0,\"Montréal, QC\",0\r\nΩ-3-1,\"quoted \"\"thing\"\"\",1\r\nΩ-3-2,\"line\nbreak\",2\r\nΩ-3-3,=1+1,3\r\nΩ-3-4,,4\r\nΩ-3-5,\"Montréal, QC\",5\r\nΩ-3-6,\"quoted \"\"thing\"\"\",6\r\nΩ-3-7,\"line\nbreak\",7\r\nΩ-3-8,=1+1,8\r\nΩ-3-9,,9\r\nΩ-3-10,\"Montréal, QC\",10\r\nΩ-3-11,\"quoted \"\"thing\"\"\",11\r\nΩ-3-12,\"line\nbreak\",12\r\nΩ-3-13,=1+1,13\r\nΩ-3-14,,14\r\nΩ-3-15,\"Montréal, QC\",15\r\nΩ-3-16,\"quoted \"\"thing\"\"\",16\r\n",
+        "safe_preview_csv": "id,text,value\nΩ-3-16,Nouveau 1fad,16\nΩ-3-15,\"Montréal, QC\",15\nΩ-3-14,,14\nΩ-3-13,'=1+1,13\nΩ-3-12,\"line\nbreak\",12\nΩ-3-11,\"quoted \"\"thing\"\"\",11\nΩ-3-10,\"Montréal, QC\",10\nΩ-3-9,,9\nΩ-3-8,'=1+1,8\nΩ-3-7,\"line\nbreak\",7\nΩ-3-6,\"quoted \"\"thing\"\"\",6\nΩ-3-5,\"Montréal, QC\",5\nΩ-3-4,,4\nΩ-3-3,'=1+1,3\nΩ-3-2,\"line\nbreak\",2\nΩ-3-1,\"quoted \"\"thing\"\"\",0.00\nNEW-3,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-3"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-3",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-3-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-3-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-3-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-3-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-3-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-3-16"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-3-16",
+              "quoted \"thing\"",
+              "16"
+            ],
+            "after": [
+              "Ω-3-16",
+              "Nouveau 1fad",
+              "16"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 17,
+          "after_rows": 17,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "957d82d5ce0c0aa132ed9ef257d4f21be51aa7334c05ff8adca6eba093481d78"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "8d5bf05dba2af8091c39ad0deced7184fada128799fe7ab9cef10b75228116b4",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 409546,
+          "output_sha256": "8d5bf05dba2af8091c39ad0deced7184fada128799fe7ab9cef10b75228116b4",
+          "output_rows": 17,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "8d5bf05dba2af8091c39ad0deced7184fada128799fe7ab9cef10b75228116b4",
+        "rows_verified": 17
+      },
+      "product_ns": 398381,
+      "conventional_ns": 213714,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 4,
+      "before_csv": "id,text,value\nΩ-4-0,\"Montréal, QC\",0\nΩ-4-1,\"quoted \"\"thing\"\"\",1\nΩ-4-2,\"line\nbreak\",2\nΩ-4-3,=1+1,3\nΩ-4-4,,4\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-7,\"line\nbreak\",7\nΩ-4-8,=1+1,8\nΩ-4-9,,9\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-12,\"line\nbreak\",12\nΩ-4-13,=1+1,13\nΩ-4-14,,14\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-17,\"line\nbreak\",17\nΩ-4-18,=1+1,18\nΩ-4-19,,19\n",
+      "after_csv": "id,text,value\nΩ-4-19,Nouveau 1fad,19\nΩ-4-18,=1+1,18\nΩ-4-17,\"line\nbreak\",17\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-14,,14\nΩ-4-13,=1+1,13\nΩ-4-12,\"line\nbreak\",12\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-9,,9\nΩ-4-8,=1+1,8\nΩ-4-7,\"line\nbreak\",7\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-4,,4\nΩ-4-3,=1+1,3\nΩ-4-2,\"line\nbreak\",2\nΩ-4-1,\"quoted \"\"thing\"\"\",0.00\nNEW-4,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "5582e3e0cc4ad171440e7797a1fb03a2e9a7d0315f0f5a8f2959aef3ffee6b47",
+        "after_sha256": "6254e203ddd840664bbc7684c632f19eca1a5eed6cbace44b91ed0c8fb3f3b97",
+        "after_csv": "id,text,value\nΩ-4-19,Nouveau 1fad,19\nΩ-4-18,=1+1,18\nΩ-4-17,\"line\nbreak\",17\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-14,,14\nΩ-4-13,=1+1,13\nΩ-4-12,\"line\nbreak\",12\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-9,,9\nΩ-4-8,=1+1,8\nΩ-4-7,\"line\nbreak\",7\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-4,,4\nΩ-4-3,=1+1,3\nΩ-4-2,\"line\nbreak\",2\nΩ-4-1,\"quoted \"\"thing\"\"\",0.00\nNEW-4,français α,42\n",
+        "output_sha256": "6254e203ddd840664bbc7684c632f19eca1a5eed6cbace44b91ed0c8fb3f3b97",
+        "output_csv": "id,text,value\nΩ-4-19,Nouveau 1fad,19\nΩ-4-18,=1+1,18\nΩ-4-17,\"line\nbreak\",17\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-14,,14\nΩ-4-13,=1+1,13\nΩ-4-12,\"line\nbreak\",12\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-9,,9\nΩ-4-8,=1+1,8\nΩ-4-7,\"line\nbreak\",7\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-4,,4\nΩ-4-3,=1+1,3\nΩ-4-2,\"line\nbreak\",2\nΩ-4-1,\"quoted \"\"thing\"\"\",0.00\nNEW-4,français α,42\n",
+        "rollback_csv": "id,text,value\nΩ-4-0,\"Montréal, QC\",0\nΩ-4-1,\"quoted \"\"thing\"\"\",1\nΩ-4-2,\"line\nbreak\",2\nΩ-4-3,=1+1,3\nΩ-4-4,,4\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-7,\"line\nbreak\",7\nΩ-4-8,=1+1,8\nΩ-4-9,,9\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-12,\"line\nbreak\",12\nΩ-4-13,=1+1,13\nΩ-4-14,,14\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-17,\"line\nbreak\",17\nΩ-4-18,=1+1,18\nΩ-4-19,,19\n",
+        "safe_preview_csv": "id,text,value\nΩ-4-19,Nouveau 1fad,19\nΩ-4-18,'=1+1,18\nΩ-4-17,\"line\nbreak\",17\nΩ-4-16,\"quoted \"\"thing\"\"\",16\nΩ-4-15,\"Montréal, QC\",15\nΩ-4-14,,14\nΩ-4-13,'=1+1,13\nΩ-4-12,\"line\nbreak\",12\nΩ-4-11,\"quoted \"\"thing\"\"\",11\nΩ-4-10,\"Montréal, QC\",10\nΩ-4-9,,9\nΩ-4-8,'=1+1,8\nΩ-4-7,\"line\nbreak\",7\nΩ-4-6,\"quoted \"\"thing\"\"\",6\nΩ-4-5,\"Montréal, QC\",5\nΩ-4-4,,4\nΩ-4-3,'=1+1,3\nΩ-4-2,\"line\nbreak\",2\nΩ-4-1,\"quoted \"\"thing\"\"\",0.00\nNEW-4,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-4"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-4",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-4-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-4-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-4-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-4-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-4-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-4-19"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-4-19",
+              "",
+              "19"
+            ],
+            "after": [
+              "Ω-4-19",
+              "Nouveau 1fad",
+              "19"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 20,
+          "after_rows": 20,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "efe6e2e2583925952a6b6a2a1c8e5472d892827cf7c2380118166233c7b003b3"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "6254e203ddd840664bbc7684c632f19eca1a5eed6cbace44b91ed0c8fb3f3b97",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 373023,
+          "output_sha256": "6254e203ddd840664bbc7684c632f19eca1a5eed6cbace44b91ed0c8fb3f3b97",
+          "output_rows": 20,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "6254e203ddd840664bbc7684c632f19eca1a5eed6cbace44b91ed0c8fb3f3b97",
+        "rows_verified": 20
+      },
+      "product_ns": 506613,
+      "conventional_ns": 236687,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 5,
+      "before_csv": "id,text,value\r\nΩ-5-0,\"Montréal, QC\",0\r\nΩ-5-1,\"quoted \"\"thing\"\"\",1\r\nΩ-5-2,\"line\nbreak\",2\r\nΩ-5-3,=1+1,3\r\nΩ-5-4,,4\r\nΩ-5-5,\"Montréal, QC\",5\r\nΩ-5-6,\"quoted \"\"thing\"\"\",6\r\nΩ-5-7,\"line\nbreak\",7\r\nΩ-5-8,=1+1,8\r\nΩ-5-9,,9\r\nΩ-5-10,\"Montréal, QC\",10\r\nΩ-5-11,\"quoted \"\"thing\"\"\",11\r\nΩ-5-12,\"line\nbreak\",12\r\nΩ-5-13,=1+1,13\r\nΩ-5-14,,14\r\nΩ-5-15,\"Montréal, QC\",15\r\nΩ-5-16,\"quoted \"\"thing\"\"\",16\r\nΩ-5-17,\"line\nbreak\",17\r\nΩ-5-18,=1+1,18\r\nΩ-5-19,,19\r\nΩ-5-20,\"Montréal, QC\",20\r\nΩ-5-21,\"quoted \"\"thing\"\"\",21\r\nΩ-5-22,\"line\nbreak\",22\r\n",
+      "after_csv": "id,text,value\nΩ-5-22,Nouveau 1fad,22\nΩ-5-21,\"quoted \"\"thing\"\"\",21\nΩ-5-20,\"Montréal, QC\",20\nΩ-5-19,,19\nΩ-5-18,=1+1,18\nΩ-5-17,\"line\nbreak\",17\nΩ-5-16,\"quoted \"\"thing\"\"\",16\nΩ-5-15,\"Montréal, QC\",15\nΩ-5-14,,14\nΩ-5-13,=1+1,13\nΩ-5-12,\"line\nbreak\",12\nΩ-5-11,\"quoted \"\"thing\"\"\",11\nΩ-5-10,\"Montréal, QC\",10\nΩ-5-9,,9\nΩ-5-8,=1+1,8\nΩ-5-7,\"line\nbreak\",7\nΩ-5-6,\"quoted \"\"thing\"\"\",6\nΩ-5-5,\"Montréal, QC\",5\nΩ-5-4,,4\nΩ-5-3,=1+1,3\nΩ-5-2,\"line\nbreak\",2\nΩ-5-1,\"quoted \"\"thing\"\"\",0.00\nNEW-5,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "d3f647fa9806279b384353508c368dd9eef3eea79ab852475bd0f93c858f1df9",
+        "after_sha256": "335b793752320ad10dc2f32a9d029bec015323912a373b301171f5e5b4fa5432",
+        "after_csv": "id,text,value\nΩ-5-22,Nouveau 1fad,22\nΩ-5-21,\"quoted \"\"thing\"\"\",21\nΩ-5-20,\"Montréal, QC\",20\nΩ-5-19,,19\nΩ-5-18,=1+1,18\nΩ-5-17,\"line\nbreak\",17\nΩ-5-16,\"quoted \"\"thing\"\"\",16\nΩ-5-15,\"Montréal, QC\",15\nΩ-5-14,,14\nΩ-5-13,=1+1,13\nΩ-5-12,\"line\nbreak\",12\nΩ-5-11,\"quoted \"\"thing\"\"\",11\nΩ-5-10,\"Montréal, QC\",10\nΩ-5-9,,9\nΩ-5-8,=1+1,8\nΩ-5-7,\"line\nbreak\",7\nΩ-5-6,\"quoted \"\"thing\"\"\",6\nΩ-5-5,\"Montréal, QC\",5\nΩ-5-4,,4\nΩ-5-3,=1+1,3\nΩ-5-2,\"line\nbreak\",2\nΩ-5-1,\"quoted \"\"thing\"\"\",0.00\nNEW-5,français α,42\n",
+        "output_sha256": "335b793752320ad10dc2f32a9d029bec015323912a373b301171f5e5b4fa5432",
+        "output_csv": "id,text,value\nΩ-5-22,Nouveau 1fad,22\nΩ-5-21,\"quoted \"\"thing\"\"\",21\nΩ-5-20,\"Montréal, QC\",20\nΩ-5-19,,19\nΩ-5-18,=1+1,18\nΩ-5-17,\"line\nbreak\",17\nΩ-5-16,\"quoted \"\"thing\"\"\",16\nΩ-5-15,\"Montréal, QC\",15\nΩ-5-14,,14\nΩ-5-13,=1+1,13\nΩ-5-12,\"line\nbreak\",12\nΩ-5-11,\"quoted \"\"thing\"\"\",11\nΩ-5-10,\"Montréal, QC\",10\nΩ-5-9,,9\nΩ-5-8,=1+1,8\nΩ-5-7,\"line\nbreak\",7\nΩ-5-6,\"quoted \"\"thing\"\"\",6\nΩ-5-5,\"Montréal, QC\",5\nΩ-5-4,,4\nΩ-5-3,=1+1,3\nΩ-5-2,\"line\nbreak\",2\nΩ-5-1,\"quoted \"\"thing\"\"\",0.00\nNEW-5,français α,42\n",
+        "rollback_csv": "id,text,value\r\nΩ-5-0,\"Montréal, QC\",0\r\nΩ-5-1,\"quoted \"\"thing\"\"\",1\r\nΩ-5-2,\"line\nbreak\",2\r\nΩ-5-3,=1+1,3\r\nΩ-5-4,,4\r\nΩ-5-5,\"Montréal, QC\",5\r\nΩ-5-6,\"quoted \"\"thing\"\"\",6\r\nΩ-5-7,\"line\nbreak\",7\r\nΩ-5-8,=1+1,8\r\nΩ-5-9,,9\r\nΩ-5-10,\"Montréal, QC\",10\r\nΩ-5-11,\"quoted \"\"thing\"\"\",11\r\nΩ-5-12,\"line\nbreak\",12\r\nΩ-5-13,=1+1,13\r\nΩ-5-14,,14\r\nΩ-5-15,\"Montréal, QC\",15\r\nΩ-5-16,\"quoted \"\"thing\"\"\",16\r\nΩ-5-17,\"line\nbreak\",17\r\nΩ-5-18,=1+1,18\r\nΩ-5-19,,19\r\nΩ-5-20,\"Montréal, QC\",20\r\nΩ-5-21,\"quoted \"\"thing\"\"\",21\r\nΩ-5-22,\"line\nbreak\",22\r\n",
+        "safe_preview_csv": "id,text,value\nΩ-5-22,Nouveau 1fad,22\nΩ-5-21,\"quoted \"\"thing\"\"\",21\nΩ-5-20,\"Montréal, QC\",20\nΩ-5-19,,19\nΩ-5-18,'=1+1,18\nΩ-5-17,\"line\nbreak\",17\nΩ-5-16,\"quoted \"\"thing\"\"\",16\nΩ-5-15,\"Montréal, QC\",15\nΩ-5-14,,14\nΩ-5-13,'=1+1,13\nΩ-5-12,\"line\nbreak\",12\nΩ-5-11,\"quoted \"\"thing\"\"\",11\nΩ-5-10,\"Montréal, QC\",10\nΩ-5-9,,9\nΩ-5-8,'=1+1,8\nΩ-5-7,\"line\nbreak\",7\nΩ-5-6,\"quoted \"\"thing\"\"\",6\nΩ-5-5,\"Montréal, QC\",5\nΩ-5-4,,4\nΩ-5-3,'=1+1,3\nΩ-5-2,\"line\nbreak\",2\nΩ-5-1,\"quoted \"\"thing\"\"\",0.00\nNEW-5,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-5"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-5",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-5-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-5-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-5-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-5-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-5-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-5-22"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-5-22",
+              "line\nbreak",
+              "22"
+            ],
+            "after": [
+              "Ω-5-22",
+              "Nouveau 1fad",
+              "22"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 23,
+          "after_rows": 23,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "7efc68ce83135c7fe4b5093304fdf0328cade7520c7e708a0d6745a8c36c4b39"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "335b793752320ad10dc2f32a9d029bec015323912a373b301171f5e5b4fa5432",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 291687,
+          "output_sha256": "335b793752320ad10dc2f32a9d029bec015323912a373b301171f5e5b4fa5432",
+          "output_rows": 23,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "335b793752320ad10dc2f32a9d029bec015323912a373b301171f5e5b4fa5432",
+        "rows_verified": 23
+      },
+      "product_ns": 517277,
+      "conventional_ns": 259923,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 6,
+      "before_csv": "id,text,value\nΩ-6-0,\"Montréal, QC\",0\nΩ-6-1,\"quoted \"\"thing\"\"\",1\nΩ-6-2,\"line\nbreak\",2\nΩ-6-3,=1+1,3\nΩ-6-4,,4\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-7,\"line\nbreak\",7\nΩ-6-8,=1+1,8\nΩ-6-9,,9\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-12,\"line\nbreak\",12\nΩ-6-13,=1+1,13\nΩ-6-14,,14\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-17,\"line\nbreak\",17\nΩ-6-18,=1+1,18\nΩ-6-19,,19\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-22,\"line\nbreak\",22\nΩ-6-23,=1+1,23\nΩ-6-24,,24\nΩ-6-25,\"Montréal, QC\",25\n",
+      "after_csv": "id,text,value\nΩ-6-25,Nouveau 1fad,25\nΩ-6-24,,24\nΩ-6-23,=1+1,23\nΩ-6-22,\"line\nbreak\",22\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-19,,19\nΩ-6-18,=1+1,18\nΩ-6-17,\"line\nbreak\",17\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-14,,14\nΩ-6-13,=1+1,13\nΩ-6-12,\"line\nbreak\",12\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-9,,9\nΩ-6-8,=1+1,8\nΩ-6-7,\"line\nbreak\",7\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-4,,4\nΩ-6-3,=1+1,3\nΩ-6-2,\"line\nbreak\",2\nΩ-6-1,\"quoted \"\"thing\"\"\",0.00\nNEW-6,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "f0e925c698a51bd4d19e74493f55f6a008d7af9d7de8641335e52ecd0eaea1b1",
+        "after_sha256": "3cff6ca1981900dfe82b97503ff4b5c7340f9e6b90c378817eee54214a9fb764",
+        "after_csv": "id,text,value\nΩ-6-25,Nouveau 1fad,25\nΩ-6-24,,24\nΩ-6-23,=1+1,23\nΩ-6-22,\"line\nbreak\",22\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-19,,19\nΩ-6-18,=1+1,18\nΩ-6-17,\"line\nbreak\",17\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-14,,14\nΩ-6-13,=1+1,13\nΩ-6-12,\"line\nbreak\",12\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-9,,9\nΩ-6-8,=1+1,8\nΩ-6-7,\"line\nbreak\",7\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-4,,4\nΩ-6-3,=1+1,3\nΩ-6-2,\"line\nbreak\",2\nΩ-6-1,\"quoted \"\"thing\"\"\",0.00\nNEW-6,français α,42\n",
+        "output_sha256": "3cff6ca1981900dfe82b97503ff4b5c7340f9e6b90c378817eee54214a9fb764",
+        "output_csv": "id,text,value\nΩ-6-25,Nouveau 1fad,25\nΩ-6-24,,24\nΩ-6-23,=1+1,23\nΩ-6-22,\"line\nbreak\",22\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-19,,19\nΩ-6-18,=1+1,18\nΩ-6-17,\"line\nbreak\",17\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-14,,14\nΩ-6-13,=1+1,13\nΩ-6-12,\"line\nbreak\",12\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-9,,9\nΩ-6-8,=1+1,8\nΩ-6-7,\"line\nbreak\",7\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-4,,4\nΩ-6-3,=1+1,3\nΩ-6-2,\"line\nbreak\",2\nΩ-6-1,\"quoted \"\"thing\"\"\",0.00\nNEW-6,français α,42\n",
+        "rollback_csv": "id,text,value\nΩ-6-0,\"Montréal, QC\",0\nΩ-6-1,\"quoted \"\"thing\"\"\",1\nΩ-6-2,\"line\nbreak\",2\nΩ-6-3,=1+1,3\nΩ-6-4,,4\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-7,\"line\nbreak\",7\nΩ-6-8,=1+1,8\nΩ-6-9,,9\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-12,\"line\nbreak\",12\nΩ-6-13,=1+1,13\nΩ-6-14,,14\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-17,\"line\nbreak\",17\nΩ-6-18,=1+1,18\nΩ-6-19,,19\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-22,\"line\nbreak\",22\nΩ-6-23,=1+1,23\nΩ-6-24,,24\nΩ-6-25,\"Montréal, QC\",25\n",
+        "safe_preview_csv": "id,text,value\nΩ-6-25,Nouveau 1fad,25\nΩ-6-24,,24\nΩ-6-23,'=1+1,23\nΩ-6-22,\"line\nbreak\",22\nΩ-6-21,\"quoted \"\"thing\"\"\",21\nΩ-6-20,\"Montréal, QC\",20\nΩ-6-19,,19\nΩ-6-18,'=1+1,18\nΩ-6-17,\"line\nbreak\",17\nΩ-6-16,\"quoted \"\"thing\"\"\",16\nΩ-6-15,\"Montréal, QC\",15\nΩ-6-14,,14\nΩ-6-13,'=1+1,13\nΩ-6-12,\"line\nbreak\",12\nΩ-6-11,\"quoted \"\"thing\"\"\",11\nΩ-6-10,\"Montréal, QC\",10\nΩ-6-9,,9\nΩ-6-8,'=1+1,8\nΩ-6-7,\"line\nbreak\",7\nΩ-6-6,\"quoted \"\"thing\"\"\",6\nΩ-6-5,\"Montréal, QC\",5\nΩ-6-4,,4\nΩ-6-3,'=1+1,3\nΩ-6-2,\"line\nbreak\",2\nΩ-6-1,\"quoted \"\"thing\"\"\",0.00\nNEW-6,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-6"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-6",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-6-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-6-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-6-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-6-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-6-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-6-25"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-6-25",
+              "Montréal, QC",
+              "25"
+            ],
+            "after": [
+              "Ω-6-25",
+              "Nouveau 1fad",
+              "25"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 26,
+          "after_rows": 26,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "9e2d225c3520a371dec30c445afdc6d1be6447449d3d2c6fd59d103a96d56492"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "3cff6ca1981900dfe82b97503ff4b5c7340f9e6b90c378817eee54214a9fb764",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 363765,
+          "output_sha256": "3cff6ca1981900dfe82b97503ff4b5c7340f9e6b90c378817eee54214a9fb764",
+          "output_rows": 26,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "3cff6ca1981900dfe82b97503ff4b5c7340f9e6b90c378817eee54214a9fb764",
+        "rows_verified": 26
+      },
+      "product_ns": 605316,
+      "conventional_ns": 348405,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    },
+    {
+      "case": 7,
+      "before_csv": "﻿id,text,value\r\nΩ-7-0,\"Montréal, QC\",0\r\nΩ-7-1,\"quoted \"\"thing\"\"\",1\r\nΩ-7-2,\"line\nbreak\",2\r\nΩ-7-3,=1+1,3\r\nΩ-7-4,,4\r\nΩ-7-5,\"Montréal, QC\",5\r\nΩ-7-6,\"quoted \"\"thing\"\"\",6\r\nΩ-7-7,\"line\nbreak\",7\r\nΩ-7-8,=1+1,8\r\nΩ-7-9,,9\r\nΩ-7-10,\"Montréal, QC\",10\r\nΩ-7-11,\"quoted \"\"thing\"\"\",11\r\nΩ-7-12,\"line\nbreak\",12\r\nΩ-7-13,=1+1,13\r\nΩ-7-14,,14\r\nΩ-7-15,\"Montréal, QC\",15\r\nΩ-7-16,\"quoted \"\"thing\"\"\",16\r\nΩ-7-17,\"line\nbreak\",17\r\nΩ-7-18,=1+1,18\r\nΩ-7-19,,19\r\nΩ-7-20,\"Montréal, QC\",20\r\nΩ-7-21,\"quoted \"\"thing\"\"\",21\r\nΩ-7-22,\"line\nbreak\",22\r\nΩ-7-23,=1+1,23\r\nΩ-7-24,,24\r\nΩ-7-25,\"Montréal, QC\",25\r\nΩ-7-26,\"quoted \"\"thing\"\"\",26\r\nΩ-7-27,\"line\nbreak\",27\r\nΩ-7-28,=1+1,28\r\n",
+      "after_csv": "id,text,value\nΩ-7-28,Nouveau 1fad,28\nΩ-7-27,\"line\nbreak\",27\nΩ-7-26,\"quoted \"\"thing\"\"\",26\nΩ-7-25,\"Montréal, QC\",25\nΩ-7-24,,24\nΩ-7-23,=1+1,23\nΩ-7-22,\"line\nbreak\",22\nΩ-7-21,\"quoted \"\"thing\"\"\",21\nΩ-7-20,\"Montréal, QC\",20\nΩ-7-19,,19\nΩ-7-18,=1+1,18\nΩ-7-17,\"line\nbreak\",17\nΩ-7-16,\"quoted \"\"thing\"\"\",16\nΩ-7-15,\"Montréal, QC\",15\nΩ-7-14,,14\nΩ-7-13,=1+1,13\nΩ-7-12,\"line\nbreak\",12\nΩ-7-11,\"quoted \"\"thing\"\"\",11\nΩ-7-10,\"Montréal, QC\",10\nΩ-7-9,,9\nΩ-7-8,=1+1,8\nΩ-7-7,\"line\nbreak\",7\nΩ-7-6,\"quoted \"\"thing\"\"\",6\nΩ-7-5,\"Montréal, QC\",5\nΩ-7-4,,4\nΩ-7-3,=1+1,3\nΩ-7-2,\"line\nbreak\",2\nΩ-7-1,\"quoted \"\"thing\"\"\",0.00\nNEW-7,français α,42\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 0,
+        "keys": [
+          "id"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "d44950af385c05d4b4e6b87a82fab68c6a1c60c1a83056036ebd74b98da9557e",
+        "after_sha256": "c2fae8e216f0e79cffe31408b9cac21e54df8febad54fd4d4ca295d12466ae63",
+        "after_csv": "id,text,value\nΩ-7-28,Nouveau 1fad,28\nΩ-7-27,\"line\nbreak\",27\nΩ-7-26,\"quoted \"\"thing\"\"\",26\nΩ-7-25,\"Montréal, QC\",25\nΩ-7-24,,24\nΩ-7-23,=1+1,23\nΩ-7-22,\"line\nbreak\",22\nΩ-7-21,\"quoted \"\"thing\"\"\",21\nΩ-7-20,\"Montréal, QC\",20\nΩ-7-19,,19\nΩ-7-18,=1+1,18\nΩ-7-17,\"line\nbreak\",17\nΩ-7-16,\"quoted \"\"thing\"\"\",16\nΩ-7-15,\"Montréal, QC\",15\nΩ-7-14,,14\nΩ-7-13,=1+1,13\nΩ-7-12,\"line\nbreak\",12\nΩ-7-11,\"quoted \"\"thing\"\"\",11\nΩ-7-10,\"Montréal, QC\",10\nΩ-7-9,,9\nΩ-7-8,=1+1,8\nΩ-7-7,\"line\nbreak\",7\nΩ-7-6,\"quoted \"\"thing\"\"\",6\nΩ-7-5,\"Montréal, QC\",5\nΩ-7-4,,4\nΩ-7-3,=1+1,3\nΩ-7-2,\"line\nbreak\",2\nΩ-7-1,\"quoted \"\"thing\"\"\",0.00\nNEW-7,français α,42\n",
+        "output_sha256": "c2fae8e216f0e79cffe31408b9cac21e54df8febad54fd4d4ca295d12466ae63",
+        "output_csv": "id,text,value\nΩ-7-28,Nouveau 1fad,28\nΩ-7-27,\"line\nbreak\",27\nΩ-7-26,\"quoted \"\"thing\"\"\",26\nΩ-7-25,\"Montréal, QC\",25\nΩ-7-24,,24\nΩ-7-23,=1+1,23\nΩ-7-22,\"line\nbreak\",22\nΩ-7-21,\"quoted \"\"thing\"\"\",21\nΩ-7-20,\"Montréal, QC\",20\nΩ-7-19,,19\nΩ-7-18,=1+1,18\nΩ-7-17,\"line\nbreak\",17\nΩ-7-16,\"quoted \"\"thing\"\"\",16\nΩ-7-15,\"Montréal, QC\",15\nΩ-7-14,,14\nΩ-7-13,=1+1,13\nΩ-7-12,\"line\nbreak\",12\nΩ-7-11,\"quoted \"\"thing\"\"\",11\nΩ-7-10,\"Montréal, QC\",10\nΩ-7-9,,9\nΩ-7-8,=1+1,8\nΩ-7-7,\"line\nbreak\",7\nΩ-7-6,\"quoted \"\"thing\"\"\",6\nΩ-7-5,\"Montréal, QC\",5\nΩ-7-4,,4\nΩ-7-3,=1+1,3\nΩ-7-2,\"line\nbreak\",2\nΩ-7-1,\"quoted \"\"thing\"\"\",0.00\nNEW-7,français α,42\n",
+        "rollback_csv": "﻿id,text,value\r\nΩ-7-0,\"Montréal, QC\",0\r\nΩ-7-1,\"quoted \"\"thing\"\"\",1\r\nΩ-7-2,\"line\nbreak\",2\r\nΩ-7-3,=1+1,3\r\nΩ-7-4,,4\r\nΩ-7-5,\"Montréal, QC\",5\r\nΩ-7-6,\"quoted \"\"thing\"\"\",6\r\nΩ-7-7,\"line\nbreak\",7\r\nΩ-7-8,=1+1,8\r\nΩ-7-9,,9\r\nΩ-7-10,\"Montréal, QC\",10\r\nΩ-7-11,\"quoted \"\"thing\"\"\",11\r\nΩ-7-12,\"line\nbreak\",12\r\nΩ-7-13,=1+1,13\r\nΩ-7-14,,14\r\nΩ-7-15,\"Montréal, QC\",15\r\nΩ-7-16,\"quoted \"\"thing\"\"\",16\r\nΩ-7-17,\"line\nbreak\",17\r\nΩ-7-18,=1+1,18\r\nΩ-7-19,,19\r\nΩ-7-20,\"Montréal, QC\",20\r\nΩ-7-21,\"quoted \"\"thing\"\"\",21\r\nΩ-7-22,\"line\nbreak\",22\r\nΩ-7-23,=1+1,23\r\nΩ-7-24,,24\r\nΩ-7-25,\"Montréal, QC\",25\r\nΩ-7-26,\"quoted \"\"thing\"\"\",26\r\nΩ-7-27,\"line\nbreak\",27\r\nΩ-7-28,=1+1,28\r\n",
+        "safe_preview_csv": "id,text,value\nΩ-7-28,Nouveau 1fad,28\nΩ-7-27,\"line\nbreak\",27\nΩ-7-26,\"quoted \"\"thing\"\"\",26\nΩ-7-25,\"Montréal, QC\",25\nΩ-7-24,,24\nΩ-7-23,'=1+1,23\nΩ-7-22,\"line\nbreak\",22\nΩ-7-21,\"quoted \"\"thing\"\"\",21\nΩ-7-20,\"Montréal, QC\",20\nΩ-7-19,,19\nΩ-7-18,'=1+1,18\nΩ-7-17,\"line\nbreak\",17\nΩ-7-16,\"quoted \"\"thing\"\"\",16\nΩ-7-15,\"Montréal, QC\",15\nΩ-7-14,,14\nΩ-7-13,'=1+1,13\nΩ-7-12,\"line\nbreak\",12\nΩ-7-11,\"quoted \"\"thing\"\"\",11\nΩ-7-10,\"Montréal, QC\",10\nΩ-7-9,,9\nΩ-7-8,'=1+1,8\nΩ-7-7,\"line\nbreak\",7\nΩ-7-6,\"quoted \"\"thing\"\"\",6\nΩ-7-5,\"Montréal, QC\",5\nΩ-7-4,,4\nΩ-7-3,'=1+1,3\nΩ-7-2,\"line\nbreak\",2\nΩ-7-1,\"quoted \"\"thing\"\"\",0.00\nNEW-7,français α,42\n",
+        "changes": [
+          {
+            "key": [
+              "NEW-7"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW-7",
+              "français α",
+              "42"
+            ],
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-7-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "Ω-7-0",
+              "Montréal, QC",
+              "0"
+            ],
+            "after": null,
+            "fields": [
+              "id",
+              "text",
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-7-1"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-7-1",
+              "quoted \"thing\"",
+              "1"
+            ],
+            "after": [
+              "Ω-7-1",
+              "quoted \"thing\"",
+              "0.00"
+            ],
+            "fields": [
+              "value"
+            ]
+          },
+          {
+            "key": [
+              "Ω-7-28"
+            ],
+            "kind": "update",
+            "before": [
+              "Ω-7-28",
+              "=1+1",
+              "28"
+            ],
+            "after": [
+              "Ω-7-28",
+              "Nouveau 1fad",
+              "28"
+            ],
+            "fields": [
+              "text"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 29,
+          "after_rows": 29,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "44f648704f654f3ce035a6b5b9a33b5f9db32d0eff7650b9e8ccb4f2ec2fa6ca"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "c2fae8e216f0e79cffe31408b9cac21e54df8febad54fd4d4ca295d12466ae63",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 374121,
+          "output_sha256": "c2fae8e216f0e79cffe31408b9cac21e54df8febad54fd4d4ca295d12466ae63",
+          "output_rows": 29,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "c2fae8e216f0e79cffe31408b9cac21e54df8febad54fd4d4ca295d12466ae63",
+        "rows_verified": 29
+      },
+      "product_ns": 655485,
+      "conventional_ns": 353518,
+      "conventional_tie": true,
+      "ordinary_library_tie": true,
+      "removal_accepted": false
+    }
+  ],
+  "accepted": 8,
+  "conventional_ties": 8,
+  "ordinary_library_ties": 8,
+  "removal_acceptances": 0,
+  "direct_frontier_ai": "independent same-session AI-authored conventional code; no provider API trial; complete actual AI cost unknown"
+}

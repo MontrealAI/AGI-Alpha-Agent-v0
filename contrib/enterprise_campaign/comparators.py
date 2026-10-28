@@ -1,0 +1,164 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Independent conventional catalogue transformation and declared acceptance semantics."""
+from __future__ import annotations
+
+import csv
+import hashlib
+import io
+import math
+import time
+from decimal import Decimal, InvalidOperation
+from typing import Any
+
+ACCEPTANCE_PROTOCOL = {
+    "id": "alpha-catalog-independent-acceptance/v1",
+    "frozen_before_confirmation": True,
+    "semantic_target": "after membership/order; before header order; protected and numerically equivalent values retained",
+    "source_binding": "SHA-256 of exact UTF-8 before and supplied after",
+    "rollback": "exact original UTF-8 bytes, including order, newline and formatting",
+    "independence": "separately authored same-session conventional code; no producer helper imports",
+    "limits": "bounded digital files only; no spreadsheet evaluation or external catalogue write",
+}
+
+
+def sha256(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def parse_csv(text: str) -> tuple[list[str], list[dict[str, str]]]:
+    if not isinstance(text, str) or "\x00" in text or len(text.encode("utf-8")) > 2_000_000:
+        raise ValueError("unsupported CSV size or bytes")
+    reader = csv.reader(io.StringIO(text.removeprefix("\ufeff"), newline=""), strict=True)
+    try:
+        fields = next(reader)
+    except StopIteration as exc:
+        raise ValueError("CSV has no header") from exc
+    if not fields or any(not field for field in fields) or len(fields) != len(set(fields)):
+        raise ValueError("empty or duplicate field")
+    records = []
+    for row in reader:
+        if len(row) != len(fields):
+            raise ValueError("row width does not match header")
+        records.append(dict(zip(fields, row, strict=True)))
+        if len(records) > 10_000:
+            raise ValueError("row bound exceeded")
+    return fields, records
+
+
+def numeric_equal(a: str, b: str) -> bool:
+    try:
+        x, y = Decimal(a), Decimal(b)
+    except InvalidOperation as exc:
+        raise ValueError("declared decimal column contains nondecimal value") from exc
+    if not x.is_finite() or not y.is_finite():
+        raise ValueError("declared decimal column contains nonfinite value")
+    return x == y
+
+
+def conventional_transform(
+    before: str,
+    after: str,
+    keys: list[str],
+    generation: int = 0,
+    options: dict[str, Any] | None = None,
+) -> str:
+    options = options or {}
+    decimals = options.get("decimal_columns") or []
+    aliases = options.get("aliases") or {}
+    updates = options.get("update_fields")
+    if type(generation) is not int or generation not in range(4):
+        raise ValueError("unsupported generation")
+    if not keys or len(keys) != len(set(keys)) or (generation == 0 and len(keys) != 1):
+        raise ValueError("invalid keys")
+    if generation < 2 and (decimals or aliases):
+        raise ValueError("normalization requires generation two")
+    if generation < 3 and updates is not None:
+        raise ValueError("selective updates require generation three")
+    fields, original = parse_csv(before)
+    target_fields, target = parse_csv(after)
+    target_fields = [aliases.get(field, field) for field in target_fields]
+    if len(target_fields) != len(set(target_fields)) or set(fields) != set(target_fields):
+        raise ValueError("schemas differ")
+    target = [{aliases.get(field, field): value for field, value in row.items()} for row in target]
+    if not set(keys).issubset(fields) or not set(decimals).issubset(fields):
+        raise ValueError("unknown key or decimal column")
+    if set(decimals) & set(keys):
+        raise ValueError("numeric key comparison not supported")
+    if updates is not None and (not set(updates).issubset(fields) or set(updates) & set(keys)):
+        raise ValueError("unknown or key update field")
+    for row in original + target:
+        for field in decimals:
+            numeric_equal(row[field], row[field])
+    prior: dict[tuple[str, ...], dict[str, str]] = {}
+    for row in original:
+        key = tuple(row[field] for field in keys)
+        if any(value == "" for value in key) or key in prior:
+            raise ValueError("empty or duplicate original key")
+        prior[key] = row
+    found = set()
+    output = []
+    for row in target:
+        key = tuple(row[field] for field in keys)
+        if any(value == "" for value in key) or key in found:
+            raise ValueError("empty or duplicate target key")
+        found.add(key)
+        result = dict(row)
+        if key in prior:
+            for field in fields:
+                protected = field not in keys and updates is not None and field not in updates
+                equivalent = field in decimals and numeric_equal(prior[key][field], row[field])
+                if protected or equivalent:
+                    result[field] = prior[key][field]
+        output.append(result)
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(output)
+    return stream.getvalue()
+
+
+def benchmark(before: str, after: str, keys: list[str], generation: int, options: dict[str, Any]) -> dict[str, Any]:
+    started = time.perf_counter_ns()
+    output = conventional_transform(before, after, keys, generation, options)
+    return {
+        "name": "independent-conventional-csv-dictionary",
+        "elapsed_ns": time.perf_counter_ns() - started,
+        "output_sha256": sha256(output),
+        "output_rows": len(parse_csv(output)[1]),
+        "resources": "one CPU Python standard-library process, no model calls",
+        "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+        "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+        "finite": math.isfinite(float(len(output))),
+    }
+
+
+def replay_controls(path: str) -> dict[str, Any]:
+    import json
+    from pathlib import Path
+
+    receipt = json.loads(Path(path).read_text(encoding="utf-8"))
+    cases = receipt["cases"]
+    errors = []
+    for index, case in enumerate(cases):
+        package = case["package"]
+        expected = conventional_transform(case["before_csv"], case["after_csv"], package["keys"],
+                                          package["generation"], package["options"])
+        if parse_csv(expected) != parse_csv(package["output_csv"]) or sha256(expected) != package["output_sha256"]:
+            errors.append(f"case {index} differs from independently reconstructed target")
+        if package["rollback_csv"] != case["before_csv"]:
+            errors.append(f"case {index} lost exact original rollback bytes")
+    return {"passed": not errors, "cases": len(cases), "errors": errors,
+            "receipt_id": receipt["id"], "source_sha256": receipt["source_sha256"],
+            "scope": "Independent semantic reconstruction of preserved finite cases; not fresh confirmation"}
+
+
+if __name__ == "__main__":
+    import argparse
+    import json
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("receipt")
+    args = parser.parse_args()
+    replay = replay_controls(args.receipt)
+    print(json.dumps(replay, ensure_ascii=False, indent=2))
+    raise SystemExit(0 if replay["passed"] else 1)

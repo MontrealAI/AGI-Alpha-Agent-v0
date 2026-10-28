@@ -6,6 +6,43 @@
 **[Ouvrir en français](../successor/alpha/index.html?lang=fr)** ·
 [Implementation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/successor-alpha/)
 
+## Blue Sky admission before flagship construction
+
+**AGI ALPHA FLYWHEEL — The Profitable Possibility Engine.** Start with what could become possible for a
+beneficiary, beyond an assumed constraint; work backward to the instrument, method, representation or productive
+arrangement that must exist. The first commercially useful delivery must exercise that construction.
+The mission workspace supports exploration. It does not establish an admitted transformational flagship.
+
+Compare at least three materially different productive possibilities and keep the seven admission answers in the
+existing discovery/project history: consequential activity and beneficiary; strongest accessible tools and their
+remaining limitation; recent frontier change; missing means; decisive independent before-and-after experiment;
+first commercial delivery; and the further valuable activities enabled. Test removal and the strongest practical
+replacement. For an affordability transformation, state the specific economic threshold and activity opened.
+
+| State | Required evidence |
+| --- | --- |
+| Ambition | Consequential possibility; no demonstrated outcome implied |
+| Candidate admission | Substantive seven-part case and an independent falsifiable experiment |
+| Demonstrated construction | Executed usable artifacts, fresh acceptance, removal and replacement comparisons |
+| Commercial qualification | Competitive simulated buyer choice, earned revenue, collections, complete costs and liquidity under declared conditions |
+
+A populated form cannot prove a breakthrough. Blue Sky Flagship GO and commercial GO are separate decisions.
+A candidate under **Blue Sky HOLD** may receive only a bounded commercial probe with a hypothesis, deliverables,
+resource allowance and stopping condition. Commercial profitability preserves the business result but does not
+lift HOLD or release the main flagship construction, product-polish or publication allocation.
+
+**Current maintained catalog example:** the possibility is a reviewable resolution of inconsistent exports;
+the constraint is scattered record-level discrepancies; the means is a local comparison and action plan retaining
+source references; the useful outcome is downloadable differences and reusable code. Its bounded local
+construction does not establish a consequential accessibility threshold, Blue Sky admission, commercial acceptance
+or realized earnings. A new commercial campaign needs its own frozen inputs, policy, seeds and complete journals.
+
+**FR · Admettre la possibilité avant de construire le projet phare.** Comparer trois possibilités et préciser
+le bénéficiaire, la limite des meilleurs moyens accessibles, le changement récent, le moyen à construire,
+l’expérience décisive, la première livraison et les activités futures. L’ambition, l’admission, la construction
+démontrée et la qualification commerciale restent distinctes. Une fiche remplie n’est pas une percée. Une sonde
+rentable sous Blue Sky HOLD garde son budget et sa condition d’arrêt; elle ne devient pas le projet phare.
+
 Start with an opportunity worth developing: valuable digital work, a useful software improvement, a testable
 research direction or a rigorous mathematical argument. Define who benefits, compare strategies and ask whether a
 different formulation could produce a better result. Keep the work product, evidence and lessons together.

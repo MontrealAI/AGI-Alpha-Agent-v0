@@ -1,0 +1,36 @@
+import json
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+root=Path('/dev/shm/alpha-20261028/interface-qa')
+package=json.loads((root/'sample-package.json').read_text())
+checks=[]
+with sync_playwright() as p:
+ b=p.chromium.launch(headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
+ for lang in ['en','fr']:
+  for width in [1440,390,320]:
+   page=b.new_page(viewport={'width':width,'height':1000},accept_downloads=True)
+   errors=[]; external=[]
+   page.on('pageerror',lambda e:errors.append(str(e)))
+   page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') else None)
+   page.goto((root/'sample-report.html').as_uri()+'?lang='+lang)
+   assert page.locator('html').get_attribute('lang')==lang
+   assert page.locator('.status strong').inner_text()==('ACCEPTÉ' if lang=='fr' else 'ACCEPTED')
+   assert page.evaluate('window.pwned===undefined')
+   assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'),(lang,width)
+   assert '</script>' in page.locator('tbody').inner_text()
+   page.locator('details summary').focus();page.keyboard.press('Enter')
+   assert page.locator('details').get_attribute('open') is not None
+   page.locator('[data-language="'+('fr' if lang=='en' else 'en')+'"]').focus();page.keyboard.press('Enter')
+   assert page.locator('html').get_attribute('lang')!=lang
+   if width==1440:
+    for filename,key in [('before.csv','rollback_csv'),('after.csv','after_csv'),('output.csv','output_csv'),('rollback.csv','rollback_csv'),('spreadsheet-safe-preview.csv','safe_preview_csv')]:
+     with page.expect_download() as pending:page.locator('a[download="'+filename+'"]').click()
+     assert Path(pending.value.path()).read_text()==package[key],filename
+   assert not errors,errors
+   assert not external,external
+   checks.append({'language':lang,'width':width,'keyboard':True,'overflow':False,'script_payload_inert':True,'errors':errors,'external':external})
+   if (lang,width)==('en',1440):page.screenshot(path=str(root/'report-en-1440.png'),full_page=True)
+   page.close()
+ b.close()
+(root/'report-checks.json').write_text(json.dumps({'passed':True,'checks':checks,'exact_csv_downloads':10},indent=2)+'\n')
+print(json.dumps({'passed':True,'checks':len(checks),'exact_csv_downloads':10}))

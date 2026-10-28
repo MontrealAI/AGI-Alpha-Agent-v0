@@ -1,4 +1,35 @@
 <!-- current-entrypoints -->
+# AGI ALPHA FLYWHEEL · The Profitable Possibility Engine
+
+**Transformational Intelligence: learning to change the game.**
+Imagine a consequential possibility → challenge its constraint → invent the missing means → construct the capability → deliver the first useful outcome → earn and collect → fund what comes next.
+
+The ambition is productive capacity that expands what a beneficiary can accomplish. **Blue Sky Flagship GO and
+commercial GO are separate decisions.** Before substantial flagship construction, compare at least three materially
+different possibilities and record these seven questions in the existing [discovery project](docs/agent/DISCOVERY_CONSTRUCTION.md):
+
+1. What consequential activity becomes possible for whom?
+2. What limitation remains with the strongest accessible tools and workflows?
+3. What recent frontier change makes that limitation worth challenging now?
+4. What missing instrument, method, representation or productive arrangement will be constructed?
+5. Which independent before-and-after experiment, removal test and practical replacement could disprove the gain?
+6. How will the first commercial delivery exercise the construction itself?
+7. Which further family of valuable activities could it enable?
+
+A completed record establishes a candidate, not a breakthrough. Demonstrated construction needs actual artifacts
+and fresh independent acceptance. Commercial qualification additionally needs buyer choice, earned revenue,
+collections, complete AI-native costs, liquidity and funded improvement. If affordability is the transformation,
+state the economic threshold crossed and the consequential activity it opens. A profitable **Blue Sky HOLD** probe
+keeps its separate allowance and stopping condition; profit does not release the main flagship construction or
+publication budget. [Begin with the mission and evidence boundaries](docs/agent/START_HERE.md).
+
+**FR · Inventer la possibilité. Construire les moyens manquants. Livrer la valeur. Financer la suite.**
+Avant de construire le projet phare, comparer au moins trois possibilités et préciser le bénéficiaire, l’activité
+rendue possible, la limite des meilleurs moyens accessibles, le changement récent, le moyen à construire,
+l’expérience décisive, la première livraison et les activités futures. Une fiche remplie reste une candidature.
+L’admission Blue Sky, la construction démontrée et la qualification commerciale restent distinctes. Une sonde
+rentable sous **Blue Sky HOLD** conserve son budget délimité; elle ne devient pas automatiquement le projet phare.
+
 # Two lists. A clear next step.
 
 **[Try it now →](https://montrealai.github.io/AGI-Alpha-Agent-v0/try/)** ·

@@ -25,11 +25,12 @@ dependencies = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["alpha_factory_v1*", "af_requests*", "openai_agents*"]
+include = ["alpha_factory_v1*", "af_requests*", "openai_agents*", "contrib.enterprise_campaign*"]
 exclude = ["*.node_modules*", "*.tests*", "*.test*", "*.build*", "*.wasm*", "*.dist*", "*.presentation*", "*.venv*"]
 namespaces = true
 
 [tool.setuptools.package-data]
+"contrib.enterprise_campaign" = ["*.json", "stages/*/*.json", "stages/*/*.txt"]
 "alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0" = ["*.sh", "*.html", "web/*", "archive/*"]
 "alpha_factory_v1" = ["py.typed", "**/*.yaml", "**/*.yml", "**/*.json", "**/*.proto", "**/*.txt", "**/*.md"]
 "alpha_factory_v1.core.runtime" = ["web/*", "examples/*.json"]
@@ -49,6 +50,7 @@ namespaces = true
 "*" = ["**/node_modules/**", "**/__pycache__/**", "**/.venv/**", "**/venv/**"]
 
 [project.scripts]
+alpha-enterprise-campaign = "contrib.enterprise_campaign.catalog_product:main"
 alpha-agent = "alpha_factory_v1.core.runtime.cli:main"
 alpha-factory = "alpha_factory_v1.run:run"
 insight-workbench = "alpha_factory_v1.demos.alpha_agi_insight_v0.discovery_cli:main"

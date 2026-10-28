@@ -1,0 +1,273 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import io
+import json
+from pathlib import Path
+from typing import Any
+
+CAPABILITY_GENERATION = 1
+MAX_CSV_BYTES = 200_000
+MAX_ROWS = 1_500
+MAX_COLUMNS = 32
+MAX_CELL_CHARS = 4_096
+SCHEMA = "catalog-change-set/v1"
+
+
+def digest(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _canonical(value: object) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def _parse(text: str) -> tuple[list[str], list[list[str]]]:
+    if not isinstance(text, str) or len(text.encode("utf-8")) > MAX_CSV_BYTES:
+        raise ValueError("Each CSV is limited to 200000 UTF-8 bytes.")
+    if "\0" in text:
+        raise ValueError("CSV cannot contain NUL characters.")
+    if text.startswith("\ufeff"):
+        text = text[1:]
+    if not text:
+        raise ValueError("CSV needs a header row.")
+    records: list[list[str]] = []
+    row: list[str] = []
+    cell: list[str] = []
+    quoted = closed = started = False
+
+    def finish_cell() -> None:
+        nonlocal cell, closed, started
+        row.append("".join(cell))
+        if len(row) > MAX_COLUMNS:
+            raise ValueError("CSV exceeds 32 columns.")
+        cell, closed, started = [], False, False
+
+    def finish_row() -> None:
+        nonlocal row
+        finish_cell()
+        records.append(row)
+        row = []
+        if len(records) > MAX_ROWS + 1:
+            raise ValueError("CSV exceeds 1500 data rows.")
+
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if quoted:
+            if char == '"':
+                if index + 1 < len(text) and text[index + 1] == '"':
+                    cell.append('"')
+                    index += 1
+                else:
+                    quoted, closed = False, True
+            else:
+                cell.append(char)
+        elif char == ",":
+            finish_cell()
+        elif char in "\r\n":
+            if char == "\r" and index + 1 < len(text) and text[index + 1] == "\n":
+                index += 1
+            finish_row()
+        elif char == '"':
+            if started or closed:
+                raise ValueError("Quote inside an unquoted CSV cell.")
+            quoted, started = True, True
+        else:
+            if closed:
+                raise ValueError("Unexpected text after a closing CSV quote.")
+            cell.append(char)
+            started = True
+        if len(cell) > MAX_CELL_CHARS:
+            raise ValueError("CSV cells exceed 4096 characters.")
+        index += 1
+    if quoted:
+        raise ValueError("Unclosed quoted CSV cell.")
+    if row or cell or closed or started:
+        finish_row()
+    headers, *rows = records
+    if any(not field.strip() for field in headers) or len(set(headers)) != len(headers):
+        raise ValueError("CSV headers must be nonempty and unique.")
+    if any(len(record) != len(headers) for record in rows):
+        raise ValueError("Every CSV row must have the header column count.")
+    return headers, rows
+
+
+def _emit(headers: list[str], rows: list[list[str]], *, spreadsheet_safe: bool = False) -> str:
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream, lineterminator="\n")
+    for row in [headers, *rows]:
+        writer.writerow(
+            ["'" + cell if spreadsheet_safe and cell.lstrip().startswith(("=", "+", "-", "@")) else cell for cell in row]
+        )
+    return stream.getvalue()
+
+
+def _index(headers: list[str], rows: list[list[str]], keys: list[str]) -> dict[tuple[str, ...], list[str]]:
+    positions = [headers.index(key) for key in keys]
+    result: dict[tuple[str, ...], list[str]] = {}
+    for row in rows:
+        key = tuple(row[position] for position in positions)
+        if any(not part for part in key):
+            raise ValueError("Keys must be nonempty exact strings.")
+        if key in result:
+            raise ValueError("Duplicate keys refuse ambiguous patch construction.")
+        result[key] = row
+    return result
+
+
+def reconcile(
+    before_csv: str,
+    after_csv: str,
+    keys: list[str],
+    generation: int = 0,
+    *,
+    decimal_columns: list[str] | None = None,
+    aliases: dict[str, str] | None = None,
+    update_fields: list[str] | None = None,
+) -> dict[str, Any]:
+    if type(generation) is not int or not 0 <= generation <= CAPABILITY_GENERATION:
+        raise ValueError("Requested generation is not constructed in this source.")
+    if not isinstance(keys, list) or not keys or not all(isinstance(key, str) for key in keys):
+        raise ValueError("Declare a nonempty list of exact key columns.")
+    if len(keys) != len(set(keys)) or (generation == 0 and len(keys) != 1):
+        raise ValueError("Composite keys require generation one; repeated key columns refuse.")
+    if decimal_columns or aliases or update_fields is not None:
+        raise ValueError("Requested normalization or field policy is not constructed in this source.")
+    headers, before_rows = _parse(before_csv)
+    after_headers, after_rows = _parse(after_csv)
+    if headers != after_headers or any(key not in headers for key in keys):
+        raise ValueError("Both CSV snapshots must have the same ordered headers and declared keys.")
+    before = _index(headers, before_rows, keys)
+    after = _index(headers, after_rows, keys)
+    changes: list[dict[str, Any]] = []
+    for key in sorted(before.keys() | after.keys()):
+        old, new = before.get(key), after.get(key)
+        if old == new:
+            continue
+        changes.append(
+            {"key": list(key), "kind": "insert" if old is None else "delete" if new is None else "update",
+             "before": old, "after": new,
+             "fields": headers[:] if old is None or new is None else
+             [name for name, a, b in zip(headers, old, new, strict=True) if a != b]}
+        )
+    output = _emit(headers, after_rows)
+    package: dict[str, Any] = {
+        "schema": SCHEMA,
+        "generation": generation,
+        "keys": keys[:],
+        "options": {"decimal_columns": decimal_columns or [], "aliases": aliases or {}, "update_fields": update_fields},
+        "before_sha256": digest(before_csv),
+        "after_sha256": digest(after_csv),
+        "after_csv": after_csv,
+        "output_sha256": digest(output),
+        "output_csv": output,
+        "rollback_csv": before_csv,
+        "safe_preview_csv": _emit(headers, after_rows, spreadsheet_safe=True),
+        "changes": changes,
+        "trace": {
+            "before_rows": len(before_rows), "after_rows": len(after_rows), "changed_keys": len(changes),
+            "authority": "none; in-memory transformation only",
+            "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+            "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs.",
+        },
+    }
+    package["proof_digest"] = digest(_canonical(package))
+    return package
+
+
+def verify_package(package: dict[str, Any], before_csv: str) -> bool:
+    if not isinstance(package, dict) or package.get("schema") != SCHEMA:
+        raise ValueError("Unsupported patch schema.")
+    if package.get("before_sha256") != digest(before_csv):
+        raise ValueError("Stale or different source snapshot.")
+    unsigned = {key: value for key, value in package.items() if key != "proof_digest"}
+    if package.get("proof_digest") != digest(_canonical(unsigned)):
+        raise ValueError("Patch integrity check failed.")
+    try:
+        expected = reconcile(
+            before_csv, package["after_csv"], package["keys"], package["generation"], **package["options"]
+        )
+    except (KeyError, TypeError) as error:
+        raise ValueError("Invalid patch fields.") from error
+    if expected != package:
+        raise ValueError("Patch content differs from source-derived construction.")
+    return True
+
+
+def apply_patch(before_csv: str, package: dict[str, Any], *, authorized: bool = False) -> str:
+    if authorized is not True:
+        raise PermissionError("Current explicit authorization is required.")
+    verify_package(package, before_csv)
+    return str(package["output_csv"])
+
+
+def rollback(output_csv: str, package: dict[str, Any], *, authorized: bool = False) -> str:
+    if authorized is not True:
+        raise PermissionError("Current explicit authorization is required.")
+    if not isinstance(package, dict) or not isinstance(package.get("rollback_csv"), str):
+        raise ValueError("Invalid rollback package.")
+    verify_package(package, package["rollback_csv"])
+    if digest(output_csv) != package["output_sha256"]:
+        raise ValueError("Current output is stale; rollback refuses.")
+    return str(package["rollback_csv"])
+
+
+def _read(path: str, limit: int = MAX_CSV_BYTES) -> str:
+    source = Path(path)
+    if source.is_symlink() or not source.is_file():
+        raise ValueError("Input must be an existing regular file, not a symlink.")
+    with source.open("rb") as handle:
+        data = handle.read(limit + 1)
+    if len(data) > limit:
+        raise ValueError("Input exceeds byte limit.")
+    return data.decode("utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Construct and check bounded reversible catalog changes.")
+    actions = parser.add_subparsers(dest="action", required=True)
+    plan = actions.add_parser("reconcile")
+    plan.add_argument("before")
+    plan.add_argument("after")
+    plan.add_argument("--keys", nargs="+", required=True)
+    plan.add_argument("--generation", type=int, default=0)
+    plan.add_argument("--decimal-columns", nargs="*")
+    plan.add_argument("--aliases", help="JSON object mapping supplier headers to canonical headers")
+    plan.add_argument("--update-fields", nargs="*")
+    plan.add_argument("--output", required=True)
+    for name in ("apply", "rollback"):
+        action = actions.add_parser(name)
+        action.add_argument("current")
+        action.add_argument("package")
+        action.add_argument("--authorize", action="store_true")
+        action.add_argument("--expected-package-digest", required=True)
+        action.add_argument("--output", required=True)
+    args = parser.parse_args()
+    try:
+        if args.action == "reconcile":
+            package = reconcile(
+                _read(args.before), _read(args.after), args.keys, args.generation,
+                decimal_columns=args.decimal_columns,
+                aliases=json.loads(args.aliases) if args.aliases else None,
+                update_fields=args.update_fields,
+            )
+            result = json.dumps(package, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        else:
+            package = json.loads(_read(args.package, 4_000_000))
+            if package.get("proof_digest") != args.expected_package_digest:
+                raise ValueError("Approval is bound to a different package digest.")
+            operation = apply_patch if args.action == "apply" else rollback
+            result = operation(_read(args.current), package, authorized=args.authorize)
+        with Path(args.output).open("x", encoding="utf-8", newline="") as destination:
+            destination.write(result)
+    except (ValueError, TypeError, OSError, PermissionError) as error:
+        parser.exit(2, f"Refused: {error}\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
