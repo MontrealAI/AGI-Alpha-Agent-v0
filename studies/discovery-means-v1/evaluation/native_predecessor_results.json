@@ -1,0 +1,1094 @@
+{
+  "loaded_native_path": "/dev/shm/agi-campaign-b31fc52d/agi-alpha/alpha_factory_v1/core/runtime/successor/flywheel_probe.py",
+  "loaded_native_sha256": "cb386ad3dc3001a585351730a7ba4476ec5657c5215c3e9a26c3194e122594c7",
+  "manifest_sha256": "95a6181c8bb85fc03b57577dcc1050420a03a139ed25bdfc5c667fff6ac0f0e3",
+  "rows": [
+    {
+      "all_worlds_correct": true,
+      "case_id": "case-09",
+      "excluded_forbidden_experiments": [
+        "probe_4fc25ff4"
+      ],
+      "hypothesis_to_result": {
+        "hyp_9719ea49": "not-applied",
+        "hyp_b2c23ff1": "applied",
+        "hyp_b89b977e": "partially-applied"
+      },
+      "input": {
+        "coverage_basis": "Exhaustive replay of every hypothesis in the supplied three-hypothesis model only",
+        "hypotheses": [
+          {
+            "hypothesis_id": "hyp_9719ea49",
+            "observations": {
+              "probe_6c7a9ab5": "obs_e4c64d58",
+              "probe_aa8c47d6": "obs_32286b81"
+            },
+            "result": "not-applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_b2c23ff1",
+            "observations": {
+              "probe_6c7a9ab5": "obs_bb84ffbc",
+              "probe_aa8c47d6": "obs_8208d247"
+            },
+            "result": "applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_b89b977e",
+            "observations": {
+              "probe_6c7a9ab5": "obs_e4c64d58",
+              "probe_aa8c47d6": "obs_8208d247"
+            },
+            "result": "partially-applied",
+            "schema_version": 1
+          }
+        ],
+        "input_semantics": "Author-generated singleton finite model, not observations of a physical system",
+        "mission_digest": "404c00c070ba5127b81223ac05bc32cd93e8e7ff2106a6fea2bf38610156df38",
+        "observation_epoch": "24c7c0169541231a1315114130ab8f9da5fa5aef2a24a9ea1969b30ec1d92a43",
+        "probes": [
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_6c7a9ab5",
+            "query_units": 3,
+            "schema_version": 1,
+            "source_digest": "010b987833da6230a8ef737f5a074f9371106c4ed9f70e9d319f5f12442a59b8"
+          },
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_aa8c47d6",
+            "query_units": 5,
+            "schema_version": 1,
+            "source_digest": "04c84422667fc2f90af1deabbf02d23485eb0a077da0460c82d72bc651f0a77f"
+          }
+        ],
+        "purpose_digest": "328e5ad4a37531405eb02ce0dc10749599568c6ff890c0c4aa24f1df43b3345a",
+        "query_budget": 8,
+        "required_output_semantics": "Bijective three-result label mapped to exact hypothesis identity",
+        "schema_name": "flywheel-information-probe/v1",
+        "schema_version": 1
+      },
+      "worlds": [
+        {
+          "correct": true,
+          "cost": 8,
+          "cpu_seconds": 0.003465216999999965,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_6c7a9ab5",
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49",
+                  "hyp_b2c23ff1",
+                  "hyp_b89b977e"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_aa8c47d6",
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49",
+                  "hyp_b89b977e"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "7169234b17b29f7b144e8edb7654f325b4908ea81977776e1231b92e3e695d53"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 8,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49"
+                ],
+                "result": "not-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "11d3ce1e6da6c7aa6f4c20c7360b97bdc1f8ab34343629fd335e3a03b1ffbf55"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_9719ea49",
+          "wall_seconds": 0.00346575299045071
+        },
+        {
+          "correct": true,
+          "cost": 3,
+          "cpu_seconds": 0.0017228860000000346,
+          "depth": 1,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_6c7a9ab5",
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49",
+                  "hyp_b2c23ff1",
+                  "hyp_b89b977e"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 3,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_b2c23ff1"
+                ],
+                "result": "applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "a75a21615b6b262b525de47c4632cd133142c5d28fd9d13cdfa11b8dcb92f832"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_b2c23ff1",
+          "wall_seconds": 0.0017219919973285869
+        },
+        {
+          "correct": true,
+          "cost": 8,
+          "cpu_seconds": 0.0038350050000000024,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_6c7a9ab5",
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49",
+                  "hyp_b2c23ff1",
+                  "hyp_b89b977e"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_aa8c47d6",
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_9719ea49",
+                  "hyp_b89b977e"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "7169234b17b29f7b144e8edb7654f325b4908ea81977776e1231b92e3e695d53"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "dbb0df2c818a32f5fed93796c97ce3770c682663434838208f3815d77b31e912",
+                "query_units_spent": 8,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_b89b977e"
+                ],
+                "result": "partially-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "134a92c031e801999eff60afcf55e9aa75c2b23b2b67c5ec5104b0b323882762"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_b89b977e",
+          "wall_seconds": 0.0038332680123858154
+        }
+      ],
+      "worst_cost": 8,
+      "worst_depth": 2
+    },
+    {
+      "all_worlds_correct": true,
+      "case_id": "case-10",
+      "excluded_forbidden_experiments": [
+        "probe_24267a05"
+      ],
+      "hypothesis_to_result": {
+        "hyp_dbe8d82d": "not-applied",
+        "hyp_de4bb241": "applied",
+        "hyp_e4a9c114": "partially-applied"
+      },
+      "input": {
+        "coverage_basis": "Exhaustive replay of every hypothesis in the supplied three-hypothesis model only",
+        "hypotheses": [
+          {
+            "hypothesis_id": "hyp_dbe8d82d",
+            "observations": {
+              "probe_8f0447c8": "obs_a6ef9748",
+              "probe_aa4587df": "obs_5102c3af"
+            },
+            "result": "not-applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_de4bb241",
+            "observations": {
+              "probe_8f0447c8": "obs_21b2ce60",
+              "probe_aa4587df": "obs_5102c3af"
+            },
+            "result": "applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_e4a9c114",
+            "observations": {
+              "probe_8f0447c8": "obs_21b2ce60",
+              "probe_aa4587df": "obs_8aa299b4"
+            },
+            "result": "partially-applied",
+            "schema_version": 1
+          }
+        ],
+        "input_semantics": "Author-generated singleton finite model, not observations of a physical system",
+        "mission_digest": "673bbe2b785cfa71ecf3563c4e34ce4cbd306157445447522ec3767fe8e21d16",
+        "observation_epoch": "affe532aae095271f6d3a13edaa69b921b68bdf25cb7c68f8502c6e1094c4f64",
+        "probes": [
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_aa4587df",
+            "query_units": 9,
+            "schema_version": 1,
+            "source_digest": "3ca6b568aa3fffd2fe5591bfa10c29a0efe1ca86ad23d524e08ac31c84bc1ed9"
+          },
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_8f0447c8",
+            "query_units": 7,
+            "schema_version": 1,
+            "source_digest": "da1c646e2e6fb8c3a11a327fbbe891b6bc7faf17c4c41717103effc98e391c9b"
+          }
+        ],
+        "purpose_digest": "328e5ad4a37531405eb02ce0dc10749599568c6ff890c0c4aa24f1df43b3345a",
+        "query_budget": 16,
+        "required_output_semantics": "Bijective three-result label mapped to exact hypothesis identity",
+        "schema_name": "flywheel-information-probe/v1",
+        "schema_version": 1
+      },
+      "worlds": [
+        {
+          "correct": true,
+          "cost": 7,
+          "cpu_seconds": 0.0018561920000000343,
+          "depth": 1,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_8f0447c8",
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_dbe8d82d",
+                  "hyp_de4bb241",
+                  "hyp_e4a9c114"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 7,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_dbe8d82d"
+                ],
+                "result": "not-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "2d4878ff590ed50f48a5caae0381f95920504593279fe87ef9da56219f7c3e60"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_dbe8d82d",
+          "wall_seconds": 0.0018562999903224409
+        },
+        {
+          "correct": true,
+          "cost": 16,
+          "cpu_seconds": 0.002858371000000026,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_8f0447c8",
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_dbe8d82d",
+                  "hyp_de4bb241",
+                  "hyp_e4a9c114"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_aa4587df",
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 7,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_de4bb241",
+                  "hyp_e4a9c114"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "e096bccce1a411f2d96470aecfb54046713015cad02f1f6171ae58b78e30eab1"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 16,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_de4bb241"
+                ],
+                "result": "applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "5173c3bff6773e1748913d14c0d9e44d891804ed6ad3b0e0991c21b3794bd13a"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_de4bb241",
+          "wall_seconds": 0.0028570369904628024
+        },
+        {
+          "correct": true,
+          "cost": 16,
+          "cpu_seconds": 0.0028775349999999866,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_8f0447c8",
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_dbe8d82d",
+                  "hyp_de4bb241",
+                  "hyp_e4a9c114"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_aa4587df",
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 7,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_de4bb241",
+                  "hyp_e4a9c114"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "e096bccce1a411f2d96470aecfb54046713015cad02f1f6171ae58b78e30eab1"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "3357bac89056c2a8593de6849a5dfb2a3396abf12e7091114eab3dbbbe00fba7",
+                "query_units_spent": 16,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_e4a9c114"
+                ],
+                "result": "partially-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "d7322cb064a7ca3a90fd40dbfb04478b78187b27a92aa1a9bc3eeca889f4cc71"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_e4a9c114",
+          "wall_seconds": 0.002876661004847847
+        }
+      ],
+      "worst_cost": 16,
+      "worst_depth": 2
+    },
+    {
+      "all_worlds_correct": true,
+      "case_id": "case-11",
+      "excluded_forbidden_experiments": [
+        "probe_439a56d7"
+      ],
+      "hypothesis_to_result": {
+        "hyp_e5dcf43f": "not-applied",
+        "hyp_e61abf97": "applied",
+        "hyp_f41fc8ef": "partially-applied"
+      },
+      "input": {
+        "coverage_basis": "Exhaustive replay of every hypothesis in the supplied three-hypothesis model only",
+        "hypotheses": [
+          {
+            "hypothesis_id": "hyp_e5dcf43f",
+            "observations": {
+              "probe_98004f97": "obs_cb30cfe5",
+              "probe_edfe8c26": "obs_d9dd4310"
+            },
+            "result": "not-applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_e61abf97",
+            "observations": {
+              "probe_98004f97": "obs_f228aeb7",
+              "probe_edfe8c26": "obs_d9dd4310"
+            },
+            "result": "applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_f41fc8ef",
+            "observations": {
+              "probe_98004f97": "obs_f228aeb7",
+              "probe_edfe8c26": "obs_f6b83884"
+            },
+            "result": "partially-applied",
+            "schema_version": 1
+          }
+        ],
+        "input_semantics": "Author-generated singleton finite model, not observations of a physical system",
+        "mission_digest": "4599a4a3d933aa8362bea52a92b26c439afd62d1316fdd5e255a31192092ec44",
+        "observation_epoch": "7a8e226d235bc0860dc3410ca591d5922467b450e5a900801d6fe8f1f78ad2b9",
+        "probes": [
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_98004f97",
+            "query_units": 4,
+            "schema_version": 1,
+            "source_digest": "35b21344ad0e160ea9cca4a9e8b1d71a8fae7741005c5749a7cd028c8a15d562"
+          },
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_edfe8c26",
+            "query_units": 3,
+            "schema_version": 1,
+            "source_digest": "6f2736d75e77c08e2e723b6840006130e70b4b93d9217867dae5a068197ab319"
+          }
+        ],
+        "purpose_digest": "328e5ad4a37531405eb02ce0dc10749599568c6ff890c0c4aa24f1df43b3345a",
+        "query_budget": 7,
+        "required_output_semantics": "Bijective three-result label mapped to exact hypothesis identity",
+        "schema_name": "flywheel-information-probe/v1",
+        "schema_version": 1
+      },
+      "worlds": [
+        {
+          "correct": true,
+          "cost": 7,
+          "cpu_seconds": 0.002846377000000011,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_edfe8c26",
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f",
+                  "hyp_e61abf97",
+                  "hyp_f41fc8ef"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_98004f97",
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f",
+                  "hyp_e61abf97"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "4bfdc6a65b97cf1e78f807cf80c2dcf244d9680b32bccd28e6c45d979c3f3bba"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 7,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f"
+                ],
+                "result": "not-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "4f592ef4c884d8a0ac40711561512305f2b5a023c8a4e5da98290c343ef48130"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_e5dcf43f",
+          "wall_seconds": 0.002846219009370543
+        },
+        {
+          "correct": true,
+          "cost": 7,
+          "cpu_seconds": 0.002703508999999993,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_edfe8c26",
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f",
+                  "hyp_e61abf97",
+                  "hyp_f41fc8ef"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_98004f97",
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f",
+                  "hyp_e61abf97"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "4bfdc6a65b97cf1e78f807cf80c2dcf244d9680b32bccd28e6c45d979c3f3bba"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 7,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_e61abf97"
+                ],
+                "result": "applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "10873600fac2d258e2c2153ba6fc9216706ab2e42678e69e136914e551b29c34"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_e61abf97",
+          "wall_seconds": 0.002702106998185627
+        },
+        {
+          "correct": true,
+          "cost": 3,
+          "cpu_seconds": 0.001595889000000017,
+          "depth": 1,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_edfe8c26",
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_e5dcf43f",
+                  "hyp_e61abf97",
+                  "hyp_f41fc8ef"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "86df4fb48188285dbd223c3c99d396487fa7476ebe7a7ab31a99eda7a2a9840e",
+                "query_units_spent": 3,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_f41fc8ef"
+                ],
+                "result": "partially-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "c0d02096134e23b1015396a7964ea19beed33d85dfc6fc3f1a10facea2a2175f"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_f41fc8ef",
+          "wall_seconds": 0.0015952159883454442
+        }
+      ],
+      "worst_cost": 7,
+      "worst_depth": 2
+    },
+    {
+      "all_worlds_correct": true,
+      "case_id": "case-12",
+      "excluded_forbidden_experiments": [
+        "probe_0f203951"
+      ],
+      "hypothesis_to_result": {
+        "hyp_05ffa8cd": "not-applied",
+        "hyp_4daf72f9": "applied",
+        "hyp_ae0fad51": "partially-applied"
+      },
+      "input": {
+        "coverage_basis": "Exhaustive replay of every hypothesis in the supplied three-hypothesis model only",
+        "hypotheses": [
+          {
+            "hypothesis_id": "hyp_05ffa8cd",
+            "observations": {
+              "probe_3ccffe7b": "obs_db97cfee",
+              "probe_b7e052cd": "obs_fd129336"
+            },
+            "result": "not-applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_4daf72f9",
+            "observations": {
+              "probe_3ccffe7b": "obs_db97cfee",
+              "probe_b7e052cd": "obs_63c3073f"
+            },
+            "result": "applied",
+            "schema_version": 1
+          },
+          {
+            "hypothesis_id": "hyp_ae0fad51",
+            "observations": {
+              "probe_3ccffe7b": "obs_80ea055d",
+              "probe_b7e052cd": "obs_63c3073f"
+            },
+            "result": "partially-applied",
+            "schema_version": 1
+          }
+        ],
+        "input_semantics": "Author-generated singleton finite model, not observations of a physical system",
+        "mission_digest": "d26524a9e56ceb648ad06dd96f11ed0afd701d1ca70144001f288b0a993f67cf",
+        "observation_epoch": "2dcd26b7ebaf14d9448cbb49400757767134f0a30060e0eb58715e310b003a56",
+        "probes": [
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_3ccffe7b",
+            "query_units": 8,
+            "schema_version": 1,
+            "source_digest": "4ff52dafcf49c86ddf9756e683fca2774998836314177349423a227bb6da6e5f"
+          },
+          {
+            "observation_contract": "Synthetic singleton outcome",
+            "probe_id": "probe_b7e052cd",
+            "query_units": 3,
+            "schema_version": 1,
+            "source_digest": "fc821c182fa55d3c41095745f6484a84736ea9efe3b124b96192bdc4457e0015"
+          }
+        ],
+        "purpose_digest": "328e5ad4a37531405eb02ce0dc10749599568c6ff890c0c4aa24f1df43b3345a",
+        "query_budget": 11,
+        "required_output_semantics": "Bijective three-result label mapped to exact hypothesis identity",
+        "schema_name": "flywheel-information-probe/v1",
+        "schema_version": 1
+      },
+      "worlds": [
+        {
+          "correct": true,
+          "cost": 3,
+          "cpu_seconds": 0.0015595170000000103,
+          "depth": 1,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_b7e052cd",
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_05ffa8cd",
+                  "hyp_4daf72f9",
+                  "hyp_ae0fad51"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 3,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_05ffa8cd"
+                ],
+                "result": "not-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "520b906f79a5aef1d2d4d1bf50498723ca5ec216b3765d045d14463e7b253611"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_05ffa8cd",
+          "wall_seconds": 0.0015594079886795953
+        },
+        {
+          "correct": true,
+          "cost": 11,
+          "cpu_seconds": 0.0023808410000000224,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_b7e052cd",
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_05ffa8cd",
+                  "hyp_4daf72f9",
+                  "hyp_ae0fad51"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_3ccffe7b",
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_4daf72f9",
+                  "hyp_ae0fad51"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "2050438e1255877eae9ccf4d101830bfc0c59f05ac2223fd0db1c40dd6d8cb47"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 11,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_4daf72f9"
+                ],
+                "result": "applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "e2f21b52de02e2f77d8f52e151c1c65cf9cdd76ab1b4ae0bf05f74d439435b29"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_4daf72f9",
+          "wall_seconds": 0.0023804590018698946
+        },
+        {
+          "correct": true,
+          "cost": 11,
+          "cpu_seconds": 0.0023915360000000274,
+          "depth": 2,
+          "trace": [
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_b7e052cd",
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 0,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_05ffa8cd",
+                  "hyp_4daf72f9",
+                  "hyp_ae0fad51"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": "probe_3ccffe7b",
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 3,
+                "reason": "request-separating-read",
+                "remaining_hypotheses": [
+                  "hyp_4daf72f9",
+                  "hyp_ae0fad51"
+                ],
+                "result": null,
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "2050438e1255877eae9ccf4d101830bfc0c59f05ac2223fd0db1c40dd6d8cb47"
+              }
+            },
+            {
+              "independent_state_check": true,
+              "report": {
+                "actual_effect_accepted": false,
+                "authority_granted": false,
+                "coverage_qualified": false,
+                "evidence_type": "conditional-finite-model-computation",
+                "next_probe": null,
+                "problem_digest": "f4cca33218c3936a6464db12e3c7264535ba42af0abe8ae1fe72719fe7ddccc7",
+                "query_units_spent": 11,
+                "reason": "resolved-in-declared-model",
+                "remaining_hypotheses": [
+                  "hyp_ae0fad51"
+                ],
+                "result": "partially-applied",
+                "retry_permitted": false,
+                "schema": "flywheel-information-result/v1",
+                "transcript_digest": "0eaa97f43938d8a219113bf6b09477971dd81e05bd19e8b65a9d250373e6c35c"
+              }
+            }
+          ],
+          "true_hypothesis": "hyp_ae0fad51",
+          "wall_seconds": 0.0023911419993964955
+        }
+      ],
+      "worst_cost": 11,
+      "worst_depth": 2
+    }
+  ],
+  "scope": "Four matched singleton three-result cases from frozen24-case manifest; all12worlds replayed. Native depth enforced by external same-cap wrapper because native contract has no depth field. Other20cases outside native schema, not failures. No physical observation, installed release qualification, or production authority.",
+  "summary": {
+    "cases": 4,
+    "correct_cases": 4,
+    "correct_worlds": 12,
+    "worlds": 12
+  }
+}

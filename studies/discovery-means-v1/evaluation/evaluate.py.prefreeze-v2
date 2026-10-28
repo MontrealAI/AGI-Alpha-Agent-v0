@@ -1,0 +1,337 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+import argparse
+import copy
+import hashlib
+import importlib.util
+import itertools
+import json
+import math
+import random
+import secrets
+import time
+from functools import lru_cache
+from pathlib import Path
+from typing import Any
+
+
+def canonical(obj: Any) -> str:
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save(path: Path, obj: Any) -> None:
+    path.write_text(json.dumps(obj, indent=2, sort_keys=True, allow_nan=False) + "\n")
+
+
+def conventional_adaptive(case: dict[str, Any]) -> dict[str, Any]:
+    hypotheses = tuple(sorted(case["hypotheses"]))
+    experiments = {e["id"]: e for e in case["experiments"] if e["allowed"]}
+    states = 0
+
+    @lru_cache(None)
+    def visit(hs: tuple[str, ...], available: tuple[str, ...], depth: int) -> tuple[float, int, Any]:
+        nonlocal states
+        states += 1
+        if states > case.get("max_states", 100000):
+            raise RuntimeError("independent oracle exceeded frozen state cap")
+        if len(hs) == 1:
+            return 0, 0, {"kind": "leaf", "hypothesis": hs[0]}
+        if depth == 0 or not available:
+            return math.inf, 0, None
+        best: tuple[float, int, Any] = (math.inf, 0, None)
+        best_key: tuple[float, int, str] = (math.inf, 0, "")
+        for eid in available:
+            e = experiments[eid]
+            symbols = sorted(set().union(*(set(e["outcomes"][h]) for h in hs)))
+            rest = tuple(x for x in available if x != eid)
+            branches = {}
+            child_costs = []
+            child_depths = []
+            for symbol in symbols:
+                group = tuple(h for h in hs if symbol in e["outcomes"][h])
+                cost, d, policy = visit(group, rest, depth - 1)
+                if policy is None:
+                    break
+                branches[symbol] = policy
+                child_costs.append(cost)
+                child_depths.append(d)
+            else:
+                policy = {"kind": "probe", "experiment": eid, "branches": branches}
+                total = e["cost"] + max(child_costs)
+                d = 1 + max(child_depths)
+                key = (total, d, canonical(policy))
+                if key < best_key:
+                    best_key, best = key, (total, d, policy)
+        return best
+
+    choices = [visit(hypotheses, tuple(sorted(experiments)), d) for d in range(case["max_experiments"] + 1)]
+    cost, depth, policy = min(choices, key=lambda item: (item[0], item[1], canonical(item[2])))
+    feasible = policy is not None and cost <= case["max_cost"]
+    return {"status": "optimal" if feasible else "infeasible", "worst_cost": int(cost) if feasible else None,
+            "worst_depth": depth if feasible else None, "policy": policy if feasible else None,
+            "unconstrained_cost_under_depth": int(cost) if math.isfinite(cost) else None, "search_states": states}
+
+
+def conventional_static(case: dict[str, Any]) -> dict[str, Any]:
+    allowed = sorted((e for e in case["experiments"] if e["allowed"]), key=lambda e: e["id"])
+    pairs = list(itertools.combinations(sorted(case["hypotheses"]), 2))
+    best = None
+    checked = 0
+    for n in range(min(len(allowed), case["max_experiments"]) + 1):
+        for selected in itertools.combinations(allowed, n):
+            checked += 1
+            cost = sum(e["cost"] for e in selected)
+            if cost > case["max_cost"]:
+                continue
+            if all(any(set(e["outcomes"][a]).isdisjoint(e["outcomes"][b]) for e in selected) for a, b in pairs):
+                candidate = (cost, n, tuple(e["id"] for e in selected))
+                if best is None or candidate < best:
+                    best = candidate
+    return {"status": "optimal" if best is not None else "infeasible", "cost": best[0] if best else None,
+            "count": best[1] if best else None, "selected": list(best[2]) if best else [], "subsets_checked": checked}
+
+
+def audit_policy(case: dict[str, Any], policy: Any) -> dict[str, Any]:
+    experiments = {e["id"]: e for e in case["experiments"]}
+    visits = 0
+    leaves = []
+
+    def visit(node: Any, hs: frozenset[str], used: frozenset[str], spent: int, path: list[list[str]]) -> tuple[int, int]:
+        nonlocal visits
+        visits += 1
+        if visits > 100000:
+            raise ValueError("certificate node cap")
+        if not isinstance(node, dict):
+            raise ValueError("policy node must be object")
+        if node.get("kind") == "leaf":
+            if len(hs) != 1 or node.get("hypothesis") not in hs:
+                raise ValueError("leaf does not identify the remaining hypothesis")
+            leaves.append({"hypothesis": node["hypothesis"], "cost": spent, "depth": len(used), "path": path})
+            return spent, len(used)
+        if node.get("kind") != "probe":
+            raise ValueError("unrecognized policy node")
+        eid = node.get("experiment")
+        if eid not in experiments or eid in used:
+            raise ValueError("unknown or repeated experiment")
+        e = experiments[eid]
+        if e["allowed"] is not True:
+            raise ValueError("unauthorized experiment")
+        cost = spent + e["cost"]
+        if cost > case["max_cost"] or len(used) + 1 > case["max_experiments"]:
+            raise ValueError("path exceeds declared resource cap")
+        symbols = set().union(*(set(e["outcomes"][h]) for h in hs))
+        branches = node.get("branches")
+        if not isinstance(branches, dict) or set(branches) != symbols:
+            raise ValueError("branch coverage differs from complete possible observations")
+        results = []
+        for symbol in sorted(symbols):
+            group = frozenset(h for h in hs if symbol in e["outcomes"][h])
+            results.append(visit(branches[symbol], group, used | {eid}, cost, path + [[eid, symbol]]))
+        return max(r[0] for r in results), max(r[1] for r in results)
+
+    try:
+        cost, depth = visit(policy, frozenset(case["hypotheses"]), frozenset(), 0, [])
+        return {"accepted": True, "worst_cost": cost, "worst_depth": depth, "nodes": visits, "leaves": leaves}
+    except (ValueError, KeyError, TypeError, RecursionError) as exc:
+        return {"accepted": False, "reason": str(exc), "nodes": visits}
+
+
+def relabel(case: dict[str, Any], rng: random.Random, index: int) -> dict[str, Any]:
+    hs = case["hypotheses"][:]
+    names = [f"hyp_{rng.getrandbits(32):08x}" for _ in hs]
+    mapping = dict(zip(hs, names))
+    case = copy.deepcopy(case)
+    case["hypotheses"] = names
+    rng.shuffle(case["hypotheses"])
+    for e in case["experiments"]:
+        e["id"] = f"probe_{rng.getrandbits(32):08x}"
+        symbols = sorted(set().union(*(set(v) for v in e["outcomes"].values())))
+        symmap = {s: f"obs_{rng.getrandbits(32):08x}" for s in symbols}
+        e["outcomes"] = {mapping[h]: [symmap[s] for s in values] for h, values in e["outcomes"].items()}
+    rng.shuffle(case["experiments"])
+    case["case_id"] = f"case-{index:02d}"
+    case["max_states"] = 100000
+    return case
+
+
+def make_cases(seed: int) -> list[dict[str, Any]]:
+    rng = random.Random(seed)
+    cases = []
+    for family in ("adaptive_advantage", "overlapping_observations", "permission_constraints", "irreducible_pair", "cost_cap", "depth_cap"):
+        for repeat in range(4):
+            r, left, right = [rng.randint(2, 9) for _ in range(3)]
+            hs = ["h0", "h1", "h2", "h3"]
+            es = [
+                {"id": "root", "cost": r, "allowed": True, "outcomes": {"h0": ["a"], "h1": ["a"], "h2": ["b"], "h3": ["b"]}},
+                {"id": "left", "cost": left, "allowed": True, "outcomes": {"h0": ["x"], "h1": ["y"], "h2": ["x", "y"], "h3": ["x", "y"]}},
+                {"id": "right", "cost": right, "allowed": True, "outcomes": {"h0": ["x", "y"], "h1": ["x", "y"], "h2": ["x"], "h3": ["y"]}},
+                {"id": "distractor", "cost": rng.randint(1, 4), "allowed": True, "outcomes": {h: ["u", "v"] for h in hs}}
+            ]
+            cap, depth = r + max(left, right), 2
+            if family == "overlapping_observations":
+                hs = ["h0", "h1", "h2"]
+                es = [
+                    {"id": "triangle", "cost": r, "allowed": True, "outcomes": {"h0": ["a", "b"], "h1": ["b", "c"], "h2": ["c", "a"]}},
+                    {"id": "zero", "cost": left, "allowed": True, "outcomes": {"h0": ["x"], "h1": ["y"], "h2": ["y"]}},
+                    {"id": "one", "cost": right, "allowed": True, "outcomes": {"h0": ["y"], "h1": ["x"], "h2": ["y"]}},
+                    {"id": "two", "cost": rng.randint(2, 9), "allowed": True, "outcomes": {"h0": ["y"], "h1": ["y"], "h2": ["x"]}}
+                ]
+                cap, depth = sum(e["cost"] for e in es), 2
+            elif family == "permission_constraints":
+                es = [
+                    {"id": "bit0", "cost": r, "allowed": True, "outcomes": {h: [str(i // 2)] for i, h in enumerate(hs)}},
+                    {"id": "bit1", "cost": left, "allowed": True, "outcomes": {h: [str(i % 2)] for i, h in enumerate(hs)}},
+                    {"id": "forbidden", "cost": 1, "allowed": False, "outcomes": {h: [str(i)] for i, h in enumerate(hs)}}
+                ]
+                cap, depth = r + left, 2
+            elif family == "irreducible_pair":
+                for e in es:
+                    e["outcomes"]["h1"] = e["outcomes"]["h0"][:]
+                cap, depth = sum(e["cost"] for e in es), len(es)
+            elif family == "cost_cap":
+                cap -= 1
+                depth = 4
+            elif family == "depth_cap":
+                cap = sum(e["cost"] for e in es)
+                depth = 1
+            case = {"family": family, "replicate": repeat + 1, "hypotheses": hs, "experiments": es,
+                    "max_cost": cap, "max_experiments": depth}
+            cases.append(relabel(case, rng, len(cases) + 1))
+    return cases
+
+
+def invalid_cases(base: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for name in ("duplicate_hypothesis", "duplicate_experiment", "empty_outcome_set", "missing_hypothesis_outcomes", "boolean_cost", "zero_cost"):
+        case = copy.deepcopy(base)
+        if name == "duplicate_hypothesis":
+            case["hypotheses"].append(case["hypotheses"][0])
+        elif name == "duplicate_experiment":
+            case["experiments"].append(copy.deepcopy(case["experiments"][0]))
+        elif name == "empty_outcome_set":
+            case["experiments"][0]["outcomes"][case["hypotheses"][0]] = []
+        elif name == "missing_hypothesis_outcomes":
+            del case["experiments"][0]["outcomes"][case["hypotheses"][0]]
+        elif name == "boolean_cost":
+            case["experiments"][0]["cost"] = True
+        elif name == "zero_cost":
+            case["experiments"][0]["cost"] = 0
+        rows.append({"probe": name, "case": case})
+    return rows
+
+
+def clean_case(case: dict[str, Any]) -> dict[str, Any]:
+    return {k: copy.deepcopy(case[k]) for k in ("hypotheses", "experiments", "max_cost", "max_experiments", "max_states")}
+
+
+def generate(args: argparse.Namespace) -> None:
+    out = args.output
+    out.mkdir(parents=True, exist_ok=True)
+    destination = out / "task_manifest.json"
+    if destination.exists():
+        raise SystemExit("refusing to overwrite frozen confirmation tasks")
+    source_files = [Path(p) for p in args.source]
+    source_identity = {str(p): sha(p) for p in source_files}
+    seed = secrets.randbits(64)
+    cases = make_cases(seed)
+    save(destination, {"protocol": "discovery-means-adaptive-confirmation-v1", "seed": seed,
+                       "generated_unix_ns": time.time_ns(), "source_freeze": source_identity,
+                       "generator_sha256": sha(Path(__file__)), "protocol_sha256": sha(Path(__file__).with_name("protocol.json")),
+                       "cases": cases, "invalid_probes": invalid_cases(cases[0])})
+    print(canonical({"manifest": str(destination), "sha256": sha(destination), "cases": len(cases)}))
+
+
+def run(args: argparse.Namespace) -> None:
+    manifest_path = args.output / "task_manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    for path, digest in manifest["source_freeze"].items():
+        if sha(Path(path)) != digest:
+            raise SystemExit("source differs from frozen identity; confirmation refused")
+    if manifest["generator_sha256"] != sha(Path(__file__)):
+        raise SystemExit("evaluation script differs from pre-generation identity")
+    result_path = args.output / "results.json"
+    if result_path.exists():
+        raise SystemExit("refusing to overwrite confirmation results")
+    spec = importlib.util.spec_from_file_location("candidate_instrument", args.instrument)
+    if spec is None or spec.loader is None:
+        raise SystemExit("instrument import unavailable")
+    module = importlib.util.module_from_spec(spec)
+    import sys
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    solve = module.solve
+    rows = []
+    for case in manifest["cases"]:
+        payload = clean_case(case)
+        start, cpu = time.perf_counter(), time.process_time()
+        oracle = conventional_adaptive(payload)
+        oracle_wall, oracle_cpu = time.perf_counter() - start, time.process_time() - cpu
+        start, cpu = time.perf_counter(), time.process_time()
+        error = None
+        try:
+            report = solve(copy.deepcopy(payload))
+        except Exception as exc:
+            report, error = None, type(exc).__name__ + ": " + str(exc)
+        candidate_wall, candidate_cpu = time.perf_counter() - start, time.process_time() - cpu
+        static = conventional_static(payload)
+        audit = audit_policy(payload, report.get("policy")) if report and report.get("status") == "optimal" else None
+        correct = bool(report and report.get("status") == oracle["status"])
+        if correct and oracle["status"] == "optimal":
+            correct = bool(audit and audit["accepted"] and report.get("worst_cost") == oracle["worst_cost"]
+                           and report.get("worst_depth") == audit["worst_depth"]
+                           and audit["worst_cost"] == oracle["worst_cost"] and audit["worst_depth"] <= payload["max_experiments"])
+        ablations = {}
+        for ablation in ("ignore_permissions", "no_noise"):
+            altered = copy.deepcopy(payload)
+            for e in altered["experiments"]:
+                if ablation == "ignore_permissions":
+                    e["allowed"] = True
+                else:
+                    e["outcomes"] = {h: [min(v)] for h, v in e["outcomes"].items()}
+            altered_report = conventional_adaptive(altered)
+            altered_audit = audit_policy(payload, altered_report["policy"]) if altered_report["policy"] else None
+            ablations[ablation] = {"status_in_altered_model": altered_report["status"], "original_case_audit": altered_audit}
+        rows.append({"case_id": case["case_id"], "family": case["family"], "oracle": oracle, "static": static,
+                     "instrument": report, "error": error, "certificate_audit": audit, "correct": correct,
+                     "seconds": {"oracle_wall": oracle_wall, "oracle_cpu": oracle_cpu,
+                                 "instrument_wall": candidate_wall, "instrument_cpu": candidate_cpu}, "ablations": ablations})
+    invalid = []
+    for probe in manifest["invalid_probes"]:
+        try:
+            result = solve(clean_case(probe["case"]))
+            invalid.append({"probe": probe["probe"], "rejected": False, "returned": result})
+        except (ValueError, TypeError) as exc:
+            invalid.append({"probe": probe["probe"], "rejected": True, "reason": type(exc).__name__ + ": " + str(exc)})
+        except Exception as exc:
+            invalid.append({"probe": probe["probe"], "rejected": False, "unexpected_exception": type(exc).__name__ + ": " + str(exc)})
+    save(result_path, {"task_manifest_sha256": sha(manifest_path), "instrument_path": str(args.instrument),
+                       "instrument_sha256": sha(args.instrument), "rows": rows, "validation": invalid,
+                       "summary": {"case_count": len(rows), "correct": sum(r["correct"] for r in rows),
+                                   "instrument_solved": sum(bool(r["certificate_audit"] and r["certificate_audit"]["accepted"]) for r in rows),
+                                   "oracle_solved": sum(r["oracle"]["status"] == "optimal" for r in rows),
+                                   "static_solved": sum(r["static"]["status"] == "optimal" for r in rows),
+                                   "validation_rejected": sum(r["rejected"] for r in invalid)}})
+    print(canonical(json.loads(result_path.read_text())["summary"]))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("mode", choices=["generate", "run"])
+    parser.add_argument("--output", type=Path, default=Path(__file__).parent)
+    parser.add_argument("--source", action="append", default=[])
+    parser.add_argument("--instrument", type=Path)
+    args = parser.parse_args()
+    if args.mode == "generate":
+        if not args.source:
+            raise SystemExit("source freeze required before generation")
+        generate(args)
+    else:
+        run(args)
+
+
+if __name__ == "__main__":
+    main()

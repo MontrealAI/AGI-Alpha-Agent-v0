@@ -1,0 +1,37 @@
+{
+  "development_revisions": 2,
+  "events": [
+    {
+      "finding": "Initial scope wrongly assumed predecessor5008 was noiseless",
+      "correction": "Read actual code; inherited bounded gain/noise envelopes and static portfolios retained; contribution narrowed to contingent policies",
+      "confirmation_seen": false
+    },
+    {
+      "finding": "Local lexicographic child optima do not establish global secondary depth optimum",
+      "correction": "Global objective narrowed to worst-casecost under harddepth; deterministic local ties not claimed globally optimal",
+      "confirmation_seen": false
+    },
+    {
+      "finding": "Cached state cap did not bound expanded policy serialization",
+      "correction": "Added5000node/250000byte summaries and20CPU-second cap; incomplete result on limit; synonym stress development test passed",
+      "confirmation_seen": false
+    },
+    {
+      "finding": "Strictmypy rejected dict arguments to typed native models and initial action string",
+      "correction": "Native model_validate and Literal action type; final fourfile strictmypy passes",
+      "confirmation_seen": false
+    }
+  ],
+  "preserved_failures": {
+    "full_setup": "Missing offline wheelhouse; no dependency installation attempted",
+    "check_env": "Sparse checkout lacks alpha_factory_v1.scripts.preflight",
+    "environment": "cryptography45.0.7 does not satisfy>=50.0.1"
+  },
+  "claims_excluded": [
+    "globaldepthoptimality",
+    "newdecisiontreetheory",
+    "newnoiseinstrument",
+    "fullnativequalification",
+    "commercialviability"
+  ]
+}

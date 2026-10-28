@@ -1,0 +1,203 @@
+{
+  "authority_granted": false,
+  "construction": {
+    "authority_granted": false,
+    "complete": true,
+    "coverage_qualified": false,
+    "objective": "minimum worst-case cost under hard depth cap; depth ties are not globally optimized",
+    "policy": {
+      "branches": {
+        "L": {
+          "branches": {
+            "a": {
+              "hypothesis": "H0",
+              "kind": "leaf"
+            },
+            "a2": {
+              "hypothesis": "H0",
+              "kind": "leaf"
+            },
+            "b": {
+              "hypothesis": "H1",
+              "kind": "leaf"
+            },
+            "b2": {
+              "hypothesis": "H1",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "left",
+          "kind": "probe"
+        },
+        "L2": {
+          "branches": {
+            "a": {
+              "hypothesis": "H0",
+              "kind": "leaf"
+            },
+            "a2": {
+              "hypothesis": "H0",
+              "kind": "leaf"
+            },
+            "b": {
+              "hypothesis": "H1",
+              "kind": "leaf"
+            },
+            "b2": {
+              "hypothesis": "H1",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "left",
+          "kind": "probe"
+        },
+        "R": {
+          "branches": {
+            "c": {
+              "hypothesis": "H2",
+              "kind": "leaf"
+            },
+            "c2": {
+              "hypothesis": "H2",
+              "kind": "leaf"
+            },
+            "d": {
+              "hypothesis": "H3",
+              "kind": "leaf"
+            },
+            "d2": {
+              "hypothesis": "H3",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "right",
+          "kind": "probe"
+        },
+        "R2": {
+          "branches": {
+            "c": {
+              "hypothesis": "H2",
+              "kind": "leaf"
+            },
+            "c2": {
+              "hypothesis": "H2",
+              "kind": "leaf"
+            },
+            "d": {
+              "hypothesis": "H3",
+              "kind": "leaf"
+            },
+            "d2": {
+              "hypothesis": "H3",
+              "kind": "leaf"
+            }
+          },
+          "experiment": "right",
+          "kind": "probe"
+        }
+      },
+      "experiment": "screen",
+      "kind": "probe"
+    },
+    "policy_bytes": 887,
+    "policy_nodes": 21,
+    "problem_digest": "ed3b738451dced679ab80db77a4c5827fe3ddf8e3e377b592314b4930af9ff3e",
+    "schema": "discovery-means-adaptive/v1",
+    "scope": "finite supplied observation sets; no physical or customer acceptance",
+    "search_states": 15,
+    "status": "optimal",
+    "stopping_reason": "exhaustive finite search completed",
+    "unresolved_pairs": [],
+    "worst_cost": 3,
+    "worst_depth": 2
+  },
+  "distribution_versions": {
+    "agi-discovery-means": "0.1.0",
+    "alpha-factory-v1": "1.47.0",
+    "cryptography": "45.0.7",
+    "pydantic": "2.14.1"
+  },
+  "frontier_execution": "BLOCKED: no provisioned signed deployment/model permit; no call attempted",
+  "loaded_modules": {
+    "alpha_factory_v1.core.runtime.successor.flywheel_discovery": {
+      "path": "/dev/shm/agi-campaign-b31fc52d/agi-alpha/alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+      "sha256": "c5c79f764bed1fdb74479463622a2ed909db3e838a6b329637c4aac1f9261559"
+    },
+    "alpha_factory_v1.core.runtime.successor.flywheel_probe": {
+      "path": "/dev/shm/agi-campaign-b31fc52d/agi-alpha/alpha_factory_v1/core/runtime/successor/flywheel_probe.py",
+      "sha256": "cb386ad3dc3001a585351730a7ba4476ec5657c5215c3e9a26c3194e122594c7"
+    },
+    "alpha_factory_v1.core.runtime.successor.protocol": {
+      "path": "/dev/shm/agi-campaign-b31fc52d/agi-alpha/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "sha256": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd"
+    },
+    "discovery_means.instrument": {
+      "path": "/dev/shm/agi-campaign-b31fc52d/agi-alpha/contrib/discovery_means_v1/instrument.py",
+      "sha256": "fd876e0967a4b4a311449e597d47a7da58bb3926895cdd004ece58dcf78d1da5"
+    }
+  },
+  "native_bundle_draft": {
+    "bundle_id": "adaptive-investigation-draft",
+    "checkpoint_after": [
+      "construct-policy"
+    ],
+    "joint_value_hypothesis": "Observation-conditioned actions may resolve work that exceeds a static portfolio budget",
+    "schema_name": "flywheel-exploration-bundle/v1",
+    "schema_version": 1,
+    "steps": [
+      {
+        "cost_bucket": "B",
+        "cost_cap_micro_usd": 0,
+        "decisive_check": "Independently traverse all policy branches and compare an exact oracle",
+        "dependencies": [],
+        "execution_request_digest": null,
+        "falsifying_observation": "An allowed observation reaches an ambiguous leaf or exceeds a cap",
+        "proposed_artifact": "ed3b738451dced679ab80db77a4c5827fe3ddf8e3e377b592314b4930af9ff3e",
+        "question": "Can a permitted contingent policy identify every model?",
+        "schema_version": 1,
+        "seconds_cap": 60,
+        "step_id": "construct-policy"
+      }
+    ],
+    "stopping_conditions": [
+      "No outside actions or provider calls",
+      "Stop at finite search cap"
+    ],
+    "total_cost_cap_micro_usd": 0,
+    "total_seconds_cap": 60,
+    "uncertainty": "Cost units are abstract; full research cost unknown. This draft is not authority or funding.",
+    "witness_id": "unsubmitted-instrument-witness",
+    "witness_spec_digest": "566f5a6b95c175e1bdb1c3143ee9658da62911179fd7081d078ccfcc64be42f2"
+  },
+  "native_bundle_submitted": false,
+  "native_predecessor": {
+    "actual_effect_accepted": false,
+    "authority_granted": false,
+    "coverage_qualified": false,
+    "evidence_type": "conditional-finite-model-computation",
+    "next_probe": "read",
+    "problem_digest": "05148dbc4beab517b62caed73880c13239ec70c3d7db30d20c58983ba6e4b549",
+    "query_units_spent": 0,
+    "reason": "request-separating-read",
+    "remaining_hypotheses": [
+      "absent",
+      "present"
+    ],
+    "result": null,
+    "retry_permitted": false,
+    "schema": "flywheel-information-result/v1",
+    "transcript_digest": "507225c697df72c509544aff0db85ad0f72d5e8a1054c88e6535eea5fcea4235"
+  },
+  "native_predecessor_verified": true,
+  "new_ledger_created": false,
+  "policy_verification": {
+    "accepted_policy": true,
+    "checked_nodes": 21,
+    "optimality_checked": false,
+    "scope": "independent branch feasibility, not adequacy of supplied hypotheses",
+    "worst_cost": 3,
+    "worst_depth": 2
+  },
+  "qualification": "BLOCKED: sparse environment and installed dependency versions do not meet full lock",
+  "scope": "installed editable add-on plus installed native contracts; not full operating qualification"
+}
