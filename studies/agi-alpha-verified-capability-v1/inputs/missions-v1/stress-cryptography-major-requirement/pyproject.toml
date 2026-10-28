@@ -1,0 +1,166 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alpha-factory-v1"
+version = "1.44.0"
+description = "AGIALPHA Agent: evidence-driven missions, evolutionary optimization and operator controls"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "Apache-2.0"
+dependencies = [
+    "cryptography>=51,<52",
+    "fastapi>=0.116,<1",
+    "httpx>=0.28,<1",
+    "numpy>=2.2,<2.5",
+    "pydantic>=2.11,<3",
+    "pydantic-settings>=2.10,<3",
+    "PyYAML>=6,<7",
+    "uvicorn>=0.35,<1",
+    "prometheus-client>=0.19,<1",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["alpha_factory_v1*", "af_requests*", "openai_agents*"]
+exclude = ["*.node_modules*", "*.tests*", "*.test*", "*.build*", "*.wasm*", "*.dist*", "*.presentation*", "*.venv*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0" = ["*.sh", "*.html", "web/*", "archive/*"]
+"alpha_factory_v1" = ["py.typed", "**/*.yaml", "**/*.yml", "**/*.json", "**/*.proto", "**/*.txt", "**/*.md"]
+"alpha_factory_v1.core.runtime" = ["web/*", "examples/*.json"]
+"alpha_factory_v1.core.runtime.successor" = ["schemas.json", "canonical-vectors.json", "workbench_worker.mjs", "workbench_sources.json", "workbench_LICENSE.txt"]
+"alpha_factory_v1.demos.macro_sentinel" = ["offline_samples/*.csv"]
+"alpha_factory_v1.demos.finance_alpha" = ["*.sh", "*.ipynb", "web/*", "archive/*"]
+"alpha_factory_v1.demos.muzeromctsllmagent_v0" = ["*.sh", "*.html", "requirements-*.txt", "archive/*"]
+"alpha_factory_v1.demos.muzero_planning" = ["requirements.lock", "Dockerfile", "*.sh", "*.ipynb", "archive/*"]
+"alpha_factory_v1.demos.meta_agentic_agi_v3" = ["configs/*.csv", "web/meta_agentic_agi_v3/*", "web/assets/*/*"]
+"alpha_factory_v1.demos.meta_agentic_tree_search_v0" = ["web/meta_agentic_tree_search_v0/*", "web/assets/*/*"]
+"alpha_factory_v1.demos.era_of_experience" = ["offline_samples/*.csv", "web/era_of_experience/*", "web/assets/*/*"]
+"alpha_factory_v1.demos.alpha_agi_insight_v1" = ["py.typed"]
+"alpha_factory_v1.core.interface.web_client" = ["dist/**"]
+"alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.web_client" = ["dist/**"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["**/node_modules/**", "**/__pycache__/**", "**/.venv/**", "**/venv/**"]
+
+[project.scripts]
+alpha-agent = "alpha_factory_v1.core.runtime.cli:main"
+alpha-factory = "alpha_factory_v1.run:run"
+insight-workbench = "alpha_factory_v1.demos.alpha_agi_insight_v0.discovery_cli:main"
+curriculum-lab = "alpha_factory_v1.demos.meta_agentic_agi_v3.lab_cli:main"
+mats-lab = "alpha_factory_v1.demos.meta_agentic_tree_search_v0.lab_cli:main"
+experience-lab = "alpha_factory_v1.demos.era_of_experience.lab_cli:main"
+governance-workbench = "alpha_factory_v1.demos.solving_agi_governance.cli:main"
+governance-sim = "alpha_factory_v1.demos.solving_agi_governance.governance_sim:main"
+edge-runner = "alpha_factory_v1.edge_runner:main"
+alpha-asi-demo = "alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo:_main"
+validate-demos = "alpha_factory_v1.demos.validate_demos:main"
+aiga-meta-demo = "alpha_factory_v1.demos.aiga_meta_evolution.meta_evolver:cli"
+muzero-demo = "alpha_factory_v1.demos.muzero_planning.agent_muzero_entrypoint:launch_dashboard"
+alpha-agi-business-3-v1 = "alpha_factory_v1.demos.alpha_agi_business_3_v1.cli:main"
+alpha-agi-insight-v1 = "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli:main"
+alpha-agi-insight-v1-api = "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server:main"
+aii = "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli:main"
+verify-wheel-sig = "alpha_factory_v1.scripts.verify_wheel_sig:main"
+mats-demo = "alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo:main"
+mats-bridge = "alpha_factory_v1.demos.meta_agentic_tree_search_v0.openai_agents_bridge:main"
+governance-bridge = "alpha_factory_v1.demos.solving_agi_governance.openai_agents_bridge:main"
+macro-sentinel = "alpha_factory_v1.demos.macro_sentinel.agent_macro_entrypoint:launch_ui"
+
+[project.optional-dependencies]
+chain = ["eth-account>=0.13.7,<0.14"]
+tests = [
+    "pytest",
+]
+
+[project.entry-points."alpha_factory.agents"]
+# custom agents can be registered here
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+    ".cache",
+    ".git",
+    # exclude all demo directories except MuZero planning
+    "alpha_factory_v1/demos/aiga_meta_evolution/*",
+    "alpha_factory_v1/demos/alpha_agi_business_2_v1/*",
+    "alpha_factory_v1/demos/alpha_agi_business_v1/*",
+    "alpha_factory_v1/demos/alpha_agi_insight_v0/*",
+    "alpha_factory_v1/demos/alpha_agi_marketplace_v1/*",
+    "alpha_factory_v1/demos/finance_alpha/*",
+    "alpha_factory_v1/demos/macro_sentinel/*",
+    "alpha_factory_v1/demos/meta_agentic_agi/*",
+    "alpha_factory_v1/demos/meta_agentic_agi_v2/*",
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/*",
+    "alpha_factory_v1/demos/meta_agentic_tree_search_v0/*",
+    "alpha_factory_v1/demos/muzeromctsllmagent_v0/*",
+    "alpha_factory_v1/demos/omni_factory_demo/*",
+    "alpha_factory_v1/demos/self_healing_repo_cli.py",
+    "alpha_factory_v1/demos/solving_agi_governance/*",
+    "alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/*",
+    "alpha_factory_v1/tests/*",
+    "*.ipynb",
+]
+
+[tool.ruff.lint]
+extend-ignore = ["E402", "F401", "E401"]
+
+[tool.ruff.lint.per-file-ignores]
+"contrib/strategy_succession/worker/scientific/companion/specialist.py" = ["E701", "E702"]
+"contrib/strategy_succession/worker/scientific/review/check.py" = ["F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/companion/analyze.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/companion/specialist.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/history/audit_original.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/history/current-exact-replay/replay_original.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/paper/make_result_figures.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/publication/build_docket.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/publication/build_verification.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/audit/derive_acquisition_audit.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/audit/derive_selected_lineage.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/review/check.py" = ["F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/review/results/audit_main.py" = ["E701", "E702", "F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/scripts/freeze_study.py" = ["E701", "E702"]
+
+[tool.flake8]
+max-line-length = 120
+
+[tool.coverage.run]
+omit = [
+    "alpha_factory_v1/demos/*",
+    "alpha_factory_v1/backend/agents/*",
+    "alpha_factory_v1/backend/memory*",
+    "/tmp/*",
+    "*/tmp/*",
+]
+
+# Apply the same existing scope to data collected by test subprocesses.
+[tool.coverage.report]
+omit = [
+    "alpha_factory_v1/demos/*",
+    "alpha_factory_v1/backend/agents/*",
+    "alpha_factory_v1/backend/memory*",
+    "/tmp/*",
+    "*/tmp/*",
+]
+
+[tool.mutmut]
+# Merge-safe mutation smoke scope. This intentionally targets a bounded,
+# high-signal Python surface so push-to-main runs stay deterministic.
+paths_to_mutate = ["scripts/mutation_smoke_target.py"]
+pytest_add_cli_args_test_selection = "tests/test_mutation_smoke_target.py"
+pytest_add_cli_args = "-q"
+mutate_only_covered_lines = true
+max_stack_depth = 12
+do_not_mutate = [
+    "*/__init__.py",
+    "*/SCRATCHPAD.md",
+]

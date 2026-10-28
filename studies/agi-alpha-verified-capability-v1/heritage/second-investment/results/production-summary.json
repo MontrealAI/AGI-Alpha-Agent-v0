@@ -1,0 +1,195 @@
+{
+  "schema": "agi-alpha-second-investment-production-summary/v1",
+  "campaign_sha256": "7081c4b19c6df3558a86b4887b68bd8753ea287f73782701b308b3bc1cf34d2f",
+  "source_freeze_sha256": "23e0203abc7ef56a6e9a0e26ec857210fb778777cbf05b6e68fcba5b9f90c664",
+  "arms": {
+    "A": {
+      "questions": 6,
+      "accepted": 6,
+      "decisions": {
+        "CONSISTENT": 4,
+        "CONFLICT": 2,
+        "INCOMPLETE": 0
+      },
+      "wall_mean_seconds": 1.1352335836672864,
+      "wall_median_seconds": 1.159386617500786,
+      "wall_min_seconds": 0.9817438770005538,
+      "wall_max_seconds": 1.2346346090016596,
+      "cpu_mean_seconds": 1.0766441026666667
+    },
+    "B": {
+      "questions": 6,
+      "accepted": 6,
+      "decisions": {
+        "CONSISTENT": 4,
+        "CONFLICT": 2,
+        "INCOMPLETE": 0
+      },
+      "wall_mean_seconds": 1.3396852598325495,
+      "wall_median_seconds": 1.3713346504991932,
+      "wall_min_seconds": 1.1683287430023483,
+      "wall_max_seconds": 1.471722204998514,
+      "cpu_mean_seconds": 1.3202787283333328
+    },
+    "C": {
+      "questions": 6,
+      "accepted": 6,
+      "decisions": {
+        "CONSISTENT": 4,
+        "CONFLICT": 2,
+        "INCOMPLETE": 0
+      },
+      "wall_mean_seconds": 1.1754976715001249,
+      "wall_median_seconds": 1.1602389500003483,
+      "wall_min_seconds": 1.0824623650005378,
+      "wall_max_seconds": 1.2837999709990982,
+      "cpu_mean_seconds": 1.115225975333333
+    }
+  },
+  "comparisons": {
+    "B_minus_A": {
+      "pairs": [
+        {
+          "family": "cryptography",
+          "wall_difference_seconds": 0.18746008100060862,
+          "cpu_difference_seconds": 0.2240702830000001,
+          "same_decision": true
+        },
+        {
+          "family": "eth-account",
+          "wall_difference_seconds": 0.3354273019976972,
+          "cpu_difference_seconds": 0.37326778600000043,
+          "same_decision": true
+        },
+        {
+          "family": "prometheus-client",
+          "wall_difference_seconds": 0.19118283599527786,
+          "cpu_difference_seconds": 0.21118985800000112,
+          "same_decision": true
+        },
+        {
+          "family": "pydantic-settings",
+          "wall_difference_seconds": 0.18896208899604972,
+          "cpu_difference_seconds": 0.27076081299999744,
+          "same_decision": true
+        },
+        {
+          "family": "pyyaml",
+          "wall_difference_seconds": 0.18658486600179458,
+          "cpu_difference_seconds": 0.21648819699999922,
+          "same_decision": true
+        },
+        {
+          "family": "uvicorn",
+          "wall_difference_seconds": 0.13709288300015032,
+          "cpu_difference_seconds": 0.16603081699999755,
+          "same_decision": true
+        }
+      ],
+      "wall_difference_mean_seconds": 0.20445167616526305,
+      "cpu_difference_mean_seconds": 0.24363462566666597,
+      "treatment_faster_count": 0,
+      "additional_accepted_outcomes": 0
+    },
+    "C_minus_A": {
+      "pairs": [
+        {
+          "family": "cryptography",
+          "wall_difference_seconds": 0.1436560020010802,
+          "cpu_difference_seconds": 0.12140699899999996,
+          "same_decision": true
+        },
+        {
+          "family": "eth-account",
+          "wall_difference_seconds": -0.0015867889997025486,
+          "cpu_difference_seconds": 0.029223451999999206,
+          "same_decision": true
+        },
+        {
+          "family": "prometheus-client",
+          "wall_difference_seconds": 0.049165361997438595,
+          "cpu_difference_seconds": 0.06506221100000076,
+          "same_decision": true
+        },
+        {
+          "family": "pydantic-settings",
+          "wall_difference_seconds": 0.05137989599825232,
+          "cpu_difference_seconds": 0.058365251999998646,
+          "same_decision": true
+        },
+        {
+          "family": "pyyaml",
+          "wall_difference_seconds": 0.10071848799998406,
+          "cpu_difference_seconds": 0.049413881000001325,
+          "same_decision": true
+        },
+        {
+          "family": "uvicorn",
+          "wall_difference_seconds": -0.10174843200002215,
+          "cpu_difference_seconds": -0.09198055900000313,
+          "same_decision": true
+        }
+      ],
+      "wall_difference_mean_seconds": 0.04026408783283841,
+      "cpu_difference_mean_seconds": 0.03858187266666613,
+      "treatment_faster_count": 2,
+      "additional_accepted_outcomes": 0
+    },
+    "B_minus_C": {
+      "pairs": [
+        {
+          "family": "cryptography",
+          "wall_difference_seconds": 0.04380407899952843,
+          "cpu_difference_seconds": 0.10266328400000013,
+          "same_decision": true
+        },
+        {
+          "family": "eth-account",
+          "wall_difference_seconds": 0.33701409099739976,
+          "cpu_difference_seconds": 0.34404433400000123,
+          "same_decision": true
+        },
+        {
+          "family": "prometheus-client",
+          "wall_difference_seconds": 0.14201747399783926,
+          "cpu_difference_seconds": 0.14612764700000036,
+          "same_decision": true
+        },
+        {
+          "family": "pydantic-settings",
+          "wall_difference_seconds": 0.1375821929977974,
+          "cpu_difference_seconds": 0.2123955609999988,
+          "same_decision": true
+        },
+        {
+          "family": "pyyaml",
+          "wall_difference_seconds": 0.08586637800181052,
+          "cpu_difference_seconds": 0.1670743159999979,
+          "same_decision": true
+        },
+        {
+          "family": "uvicorn",
+          "wall_difference_seconds": 0.23884131500017247,
+          "cpu_difference_seconds": 0.2580113760000007,
+          "same_decision": true
+        }
+      ],
+      "wall_difference_mean_seconds": 0.16418758833242464,
+      "cpu_difference_mean_seconds": 0.20505275299999984,
+      "treatment_faster_count": 0,
+      "additional_accepted_outcomes": 0
+    }
+  },
+  "new_customer_orders": 0,
+  "human_minutes_saved": null,
+  "customer_minutes_saved": null,
+  "scope": "Six prospective-selected research substitutions, one run per arm; metadata contract only.",
+  "limits": [
+    "Single same-machine runs, shared cache and balanced order; no inferential speed or field reliability claim.",
+    "Two root-minimum conflicts were foreseeable from development inputs; they are not newly discovered upstream defects.",
+    "Independent checker and reviewer are separate assistant contributors in the same research environment, not external customer acceptance.",
+    "A includes study-only capture and acceptance instrumentation; no retained second enterprise capability is assumed.",
+    "The common verifier is measured in every arm; its research construction is not assumed free.",
+    "No human labor reduction, demand increase, additional eventual output, price premium or runtime qualification is demonstrated."
+  ]
+}

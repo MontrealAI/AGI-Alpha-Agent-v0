@@ -1,0 +1,805 @@
+{
+  "schema": "agi-alpha-independent-production-reconciliation/v1",
+  "status": "PASS",
+  "scope": "All72frozen packets; stored pip evidence and exact-wheel metadata reverified, no new production/pip execution. Only fresh remeasurement CPU/wall excluded from certificate semantic equality.",
+  "source_freeze_sha256": "ad71e32caf4545a1baa1f3b09c8e75381967863a444d26dc01c6f13c6d68a82d",
+  "source_files_verified": 193,
+  "source_bytes_verified": 43317560,
+  "production_summary_sha256": "5c54f59287acef6e9b9db4fbbabd613994df40c0a9f6ea7284a8a8faf10347a2",
+  "checks": 5788,
+  "failed_checks": 0,
+  "failures": [],
+  "packets_reconciled": 72,
+  "passed_packets": 72,
+  "payload_files_verified": 1242,
+  "archive_entries_verified": 1314,
+  "primary_missions": 15,
+  "separate_stresses": 3,
+  "cache_confirmations": 4,
+  "new_jobs_from_cache": 0,
+  "arms": {
+    "A": {
+      "accepted": 18,
+      "primary_consistent": 6,
+      "primary_conflict": 9,
+      "primary_mean_cpu_seconds_with_uniform_shared_allocation": 1.5328868441555554,
+      "primary_mean_elapsed_seconds_with_uniform_shared_allocation": 1.5976115100333337,
+      "total_cpu_seconds": 27.055478911,
+      "total_elapsed_seconds": 28.222199518,
+      "declared_tool_checks": 36
+    },
+    "B": {
+      "accepted": 18,
+      "primary_consistent": 6,
+      "primary_conflict": 9,
+      "primary_mean_cpu_seconds_with_uniform_shared_allocation": 1.6225543634000001,
+      "primary_mean_elapsed_seconds_with_uniform_shared_allocation": 1.6789825580555569,
+      "total_cpu_seconds": 28.539691424000004,
+      "total_elapsed_seconds": 29.590071298000023,
+      "declared_tool_checks": 504
+    },
+    "C": {
+      "accepted": 18,
+      "primary_consistent": 6,
+      "primary_conflict": 9,
+      "primary_mean_cpu_seconds_with_uniform_shared_allocation": 1.6036604501111111,
+      "primary_mean_elapsed_seconds_with_uniform_shared_allocation": 1.6658715492888911,
+      "total_cpu_seconds": 28.416875681,
+      "total_elapsed_seconds": 29.464893817000036,
+      "declared_tool_checks": 504
+    },
+    "D": {
+      "accepted": 18,
+      "primary_consistent": 6,
+      "primary_conflict": 9,
+      "primary_mean_cpu_seconds_with_uniform_shared_allocation": 1.2988555516888887,
+      "primary_mean_elapsed_seconds_with_uniform_shared_allocation": 1.3845540436333335,
+      "total_cpu_seconds": 23.482175736,
+      "total_elapsed_seconds": 25.021260691000013,
+      "declared_tool_checks": 36
+    }
+  },
+  "unallocated_post_sample_wall_seconds": 0.00026461699993829413,
+  "rows": [
+    {
+      "arm": "A",
+      "id": "pair-cryptography--eth-account",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "5e778613422aa8c1e6dc094a3bf67784d771eaf2471cbebe7fcd1d60c2058083",
+      "certificate_sha256": "891c98c775f4b3b5a9a2393302332a540a222909c3f5d723b5ffb26955708d8b"
+    },
+    {
+      "arm": "A",
+      "id": "pair-cryptography--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "739f78a88b8d33a816f629d4d04af1a92e4a5a3000c13d31dd286ea3ad073cbe",
+      "certificate_sha256": "7f7f3b1acb78a2c209a86e26b4ee13d1aaef987d0b7ec46bfee93e45ab360215"
+    },
+    {
+      "arm": "A",
+      "id": "pair-cryptography--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "bdf859ce8e8c1043f6e9f98d257616c67a1aea01e04e57587145085af2dc8096",
+      "certificate_sha256": "b049241cfaa2f06d462d7807caab0d42f1f955c9e8fd94c4974c67dc2490cb0b"
+    },
+    {
+      "arm": "A",
+      "id": "pair-cryptography--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "45e79b47c5c8ec298ad22380345442d71decf63ef1f14d141471da2fb568b1b1",
+      "certificate_sha256": "32f60aabf436c7b67c7a5314a5fd3be080abe7d65cbc0f651352c676006ad8a0"
+    },
+    {
+      "arm": "A",
+      "id": "pair-cryptography--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "e65841be5406e0239674f36643c01ca89162ec3797d3ca3226fdd5c52fdbdca8",
+      "certificate_sha256": "80ed87eb322746b4fa97e411e37b49ed0344270c32d9e27522d819e1ba3ba4e4"
+    },
+    {
+      "arm": "A",
+      "id": "pair-eth-account--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "ec3647443d3738822f720516da4f3a27c4530afc73ee9f5dd89dcfd8b6d9a73d",
+      "certificate_sha256": "960ff2a0a1f1007bba6cad536e326b448ab9324f4e28365a23fee2e1a90fead0"
+    },
+    {
+      "arm": "A",
+      "id": "pair-eth-account--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "d32e1eeb85367fe1d1b491af34671ef8ee6fe430a73d23ac081c52fc5718fde2",
+      "certificate_sha256": "2abafb7c9288d478df51bf0ca8e0f3fc6c68ec4a64fd976eeac61fdfa2f675ce"
+    },
+    {
+      "arm": "A",
+      "id": "pair-eth-account--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "8cdea4f8434ad9d1b0b0a2b400f7275495f930c5feb1f44ecef65a0ff623f50e",
+      "certificate_sha256": "413dbfd450785e433d383415ea6f346c201d11d1d547bb092cf7f5c8ea495aed"
+    },
+    {
+      "arm": "A",
+      "id": "pair-eth-account--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "d28d41b981e272687f9c8924f48f2b85ab626d77dbac197e49224070ce4d0058",
+      "certificate_sha256": "7bd8a4635fe2918c93e967e5436c9c75eafc6c37e82fbee0d52352aa5090db2c"
+    },
+    {
+      "arm": "A",
+      "id": "pair-prometheus-client--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "8caadd43f58b53796773c792b9daec81bba43d7b1a11867d1fe2a4c0fe7e9431",
+      "certificate_sha256": "684680bd64190cfd7f93c751796d824e70a7ddb10589ef4d64e1f450bfa2b3d0"
+    },
+    {
+      "arm": "A",
+      "id": "pair-prometheus-client--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "f7075aff1f090d138e579cdb84d5d40cae5ae599eee17f78943949ed7ffd6a2a",
+      "certificate_sha256": "3b1919b3726c1622aa0d5add950e6580c2fba5a1b11c2a425b215eb79830867b"
+    },
+    {
+      "arm": "A",
+      "id": "pair-prometheus-client--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "ac6e7e6d9109d1da6360674d4c94c5d7e8a56b1c8108443a236d936e28fd0160",
+      "certificate_sha256": "bdfb4608c59a8b9ce839bcc01cee7dd8e73baf1808d05c5b16e5bd7ee4b53ee8"
+    },
+    {
+      "arm": "A",
+      "id": "pair-pydantic-settings--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "abf4e23f167c10e6e8ad820f96ddda706978874d4f2353932467a46cf8a4a17c",
+      "certificate_sha256": "2a50d398e24283052dc739c9598db437b0b1ed5cc4624db04054f77de238dada"
+    },
+    {
+      "arm": "A",
+      "id": "pair-pydantic-settings--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "bb32da9a9adb1a46a209909a96fc93bc7a0b437a647b335daeff841206e6e8bb",
+      "certificate_sha256": "46c17b2dad91897b40ddbc621ac9b282d7fc51aab1c7b25e6419c72eb4df1925"
+    },
+    {
+      "arm": "A",
+      "id": "pair-pyyaml--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "7e7ce831609eed62d1145cfb9ea416228f29cdf1ed0abf34a2356293d3bdb7b8",
+      "certificate_sha256": "682a6743b729c414f1a7470cbf914e01bd487d3db6a953beb1465cd7dc180c43"
+    },
+    {
+      "arm": "A",
+      "id": "stress-cryptography-major-requirement",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "aa1fed3f9d77b3992a7eae63f2f94a568dac6464ebd19264c2dac9655383d3d2",
+      "certificate_sha256": "bd26463e6617066cc05d498e4309b283f8cc4cd55fb12b947a21cf6cfa085cf8"
+    },
+    {
+      "arm": "A",
+      "id": "stress-remove-chain-requirement",
+      "cohort": "stress",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "6ad77f85d378940a10e80e4639b8ddc4b2dcd7e425822910c733ed16f75ff24c",
+      "certificate_sha256": "f72c78f3535491091ab2a8cf1f7f2915a499d84b4bc23e0b88faae770298e4ab"
+    },
+    {
+      "arm": "A",
+      "id": "stress-python-minimum-313",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "70e2a1c0f1df5bdd3f19883a3daa123140ff4339495e7b0b3a3b3dfe6cdeb5bc",
+      "certificate_sha256": "f6125925b2eef5cac55879fe4336eccfa81a4c31a3b0d8f9eb8613bccdb62cc0"
+    },
+    {
+      "arm": "B",
+      "id": "pair-cryptography--eth-account",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "95c4eb001518d6dc7fd78508666534b4c16864e17d8ac93f976dfb30467c0f8a",
+      "certificate_sha256": "f9040037206252335e7d24900421c515d3a8390cb96d668f17510b6f3af610b6"
+    },
+    {
+      "arm": "B",
+      "id": "pair-cryptography--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "9e5957b763ee5ad661165169157e8d35bf8362b6753c98d733a2301d3c329ea2",
+      "certificate_sha256": "81a257de117faaa6535cc6efdbb0b900ed7510146fa4563cd98b60bd1ff69c7e"
+    },
+    {
+      "arm": "B",
+      "id": "pair-cryptography--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "5bfac4379c15e521bc55a9abe75fab2c4cddeae04c2d963fd75e0caf50e66c16",
+      "certificate_sha256": "f4f7c66bf36bb20a32cd73759ba186d6d2ef4b7bac1a2701e7ec0b41ac5e9c84"
+    },
+    {
+      "arm": "B",
+      "id": "pair-cryptography--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "40efef2e355390b386b65506b708bfcdff5d5e4108f558ee5866ab0dd22bd758",
+      "certificate_sha256": "1cbad630cc304953b849d320db9aa68bd3c13e64b11cc992222f5d01e4540e37"
+    },
+    {
+      "arm": "B",
+      "id": "pair-cryptography--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "48c60590d8c7c89c9ab6c5ce82ff04adfcf697a0867e37e07cea8cba3e4e942b",
+      "certificate_sha256": "3ae56e59d06d70e8e450edee74046947e1a2dbcec139ff0cddbc4faa4b0ed59a"
+    },
+    {
+      "arm": "B",
+      "id": "pair-eth-account--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "380a8d0e79a28cbbcf5cf8565ff72dc65d104d2ab6a3a529edabcb5b54f50232",
+      "certificate_sha256": "1501cfe5f1d1ca0dff3453721798724355f0cbbcb8d46f90c43727b5da456857"
+    },
+    {
+      "arm": "B",
+      "id": "pair-eth-account--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "7739e5274e5a1160ea53afa827002c79d2f9a4d6862faa8a5de698fbaa6cdda2",
+      "certificate_sha256": "7ebe3ee6ed9b8026d373fab4c4bae22d3195dd9416e1fbfd7553d53f2d559687"
+    },
+    {
+      "arm": "B",
+      "id": "pair-eth-account--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "4c3b3014977ea1ed1929a197d9a86cc7f44ba6f691520553f746db591381955b",
+      "certificate_sha256": "285d871e71aa1cab4999e759a8d1b545657e869dfa1f00165b287d06a78cf4a0"
+    },
+    {
+      "arm": "B",
+      "id": "pair-eth-account--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "ef85a6015cd27e08eb1ae04a76a28f926d38693f5e9da6433c0163518078c54b",
+      "certificate_sha256": "001d3dbc0d497e4e9026dbc08394dfe017e74727d87e1cec208114d05f6e58a3"
+    },
+    {
+      "arm": "B",
+      "id": "pair-prometheus-client--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "f5d5735bc93a85b00ca139a35e18f853de28a14da234c69463b017ac97776b3e",
+      "certificate_sha256": "8b18ee5e63a72f59523e670c595d822cb3099c10a7bd10a7a8a5ae9fd978381f"
+    },
+    {
+      "arm": "B",
+      "id": "pair-prometheus-client--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "302130f9e8c5f72e7e3c2fd1436e157c4e5400d867d9b479f66258c1a10032e9",
+      "certificate_sha256": "589a3d1f7f97ef83b498288e68f8558324b7d569b3e653ecb095e676557c6869"
+    },
+    {
+      "arm": "B",
+      "id": "pair-prometheus-client--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "062cf9ad8faca2a9dd8914afb4c10f978149f16de75b07b968f60c2ecd14e458",
+      "certificate_sha256": "9ce98beb6ec17a721548b8d124e8c3dba93b05e81a9335d30db2a0a91e52f374"
+    },
+    {
+      "arm": "B",
+      "id": "pair-pydantic-settings--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "d3c4e51f671e1e125b29501f2b58c68550488ccf4b187d697a4d6363ab618f75",
+      "certificate_sha256": "d64b4d848005a852fa9573ae75a2b6508568df0dc4105d69007914ffaa353ae2"
+    },
+    {
+      "arm": "B",
+      "id": "pair-pydantic-settings--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "4279b1abc71fa1bf86c4266c51abf5b4f27c2ecbbbe2e79612238edbee4facdb",
+      "certificate_sha256": "ff99408b59535c96f31d6e8d2431893e349e2eb76f29d5834f9c47745b8c8814"
+    },
+    {
+      "arm": "B",
+      "id": "pair-pyyaml--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "4150537c10ee1323b5d1d75ee2b4eebc8a49d0c17755e045926bec66a45b66e1",
+      "certificate_sha256": "c764a8487eafe114b7a0c88b37abef18afd74acdb62781a31744fb70b39d7124"
+    },
+    {
+      "arm": "B",
+      "id": "stress-cryptography-major-requirement",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "d3982a7ab299c7a0319790a52d9e0a6a2ca651ec2f8180f9a4d8832645755840",
+      "certificate_sha256": "5630cfde12927c3f9ac0e65d4841c40af2f36af46f60c55d6c7af39009d0a0d0"
+    },
+    {
+      "arm": "B",
+      "id": "stress-remove-chain-requirement",
+      "cohort": "stress",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "c6170c8862a361f9d41eebc0292588fe619573a95291ba269b35815bea59fc7f",
+      "certificate_sha256": "b02f84aeea79935acb76e76a7fc8ace4ca933ab893b735afad8e4b46c2372e49"
+    },
+    {
+      "arm": "B",
+      "id": "stress-python-minimum-313",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "d0cf443af4c4ec4465303b9e939562844042bd363092c4fc4abfca88eb77feb0",
+      "certificate_sha256": "7c8617c28137a7b65d50c810deb90879dd689fffeef26a1f7004b5040a7880c2"
+    },
+    {
+      "arm": "C",
+      "id": "pair-cryptography--eth-account",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "d14971fadcb8d4f452134d4788e444bf51a7a917d4bce087ecbba8b7bfdb0106",
+      "certificate_sha256": "edbbbe6e059e7d3a0081d03b7d462134ee6dd08b289aa280b117be073e6799d4"
+    },
+    {
+      "arm": "C",
+      "id": "pair-cryptography--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "046822e3166169a67e784e9d85c83fc4a254b4ca090f289a3bd9bb41294352dc",
+      "certificate_sha256": "89d91c6e2926a323e6cccf25e5734902a3fed8628872b969dfc702c10d7c470f"
+    },
+    {
+      "arm": "C",
+      "id": "pair-cryptography--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "5c3abc751dba98a2d7ef249c996c18acff7cd3aec315182ee5451d7f20f6edaf",
+      "certificate_sha256": "6056ed7d1da03f584f91d7b3cdefaf706d480b30eb81aa8b2a2e70f44f7093bb"
+    },
+    {
+      "arm": "C",
+      "id": "pair-cryptography--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "d08b2375d85e1a77ecdf87dacc3270cfa85f59f2c3aa662d13da2883dd3672b8",
+      "certificate_sha256": "99743fd4103340124b68754620efebc1018ece351ed61465098d5eb64ee2fc95"
+    },
+    {
+      "arm": "C",
+      "id": "pair-cryptography--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "58b1a80c44a2f618eacee0210a4d2c6e8d6479fb7e324ebbe62712d0fd28e746",
+      "certificate_sha256": "cc0344a28eacd8890d978ed41e35a3bab236735ae59e5aa444a1468eed8ea4ed"
+    },
+    {
+      "arm": "C",
+      "id": "pair-eth-account--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "7aa7dbf87961766ac0f3a1bdffa7061e4204d9c85fa183331bc90e4d14f559e1",
+      "certificate_sha256": "44c41366bcbe58932bb06acfaac7876cb15efe77e9f4c833150c2b1072bd774c"
+    },
+    {
+      "arm": "C",
+      "id": "pair-eth-account--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "b5ce152e983726246b980e2ce30dd7bc382bfbf787f631f54fffb80fbe09b241",
+      "certificate_sha256": "2fb96d2651058703de3b54830df0f295d3c3e81d97f6289218da680105b4b101"
+    },
+    {
+      "arm": "C",
+      "id": "pair-eth-account--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "c495881af09f177c1cf003aaec62d10fc0ff4fe3951c9ec464501e647ff2f564",
+      "certificate_sha256": "af1ec1626b43ecf8ac8fd9e50568ed14dcf585717141f08a0d23472285c089ed"
+    },
+    {
+      "arm": "C",
+      "id": "pair-eth-account--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "24a18b9f1df28a2c988ef58e93138a81ce880c7bc77764094de142dd7b4967ff",
+      "certificate_sha256": "5aaba20d204e528ee1947fd7d32128c91c813a24618a163b75e99d6f4a0bf27a"
+    },
+    {
+      "arm": "C",
+      "id": "pair-prometheus-client--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "99f0369ae342b4cf777189a9b05064a0019a598dc82eb45feb5c13dd978b97d5",
+      "certificate_sha256": "40b17e368ec2cc23ce37c6a197a1f8696b311db5555a6395c467e71ed66d2bf8"
+    },
+    {
+      "arm": "C",
+      "id": "pair-prometheus-client--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "5077da0c71236d5c8a0355eaff2438a89fe7c7b4abdba37ec2d6543e8cc37fc2",
+      "certificate_sha256": "a0fe05e6fe981b6918586291239b4adb5fc9bdf813426768fc77f3747cb98867"
+    },
+    {
+      "arm": "C",
+      "id": "pair-prometheus-client--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "7c8d3985c3769389928449ce54ab205e47b204e857dad0244f93fef74fccb5e9",
+      "certificate_sha256": "5dc935cab2e399390def6d9e5ba7bda05531ded180d29b6264d4892a6ba40048"
+    },
+    {
+      "arm": "C",
+      "id": "pair-pydantic-settings--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "df8cfd79c7b9486f0e9ac86e5a5811b53382f382fde61502ddafd657c3cfdc24",
+      "certificate_sha256": "2ecd96c502512c90de2855068d9ca37c6fe612061fda67a1ffcedfecd39b1e44"
+    },
+    {
+      "arm": "C",
+      "id": "pair-pydantic-settings--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "102f3afe16199a3593022c8b10ada49c6c2919508ff92911133c1681537dc115",
+      "certificate_sha256": "977f3312313fd9aba4e95d3a55be0ba83a64b1ec9a0e57d1b4e965d71ea7b43b"
+    },
+    {
+      "arm": "C",
+      "id": "pair-pyyaml--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "2ddfcaeb66cf1b8882537fca38e1143908e8344fce81910655b78ec9450d9f33",
+      "certificate_sha256": "bb8921dd35598f86c95d41169b0b8128e6655f39385274c9730be800c3f5eda4"
+    },
+    {
+      "arm": "C",
+      "id": "stress-cryptography-major-requirement",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "8a0a61aaf1b40775bc3022ada87e6554339667a1e6247c26c61609322775e2cc",
+      "certificate_sha256": "0534872d6be6deac1a9ceaa3f805aaabaed8ed153e14d7f6b92261dc053a1b42"
+    },
+    {
+      "arm": "C",
+      "id": "stress-remove-chain-requirement",
+      "cohort": "stress",
+      "decision": "CONSISTENT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "72598911fd260298ed52b152e1fc7374816b623e741200aaee2e47787323aee0",
+      "certificate_sha256": "a79742802966b155239162d58abe8ca1ace45080b27ef68a54f8b728dedc50ff"
+    },
+    {
+      "arm": "C",
+      "id": "stress-python-minimum-313",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 78,
+      "passed": true,
+      "packet_sha256": "79678941d4d03bd2b401fb78b79b212b16f8dad62436ce45b922d749f8bd98f7",
+      "certificate_sha256": "0e5dc9f07d7f192e196f7053d515e52b63effaa0db88b9e698dd39a054081d08"
+    },
+    {
+      "arm": "D",
+      "id": "pair-cryptography--eth-account",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "20e72d2108276a1bcf589d926765aa5027bfd38e03b2f3d6b5ec1a8fbf8d04b8",
+      "certificate_sha256": "fa6960e325c5af81a663f9b36ec72833ebfc6cfa016ca5ae009c45ce014fe18a"
+    },
+    {
+      "arm": "D",
+      "id": "pair-cryptography--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "6924b74909d9e887f7867553166f1b858199be0285becc0a0254ea89e9784550",
+      "certificate_sha256": "533f313de9fcbdce94e2374c3fe9446778aab78c2fff160cdb516cddbb634cbe"
+    },
+    {
+      "arm": "D",
+      "id": "pair-cryptography--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "c1b450942c46234dfd769f24b420075fef84e7d889f902bbce5392a09ded511a",
+      "certificate_sha256": "00119722e7f0ca0a43a3eb8cdb91537d86e9f69645b6971776715c454faff9ce"
+    },
+    {
+      "arm": "D",
+      "id": "pair-cryptography--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "0fc96d1c6f518211b46969d8e2f552f22485669dd797154fbfec4e6487d85083",
+      "certificate_sha256": "b55df165680aded3256743d835f355eb3874d8f72e959687fc6960c704f5095d"
+    },
+    {
+      "arm": "D",
+      "id": "pair-cryptography--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "33722a567737b968f1fdd5cbfec52ea456c0b7d0a8f25a887b6df87f77ec90ef",
+      "certificate_sha256": "54b27f28531926bad705c3a9cca2a5708b476f51ce31203d7883a7526015b55f"
+    },
+    {
+      "arm": "D",
+      "id": "pair-eth-account--prometheus-client",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "c40858ea12d9c124f030a4903e63b9be5b709bcffed1ce5757d357368f09357d",
+      "certificate_sha256": "30177849d345b9357c24f7f154437f0334493c2faec64c084d86ed7c8c4c13de"
+    },
+    {
+      "arm": "D",
+      "id": "pair-eth-account--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "6e5b5e9a7837af83c805200cfb4322198cea87e3cc1da191c9582abbd2725b8a",
+      "certificate_sha256": "3738b2ebf639255c2722db8cb0e7e922a0713c621106433b18439cd439167566"
+    },
+    {
+      "arm": "D",
+      "id": "pair-eth-account--pyyaml",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "bd71d935fa6490b0edd0a403a8373e253e8655153535d917c3cadc9d19502815",
+      "certificate_sha256": "bd5eeb65489e0519710eaa28e3c9fc1748704e5e27c6640d9e3206ec4e3c5a0a"
+    },
+    {
+      "arm": "D",
+      "id": "pair-eth-account--uvicorn",
+      "cohort": "primary",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "1a625c43dab376fd7b5c9f7d44a985e74c2b625ad382c6d5f728023d6fed8c4c",
+      "certificate_sha256": "2a6b29d1d63d1f91d4b579b910ee7b4543c3b7de2a6223fe33a8b8d4b9994816"
+    },
+    {
+      "arm": "D",
+      "id": "pair-prometheus-client--pydantic-settings",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "0c02687ecafc78ac7f13d3a7c419e62c6cc3da8e756b5db11f3d41a9e58f7f4b",
+      "certificate_sha256": "c8a11a2eee738bafa9945b0fd3354a992c3afb2642dec3a3c02f7fcb0bd702b7"
+    },
+    {
+      "arm": "D",
+      "id": "pair-prometheus-client--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "f25d487872a2c70534279673e394cae364271a333976772a2f77eadb0792d49d",
+      "certificate_sha256": "3252ea688e1b8a1738844f394565aa441890383a91bcd9583d627ad1d09d042f"
+    },
+    {
+      "arm": "D",
+      "id": "pair-prometheus-client--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "5f02c999ed1142abe2ffc8eeb2436786c7e87689952a9d6122fc7df802ddc3fd",
+      "certificate_sha256": "1d1e2ad91b56d295879cdb33e68fbeb96f44fd91e64a3d4af6d9092f23ecc6a4"
+    },
+    {
+      "arm": "D",
+      "id": "pair-pydantic-settings--pyyaml",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "88d8d25fce42df659ba40d58ffebd12219dc48acd1608c2c2f5c0f6a32477851",
+      "certificate_sha256": "e5040d224f3cc06ad1005a3102eb8e1b4eaf7a9c67b8d80f9b0f4d523ec85b29"
+    },
+    {
+      "arm": "D",
+      "id": "pair-pydantic-settings--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "5a80f2419692726c2e22d7f9dad5bc067fd38dcc2e5fe2e2701f8d4143a3590c",
+      "certificate_sha256": "1126b3aa3643e788164bd68090e3dbc5a428f178de7f4a678e1ab10c732680c2"
+    },
+    {
+      "arm": "D",
+      "id": "pair-pyyaml--uvicorn",
+      "cohort": "primary",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "7248873878988baa0e7e365581f36195aa9df8c0b50514c295d589049e34a3e3",
+      "certificate_sha256": "0483e451d570191d18afb1e017c7e0157f56d99f904428fd3c62a592a3d2f882"
+    },
+    {
+      "arm": "D",
+      "id": "stress-cryptography-major-requirement",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "6dc412e2f638d5d7d7830e02708e613c8961de58e6d911ccc4e3a24dd80be668",
+      "certificate_sha256": "8ee40987b6854bad8803d4ddc2d7f123f79bcdc06d767eb1654e9cb3fd98464f"
+    },
+    {
+      "arm": "D",
+      "id": "stress-remove-chain-requirement",
+      "cohort": "stress",
+      "decision": "CONSISTENT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "605ba957db44872adeb4d9f491e9b59a4c1810f595949e34152a45293ae25e1d",
+      "certificate_sha256": "5da4fe14432241681033ade0a5cbcc7a18efaa92295170a3435dd78178921d95"
+    },
+    {
+      "arm": "D",
+      "id": "stress-python-minimum-313",
+      "cohort": "stress",
+      "decision": "CONFLICT",
+      "checks": 75,
+      "passed": true,
+      "packet_sha256": "be72df1175142b61632656722912bcba1c402b71fc48a7c03cd1b5c58e6809c5",
+      "certificate_sha256": "8c8158affb317efc400b6121750937973317ae4c2d3a41c5d44ec7e72eb15063"
+    }
+  ],
+  "review_resources": {
+    "elapsed_seconds": 8.940205105998757,
+    "cpu_seconds": 8.933000345,
+    "metadata_reverifications": 72,
+    "new_pip_executions": 0,
+    "model_calls_in_script": 0,
+    "network_requests": 0,
+    "actual_collections": 0
+  },
+  "supersedes_checker_receipt": {
+    "path": "review/production-reconciliation-01.json",
+    "reason": "Initial review code incorrectly demanded equality of new verifier timing measurements, treated witness lists as numbers, and searched prose for joblabel instead of bound mission/input digests. It also required submicrosecond equality of separatelysampled finalwall. Those checker defects are repaired only in this new review; frozen candidate/output files unchanged.",
+    "prior_review_resource_cost_retained": true
+  },
+  "limits": [
+    "Same-session independent reviewer, not external certification.",
+    "Actual complete monetary costs remain unknown.",
+    "Declaredtools_total is pip+metadata+inclusion+attestation checks; source IO and root-history/current-root checks retain separate counters.",
+    "Post-sample serialization and pre-clock Nodewall remain disclosed measurement limits."
+  ]
+}

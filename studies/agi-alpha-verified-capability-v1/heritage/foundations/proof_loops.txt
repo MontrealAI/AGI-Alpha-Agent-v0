@@ -1,0 +1,598 @@
+                        Montreal.AI Research           ⋄    GoalOS Protocol Note Series
+
+
+
+
+                         PROOF_LOOPS.md
+Field Notes on Machines That Turn Work Into Capability
+   A research architecture for proof-gated autonomous work, Chronicle memory,
+                      and on-chain graph-root commitments
+
+
+
+
+                                              Vincent Boucher
+                                 President, QUEBEC.AI & MONTREAL.AI
+
+
+                           Research Edition v2.0   |       Publication-safe, claim-bounded
+
+
+
+
+Core loop
+
+ Objective → Proof Mission → AGI Jobs → Evidence → Chronicle → Validated
+         Skill → On-chain Graph Root → Future Mission Improvement
+
+
+  AI creates output. GoalOS creates proof. The machine may draft; the institution must decide what earns memory.
+PROOF_LOOPS.md                                                  ⋄                                              Vincent Boucher
+
+
+
+                                                            Abstract
+      PROOF_LOOPS.md specifies a compact operating law for proof-gated autonomous work: an objective becomes a
+      proof mission; proof debt becomes AGI Jobs; jobs return evidence; evidence is gated by Chronicle; validated skills
+      become graph memory; graph roots can be committed on-chain; and admitted skills improve future missions. This
+      paper converts that operating note into a formal research architecture. It defines a state model, proof-debt mechanics,
+      AGI Job contracts, Evidence Dockets, Chronicle admission, Validated Skill Graph accumulation, proof-level policy,
+      on-chain commitment boundaries, and falsification tests. The central claim is architectural and testable: durable
+      autonomy requires proof-carrying loops that prevent unverified output from becoming institutional memory. The
+      paper does not claim achieved AGI, achieved ASI, legal certification, financial advice, production authorization, live
+      settlement, or external validation. It defines the loop required for such claims to become inspectable, replayable, and
+      governed.
+  Keywords: GoalOS; proof loops; autonomous agents; Proof Debt; AGI Jobs; Evidence Dockets; Chronicle; Validated Skill
+                                     Graph; on-chain commitments; proof economy.
+
+   Executive thesis
+
+   A prompt is a request. A proof loop is an institution. The prompt asks a model to answer; the loop decides what
+   must be proven before the answer can matter.
+
+
+1 Introduction
+Frontier models make candidate work abundant. They produce claims, reports, code, plans, critiques, tool traces, and
+agent outputs at low marginal cost. The institutional problem is not whether an AI system can generate. It is whether a
+result deserves trust, reuse, payment, propagation, memory, or rollback authority.
+GoalOS answers by separating output from authority. Model output is candidate work. Candidate work may create
+Proof Debt. Proof Debt may become AGI Jobs. Jobs may return ProofBundle artifacts. Those artifacts may update an
+Evidence Docket. Only then can Chronicle decide whether a capability enters durable memory as a validated skill.
+The note PROOF_LOOPS.md compresses the system to one loop:
+               Objective → Proof Mission → AGI Jobs → Evidence → Chronicle
+                           → Validated Skill → On-chain Graph Root → Future Mission Improvement.
+This paper gives that loop a research form: objects, transition rules, gates, proof levels, privacy boundary, threat model,
+and evaluation program.
+
+
+2 Contributions
+This paper makes seven contributions.
+1. Proof-loop formalism. A state-machine model for converting objectives into proof-gated capability.
+2. Proof Debt to AGI Job conversion. A job factory that starts empty and creates only the proof work required by
+   the mission.
+3. Evidence Docket model. A structured proof room that turns artifacts into inspectable claims, risks, replay paths,
+   and validator records.
+4. Chronicle admission law. A memory firewall preventing unsupported output from influencing future missions.
+5. Validated Skill Graph accumulation. A capability graph that stores scoped, replayable, evidence-backed skills
+   rather than prompt fragments.
+6. On-chain graph-root boundary. A public/private model in which private intelligence remains protected while
+   proof commitments can be anchored.
+
+QUEBEC.AI & MONTREAL.AI                                                                                                         1 / 11
+PROOF_LOOPS.md                                                 ⋄                                         Vincent Boucher
+
+
+
+7. Falsification program. Tests for whether proof loops outperform report-only, prompt-library, and ungated-agent
+   baselines.
+
+
+3 System Doctrine
+The proof loop rests on four doctrines.
+
+   Doctrine 1: output is not authority
+
+   A model may answer; an agent may act; an institution must prove. Fluency cannot grant future mission influence.
+
+
+   Doctrine 2: memory is gated
+
+   No Chronicle entry means no future mission influence. Memory must be admitted, scoped, replayable, and
+   rollbackable.
+
+   Doctrine 3: work is proof-producing
+
+   AGI Jobs are not tasks in a todo list. They are proof contracts with claim, worker, validator, acceptance tests,
+   blocked claims, and ProofBundle return path.
+
+
+   Doctrine 4: public proof, private intelligence
+
+   Do not expose private skill intelligence as plaintext. Use commitments, encrypted capsules, attestations, and
+   zero-knowledge proofs where applicable.
+
+
+
+4 Formal State Model
+Let a proof-loop run at time 𝑡 have state
+
+                                          𝑆𝑡 = (𝑂, 𝑀, 𝐶, 𝐷, 𝐽, 𝑃, 𝐸, 𝑉, 𝐾, 𝑅, 𝐹),                                        (1)
+
+where 𝑂 is the objective, 𝑀 the Mission Contract, 𝐶 the claim set, 𝐷 the Proof Debt register, 𝐽 the AGI Job queue, 𝑃
+the returned ProofBundles, 𝐸 the Evidence Docket, 𝑉 the verifier state, 𝐾 the Chronicle decision state, 𝑅 the on-chain
+graph-root record, and 𝐹 the future mission prior.
+A transition is
+                                                 𝑆𝑡+1 = 𝜏(𝑆𝑡 , 𝑢 𝑡 , 𝜋ℓ , 𝜌𝑡 ),                                          (2)
+where 𝑢 𝑡 is an operator or system action, 𝜋ℓ is the selected proof-level policy, and 𝜌𝑡 is a review, replay, validation, or
+risk signal.
+The loop is complete when
+
+                        Done(𝑆𝑡 ) = 𝑀 ∧ 𝐷 𝑟 𝑒𝑡𝑖𝑟 𝑒𝑑 ∧ 𝑃 ∧ 𝐸 ∧ 𝑉 𝑝𝑎𝑠𝑠 ∧ 𝐾 𝑑𝑒𝑐𝑖𝑠𝑖𝑜𝑛 ∧ 𝐵𝑏𝑜𝑢𝑛𝑑𝑎𝑟 𝑦 ,                         (3)
+
+where 𝐵𝑏𝑜𝑢𝑛𝑑𝑎𝑟 𝑦 asserts that claim, privacy, wallet, settlement, and scope boundaries remain intact.
+
+
+5 Layered Architecture
+The proof loop is a layered operating system. Each layer narrows authority.
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                               2 / 11
+PROOF_LOOPS.md                                                             ⋄                                                                Vincent Boucher
+
+
+
+
+                       2                3                                                                     6                     7                    8
+       1                                                        4                     5
+                     Proof             AGI                                                                Validated              On-chain             Future
+    Objective                                                Evidence              Chronicle
+                    Mission            Jobs                                                                 Skill                 Root                Mission
+
+
+                                                           capability prior only from admitted skill
+                                                                             Loop law: work does not become memory until evidence passes Chronicle.
+
+
+                                              incomplete proof
+                                      Proof
+                                      Debt
+
+
+
+Figure 1: The canonical proof loop. The loop turns autonomous work into proof, proof into validated skill, skill into graph
+memory, and graph memory into future mission improvement.
+
+
+
+
+  1. Objective Layer
+  User intent, decision to support, success criteria, failure criteria, constraints.
+
+
+   2. Mission Layer
+   Mission Contract, proof level, claim boundary, allowed tools, validators, rollback obligations.
+
+
+   3. Proof Layer
+   Claim extraction, Proof Debt, custom AGI Jobs, worker/validator/sentinel assignments.
+
+
+  4. Evidence Layer
+  ProofBundles, Evidence Docket, replay manifests, risk ledger, source provenance.
+
+
+   5. Memory Layer
+   Chronicle Gate, validated skill admission, Validated Skill Graph, future mission influence.
+
+
+   6. Commitment Layer
+   On-chain graph roots, evidence roots, ProofBundle roots, policy hashes, attestations, encrypted capsule
+   commitments.
+
+                                Authority increases only downward: objective to proof, proof to mem-
+                              ory, memory to commitment. A failed gate returns the run to Proof Debt.
+
+Figure 2: Layered proof-loop architecture. GoalOS separates user objective, mission design, proof production, evidence
+validation, memory admission, and public commitment.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                                                         3 / 11
+PROOF_LOOPS.md                                                   ⋄                                                 Vincent Boucher
+
+
+
+
+6 Proof Mission and Mission Contract
+A Proof Mission is the conversion of an objective into an evidence-generating run. Its contract is the first authority-
+bearing object.
+
+                                              Listing 1: Mission Contract skeleton.
+{
+    "mission_id": "mission-001",
+    "objective": "...",
+    "decision_to_support": "...",
+    "success_criteria": [],
+    "failure_criteria": [],
+    "constraints": [],
+    "proof_level": "L3 External Review",
+    "risk_class": "medium",
+    "allowed_tools": [],
+    "required_validators": [],
+    "blocked_claims": [],
+    "rollback_obligations": []
+}
+
+The mission contract prevents an agent from optimizing an ambiguous request. It states what the work is for, what
+would count as success, what would fail the mission, and which claims are blocked before proof.
+
+
+7 Proof Debt
+Proof Debt is the difference between what the system wants to claim and what it can support.
+                                ∑︁
+                  𝐷 𝑝𝑟 𝑜𝑜 𝑓 =        Impact(𝑐 𝑖 ) · Unsupported(𝑐 𝑖 ) · Irreversibility(𝑐 𝑖 ) · ReuseRisk(𝑐 𝑖 ).               (4)
+                                𝑖
+
+A claim may be classified as supported, needs evidence, needs replay, needs reviewer, needs boundary, blocked, or out
+of scope. This turns uncertainty into a work queue rather than burying it in prose.
+
+
+8 Custom AGI Jobs
+The AGI Job factory starts empty. Jobs are generated only after the mission and proof level are known.
+An AGI Job is a proof contract:
+
+                                                   Listing 2: AGI Job skeleton.
+{
+    "job_id": "agi-job-001",
+    "proof_debt_id": "debt-001",
+    "source_claim": "...",
+    "worker": "Reviewer Agent or Human Reviewer",
+    "validator": "AGI Node Validator + Human Review",
+    "sentinel": "Boundary Sentinel",
+    "deliverables": [],
+    "acceptance_tests": [],
+    "blocked_claims": [],
+    "proofbundle_return_path": "proofbundles/agi-job-001.json",
+    "status": "ready-for-execution"
+}
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                      4 / 11
+PROOF_LOOPS.md                                                   ⋄                                              Vincent Boucher
+
+
+
+
+9 Evidence Docket
+The Evidence Docket is not a file pile. It is the proof room. It ties claims to sources, ProofBundles, validator verdicts,
+risk, replay, and decision state.
+
+     Minimum docket contents
+
+     Mission Contract; claims matrix; Proof Debt Register; ProofBundle manifest; source provenance; replay manifest;
+     risk ledger; blocked claims; validator notes; Chronicle recommendation; rollback conditions.
+
+A docket is complete only if a reviewer can answer: What was attempted? What evidence exists? What failed? What
+remains blocked? What may be reused? What must not be claimed?
+
+
+10 Chronicle Gate
+Chronicle is the memory firewall. It admits only candidates that satisfy the selected proof level.
+
+
+                    Admit(𝑐, ℓ) = 1{𝐸 (𝑐) ≥ 𝜃 ℓ𝐸 ∧ 𝑅(𝑐) ≤ 𝜃 ℓ𝑅 ∧ 𝑉 (𝑐) ≥ 𝜃 𝑉
+                                                                           ℓ
+                                                                             ∧ 𝑃(𝑐) = 1 ∧ 𝐵(𝑐) = 1},                            (5)
+where 𝐸 measures evidence strength, 𝑅 risk, 𝑉 validation coverage, 𝑃 replay readiness, and 𝐵 boundary compliance.
+
+
+11 Validated Skill Graph
+A validated skill is a governed capability object. It is scoped, evidenced, replayable, versioned, and rollbackable.
+
+
+         𝑠 = ⟨𝑖𝑑, 𝑡𝑦 𝑝𝑒, 𝑠𝑐𝑜 𝑝𝑒, 𝑚𝑒𝑡ℎ𝑜𝑑, 𝑒𝑣𝑖𝑑𝑒𝑛𝑐𝑒, 𝑡𝑒𝑠𝑡𝑠, 𝑣𝑎𝑙𝑖𝑑𝑎𝑡𝑜𝑟 𝑠, 𝑟𝑖𝑠𝑘, 𝑝𝑜𝑙𝑖𝑐𝑦, 𝑣𝑒𝑟 𝑠𝑖𝑜𝑛, 𝑟𝑜𝑙𝑙𝑏𝑎𝑐𝑘, 𝑢𝑡𝑖𝑙𝑖𝑡𝑦⟩.              (6)
+
+The graph 𝐺 𝑡 = (𝑉𝑡 , 𝐸 𝑡 ) contains skill nodes and policy-scoped edges. Edge types include reuse, compose, teach,
+package, audit, supersede, retire, and future-prior. A future mission may use a skill only if the mission context matches
+the skill’s scope and proof level.
+
+
+12 Proof Levels
+Proof levels calibrate authority. A high-risk public claim, a mainnet handoff, and an exploratory draft should not share
+one proof threshold.
+
+Level        Name                      Required posture                                                Memory effect
+L1           Structural / Demo         Mission structure, explicit Proof Debt, local artifact coher-   No durable Chronicle influ-
+                                       ence.                                                           ence.
+L2           Internal Review           Operator or internal reviewer confirms usefulness, scope,       Temporary reuse, clearly la-
+                                       and obvious safety.                                             beled.
+L3           External Review           Cross-source support or independent reviewer / AGI Node         Scoped reusable skill.
+                                       validation.
+L4           Mainnet Handoff           Handoff packet with validated evidence, job specification,      May inform external execu-
+                                       and settlement boundary.                                        tion preparation.
+L5           Chronicle / Formal        Multi-validator evidence, replay, baseline comparison, risk     Durable future mission influ-
+                                       gate, rollback condition.                                       ence.
+
+         Table 1: Proof levels. Higher levels increase validator burden, evidence strictness, replay duty, and authority.
+
+The selected proof level is a mission parameter, not a label added after the fact. It controls job decomposition, validator
+density, Evidence Docket strictness, and Chronicle threshold.
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                       5 / 11
+PROOF_LOOPS.md                                                         ⋄                                                       Vincent Boucher
+
+
+
+
+       Objective               Claim                      Proof Debt                    Custom Job
+     + proof level            boundary                     register                      Factory
+
+
+
+
+                                    Evidence                       Replay                        Reviewer                      Boundary
+                                    collection                   construction                    validation                      audit
+
+
+
+
+                                                                  Returned                           Candidate
+                                                                ProofBundles                        Skill Capsule
+
+
+
+
+                                                    Empty-by-design rule: no jobs exist before the objective and proof level are set.
+
+Figure 3: Proof Debt becomes custom AGI Jobs. The workbench is empty until the mission defines claims, proof level, and
+boundary.
+
+
+
+
+                                                                           validation
+                                     support
+                                                                                                             Admit
+                                                                                                          memory entry
+
+                                                                                             pass
+
+
+       Candidate                    Evidence                               Chronicle          missing proof          Repair
+         Skill                       Docket                                  Gate                                   AGI Jobs
+
+
+                                                                                          policy fail
+
+                                                                                                               Reject /
+                                                                                                              Quarantine
+                                      replay
+                                                                                risk
+
+
+                                                 Gate law: evidence becomes authority only through policy.
+
+Figure 4: Chronicle admission. A candidate skill can be admitted, repaired, rejected, or quarantined; unsupported candidates do
+not become future mission memory.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                                   6 / 11
+PROOF_LOOPS.md                                                      ⋄                                          Vincent Boucher
+
+
+
+
+13 On-chain Graph Root and Privacy Boundary
+The on-chain graph root is a public commitment, not the skill itself. The skill lives in the encrypted capsule, Evidence
+Docket, ProofBundles, replay manifests, validator attestations, risk ledgers, and Chronicle decision.
+A public root record may contain:
+
+                                              Listing 3: On-chain graph-root record.
+{
+    "agent": "john.agent.agi.eth",
+    "skill_id": "skill-001",
+    "graph_root": "0x...",
+    "evidence_root": "0x...",
+    "proofbundle_root": "0x...",
+    "policy_hash": "0x...",
+    "schema_hash": "0x...",
+    "attestation_root": "0x...",
+    "zk_proof_hash": "0x...",
+    "version": 1,
+    "status": "registered"
+}
+
+
+
+14 Future Mission Improvement
+The loop compounds only if future missions learn from admitted skills rather than from raw outputs. A future mission
+may use a validated skill as a capability prior if and only if:
+
+                  Influence(𝑠, 𝑀 ′ ) = Admitted(𝑠) ∧ ScopeMatch(𝑠, 𝑀 ′ ) ∧ Fresh(𝑠) ∧ ¬ Blocked(𝑠, 𝑀 ′ ).                      (7)
+
+If any condition fails, the system creates repair work instead of memory influence.
+
+
+15 Threat Model
+The central risks are authority errors, not just software defects.
+
+Threat                       Failure mode                                        Control
+Prompt contamination         Persuasive text enters memory as capability.        Chronicle gate; no durable memory without evi-
+                                                                                 dence.
+Proof leakage                Local draft is treated as validated proof.          Proof level labels, Evidence Docket state, blocked
+                                                                                 claims.
+Replay failure               A result cannot be reconstructed.                   Replay manifests, artifact hashes, baseline
+                                                                                 records.
+Validator capture            Weak skill admitted through bad review.             Multi-validator policies, challenge windows, rep-
+                                                                                 utation.
+Scope drift                  Skill used outside admitted envelope.               Scope tags, policy checks, rollback.
+Plaintext leakage            Private method or evidence exposed on-chain.        Encryption, commitments, ZK proofs, public/pri-
+                                                                                 vate boundary.
+Mainnet confusion            Local handoff treated as settlement.                Explicit wallet, escrow, posting, and settlement
+                                                                                 boundary.
+
+                 Table 2: Proof-loop threat model. The principal failure is unsupported authority over future work.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                      7 / 11
+PROOF_LOOPS.md                                                       ⋄                                                          Vincent Boucher
+
+
+
+
+         Identity & Scope                                                                                                Evidence
+          id, type, limits                                                                                            bundles, docket
+
+
+
+         Method & Replay                                                                                                Validators
+         procedure, tests                                        Validated                                             human, node
+                                                                   Skill
+                                                                   Node
+
+            Risk Ledger                                                                                                   Policy
+            misuse, drift                                                                                              proof, version
+
+
+
+         Repair Jobs                                                                                                            Retire /
+      if proof missing                                                                                                          Rollback
+
+                                                                Chronicle
+                                                                Memory
+
+
+
+
+             Object law: a skill is not a note. It is a capability record with evidence, scope, replay, policy, and rollback.
+
+  Figure 5: Validated skill object model. The skill carries operational semantics, proof, policy, and rollback, not merely text.
+
+
+
+
+        Private Skill        encrypt       Encrypted           commit             Roots +             register          On-chain
+          Capsule                           Capsule                               Hashes                               Graph Root
+
+
+
+
+                                                                                 ZK Policy
+                                                                                  Proof
+
+
+
+
+                                                Privacy law: plaintext private intelligence never goes public. Public author-
+                                                ity is coordinated through ciphertext, commitments, attestations, and proof.
+
+Figure 6: Public-private proof boundary. Ethereum should coordinate proof-bearing commitments and authorization, not expose
+private skill intelligence.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                                                    8 / 11
+PROOF_LOOPS.md                                               ⋄                                           Vincent Boucher
+
+
+
+
+16 Evaluation Program
+The system should be evaluated by its effect on future work, not by the number of pages, prompts, jobs, or graph nodes
+created.
+
+16.1 Metrics
+ • Chronicle precision: fraction of admitted skills that later pass replay or reuse tests.
+ • Reuse yield: improvement in future mission speed, quality, cost, or risk posture.
+ • Repair efficiency: proportion of failed candidates converted into useful AGI Jobs.
+ • Drift resistance: rate at which reused skills remain within scope.
+ • Boundary correctness: absence of local-live confusion or unsupported settlement claims.
+ • Evidence density: proportion of major claims linked to evidence, replay, or explicit uncertainty.
+
+16.2 Falsification tests
+The proof-loop claim should fail if any of the following hold under fair evaluation:
+1. Admitted skills do not improve future missions compared with notes or prompt libraries.
+2. Chronicle admission cannot prevent unsupported claims from entering future mission influence.
+3. Custom AGI Jobs do not retire Proof Debt more effectively than a static checklist.
+4. The on-chain root boundary cannot be explained to non-technical operators.
+5. The system increases confidence faster than it increases evidence.
+
+
+17 Artifact Standard
+A complete run should emit at minimum:
+
+   Minimum export
+
+   Mission Contract; Proof Debt Register; AGI Job Queue; ProofBundle Manifest; Evidence Docket; Verifier
+   Report; Chronicle Gate Decision; Validated Skill Capsule; Validated Skill Graph Update; On-chain Graph Root
+   Record; Reviewer Room; Action Graph; Claim Boundary; Rollback Plan.
+
+High-rigor runs add baseline comparison, replay manifest, stress tests, validator attestations, ZK policy proof, attestation
+root, cost ledger, risk ledger, external reviewer notes, and delayed-outcome monitor.
+
+
+18 Claim Boundary
+This paper defines an operating pattern and architecture. It does not claim achieved AGI, achieved ASI, empirical state
+of the art, legal certification, financial advice, security certification, live wallet support, live settlement, autonomous
+production authority, or external validation.
+Its claim is narrower and stronger: proof-gated loops make autonomous work inspectable, replayable, and governed.
+Stronger claims require Evidence Dockets, baselines, ProofBundles, replay logs, cost/risk ledgers, validator reports,
+delayed outcomes, and independent reproduction.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                               9 / 11
+PROOF_LOOPS.md                                         ⋄                                      Vincent Boucher
+
+
+
+
+19 Conclusion
+PROOF_LOOPS.md is the compact law of GoalOS-style autonomous work. It says that useful AI output is not enough.
+Work must become proof; proof must become evidence; evidence must pass Chronicle; Chronicle must admit a bounded
+skill; and only then can memory improve future missions.
+
+  Final line
+
+  Do not remember what was merely said. Remember what was proven, bounded, replayable, and safe to reuse.
+
+
+                                  Proof today. Capability forever.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                  10 / 11
+PROOF_LOOPS.md                                         ⋄                                      Vincent Boucher
+
+
+
+
+References
+[1] Vincent Boucher. PROOF_LOOPS.md: Field Notes on Machines That Turn Work Into Capability. GoalOS
+    operating note, 2026.
+[2] Vincent Boucher. GoalOS Mission OS: The Proof OS for Autonomous AI Work. Publication-safe, claim-bounded
+    edition, 2026.
+[3] Vincent Boucher. GoalOS: The Validated Skill Graph. Montreal.AI Research, 2026.
+[4] Vincent Boucher. GoalOS V97.4: Private On-Chain Validated Skill Graphs. Montreal.AI Research, 2026.
+[5] Vincent Boucher. GoalOS: The Proof-of-Evolution Constitution, AEP-001. Institutional Standard, 2026.
+[6] Vincent Boucher. AGI ALPHA: A Scalable Substrate for Intelligence Organizations. Montreal.AI / QUEBEC.AI
+    ecosystem context, 2026.
+[7] Vincent Boucher. GoalOS V85: A Unified Sovereign Proof Economy Operating System. GoalOS Research Draft,
+    2026.
+
+
+
+
+QUEBEC.AI & MONTREAL.AI                                                                                    11 / 11
+

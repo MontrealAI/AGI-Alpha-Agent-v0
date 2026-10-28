@@ -1,0 +1,347 @@
+{
+  "productionSHA256": "5c54f59287acef6e9b9db4fbbabd613994df40c0a9f6ea7284a8a8faf10347a2",
+  "effects": {
+    "B": {
+      "id": "verified-registry-composition-v1",
+      "assetSHA256": "518912e036fed53f7012c2019476b8678999991f0a0dcb13ef7e1ca98def26a9",
+      "acceptanceEvidenceSHA256": "ebfb82f82da41d2c0737cce3e176f3575bb3644143cc6fdb7174787e7db5fb6a",
+      "tested": true,
+      "researchPrototypeConstructed": true,
+      "effects": {
+        "providerMinutesSaved": 0,
+        "computeAndToolCentsSaved": 0,
+        "customerReviewMinutesSaved": 0
+      },
+      "effectEvidence": {
+        "providerMinutesSaved": "Human effort unmeasured; zero incremental economic credit, not evidence of zero human work.",
+        "computeAndToolCentsSaved": "Inclusive measured A-minus-B CPU -0.08966751924444472 seconds per fresh mission, priced only at assumed USD1/core-hour. Signed subcent residual retained. Failed/non-equivalent output receives no saving credit.",
+        "customerReviewMinutesSaved": "Customer effort, trust, willingness to pay and price premium unmeasured; no incremental credit."
+      },
+      "unroundedComputeSavingsMicrocentsPerJob": -2491,
+      "measuredCpuSecondsSavedPerMission": -0.08966751924444472,
+      "primaryObservations": 15,
+      "designedStressObservationsNotUsedForCalibration": 3,
+      "sharedCPUAllocation": "Inclusive total CPU beyond individual rows is charged uniformly across18fresh outcomes; no shared overhead is omitted.",
+      "exactConditionalComputeCentsSavedPerMission": -0.0024907644234567973,
+      "equivalentAcceptedOutcomes": true,
+      "actualAssetAdmission": true,
+      "actualAssetUsedOnFreshWork": true,
+      "actualCompleteMonetaryCost": null,
+      "liveIdentityEnforcement": "NOT RUN"
+    },
+    "C": {
+      "id": "verified-graph-composition-v1",
+      "assetSHA256": "9103a6fe7d905f0df720ddf3911aca267df3609fd517703a6dcba4fd2a1af64a",
+      "acceptanceEvidenceSHA256": "ebfb82f82da41d2c0737cce3e176f3575bb3644143cc6fdb7174787e7db5fb6a",
+      "tested": true,
+      "researchPrototypeConstructed": true,
+      "effects": {
+        "providerMinutesSaved": 0,
+        "computeAndToolCentsSaved": 0,
+        "customerReviewMinutesSaved": 0
+      },
+      "effectEvidence": {
+        "providerMinutesSaved": "Human effort unmeasured; zero incremental economic credit, not evidence of zero human work.",
+        "computeAndToolCentsSaved": "Inclusive measured A-minus-C CPU -0.07077360595555571 seconds per fresh mission, priced only at assumed USD1/core-hour. Signed subcent residual retained. Failed/non-equivalent output receives no saving credit.",
+        "customerReviewMinutesSaved": "Customer effort, trust, willingness to pay and price premium unmeasured; no incremental credit."
+      },
+      "unroundedComputeSavingsMicrocentsPerJob": -1966,
+      "measuredCpuSecondsSavedPerMission": -0.07077360595555571,
+      "primaryObservations": 15,
+      "designedStressObservationsNotUsedForCalibration": 3,
+      "sharedCPUAllocation": "Inclusive total CPU beyond individual rows is charged uniformly across18fresh outcomes; no shared overhead is omitted.",
+      "exactConditionalComputeCentsSavedPerMission": -0.001965933498765436,
+      "equivalentAcceptedOutcomes": true,
+      "actualAssetAdmission": true,
+      "actualAssetUsedOnFreshWork": true,
+      "actualCompleteMonetaryCost": null,
+      "liveIdentityEnforcement": "NOT RUN"
+    }
+  },
+  "directAlternative": {
+    "schema": "agi-alpha-verified-capability-direct-alternative/v1",
+    "primaryCount": 15,
+    "arms": {
+      "A": {
+        "meanCPUSeconds": 1.5328868441555554,
+        "meanElapsedSeconds": 1.5976115100333335
+      },
+      "B": {
+        "meanCPUSeconds": 1.6225543634000001,
+        "meanElapsedSeconds": 1.6789825580555569
+      },
+      "C": {
+        "meanCPUSeconds": 1.6036604501111111,
+        "meanElapsedSeconds": 1.6658715492888907
+      },
+      "D": {
+        "meanCPUSeconds": 1.2988555516888887,
+        "meanElapsedSeconds": 1.3845540436333335
+      }
+    },
+    "comparisons": {
+      "A": {
+        "equivalentAcceptedOutputs": true,
+        "CPUSecondsSavedVersusD": -0.23403129246666676,
+        "elapsedSecondsSavedVersusD": -0.2130574664,
+        "DUsesLessMeasuredCPU": true,
+        "assumedTariffUSDSavedPerUse": [
+          {
+            "USDPerCoreHour": 0.1,
+            "deltaUSD": -0.000006500869235185189
+          },
+          {
+            "USDPerCoreHour": 1,
+            "deltaUSD": -0.00006500869235185187
+          },
+          {
+            "USDPerCoreHour": 10,
+            "deltaUSD": -0.0006500869235185187
+          }
+        ]
+      },
+      "B": {
+        "equivalentAcceptedOutputs": true,
+        "CPUSecondsSavedVersusD": -0.3236988117111115,
+        "elapsedSecondsSavedVersusD": -0.2944285144222234,
+        "DUsesLessMeasuredCPU": true,
+        "assumedTariffUSDSavedPerUse": [
+          {
+            "USDPerCoreHour": 0.1,
+            "deltaUSD": -0.000008991633658641985
+          },
+          {
+            "USDPerCoreHour": 1,
+            "deltaUSD": -0.00008991633658641985
+          },
+          {
+            "USDPerCoreHour": 10,
+            "deltaUSD": -0.0008991633658641986
+          }
+        ]
+      },
+      "C": {
+        "equivalentAcceptedOutputs": true,
+        "CPUSecondsSavedVersusD": -0.30480489842222247,
+        "elapsedSecondsSavedVersusD": -0.28131750565555724,
+        "DUsesLessMeasuredCPU": true,
+        "assumedTariffUSDSavedPerUse": [
+          {
+            "USDPerCoreHour": 0.1,
+            "deltaUSD": -0.000008466802733950626
+          },
+          {
+            "USDPerCoreHour": 1,
+            "deltaUSD": -0.00008466802733950624
+          },
+          {
+            "USDPerCoreHour": 10,
+            "deltaUSD": -0.0008466802733950624
+          }
+        ]
+      }
+    },
+    "completeDAdoptionCost": null,
+    "globalEconomicAdmission": null,
+    "scope": "Direct D is a real measured alternative. The native-history A/B/C market comparison does not establish superiority or global adoption over D. Complete integration, attention and historical costs remain unknown."
+  },
+  "costAssumptions": {
+    "schema": "agi-alpha-verified-capability-costs/v1",
+    "currency": "USD",
+    "classification": "EXPLICIT_COMPLETE_CATEGORY_SCENARIOS_NOT_INVOICES_OR_EMPIRICAL_BOUNDS",
+    "original_costs_counted_once": "Original first-asset history remains in inherited market. These are new incremental composition/layer allocations. Open-source prior research is not silently recovered; actual fully loaded cost stays unknown.",
+    "rows": [
+      {
+        "id": "priorDiscovery",
+        "canonicalCategory": "priorDiscovery",
+        "referenceCents": {
+          "B": 500,
+          "C": 500
+        },
+        "basis": "scenario",
+        "explanation": "Incremental prior-source discovery allocation; original first-asset historical allowance stays in inherited market accounting."
+      },
+      {
+        "id": "discovery",
+        "canonicalCategory": "discovery",
+        "referenceCents": {
+          "B": 500,
+          "C": 500
+        },
+        "basis": "scenario",
+        "explanation": "New bounded registry/graph design and opportunity search."
+      },
+      {
+        "id": "rejectedCandidates",
+        "canonicalCategory": "rejectedCandidates",
+        "referenceCents": {
+          "B": 250,
+          "C": 250
+        },
+        "basis": "scenario",
+        "explanation": "Rejected designs and unsuccessful criticism/correction."
+      },
+      {
+        "id": "construction",
+        "canonicalCategory": "construction",
+        "referenceCents": {
+          "B": 1500,
+          "C": 1500
+        },
+        "basis": "scenario",
+        "explanation": "New executable composition construction; inherited production asset construction is not charged again."
+      },
+      {
+        "id": "validation",
+        "canonicalCategory": "verification",
+        "referenceCents": {
+          "B": 1000,
+          "C": 1000
+        },
+        "basis": "scenario",
+        "explanation": "Independent technical admission and composed-workflow validation."
+      },
+      {
+        "id": "identityVerification",
+        "canonicalCategory": "verification",
+        "referenceCents": {
+          "B": 500,
+          "C": 500
+        },
+        "basis": "scenario",
+        "explanation": "Authenticated fixture authority and attestation checks; live ENS is not run."
+      },
+      {
+        "id": "indexing",
+        "canonicalCategory": "construction",
+        "referenceCents": {
+          "B": 200,
+          "C": 400
+        },
+        "basis": "scenario",
+        "explanation": "Comparable search indexes; C additionally constructs typed adjacency relationships."
+      },
+      {
+        "id": "proofGenerationAndChecking",
+        "canonicalCategory": "verification",
+        "referenceCents": {
+          "B": 400,
+          "C": 400
+        },
+        "basis": "scenario",
+        "explanation": "Both arms verify identical authenticated catalogue/root integrity and inclusion proofs; graph topology is isolated from proof access."
+      },
+      {
+        "id": "retrieval",
+        "canonicalCategory": "integration",
+        "referenceCents": {
+          "B": 200,
+          "C": 200
+        },
+        "basis": "scenario",
+        "explanation": "Retrieval and exact-evidence availability integration."
+      },
+      {
+        "id": "composition",
+        "canonicalCategory": "integration",
+        "referenceCents": {
+          "B": 500,
+          "C": 500
+        },
+        "basis": "scenario",
+        "explanation": "Connect actual selected methods to the existing native runtime."
+      },
+      {
+        "id": "revalidation",
+        "canonicalCategory": "verification",
+        "referenceCents": {
+          "B": 200,
+          "C": 200
+        },
+        "basis": "scenario",
+        "explanation": "Implementation of expiry, revocation, source-change and repair checks."
+      },
+      {
+        "id": "storage",
+        "canonicalCategory": "modelAndTools",
+        "referenceCents": {
+          "B": 100,
+          "C": 100
+        },
+        "basis": "scenario",
+        "explanation": "Evidence and record storage setup allocation."
+      },
+      {
+        "id": "researcherContribution",
+        "canonicalCategory": "researcherContribution",
+        "referenceCents": {
+          "B": 1000,
+          "C": 1000
+        },
+        "basis": "scenario",
+        "explanation": "Research contributions outside execution, retained as an explicit cost."
+      },
+      {
+        "id": "authoringInferenceAndTools",
+        "canonicalCategory": "modelAndTools",
+        "referenceCents": {
+          "B": 2000,
+          "C": 2000
+        },
+        "basis": "scenario",
+        "explanation": "Authoring/inference/tool allocation; actual invoice and token use unknown."
+      }
+    ],
+    "profiles": {
+      "low": {
+        "multiplier": 0.25
+      },
+      "reference": {
+        "multiplier": 1
+      },
+      "high": {
+        "multiplier": 4
+      },
+      "actual-unknown": {
+        "multiplier": null
+      }
+    },
+    "weeklyRows": [
+      {
+        "id": "maintenance",
+        "referenceCents": {
+          "B": 20,
+          "C": 20
+        },
+        "explanation": "Identical recurring validation, freshness and record upkeep allocation."
+      },
+      {
+        "id": "storage",
+        "referenceCents": {
+          "B": 5,
+          "C": 5
+        },
+        "explanation": "Identical recurring evidence storage allocation."
+      },
+      {
+        "id": "graphIndexMaintenance",
+        "referenceCents": {
+          "B": 0,
+          "C": 15
+        },
+        "explanation": "Illustrative additional graph adjacency index maintenance, not an assumed common revalidation difference."
+      }
+    ],
+    "actualUnknown": [
+      "authoring inference",
+      "active human attention",
+      "model/tool invoices",
+      "complete construction/validation costs",
+      "future maintenance and storage"
+    ],
+    "zeroNotFree": "A zero structural feature allocation means that arm does not implement that extra feature. It does not assert zero unknown whole-service or research costs.",
+    "sameEvidenceAndProofPolicy": true
+  },
+  "nativeComparisonOnly": true,
+  "actualFullyLoadedCosts": null
+}

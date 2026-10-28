@@ -1,0 +1,61 @@
+{
+  "schema": "agi-alpha-measurement-wrapper-qualification/v1",
+  "scope": "Single unchanged development baseline only; no15primary or3stress outcomes executed",
+  "checks": {
+    "accepted_baseline": true,
+    "job_identity": true,
+    "semantic_key": true,
+    "native_route": true,
+    "final_source": true,
+    "clean_exit": true,
+    "complete_descendants": true,
+    "cpu_reconciles": true,
+    "no_authority": true,
+    "no_application_qualification": true
+  },
+  "passed": 10,
+  "failed": 0,
+  "measurement": {
+    "schema": "agi-alpha-complete-production-measurement/v1",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/scratch/56915413375a/verified-capability/src/production.py",
+      "--job",
+      "/workspace/scratch/56915413375a/verified-capability/inputs/missions-v1/development-unchanged-lock/job.json",
+      "--out",
+      "/workspace/scratch/56915413375a/verified-capability/evidence/development/measurement-wrapper-01/payload",
+      "--route",
+      "native"
+    ],
+    "returncode": 0,
+    "wall_seconds": 1.3187026689993218,
+    "child_cpu_seconds": 1.2662870000000002,
+    "measurement_driver_cpu_seconds": 0.063815899,
+    "cpu_seconds": 1.3301028990000001,
+    "max_child_rss_kib": 44220,
+    "descendant_cpu_complete": true,
+    "scope": "Producer interpreter startup, all waited subprocess descendants and measurement-driver CPU since process start. Parent campaign/select/serialization CPU measured separately.",
+    "unmeasured": "Final receipt serialization after CPU sampling; no human attention or authoring inference estimate."
+  },
+  "source": [
+    {
+      "path": "src/run_campaign.mjs",
+      "sha256": "005f111e5240e4f9ec25bfecee8cf22c4ebe23ff54d266ccea141df4d3c18f8d"
+    },
+    {
+      "path": "src/measure_production.py",
+      "sha256": "9682b04c0dee11acdd874d18d78f892c61097cb721559af02ef4a0ac7f674315"
+    },
+    {
+      "path": "src/production.py",
+      "sha256": "6b8d9be54ccd5752bfe7b7a58f3fe4b2b92614b0f494fc498281e1edb99a7663"
+    },
+    {
+      "path": "src/acceptance.py",
+      "sha256": "d43be6d98325901b40356db18bf92983d8b1312e294163b14da87a7913984a3d"
+    }
+  ],
+  "baseline_packet_sha256": "0823445e60bd20108e90d53f751294f937cb766f5a2e6ca4a1f084ccedc05e4f",
+  "no_fresh_outcomes": true,
+  "remaining_limit": "Final receipt and summary serialization after sampled CPU; human and authoring costs unknown."
+}

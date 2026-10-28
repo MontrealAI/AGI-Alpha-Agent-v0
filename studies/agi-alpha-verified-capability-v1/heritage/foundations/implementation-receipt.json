@@ -1,0 +1,43 @@
+{
+  "schema": "verified-capability-authority-implementation-receipt/v1",
+  "mode": "FIXTURE_ONLY",
+  "live_identity_enforcement": "NOT_RUN",
+  "credentials_created": 0,
+  "network_registry_queries": 0,
+  "onchain_transactions": 0,
+  "test_results": {
+    "authority_passed": 49,
+    "commitments_passed": 26,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cross_language": "Python independently reproduced canonical typed leaves, odd-node Merkle root and complete graph epoch",
+  "test_commands": [
+    "node tests/authority.test.mjs",
+    "node tests/commitments.test.mjs"
+  ],
+  "development_failure": "Initial Python stdin cross-language subprocess blocked in this host. Its single owned Node process was terminated. Bounded argv fixture runner passed. No production source or semantic gate was weakened.",
+  "files": {
+    "src/authority.mjs": {
+      "bytes": 13737,
+      "sha256": "655ce76269356b038deb5ef5a18aef7e1766c8529e19dac6c8391464ee83ea40"
+    },
+    "src/commitments.mjs": {
+      "bytes": 9972,
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    },
+    "fixtures/authority.json": {
+      "bytes": 16257,
+      "sha256": "c130af4be60ab8ab5e61292ddbdd7f9588f2f8817c0edca150ccfc8709624da4"
+    },
+    "tests/authority.test.mjs": {
+      "bytes": 13250,
+      "sha256": "28cf396defd646b800cab69974ff35f58a9ce5d629fa34820fae6ac71d838412"
+    },
+    "tests/commitments.test.mjs": {
+      "bytes": 9223,
+      "sha256": "a65c09463ef060a800891b403e7431fdcf014852063f3e49ce46b6e43cf861d4"
+    }
+  },
+  "independent_review": "Same-session separate implementation/evidence inspection; not external organizational independence."
+}

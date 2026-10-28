@@ -1,0 +1,286 @@
+{
+  "schema": "agi-alpha-publication-ci-disposition/v1",
+  "status": "DRAFT_BLOCKED_BY78FROZEN_SOURCE_LINT_FINDINGS",
+  "inspected_head": "a98276d09f92f5ef9dafe8c63c360296d1e1448d",
+  "hosted_ci_run": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40393144646",
+  "hosted_full_lint_findings": 115,
+  "hosted_full_smoke": "SUCCESS",
+  "frozen_findings": 78,
+  "files": [
+    {
+      "repo_path": "studies/agi-alpha-verified-capability-v1/paper/build.py",
+      "study_path": "paper/build.py",
+      "findings": 37,
+      "rules": {
+        "F841": 2,
+        "E702": 28,
+        "E701": 7
+      },
+      "frozen_in_both_manifests": false,
+      "origin": "new study publication builder"
+    },
+    {
+      "repo_path": "studies/agi-alpha-verified-capability-v1/production/incumbent.py",
+      "study_path": "production/incumbent.py",
+      "findings": 20,
+      "rules": {
+        "E702": 14,
+        "E731": 1,
+        "E701": 5
+      },
+      "frozen_in_both_manifests": true,
+      "origin": "byte-preserved inherited production"
+    },
+    {
+      "repo_path": "studies/agi-alpha-verified-capability-v1/production/retained.py",
+      "study_path": "production/retained.py",
+      "findings": 39,
+      "rules": {
+        "E702": 19,
+        "E701": 20
+      },
+      "frozen_in_both_manifests": true,
+      "origin": "byte-preserved inherited production"
+    },
+    {
+      "repo_path": "studies/agi-alpha-verified-capability-v1/src/measure_production.py",
+      "study_path": "src/measure_production.py",
+      "findings": 14,
+      "rules": {
+        "E702": 11,
+        "E701": 3
+      },
+      "frozen_in_both_manifests": true,
+      "origin": "new study scientific source"
+    },
+    {
+      "repo_path": "studies/agi-alpha-verified-capability-v1/src/validate_dossier.py",
+      "study_path": "src/validate_dossier.py",
+      "findings": 5,
+      "rules": {
+        "E702": 5
+      },
+      "frozen_in_both_manifests": true,
+      "origin": "new study scientific source"
+    }
+  ],
+  "publication_builder_correction": {
+    "schema": "agi-alpha-publication-builder-lint-correction/v1",
+    "status": "STAGED_PUBLICATION_ONLY_PASS; SCIENTIFIC_LINT_REMAINS_BLOCKING",
+    "created_at_utc": "2026-10-26T20:23:41.178413+00:00",
+    "original": {
+      "path": "/workspace/scratch/56915413375a/publication-correction/paper_build.original.py",
+      "bytes": 42997,
+      "sha256": "ade29eee501bc2c2093b7e2e6ba5002b61255db84a12e8eb7a3eee06a8d15930"
+    },
+    "original_git_blob_sha1": "a73f3867515302f2eb81db00a0b1da051104a8f5",
+    "staged": {
+      "path": "/workspace/scratch/56915413375a/publication-correction/paper_build.py",
+      "bytes": 46374,
+      "sha256": "40c17ad36f0440475d43f12784c1acd28f2f80e7ad1eea7f86a3a15ec7a054af"
+    },
+    "patch": {
+      "path": "/workspace/scratch/56915413375a/publication-correction/paper-build-lint.patch",
+      "bytes": 76891,
+      "sha256": "a223c68529ed570faa2fbfc93cc8accead36ce30c1c9a7089628a967b5ea3058"
+    },
+    "verification_script": {
+      "path": "/workspace/scratch/56915413375a/publication-correction/verify_builder.py",
+      "bytes": 6923,
+      "sha256": "a2071266e5dfe47be6a633d39abecacb36aea3543b1d882c29bbd33fb8067202"
+    },
+    "toolchain": {
+      "python": "3.12.14",
+      "ruff": "0.12.5",
+      "binary": {
+        "path": "/workspace/scratch/56915413375a/publication-correction/tools/ruff",
+        "bytes": 35463248,
+        "sha256": "7f8ae397b72e56e637cc85043042d22f069961169e01a216c400f0dc0ce333ac"
+      },
+      "public_pypi_wheel": {
+        "path": "/workspace/scratch/56915413375a/publication-correction/tools/ruff-0.12.5-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "bytes": 12937465,
+        "sha256": "2c47dea6ae39421851685141ba9734767f960113d51e83fd7bb9958d5be8763a"
+      },
+      "existing_repository_policy": {
+        "path": "/workspace/scratch/56915413375a/publication-correction/hosted-ci/policy-snapshots/pyproject.toml",
+        "bytes": 7787,
+        "sha256": "042380c2e3e90872027acc1053ebef09472cc34db142318af1ff2390aec5483f"
+      },
+      "policy_changes": 0,
+      "new_waivers_or_exclusions": 0
+    },
+    "before_findings": {
+      "total": 37,
+      "by_rule": {
+        "E701": 7,
+        "E702": 28,
+        "F841": 2
+      }
+    },
+    "after_findings": {
+      "total": 0,
+      "by_rule": {}
+    },
+    "ast_verification": {
+      "status": "PASS",
+      "ignored": "AST source locations and exactly two unused assignment identifier renames",
+      "renames": {
+        "_findings": "findings",
+        "_pc": "pc"
+      },
+      "normalized_ast_sha256": "a2892935be1aa2ee87cd0063e79b47ff4bac2f1012ce652dd99e3252e3eeb74c",
+      "rhs_expressions_and_read_side_effects_preserved": true,
+      "constant_strings_and_control_flow_preserved": true
+    },
+    "checks": {
+      "version": {
+        "command": [
+          "/workspace/scratch/56915413375a/publication-correction/tools/ruff",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "ruff 0.12.5\n",
+        "stderr": ""
+      },
+      "before": {
+        "command": [
+          "/workspace/scratch/56915413375a/publication-correction/tools/ruff",
+          "check",
+          "--config",
+          "/workspace/scratch/56915413375a/publication-correction/hosted-ci/policy-snapshots/pyproject.toml",
+          "--output-format",
+          "json",
+          "/workspace/scratch/56915413375a/publication-correction/paper_build.original.py"
+        ],
+        "exit_code": 1,
+        "stdout": "[\n  {\n    \"cell\": null,\n    \"code\": \"F841\",\n    \"end_location\": {\n      \"column\": 13,\n      \"row\": 129\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 16,\n            \"row\": 129\n          },\n          \"location\": {\n            \"column\": 5,\n            \"row\": 129\n          }\n        }\n      ],\n      \"message\": \"Remove assignment to unused variable `findings`\"\n    },\n    \"location\": {\n      \"column\": 5,\n      \"row\": 129\n    },\n    \"message\": \"Local variable `findings` is assigned to but never used\",\n    \"noqa_row\": 129,\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-variable\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 42,\n      \"row\": 158\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 41,\n      \"row\": 158\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 158,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 67,\n      \"row\": 310\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 66,\n      \"row\": 310\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 310,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 123,\n      \"row\": 310\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 122,\n      \"row\": 310\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 310,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 58,\n      \"row\": 320\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 57,\n      \"row\": 320\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 320,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"F841\",\n    \"end_location\": {\n      \"column\": 7,\n      \"row\": 329\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 10,\n            \"row\": 329\n          },\n          \"location\": {\n            \"column\": 5,\n            \"row\": 329\n          }\n        }\n      ],\n      \"message\": \"Remove assignment to unused variable `pc`\"\n    },\n    \"location\": {\n      \"column\": 5,\n      \"row\": 329\n    },\n    \"message\": \"Local variable `pc` is assigned to but never used\",\n    \"noqa_row\": 329,\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-variable\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 29,\n      \"row\": 354\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 28,\n      \"row\": 354\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 354,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 64,\n      \"row\": 354\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 63,\n      \"row\": 354\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 354,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 32,\n      \"row\": 370\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 31,\n      \"row\": 370\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 370,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 38,\n      \"row\": 405\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 37,\n      \"row\": 405\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 405,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 59,\n      \"row\": 409\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 58,\n      \"row\": 409\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 409,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 47,\n      \"row\": 410\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 46,\n      \"row\": 410\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 410,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 37,\n      \"row\": 418\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 36,\n      \"row\": 418\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 418,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 113,\n      \"row\": 418\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 112,\n      \"row\": 418\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 418,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 48,\n      \"row\": 420\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 47,\n      \"row\": 420\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 420,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 28,\n      \"row\": 421\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 27,\n      \"row\": 421\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 421,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 36,\n      \"row\": 422\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 35,\n      \"row\": 422\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 422,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 63,\n      \"row\": 423\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 62,\n      \"row\": 423\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 423,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 83,\n      \"row\": 423\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 82,\n      \"row\": 423\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 423,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 30,\n      \"row\": 432\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 29,\n      \"row\": 432\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 432,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 55,\n      \"row\": 432\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 54,\n      \"row\": 432\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 432,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 48,\n      \"row\": 434\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 47,\n      \"row\": 434\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 434,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 82,\n      \"row\": 434\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 81,\n      \"row\": 434\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 434,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 93,\n      \"row\": 434\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 92,\n      \"row\": 434\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 434,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 19,\n      \"row\": 435\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 18,\n      \"row\": 435\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 435,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 61,\n      \"row\": 437\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 60,\n      \"row\": 437\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 437,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 69,\n      \"row\": 438\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 68,\n      \"row\": 438\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 438,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 73,\n      \"row\": 439\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 72,\n      \"row\": 439\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 439,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 47,\n      \"row\": 440\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 46,\n      \"row\": 440\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 440,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 67,\n      \"row\": 440\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 66,\n      \"row\": 440\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 440,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 31,\n      \"row\": 448\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 30,\n      \"row\": 448\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 448,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 30,\n      \"row\": 451\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 29,\n      \"row\": 451\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 451,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 24,\n      \"row\": 452\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 23,\n      \"row\": 452\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 452,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 31,\n      \"row\": 457\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 30,\n      \"row\": 457\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 457,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 33,\n      \"row\": 462\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 32,\n      \"row\": 462\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 462,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E702\",\n    \"end_location\": {\n      \"column\": 87,\n      \"row\": 469\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 86,\n      \"row\": 469\n    },\n    \"message\": \"Multiple statements on one line (semicolon)\",\n    \"noqa_row\": 469,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-semicolon\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E701\",\n    \"end_location\": {\n      \"column\": 25,\n      \"row\": 476\n    },\n    \"filename\": \"/workspace/scratch/56915413375a/publication-correction/paper_build.original.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 24,\n      \"row\": 476\n    },\n    \"message\": \"Multiple statements on one line (colon)\",\n    \"noqa_row\": 476,\n    \"url\": \"https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon\"\n  }\n]",
+        "stderr": ""
+      },
+      "after": {
+        "command": [
+          "/workspace/scratch/56915413375a/publication-correction/tools/ruff",
+          "check",
+          "--config",
+          "/workspace/scratch/56915413375a/publication-correction/hosted-ci/policy-snapshots/pyproject.toml",
+          "--output-format",
+          "json",
+          "/workspace/scratch/56915413375a/publication-correction/paper_build.py"
+        ],
+        "exit_code": 0,
+        "stdout": "[]",
+        "stderr": ""
+      },
+      "format": {
+        "command": [
+          "/workspace/scratch/56915413375a/publication-correction/tools/ruff",
+          "format",
+          "--check",
+          "--config",
+          "/workspace/scratch/56915413375a/publication-correction/hosted-ci/policy-snapshots/pyproject.toml",
+          "/workspace/scratch/56915413375a/publication-correction/paper_build.py"
+        ],
+        "exit_code": 0,
+        "stdout": "1 file already formatted\n",
+        "stderr": ""
+      },
+      "py_compile": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "py_compile",
+          "/workspace/scratch/56915413375a/publication-correction/paper_build.py"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    "preservation": {
+      "original_builder_unchanged": true,
+      "original_pdf": {
+        "path": "/workspace/scratch/56915413375a/verified-capability/paper/AGI_ALPHA_Economy_of_Verified_Capability.pdf",
+        "bytes": 216291,
+        "sha256": "2c6060f57d1fb1d99bbcf59d3bbc7d5959a749d45f49fc15388934569828931c"
+      },
+      "frozen_scientific_sources": [
+        {
+          "repo_path": "studies/agi-alpha-verified-capability-v1/production/incumbent.py",
+          "study_path": "production/incumbent.py",
+          "findings": 20,
+          "rules": {
+            "E702": 14,
+            "E731": 1,
+            "E701": 5
+          },
+          "frozen_in_both_manifests": true,
+          "origin": "byte-preserved inherited production",
+          "local_identity": {
+            "path": "/workspace/scratch/56915413375a/verified-capability/production/incumbent.py",
+            "bytes": 3867,
+            "sha256": "a84749b2ca63902d3ab2a86c78bb599d651c427707ebc1193c1622c5ca95890f"
+          },
+          "status": "UNMODIFIED; BLOCKING"
+        },
+        {
+          "repo_path": "studies/agi-alpha-verified-capability-v1/production/retained.py",
+          "study_path": "production/retained.py",
+          "findings": 39,
+          "rules": {
+            "E702": 19,
+            "E701": 20
+          },
+          "frozen_in_both_manifests": true,
+          "origin": "byte-preserved inherited production",
+          "local_identity": {
+            "path": "/workspace/scratch/56915413375a/verified-capability/production/retained.py",
+            "bytes": 7586,
+            "sha256": "9d223262ab58043c6d03da24384c13d75f362547d72a5d94bf662f75e9a7f471"
+          },
+          "status": "UNMODIFIED; BLOCKING"
+        },
+        {
+          "repo_path": "studies/agi-alpha-verified-capability-v1/src/measure_production.py",
+          "study_path": "src/measure_production.py",
+          "findings": 14,
+          "rules": {
+            "E702": 11,
+            "E701": 3
+          },
+          "frozen_in_both_manifests": true,
+          "origin": "new study scientific source",
+          "local_identity": {
+            "path": "/workspace/scratch/56915413375a/verified-capability/src/measure_production.py",
+            "bytes": 2313,
+            "sha256": "9682b04c0dee11acdd874d18d78f892c61097cb721559af02ef4a0ac7f674315"
+          },
+          "status": "UNMODIFIED; BLOCKING"
+        },
+        {
+          "repo_path": "studies/agi-alpha-verified-capability-v1/src/validate_dossier.py",
+          "study_path": "src/validate_dossier.py",
+          "findings": 5,
+          "rules": {
+            "E702": 5
+          },
+          "frozen_in_both_manifests": true,
+          "origin": "new study scientific source",
+          "local_identity": {
+            "path": "/workspace/scratch/56915413375a/verified-capability/src/validate_dossier.py",
+            "bytes": 1682,
+            "sha256": "b631ae66108b9416212dd6a1eb50216386522aa4289ff36a2ae7516c399fe60f"
+          },
+          "status": "UNMODIFIED; BLOCKING"
+        }
+      ],
+      "remaining_blocking_findings": 78,
+      "scientific_experiment_reruns": 0,
+      "publication_builder_executions": 0,
+      "original_paper_rebuilds": 0,
+      "external_publications_by_this_repair": 0
+    },
+    "scope": "Formatting and two unused binding renames in a separate staging copy only. No original source, PDF, result, manifest, lint policy or waiver was changed. This scoped pass is not a full-repository or hosted-current-head CI pass."
+  },
+  "policy": "Existing Fast Release Policy keeps Ruff blocking; existing exact13E721 compatibility profile does not cover these findings. No scientific source, lint configuration or compatibility profile was changed.",
+  "original_artifacts": "Canonical scientific companion, PDF, LaTeX source archive and HTML stay unchanged. This is a separately recorded publication-source overlay, not a second scientific confirmation or software-release qualification."
+}

@@ -1,0 +1,17 @@
+{
+  "status": "OPEN_UNTIL_REVIEW_COMPLETE",
+  "findings": [
+    {
+      "id": "F1",
+      "finding": "First baseline evidence predates final producer review fields; catalog could admit changed source from old accepted flag.",
+      "substantiated": true,
+      "correction": "Bind baseline source manifest digest and every executed source file to current exact implementation before constructing catalog; use final-source baseline.",
+      "preserved": [
+        "evidence/development/native-baseline-01",
+        "evidence/development/catalog-01"
+      ],
+      "phase": "Before confirmation",
+      "reviewer": "same-session independent runtime auditor"
+    }
+  ]
+}
