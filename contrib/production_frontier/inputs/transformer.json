@@ -1,0 +1,280 @@
+{
+  "beneficiary": "A hypothetical consenting utility consortium",
+  "binding_constraint": "Shared manufacturing inputs, two site interfaces and an independently checked acceptance condition",
+  "brief_id": "transformer-103",
+  "capabilities": [],
+  "cost_cap_micro_usd": 15000000000,
+  "input_mode": "authored-simulation",
+  "limitations": [
+    "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+    "Original relationships are represented as declarations and have not been independently translated from engineering source",
+    "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+  ],
+  "obligations": [
+    "original-interface",
+    "independent-acceptance",
+    "no-inferred-authority"
+  ],
+  "recipes": [
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "raw-a": 4
+      },
+      "description": "Authored transformer model operation accept-a; no external action",
+      "estimated_cost_micro_usd": 200000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "usable-a": 4
+      },
+      "provides": [],
+      "recipe_id": "accept-a",
+      "requires": [
+        "interface-a"
+      ],
+      "schema_version": 1,
+      "seconds": 300,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {},
+      "description": "Authored transformer model operation common-design; no external action",
+      "estimated_cost_micro_usd": 1000000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "proposed-construction",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {},
+      "provides": [
+        "shared-spec"
+      ],
+      "recipe_id": "common-design",
+      "requires": [
+        "interface-a",
+        "interface-b"
+      ],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {},
+      "description": "Authored transformer model operation measure-b; no external action",
+      "estimated_cost_micro_usd": 250000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {},
+      "provides": [
+        "interface-b"
+      ],
+      "recipe_id": "measure-b",
+      "requires": [],
+      "schema_version": 1,
+      "seconds": 300,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "material": 6
+      },
+      "description": "Authored transformer model operation shared-batch; no external action",
+      "estimated_cost_micro_usd": 4800000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "proposed-construction",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "raw-a": 4,
+        "raw-b": 2
+      },
+      "provides": [],
+      "recipe_id": "shared-batch",
+      "requires": [
+        "shared-spec"
+      ],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "raw-b": 2
+      },
+      "description": "Authored transformer model operation accept-b; no external action",
+      "estimated_cost_micro_usd": 200000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "usable-b": 2
+      },
+      "provides": [],
+      "recipe_id": "accept-b",
+      "requires": [
+        "interface-b"
+      ],
+      "schema_version": 1,
+      "seconds": 300,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "material": 6
+      },
+      "description": "Authored transformer model operation conventional-batch; no external action",
+      "estimated_cost_micro_usd": 9000000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "raw-a": 4,
+        "raw-b": 2
+      },
+      "provides": [],
+      "recipe_id": "conventional-batch",
+      "requires": [
+        "interface-a",
+        "interface-b"
+      ],
+      "schema_version": 1,
+      "seconds": 1200,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {},
+      "description": "Authored transformer model operation measure-a; no external action",
+      "estimated_cost_micro_usd": 250000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {},
+      "provides": [
+        "interface-a"
+      ],
+      "recipe_id": "measure-a",
+      "requires": [],
+      "schema_version": 1,
+      "seconds": 300,
+      "sources": [
+        "authored"
+      ]
+    }
+  ],
+  "required_capabilities": [],
+  "required_stock": {
+    "usable-a": 4,
+    "usable-b": 2
+  },
+  "resources": [
+    {
+      "meaning": "Authored material; no physical interchangeability or qualification established",
+      "resource_id": "material",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored raw-a; no physical interchangeability or qualification established",
+      "resource_id": "raw-a",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored raw-b; no physical interchangeability or qualification established",
+      "resource_id": "raw-b",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored usable-a; no physical interchangeability or qualification established",
+      "resource_id": "usable-a",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored usable-b; no physical interchangeability or qualification established",
+      "resource_id": "usable-b",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    }
+  ],
+  "schema_name": "production-frontier/v1",
+  "schema_version": 1,
+  "seconds_cap": 10800,
+  "sources": [
+    {
+      "does_not_establish": "Utility specifications, laboratory physics, access rights, prices or paid demand",
+      "kind": "authored-assumption",
+      "schema_version": 1,
+      "sha256": "671adf5c9e7a86ba3864948f8d5225abf036d453da6ab895ba00b4556f6cd843",
+      "source_id": "authored",
+      "supports": "Only the provenance label of authored parameters",
+      "uri": "urn:agi-alpha:authored-model:production-frontier/v1"
+    }
+  ],
+  "state_cap": 4096,
+  "stock": {
+    "material": 6
+  },
+  "useful_outcome": "Find a conditional joint batch serving two declared interface classes without reusing shared material"
+}

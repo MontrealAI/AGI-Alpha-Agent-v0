@@ -1,0 +1,1240 @@
+{
+  "metrology": {
+    "brief": {
+      "beneficiary": "A hypothetical AM metrology team",
+      "binding_constraint": "The same finite coupons cannot support two destructive uses; internal and mechanical observations complement",
+      "brief_id": "metrology-106",
+      "capabilities": [],
+      "cost_cap_micro_usd": 6000000000,
+      "input_mode": "authored-simulation",
+      "limitations": [
+        "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+        "Original relationships are represented as declarations and have not been independently translated from engineering source",
+        "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+      ],
+      "obligations": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "recipes": [
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "coupon": 3
+          },
+          "description": "Authored metrology model operation destructive-test; no external action",
+          "estimated_cost_micro_usd": 900000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "destructive-result": 3
+          },
+          "provides": [
+            "mechanical-measurements"
+          ],
+          "recipe_id": "destructive-test",
+          "requires": [
+            "build-trace"
+          ],
+          "schema_version": 1,
+          "seconds": 900,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "blank": 6
+          },
+          "description": "Authored metrology model operation conventional-laboratory; no external action",
+          "estimated_cost_micro_usd": 8000000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "validation-packet": 1
+          },
+          "provides": [],
+          "recipe_id": "conventional-laboratory",
+          "requires": [],
+          "schema_version": 1,
+          "seconds": 7200,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "coupon": 6
+          },
+          "description": "Authored metrology model operation image-interior; no external action",
+          "estimated_cost_micro_usd": 600000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "coupon": 6
+          },
+          "provides": [
+            "internal-measurements"
+          ],
+          "recipe_id": "image-interior",
+          "requires": [
+            "build-trace"
+          ],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "blank": 6
+          },
+          "description": "Authored metrology model operation make-coupons; no external action",
+          "estimated_cost_micro_usd": 1800000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "coupon": 6
+          },
+          "provides": [
+            "build-trace"
+          ],
+          "recipe_id": "make-coupons",
+          "requires": [],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {},
+          "description": "Authored metrology model operation fit-joint-model; no external action",
+          "estimated_cost_micro_usd": 400000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "proposed-construction",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {},
+          "provides": [
+            "joint-model"
+          ],
+          "recipe_id": "fit-joint-model",
+          "requires": [
+            "internal-measurements",
+            "mechanical-measurements"
+          ],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {},
+          "description": "Authored metrology model operation reject-without-measurement; no external action",
+          "estimated_cost_micro_usd": 1000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "validation-packet": 1
+          },
+          "provides": [],
+          "recipe_id": "reject-without-measurement",
+          "requires": [
+            "unavailable-truth-oracle"
+          ],
+          "schema_version": 1,
+          "seconds": 1,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "coupon": 2,
+            "destructive-result": 3
+          },
+          "description": "Authored metrology model operation fresh-geometry-check; no external action",
+          "estimated_cost_micro_usd": 700000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "proposed-construction",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "validation-packet": 1
+          },
+          "provides": [],
+          "recipe_id": "fresh-geometry-check",
+          "requires": [
+            "joint-model"
+          ],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        }
+      ],
+      "required_capabilities": [],
+      "required_stock": {
+        "validation-packet": 1
+      },
+      "resources": [
+        {
+          "meaning": "Authored blank; no physical interchangeability or qualification established",
+          "resource_id": "blank",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored coupon; no physical interchangeability or qualification established",
+          "resource_id": "coupon",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored destructive-result; no physical interchangeability or qualification established",
+          "resource_id": "destructive-result",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored validation-packet; no physical interchangeability or qualification established",
+          "resource_id": "validation-packet",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        }
+      ],
+      "schema_name": "production-frontier/v1",
+      "schema_version": 1,
+      "seconds_cap": 10800,
+      "sources": [
+        {
+          "does_not_establish": "Utility specifications, laboratory physics, access rights, prices or paid demand",
+          "kind": "authored-assumption",
+          "schema_version": 1,
+          "sha256": "d042e7333e2def0bf6f216a764e96d0c090f0bc9e10e791430a7bd55f7888a5f",
+          "source_id": "authored",
+          "supports": "Only the provenance label of authored parameters",
+          "uri": "urn:agi-alpha:authored-model:production-frontier/v1"
+        }
+      ],
+      "state_cap": 4096,
+      "stock": {
+        "blank": 6
+      },
+      "useful_outcome": "Construct a measurement sequence that leaves fresh material for validation after destructive testing"
+    },
+    "native_opportunity_proposal": {
+      "discovery_case": null,
+      "formulations": [
+        {
+          "approach": "Backward dependency search joined to resource-conserving forward construction",
+          "assumptions": [
+            "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+            "Original relationships are represented as declarations and have not been independently translated from engineering source",
+            "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+          ],
+          "dependencies": [
+            "destructive-test",
+            "conventional-laboratory",
+            "image-interior",
+            "make-coupons",
+            "fit-joint-model",
+            "reject-without-measurement",
+            "fresh-geometry-check"
+          ],
+          "formulation_id": "joint-construction",
+          "material_difference": "Quantitative stock and complementary capability requirements replace monotone availability labels",
+          "schema_version": 1,
+          "uncertainty": "Recipe truth, buyer value and field performance unverified"
+        },
+        {
+          "approach": "Conventional exhaustive enumeration with independent witness replay under identical inputs",
+          "assumptions": [
+            "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+            "Original relationships are represented as declarations and have not been independently translated from engineering source",
+            "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+          ],
+          "dependencies": [
+            "destructive-test",
+            "conventional-laboratory",
+            "image-interior",
+            "make-coupons",
+            "fit-joint-model",
+            "reject-without-measurement",
+            "fresh-geometry-check"
+          ],
+          "formulation_id": "conventional-control",
+          "material_difference": "Different search implementation; the same information and recipes are available",
+          "schema_version": 1,
+          "uncertainty": "A finite tie does not establish field or discovery advantage"
+        }
+      ],
+      "ingredients": [
+        {
+          "description": "Authored metrology model operation destructive-test; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "destructive-test",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation conventional-laboratory; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "conventional-laboratory",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation image-interior; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "image-interior",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation make-coupons; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "make-coupons",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation fit-joint-model; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "fit-joint-model",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "constructed",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation reject-without-measurement; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "reject-without-measurement",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored metrology model operation fresh-geometry-check; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "fresh-geometry-check",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "constructed",
+          "schema_version": 1
+        }
+      ],
+      "limiting_assumptions": [
+        "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+        "Original relationships are represented as declarations and have not been independently translated from engineering source",
+        "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+      ],
+      "mode": "simulation",
+      "needs": [
+        {
+          "beneficiary": "A hypothetical AM metrology team",
+          "demand_uncertainty": "No authorized buyer brief, quotation or purchase; public context is not buyer demand",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:metrology-106",
+              "record_digest": "cf8f765a3c0ad9a786a0bf460eb4d2e0887c09b2cad28359ae644d7046f7ae39",
+              "schema_version": 1
+            }
+          ],
+          "evidence_kind": "synthetic",
+          "independently_motivated_purpose": "Construct a measurement sequence that leaves fresh material for validation after destructive testing",
+          "need_id": "need-metrology-106",
+          "outside_option": "Competent conventional engineer/laboratory and exhaustive search of the same finite grammar",
+          "schema_version": 1
+        }
+      ],
+      "opportunity_id": "metrology-106",
+      "parent_opportunity": null,
+      "purpose": {
+        "acceptance_criteria": [
+          "Conserve every declared resource",
+          "Meet original outputs and obligations",
+          "Recheck all real-world semantics, grants and buyer acceptance independently"
+        ],
+        "deliverable": "Exact-input conditional construction, conventional comparison and ablation witnesses",
+        "input_semantics": "Finite typed stock and single-use recipes with explicit costs, evidence and permission declarations",
+        "output_semantics": "A research witness only, no production or qualification authority",
+        "schema_version": 1,
+        "scope": "Finite sequential declared-model simulation",
+        "useful_purpose": "Construct a measurement sequence that leaves fresh material for validation after destructive testing"
+      },
+      "schema_name": "flywheel-opportunity/v1",
+      "schema_version": 1,
+      "shared_structure_hypothesis": "The same finite coupons cannot support two destructive uses; internal and mechanical observations complement",
+      "unresolved_questions": [
+        "Do independently reviewed real requirements fit this finite model without losing essential relationships?",
+        "Does a supplier-confirmed shared arrangement improve an actual buyer's outside option?"
+      ],
+      "version": 1
+    },
+    "registered_in_native_custody": false,
+    "result": {
+      "adapter": "declared-model-simulation",
+      "authority_granted": false,
+      "best": {
+        "capabilities": [
+          "build-trace",
+          "internal-measurements",
+          "joint-model",
+          "mechanical-measurements"
+        ],
+        "estimated_cost_micro_usd": 4400000000,
+        "pending_permissions": [],
+        "rank": [
+          0,
+          4400000000,
+          2,
+          3300,
+          5,
+          [
+            "make-coupons",
+            "image-interior",
+            "destructive-test",
+            "fit-joint-model",
+            "fresh-geometry-check"
+          ]
+        ],
+        "seconds": 3300,
+        "steps": [
+          "make-coupons",
+          "image-interior",
+          "destructive-test",
+          "fit-joint-model",
+          "fresh-geometry-check"
+        ],
+        "stock": {
+          "blank": 0,
+          "coupon": 1,
+          "destructive-result": 0,
+          "validation-packet": 1
+        }
+      },
+      "binding": "a34e6b5ba6cc4ce147075643d0f75c3dea392d94aad8543d6caf653e0e3a8531",
+      "brief_id": "metrology-106",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "capabilities": [
+            "build-trace",
+            "internal-measurements",
+            "joint-model",
+            "mechanical-measurements"
+          ],
+          "estimated_cost_micro_usd": 4400000000,
+          "pending_permissions": [],
+          "rank": [
+            0,
+            4400000000,
+            2,
+            3300,
+            5,
+            [
+              "make-coupons",
+              "image-interior",
+              "destructive-test",
+              "fit-joint-model",
+              "fresh-geometry-check"
+            ]
+          ],
+          "seconds": 3300,
+          "steps": [
+            "make-coupons",
+            "image-interior",
+            "destructive-test",
+            "fit-joint-model",
+            "fresh-geometry-check"
+          ],
+          "stock": {
+            "blank": 0,
+            "coupon": 1,
+            "destructive-result": 0,
+            "validation-packet": 1
+          }
+        }
+      ],
+      "conventional_only": false,
+      "disabled": [],
+      "input_mode": "authored-simulation",
+      "policy": {
+        "acceptance": "typed-conservation-final-requirements-obligations-budgets",
+        "model_scope": "finite-single-use-sequential-recipes",
+        "ranking": "permissions-cost-new-components-time-length-identities",
+        "schema_name": "production-frontier-policy/v1",
+        "schema_version": 1
+      },
+      "real_actions_executed": false,
+      "schema": "production-frontier-result/v1",
+      "scientific_or_commercial_acceptance": false,
+      "scope": "finite declared recipes; no physical truth, optimality outside this grammar or real approval inferred",
+      "search_complete": true,
+      "states": 7,
+      "status": "feasible"
+    }
+  },
+  "transformer": {
+    "brief": {
+      "beneficiary": "A hypothetical consenting utility consortium",
+      "binding_constraint": "Shared manufacturing inputs, two site interfaces and an independently checked acceptance condition",
+      "brief_id": "transformer-103",
+      "capabilities": [],
+      "cost_cap_micro_usd": 15000000000,
+      "input_mode": "authored-simulation",
+      "limitations": [
+        "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+        "Original relationships are represented as declarations and have not been independently translated from engineering source",
+        "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+      ],
+      "obligations": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "recipes": [
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "raw-a": 4
+          },
+          "description": "Authored transformer model operation accept-a; no external action",
+          "estimated_cost_micro_usd": 200000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "usable-a": 4
+          },
+          "provides": [],
+          "recipe_id": "accept-a",
+          "requires": [
+            "interface-a"
+          ],
+          "schema_version": 1,
+          "seconds": 300,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {},
+          "description": "Authored transformer model operation common-design; no external action",
+          "estimated_cost_micro_usd": 1000000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "proposed-construction",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {},
+          "provides": [
+            "shared-spec"
+          ],
+          "recipe_id": "common-design",
+          "requires": [
+            "interface-a",
+            "interface-b"
+          ],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {},
+          "description": "Authored transformer model operation measure-b; no external action",
+          "estimated_cost_micro_usd": 250000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {},
+          "provides": [
+            "interface-b"
+          ],
+          "recipe_id": "measure-b",
+          "requires": [],
+          "schema_version": 1,
+          "seconds": 300,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "material": 6
+          },
+          "description": "Authored transformer model operation shared-batch; no external action",
+          "estimated_cost_micro_usd": 4800000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "proposed-construction",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "raw-a": 4,
+            "raw-b": 2
+          },
+          "provides": [],
+          "recipe_id": "shared-batch",
+          "requires": [
+            "shared-spec"
+          ],
+          "schema_version": 1,
+          "seconds": 600,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "raw-b": 2
+          },
+          "description": "Authored transformer model operation accept-b; no external action",
+          "estimated_cost_micro_usd": 200000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "usable-b": 2
+          },
+          "provides": [],
+          "recipe_id": "accept-b",
+          "requires": [
+            "interface-b"
+          ],
+          "schema_version": 1,
+          "seconds": 300,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {
+            "material": 6
+          },
+          "description": "Authored transformer model operation conventional-batch; no external action",
+          "estimated_cost_micro_usd": 9000000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {
+            "raw-a": 4,
+            "raw-b": 2
+          },
+          "provides": [],
+          "recipe_id": "conventional-batch",
+          "requires": [
+            "interface-a",
+            "interface-b"
+          ],
+          "schema_version": 1,
+          "seconds": 1200,
+          "sources": [
+            "authored"
+          ]
+        },
+        {
+          "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+          "consumes": {},
+          "description": "Authored transformer model operation measure-a; no external action",
+          "estimated_cost_micro_usd": 250000000,
+          "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+          "origin": "conventional",
+          "permission": "research-cleared",
+          "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+          "preserves": [
+            "original-interface",
+            "independent-acceptance",
+            "no-inferred-authority"
+          ],
+          "produces": {},
+          "provides": [
+            "interface-a"
+          ],
+          "recipe_id": "measure-a",
+          "requires": [],
+          "schema_version": 1,
+          "seconds": 300,
+          "sources": [
+            "authored"
+          ]
+        }
+      ],
+      "required_capabilities": [],
+      "required_stock": {
+        "usable-a": 4,
+        "usable-b": 2
+      },
+      "resources": [
+        {
+          "meaning": "Authored material; no physical interchangeability or qualification established",
+          "resource_id": "material",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored raw-a; no physical interchangeability or qualification established",
+          "resource_id": "raw-a",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored raw-b; no physical interchangeability or qualification established",
+          "resource_id": "raw-b",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored usable-a; no physical interchangeability or qualification established",
+          "resource_id": "usable-a",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        },
+        {
+          "meaning": "Authored usable-b; no physical interchangeability or qualification established",
+          "resource_id": "usable-b",
+          "schema_version": 1,
+          "unit": "declared discrete item"
+        }
+      ],
+      "schema_name": "production-frontier/v1",
+      "schema_version": 1,
+      "seconds_cap": 10800,
+      "sources": [
+        {
+          "does_not_establish": "Utility specifications, laboratory physics, access rights, prices or paid demand",
+          "kind": "authored-assumption",
+          "schema_version": 1,
+          "sha256": "671adf5c9e7a86ba3864948f8d5225abf036d453da6ab895ba00b4556f6cd843",
+          "source_id": "authored",
+          "supports": "Only the provenance label of authored parameters",
+          "uri": "urn:agi-alpha:authored-model:production-frontier/v1"
+        }
+      ],
+      "state_cap": 4096,
+      "stock": {
+        "material": 6
+      },
+      "useful_outcome": "Find a conditional joint batch serving two declared interface classes without reusing shared material"
+    },
+    "native_opportunity_proposal": {
+      "discovery_case": null,
+      "formulations": [
+        {
+          "approach": "Backward dependency search joined to resource-conserving forward construction",
+          "assumptions": [
+            "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+            "Original relationships are represented as declarations and have not been independently translated from engineering source",
+            "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+          ],
+          "dependencies": [
+            "accept-a",
+            "common-design",
+            "measure-b",
+            "shared-batch",
+            "accept-b",
+            "conventional-batch",
+            "measure-a"
+          ],
+          "formulation_id": "joint-construction",
+          "material_difference": "Quantitative stock and complementary capability requirements replace monotone availability labels",
+          "schema_version": 1,
+          "uncertainty": "Recipe truth, buyer value and field performance unverified"
+        },
+        {
+          "approach": "Conventional exhaustive enumeration with independent witness replay under identical inputs",
+          "assumptions": [
+            "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+            "Original relationships are represented as declarations and have not been independently translated from engineering source",
+            "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+          ],
+          "dependencies": [
+            "accept-a",
+            "common-design",
+            "measure-b",
+            "shared-batch",
+            "accept-b",
+            "conventional-batch",
+            "measure-a"
+          ],
+          "formulation_id": "conventional-control",
+          "material_difference": "Different search implementation; the same information and recipes are available",
+          "schema_version": 1,
+          "uncertainty": "A finite tie does not establish field or discovery advantage"
+        }
+      ],
+      "ingredients": [
+        {
+          "description": "Authored transformer model operation accept-a; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "accept-a",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation common-design; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "common-design",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "constructed",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation measure-b; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "measure-b",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation shared-batch; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "shared-batch",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "constructed",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation accept-b; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "accept-b",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation conventional-batch; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "conventional-batch",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        },
+        {
+          "description": "Authored transformer model operation measure-a; no external action",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "ingredient_id": "measure-a",
+          "limitations": "Authored recipe semantics and prices; local witness conformance is not engineering acceptance",
+          "origin": "established-method",
+          "schema_version": 1
+        }
+      ],
+      "limiting_assumptions": [
+        "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+        "Original relationships are represented as declarations and have not been independently translated from engineering source",
+        "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+      ],
+      "mode": "simulation",
+      "needs": [
+        {
+          "beneficiary": "A hypothetical consenting utility consortium",
+          "demand_uncertainty": "No authorized buyer brief, quotation or purchase; public context is not buyer demand",
+          "evidence": [
+            {
+              "journal_key": "@production-frontier-proposal:transformer-103",
+              "record_digest": "ea20349e6f793eb9ccb2991a3c5dec3852cd6e124b78dd638bd578c19e0fa926",
+              "schema_version": 1
+            }
+          ],
+          "evidence_kind": "synthetic",
+          "independently_motivated_purpose": "Find a conditional joint batch serving two declared interface classes without reusing shared material",
+          "need_id": "need-transformer-103",
+          "outside_option": "Competent conventional engineer/laboratory and exhaustive search of the same finite grammar",
+          "schema_version": 1
+        }
+      ],
+      "opportunity_id": "transformer-103",
+      "parent_opportunity": null,
+      "purpose": {
+        "acceptance_criteria": [
+          "Conserve every declared resource",
+          "Meet original outputs and obligations",
+          "Recheck all real-world semantics, grants and buyer acceptance independently"
+        ],
+        "deliverable": "Exact-input conditional construction, conventional comparison and ablation witnesses",
+        "input_semantics": "Finite typed stock and single-use recipes with explicit costs, evidence and permission declarations",
+        "output_semantics": "A research witness only, no production or qualification authority",
+        "schema_version": 1,
+        "scope": "Finite sequential declared-model simulation",
+        "useful_purpose": "Find a conditional joint batch serving two declared interface classes without reusing shared material"
+      },
+      "schema_name": "flywheel-opportunity/v1",
+      "schema_version": 1,
+      "shared_structure_hypothesis": "Shared manufacturing inputs, two site interfaces and an independently checked acceptance condition",
+      "unresolved_questions": [
+        "Do independently reviewed real requirements fit this finite model without losing essential relationships?",
+        "Does a supplier-confirmed shared arrangement improve an actual buyer's outside option?"
+      ],
+      "version": 1
+    },
+    "registered_in_native_custody": false,
+    "result": {
+      "adapter": "declared-model-simulation",
+      "authority_granted": false,
+      "best": {
+        "capabilities": [
+          "interface-a",
+          "interface-b",
+          "shared-spec"
+        ],
+        "estimated_cost_micro_usd": 6700000000,
+        "pending_permissions": [],
+        "rank": [
+          0,
+          6700000000,
+          2,
+          2400,
+          6,
+          [
+            "measure-a",
+            "measure-b",
+            "common-design",
+            "shared-batch",
+            "accept-a",
+            "accept-b"
+          ]
+        ],
+        "seconds": 2400,
+        "steps": [
+          "measure-a",
+          "measure-b",
+          "common-design",
+          "shared-batch",
+          "accept-a",
+          "accept-b"
+        ],
+        "stock": {
+          "material": 0,
+          "raw-a": 0,
+          "raw-b": 0,
+          "usable-a": 4,
+          "usable-b": 2
+        }
+      },
+      "binding": "e9e050561c9598b2141d6d7e310312c3e8c661db8226425ca362647df580198a",
+      "brief_id": "transformer-103",
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "capabilities": [
+            "interface-a",
+            "interface-b",
+            "shared-spec"
+          ],
+          "estimated_cost_micro_usd": 6700000000,
+          "pending_permissions": [],
+          "rank": [
+            0,
+            6700000000,
+            2,
+            2400,
+            6,
+            [
+              "measure-a",
+              "measure-b",
+              "common-design",
+              "shared-batch",
+              "accept-a",
+              "accept-b"
+            ]
+          ],
+          "seconds": 2400,
+          "steps": [
+            "measure-a",
+            "measure-b",
+            "common-design",
+            "shared-batch",
+            "accept-a",
+            "accept-b"
+          ],
+          "stock": {
+            "material": 0,
+            "raw-a": 0,
+            "raw-b": 0,
+            "usable-a": 4,
+            "usable-b": 2
+          }
+        },
+        {
+          "capabilities": [
+            "interface-a",
+            "interface-b"
+          ],
+          "estimated_cost_micro_usd": 9900000000,
+          "pending_permissions": [],
+          "rank": [
+            0,
+            9900000000,
+            0,
+            2400,
+            5,
+            [
+              "measure-a",
+              "measure-b",
+              "conventional-batch",
+              "accept-a",
+              "accept-b"
+            ]
+          ],
+          "seconds": 2400,
+          "steps": [
+            "measure-a",
+            "measure-b",
+            "conventional-batch",
+            "accept-a",
+            "accept-b"
+          ],
+          "stock": {
+            "material": 0,
+            "raw-a": 0,
+            "raw-b": 0,
+            "usable-a": 4,
+            "usable-b": 2
+          }
+        },
+        {
+          "capabilities": [
+            "interface-a",
+            "interface-b",
+            "shared-spec"
+          ],
+          "estimated_cost_micro_usd": 10900000000,
+          "pending_permissions": [],
+          "rank": [
+            0,
+            10900000000,
+            1,
+            3000,
+            6,
+            [
+              "measure-a",
+              "measure-b",
+              "common-design",
+              "conventional-batch",
+              "accept-a",
+              "accept-b"
+            ]
+          ],
+          "seconds": 3000,
+          "steps": [
+            "measure-a",
+            "measure-b",
+            "common-design",
+            "conventional-batch",
+            "accept-a",
+            "accept-b"
+          ],
+          "stock": {
+            "material": 0,
+            "raw-a": 0,
+            "raw-b": 0,
+            "usable-a": 4,
+            "usable-b": 2
+          }
+        }
+      ],
+      "conventional_only": false,
+      "disabled": [],
+      "input_mode": "authored-simulation",
+      "policy": {
+        "acceptance": "typed-conservation-final-requirements-obligations-budgets",
+        "model_scope": "finite-single-use-sequential-recipes",
+        "ranking": "permissions-cost-new-components-time-length-identities",
+        "schema_name": "production-frontier-policy/v1",
+        "schema_version": 1
+      },
+      "real_actions_executed": false,
+      "schema": "production-frontier-result/v1",
+      "scientific_or_commercial_acceptance": false,
+      "scope": "finite declared recipes; no physical truth, optimality outside this grammar or real approval inferred",
+      "search_complete": true,
+      "states": 17,
+      "status": "feasible"
+    }
+  }
+}
