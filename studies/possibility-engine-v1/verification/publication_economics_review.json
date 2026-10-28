@@ -1,0 +1,962 @@
+{
+  "schema": "possibility-engine-publication-economics-review-v1",
+  "reviewed_at_utc": "2026-10-28T14:29:06.503439+00:00",
+  "status": "pass",
+  "reviewer_role": "Economics agent, separate from manuscript author; frozen accounting was independently reconstructed by challenger",
+  "scope": "Economic numbers and worded claims in PAPER.md and EXECUTIVE_BRIEF.md; scientific statements and rendered layouts are outside this review",
+  "reviewed_documents": {
+    "publication/PAPER.md": "dd4025aa4faeb1197d0f608b9a2ec06c5f029e578be1a4c926f38669b0a3ae46",
+    "publication/EXECUTIVE_BRIEF.md": "a8658ebb93be6eec7054a27f8e128cd0a02aeb3ad2d2f5dc1619102d85228922"
+  },
+  "document_identity_limit": "Receipt binds reviewed draft bytes. Later root edits require the final-diff receipt; no source/policy changes authorized.",
+  "evidence_sha256": {
+    "FREEZE.json": "e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7",
+    "economics/FREEZE.json": "71d51ab0c76c3666898d0a39653061e3fd73b428f611c8769241216d3bdc2da2",
+    "economics/model.py": "2abec1e5faa7b45b499dc18ca5d98911167ee7908d94dfd4cd781fb073fb18ca",
+    "economics/assumptions.json": "dfeb609ca25da952a087b719b811825b2e5a78e45fd1f99cd8b8f596025329ad",
+    "economics/selected_policy.json": "04fc1658091b0fbb672ff526d6b62a689b306015b436924ee213b44869160eee",
+    "economics/PROTOCOL.md": "c0de3ccc2ddc9c638ebf64f13c116161745f517f1cf24f1c4706216daf5af53c",
+    "economics/confirmation/summary.json": "c15ffbb6da850da335f945b73330371380882d3e19489e09fd293f50c5a54ff4",
+    "economics/confirmation/reporting_metrics.json": "45fa96674ca4d7e5381df1a8f0030492723089e142a2ce470916e16ac695b0bc",
+    "economics/break_even_analysis.json": "aab942cf5ae0fd1d27233e47fafc907a9dc3ef314059997a3bff13c780c05720",
+    "economics/arrangement_analysis.json": "21f8b75d082d7b28dfbbab624579aaf9645da34019bcd1a730cbbcea6db6777c",
+    "economics/development/selection.json": "8d4517242d6cb8509ffaa5c8904cfbec7158163eff768a5853f6f41141513859",
+    "verification/economic_confirmation_audit.json": "2c1cf043e24ced7ee6e5a435ed35906670993b55f350442924b87a465b38ecaf",
+    "verification/economic_aggregate_audit.json": "3ce5fe6e6c8c18a8bea40aefbf2776c9816deafbba59b6fcf63a528a8b411906",
+    "verification/reference_accounting_audit.json": "749d9d7978a5e6da66745335dfcf90bb455a764df5c6f1a32b99e3c5fe96f151",
+    "evidence/research/frontier.md": "837dd84a793b0992f01ca0c87ded07c822fe78ec5b704a5f2c265614050352be"
+  },
+  "numeric_and_identity_checks": [
+    {
+      "claim": "PAPER reference mean_profit_cents",
+      "reported_or_derived": -53187.2,
+      "evidence_value": -53187.196796875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER reference mean_operating_contribution_cents",
+      "reported_or_derived": -15887.2,
+      "evidence_value": -15887.196796875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER reference mean_accepted",
+      "reported_or_derived": 1.62,
+      "evidence_value": 1.6171875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER reference loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER low_demand mean_profit_cents",
+      "reported_or_derived": -49293.28,
+      "evidence_value": -49293.28375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_demand mean_operating_contribution_cents",
+      "reported_or_derived": -11993.28,
+      "evidence_value": -11993.28375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_demand mean_accepted",
+      "reported_or_derived": 0.6,
+      "evidence_value": 0.6015625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_demand loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER same_ai_price_war mean_profit_cents",
+      "reported_or_derived": -53735.23,
+      "evidence_value": -53735.2278125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER same_ai_price_war mean_operating_contribution_cents",
+      "reported_or_derived": -16435.23,
+      "evidence_value": -16435.2278125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER same_ai_price_war mean_accepted",
+      "reported_or_derived": 1.12,
+      "evidence_value": 1.125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER same_ai_price_war loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER supplier_shock mean_profit_cents",
+      "reported_or_derived": -53359.49,
+      "evidence_value": -53359.485625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER supplier_shock mean_operating_contribution_cents",
+      "reported_or_derived": -16059.49,
+      "evidence_value": -16059.485625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER supplier_shock mean_accepted",
+      "reported_or_derived": 1.59,
+      "evidence_value": 1.59375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER supplier_shock loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER payment_deviation mean_profit_cents",
+      "reported_or_derived": -54054.56,
+      "evidence_value": -54054.560078125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER payment_deviation mean_operating_contribution_cents",
+      "reported_or_derived": -16754.56,
+      "evidence_value": -16754.560078125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER payment_deviation mean_accepted",
+      "reported_or_derived": 1.62,
+      "evidence_value": 1.6171875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER payment_deviation loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER rational_buyers mean_profit_cents",
+      "reported_or_derived": -55407.0,
+      "evidence_value": -55407.00390625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER rational_buyers mean_operating_contribution_cents",
+      "reported_or_derived": -18107.0,
+      "evidence_value": -18107.00390625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER rational_buyers mean_accepted",
+      "reported_or_derived": 0.0,
+      "evidence_value": 0,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER rational_buyers loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER high_need mean_profit_cents",
+      "reported_or_derived": -59480.93,
+      "evidence_value": -59480.925859375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER high_need mean_operating_contribution_cents",
+      "reported_or_derived": -22180.93,
+      "evidence_value": -22180.925859375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER high_need mean_accepted",
+      "reported_or_derived": 3.77,
+      "evidence_value": 3.7734375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER high_need loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER correlated_failure mean_profit_cents",
+      "reported_or_derived": -54091.56,
+      "evidence_value": -54091.556484375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER correlated_failure mean_operating_contribution_cents",
+      "reported_or_derived": -16791.56,
+      "evidence_value": -16791.556484375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER correlated_failure mean_accepted",
+      "reported_or_derived": 1.48,
+      "evidence_value": 1.484375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER correlated_failure loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER strongest_free mean_profit_cents",
+      "reported_or_derived": -55407.0,
+      "evidence_value": -55407.00390625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER strongest_free mean_operating_contribution_cents",
+      "reported_or_derived": -18107.0,
+      "evidence_value": -18107.00390625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER strongest_free mean_accepted",
+      "reported_or_derived": 0.0,
+      "evidence_value": 0,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER strongest_free loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "PAPER low_labor mean_profit_cents",
+      "reported_or_derived": -50199.9,
+      "evidence_value": -50199.902734375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_labor mean_operating_contribution_cents",
+      "reported_or_derived": -12899.9,
+      "evidence_value": -12899.902734375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_labor mean_accepted",
+      "reported_or_derived": 0.0,
+      "evidence_value": 0,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "PAPER low_labor loss histories",
+      "reported_or_derived": "128/128",
+      "evidence_value": "128/128",
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json"
+    },
+    {
+      "claim": "BRIEF Complete construction cost before finance/exit",
+      "reported_or_derived": 36200.0,
+      "evidence_value": 36200.0,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Mean recognized revenue",
+      "reported_or_derived": 6648.82,
+      "evidence_value": 6648.82171875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Mean operating contribution",
+      "reported_or_derived": -15887.2,
+      "evidence_value": -15887.196796875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Mean full-project profit",
+      "reported_or_derived": -53187.2,
+      "evidence_value": -53187.196796875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Mean peak funding requirement",
+      "reported_or_derived": 53877.96,
+      "evidence_value": 53877.961640625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Stop after completed research and archive",
+      "reported_or_derived": -36950.0,
+      "evidence_value": -36950.0,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF Additional expected loss from continuing",
+      "reported_or_derived": 16237.2,
+      "evidence_value": 16237.196796875,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF profit_p05_cents",
+      "reported_or_derived": -57403.12,
+      "evidence_value": -57403.12,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "BRIEF profit_p95_cents",
+      "reported_or_derived": -49832.99,
+      "evidence_value": -49832.99,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Startup replacement effort hours",
+      "reported_or_derived": 304,
+      "evidence_value": 304,
+      "status": "pass",
+      "evidence": "economics/assumptions.json"
+    },
+    {
+      "claim": "Startup replacement cost USD",
+      "reported_or_derived": 36200,
+      "evidence_value": 36200.0,
+      "status": "pass",
+      "evidence": "economics/assumptions.json"
+    },
+    {
+      "claim": "Reference gross collections USD",
+      "reported_or_derived": 6778.76,
+      "evidence_value": 6778.763125,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference total cost USD",
+      "reported_or_derived": 59836.02,
+      "evidence_value": 59836.018515625,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference sampling standard error USD",
+      "reported_or_derived": 231.12,
+      "evidence_value": 231.12404329027973,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "All-scenario maximum cash USD",
+      "reported_or_derived": 70241.74,
+      "evidence_value": 70241.74,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "All-scenario worst loss USD",
+      "reported_or_derived": 68654.39,
+      "evidence_value": 68654.39,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count leads",
+      "reported_or_derived": 70.75,
+      "evidence_value": 70.75,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count qualified",
+      "reported_or_derived": 38.55,
+      "evidence_value": 38.5546875,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count negotiations",
+      "reported_or_derived": 1.91,
+      "evidence_value": 1.90625,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count signed",
+      "reported_or_derived": 1.7,
+      "evidence_value": 1.703125,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count accepted",
+      "reported_or_derived": 1.62,
+      "evidence_value": 1.6171875,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operating count corrected",
+      "reported_or_derived": 0.336,
+      "evidence_value": 0.3359375,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.0005000100000000001
+    },
+    {
+      "claim": "Reference operating count failed",
+      "reported_or_derived": 0.086,
+      "evidence_value": 0.0859375,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.0005000100000000001
+    },
+    {
+      "claim": "Reference operating count withheld",
+      "reported_or_derived": 0.141,
+      "evidence_value": 0.140625,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.0005000100000000001
+    },
+    {
+      "claim": "Reference total hours",
+      "reported_or_derived": 512.75,
+      "evidence_value": 512.7541109375,
+      "status": "pass",
+      "evidence": "economics/confirmation/summary.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Reference operational verification hours",
+      "reported_or_derived": 7.48,
+      "evidence_value": 7.484375,
+      "status": "pass",
+      "evidence": "economics/confirmation/reporting_metrics.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Full project signed break-even",
+      "reported_or_derived": 39.5,
+      "evidence_value": 39.47833248985344,
+      "status": "pass",
+      "evidence": "economics/break_even_analysis.json",
+      "rounding_tolerance": 0.05000001
+    },
+    {
+      "claim": "Operating signed break-even",
+      "reported_or_derived": 21.5,
+      "evidence_value": 21.517172258442248,
+      "status": "pass",
+      "evidence": "economics/break_even_analysis.json",
+      "rounding_tolerance": 0.05000001
+    },
+    {
+      "claim": "Full-capacity price floor USD",
+      "reported_or_derived": 5890.08,
+      "evidence_value": 5890.075358971069,
+      "status": "pass",
+      "evidence": "economics/break_even_analysis.json",
+      "rounding_tolerance": 0.00500001
+    },
+    {
+      "claim": "Three-sponsor unanimity",
+      "reported_or_derived": 0.343,
+      "evidence_value": 0.3429999999999999,
+      "status": "pass",
+      "evidence": "economics/assumptions.json",
+      "rounding_tolerance": 1e-12
+    },
+    {
+      "claim": "Three-sponsor variable subtotal USD",
+      "reported_or_derived": 4500,
+      "evidence_value": 4500,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Shared simplified break-even sponsor count",
+      "reported_or_derived": 12,
+      "evidence_value": 12,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Successor conservative expected benefit USD",
+      "reported_or_derived": 1600,
+      "evidence_value": 1600.0,
+      "status": "pass",
+      "evidence": "economics/assumptions.json"
+    },
+    {
+      "claim": "Scale ten_year_packs_required",
+      "reported_or_derived": 400000,
+      "evidence_value": 400000.0,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Scale annual_deliveries_required",
+      "reported_or_derived": 40000,
+      "evidence_value": 40000.0,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Scale active_accounts_at_four_packs_per_year",
+      "reported_or_derived": 10000,
+      "evidence_value": 10000.0,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Scale teams_at_24_packs_per_year",
+      "reported_or_derived": 1667,
+      "evidence_value": 1666.6666666666667,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json",
+      "rounding_tolerance": 0.5
+    },
+    {
+      "claim": "Scale verification_hours_per_year_at_four_per_pack",
+      "reported_or_derived": 160000,
+      "evidence_value": 160000.0,
+      "status": "pass",
+      "evidence": "economics/arrangement_analysis.json"
+    },
+    {
+      "claim": "Frozen source economics/FREEZE.json",
+      "reported_or_derived": "71d51ab0c76c3666898d0a39653061e3fd73b428f611c8769241216d3bdc2da2",
+      "evidence_value": "71d51ab0c76c3666898d0a39653061e3fd73b428f611c8769241216d3bdc2da2",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source economics/PROTOCOL.md",
+      "reported_or_derived": "c0de3ccc2ddc9c638ebf64f13c116161745f517f1cf24f1c4706216daf5af53c",
+      "evidence_value": "c0de3ccc2ddc9c638ebf64f13c116161745f517f1cf24f1c4706216daf5af53c",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source economics/arrangements.py",
+      "reported_or_derived": "051ca747e9813e050a7310d89549aaa46034b5b05a45290ac80a738b5a219c63",
+      "evidence_value": "051ca747e9813e050a7310d89549aaa46034b5b05a45290ac80a738b5a219c63",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source economics/assumptions.json",
+      "reported_or_derived": "dfeb609ca25da952a087b719b811825b2e5a78e45fd1f99cd8b8f596025329ad",
+      "evidence_value": "dfeb609ca25da952a087b719b811825b2e5a78e45fd1f99cd8b8f596025329ad",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source economics/model.py",
+      "reported_or_derived": "2abec1e5faa7b45b499dc18ca5d98911167ee7908d94dfd4cd781fb073fb18ca",
+      "evidence_value": "2abec1e5faa7b45b499dc18ca5d98911167ee7908d94dfd4cd781fb073fb18ca",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source economics/selected_policy.json",
+      "reported_or_derived": "04fc1658091b0fbb672ff526d6b62a689b306015b436924ee213b44869160eee",
+      "evidence_value": "04fc1658091b0fbb672ff526d6b62a689b306015b436924ee213b44869160eee",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source protocol/ACCEPTANCE.md",
+      "reported_or_derived": "5dd436173228b536fa7130d59b4d346faf4f7a97eb414ebafca2dc91a4a24d07",
+      "evidence_value": "5dd436173228b536fa7130d59b4d346faf4f7a97eb414ebafca2dc91a4a24d07",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source src/engine.py",
+      "reported_or_derived": "e83b337b87841af286f50a72cc8229ddf46e2db5c7834b80d817caa184eed2eb",
+      "evidence_value": "e83b337b87841af286f50a72cc8229ddf46e2db5c7834b80d817caa184eed2eb",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source src/make_examples.py",
+      "reported_or_derived": "d69a051e2f33b25b04a35a06df3ffcc33ee49187ee8122aa986d1b9478d88475",
+      "evidence_value": "d69a051e2f33b25b04a35a06df3ffcc33ee49187ee8122aa986d1b9478d88475",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/CIRCUIT_ACCEPTANCE.json",
+      "reported_or_derived": "ddb3d323775817d0e0a193adc73bc6802f98ff87fc215a5abb2ee4c9d83f73ff",
+      "evidence_value": "ddb3d323775817d0e0a193adc73bc6802f98ff87fc215a5abb2ee4c9d83f73ff",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/CIRCUIT_SOURCE_FREEZE.json",
+      "reported_or_derived": "32788c8719f537ad276a661af60977c406881a3468ebc76f97b473bf9cb619b7",
+      "evidence_value": "32788c8719f537ad276a661af60977c406881a3468ebc76f97b473bf9cb619b7",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/check_accounts.py",
+      "reported_or_derived": "06d176da79f8ca1574605cd5dc331e0d5cdff53abc0749a0b7331f99999bbf56",
+      "evidence_value": "06d176da79f8ca1574605cd5dc331e0d5cdff53abc0749a0b7331f99999bbf56",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/check_protocol.py",
+      "reported_or_derived": "22ccc387585c4a26365073db657a56ae122d1eca6b8e85cdce3385e97d4a8a6e",
+      "evidence_value": "22ccc387585c4a26365073db657a56ae122d1eca6b8e85cdce3385e97d4a8a6e",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/circuit_runner.py",
+      "reported_or_derived": "370a4e33bb62d4a5729285a026dcd4ff894fcc91261ed8f963028914dfea77b7",
+      "evidence_value": "370a4e33bb62d4a5729285a026dcd4ff894fcc91261ed8f963028914dfea77b7",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/independent_graphs.json",
+      "reported_or_derived": "714772fb7c7ef22815b3f5b090df14ce43a40a6570b3e55b43e238ff06c5f14e",
+      "evidence_value": "714772fb7c7ef22815b3f5b090df14ce43a40a6570b3e55b43e238ff06c5f14e",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/independent_math.py",
+      "reported_or_derived": "6ae747b74014a1a5bd434cdce457f7d12dcd7d29ae298a602705083d0fea0f36",
+      "evidence_value": "6ae747b74014a1a5bd434cdce457f7d12dcd7d29ae298a602705083d0fea0f36",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/issue_seeds.py",
+      "reported_or_derived": "8b6f6f71bd4247b5d2237660725e4764fbc5a03bf945dc812f3afcb649d1278d",
+      "evidence_value": "8b6f6f71bd4247b5d2237660725e4764fbc5a03bf945dc812f3afcb649d1278d",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/probe_economics.py",
+      "reported_or_derived": "93a6f90f55912a3d26b40f35b7f7d5e9957b69922767dd746fffcf615e2d6d30",
+      "evidence_value": "93a6f90f55912a3d26b40f35b7f7d5e9957b69922767dd746fffcf615e2d6d30",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/run_confirmation.py",
+      "reported_or_derived": "31c6547ec539aa451f6224287649f28132cbac3f9a529f909d85c698d6fe2123",
+      "evidence_value": "31c6547ec539aa451f6224287649f28132cbac3f9a529f909d85c698d6fe2123",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/test_circuit_runner.py",
+      "reported_or_derived": "c816cfeafcd2a301778e9bd2d717bcd29b1216545420db4c3df2fca074cbdb95",
+      "evidence_value": "c816cfeafcd2a301778e9bd2d717bcd29b1216545420db4c3df2fca074cbdb95",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/test_independent_math.py",
+      "reported_or_derived": "54f1cd200a6ddc1b9b16b6eae289cada65b3c36a07388f22cec883dc4fbbc659",
+      "evidence_value": "54f1cd200a6ddc1b9b16b6eae289cada65b3c36a07388f22cec883dc4fbbc659",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Frozen source verification/test_protocol_delivery.py",
+      "reported_or_derived": "9e9ff00e9f0d66394393a814af095c6d6a84dd01e6380c4def3a957e7408dcb2",
+      "evidence_value": "9e9ff00e9f0d66394393a814af095c6d6a84dd01e6380c4def3a957e7408dcb2",
+      "status": "pass",
+      "evidence": "FREEZE.json"
+    },
+    {
+      "claim": "Preserved worlds",
+      "reported_or_derived": 1536,
+      "evidence_value": 1536,
+      "status": "pass",
+      "evidence": "verification/economic_confirmation_audit.json; verification/reference_accounting_audit.json; verification/economic_aggregate_audit.json"
+    },
+    {
+      "claim": "Journal events",
+      "reported_or_derived": 385682,
+      "evidence_value": 385682,
+      "status": "pass",
+      "evidence": "verification/economic_confirmation_audit.json; verification/reference_accounting_audit.json; verification/economic_aggregate_audit.json"
+    },
+    {
+      "claim": "Contracts checked",
+      "reported_or_derived": 1828,
+      "evidence_value": 1828,
+      "status": "pass",
+      "evidence": "verification/economic_confirmation_audit.json; verification/reference_accounting_audit.json; verification/economic_aggregate_audit.json"
+    },
+    {
+      "claim": "Aggregate fields checked",
+      "reported_or_derived": 228,
+      "evidence_value": 228,
+      "status": "pass",
+      "evidence": "verification/economic_confirmation_audit.json; verification/reference_accounting_audit.json; verification/economic_aggregate_audit.json"
+    }
+  ],
+  "numeric_and_identity_check_count": 104,
+  "manual_claim_checks": [
+    {
+      "claim": "Simulated scope, observed model outcomes and uncertainty are distinguished from actual commerce and market validation",
+      "status": "pass",
+      "evidence": [
+        "economics/PROTOCOL.md",
+        "economics/assumptions.json"
+      ]
+    },
+    {
+      "claim": "Offer is confined to the supplied validated network family and computational acceptance; physical deployment remains separate",
+      "status": "pass",
+      "evidence": [
+        "economics/PROTOCOL.md",
+        "protocol/ACCEPTANCE.md"
+      ]
+    },
+    {
+      "claim": "Buyer alternatives, private information, logit and best-response rules, same-AI price actions, supplier terms and payment deviations match implemented game",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py",
+        "economics/assumptions.json"
+      ]
+    },
+    {
+      "claim": "Common quality shock changes both correction probability and warranty exposure",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py"
+      ]
+    },
+    {
+      "claim": "Startup effort/rates, ten delivery hours, four verification hours, opening equity, credit limit/APR, 12 selling plus six runoff months match source",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py",
+        "economics/assumptions.json"
+      ]
+    },
+    {
+      "claim": "Restricted deposits, acceptance, revenue, receivables, corrections, refunds, support, debt and exit are distinct journal events; no speculative terminal value is booked",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py",
+        "verification/economic_confirmation_audit.json"
+      ]
+    },
+    {
+      "claim": "Initial and one redesigned grid have 24 entries, 20 unique parameter sets, 12 common development seeds, six design-weighted scenarios; lower-price redesign does not raise demand/value",
+      "status": "pass",
+      "evidence": [
+        "economics/development/policy_comparison.json",
+        "economics/development/selection.json",
+        "economics/archive-v1/assumptions.json",
+        "economics/assumptions.json"
+      ]
+    },
+    {
+      "claim": "All reference worlds stop in month five; no confirmation renewal or successor investment occurs; strongest-free and rational-buyer cases have zero enterprise sales",
+      "status": "pass",
+      "evidence": [
+        "economics/confirmation/worlds",
+        "economics/confirmation/summary.json"
+      ]
+    },
+    {
+      "claim": "Ordinary conventional economics are assumed identical, not a measured operating advantage; shared-commissioning threshold omits further lifecycle costs",
+      "status": "pass",
+      "evidence": [
+        "economics/PROTOCOL.md",
+        "economics/arrangement_analysis.json"
+      ]
+    },
+    {
+      "claim": "Stop-after-research retains sunk research and archival exit; ex-ante no-research zero-cost baseline is a different decision date",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py",
+        "economics/confirmation/summary.json"
+      ]
+    },
+    {
+      "claim": "Successor threshold is >= cost; actual lower bound fails; $20,000 later stage is separate/unfunded and no future value counted",
+      "status": "pass",
+      "evidence": [
+        "economics/model.py",
+        "economics/assumptions.json"
+      ]
+    },
+    {
+      "claim": "Billion-scale arithmetic is a conditional incremental-beneficiary-value threshold with reachable demand/adoption/value unestablished, separate from revenue/profit/valuation",
+      "status": "pass",
+      "evidence": [
+        "economics/arrangements.py",
+        "economics/arrangement_analysis.json"
+      ]
+    },
+    {
+      "claim": "Terra/Astra published reference rates and illustrative 20,000 input / 5,000 output arithmetic match inspected frontier memo; no claim of billed session cost",
+      "status": "pass",
+      "evidence": [
+        "evidence/research/frontier.md"
+      ],
+      "limit": "This audit checks the preserved primary-source reading and arithmetic; it does not remeasure API prices or actual usage."
+    }
+  ],
+  "wording_corrections_reported_to_author": [
+    {
+      "id": "free_substitute_subject",
+      "severity": "wording",
+      "initial_text": "The strongest free substitute obtains zero sales.",
+      "corrected_meaning": "The paid offering obtains zero sales when the strongest free substitute is available.",
+      "resolved": true
+    },
+    {
+      "id": "prospect_cost_scope",
+      "severity": "wording",
+      "initial_text": "Per-order costs include qualification, negotiation",
+      "corrected_meaning": "Prospect and order costs include qualification and negotiation even without a contract.",
+      "resolved": true
+    },
+    {
+      "id": "quoted_versus_negotiated_price",
+      "severity": "precision",
+      "initial_text": "charges USD4,500",
+      "corrected_meaning": "Quotes USD4,500; frozen model permits up to 10% negotiated discount.",
+      "resolved": true
+    },
+    {
+      "id": "successor_gate_boundary",
+      "severity": "precision",
+      "initial_text": "benefit must exceed experiment cost",
+      "corrected_meaning": "Benefit must at least cover experiment cost (>=).",
+      "resolved": true
+    }
+  ],
+  "errors": [],
+  "recommendation": "Publish the economic account with its conditional scope and stop decision. Preserve all negative scenarios and distinguish the simple joint subtotal from complete lifecycle profit. Reopening requires external beneficiary/demand/cost evidence and a new frozen study.",
+  "commercial_handoff": "publication/COMMERCIAL_HANDOFF.md",
+  "commercial_handoff_sha256": "6b1851dd806918bb27581466e83179c8ddb40d20768ae3667cd6e18e5b4d9112",
+  "frozen_files_unchanged": true,
+  "reviewed_documents_stable_during_check": true
+}

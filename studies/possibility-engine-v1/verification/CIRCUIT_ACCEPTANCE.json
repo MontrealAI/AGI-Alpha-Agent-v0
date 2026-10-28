@@ -1,0 +1,9 @@
+{
+  "schema": "possibility-circuit-acceptance-v1",
+  "declared_before_execution": "2026-10-28T14:04:59.589605+00:00",
+  "absolute_agreement_tolerance": 1e-06,
+  "comparison": "SPICE .measure and independent Kirchhoff-law solve_ivp against frozen generated result nominal_outputs",
+  "ode_solver": "SciPy DOP853, rtol 1e-11, atol 1e-13",
+  "scope": "nominal circuit-software execution, not physical validation; .cir capacitor IC models initialized normalized charge, not a physically realized impulse",
+  "failure_retention": "all attempted simulator stdout/stderr and original netlist hashes retained; fresh source change requires new run directory"
+}

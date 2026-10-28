@@ -1,0 +1,79 @@
+{
+  "mode": "stage-full",
+  "status": "staged",
+  "workspace": "/tmp/possibility-engine-handoff-full-v1/workspace",
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "verification/run_confirmation.py",
+      "FREEZE.json",
+      "evidence/confirmation/seeds.json",
+      "--output",
+      "evidence/confirmation/technical"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "economics/model.py",
+      "confirm",
+      "--seed-file",
+      "evidence/confirmation/seeds.json",
+      "--output",
+      "economics/confirmation"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "economics/persist_confirmation_references.py"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "verification/check_accounts.py",
+      "economics/confirmation",
+      "--config",
+      "economics/assumptions.json",
+      "--output",
+      "verification/replayed_accounting.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "verification/check_summaries.py",
+      "."
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "verification/check_reference_accounts.py",
+      "."
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "reproduce.py",
+      "--mode",
+      "stage-circuits",
+      "--technical",
+      "evidence/confirmation/technical",
+      "--output",
+      "/tmp/possibility-engine-handoff-full-v1/circuit-inputs"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "verification/circuit_runner.py",
+      "/tmp/possibility-engine-handoff-full-v1/circuit-inputs",
+      "/tmp/possibility-engine-handoff-full-v1/circuit-results"
+    ]
+  ],
+  "command_file": "/tmp/possibility-engine-handoff-full-v1/REPLAY_COMMANDS.sh",
+  "ngspice_requested": false,
+  "scope": "No replay executed by staging; same issued seeds reproduce original confirmation, not fresh evidence",
+  "freeze_sha256": "e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7",
+  "seed_bank_sha256": "e721d18d75f2c6f95bd3d25668d4799a4d7d54e85db24cd8ff414e801ec0fea1",
+  "wrapper_sha256": "cc50b7a021bf1a7b68fe929c6f8ab91ee7f66d1b676f589bad5bff298fcc2384",
+  "python": "3.12.14",
+  "original_frozen_sources_and_seed_bank_unchanged": true
+}

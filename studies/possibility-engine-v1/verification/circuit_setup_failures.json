@@ -1,0 +1,36 @@
+[
+  {
+    "failure_id": "CIRCUIT-SETUP-001",
+    "status": "retained",
+    "command": "command -v ngspice",
+    "observation": "No installed executable found before setup",
+    "resolution": "Isolated public Ubuntu package retrieval attempted, no system installation",
+    "web_lookup_failures": [
+      "packages.ubuntu.com/noble/amd64/ngspice/download returned500",
+      "packages.ubuntu.com/noble/ngspice timed out"
+    ],
+    "changed_acceptance": false
+  },
+  {
+    "failure_id": "CIRCUIT-SETUP-002",
+    "status": "retained",
+    "command": "/tmp/possibility-ngspice/root/usr/bin/ngspice --version",
+    "exit_code": 127,
+    "stderr": "error while loading shared libraries: libXft.so.2: cannot open shared object file: No such file or directory",
+    "resolution": "Downloaded checksum-matched libxft2 and libxrender1 from official Ubuntu main index, unpacked in /tmp, and set only process-local library path. Version invocation now succeeds.",
+    "changed_acceptance": false
+  },
+  {
+    "failure_id": "CIRCUIT-CHECKER-003",
+    "original_result": "32/32 refusals in circuit_nominal_v1",
+    "cause": "EREAD gain source newly present, not admitted by initial independent parser",
+    "resolution": "Explicit isolated gain-source parsing; original checker and all failure receipts preserved",
+    "changed_acceptance": false
+  },
+  {
+    "failure_id": "CIRCUIT-TYPING-004",
+    "original_result": "4 strict mypy errors: 2 absent SciPy stubs, reused str/float local, Any return in control test",
+    "resolution": "Local types corrected before fresh confirmation;2 unavailable-stub errors remain reported",
+    "changed_acceptance": false
+  }
+]

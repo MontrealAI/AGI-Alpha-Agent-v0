@@ -1,0 +1,101 @@
+{
+  "mode": "quick",
+  "status": "pass",
+  "frozen_files_verified": 22,
+  "original_used_files_unchanged": 28,
+  "comparisons": [
+    {
+      "arm": "joint",
+      "semantic_equivalence": true,
+      "complete_json_equality": true,
+      "status": "constructed",
+      "cost_units": 14,
+      "independent_optimality_and_predictions": "pass"
+    },
+    {
+      "arm": "successor",
+      "semantic_equivalence": true,
+      "complete_json_equality": true,
+      "status": "constructed",
+      "cost_units": 66,
+      "independent_optimality_and_predictions": "pass"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "src/engine.py",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/evidence/development/joint/input.json",
+        "--output",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/joint"
+      ],
+      "cwd": "/tmp/possibility-engine-handoff-smoke-v2/workspace",
+      "returncode": 0,
+      "seconds": 1.0321569150037249
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_protocol.py",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/joint",
+        "--output",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/joint/independent_check.json"
+      ],
+      "cwd": "/tmp/possibility-engine-handoff-smoke-v2/workspace",
+      "returncode": 0,
+      "seconds": 0.05575266700179782
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "src/engine.py",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/evidence/development/successor/input.json",
+        "--output",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/successor"
+      ],
+      "cwd": "/tmp/possibility-engine-handoff-smoke-v2/workspace",
+      "returncode": 0,
+      "seconds": 0.971102098999836
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_protocol.py",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/successor",
+        "--output",
+        "/tmp/possibility-engine-handoff-smoke-v2/workspace/replayed/successor/independent_check.json"
+      ],
+      "cwd": "/tmp/possibility-engine-handoff-smoke-v2/workspace",
+      "returncode": 0,
+      "seconds": 0.11969745600072201
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "verification",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "/tmp/possibility-engine-handoff-smoke-v2/workspace",
+      "returncode": 0,
+      "seconds": 2.1780458869980066
+    }
+  ],
+  "scope": "Local study replay and scoped controls; not repository release qualification",
+  "freeze_sha256": "e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7",
+  "seed_bank_sha256": "e721d18d75f2c6f95bd3d25668d4799a4d7d54e85db24cd8ff414e801ec0fea1",
+  "wrapper_sha256": "05a34b632c26449b114a756c66a506c414cdc5d70d3934a1206e7a5dadfa8b3a",
+  "python": "3.12.14",
+  "original_frozen_sources_and_seed_bank_unchanged": true
+}

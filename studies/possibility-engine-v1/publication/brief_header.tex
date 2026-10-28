@@ -1,0 +1,12 @@
+\usepackage{fontspec,titlesec,fancyhdr,xurl}
+\AtBeginDocument{\setmainfont[Scale=.94,ItalicFont={DejaVu Serif},ItalicFeatures={FakeSlant=.2},BoldItalicFont={DejaVu Serif Bold},BoldItalicFeatures={FakeSlant=.2}]{DejaVu Serif}}
+\setsansfont{DejaVu Sans}[Scale=.94]
+\setmonofont{DejaVu Sans Mono}[Scale=.72]
+\definecolor{ink}{HTML}{142B42}\definecolor{teal}{HTML}{087F8C}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{.5em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{teal}}{\thesubsection}{.5em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\setlength{\emergencystretch}{3em}\widowpenalty=10000\clubpenalty=10000
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\scriptsize\sffamily AGI ALPHA FLYWHEEL / EXECUTIVE BRIEF}
+\fancyfoot[L]{\scriptsize\sffamily MONTREAL.AI / 28 October 2026}\fancyfoot[R]{\thepage}
+\setlength{\headheight}{15pt}\AtBeginDocument{\hypersetup{linkcolor=ink,urlcolor=teal}}

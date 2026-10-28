@@ -1,0 +1,17 @@
+{
+  "ast_equivalence_of_staged_recipe_test_and_final_wrapper": true,
+  "probes": [
+    {
+      "probe": "existing_output",
+      "correctly_rejected": true,
+      "returncode": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 211, in <module>\n    main()\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 195, in main\n    output = new_output(args.output)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 50, in new_output\n    raise ValueError(\"Output must be a nonexistent directory outside the study\")\nValueError: Output must be a nonexistent directory outside the study\n"
+    },
+    {
+      "probe": "inside_study",
+      "correctly_rejected": true,
+      "returncode": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 211, in <module>\n    main()\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 195, in main\n    output = new_output(args.output)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/possibility-engine-handoff-full-v1/workspace/reproduce.py\", line 50, in new_output\n    raise ValueError(\"Output must be a nonexistent directory outside the study\")\nValueError: Output must be a nonexistent directory outside the study\n"
+    }
+  ]
+}
