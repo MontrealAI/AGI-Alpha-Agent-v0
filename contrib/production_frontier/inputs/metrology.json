@@ -1,0 +1,279 @@
+{
+  "beneficiary": "A hypothetical AM metrology team",
+  "binding_constraint": "The same finite coupons cannot support two destructive uses; internal and mechanical observations complement",
+  "brief_id": "metrology-106",
+  "capabilities": [],
+  "cost_cap_micro_usd": 6000000000,
+  "input_mode": "authored-simulation",
+  "limitations": [
+    "Finite sequential single-use batches; no scheduling concurrency, stochastic yields or real production",
+    "Original relationships are represented as declarations and have not been independently translated from engineering source",
+    "All quantities, durations, costs, buyer identities and recipe performance are authored assumptions"
+  ],
+  "obligations": [
+    "original-interface",
+    "independent-acceptance",
+    "no-inferred-authority"
+  ],
+  "recipes": [
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "coupon": 3
+      },
+      "description": "Authored metrology model operation destructive-test; no external action",
+      "estimated_cost_micro_usd": 900000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "destructive-result": 3
+      },
+      "provides": [
+        "mechanical-measurements"
+      ],
+      "recipe_id": "destructive-test",
+      "requires": [
+        "build-trace"
+      ],
+      "schema_version": 1,
+      "seconds": 900,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "blank": 6
+      },
+      "description": "Authored metrology model operation conventional-laboratory; no external action",
+      "estimated_cost_micro_usd": 8000000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "validation-packet": 1
+      },
+      "provides": [],
+      "recipe_id": "conventional-laboratory",
+      "requires": [],
+      "schema_version": 1,
+      "seconds": 7200,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "coupon": 6
+      },
+      "description": "Authored metrology model operation image-interior; no external action",
+      "estimated_cost_micro_usd": 600000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "coupon": 6
+      },
+      "provides": [
+        "internal-measurements"
+      ],
+      "recipe_id": "image-interior",
+      "requires": [
+        "build-trace"
+      ],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "blank": 6
+      },
+      "description": "Authored metrology model operation make-coupons; no external action",
+      "estimated_cost_micro_usd": 1800000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "coupon": 6
+      },
+      "provides": [
+        "build-trace"
+      ],
+      "recipe_id": "make-coupons",
+      "requires": [],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {},
+      "description": "Authored metrology model operation fit-joint-model; no external action",
+      "estimated_cost_micro_usd": 400000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "proposed-construction",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {},
+      "provides": [
+        "joint-model"
+      ],
+      "recipe_id": "fit-joint-model",
+      "requires": [
+        "internal-measurements",
+        "mechanical-measurements"
+      ],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {},
+      "description": "Authored metrology model operation reject-without-measurement; no external action",
+      "estimated_cost_micro_usd": 1000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "conventional",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "validation-packet": 1
+      },
+      "provides": [],
+      "recipe_id": "reject-without-measurement",
+      "requires": [
+        "unavailable-truth-oracle"
+      ],
+      "schema_version": 1,
+      "seconds": 1,
+      "sources": [
+        "authored"
+      ]
+    },
+    {
+      "acceptance": "Independent replay must conserve declared inputs and meet every original output and budget",
+      "consumes": {
+        "coupon": 2,
+        "destructive-result": 3
+      },
+      "description": "Authored metrology model operation fresh-geometry-check; no external action",
+      "estimated_cost_micro_usd": 700000000,
+      "failure": "Invalid source meaning, missing real approval, physical mismatch or scarce input reused",
+      "origin": "proposed-construction",
+      "permission": "research-cleared",
+      "permission_basis": "Only local computation over public authored inputs is cleared; real actions are untested",
+      "preserves": [
+        "original-interface",
+        "independent-acceptance",
+        "no-inferred-authority"
+      ],
+      "produces": {
+        "validation-packet": 1
+      },
+      "provides": [],
+      "recipe_id": "fresh-geometry-check",
+      "requires": [
+        "joint-model"
+      ],
+      "schema_version": 1,
+      "seconds": 600,
+      "sources": [
+        "authored"
+      ]
+    }
+  ],
+  "required_capabilities": [],
+  "required_stock": {
+    "validation-packet": 1
+  },
+  "resources": [
+    {
+      "meaning": "Authored blank; no physical interchangeability or qualification established",
+      "resource_id": "blank",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored coupon; no physical interchangeability or qualification established",
+      "resource_id": "coupon",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored destructive-result; no physical interchangeability or qualification established",
+      "resource_id": "destructive-result",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    },
+    {
+      "meaning": "Authored validation-packet; no physical interchangeability or qualification established",
+      "resource_id": "validation-packet",
+      "schema_version": 1,
+      "unit": "declared discrete item"
+    }
+  ],
+  "schema_name": "production-frontier/v1",
+  "schema_version": 1,
+  "seconds_cap": 10800,
+  "sources": [
+    {
+      "does_not_establish": "Utility specifications, laboratory physics, access rights, prices or paid demand",
+      "kind": "authored-assumption",
+      "schema_version": 1,
+      "sha256": "d042e7333e2def0bf6f216a764e96d0c090f0bc9e10e791430a7bd55f7888a5f",
+      "source_id": "authored",
+      "supports": "Only the provenance label of authored parameters",
+      "uri": "urn:agi-alpha:authored-model:production-frontier/v1"
+    }
+  ],
+  "state_cap": 4096,
+  "stock": {
+    "blank": 6
+  },
+  "useful_outcome": "Construct a measurement sequence that leaves fresh material for validation after destructive testing"
+}
