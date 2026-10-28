@@ -201,22 +201,24 @@ class Enterprise:
         self._evidence(assessment.evidence, cx)
         return assessment
 
-    def _technical_origin(self, offering: dict[str, Any], cx: Any) -> None:
-        """Recheck current support while preserving the historical qualification."""
+    def _technical_evidence(self, offering: dict[str, Any], cx: Any) -> None:
+        """Require the same qualified prototype to remain a currently accepted origin."""
         operation = offering.get("prototype_operation")
-        if not isinstance(operation, str) or offering["qualification_source"] != self.service.execution_digest:
+        if not isinstance(operation, str):
+            raise ValueError("offering has no qualified prototype origin")
+        if offering["qualification_source"] != self.service.execution_digest:
             raise Conflict("prototype technical source requires requalification")
+        execution, _ = accepted_general_origin(self.service, operation, cx)
         launch = self._read("launch", operation, cx)
-        record, _ = accepted_general_origin(self.service, operation, cx)
         if (
             launch is None
             or launch["status"] != "completed"
             or launch["source"] != self.service.execution_digest
             or launch["offering_spec_digest"]
             != digest("enterprise-offering", Offering.model_validate(offering["spec"]))
-            or launch["execution_digest"] != record["digest"]
+            or launch["execution_digest"] != execution["digest"]
         ):
-            raise Conflict("prototype acceptance differs from the qualified offering execution")
+            raise Conflict("qualified prototype launch changed or belongs to another offering")
 
     def _context(self, cx: Any) -> dict[str, Any]:
         _, network = self.service._state(cx)
@@ -404,7 +406,7 @@ class Enterprise:
         else:
             if raw["execution_operation"] is not None or value["qualification_source"] != self.service.execution_digest:
                 raise ValueError("technical source requires requalification")
-            self._technical_origin(value, cx)
+            self._technical_evidence(value, cx)
             if stage == "commercially-assessed":
                 assessment = CommercialAssessment.model_validate(raw["commercial"])
                 self._evidence(assessment.evidence, cx)
@@ -444,9 +446,14 @@ class Enterprise:
                         reasons.append("offering not currently authorized")
                     elif alternative.action == "produce":
                         try:
-                            self._technical_origin(offering, cx)
+                            self._technical_evidence(offering, cx)
                         except (KeyError, ValueError):
-                            reasons.append("prototype acceptance or supporting evidence is not currently eligible")
+                            reasons.extend(
+                                [
+                                    "prototype acceptance is missing, changed or no longer eligible",
+                                    "prototype acceptance or supporting evidence is not currently eligible",
+                                ]
+                            )
                         try:
                             self._commercial_evidence(offering, cx)
                         except (KeyError, ValueError):
@@ -568,7 +575,6 @@ class Enterprise:
                             and alternative.action == "produce"
                             and current_offering["stage"] == "authorized"
                         ):
-                            self._technical_origin(current_offering, cx)
                             self._commercial_evidence(current_offering, cx)
             row = next(
                 x for x in decision["alternatives"] if x["alternative"]["alternative_id"] == decision["selected"]
@@ -579,6 +585,8 @@ class Enterprise:
             offering = self._read("offering", str(choice.offering_id), cx)
             if offering is None or offering["digest"] != row["offering_head"]:
                 raise Conflict("offering changed since decision")
+            if choice.action == "produce":
+                self._technical_evidence(offering, cx)
             spec = Offering.model_validate(offering["spec"])
             if spec.required_capabilities:
                 raise ValueError(
@@ -644,7 +652,7 @@ class Enterprise:
                     current_offering = self._read("offering", spec.offering_id, cx)
                     if current_offering is None or current_offering["digest"] != offering["digest"]:
                         raise Conflict("offering changed during production; reassess")
-                    self._technical_origin(current_offering, cx)
+                    self._technical_evidence(current_offering, cx)
 
         try:
             result = (

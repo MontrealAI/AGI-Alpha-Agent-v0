@@ -1,0 +1,35 @@
+{
+  "schema": "held-test-selection-incident/v1",
+  "status": "recorded-corrected-selection; omitted outcomes remain unqualified",
+  "cause": "Root changed one exact old handoff assertion without checking its held-source membership, then ran the broad module without the four required deselections. Static source guard rejected the edit.",
+  "baseline_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "original_source_sha256": "db4fac243db988b418968d8fbb11ae38b5a88ca86d703d5643583ab2c57b84f1",
+  "modified_source_sha256": "1758db385231f4e3ffa2a662f7aae1fee330354bb740365ad64065bf115d753f",
+  "modified_patch": "diff --git a/tests/test_successor_capability_delivery.py b/tests/test_successor_capability_delivery.py\nindex 78ef7e548..754962e87 100644\n--- a/tests/test_successor_capability_delivery.py\n+++ b/tests/test_successor_capability_delivery.py\n@@ -375,7 +375,8 @@ def test_release_packaging_requires_the_same_complete_capability_gate() -> None:\n     download = next(step for step in package[\"steps\"] if step.get(\"uses\", \"\").startswith(\"actions/download-artifact@\"))\n     # Keep advisory formatting out without excluding substantive acceptance evidence.\n     assert (\n-        download[\"with\"][\"pattern\"] == \"!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*\"\n+        download[\"with\"][\"pattern\"]\n+        == \"!{historical-ci,release-package,operator-package,public-pages,github-pages,advisory-formatting}*\"\n     )\n     assert download[\"with\"][\"digest-mismatch\"] == \"error\"\n \n",
+  "held_node_bodies_unchanged": true,
+  "affected_nodes": [
+    {
+      "nodeid": "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands",
+      "observed_invocation": "editions-and-handoffs.json",
+      "outcome_qualification": "UNQUALIFIED; unauthorized selection is not adopted as release acceptance"
+    },
+    {
+      "nodeid": "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata",
+      "observed_invocation": "editions-and-handoffs.json",
+      "outcome_qualification": "UNQUALIFIED; unauthorized selection is not adopted as release acceptance"
+    },
+    {
+      "nodeid": "tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer",
+      "observed_invocation": "editions-and-handoffs.json",
+      "outcome_qualification": "UNQUALIFIED; unauthorized selection is not adopted as release acceptance"
+    },
+    {
+      "nodeid": "tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history",
+      "observed_invocation": "editions-and-handoffs.json",
+      "outcome_qualification": "UNQUALIFIED; unauthorized selection is not adopted as release acceptance"
+    }
+  ],
+  "observed_inputs": "Two held nodes called the native helper with inert local Git metadata and empty JSON fixtures and asserted refusals; two inspected source syntax. No production authority is granted by those fixtures.",
+  "scope_limit": "This record does not retroactively authorize the calls or qualify held behavior; it preserves the actual invocation.",
+  "correction": "Restore original exact source bytes and index; put the small artifact under the already-excluded release-package namespace; use the original four explicit deselections in fresh checks; preserve all guard pins and old evidence."
+}

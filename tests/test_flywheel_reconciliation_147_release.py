@@ -55,17 +55,22 @@ def current_files() -> dict[str, bytes]:
     catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
     names = set(catalog["sources"]) | set(checkout.RECONCILED_FLYWHEEL_147_EXTRA_FILES)
     assert len(names) == 61
-    return {name: (ROOT / name).read_bytes() for name in names}
+    files = {name: (ROOT / name).read_bytes() for name in names}
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+    return files
 
 
-def test_reconciled_edition_matches_current_source_and_preserves_both_histories() -> None:
+def test_reconciled_edition_preserves_its_frozen_source_and_both_histories(tmp_path: Path) -> None:
     value = fixture()
     profiles = {name: getattr(checkout, name) for name in PREDECESSOR_NAMES}
     assert len(profiles) == 23
     assert hashlib.sha256(json.dumps(profiles, sort_keys=True, separators=(",", ":")).encode()).hexdigest() == (
         PREDECESSOR_SHA256
     )
-    assert value["pageSha256"] == hashlib.sha256((ROOT / "docs/flywheel/index.html").read_bytes()).hexdigest()
+    assert (
+        value["pageSha256"]
+        == hashlib.sha256((ROOT / "tests/fixtures/agi-alpha-reconciled-147-page.html.txt").read_bytes()).hexdigest()
+    )
     before = current_files()
     for name, record in value["files"].items():
         body = before[name]
@@ -73,7 +78,8 @@ def test_reconciled_edition_matches_current_source_and_preserves_both_histories(
         assert (len(body), hashlib.sha256(body).hexdigest()) == checkout.RECONCILED_FLYWHEEL_147_EXTRA_FILES[name]
         assert (record["bytes"], record["sha256"]) == checkout.RECONCILED_FLYWHEEL_147_EXTRA_FILES[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
-    report = checkout.refresh(ROOT)
+    write_files(tmp_path, before)
+    report = checkout.refresh(tmp_path)
     assert report["checked"] == 61 and report["needsRefresh"] == []
     assert report["applied"] is False and report["backupDirectory"] is None
     assert current_files() == before

@@ -1,0 +1,61 @@
+[
+  {
+    "name": "insight-browser",
+    "command": [
+      "/tmp/decisive-agent-venv/bin/python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/workspace/scratch/1602dd9e6810/agi-alpha/evidence/decisive-frontier-20261027/review-enterprise-integrated/browser-insight.json",
+      "--screenshots",
+      "/tmp/decisive-enterprise-insight-screens",
+      "--axe-script",
+      "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 5.229
+  },
+  {
+    "name": "preserved-browser",
+    "command": [
+      "/tmp/decisive-agent-venv/bin/python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/tmp/decisive-enterprise-preserved-browser",
+      "--axe-script",
+      "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 24.985
+  },
+  {
+    "name": "comparison-browser",
+    "command": [
+      "/tmp/decisive-agent-venv/bin/python",
+      "tests/browser/test_flywheel_comparison_browser.py"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 15.285
+  },
+  {
+    "name": "comparison-units",
+    "command": [
+      "/tmp/decisive-agent-venv/bin/python",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-o",
+      "addopts=",
+      "tests/test_flywheel_comparison_ui.py",
+      "--basetemp=/tmp/decisive-enterprise-comparison-ui",
+      "-q"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.801
+  }
+]

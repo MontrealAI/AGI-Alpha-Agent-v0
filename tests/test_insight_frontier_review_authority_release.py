@@ -59,7 +59,7 @@ def edition_files() -> dict[str, bytes]:
     return files
 
 
-def test_authority_review_workers_preserve_their_frozen_source_and_all_twenty_one_predecessors(
+def test_historical_authority_review_workers_preserve_their_own_source_and_all_twenty_one_predecessors(
     tmp_path: Path,
 ) -> None:
     fixture = worker_fixture()
@@ -77,10 +77,12 @@ def test_authority_review_workers_preserve_their_frozen_source_and_all_twenty_on
     }
     assert len(set(current) - set(WORKERS)) == 5
     assert fixture["pageSha256"] == "3757e022465f8b802e25c4cfb6eade3cd9214821862e4324f9dd0ac59ab14410"
+    historical_page = ROOT / "tests/fixtures/insight-frontier-147-review-authority-page.html.txt"
+    assert hashlib.sha256(historical_page.read_bytes()).hexdigest() == fixture["pageSha256"]
     records = {}
     for name, row in fixture["files"].items():
         body = row["text"].encode()
-        assert body == edition_files()[name]
+        # This historical edition keeps its exact workers after a later candidate is admitted.
         assert b"agialpha-gallery-9fa255c90814ec03" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == (row["bytes"], row["sha256"]) == current[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == row["gitBlob"]

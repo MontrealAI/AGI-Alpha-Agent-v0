@@ -99,7 +99,7 @@ def test_bulk_download_excludes_failed_history_and_previous_release_outputs() ->
     def retained(name: str) -> bool:
         return not any(fnmatch.fnmatchcase(name, exclusion) for exclusion in exclusions)
 
-    for prefix in ("historical-ci", "release-package", "public-pages", "github-pages"):
+    for prefix in ("historical-ci", "release-package", "release-package-operator", "public-pages", "github-pages"):
         assert not retained(prefix)
         assert not retained(prefix + "-37836936731-1")
         assert not retained(prefix + "-37836936731-2")
@@ -269,3 +269,67 @@ def test_pages_deploys_the_unique_artifact_uploaded_in_its_own_attempt() -> None
     assert name == deploy["with"]["artifact_name"]
     assert "${{ github.run_id }}" in name
     assert "${{ github.run_attempt }}" in name
+
+
+def test_operator_package_follows_verified_full_artifact_with_unique_attempt_identity() -> None:
+    package = jobs()["package"]
+    steps = package["steps"]
+    verified = next(step for step in steps if step.get("name") == "Build, verify and package the exact tested commit")
+    uploads = [step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@")]
+    assert len(uploads) == 2
+    full, operator = uploads
+    assert full == {
+        "uses": "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f",
+        "with": {"name": "${{ steps.package-name.outputs.name }}", "path": "release/", "if-no-files-found": "error"},
+    }
+    assert steps.index(verified) < steps.index(full) < steps.index(operator)
+    script = verified["run"]
+    build = script.index("python -m scripts.package_agent_release --output release --evidence evidence")
+    preflight = script.index("python scripts/install_agent.py --release-dir release --check-only")
+    install = script.index("python scripts/install_agent.py --release-dir release --venv")
+    checksums = script.index("sha256sum -c SHA256SUMS")
+    assert build < preflight < install < checksums
+    assert not any(step.get("continue-on-error", False) for step in (verified, full, operator))
+    assert "if" not in operator and operator["uses"] == full["uses"]
+    assert operator["with"]["if-no-files-found"] == "error"
+    name = operator["with"]["name"]
+    assert name == "release-package-operator-${{ github.run_id }}-${{ github.run_attempt }}"
+    names = {
+        name.replace("${{ github.run_id }}", run).replace("${{ github.run_attempt }}", attempt)
+        for run, attempt in (("37836936731", "1"), ("37836936731", "2"), ("37836936732", "1"))
+    }
+    assert len(names) == 3
+    assert all(re.fullmatch(r"release-package-operator-[1-9][0-9]*-[1-9][0-9]*", value) for value in names)
+    assert package["outputs"]["artifact-name"] == "${{ steps.package-name.outputs.name }}"
+
+
+def test_operator_package_upload_contains_only_exact_allowed_release_files(tmp_path: Path) -> None:
+    operator = next(
+        step for step in jobs()["package"]["steps"] if step.get("name") == "Upload the verified operator package"
+    )
+    patterns = operator["with"]["path"].splitlines()
+    assert patterns == [
+        "release/alpha_factory_v1-*.whl",
+        "release/requirements-agent.lock",
+        "release/install_agent.py",
+        "release/SHA256SUMS",
+        "release/source-manifest.json",
+        "release/release-manifest.json",
+    ]
+    release = tmp_path / "release"
+    release.mkdir()
+    allowed = {
+        "alpha_factory_v1-1.47.0-py3-none-any.whl",
+        "requirements-agent.lock",
+        "install_agent.py",
+        "SHA256SUMS",
+        "source-manifest.json",
+        "release-manifest.json",
+    }
+    excluded = {"gallery-full.zip", "native-runtime.tar.gz", "unrelated.whl", "identity.key", "evidence.json"}
+    for filename in allowed | excluded:
+        (release / filename).write_bytes(("unchanged verified fixture: " + filename).encode())
+    originals = {path.name: path.read_bytes() for path in release.iterdir()}
+    selected = {path.name for pattern in patterns for path in tmp_path.glob(pattern)}
+    assert selected == allowed and selected.isdisjoint(excluded)
+    assert {path.name: path.read_bytes() for path in release.iterdir()} == originals

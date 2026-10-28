@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "tools/update_actions.py"
+  ],
+  "scope": "Isolated exact current copies; zero matched version-commented uses, no network/version freshness claim",
+  "exit_code": 1,
+  "wall_seconds": 0.03895556299994496,
+  "source_sha256": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+  "isolated_workflow_unchanged": true,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/decisive-final-updater-2jf2vuq1/tools/update_actions.py\", line 94, in <module>\n    main()\n  File \"/tmp/decisive-final-updater-2jf2vuq1/tools/update_actions.py\", line 87, in main\n    if update():\n       ^^^^^^^^\n  File \"/tmp/decisive-final-updater-2jf2vuq1/tools/update_actions.py\", line 63, in update\n    lines = WORKFLOW.read_text().splitlines()\n            ^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/decisive-final-updater-2jf2vuq1/.github/workflows/ci.yml'\n",
+  "previous_runner_attempt": "Minimal operator prefix lacks requests; prior wrapper assertion failed before child output was captured, so that attempt is not a pass."
+}

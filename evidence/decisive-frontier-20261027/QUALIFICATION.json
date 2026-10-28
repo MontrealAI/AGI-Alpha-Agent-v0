@@ -1,25 +1,26 @@
 {
-  "schema": "connected-insight-qualification/v3",
-  "base_commit": "6010e19bff857704827c3aa373121c98003d8965",
-  "base_tree": "05bed4773d2da4b9b1cbf81969ed174101e98199",
+  "schema": "connected-insight-qualification/v4",
+  "base_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "base_tree": "ba5ded943e63bc96be8fed63696efa20d316704c",
   "main_at_qualification": "3947e4ec8fd74ad40e13e8ff825a149fa98a10e9",
-  "status": "Locally qualified named scopes; fresh exact-head review/CI and complete resulting-main release/public/installation gates remain required",
+  "status": "Named combined-source local checks pass; new exact-head review/CI and complete resulting-main release/public/installation remain required",
   "predecessor": {
-    "file": "QUALIFICATION_PRE_REVIEW.json",
-    "sha256": "3282240749118b36e48a129b6e55e5c3a0a40c21c5470df224dd484736f9ad1c",
-    "scope": "Unchanged exact predecessor evidence; its1516runtime tests and125worker cases are not passes of revised bytes"
+    "file": "QUALIFICATION_PRE_ENTERPRISE.json",
+    "sha256": "99d1113e9418f23c9af03e0c340afe24b42e38017f4d64527a4ef15ebf09277e",
+    "scope": "Exact committed8b2qualification, including previous source/review failures; its earlier tests do not qualify changed source"
   },
   "review_fixes": {
     "recurring_execution_controller": "review-authority/QUALIFICATION.json",
     "accepted_origin_controller": "review-authority/QUALIFICATION.json",
     "capsule_origin_acceptance": "review-authority/QUALIFICATION.json",
     "current_frozen_monetary_cap_and_historical_acceptance": "review-comparison-cap/QUALIFICATION.json",
-    "current_construction_acceptance_at_assessment_and_inheritance": "review-insight-acceptance/QUALIFICATION.json"
+    "current_construction_acceptance_at_assessment_and_inheritance": "review-insight-acceptance/QUALIFICATION.json",
+    "current_prototype_acceptance_for_production_and_qualification": "review-enterprise-acceptance/QUALIFICATION.json"
   },
   "observed": {
     "locked_runtime": {
       "command": [
-        "/dev/shm/decisive-agent-venv/bin/python",
+        "/tmp/decisive-agent-venv/bin/python",
         "-m",
         "pytest",
         "tests/runtime",
@@ -27,69 +28,89 @@
         "--ignore=tests/runtime/test_budget_browser.py",
         "--ignore=tests/runtime/test_ecosystem_browser.py",
         "--ignore=tests/runtime/test_supplier_browser_browser.py",
-        "--basetemp=/tmp/decisive-review-runtime/fixtures",
+        "--basetemp=/tmp/decisive-enterprise-runtime/fixtures",
         "-o",
         "tmp_path_retention_policy=failed",
         "-o",
         "tmp_path_retention_count=1",
-        "-q"
+        "-q",
+        "--junitxml=/workspace/scratch/1602dd9e6810/agi-alpha/evidence/decisive-frontier-20261027/review-enterprise-integrated/runtime.xml"
       ],
       "exit_code": 0,
-      "seconds": 426.004,
+      "wall_seconds": 440.606,
       "runtime_source_stable": true,
       "runtime_files": 75,
-      "scope": "Complete hash-locked minimal runtime selection with the three named browser files excluded. Separate Insight/Flywheel/comparison browser validators are recorded; this is not the full release campaign.",
-      "passed": 1551,
-      "skipped": 2,
-      "warnings": 1,
-      "pytest_seconds": 424.55
+      "scope": "Complete official minimal runtime selection with three named browser files excluded, separately recorded browser/tool dependencies; not complete repository or release qualification",
+      "junit_totals": {
+        "tests": 1570,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 1
+      },
+      "skips": [
+        {
+          "name": "test_real_container_keyboard_screenshot_and_cleanup",
+          "class": "tests.runtime.test_successor_computer",
+          "reason": "real Docker image must be explicitly provided"
+        }
+      ],
+      "passed": 1569,
+      "skipped": 1,
+      "pytest_seconds": 439.63,
+      "note": "16 new enterprise cases plus two Studio browser cases enabled by recorded Playwright tooling; the former module import-skip is not a performance gain. The skipped real-container test requires an explicitly provided Docker image."
     },
     "runtime_strict_types": {
       "passed": true,
       "files": 75,
-      "source": "review-integrated/runtime-types.txt"
+      "source": "review-enterprise-integrated/runtime-types.json"
     },
     "insight_browser": {
       "passed": 54,
       "axe_audits": 2,
-      "source": "review-integrated/browser-insight.json"
+      "source": "review-enterprise-integrated/browser-insight.json"
     },
     "preserved_browser": {
       "passed": 23,
       "axe_audits": 6,
-      "source": "review-integrated/browser-preserved.json"
+      "source": "review-enterprise-integrated/browser-preserved.json"
     },
     "comparison_browser": {
       "passed": 15,
       "axe_enabled": true,
-      "source": "review-integrated/browser-comparison.json",
-      "scope": "Includes EN/FR monetary-overrun and revoked-origin rendering; backend authority/cost tests are separately executed, not inferred from injection"
+      "source": "review-enterprise-integrated/browser-comparison.json",
+      "scope": "Includes EN/FR cap and revocation rendering, with separate executable backend tests"
     },
     "comparison_ui_units": {
       "passed": 2,
-      "source": "review-integrated/comparison-ui-unit.json"
+      "source": "review-enterprise-integrated/comparison-units.txt"
     },
     "worker_editions": {
-      "passed": 165,
-      "new_cases": 40,
-      "retained_cases": 125,
+      "passed": 213,
+      "new_cases": 48,
+      "retained_cases": 165,
       "skipped": 0,
-      "source": "release-metadata/worker-review-authority/QUALIFICATION.json",
-      "historical_profiles_preserved": 21
+      "source": "review-enterprise-integrated/authorized-editions-handoffs.json",
+      "historical_profiles_preserved": 22,
+      "historical_page_blob": "14512919304afc1eaa20a7575186f3554d5076bc",
+      "prior_phase_source": "release-metadata/worker-enterprise-acceptance/QUALIFICATION.json",
+      "note": "All213worker cases rerun after AST-preserving allowlist formatting; original pre-format source retained in allowlist-before-format.json"
     },
     "ci_budget_contracts": {
-      "passed": 74,
-      "source": "ci-budget/QUALIFICATION.json",
-      "change": "Enclosing regression orchestration90to120minutes only; all functional/test/security/coverage/action/permission constraints unchanged"
+      "passed": 76,
+      "new_operator_cases": 2,
+      "source": "evidence/release-operator-artifact/QUALIFICATION.json",
+      "source_root": "repository",
+      "historical_timeout_migration": "ci-budget/QUALIFICATION.json; exact original migration preserved, enclosing120minute ceiling remains",
+      "change": "One final six-file release-package-operator upload after existing verification/full upload; original bulk selector, pins, source/authority and publication gates unchanged."
     },
     "source_packets": {
       "fresh_executed": 8,
-      "source": "review-integrated/source-packet-runs.json",
+      "source": "review-enterprise-integrated/source-packet-runs.json",
       "runtime_stable": true
     },
     "generation": {
       "deterministic": true,
-      "source": "review-integrated/generation-determinism.json"
+      "source": "review-enterprise-integrated/generation-determinism.json"
     },
     "prospective_canary_drivers": {
       "syntax_lint_and_read_only_review": "review-integrated/canary-driver-review.json",
@@ -101,16 +122,41 @@
     "selected_security_integrity": {
       "passed": true,
       "checks": 4,
-      "scope": "Four named direct checks on final staged source, not full hook campaign",
-      "source": "review-integrated/selected-security-integrity.json",
-      "first_whitespace_failure_preserved": "review-integrated/selected-security-integrity.attempt-1.json",
-      "exact_original_failure_log_migration": "review-comparison-cap/RAW_LOG_MIGRATION.json"
+      "scope": "Four named final staged direct checks; full local hook campaign unqualified",
+      "source": "review-enterprise-integrated/security-integrity.json",
+      "failed_attempts_preserved": [
+        "review-enterprise-integrated/security-integrity.attempt-1.json",
+        "review-enterprise-integrated/security-integrity.attempt-2.json"
+      ]
+    },
+    "workspace_restoration": {
+      "source": "WORKSPACE_RESTORATION.json",
+      "previous_source_bindings_verified": 194,
+      "previous_receipt_bindings_verified": 102,
+      "uncommitted_operator_edit": "Reconstructed and freshly76case qualified; old lost hashes not invented"
+    },
+    "qualification_environment": {
+      "source": "RESTORED_ENVIRONMENT.json",
+      "python": "3.12.14",
+      "node": "22.17.1",
+      "pytest": "8.4.1",
+      "ruff": "0.12.5",
+      "mypy": "1.17.0",
+      "playwright": "1.54.0",
+      "chromium": "139.0.7258.5"
+    },
+    "allowed_editions_handoff_campaign": {
+      "passed": 342,
+      "deselected": 4,
+      "skipped": 0,
+      "source": "review-enterprise-integrated/authorized-editions-handoffs.json",
+      "scope": "213worker cases +76CI contracts +53allowed successor-delivery checks; original four held nodes explicitly deselected and absent from JUnit"
     }
   },
-  "pageSha256": "3757e022465f8b802e25c4cfb6eade3cd9214821862e4324f9dd0ac59ab14410",
-  "sourceHash": "f29742eca8781d4b289213990fbd3f14d1a1d8ba87bef24de6e2c56cdecaeea8",
+  "pageSha256": "7c6144a05219319687a35e2c54e0edce1443635f89cb241c0fe7766e67094f98",
+  "sourceHash": "3289431239790e9dfc14293d63179728f11cdbf691946f8c586fe12b65e115ba",
   "source_sha256": {
-    ".github/workflows/agent-release.yml": "182217b3e43e89d21944310d704e7c7e221d722ed883757fadfb4abb9efac8dd",
+    ".github/workflows/agent-release.yml": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
     ".pre-commit-config.yaml": "e4b016edad52d2c21372c89174b379e1aabb05883749f81a98ab55f601cce6c2",
     "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
     "alpha_factory_v1/core/runtime/__init__.py": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
@@ -151,7 +197,7 @@
     "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": "3b2de479398270e7c8d54f0156fb17d674f5e9a4b3dc60eb28a9d5ff4f769ebe",
     "alpha_factory_v1/core/runtime/successor/flywheel_customer.py": "43744f51992f0ac749d4d3646f476a2723565107dd209cc46661e301f5f99d2a",
     "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "9981bf991d6b3d1dc15ebc5ebd31b6715a2dfaf21ac99806a3175ee91ae5577f",
-    "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py": "f0f778292ad01d0a3b29bf754eef027b674292bb3aa050fcecd20b97eb76ed7d",
+    "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py": "c74494099f6d1626d4c7a53752d1510be8059970c1e3932763a75fe46f47112b",
     "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "f459ddf1c46a571f90b5c203847906e7554e452e8dc0630d557cc6524c7dcfa5",
     "alpha_factory_v1/core/runtime/successor/flywheel_experiments.py": "823415747a30dc34f630cbd6cb9ad1320c1b6d7a20f4ab2d076b9de509aed519",
     "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py": "2aab5786244ffa2927d322a5c0821824f2cfb9d1ba679d73251a6747f0d5b221",
@@ -189,12 +235,14 @@
     "alpha_factory_v1/core/runtime/work.py": "0dae1e55376f991a364cbe748fb7eccc3c91be29cfb8ed8a9a43e8366fe4c2c9",
     "alpha_factory_v1/core/runtime/work_spec.py": "64fc1ac65ad850b7e8cf776d4481ff641ddcaed7492ed8df84d8de69c213b62f",
     "docs/agent/RELEASE_READINESS.md": "883ea9096867cc8e20118371ff80b796caa6bfe30dd7f2bc2826c31bd63c1a55",
-    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": "e8a05eaf3ccfbeea86ea9318bc66f2f382682c483a40792d76f9087eb2d32f65",
-    "docs/assets/service-worker.js": "0b0f9987d46e5c652d54f961b631cc68db78688da30321ff6b1b6e9b645183dd",
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": "06eca2a88af6bd6a50f15da4165a4e70c6015a388ecd9e4beba280ef3089d593",
+    "docs/assets/service-worker.js": "c0b2123977d6f95ac3c09ab9e20db418484107d0f8a14893bd2ba5e74b941127",
     "docs/assets/successor/engine.mjs": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
-    "docs/flywheel/index.html": "3757e022465f8b802e25c4cfb6eade3cd9214821862e4324f9dd0ac59ab14410",
-    "docs/flywheel/sources.json": "9f73bf9978f0c8ade0ca3a651b23c4851776cddedb0069bf106fa88fe6028adf",
-    "docs/service-worker.js": "357308e5afd03495e75cfe557ccff8fc42c6c008e8c1b2b814138b92642eade9",
+    "docs/flywheel/index.html": "7c6144a05219319687a35e2c54e0edce1443635f89cb241c0fe7766e67094f98",
+    "docs/flywheel/sources.json": "316df9a233904698125827719115a0344ac8394af5ccd25c441ecdb5bd7d1c6e",
+    "docs/service-worker.js": "3e03df48a33790526091917aec7223b5b8c84eb820a5a927ea2cde7b803520de",
+    "evidence/decisive-frontier-20261027/RESTORED_ENVIRONMENT.json": "1c5dd7ed9623a5e471b61ff4391f3af73f81ac4a7f0260f39fbfbf175baca43e",
+    "evidence/decisive-frontier-20261027/WORKSPACE_RESTORATION.json": "7d6148783aaff1304f381b8a47319a94eb506f2db65b2defde6b8037bce4d8ce",
     "evidence/decisive-frontier-20261027/native-canary/FREEZE.json": "f3a398ca79219221c77e3adb35cd1a77e1b3f2883072e31ffb79bd84d067fa2e",
     "evidence/decisive-frontier-20261027/native-canary/PRECONFIRMATION_ADDENDUM.json": "3d14427deb50cbdfdb2c612a6013950905c66ba39f87674e8b1594f4807bbee5",
     "evidence/decisive-frontier-20261027/native-canary/fresh-allocation.json": "14279cb4912a6fdffae3dea40240b3f5f8dc5a4562a00c3eae698001dc109011",
@@ -215,25 +263,27 @@
     "scripts/generate_alpha_flywheel.py": "63dce9871d0c94877f78c5bf1ef5720ced6860715edbb8feaa94945f35abe43e",
     "scripts/record_insight_frontier.py": "7e23c62ff2e71b2d46947a3d67634c611a6dbf17e65d809c782397b62b5fdf71",
     "scripts/record_opportunity_probe.py": "07b928da1b049cf065ac407d5bf44c8ef779e0f52f2f55f78221d4d9802c00b7",
-    "scripts/refresh_capability_checkout.py": "182c950a27df8f630f621d9d712d5e9d44f67465e9415c58dd002de14869963d",
+    "scripts/refresh_capability_checkout.py": "ab41b5a396a364be491fe6c08cfed640502a411b307c46630d8e6dd93cebd081",
     "scripts/templates/alpha-flywheel/app.js": "cca82278f0c402828c835e13cd31aa9a0486bad07980b5638210225eb33761ca",
-    "scripts/templates/alpha-flywheel/comparison-evidence.json": "aa3eab1b88e8d922ae76b5eaaae9fd9b5f031ad080a84fa7772b5c02618892ed",
-    "scripts/templates/alpha-flywheel/customer-evidence.json": "40a454e0ed65991b7a33b326fef6f42e35b72b696d5a26ec0b167c004096db23",
-    "scripts/templates/alpha-flywheel/discovery-evidence.json": "d2de3039dc11e19efc12d0c5d476c49ef01123f6a3120b812d26eb9213e2cb11",
-    "scripts/templates/alpha-flywheel/enterprise-evidence.json": "88cb2b311e4398e3e6ae2acb6636c02268d4ddafe72103f6a1bbc615baac3217",
-    "scripts/templates/alpha-flywheel/general-evidence.json": "35f651332f77736cac8893e6c3edeae58fb77d2f6577ca17683437efa84b2031",
+    "scripts/templates/alpha-flywheel/comparison-evidence.json": "8a3ac0eb070465da5c702e8080e537eaa7c727077aa87aa7e018833fcb425fd6",
+    "scripts/templates/alpha-flywheel/customer-evidence.json": "85f0ce48a99183dce8496bd6440a09fd5d2593621c9264911d1af088ec2690a8",
+    "scripts/templates/alpha-flywheel/discovery-evidence.json": "201221a1b42565cd38a4f58b9d45fd0f39ae6a0bfefbb7fd36301b94625e710c",
+    "scripts/templates/alpha-flywheel/enterprise-evidence.json": "e3928c53090a9b3411d439fe6d02479010d232c5b698fa698e908868cb6ae502",
+    "scripts/templates/alpha-flywheel/general-evidence.json": "497d5b7c2f70f6951eda1d70f830cde75c2672a995216432dbab54b4b5c36945",
     "scripts/templates/alpha-flywheel/index.html": "306c19e2cdae5fe66fa6fd09a84d60ff9b6a8988c6629af6b97bcb894107b359",
-    "scripts/templates/alpha-flywheel/insight-evidence.json": "31b7c70211077072e7a9c574153d5c159c3b4d16b1a75b8582ca0c31ddc9f4ef",
+    "scripts/templates/alpha-flywheel/insight-evidence.json": "e86387ddb1fbcfe20c8a59bfb00ed5cec224ebc681699fe61a79195c524a57e9",
     "scripts/templates/alpha-flywheel/insight-section.html": "05104dd144b704d820559750ef14325c646035fc4fe7fd6c51b0314ff8dc1802",
     "scripts/templates/alpha-flywheel/insight.js": "a0c3d4d027e994bbd6d06b346fcd5072f48f32be5be019b45aaf0b3a8cf74daa",
     "scripts/templates/alpha-flywheel/opportunity-evidence.json": "1ad873c8322d3562f8cf1ecdc6c0a8b8105cf83aec6ae8df09a5f2cebc7f0404",
-    "scripts/templates/alpha-flywheel/specialist-evidence.json": "08a122727d08f506c9d3f65ea050a8726f34ca5aa775c3a485b3fe193d429109",
+    "scripts/templates/alpha-flywheel/specialist-evidence.json": "4c4fc5c843b0fe963ae7c7539f6039bf0e5696db9da823c1e4e089995b51cba7",
     "scripts/templates/alpha-flywheel/style.css": "aabd302cbc392869aea2a660a798e2798534edd5473bf2c5300a5ef6c74129b6",
     "scripts/validate_alpha_flywheel.py": "8d4774260bdd26477e39633c6f88484dae8d4d262ed7196588f380a85a7f5f58",
     "scripts/validate_insight_frontier.py": "5f51b34bf31809185c9615372f770876f03478d9bb92543ae9872adf11a8605a",
     "tests/browser/test_flywheel_comparison_browser.py": "f06a257b2913282ef5331b9f6286f20e7beacdc46ccb62ceb2e6ed0efdd78b1f",
+    "tests/fixtures/capability-checkout-insight-frontier-147-enterprise-acceptance-workers.json": "c750d36d109118d6c170185c6a98b5a508f67c7e8cf0c6fcbff675da6e15b2e5",
     "tests/fixtures/capability-checkout-insight-frontier-147-post-guard-workers.json": "d4a8b72e3e8c46a9cf162e4cc2cfc5fac1edbc8c4cc122184e18102b54c47308",
     "tests/fixtures/capability-checkout-insight-frontier-147-review-authority-workers.json": "659c8f56ea2d09051a92f7c2de81ca7f83b59fb868df2ab8ec0dd5d17b13b06b",
+    "tests/fixtures/insight-frontier-147-review-authority-page.html.txt": "3757e022465f8b802e25c4cfb6eade3cd9214821862e4324f9dd0ac59ab14410",
     "tests/runtime/test_api_boundary.py": "afa41ae0e428e9be048544e03daaf7a4e2c3e45a0b83d889d6883e8121fdcd45",
     "tests/runtime/test_ascension_handoff.py": "ee9cbfcd57d3967fd59e527063a3942f1c8b3f12d4be2f5574f81c07b38ba2a8",
     "tests/runtime/test_budget_browser.py": "32a402eda11088af38e45cdeeb5b954090f89b0876364125af241ca05bafea46",
@@ -253,6 +303,7 @@
     "tests/runtime/test_flywheel_customer.py": "eda6baba52182f2f5234906952f4422380669ba981d9727a997f66bdc77fb568",
     "tests/runtime/test_flywheel_discovery.py": "f2010c08f0e3d28efa9e8e29cfc5dd24e2bc60c88c57b73c17ecb20113ee06e9",
     "tests/runtime/test_flywheel_enterprise.py": "e8b4b02f86825347f2a3ebfe7b2857737f64bdac372311e370d47529b967b64a",
+    "tests/runtime/test_flywheel_enterprise_technical_authority.py": "7816204dc3ddd5d8d0232c708f2d1df4b65378a87b5260f424bf1ca825c001c3",
     "tests/runtime/test_flywheel_execution.py": "5eed1d863b13df03c8b95c8d436c43023598959e375df1977a08420a4952b035",
     "tests/runtime/test_flywheel_insight.py": "8d077f0ed46e6bc53b11bec6242047287f27456aaca9f8d5e48317b176aede77",
     "tests/runtime/test_flywheel_probe.py": "1d8987c48649abc9cbb9ff357b2c666af6627290565f2603ee8df195700f327c",
@@ -298,12 +349,14 @@
     "tests/runtime/test_transformation_source_audit.py": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
     "tests/runtime/test_work_numeric.py": "0cabc9614931857504087a8273f244ba3eb37033335fc2ba9d274346fec03696",
     "tests/runtime/test_work_spec_draft.py": "caf023569de1c41a52fe0b16f8678064367232bcb39f2bdddcb27be3b2dd8502",
-    "tests/test_capability_publication_edition.py": "7e9a04a24438e6581ffae79c985d59707bfb88d84a5de794a3bf0cadeaf088a6",
+    "tests/test_capability_publication_edition.py": "5c5649b40b704b0f30ade52e0c237f4d0f34558c228261796af689e52ca90cdd",
     "tests/test_ci_install_bounds.py": "02bda953d3a78d3f91929e0657363f21233bf53752b88d236419b405b1cc0cf8",
     "tests/test_insight_conventional_evidence.py": "4bc7f795d34e99e96b30fe105cc711ac6de78df21bd7761f5300e9eb6a710ae3",
+    "tests/test_insight_frontier_enterprise_acceptance_release.py": "cd31ce2b9874b97bbe6faaefc10f893cbffa1d9fdcea674884de048be8ca2237",
     "tests/test_insight_frontier_post_guard_release.py": "be2c2e6036dce82debddecfb0d291f92e80792e1c87a93583e91fa19fa4c2f3a",
     "tests/test_insight_frontier_release.py": "a4b11a1494216d97eace01b1424525276c798e40baf0621b677416ec5c30def4",
-    "tests/test_insight_frontier_review_authority_release.py": "ac11716fbf13a67515b8ae2fab430426a91d2bb239b9b543d44c60159e239314"
+    "tests/test_insight_frontier_review_authority_release.py": "91512aae36845b07ac594d641a57c1f187db0dc7450de1cd9e6fb4fd374300e1",
+    "tests/test_release_artifact_handoffs.py": "fe5d1693e82b49bf79321ee1408e81703271ab09ada10e2dc21f5b1f528f1544"
   },
   "evidence_sha256": {
     "review-integrated/README.md": "a418a57278ad5b7341a24aa34229459022be38ec2d2bcc9d547620a95d538b82",
@@ -407,12 +460,86 @@
     "release-metadata/worker-review-authority/tests.txt": "0a27e016180b87ef37ad9991a78587165b50a09c316035c6a18e4dbc244012b2",
     "release-metadata/worker-review-authority/tests.xml": "cd91b4e21d6c2687840e10c542dffd38750b2c25eb2b6bedf5ed43325c9672cd",
     "release-metadata/worker-review-authority/types.txt": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
-    "release-metadata/worker-review-authority/whitespace.txt": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    "release-metadata/worker-review-authority/whitespace.txt": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "review-enterprise-acceptance/BEFORE.json": "76bc0cbad5aabd4ce11bb85d16aef0dc3d77214d3bad51eaa67bc2f04e99ff8e",
+    "review-enterprise-acceptance/ORIGINAL_SOURCE.py.txt": "f0f778292ad01d0a3b29bf754eef027b674292bb3aa050fcecd20b97eb76ed7d",
+    "review-enterprise-acceptance/QUALIFICATION-before-raw-representation.json": "f1e53eae488b5659ab033f63b69cb0cbb2ae6eaccbe95592ed1194619ed0fd10",
+    "review-enterprise-acceptance/QUALIFICATION.json": "134b4eb8730d5b0e5b85a3f0fc8028ae670632327615fd682de297c8b14a4f32",
+    "review-enterprise-acceptance/README.md": "6ef40041360bbae61b245957efbe5b5326866fa9a35f881453efe477ebc12ac1",
+    "review-enterprise-acceptance/TOOLS.json": "46a8e8b4ebf8f6816d9df7831f3d6b8b7e3f2c826765b0a06672743ea8364bef",
+    "review-enterprise-acceptance/corrected-tests.txt": "6a368644dec13fb8b8fe342d68248f787b53e56930183dec8ba9548fa741f9ea",
+    "review-enterprise-acceptance/environment.txt": "92e7556a4d78f037d5d329bede14ce94f20151419e4efc2419105a713e2aa87c",
+    "review-enterprise-acceptance/format.txt": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "review-enterprise-acceptance/lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "review-enterprise-acceptance/original-tests.txt": "d4f0b288f8fbf55e28b79b59083447f97fcea07ef2cac1095a2bc04a875536fc",
+    "review-enterprise-acceptance/original-tests.txt.raw.json": "1ea0ccacc0f2b3d3d50a73657044f16e67862150536153ce839ea90e81dd3a7d",
+    "review-enterprise-acceptance/typing.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+    "review-enterprise-integrated/HELD_SELECTION_INCIDENT.json": "565742657577a97639f2f38e8c4cf55eae1c9bf891b936bc1c2d1b5f25b304bb",
+    "review-enterprise-integrated/RAW_EVIDENCE_REPRESENTATION.json": "d944b36a0f6a3c639b9d329361219d59b54eab13d3c7a57f46c42e98943029da",
+    "review-enterprise-integrated/README.md": "857d9d6c5105c6d9d65c4426fac8d071b4322fa20d48972f330d90393ac46f61",
+    "review-enterprise-integrated/allowlist-before-format.json": "a6ac5ade6137652a2e96d6bf49fc8f8a699ee06aa1c8913bc32297faa6b2bd06",
+    "review-enterprise-integrated/authorized-editions-handoffs.json": "93898d57efb25eccc1d81f51ef3c0e8cbc9f2e33db359da91ea4ef4bd1a9c87e",
+    "review-enterprise-integrated/authorized-editions-handoffs.txt": "9aa95c2dfa60796a5a2e120e302948121ad5b6f2ea3ff3ed1f78732c5f0bb39d",
+    "review-enterprise-integrated/authorized-editions-handoffs.xml": "5cfeab4825d6826621c985d619119583017101d7fce12d4b5f7fb77d9d699188",
+    "review-enterprise-integrated/browser-comparison.json": "7a6bf193bacb931e7cc43ca66b2ff78a103a333e67f546e10f1f9dd1995a4f86",
+    "review-enterprise-integrated/browser-insight.json": "11275d564ca336b498bee8acf9ba1616e362fffc54a3351165b2c626e23f8f88",
+    "review-enterprise-integrated/browser-preserved-details.json": "d34e4d59dc291b2fbc55fb576e12da2a5f1eab43da86912b0daf77c34b1a8c60",
+    "review-enterprise-integrated/browser-preserved.json": "02b5a04e9f2b557077ae57a208480b18c74dc50bbb9a22f2669bd087d2918e4a",
+    "review-enterprise-integrated/browser-runs.json": "cd6a5b3edd2b039ab05ac36fae0c325eaa17ae25b7bd70cbdbd58e9bca910670",
+    "review-enterprise-integrated/comparison-browser.txt": "7a6bf193bacb931e7cc43ca66b2ff78a103a333e67f546e10f1f9dd1995a4f86",
+    "review-enterprise-integrated/comparison-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/comparison-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/comparison-units.txt": "686b4ed9a084cc13a88ea4749c9895e659d7faa3540b7c04eedf6fa858d9cc2c",
+    "review-enterprise-integrated/customer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/customer-stdout.txt": "756e5a42de1f057c09996487b65e851d82717b1e4e9ee22436923cd7696f6d27",
+    "review-enterprise-integrated/discovery-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/discovery-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/editions-and-handoffs.json": "785154f70c61688cbb9bcfee3924b8bd015f821900b7e318e1ea226a6f6e3a76",
+    "review-enterprise-integrated/editions-and-handoffs.txt": "3d61904af5378493142f28c474c5668ab77b52fc71d479e5bb4089666d27adb9",
+    "review-enterprise-integrated/editions-and-handoffs.xml": "c403870265df990fba39b2d777043903905861c5b5f58405e659b1971818ed51",
+    "review-enterprise-integrated/enterprise-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/enterprise-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/full-runtime.json": "70e56a92a9b648fa030a9cceba3a55ea0fe5ca08b23e2ffe1b0c376891ba476e",
+    "review-enterprise-integrated/full-runtime.txt": "eb8da458b3db53f8c763098fda9efb3fc79096dd7b6f8b81900d0e2fee771a66",
+    "review-enterprise-integrated/general-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/general-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/generated-hashes.json": "311c398a7bc6788ed879e5bcebddf8733b6cc599d20b19975f30685ba905814b",
+    "review-enterprise-integrated/generation-determinism.json": "b1ef8a65b16a6bba9cde45274e9048813c459d6d95a712990f8e122499593533",
+    "review-enterprise-integrated/handoff-assertion-migration.json": "e3080fb0f8e316a4769bcaf183b45843ae8c67c043824b64f5e8b278536d1690",
+    "review-enterprise-integrated/insight-browser.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/insight-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/insight-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/opportunity-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/opportunity-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/preserved-browser.txt": "6c3dd640dcf62013e21e1303cafb4d6013c7f29b60e120f8c42f23f515d5d48b",
+    "review-enterprise-integrated/ruff-first-attempt.json": "3e582cd5d38836ab981c2d78ee64c1bf78b7f966537acea71cfe77f55e7a8ec8",
+    "review-enterprise-integrated/ruff.json": "548d218326cf34a5db120181f94ba28245e89f3f093a7008b41aa43ffa129726",
+    "review-enterprise-integrated/runtime-source-before.json": "4517093433cb17fd876c3886006935b74176dc4b3b3c9f6c12b57c7b7f48d42f",
+    "review-enterprise-integrated/runtime-types.json": "af62fac14925ebe6523bb8833b4eabb866a7238d0c44903544fcfa069e7cb806",
+    "review-enterprise-integrated/runtime-types.txt": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+    "review-enterprise-integrated/runtime.xml": "22251fe823e2cb6bd3d592b08fc3c303221f21964bf69fae9b106c513e9fdf54",
+    "review-enterprise-integrated/security-integrity.attempt-1.json": "428fcf8e2b372544b15a545b537dd772780ef31a2485d271ad5cf6d18918ff2e",
+    "review-enterprise-integrated/security-integrity.attempt-2.json": "40734f087bf46586c030bc2b83ab18828e7fb1aa05f9ab04bf636f0271659e10",
+    "review-enterprise-integrated/security-integrity.json": "0aa64e6fd0c0693fe05f6a4d1095a45d2270111f39baccc2c891d8181a305ff0",
+    "review-enterprise-integrated/source-packet-runs.json": "28a131569711218676f2b9073fb92e943750fb66875b9a0dbb6a8911a80e8035",
+    "review-enterprise-integrated/specialist-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-enterprise-integrated/specialist-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "release-metadata/worker-enterprise-acceptance/CAPTURE.json": "b7229f65b0a9d4f5057629412ddda265f6736d8fa3a577c2cfa5cfc66f7fc5d0",
+    "release-metadata/worker-enterprise-acceptance/QUALIFICATION.json": "f49a8ffc8223a9d5572d9d09c3e702275de38d7d5f7dc7a0554d69ce8d3948fb",
+    "release-metadata/worker-enterprise-acceptance/README.md": "204423dc89e7dfa55e2616d2315ae05134da5cd99fc3994f6b4d81ab4d0005ae",
+    "release-metadata/worker-enterprise-acceptance/TOOLCHAIN.json": "0c43c7a66d923dc169bb0b5bc7348cf300e68f2b81a24fea60962d343edb7538",
+    "release-metadata/worker-enterprise-acceptance/dependencies.txt": "33da1a9f7bc03f0b658912608d64784a44cbb0210bb8ceed78566ba85bfa94de",
+    "release-metadata/worker-enterprise-acceptance/format.txt": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "release-metadata/worker-enterprise-acceptance/lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "release-metadata/worker-enterprise-acceptance/tests.txt": "af20af7afc16497d2e12ca0b40dbd04a75350c5c40b3928033ab8083c38f656a",
+    "release-metadata/worker-enterprise-acceptance/tests.xml": "a9524b7e431a4dd8f00591209238b3c76a6ba91d8123405b86b077656ce8cf06",
+    "release-metadata/worker-enterprise-acceptance/types.txt": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "release-metadata/worker-enterprise-acceptance/whitespace.txt": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
   },
   "limits": {
     "full_repository_coverage": "not measured by this local minimal selection;80percent hosted floor unchanged",
-    "local_blocking_hooks": "Earlier failed Semgrep installation preserved; full current hook campaign not qualified. Local actionlint unavailable; hosted security/integrity/quality gates remain required.",
-    "held_native_behavior": "Four held native outcomes unqualified; all five exact source pins unchanged",
+    "local_blocking_hooks": "Full current local blocking-hook campaign unqualified; local actionlint unavailable and prior failed Semgrep installation remains preserved. Existing hosted security/integrity/quality gates required. Minimal test prefix lacks pandas; broader developer bootstrap not claimed.",
+    "held_native_behavior": "Four held nodes were incorrectly included in one broad local invocation. Their outcomes are UNQUALIFIED; actual incident and original output preserved. Original source/index restored byte-for-byte, all5source pins pass, later342case allowed campaign explicitly deselects all4. No guard/baseline/selection policy changed.",
     "source_edition": "All previous immutable metadata, worker variants, source evidence and failures retained; new worker edition alone binds revised generated bytes",
     "live_models": "Zero controlled paidAPIcalls; session authoring/shared tool and CI monetary costs unknown",
     "native_canary": "Budget interruption plus pause/refusal/recovery only; no process-kill or network-interruption claim",
@@ -424,5 +551,33 @@
     "commercial_models": "Same access-feasibility offering; twelve hypothetical price/cost policies, five arrangements, allHOLD",
     "discovery": "Conventional exact control matches23complete cases;1sharedincomplete;5adverseprobes refuse. Technical-breakthrough claim stopped; discovery advantage unmeasured",
     "retained_alpha": "No retained capability admitted or net benefit measured"
-  }
+  },
+  "review_history": {
+    "8b2_code_review": "One service attempt returned Unknown error; separate completed code review found the valid Enterprise P2. Neither is erased or replaced with an approval.",
+    "enterprise_thread": "PRRT_kwDONwDjTc6w8B44",
+    "enterprise_original_comment": 4395670459,
+    "fresh_review": "Required on final changed head; none claimed here",
+    "security_review": "Requested earlier but separate bot review not registered; normal blocking hosted security gates remain required"
+  },
+  "additional_evidence_root": "repository",
+  "additional_evidence_sha256": {
+    "evidence/release-operator-artifact/BEFORE.json": "b6471c843f7ec98d98123ca46a5554533dc4f592df2dcd8f162c854ff4da6c85",
+    "evidence/release-operator-artifact/NAMESPACE_REPAIR.json": "8657595028b79011e5c429fd93572f5e9949eba07bca341b6d6b1615d5aac468",
+    "evidence/release-operator-artifact/QUALIFICATION-before-namespace.json": "7d3596d89706bd1a98730d77690266d3c9bfc9741e064073fe036d9a3f1b97e9",
+    "evidence/release-operator-artifact/QUALIFICATION-before-raw-representation.json": "3d1a90c68bbea95d449eaaf8045d5f10878776f3c56405341d20941119d3faff",
+    "evidence/release-operator-artifact/QUALIFICATION.json": "23b6ffd1cdcca3eb09ce0355e18bf43940372a9c30120562143fee9fb7f6085c",
+    "evidence/release-operator-artifact/README-before-namespace.md": "94c16db9d79ecc5990e6e00091c99aca0d50f438c5fc7c3e1549497b7e49558b",
+    "evidence/release-operator-artifact/README.md": "8427227fdff9daf52c90dd43b5d46715b079eded761f3b9e84bbbbb4eec10b67",
+    "evidence/release-operator-artifact/RECOVERY_HISTORY.json": "ef919a6ee72377802871f5dce0d3c6d3d76557af01f91572bde7b8725b3563fa",
+    "evidence/release-operator-artifact/contracts-before-namespace.json": "419dd7410bd7d052a5eedc2191afa9a7370449cd43efa73e402e3ad83b223186",
+    "evidence/release-operator-artifact/contracts.json": "6b7613a0d86db7996717e0e1d6f78fdd25d9dbd78dbc2821677b3d14a7e782aa",
+    "evidence/release-operator-artifact/recovered-source.patch": "5344b17bc4f2cd521e41ab9ba07d0c829fc341a72cbb927bb241bacb2b5ced21",
+    "evidence/release-operator-artifact/recovered-source.patch.raw.json": "b7368bc78928d9fa95404f0ecbf0a173dbd26c85488422548f92269031409831",
+    "evidence/release-operator-artifact/static-checks.json": "a2e49a04ccd1cebc66ed354b467ce5aed8384b5fe94e12dedc9a30ab0f36b2d4",
+    "evidence/release-operator-artifact/update-actions-current.json": "6da304ab1f73e3eb4c5f761884b1d258471d143c0138b72ddcf95409f2118153",
+    "evidence/release-operator-artifact/update-actions-failed-isolation.json": "bdeb50536a72165b07cd7fdea38ef827bc002f07825d7b15a38dd5fbdee06e7b",
+    "evidence/release-operator-artifact/update-actions.json": "4ce6a7289729905f68125a894e25431c9a2f1ac69f7a83ee57d7c8296d735387"
+  },
+  "held_selection_incident": "review-enterprise-integrated/HELD_SELECTION_INCIDENT.json",
+  "unqualified_broad_run": "review-enterprise-integrated/editions-and-handoffs.json; includes four held nodes, not the authorized qualification campaign"
 }

@@ -1,0 +1,259 @@
+FFFFFFFFFFFF....                                                         [100%]
+=================================== FAILURES ===================================
+_ test_production_decision_rechecks_its_original_accepted_prototype[acceptor] __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab0b2f60>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab835650>, ...}, ...}
+support = 'acceptor'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+>       assert selected["selected"] == "hold"
+E       AssertionError: assert 'deliver' == 'hold'
+E
+E         - hold
+E         + deliver
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:98: AssertionError
+_ test_production_decision_rechecks_its_original_accepted_prototype[prototype-controller] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab3833b0>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab835370>, ...}, ...}
+support = 'prototype-controller'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+>       assert selected["selected"] == "hold"
+E       AssertionError: assert 'deliver' == 'hold'
+E
+E         - hold
+E         + deliver
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:98: AssertionError
+_ test_production_decision_rechecks_its_original_accepted_prototype[changed-origin] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab3805f0>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab837910>, ...}, ...}
+support = 'changed-origin'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+>       assert selected["selected"] == "hold"
+E       AssertionError: assert 'deliver' == 'hold'
+E
+E         - hold
+E         + deliver
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:98: AssertionError
+__ test_production_dispatch_refuses_withdrawn_prototype_atomically[acceptor] ___
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab357ec0>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab836fb0>, ...}, ...}
+support = 'acceptor'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_dispatch_refuses_withdrawn_prototype_atomically(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        enterprise = Enterprise(setup["service"])
+        decision = e.decision(setup, "before-withdrawal", action="produce")
+        assert decision["selected"] == "deliver"
+        withdraw(setup, support)
+        executor, mission, profile, permit = e.execution(setup, "refused-production")
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+        capacity = enterprise._read("active", "capacity", None)
+        with setup["journal"].transaction() as cx:
+            assert decision["context"] == enterprise._context(cx)
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:118: Failed
+_ test_production_dispatch_refuses_withdrawn_prototype_atomically[prototype-controller] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab320860>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab835d90>, ...}, ...}
+support = 'prototype-controller'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_dispatch_refuses_withdrawn_prototype_atomically(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        enterprise = Enterprise(setup["service"])
+        decision = e.decision(setup, "before-withdrawal", action="produce")
+        assert decision["selected"] == "deliver"
+        withdraw(setup, support)
+        executor, mission, profile, permit = e.execution(setup, "refused-production")
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+        capacity = enterprise._read("active", "capacity", None)
+        with setup["journal"].transaction() as cx:
+            assert decision["context"] == enterprise._context(cx)
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:118: Failed
+_ test_production_dispatch_refuses_withdrawn_prototype_atomically[changed-origin] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab322870>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab039fb0>, ...}, ...}
+support = 'changed-origin'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_dispatch_refuses_withdrawn_prototype_atomically(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        enterprise = Enterprise(setup["service"])
+        decision = e.decision(setup, "before-withdrawal", action="produce")
+        assert decision["selected"] == "deliver"
+        withdraw(setup, support)
+        executor, mission, profile, permit = e.execution(setup, "refused-production")
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+        capacity = enterprise._read("active", "capacity", None)
+        with setup["journal"].transaction() as cx:
+            assert decision["context"] == enterprise._context(cx)
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:118: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[acceptor-commercially-assessed] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab367380>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab03bd30>, ...}, ...}
+stage = 'commercially-assessed', support = 'acceptor'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[acceptor-authorized] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab367320>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab0391b0>, ...}, ...}
+stage = 'authorized', support = 'acceptor'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[prototype-controller-commercially-assessed] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab323e00>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab03a050>, ...}, ...}
+stage = 'commercially-assessed', support = 'prototype-controller'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[prototype-controller-authorized] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab323d70>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab03af50>, ...}, ...}
+stage = 'authorized', support = 'prototype-controller'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[changed-origin-commercially-assessed] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab3569f0>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab038d90>, ...}, ...}
+stage = 'commercially-assessed', support = 'changed-origin'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+_ test_new_qualification_transition_requires_current_exact_prototype[changed-origin-authorized] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f85ab3554c0>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f85ab03a6d0>, ...}, ...}
+stage = 'authorized', support = 'changed-origin'
+
+    @pytest.mark.parametrize("stage", ["commercially-assessed", "authorized"])
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_new_qualification_transition_requires_current_exact_prototype(
+        setup: dict[str, Any], stage: str, support: str
+    ) -> None:
+        previous = "technically-qualified" if stage == "commercially-assessed" else "commercially-assessed"
+        historical = prepare(setup, previous)
+        withdraw(setup, support)
+        before = setup["journal"].verify()
+        costs = setup["costs"].snapshot()
+>       with pytest.raises((ValueError, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (<class 'ValueError'>, <class 'KeyError'>)
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:142: Failed
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[acceptor]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[prototype-controller]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[changed-origin]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_dispatch_refuses_withdrawn_prototype_atomically[acceptor]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_dispatch_refuses_withdrawn_prototype_atomically[prototype-controller]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_dispatch_refuses_withdrawn_prototype_atomically[changed-origin]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[acceptor-commercially-assessed]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[acceptor-authorized]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[prototype-controller-commercially-assessed]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[prototype-controller-authorized]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[changed-origin-commercially-assessed]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_new_qualification_transition_requires_current_exact_prototype[changed-origin-authorized]
+12 failed, 4 passed in 8.72s
