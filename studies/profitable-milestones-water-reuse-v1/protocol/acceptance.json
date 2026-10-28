@@ -1,0 +1,58 @@
+{
+  "protocol_version": "reuse-investment-gate.v1",
+  "freeze_phase": "before implementation and fresh confirmation",
+  "offering": "Reuse Investment Gate Pack",
+  "purpose": "Determine whether a specified non-potable industrial water-reuse opportunity warrants the next bounded engineering milestone, without certifying physical operation or guaranteeing discovery.",
+  "deliverables": ["source-grounded input record", "cash and accounting reconciliation", "conditional quality/economic envelope", "explicit missing-evidence and stop reasons", "next measurement plan", "machine-readable decision and browser-readable pack"],
+  "turnaround_hypothesis": "three business days after complete authorized inputs; validation pending",
+  "price_policy": "selected from same-scope candidate prices in economics development configuration before confirmation",
+  "corrections": "one in-scope factual or computational correction within ten business days; failed acceptance after correction is refunded in the simulation",
+  "input_schema": {
+    "schema": "reuse-gate-input.v1",
+    "id": "nonempty string",
+    "use": "industrial_nonpotable, potable, or unsupported",
+    "request": "screening or unsupported operation/mixing/control",
+    "currency": "EUR",
+    "capex": "finite nonnegative [lower,upper]",
+    "annual_savings": "finite nonnegative [lower,upper]",
+    "cash_opex": "object of named finite nonnegative [lower,upper] cash costs, not depreciation",
+    "annual_depreciation": "finite nonnegative number, reported separately",
+    "discount_rate": "finite number from zero through one",
+    "years": "integer 1 through 50, boolean excluded",
+    "quality_unit": "mg/L",
+    "product_quality": "nonempty object of analyte -> finite nonnegative [lower,upper] concentration; direct specified product observations/assumptions, no mixing inference",
+    "buyer_limits": "null or object with exactly the same analytes and finite positive maxima",
+    "buyer_limit_kind": "process_specification, discharge_only, or unknown",
+    "evidence": "boolean values for buyer_spec_confirmed, long_run_pilot, pretreatment, residuals_route, nonchemical_hazards, hydraulic_fit, offtake, complete_costs"
+  },
+  "decision_order": [
+    "Malformed, nonfinite, negative, unordered or incomplete mandatory numeric input -> INVALID_INPUT; no numerical claims",
+    "Non-industrial-nonpotable use or non-screening request -> OUT_OF_SCOPE; no operational authorization",
+    "Any missing/unknown mandatory evidence value is treated as unresolved, never true",
+    "Optimistic NPV strictly below zero -> STOP with economic witness",
+    "With an actual process specification, an analyte lower bound strictly above the limit -> STOP with incompatibility witness",
+    "Missing process specification, any unresolved evidence, robust NPV below zero, or any product concentration upper bound above the buyer limit -> DEFER and name every applicable gap",
+    "Otherwise -> CONDITIONAL_NEXT_MILESTONE, never permission to construct or operate"
+  ],
+  "calculation_rules": {
+    "annuity": "years if r=0; otherwise (1-(1+r)^(-years))/r with numerically stable evaluation near zero",
+    "cash_margin": "annual_savings minus the sum of cash_opex; do not subtract depreciation",
+    "accounting_margin": "cash_margin minus annual_depreciation",
+    "npv_bounds": "lower=lowest cash margin*annuity-highest capex; upper=highest cash margin*annuity-lowest capex",
+    "simple_payback_bounds": "[lowest capex/highest positive cash margin, highest capex/lowest positive cash margin]; null endpoint when corresponding margin is nonpositive",
+    "equality": "A value equal to its bound meets that bounded screen; do not silently relax violations by arbitrary tolerances",
+    "cost_omissions": "complete_costs=false produces DEFER even with favorable stated-cost NPV",
+    "currency": "no automatic EUR/USD conversion; service and project accounts remain separate"
+  },
+  "required_checks": [
+    "public-case reconciliation: EUR180000 capex, EUR82000 annual savings, EUR28630 cash opex, EUR18000 depreciation => cash margin53370, accounting margin35370, simple payback3.3726812816188867years",
+    "public-case discharge limits must not become buyer process acceptance",
+    "missing long-run fouling/uptime evidence must remain unresolved",
+    "all adverse/malformed cases return the specified safe decision",
+    "NPV and payback match an independent conventional evaluator within 1e-8 relative or 1e-6 absolute tolerance",
+    "fresh confirmation inputs generated only after implementations and protocol are frozen; retain all outcomes",
+    "no code/schema edits after confirmation to improve reported confirmation results; new findings are diagnostics"
+  ],
+  "performance_claim_boundary": "Executed software on published aggregate inputs and synthetic confirmation fixtures; not field validation, buyer acceptance, measured willingness to pay, collected revenue, or proven operational/retained Alpha.",
+  "resource_budget": {"candidate_screens":3,"delivery_domains":1,"ordinary_implementations":1,"expert_implementations":1,"independent_oracles":1,"fresh_confirmation_rounds":1,"external_spending_authorized_usd":0,"customer_contacts_authorized":0,"live_transactions_authorized":0}
+}

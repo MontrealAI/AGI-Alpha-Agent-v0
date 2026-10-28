@@ -1,0 +1,35 @@
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[ItalicFont={DejaVu Serif},ItalicFeatures={FakeSlant=0.17}]
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.83]
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{deepPurple}{HTML}{402068}
+\definecolor{mutedPurple}{HTML}{6D5786}
+\definecolor{ink}{HTML}{20202A}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\sffamily\bfseries\color{deepPurple}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{deepPurple}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries\color{deepPurple}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus 1ex minus .2ex}{1ex plus .2ex}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{mutedPurple}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\small\sffamily\color{mutedPurple}THE PAID-PROGRESS OPTION}
+\fancyfoot[L]{\footnotesize\sffamily\color{mutedPurple}Research review edition \textbullet\ 27 October 2026}
+\fancyfoot[R]{\small\sffamily\color{deepPurple}\thepage}
+\setlength{\headheight}{15pt}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\usepackage{enumitem}
+\usepackage{needspace}
+\setlist{nosep,topsep=3pt,leftmargin=1.6em}
+\usepackage{caption}
+\captionsetup{font=small,labelfont={bf,sf},skip=7pt}
+\AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=deepPurple,urlcolor=deepPurple,citecolor=deepPurple}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+\AtBeginDocument{\color{ink}}

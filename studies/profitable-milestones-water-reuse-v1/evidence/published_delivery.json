@@ -1,0 +1,143 @@
+{
+  "decision": "DEFER",
+  "reasons": [
+    "buyer_limits_missing",
+    "buyer_limit_kind:discharge_only",
+    "unresolved:buyer_spec_confirmed",
+    "unresolved:long_run_pilot",
+    "unresolved:pretreatment",
+    "unresolved:residuals_route",
+    "unresolved:nonchemical_hazards",
+    "unresolved:hydraulic_fit",
+    "unresolved:offtake",
+    "unresolved:complete_costs"
+  ],
+  "cash_margin": [
+    53370.0,
+    53370.0
+  ],
+  "accounting_margin": [
+    35370.0,
+    35370.0
+  ],
+  "npv": [
+    121552.40302628787,
+    121552.40302628787
+  ],
+  "simple_payback": [
+    3.372681281618887,
+    3.372681281618887
+  ],
+  "annuity": 5.650223028410865,
+  "next_measurements": [
+    "Obtain the customer's dated, use-specific product-water acceptance specification.",
+    "Measure sustained flux, cleaning frequency, uptime and permeate quality across operating states.",
+    "Validate pretreatment under representative source variability and chemical additions.",
+    "Confirm concentrate and cleaning-residual disposal routes, acceptance and full costs.",
+    "Assess microbial, aerosol, worker-contact and other nonchemical hazards for the intended use.",
+    "Measure source availability, demand, storage, hydraulic capacity and downtime compatibility.",
+    "Confirm the receiving process's demand, operational acceptance and contractual offtake conditions.",
+    "Obtain complete engineering, installation, replacement, downtime, permitting and funding costs."
+  ],
+  "evidence_level": "SOFTWARE_SCREEN_ONLY",
+  "operational_authorization": false,
+  "decimal_oracle": {
+    "cash_margin": [
+      "53370.0",
+      "53370.0"
+    ],
+    "accounting_margin": [
+      "35370.0",
+      "35370.0"
+    ],
+    "npv": [
+      "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003",
+      "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003"
+    ],
+    "annuity": "5.650223028410864893408062032542893696148224299821751816563581469752063126776817178768112175378593966652",
+    "simple_payback": [
+      "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302",
+      "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302"
+    ],
+    "precision": 103
+  },
+  "original_arm_comparison": {
+    "ordinary": {
+      "evaluation_status": "executed_unchanged_frozen_arm",
+      "original_result": {
+        "cash_margin": [
+          53370.0,
+          53370.0
+        ],
+        "accounting_margin": [
+          35370.0,
+          35370.0
+        ],
+        "npv": [
+          121552.40302628785,
+          121552.40302628785
+        ],
+        "simple_payback": [
+          3.372681281618887,
+          3.372681281618887
+        ],
+        "decision": "DEFER",
+        "reasons": [
+          "A buyer process specification is missing; discharge limits do not establish process-water acceptance.",
+          "Unresolved required evidence: buyer_spec_confirmed.",
+          "Unresolved required evidence: long_run_pilot.",
+          "Unresolved required evidence: pretreatment.",
+          "Unresolved required evidence: residuals_route.",
+          "Unresolved required evidence: nonchemical_hazards.",
+          "Unresolved required evidence: hydraulic_fit.",
+          "Unresolved required evidence: offtake.",
+          "Unresolved required evidence: complete_costs."
+        ]
+      },
+      "decision_disagrees": false,
+      "numbers_within_original_protocol_tolerance": true
+    },
+    "expert": {
+      "evaluation_status": "executed_unchanged_frozen_arm",
+      "original_result": {
+        "cash_margin": [
+          53370.0,
+          53370.0
+        ],
+        "accounting_margin": [
+          35370.0,
+          35370.0
+        ],
+        "npv": [
+          121552.40302628785,
+          121552.40302628785
+        ],
+        "simple_payback": [
+          3.372681281618887,
+          3.372681281618887
+        ],
+        "decision": "DEFER",
+        "reasons": [
+          "unresolved:buyer_spec_confirmed",
+          "unresolved:long_run_pilot",
+          "unresolved:pretreatment",
+          "unresolved:residuals_route",
+          "unresolved:nonchemical_hazards",
+          "unresolved:hydraulic_fit",
+          "unresolved:offtake",
+          "unresolved:complete_costs",
+          "missing_process_specification"
+        ]
+      },
+      "decision_disagrees": false,
+      "numbers_within_original_protocol_tolerance": true
+    }
+  },
+  "decision_disagreement_count": 0,
+  "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+  "delivery_revision": "post_confirmation_conventional_selector.v1",
+  "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+  "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+  "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+  "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+}

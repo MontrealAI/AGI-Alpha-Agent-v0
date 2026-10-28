@@ -1,0 +1,3735 @@
+[
+  {
+    "id": "valid_reference",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "valid_reference",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "zero_rate_exact_oracle",
+    "category": "valid_decimal_benchmark",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "zero_rate_exact_oracle",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "decimal_expected": {
+        "cash_margin": [
+          "4000",
+          "4000"
+        ],
+        "accounting_margin": [
+          "3200",
+          "3200"
+        ],
+        "npv": [
+          "12000",
+          "12000"
+        ],
+        "simple_payback": [
+          "2",
+          "2"
+        ],
+        "annuity": "5"
+      }
+    }
+  },
+  {
+    "id": "maximum_discount",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "maximum_discount",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        100,
+        100
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 1,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "maximum_horizon",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "maximum_horizon",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 50,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "zero_capital",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "zero_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        0,
+        0
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "empty_cash_costs",
+    "category": "valid_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "empty_cash_costs",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {},
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "interpretation": "Schema requires an object, not a nonempty object; completeness remains separate."
+    }
+  },
+  {
+    "id": "zero_depreciation",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "zero_depreciation",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 0,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "profitable_intervals",
+    "category": "valid",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "profitable_intervals",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        5000,
+        9000
+      ],
+      "annual_savings": [
+        4800,
+        6500
+      ],
+      "cash_opex": {
+        "operations": [
+          900,
+          1200
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "quality_equal_limits",
+    "category": "valid_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "quality_equal_limits",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          150,
+          150
+        ],
+        "chloride": [
+          200,
+          200
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "zero_cash_zero_capital",
+    "category": "valid_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "zero_cash_zero_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        0,
+        0
+      ],
+      "annual_savings": [
+        1000,
+        1000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "decimal_expected": {
+        "cash_margin": [
+          "0",
+          "0"
+        ],
+        "npv": [
+          "0",
+          "0"
+        ],
+        "simple_payback": [
+          null,
+          null
+        ]
+      }
+    }
+  },
+  {
+    "id": "published_cash_transferred_assumptions",
+    "category": "valid_transfer",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "published_cash_transferred_assumptions",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        180000,
+        180000
+      ],
+      "annual_savings": [
+        82000,
+        82000
+      ],
+      "cash_opex": {
+        "energy": [
+          7730,
+          7730
+        ],
+        "chemicals": [
+          3900,
+          3900
+        ],
+        "labour": [
+          11000,
+          11000
+        ],
+        "discharge": [
+          6000,
+          6000
+        ]
+      },
+      "annual_depreciation": 18000,
+      "discount_rate": 0.12,
+      "years": 10,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "interpretation": "Only cash magnitudes transfer; all supplied evidence and buyer limits are synthetic."
+    }
+  },
+  {
+    "id": "irrelevant_metadata",
+    "category": "valid_metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "irrelevant_metadata",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      },
+      "provenance": {
+        "note": "Untrusted metadata grants no authority."
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "same_numeric_as": "valid_reference"
+    }
+  },
+  {
+    "id": "missing_process_limits",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "missing_process_limits",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": null,
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "discharge_is_not_process",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "discharge_is_not_process",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "discharge_only",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "unknown_specification_kind",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unknown_specification_kind",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "unknown",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "missing_evidence_container",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "missing_evidence_container",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification"
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "unresolved_buyer_spec_confirmed",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_buyer_spec_confirmed",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": false,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "buyer_spec_confirmed"
+    }
+  },
+  {
+    "id": "unresolved_long_run_pilot",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_long_run_pilot",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": false,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "long_run_pilot"
+    }
+  },
+  {
+    "id": "unresolved_pretreatment",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_pretreatment",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": false,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "pretreatment"
+    }
+  },
+  {
+    "id": "unresolved_residuals_route",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_residuals_route",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": false,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "residuals_route"
+    }
+  },
+  {
+    "id": "unresolved_nonchemical_hazards",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_nonchemical_hazards",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": false,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "nonchemical_hazards"
+    }
+  },
+  {
+    "id": "unresolved_hydraulic_fit",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_hydraulic_fit",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": false,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "hydraulic_fit"
+    }
+  },
+  {
+    "id": "unresolved_offtake",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_offtake",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": false,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "offtake"
+    }
+  },
+  {
+    "id": "unresolved_complete_costs",
+    "category": "unresolved_evidence",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unresolved_complete_costs",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": false
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_name_gap": "complete_costs"
+    }
+  },
+  {
+    "id": "optimistic_economic_loss",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "optimistic_economic_loss",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        1000,
+        1100
+      ],
+      "annual_savings": [
+        10,
+        20
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "uncertain_economic_value",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "uncertain_economic_value",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        1000,
+        20000
+      ],
+      "annual_savings": [
+        1000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "certain_quality_incompatibility",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "certain_quality_incompatibility",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          151,
+          160
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "uncertain_quality_compatibility",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "uncertain_quality_compatibility",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          149,
+          151
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "no_margin_with_capital",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "no_margin_with_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        1000,
+        1000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "negative_margin_without_capital",
+    "category": "adverse",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "negative_margin_without_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        0,
+        0
+      ],
+      "annual_savings": [
+        999,
+        999
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "loss_precedes_evidence_gaps",
+    "category": "adverse_ordering",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "loss_precedes_evidence_gaps",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        1000,
+        1100
+      ],
+      "annual_savings": [
+        10,
+        20
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": null,
+      "buyer_limit_kind": "process_specification",
+      "evidence": {}
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "incompatibility_precedes_confirmation_gap",
+    "category": "adverse_ordering",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "incompatibility_precedes_confirmation_gap",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          151,
+          151
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": false,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {
+      "interpretation": "Incompatibility is conditional on the supplied process specification."
+    }
+  },
+  {
+    "id": "potable_request",
+    "category": "out_of_scope",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "potable_request",
+      "use": "potable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "OUT_OF_SCOPE",
+    "checks": {}
+  },
+  {
+    "id": "operation_request",
+    "category": "out_of_scope",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "operation_request",
+      "use": "industrial_nonpotable",
+      "request": "operation",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "OUT_OF_SCOPE",
+    "checks": {}
+  },
+  {
+    "id": "mixing_request",
+    "category": "out_of_scope",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "mixing_request",
+      "use": "industrial_nonpotable",
+      "request": "mixing",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "OUT_OF_SCOPE",
+    "checks": {}
+  },
+  {
+    "id": "control_request",
+    "category": "out_of_scope",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "control_request",
+      "use": "industrial_nonpotable",
+      "request": "control",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "OUT_OF_SCOPE",
+    "checks": {}
+  },
+  {
+    "id": "boolean_capital",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        false,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_savings",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_savings",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        true,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_operating_cost",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_operating_cost",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          false,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_depreciation",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_depreciation",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": false,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_discount",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_discount",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": false,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_horizon",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_horizon",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": true,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_quality",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_quality",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          false,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "boolean_buyer_limit",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "boolean_buyer_limit",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": true,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "nonboolean_evidence",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "nonboolean_evidence",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": 1,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "nan_capital",
+    "category": "malformed_nonfinite",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "nan_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        {
+          "__test_nonfinite_float__": "NaN"
+        },
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "infinite_savings",
+    "category": "malformed_nonfinite",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "infinite_savings",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        {
+          "__test_nonfinite_float__": "Infinity"
+        }
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "negative_cost_interval",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "negative_cost_interval",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          -1,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "unordered_capital",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "unordered_capital",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8001,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "zero_horizon",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "zero_horizon",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 0,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "missing_mandatory_costs",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "missing_mandatory_costs",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "mismatched_analytes",
+    "category": "malformed",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "mismatched_analytes",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "INVALID_INPUT",
+    "checks": {}
+  },
+  {
+    "id": "near_zero_discount_18",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "near_zero_discount_18",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 1e-18,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "near_zero_discount_12",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "near_zero_discount_12",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 1e-12,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "near_unit_discount",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "near_unit_discount",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        100,
+        100
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.9999999999999999,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {}
+  },
+  {
+    "id": "tiny_negative_npv_sign",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "tiny_negative_npv_sign",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        50,
+        50
+      ],
+      "annual_savings": [
+        2,
+        2
+      ],
+      "cash_opex": {
+        "operations": [
+          1,
+          1
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 1e-18,
+      "years": 50,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {
+      "strict_sign": "Discounted fifty unit receipts are strictly less than fifty for any positive discount."
+    }
+  },
+  {
+    "id": "quality_one_ulp_above_upper",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "quality_one_ulp_above_upper",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          150,
+          150.00000000000003
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {}
+  },
+  {
+    "id": "quality_one_ulp_above_lower",
+    "category": "numerical_boundary",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "quality_one_ulp_above_lower",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          150.00000000000003,
+          150.00000000000003
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "STOP",
+    "checks": {}
+  },
+  {
+    "id": "decimal_literal_cancellation",
+    "category": "decimal_interpretation_diagnostic",
+    "protocol_status": "protocol_gap:input_number_representation_not_explicit",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "decimal_literal_cancellation",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        0,
+        0
+      ],
+      "annual_savings": [
+        0.3,
+        0.3
+      ],
+      "cash_opex": {
+        "first": [
+          0.1,
+          0.1
+        ],
+        "second": [
+          0.2,
+          0.2
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0,
+      "years": 1,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "decimal_expected": {
+        "cash_margin": [
+          "0",
+          "0"
+        ],
+        "npv": [
+          "0",
+          "0"
+        ]
+      },
+      "diagnostic": "Decimal JSON-literal arithmetic versus binary64 representation; report separately."
+    }
+  },
+  {
+    "id": "monetary_scale_metamorphic",
+    "category": "metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "monetary_scale_metamorphic",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        80000,
+        80000
+      ],
+      "annual_savings": [
+        50000,
+        50000
+      ],
+      "cash_opex": {
+        "operations": [
+          10000,
+          10000
+        ]
+      },
+      "annual_depreciation": 8000,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "scaled_numeric_from": "valid_reference",
+      "factor": 10,
+      "unchanged": [
+        "simple_payback",
+        "decision"
+      ]
+    }
+  },
+  {
+    "id": "depreciation_does_not_change_cash",
+    "category": "metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "depreciation_does_not_change_cash",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 999999,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "same_as": "valid_reference",
+      "fields": [
+        "cash_margin",
+        "npv",
+        "simple_payback",
+        "decision"
+      ]
+    }
+  },
+  {
+    "id": "cost_partition_metamorphic",
+    "category": "metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "cost_partition_metamorphic",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "part_a": [
+          693,
+          693
+        ],
+        "part_b": [
+          307,
+          307
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "same_numeric_as": "valid_reference"
+    }
+  },
+  {
+    "id": "analyte_order_metamorphic",
+    "category": "metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "analyte_order_metamorphic",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        8000
+      ],
+      "annual_savings": [
+        5000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "chloride": [
+          90,
+          120
+        ],
+        "sodium": [
+          80,
+          100
+        ]
+      },
+      "buyer_limits": {
+        "chloride": 200,
+        "sodium": 150
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+    "checks": {
+      "same_numeric_as": "valid_reference"
+    }
+  },
+  {
+    "id": "uncertainty_widening_metamorphic",
+    "category": "metamorphic",
+    "protocol_status": "clear_protocol_requirement",
+    "case": {
+      "schema": "reuse-gate-input.v1",
+      "id": "uncertainty_widening_metamorphic",
+      "use": "industrial_nonpotable",
+      "request": "screening",
+      "currency": "EUR",
+      "capex": [
+        8000,
+        40000
+      ],
+      "annual_savings": [
+        1000,
+        5000
+      ],
+      "cash_opex": {
+        "operations": [
+          1000,
+          1000
+        ]
+      },
+      "annual_depreciation": 800,
+      "discount_rate": 0.08,
+      "years": 5,
+      "quality_unit": "mg/L",
+      "product_quality": {
+        "sodium": [
+          80,
+          100
+        ],
+        "chloride": [
+          90,
+          120
+        ]
+      },
+      "buyer_limits": {
+        "sodium": 150,
+        "chloride": 200
+      },
+      "buyer_limit_kind": "process_specification",
+      "evidence": {
+        "buyer_spec_confirmed": true,
+        "long_run_pilot": true,
+        "pretreatment": true,
+        "residuals_route": true,
+        "nonchemical_hazards": true,
+        "hydraulic_fit": true,
+        "offtake": true,
+        "complete_costs": true
+      }
+    },
+    "expected_decision": "DEFER",
+    "checks": {
+      "must_not_improve_from": "valid_reference",
+      "preserve_optimistic_bound": true
+    }
+  }
+]

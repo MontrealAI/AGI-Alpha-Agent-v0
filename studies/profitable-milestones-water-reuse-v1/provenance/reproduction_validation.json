@@ -1,0 +1,520 @@
+{
+  "status": "PASS",
+  "started_at_utc": "2026-10-27T23:52:03.782540+00:00",
+  "source": "/workspace/scratch/935f07e67c67/AGI-Alpha-Agent-v0/studies/profitable-milestones-water-reuse-v1",
+  "disposable_copy": "/tmp/paid_progress_reproduction_20261027",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "command_results": [
+    {
+      "command": "python src/deliver.py inputs/published_case.json --output evidence/published_delivery.json",
+      "returncode": 0,
+      "wall_seconds": 0.047854955002549104,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python src/run_study.py",
+      "returncode": 0,
+      "wall_seconds": 0.07392409000021871,
+      "stdout_sha256": "1095f35cf38f5666bb4228c348877e1e40454db14a728aabf28fe0308543c257",
+      "stdout_tail": "\",\n      \"actual\": \"STOP\",\n      \"semantic_match\": false,\n      \"decision_match\": false,\n      \"numeric_match\": true,\n      \"refusal_clean\": true,\n      \"passed\": false\n    }\n  ],\n  \"source_sha256\": {\n    \"protocol/acceptance.json\": \"d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a\",\n    \"inputs/published_case.json\": \"c5bf96c7b698543c9069e1bb3b12a25be7a02353bebb40d038e947e029937135\",\n    \"src/expert.py\": \"fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf\",\n    \"src/ordinary.py\": \"4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1\",\n    \"src/verifier.py\": \"5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5\",\n    \"src/confirmation_cases.py\": \"7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2\"\n  },\n  \"confirmation_sha256\": \"0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f\",\n  \"actual_customers\": 0,\n  \"actual_collections_usd\": 0,\n  \"actual_complete_cost_usd\": null,\n  \"model_usage_and_billing\": null\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python src/economics.py selfcheck",
+      "returncode": 0,
+      "wall_seconds": 0.05701351699826773,
+      "stdout_sha256": "f8df2209f051bb5322071e27d9c154bae00b2b38609f8eda5e8e05189f5c8ce6",
+      "stdout_tail": "{\"checks\": 8, \"all_passed\": true}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python src/economics.py confirm",
+      "returncode": 0,
+      "wall_seconds": 4.874383533009677,
+      "stdout_sha256": "775e42f842542267ab14d8e444db780b00148c4edfd170299741ec69b8d32f81",
+      "stdout_tail": "nal_cash_usd\": 88884.908203125,\n      \"mean_available_funds_usd\": 87884.908203125,\n      \"mean_available_surplus_above_seed_and_reserves_usd\": 77884.908203125,\n      \"optional_investments\": 0,\n      \"optional_technical_failures\": 0,\n      \"minimum_seed_first_job_no_shock_usd\": 7605.0,\n      \"minimum_seed_first_job_common_shock_usd\": 7835.0,\n      \"zero_seed_decision\": true,\n      \"optional_vs_disabled_mean_difference_usd\": 0.0\n    }\n  },\n  \"cash_conservation_checks\": 768,\n  \"minimum_available_all_worlds_usd\": 0.0,\n  \"retention_evidence\": \"Assumed savings only. Ordinary-library identical-asset economics are exactly equal by specification; no measured retained Alpha.\",\n  \"observations\": {\n    \"actual_collections_usd\": 0,\n    \"actual_complete_cost_usd\": null,\n    \"actual_model_bill_usd\": null,\n    \"actual_human_labor_hours\": null,\n    \"measured_operational_alpha\": false,\n    \"measured_retained_alpha\": false,\n    \"live_transaction_executed\": false,\n    \"production_authorized\": false\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python results/economics_audit.py",
+      "returncode": 0,
+      "wall_seconds": 1.8265682040073443,
+      "stdout_sha256": "97bb19b1674c63755991f6a6eadf877a51c4ac06899ce96b4a6a2e56ebc7a0aa",
+      "stdout_tail": "{\n  \"independent_implementation\": \"Decimal recomputation from CSV events; no imports from producer\",\n  \"worlds\": 768,\n  \"ledger_rows\": 189586,\n  \"exact_decimal_checks\": 1140588,\n  \"all_passed\": true,\n  \"plant_npv_eur_decimal\": \"121552.4030262878593611882706\",\n  \"same_controller_not_institutional_independence\": true\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python src/economics_complete.py selfcheck",
+      "returncode": 0,
+      "wall_seconds": 0.07156191600370221,
+      "stdout_sha256": "f8df2209f051bb5322071e27d9c154bae00b2b38609f8eda5e8e05189f5c8ce6",
+      "stdout_tail": "{\"checks\": 8, \"all_passed\": true}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python src/economics_complete.py confirm",
+      "returncode": 0,
+      "wall_seconds": 5.100942164004664,
+      "stdout_sha256": "dafc6bd760044d41a030d0752028bd1df8f4eaf1f0e025d3c64c614578cb5d16",
+      "stdout_tail": "minal_cash_usd\": 87279.138671875,\n      \"mean_available_funds_usd\": 86279.138671875,\n      \"mean_available_surplus_above_seed_and_reserves_usd\": 76395.9921875,\n      \"optional_investments\": 0,\n      \"optional_technical_failures\": 0,\n      \"minimum_seed_first_job_no_shock_usd\": 8445.0,\n      \"minimum_seed_first_job_common_shock_usd\": 8675.0,\n      \"zero_seed_decision\": true,\n      \"optional_vs_disabled_mean_difference_usd\": 0.0\n    }\n  },\n  \"cash_conservation_checks\": 768,\n  \"minimum_available_all_worlds_usd\": 0.0,\n  \"retention_evidence\": \"Assumed savings only. Ordinary-library identical-asset economics are exactly equal by specification; no measured retained Alpha.\",\n  \"observations\": {\n    \"actual_collections_usd\": 0,\n    \"actual_complete_cost_usd\": null,\n    \"actual_model_bill_usd\": null,\n    \"actual_human_labor_hours\": null,\n    \"measured_operational_alpha\": false,\n    \"measured_retained_alpha\": false,\n    \"live_transaction_executed\": false,\n    \"production_authorized\": false\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python results/complete/economics_audit.py",
+      "returncode": 0,
+      "wall_seconds": 1.4337044519925257,
+      "stdout_sha256": "a6cc7d87d55adfe953ace0426a170e8e0fa048f0a79a82664b0a3aa50a96d2c9",
+      "stdout_tail": "{\n  \"independent_implementation\": \"Decimal recomputation from CSV events; no imports from producer\",\n  \"worlds\": 768,\n  \"ledger_rows\": 185135,\n  \"exact_decimal_checks\": 1113882,\n  \"all_passed\": true,\n  \"plant_npv_eur_decimal\": \"121552.4030262878593611882706\",\n  \"same_controller_not_institutional_independence\": true\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python results/complete/economics_switching_sensitivity.py",
+      "returncode": 0,
+      "wall_seconds": 0.032114364992594346,
+      "stdout_sha256": "3952ce52d5e8a6a0560a410935fb567a675ccc985c0488ef65294175d45d7b1f",
+      "stdout_tail": "_week_expected_profit_usd\": \"40942.40846875320833333333332\",\n    \"break_even_acceptance_given_delivery\": \"0.4581416657135267868198320552\",\n    \"scope\": \"Analytical post-confirmation ambiguity sensitivity; price/seeds/main replay unchanged; no new buyer evidence.\"\n  },\n  {\n    \"scenario\": \"favorable\",\n    \"common_shock\": true,\n    \"reservation_interpretation\": \"gross_value_before_switching\",\n    \"price_usd\": \"3500\",\n    \"switching_cost_usd\": \"300\",\n    \"booking_probability\": \"0.2383333333333333333333333333\",\n    \"expected_attempts\": \"24.78666666666666666666666666\",\n    \"expected_job_margin_before_acquisition_usd\": \"1900.913910133250000\",\n    \"break_even_booking_probability\": \"0.06373452553953562700691201942\",\n    \"full_33_week_expected_profit_usd\": \"34517.31945250282333333333332\",\n    \"break_even_acceptance_given_delivery\": \"0.4779855543105255777843329986\",\n    \"scope\": \"Analytical post-confirmation ambiguity sensitivity; price/seeds/main replay unchanged; no new buyer evidence.\"\n  }\n]\n",
+      "stderr_tail": ""
+    }
+  ],
+  "comparisons": [
+    {
+      "file": "evidence/published_delivery.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "a67ef059c001878189db812d8d14128b1ff287712af1526fafb2869e724c5167",
+      "reproduced_sha256": "a67ef059c001878189db812d8d14128b1ff287712af1526fafb2869e724c5167"
+    },
+    {
+      "file": "results/confirmation.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "530a3c1bb44d89ffd9f9c78d43f5ddb136b7ae99064c7f83bc370642ec667945",
+      "reproduced_sha256": "530a3c1bb44d89ffd9f9c78d43f5ddb136b7ae99064c7f83bc370642ec667945"
+    },
+    {
+      "file": "results/confirmation_outputs.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed",
+      "reproduced_sha256": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed"
+    },
+    {
+      "file": "results/published_case_result.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204",
+      "reproduced_sha256": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204"
+    },
+    {
+      "file": "results/economics_development_checks.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "5ac43ca2faa824404adc4e345e8622208de871c97440ec25581f59dd23e864e7",
+      "reproduced_sha256": "5ac43ca2faa824404adc4e345e8622208de871c97440ec25581f59dd23e864e7"
+    },
+    {
+      "file": "results/economics_summary.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "775e42f842542267ab14d8e444db780b00148c4edfd170299741ec69b8d32f81",
+      "reproduced_sha256": "775e42f842542267ab14d8e444db780b00148c4edfd170299741ec69b8d32f81"
+    },
+    {
+      "file": "results/economics_worlds.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "f65f91c28618c29d2cdf20faadeb4b668883d82ee5e30ae4e3c00b8bcc7a303d",
+      "reproduced_sha256": "f65f91c28618c29d2cdf20faadeb4b668883d82ee5e30ae4e3c00b8bcc7a303d"
+    },
+    {
+      "file": "results/economics_cash_ledgers.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "5bceb69c31a68866b2a231e73d2baa2c5b75ad00bd1cad26b037f09b53b60f5c",
+      "reproduced_sha256": "5bceb69c31a68866b2a231e73d2baa2c5b75ad00bd1cad26b037f09b53b60f5c"
+    },
+    {
+      "file": "results/economics_full_world_records.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "7d694ede61a3c9a050c8985a3c589f3d27d1b19d7505f669fc09173e1dbe3f40",
+      "reproduced_sha256": "7d694ede61a3c9a050c8985a3c589f3d27d1b19d7505f669fc09173e1dbe3f40"
+    },
+    {
+      "file": "results/economics_optional_controls.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "ced244043ee0458d7d38299a5f3c5af73112b14a878f62056b35f173cd489992",
+      "reproduced_sha256": "ced244043ee0458d7d38299a5f3c5af73112b14a878f62056b35f173cd489992"
+    },
+    {
+      "file": "results/economics_retention_decisions.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "6b91e7d62a00828277db347c73aa4c392be316e35ed261eae405ddf26c21e40f",
+      "reproduced_sha256": "6b91e7d62a00828277db347c73aa4c392be316e35ed261eae405ddf26c21e40f"
+    },
+    {
+      "file": "results/economics_audit.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "97bb19b1674c63755991f6a6eadf877a51c4ac06899ce96b4a6a2e56ebc7a0aa",
+      "reproduced_sha256": "97bb19b1674c63755991f6a6eadf877a51c4ac06899ce96b4a6a2e56ebc7a0aa"
+    },
+    {
+      "file": "results/complete/economics_development_checks.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "5ac43ca2faa824404adc4e345e8622208de871c97440ec25581f59dd23e864e7",
+      "reproduced_sha256": "5ac43ca2faa824404adc4e345e8622208de871c97440ec25581f59dd23e864e7"
+    },
+    {
+      "file": "results/complete/economics_summary.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "dafc6bd760044d41a030d0752028bd1df8f4eaf1f0e025d3c64c614578cb5d16",
+      "reproduced_sha256": "dafc6bd760044d41a030d0752028bd1df8f4eaf1f0e025d3c64c614578cb5d16"
+    },
+    {
+      "file": "results/complete/economics_worlds.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "dd472d04ab42f55273ff43eebd81aec8574a2854452f5a591ad7c085dbf46cdf",
+      "reproduced_sha256": "dd472d04ab42f55273ff43eebd81aec8574a2854452f5a591ad7c085dbf46cdf"
+    },
+    {
+      "file": "results/complete/economics_cash_ledgers.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "7711dc1ef7a012c33a76dfb8b230a4a9df884a5633a6994528dc98679bfc1e6d",
+      "reproduced_sha256": "7711dc1ef7a012c33a76dfb8b230a4a9df884a5633a6994528dc98679bfc1e6d"
+    },
+    {
+      "file": "results/complete/economics_full_world_records.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "14ea2436bae616c65a60d8dbba3c9c34d8c111b6340cecbebc90a132a724f80f",
+      "reproduced_sha256": "14ea2436bae616c65a60d8dbba3c9c34d8c111b6340cecbebc90a132a724f80f"
+    },
+    {
+      "file": "results/complete/economics_optional_controls.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "05e57cf475209d6bd4e62d7e7a4d9025cad60459add6f035cb0aa471e784ea5d",
+      "reproduced_sha256": "05e57cf475209d6bd4e62d7e7a4d9025cad60459add6f035cb0aa471e784ea5d"
+    },
+    {
+      "file": "results/complete/economics_retention_decisions.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "68b715c18a60480812bbe961c6fb3fe7df70f49cb7aa5cb221e03ff73fccaeeb",
+      "reproduced_sha256": "68b715c18a60480812bbe961c6fb3fe7df70f49cb7aa5cb221e03ff73fccaeeb"
+    },
+    {
+      "file": "results/complete/economics_audit.json",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "a6cc7d87d55adfe953ace0426a170e8e0fa048f0a79a82664b0a3aa50a96d2c9",
+      "reproduced_sha256": "a6cc7d87d55adfe953ace0426a170e8e0fa048f0a79a82664b0a3aa50a96d2c9"
+    },
+    {
+      "file": "results/complete/economics_switching_sensitivity.csv",
+      "match": true,
+      "method": "exact SHA256",
+      "original_sha256": "14d5a3f15c0f64022d00c2144626fe0c6fa1eea969581431b6ca53c592cfebe6",
+      "reproduced_sha256": "14d5a3f15c0f64022d00c2144626fe0c6fa1eea969581431b6ca53c592cfebe6"
+    },
+    {
+      "file": "results/confirmation_summary.json",
+      "match": true,
+      "method": "JSON equality excluding explicit timing fields and expected replay flag",
+      "excluded_fields": [
+        "cpu_seconds",
+        "cpu_seconds_including_oracle",
+        "fresh_generation_this_run",
+        "run_at_utc",
+        "wall_seconds",
+        "wall_seconds_including_oracle"
+      ],
+      "replay_fresh_generation_this_run": false
+    }
+  ],
+  "excluded_directories": [
+    "output",
+    "figures",
+    "publication",
+    "provenance",
+    "__pycache__"
+  ],
+  "scope": "Portable arithmetic and economics only; no native repository adapter, publication rebuild, or live service validation.",
+  "protected_sha256_before": {
+    "evidence/first_confirmation.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "inputs/confirmation.json": "0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f",
+    "inputs/economics.json": "fb2986a71798322ff6d6d27d90719cf5b948011c2130c4e7415e6a8944c901a1",
+    "inputs/economics_complete.json": "beddaabb1128fbede98db1fc4c8187227b1f3bb1319b72fac7778512cd1dbffa",
+    "inputs/published_case.json": "c5bf96c7b698543c9069e1bb3b12a25be7a02353bebb40d038e947e029937135",
+    "protocol/acceptance.json": "d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a",
+    "protocol/implementation_freeze.json": "d8978dfe5da911bed9475954e51d2cff0c2daf6616d34e9255055f8338dcfda7",
+    "results/complete/economics_FREEZE.json": "6b73fae5a68625151f261498eab051767fb45bf5864ac0e9be238727186fff79",
+    "results/complete/economics_audit.json": "a6cc7d87d55adfe953ace0426a170e8e0fa048f0a79a82664b0a3aa50a96d2c9",
+    "results/complete/economics_cash_ledgers.csv": "7711dc1ef7a012c33a76dfb8b230a4a9df884a5633a6994528dc98679bfc1e6d",
+    "results/complete/economics_policy.json": "857da37114749837e4c086939e14885ad8f90034a27faae561a0dfde135b7c1e",
+    "results/complete/economics_summary.json": "dafc6bd760044d41a030d0752028bd1df8f4eaf1f0e025d3c64c614578cb5d16",
+    "results/confirmation_outputs.json": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed",
+    "results/confirmation_summary.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "results/economics_FREEZE.json": "b66129240408e92047a5e764d07144b9fd43acd36e31f3af5842a2b0cd23f843",
+    "results/economics_audit.json": "97bb19b1674c63755991f6a6eadf877a51c4ac06899ce96b4a6a2e56ebc7a0aa",
+    "results/economics_cash_ledgers.csv": "5bceb69c31a68866b2a231e73d2baa2c5b75ad00bd1cad26b037f09b53b60f5c",
+    "results/economics_policy.json": "857da37114749837e4c086939e14885ad8f90034a27faae561a0dfde135b7c1e",
+    "results/economics_summary.json": "775e42f842542267ab14d8e444db780b00148c4edfd170299741ec69b8d32f81",
+    "results/published_case_result.json": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204",
+    "src/confirmation_cases.py": "7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2",
+    "src/deliver.py": "8b280ee5ab032cdaf50a2fc595864e66722d45383c74e42e9c5177da598362cf",
+    "src/economics.py": "0f9e16d11b891cf49ff636601bf964f1dcaba7579cc8887ca4ef853cfc587111",
+    "src/economics_complete.py": "836861cacca9954379a8cf6437530f37966373da62b9842f7d22fc93d4aed8a5",
+    "src/expert.py": "fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf",
+    "src/ordinary.py": "4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1",
+    "src/verifier.py": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5"
+  },
+  "seed_interpretation": {
+    "technical_confirmation_seed": 2026102719,
+    "technical_replay": "Loads retained inputs/confirmation.json; does not generate new cases or provide an unseen holdout.",
+    "economics": {
+      "economics.json": {
+        "development_seed": 6102701,
+        "confirmation_seed": 6102791,
+        "worlds_per_scenario": 256,
+        "scenario_order": [
+          "conservative",
+          "central",
+          "favorable"
+        ]
+      },
+      "economics_complete.json": {
+        "development_seed": 6102701,
+        "confirmation_seed": 6102791,
+        "worlds_per_scenario": 256,
+        "scenario_order": [
+          "conservative",
+          "central",
+          "favorable"
+        ]
+      }
+    },
+    "history_seed_formula": "confirmation_seed + scenario_index *100000 + world_index, indices starting at0.",
+    "correction_scope": "The corrected confirm interface replays a known population. Same seeds do not preserve event-level pairing after changed intake consumes random draws differently.",
+    "optional_control_scope": "Shared seeds are not paired causal evidence when optional work changes RNG consumption or capacity."
+  },
+  "copied_file_count": 65,
+  "copied_bytes": 62409455,
+  "replayed_case_count": 64,
+  "replayed_arm_matches": {
+    "ordinary": {
+      "cases": 64,
+      "passed": 62
+    },
+    "expert": {
+      "cases": 64,
+      "passed": 62
+    },
+    "conventional": {
+      "cases": 64,
+      "passed": 64
+    }
+  },
+  "replayed_primary_economics": {
+    "selected_price_usd": 3500,
+    "world_count": 768,
+    "weeks": 26,
+    "runoff_weeks": 7,
+    "total_overhead_weeks": 33,
+    "accounting_correction": {
+      "status": "Post-confirmation accounting correction replay, not new holdout or retuned policy",
+      "change": "Reserve and expense overhead for all33weeks:26selling plus7conservative runoff closure weeks. This reruns all cash-prefix admission decisions. Price3500 and original confirmation seeds remain unchanged.",
+      "original_source_sha256": "0f9e16d11b891cf49ff636601bf964f1dcaba7579cc8887ca4ef853cfc587111",
+      "original_configuration_sha256": "fb2986a71798322ff6d6d27d90719cf5b948011c2130c4e7415e6a8944c901a1",
+      "original_selected_price_usd": 3500,
+      "buyer_reservation_interpretation": "Original selected policy interprets reservation amounts as net fee caps after switching effort. Separate gross-value sensitivity subtracts switching cost without reselecting the price."
+    },
+    "external_seed_usd": 10000,
+    "actual_collections_usd": 0,
+    "actual_complete_cost_usd": null,
+    "actual_profit_usd": null,
+    "maximum_capital_at_risk_usd": 9000,
+    "customer_field_experiment": {
+      "prior_viable": 0.5,
+      "sensitivity": 0.8,
+      "specificity": 0.8,
+      "annual_net_cash_saving_eur": 53370,
+      "simple_payback_years": 3.372681281618887,
+      "viable_case_partial_npv_eur": 121552.40302628773,
+      "nonviable_payoff_eur": -180000,
+      "no_test_invest_value_eur": -29223.798486856133,
+      "no_test_best_value_eur": 0.0,
+      "no_test_action": "STOP",
+      "signal_branches": [
+        {
+          "signal": "positive",
+          "probability": 0.5,
+          "posterior_viable": 0.8,
+          "invest_value_eur": 61241.9224210302,
+          "action": "INVEST",
+          "best_value_eur": 61241.9224210302
+        },
+        {
+          "signal": "negative",
+          "probability": 0.5,
+          "posterior_viable": 0.19999999999999996,
+          "invest_value_eur": -119689.51939474246,
+          "action": "STOP",
+          "best_value_eur": 0.0
+        }
+      ],
+      "expected_best_post_signal_value_eur": 30620.9612105151,
+      "gross_evsi_eur": 30620.9612105151,
+      "fee_eur": 7272.727272727272,
+      "delay_cost_eur": 1000,
+      "net_evsi_eur": 22348.233937787827,
+      "buy_experiment": true,
+      "current_plant_decision": "DEFER: missing specification, long-run pilot and full costs",
+      "scope": "Optional future empirical sampling/pilot experiment only. These prior/likelihood ranges are analyst stress bounds, not calibrated probabilities. M1 Gate Pack does not supply this signal. Customer finances this experiment separately; provider module surplus does not finance EUR180000 plant.",
+      "actual_customer_value_measured": false
+    },
+    "scenarios": {
+      "conservative": {
+        "mean_profit_usd": -9000.0,
+        "median_profit_usd": -9000.0,
+        "p05_profit_usd": -9000.0,
+        "p95_profit_usd": -9000.0,
+        "minimum_profit_usd": -9000.0,
+        "maximum_profit_usd": -9000.0,
+        "profitable_fraction": 0.0,
+        "mean_bookings": 0,
+        "mean_accepted": 0,
+        "mean_collected_full_balances": 0,
+        "mean_terminal_cash_usd": 1000.0,
+        "mean_available_funds_usd": 0.0,
+        "mean_available_surplus_above_seed_and_reserves_usd": 0.0,
+        "optional_investments": 0,
+        "optional_technical_failures": 0,
+        "minimum_seed_first_job_no_shock_usd": 9845.0,
+        "minimum_seed_first_job_common_shock_usd": 10410.0,
+        "zero_seed_decision": true,
+        "optional_vs_disabled_mean_difference_usd": 0.0
+      },
+      "central": {
+        "mean_profit_usd": 2962.076171875,
+        "median_profit_usd": 3545.0,
+        "p05_profit_usd": -9000.0,
+        "p95_profit_usd": 19530.0,
+        "minimum_profit_usd": -9000.0,
+        "maximum_profit_usd": 28410.0,
+        "profitable_fraction": 0.59375,
+        "mean_bookings": 7.48828125,
+        "mean_accepted": 6.890625,
+        "mean_collected_full_balances": 6.671875,
+        "mean_terminal_cash_usd": 12962.076171875,
+        "mean_available_funds_usd": 11962.076171875,
+        "mean_available_surplus_above_seed_and_reserves_usd": 5512.30859375,
+        "optional_investments": 0,
+        "optional_technical_failures": 0,
+        "minimum_seed_first_job_no_shock_usd": 8945.0,
+        "minimum_seed_first_job_common_shock_usd": 9295.0,
+        "zero_seed_decision": true,
+        "optional_vs_disabled_mean_difference_usd": 0.0
+      },
+      "favorable": {
+        "mean_profit_usd": 77279.138671875,
+        "median_profit_usd": 80997.0,
+        "p05_profit_usd": 33610.5,
+        "p95_profit_usd": 96775.0,
+        "minimum_profit_usd": -8971.5,
+        "maximum_profit_usd": 104900.0,
+        "profitable_fraction": 0.98828125,
+        "mean_bookings": 35.640625,
+        "mean_accepted": 34.546875,
+        "mean_collected_full_balances": 34.01171875,
+        "mean_terminal_cash_usd": 87279.138671875,
+        "mean_available_funds_usd": 86279.138671875,
+        "mean_available_surplus_above_seed_and_reserves_usd": 76395.9921875,
+        "optional_investments": 0,
+        "optional_technical_failures": 0,
+        "minimum_seed_first_job_no_shock_usd": 8445.0,
+        "minimum_seed_first_job_common_shock_usd": 8675.0,
+        "zero_seed_decision": true,
+        "optional_vs_disabled_mean_difference_usd": 0.0
+      }
+    },
+    "cash_conservation_checks": 768,
+    "minimum_available_all_worlds_usd": 0.0,
+    "retention_evidence": "Assumed savings only. Ordinary-library identical-asset economics are exactly equal by specification; no measured retained Alpha.",
+    "observations": {
+      "actual_collections_usd": 0,
+      "actual_complete_cost_usd": null,
+      "actual_model_bill_usd": null,
+      "actual_human_labor_hours": null,
+      "measured_operational_alpha": false,
+      "measured_retained_alpha": false,
+      "live_transaction_executed": false,
+      "production_authorized": false
+    }
+  },
+  "replayed_audits": {
+    "original": {
+      "independent_implementation": "Decimal recomputation from CSV events; no imports from producer",
+      "worlds": 768,
+      "ledger_rows": 189586,
+      "exact_decimal_checks": 1140588,
+      "all_passed": true,
+      "plant_npv_eur_decimal": "121552.4030262878593611882706",
+      "same_controller_not_institutional_independence": true
+    },
+    "complete": {
+      "independent_implementation": "Decimal recomputation from CSV events; no imports from producer",
+      "worlds": 768,
+      "ledger_rows": 185135,
+      "exact_decimal_checks": 1113882,
+      "all_passed": true,
+      "plant_npv_eur_decimal": "121552.4030262878593611882706",
+      "same_controller_not_institutional_independence": true
+    }
+  },
+  "protected_sha256_after": {
+    "evidence/first_confirmation.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "inputs/confirmation.json": "0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f",
+    "inputs/economics.json": "fb2986a71798322ff6d6d27d90719cf5b948011c2130c4e7415e6a8944c901a1",
+    "inputs/economics_complete.json": "beddaabb1128fbede98db1fc4c8187227b1f3bb1319b72fac7778512cd1dbffa",
+    "inputs/published_case.json": "c5bf96c7b698543c9069e1bb3b12a25be7a02353bebb40d038e947e029937135",
+    "protocol/acceptance.json": "d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a",
+    "protocol/implementation_freeze.json": "d8978dfe5da911bed9475954e51d2cff0c2daf6616d34e9255055f8338dcfda7",
+    "results/complete/economics_FREEZE.json": "6b73fae5a68625151f261498eab051767fb45bf5864ac0e9be238727186fff79",
+    "results/complete/economics_audit.json": "a6cc7d87d55adfe953ace0426a170e8e0fa048f0a79a82664b0a3aa50a96d2c9",
+    "results/complete/economics_cash_ledgers.csv": "7711dc1ef7a012c33a76dfb8b230a4a9df884a5633a6994528dc98679bfc1e6d",
+    "results/complete/economics_policy.json": "857da37114749837e4c086939e14885ad8f90034a27faae561a0dfde135b7c1e",
+    "results/complete/economics_summary.json": "dafc6bd760044d41a030d0752028bd1df8f4eaf1f0e025d3c64c614578cb5d16",
+    "results/confirmation_outputs.json": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed",
+    "results/confirmation_summary.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "results/economics_FREEZE.json": "b66129240408e92047a5e764d07144b9fd43acd36e31f3af5842a2b0cd23f843",
+    "results/economics_audit.json": "97bb19b1674c63755991f6a6eadf877a51c4ac06899ce96b4a6a2e56ebc7a0aa",
+    "results/economics_cash_ledgers.csv": "5bceb69c31a68866b2a231e73d2baa2c5b75ad00bd1cad26b037f09b53b60f5c",
+    "results/economics_policy.json": "857da37114749837e4c086939e14885ad8f90034a27faae561a0dfde135b7c1e",
+    "results/economics_summary.json": "775e42f842542267ab14d8e444db780b00148c4edfd170299741ec69b8d32f81",
+    "results/published_case_result.json": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204",
+    "src/confirmation_cases.py": "7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2",
+    "src/deliver.py": "8b280ee5ab032cdaf50a2fc595864e66722d45383c74e42e9c5177da598362cf",
+    "src/economics.py": "0f9e16d11b891cf49ff636601bf964f1dcaba7579cc8887ca4ef853cfc587111",
+    "src/economics_complete.py": "836861cacca9954379a8cf6437530f37966373da62b9842f7d22fc93d4aed8a5",
+    "src/expert.py": "fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf",
+    "src/ordinary.py": "4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1",
+    "src/verifier.py": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5"
+  },
+  "protected_original_files_unchanged": true,
+  "all_commands_passed": true,
+  "all_deterministic_comparisons_match": true,
+  "wall_seconds_total": 13.767214394989423,
+  "completed_at_utc": "2026-10-27T23:52:17.549803+00:00",
+  "disposable_copy_removed": true
+}
