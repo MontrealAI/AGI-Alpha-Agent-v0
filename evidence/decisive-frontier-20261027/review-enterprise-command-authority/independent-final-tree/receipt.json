@@ -1,0 +1,258 @@
+{
+  "schema": "independent-corrected-final-composition-review/v1",
+  "status": "NO_FINDINGS_IN_REVIEWED_SCOPE",
+  "reviewRole": "Independent read-only review of corrected final composed source",
+  "source": {
+    "root": "/tmp/agi-alpha-commercial-fix-c516",
+    "baseCommit": "c5164a385f54b59a11b53d70cf491e5e21ad3b18",
+    "reviewedGitTree": "378273f53da18c3aeb7d8172a945243564733ee5",
+    "headCommitAtCompletion": "c5164a385f54b59a11b53d70cf491e5e21ad3b18",
+    "headTreeAtCompletion": "895e9dd85f6a2c5c292fd28432bfbbdef44d8bf5",
+    "deltaPathCount": 136,
+    "finalDeltaManifestSha256": "108e5149de5e3f7df50f49412751d6bf1d56f7a199760bdfdd20d4fbd7f7cd33",
+    "runtimeEnterpriseSha256": "ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6",
+    "pageSha256": "eaa6d4fce130dc35bfe1f355a927d7e43080f461ad9413a4eac23b55de2ad202",
+    "newWorkerFixtureSha256": "15020dce09c00ba5a805e3908fa3c09daa1f6d9ceab8ee01b63fa9d6285e61c7"
+  },
+  "identityVerification": {
+    "indexMatchesReviewedFinalTree": true,
+    "workingTreeMatchesIndex": true,
+    "allNonEvidenceDeltaIdentitiesUnchangedDuringReview": true,
+    "heldPinsUnchangedDuringReview": true,
+    "heldGuardStatus": "STATIC_SOURCE_IDENTITY_PRESERVED",
+    "finalSourceBindingsVerified": 320,
+    "evidencePackagingChangedDuringReview": true,
+    "evidencePackagingReviewed": true
+  },
+  "findings": [],
+  "resolvedPriorFinding": {
+    "prior": "Separate commercial/decision controllers could be revoked while later enterprise actions executed",
+    "sourceLocations": [
+      "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py:204",
+      "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py:210",
+      "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py:228",
+      "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py:694"
+    ],
+    "verifiedBehavior": [
+      "The exact signed decision, journal, request, original operation target/result and existing decision deadline are checked during production and prototyping.",
+      "Production separately rechecks currently trusted commercial authorization and the original authorized offering head.",
+      "Operation and launch bindings preserve the original decision digest while consumption creates another decision revision.",
+      "Historical commercial command expiry stays consumed; it does not become an offering renewal lease.",
+      "Distinct signer revocation/decision expiry after a model response stops later tools; revocation after a tool response stops the next model call.",
+      "In-flight refusal preserves unknown cost and capacity. Preflight refusal can be explicitly reconciled into a permanent execution closure that blocks permit replay."
+    ]
+  },
+  "independentVerification": {
+    "dynamicOfflineCases": 9,
+    "dynamicCases": [
+      {
+        "case": "current-production",
+        "status": "delivered-awaiting-independent-acceptance-and-costs",
+        "actions": 1,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "completed"
+      },
+      {
+        "case": "current-prototype",
+        "status": "delivered-awaiting-independent-acceptance-and-costs",
+        "actions": 1,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "completed"
+      },
+      {
+        "case": "commercial-revoked-after-response",
+        "status": "failed-or-uncertain",
+        "actions": 0,
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "unknownLiabilityPreserved": true,
+        "capacityPreserved": true
+      },
+      {
+        "case": "decision-revoked-after-response",
+        "status": "failed-or-uncertain",
+        "actions": 0,
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "unknownLiabilityPreserved": true,
+        "capacityPreserved": true
+      },
+      {
+        "case": "prototype-short-decision-expiry",
+        "status": "failed-or-uncertain",
+        "actions": 0,
+        "modelCalls": 1,
+        "toolCalls": 0,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "unknownLiabilityPreserved": true,
+        "capacityPreserved": true
+      },
+      {
+        "case": "commercial-deadline-consumed",
+        "status": "delivered-awaiting-independent-acceptance-and-costs",
+        "actions": 1,
+        "modelCalls": 2,
+        "toolCalls": 1,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "completed"
+      },
+      {
+        "case": "preflight-refusal-and-closure",
+        "status": "preflight-refused",
+        "actions": 0,
+        "modelCalls": 0,
+        "toolCalls": 0,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "closurePreventsReplay": true
+      },
+      {
+        "case": "commercial-revoked-after-tool",
+        "status": "failed-or-uncertain",
+        "actions": 1,
+        "modelCalls": 1,
+        "toolCalls": 1,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "unknownLiabilityPreserved": true,
+        "capacityPreserved": true
+      },
+      {
+        "case": "decision-revoked-after-tool",
+        "status": "failed-or-uncertain",
+        "actions": 1,
+        "modelCalls": 1,
+        "toolCalls": 1,
+        "originalDigestPreserved": true,
+        "consumedLatestDigestDiffers": true,
+        "launchStatus": "failed-or-uncertain",
+        "unknownLiabilityPreserved": true,
+        "capacityPreserved": true
+      }
+    ],
+    "networkAttempts": 0,
+    "staticComposition": {
+      "status": "PASS",
+      "archivedSourcesExactlyMatchC516": 11,
+      "archivedPageExactlyMatchesC516": true,
+      "currentRuntimeBindings": 75,
+      "packetIdentities": 8,
+      "currentPacketSourceBindings": 433,
+      "predecessorProfileDefinitionsUnchanged": 27,
+      "predecessorProfilesUnchanged": 28,
+      "newProfiles": 1,
+      "allSixCurrentHistoricalPartialWorkerMixturesRefuse": [
+        {
+          "mask": 1,
+          "matchingCompleteProfiles": 0
+        },
+        {
+          "mask": 2,
+          "matchingCompleteProfiles": 0
+        },
+        {
+          "mask": 3,
+          "matchingCompleteProfiles": 0
+        },
+        {
+          "mask": 4,
+          "matchingCompleteProfiles": 0
+        },
+        {
+          "mask": 5,
+          "matchingCompleteProfiles": 0
+        },
+        {
+          "mask": 6,
+          "matchingCompleteProfiles": 0
+        }
+      ],
+      "uniqueCurrentWorkerProfile": true,
+      "readOnlyCheckoutClosure": {
+        "schema": "capability-lf-checkout-refresh/v1",
+        "sourceHash": "54769dbfde99ae13708a33292866f0ca7e6b8b7792a7a944f76bf2fbf1de1358",
+        "checked": 61,
+        "needsRefresh": [],
+        "applied": false,
+        "backupDirectory": null
+      }
+    },
+    "finalPackaging": {
+      "status": "PASS",
+      "finalStagedTree": "378273f53da18c3aeb7d8172a945243564733ee5",
+      "indexMatchesTree": true,
+      "workingTreeMatchesIndex": true,
+      "evidenceInventoriesVerified": {
+        "FILES.json": 141,
+        "worker-edition/FILES.json": 81
+      },
+      "retainedLocalRawScreenshotsVerified": 6,
+      "originalXmlRoundtripVerified": true,
+      "xmlRawBytes": 86866,
+      "xmlRawSha256": "2ce7302ac244d5c5124bb103a88528c27c0af8499239fa6671bc5d998c2cd852",
+      "qualificationScope": "Presentation/custody corrections only, no additional observed browser/test outcome claimed"
+    },
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/final-corrected-c516-review/independent_probe.py",
+        "exitCode": 0,
+        "raw": "independent-probe-raw.txt",
+        "result": "independent-probe-results.json"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/final-corrected-c516-review/static_composition_probe.py",
+        "exitCode": 0,
+        "raw": "static-composition-raw.txt",
+        "result": "static-composition-results.json"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/final-corrected-c516-review/final_packaging_probe.py",
+        "exitCode": 0,
+        "raw": "final-packaging-raw.txt",
+        "result": "final-packaging-results.json"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python scripts/check_held_native_source.py",
+        "exitCode": 0,
+        "raw": "held-source-static.json"
+      }
+    ]
+  },
+  "policyReview": {
+    "read": [
+      "AGENTS.md",
+      "docs/agent/FAST_RELEASE_POLICY.md",
+      "docs/agent/SCOPED_RELEASE_POLICY.md",
+      "docs/agent/RELEASE_READINESS.md current 1.47 scope and preserved review/gate passages"
+    ],
+    "configuredReview": "RELEASE_READINESS.md:11-16 requires configured review and the normal downstream exact-source acceptance. None of the inspected current instructions names completion of a particular legacy bot as a written prerequisite. This review does not invent or satisfy unseen repository-protection requirements.",
+    "remainingGates": "Applicable exact-head checks, full resulting-main security/coverage/integrity/platform/package/installation, tested-site publication and actual served-byte checks remain required; not established by this bounded review."
+  },
+  "proceduralNotes": [
+    "The first completion snapshot detected evidence packaging changes; no runtime/test/docs/current-packet/worker source bytes changed. The final packaging and inventories were then independently verified and review bound to exact staged tree 378273f53da18c3aeb7d8172a945243564733ee5.",
+    "An initial XML packaging probe assumed plaintext and raised StopIteration. After reading its declared gzip+base64 encoding, the corrected read-only probe verified the exact original byte count and SHA-256; no archived bytes were executed."
+  ],
+  "limitations": [
+    "Bounded source review and nine independent offline fixture cases; no blanket campaign rerun or new coverage claim.",
+    "No repository file writes by this reviewer, and no network/model/paid/privileged/publisher/merge actions.",
+    "The four held test nodes/helpers and reserved native/research canaries were not executed. The static guard qualifies byte preservation only.",
+    "No discovery novelty, operational Alpha, retained Alpha, real revenue/profit, live identity or public-release acceptance is established."
+  ]
+}

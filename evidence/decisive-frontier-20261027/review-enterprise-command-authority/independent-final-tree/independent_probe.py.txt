@@ -1,0 +1,105 @@
+import copy,hashlib,inspect,json,socket,sys,tempfile,time
+from pathlib import Path
+from unittest.mock import patch
+root=Path('/tmp/agi-alpha-commercial-fix-c516')
+sys.path[:0]=[str(root),str(root/'tests/runtime')]
+from alpha_factory_v1.core.runtime.store import Conflict
+from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import Enterprise,key
+from alpha_factory_v1.core.runtime.successor.flywheel_execution import operation_key
+from alpha_factory_v1.core.runtime.successor.trust import sign_record, TrustAnchor
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+import test_flywheel_enterprise as e
+import test_flywheel_enterprise_technical_authority as t
+import test_flywheel_specialists as s
+loaded=Path(inspect.getfile(Enterprise)).resolve()
+assert loaded==root/'alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py'
+assert hashlib.sha256(loaded.read_bytes()).hexdigest()=='ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6'
+network=[]
+def refuse_network(*args,**kwargs):
+ network.append('blocked');raise AssertionError('network is outside this offline review')
+socket.socket.connect=refuse_network
+rows=[]
+
+def signed_decision(st,action,identity='review-decision',expiry=None):
+ template=e.decision(st,'review-template',action=action)
+ request=copy.deepcopy(template['request']);request['decision_id']=identity
+ command=e.command(st,'decide',request,identity,principal='review-decision-controller')
+ if expiry is not None:
+  payload=copy.deepcopy(command.payload);payload['expires_at']=expiry
+  command=sign_record(st['keys']['review-decision-controller'],'review-decision-controller',command.domain,payload)
+ return Enterprise(st['service']).apply(command)
+
+for case,action in [('current-production','produce'),('current-prototype','prototype'),('commercial-revoked-after-response','produce'),('decision-revoked-after-response','prototype'),('prototype-short-decision-expiry','prototype'),('commercial-deadline-consumed','produce'),('preflight-refusal-and-closure','prototype'),('commercial-revoked-after-tool','produce'),('decision-revoked-after-tool','prototype')]:
+ with tempfile.TemporaryDirectory(prefix='corrected-source-probe-') as tmp:
+  st=t.setup.__wrapped__(Path(tmp));enterprise=Enterprise(st['service'])
+  private=Ed25519PrivateKey.generate();st['keys']['review-decision-controller']=private
+  st['trust']._anchors['review-decision-controller']=TrustAnchor(private.public_key().public_bytes(Encoding.Raw,PublicFormat.Raw).hex(),frozenset({'controller'}))
+  if action=='produce':offering=t.prepare(st)
+  else:s.funding(st);offering=e.register(st)
+  fake_now=[int(time.time())]
+  if case=='commercial-deadline-consumed':fake_now[0]=offering['signed']['payload']['expires_at']+1
+  with patch('time.time',lambda:fake_now[0]):
+   frozen=signed_decision(st,action,expiry=fake_now[0]+10 if case=='prototype-short-decision-expiry' else None)
+   executor,mission,profile,permit=e.execution(st,'review-operation')
+   calls=[];tool_calls=[]
+   respond=executor.transport.respond;perform=executor.environment.perform
+   def model(*args):
+    body=respond(*args);calls.append('scripted')
+    if case=='commercial-revoked-after-response':st['trust'].revoke('commercial-controller')
+    elif case=='decision-revoked-after-response':st['trust'].revoke('review-decision-controller')
+    elif case=='prototype-short-decision-expiry':fake_now[0]+=11
+    return body
+   def tool(*args):
+    tool_calls.append('local');body=perform(*args)
+    if case=='commercial-revoked-after-tool':st['trust'].revoke('commercial-controller')
+    elif case=='decision-revoked-after-tool':st['trust'].revoke('review-decision-controller')
+    return body
+   executor.transport.respond=model;executor.environment.perform=tool
+   if case=='preflight-refusal-and-closure':executor.qualification_check=lambda:st['trust'].revoke('review-decision-controller')
+   original_operation=enterprise._read('operation',frozen['signed']['payload']['operation_id'],None)
+   try:result=enterprise.run('review-decision',executor,mission,profile,permit)
+   except ValueError as error:
+    assert case=='preflight-refusal-and-closure';result={'status':'preflight-refused','error':str(error),'actions':0}
+   latest_decision=enterprise.inspect('decision','review-decision')
+   assert latest_decision['consumed'] is True
+   assert latest_decision['digest']!=frozen['digest']
+   assert original_operation['result']==frozen['digest']
+   assert enterprise._read('operation',frozen['signed']['payload']['operation_id'],None)==original_operation
+   launch=enterprise.inspect('launch','review-operation')
+   row={'case':case,'status':result['status'],'actions':result['actions'],'modelCalls':len(calls),'toolCalls':len(tool_calls),'originalDigestPreserved':True,'consumedLatestDigestDiffers':True,'launchStatus':launch['status']}
+   if case in ('current-production','current-prototype','commercial-deadline-consumed'):
+    assert result['status']=='delivered-awaiting-independent-acceptance-and-costs' and len(calls)==2 and len(tool_calls)==1
+   elif case=='preflight-refusal-and-closure':
+    assert not calls and not tool_calls
+    assert 'execution/review-operation' not in st['costs'].snapshot()['charges']
+    try:st['journal'].latest(operation_key('review-operation'));raise AssertionError('unexpected execution before preflight')
+    except KeyError:pass
+    assert 'review-operation' in st['journal'].latest(key('active','capacity'))['reservations']
+    st['journal'].control(True)
+    with st['journal'].transaction() as cx:st['service'].checkpoint.advance(st['journal'],cx)
+    s.seal(st,mission.mission_id,'A')
+    raw={'execution_operation':'review-operation','evidence':[e.evidence(st).model_dump()]}
+    closed=enterprise.apply(e.command(st,'reconcile',raw,'review-close',launch['digest']))
+    assert closed['status']=='reconciled-failure' and closed['authority_restored'] is False
+    assert not st['journal'].latest(key('active','capacity'))['reservations']
+    assert st['journal'].latest(operation_key('review-operation'))['status']=='cancelled-before-execution'
+    st['journal'].control(False)
+    with st['journal'].transaction() as cx:st['service'].checkpoint.advance(st['journal'],cx)
+    executor.qualification_check=lambda:None
+    try:executor.run(mission,profile,permit);raise AssertionError('replayed closed operation')
+    except Conflict as err:assert 'already attempted' in str(err)
+    row['closurePreventsReplay']=True
+   else:
+    assert result['status']=='failed-or-uncertain' and len(calls)==1
+    assert len(tool_calls)==(1 if case.endswith('after-tool') else 0)
+    assert result['actions']==(1 if case.endswith('after-tool') else 0)
+    assert 'review-operation' in st['journal'].latest(key('active','capacity'))['reservations']
+    assert st['costs'].snapshot()['charges']['execution/review-operation']['accrued_micro_usd'] is None
+    assert st['costs'].report()['available_funds'] is None
+    row['unknownLiabilityPreserved']=True
+    row['capacityPreserved']=True
+   st['journal'].verify();rows.append(row)
+result={'loadedSource':str(loaded),'sha256':hashlib.sha256(loaded.read_bytes()).hexdigest(),'networkAttempts':len(network),'cases':rows}
+Path('/tmp/final-corrected-c516-review/independent-probe-results.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result,indent=2))
