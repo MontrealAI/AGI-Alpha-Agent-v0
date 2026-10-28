@@ -1,0 +1,26 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_split_trust_registries_refuse_before_journal_or_checkpoint_changes ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fc23e4b7e30>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fc2404d2cd0>, ...}, ...}
+
+    def test_split_trust_registries_refuse_before_journal_or_checkpoint_changes(setup: dict[str, Any]) -> None:
+        s = setup
+        separate_trust = TrustRegistry(dict(s["trust"]._anchors))
+        assert separate_trust._anchors == s["trust"]._anchors
+        s["trust"].revoke("accountant")
+        with pytest.raises(ValueError, match="not currently trusted"):
+            s["trust"].anchor("accountant", "accounting")
+        assert separate_trust.anchor("accountant", "accounting")
+        separate_costs = CostLedger(s["journal"], separate_trust)
+        checkpoint = s["service"].checkpoint
+        before = s["journal"].verify()
+        checkpoint_before = checkpoint.path.read_bytes()
+>       with pytest.raises(ValueError, match="one authoritative current trust registry"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_protected.py:244: Failed
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_protected.py::test_split_trust_registries_refuse_before_journal_or_checkpoint_changes
+1 failed, 107 deselected in 1.35s

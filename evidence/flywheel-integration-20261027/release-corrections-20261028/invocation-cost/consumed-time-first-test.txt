@@ -1,0 +1,35 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_valid_consumed_authority_survives_a_pause_before_the_receipt_timestamp __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f0ea7203500>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f0ea75d03d0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0ea7a04980>
+
+    def test_valid_consumed_authority_survives_a_pause_before_the_receipt_timestamp(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        ident = f.admitted(setup)
+        request = f.invocation()
+        proof = f.proof(setup, ident, "invoke", digest("flywheel-invocation", request))
+        consume = setup["access"].consume
+    
+        def consume_then_pause(*args: Any) -> dict[str, Any]:
+            authority = consume(*args)
+            resumed_at = int(time.time()) + 121
+            monkeypatch.setattr(time, "time", lambda: resumed_at)
+            return authority
+    
+        monkeypatch.setattr(setup["access"], "consume", consume_then_pause)
+        receipt = setup["service"].invoke(ident, request, proof)
+        assert receipt["status"] == "executed-awaiting-acceptance-and-complete-cost"
+        challenge = setup["journal"].latest("@flywheel-challenge:" + proof.challenge_id)
+        assert challenge["used"] is True
+        assert receipt["started_at"] > challenge["payload"]["expires_at"]
+        reconcile(setup, request)
+>       assert report(setup, request.mission_id)["current_evidence_valid"]
+E       assert False
+
+tests/runtime/test_flywheel_invocation_cost_authority.py:278: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_invocation_cost_authority.py::test_valid_consumed_authority_survives_a_pause_before_the_receipt_timestamp
+1 failed in 2.03s

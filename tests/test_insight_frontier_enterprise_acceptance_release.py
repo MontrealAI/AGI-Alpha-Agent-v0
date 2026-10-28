@@ -60,7 +60,9 @@ def edition_files() -> dict[str, bytes]:
     return files
 
 
-def test_enterprise_acceptance_workers_match_current_source_and_preserve_all_twenty_two_predecessors() -> None:
+def test_enterprise_acceptance_workers_preserve_frozen_source_and_all_twenty_two_predecessors(
+    tmp_path: Path,
+) -> None:
     fixture = worker_fixture()
     names = (
         *HISTORICAL_PROFILES,
@@ -81,16 +83,26 @@ def test_enterprise_acceptance_workers_match_current_source_and_preserve_all_twe
     }
     assert len(set(current) - set(WORKERS)) == 5
     assert fixture["pageSha256"] == "7c6144a05219319687a35e2c54e0edce1443635f89cb241c0fe7766e67094f98"
-    assert hashlib.sha256((ROOT / "docs/flywheel/index.html").read_bytes()).hexdigest() == fixture["pageSha256"]
+    assert (
+        hashlib.sha256(
+            (ROOT / "tests/fixtures/agi-alpha-insight-frontier-147-enterprise-acceptance-page.html.txt").read_bytes()
+        ).hexdigest()
+        == fixture["pageSha256"]
+    )
     assert fixture["flywheelSourceHash"] == "3289431239790e9dfc14293d63179728f11cdbf691946f8c586fe12b65e115ba"
-    assert json.loads((ROOT / "docs/flywheel/sources.json").read_bytes())["sourceHash"] == fixture["flywheelSourceHash"]
+    assert (
+        json.loads(
+            (ROOT / "tests/fixtures/agi-alpha-insight-frontier-147-enterprise-acceptance.sources.json.txt").read_bytes()
+        )["sourceHash"]
+        == fixture["flywheelSourceHash"]
+    )
     assert fixture["enterpriseModuleSha256"] == "c74494099f6d1626d4c7a53752d1510be8059970c1e3932763a75fe46f47112b"
-    enterprise = ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"
+    enterprise = ROOT / "tests/fixtures/agi-alpha-insight-frontier-147-enterprise-acceptance.module.py.txt"
     assert hashlib.sha256(enterprise.read_bytes()).hexdigest() == fixture["enterpriseModuleSha256"]
     records = {}
     for name, row in fixture["files"].items():
         body = row["text"].encode()
-        assert body == (ROOT / name).read_bytes()
+        assert body == edition_files()[name]
         assert b"agialpha-gallery-2d48e98fb7729779" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == (row["bytes"], row["sha256"]) == current[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == row["gitBlob"]
@@ -102,7 +114,8 @@ def test_enterprise_acceptance_workers_match_current_source_and_preserve_all_twe
     ]
     assert matches == [current]
     assert len(edition_files()) == 61
-    report = checkout.refresh(ROOT)
+    write_files(tmp_path, edition_files())
+    report = checkout.refresh(tmp_path)
     assert report["checked"] == 61 and report["needsRefresh"] == []
     assert report["applied"] is False and report["backupDirectory"] is None
 

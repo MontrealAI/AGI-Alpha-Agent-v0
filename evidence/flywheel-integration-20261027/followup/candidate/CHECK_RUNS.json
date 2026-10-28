@@ -1,0 +1,110 @@
+[
+  {
+    "command": [
+      "python",
+      "evidence/flywheel-integration-20261027/followup/compare_arrangements.py",
+      "--source",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/followup/candidate/replays/insight.json",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/followup/candidate/ARRANGEMENT_COMPARISON.json"
+    ],
+    "output": "arrangements.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 3.1911826549912803
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "tests/test_flywheel_147_workers.py",
+      "tests/test_flywheel_147_release.py",
+      "tests/test_paper_checkout_bytes.py",
+      "tests/test_strategy_research_source.py",
+      "tests/test_ruff_targets.py",
+      "tests/test_generate_gallery_html.py",
+      "tests/test_mirror_demo_pages.py",
+      "tests/test_alpha_flywheel.py",
+      "tests/test_flywheel_discovery_ui.py",
+      "tests/test_flywheel_comparison_ui.py",
+      "tests/test_customer_funds_economics.py",
+      "tests/test_flywheel_arrangements.py"
+    ],
+    "output": "publication.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 23.100781265995465
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "ruff",
+      "check",
+      "evidence/flywheel-integration-20261027/followup/compare_arrangements.py"
+    ],
+    "output": "ruff-artifact.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.03255779400933534
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/flywheel-browser-candidate",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "browser.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 23.733085462008603
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/followup/candidate/insight.json",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "insight.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.3000855069985846
+  },
+  {
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "output": "ruff.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.529787331004627
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "build",
+      "--wheel",
+      "--no-isolation",
+      "--outdir",
+      "/workspace/scratch/9c7b9ec78746/wheel-candidate"
+    ],
+    "output": "wheel.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.370570287006558
+  }
+]

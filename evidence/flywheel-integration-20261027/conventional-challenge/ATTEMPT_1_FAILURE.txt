@@ -1,0 +1,16 @@
+The initial run_challenge.py executed the 32 frozen cases once and wrote RESULTS.json.
+All 28 complete pairs matched exactly; four pairs were incomplete in both arms.
+All 63 native authority/cost/obligation tamper controls refused.
+The final independent-witness assertion failed: witness_failures=21.
+Cause: the separate witness checker compared target serialized AccessStep dictionaries,
+which include StrictModel's schema_version=1 default, against original frozen input
+dictionaries, which omit the default. Native check_access accepted all 21 plans.
+
+Final original assertion:
+  assert report["witness_failures"]==0
+  AssertionError
+
+The original target results, runner, frozen cases, conventional source and reference
+receipt remain unchanged. verify_stored.py checks the already-recorded outputs after
+adding only the known schema_version=1 default to isolated input copies. It does not
+execute construct_access, replace cases or change original result files.

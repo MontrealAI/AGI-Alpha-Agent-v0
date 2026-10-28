@@ -505,7 +505,7 @@ def browser_acceptance(
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
-                for link in page.locator("a[href*='/try/']").all():
+                for link in page.locator("#prepare-link, a[href*='/try/']").all():
                     assert parse_qs(urlsplit(link.get_attribute("href") or "").query).get("lang") == [language]
                 page.set_viewport_size({"width": width, "height": 1050})
                 assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (

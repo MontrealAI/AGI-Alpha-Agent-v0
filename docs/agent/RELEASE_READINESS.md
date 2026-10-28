@@ -8,7 +8,8 @@ Insight experience joins the existing Flywheel. See [scope and limitations](RELE
 Conventional exact search matches the finite research-access construction; no technical-breakthrough,
 discovery superiority, paid demand, retained Alpha or autonomous compounding claim is established.
 
-Preserve the preceding 1.46.1 publication lease and all earlier immutable artifacts. Configured review,
+The preceding 1.46.1 release and public installation succeeded on main `3947e4e`; preserve its immutable
+artifacts and keep its receipt separate. Configured review,
 applicable exact-head checks, full resulting-main security/coverage/integrity, representative platform
 and clean package installation, tested-site publication and actual public served bytes are required.
 The new complete generated worker edition needs its own acceptance; historical workers, fixtures,

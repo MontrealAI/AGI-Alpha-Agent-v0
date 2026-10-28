@@ -27,6 +27,11 @@ comparisons; one deliberately node-limited case is incomplete in both arms. Five
 refuse. This stops the technical-breakthrough claim for that target. The experiment does not measure
 discovery advantage, frontier-model performance, real institutional access or customer acceptance.
 
+A separate independent 32-case authored challenge also remains available in
+`evidence/flywheel-integration-20261027/conventional-challenge/`: 28 complete exact ties,
+four shared incomplete pairs and 63 refused native negative controls. Its initial witness-harness
+failure and stored-output-only correction remain preserved. Neither study establishes discovery advantage.
+
 The access-plan feasibility packet's economics remain explicitly hypothetical. Production cost,
 selling price, buyer value, participation, failure, defaults, refunds, prefunding and reserves are
 separate. Actual customer collections are zero; complete actual monetary cost and profit are unknown.
@@ -44,7 +49,8 @@ listing, trade, customer contact or expansion of access follows from generating 
 Version 1.47.0 is a prospective source candidate until its own configured review, required exact-source
 checks, complete resulting-main regression/security/integrity, immutable package, clean installation,
 tested-site publication and actual served-byte verification pass. The existing publisher owns those
-steps, after the preceding 1.46.1 publication lease closes. Earlier tests qualify only their recorded
+steps. The preceding 1.46.1 publication and public installation succeeded on main `3947e4e`; their
+receipt does not qualify this successor. Earlier tests qualify only their recorded
 source and scope. The existing 80% coverage floor, representative platform campaign, blocking hooks,
 five held native-source pins and separately unqualified native outcomes remain unchanged.
 

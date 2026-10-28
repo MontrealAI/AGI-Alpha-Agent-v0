@@ -8,7 +8,9 @@ records retain stopped, rejected and uncertain work without automatic replay.
 
 from __future__ import annotations
 
+import sqlite3
 import time
+from contextlib import closing
 from typing import Any, Literal
 
 from pydantic import Field, model_validator
@@ -204,6 +206,8 @@ class Enterprise:
         operation = offering.get("prototype_operation")
         if not isinstance(operation, str):
             raise ValueError("offering has no qualified prototype origin")
+        if offering["qualification_source"] != self.service.execution_digest:
+            raise Conflict("prototype technical source requires requalification")
         execution, _ = accepted_general_origin(self.service, operation, cx)
         launch = self._read("launch", operation, cx)
         if (
@@ -442,13 +446,18 @@ class Enterprise:
                         reasons.append("offering not currently authorized")
                     elif alternative.action == "produce":
                         try:
+                            self._technical_evidence(offering, cx)
+                        except (KeyError, ValueError):
+                            reasons.extend(
+                                [
+                                    "prototype acceptance is missing, changed or no longer eligible",
+                                    "prototype acceptance or supporting evidence is not currently eligible",
+                                ]
+                            )
+                        try:
                             self._commercial_evidence(offering, cx)
                         except (KeyError, ValueError):
                             reasons.append("commercial assessment evidence is missing or stale")
-                        try:
-                            self._technical_evidence(offering, cx)
-                        except (KeyError, ValueError):
-                            reasons.append("prototype acceptance is missing, changed or no longer eligible")
                     if (
                         alternative.price_micro_usd is not None
                         and alternative.price_micro_usd not in spec.price_candidates_micro_usd
@@ -633,8 +642,24 @@ class Enterprise:
             updated["consumed"] = True
             self.journal.append(cx, key("decision", decision_id), updated)
             self.service.checkpoint.advance(self.journal, cx)
+
+        def current_support() -> None:
+            if choice.action == "produce":
+                # active() also runs inside the executor's writer transaction.
+                # Use one read-only snapshot, avoiding a nested writer lock.
+                with closing(sqlite3.connect(self.journal.path.as_uri() + "?mode=ro", uri=True)) as cx:
+                    cx.execute("BEGIN")
+                    current_offering = self._read("offering", spec.offering_id, cx)
+                    if current_offering is None or current_offering["digest"] != offering["digest"]:
+                        raise Conflict("offering changed during production; reassess")
+                    self._technical_evidence(current_offering, cx)
+
         try:
-            result = executor.run(mission, profile, permit)
+            result = (
+                executor.run(mission, profile, permit, support_check=current_support)
+                if choice.action == "produce"
+                else executor.run(mission, profile, permit)
+            )
         except Exception:
             self._finish(terms.operation_id, pending["digest"], "failed-or-uncertain")
             raise

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/runtime/test_flywheel_enterprise_authority.py",
+    "tests/runtime/test_flywheel_enterprise.py",
+    "tests/runtime/test_flywheel_execution.py",
+    "--confcutdir=tests/runtime",
+    "--cov=alpha_factory_v1.core.runtime.successor.flywheel_enterprise",
+    "--cov=alpha_factory_v1.core.runtime.successor.flywheel_execution",
+    "--cov-report=term-missing",
+    "--cov-fail-under=80"
+  ],
+  "cwd": "/workspace/scratch/9c7b9ec78746/repo",
+  "exit_code": 1
+}

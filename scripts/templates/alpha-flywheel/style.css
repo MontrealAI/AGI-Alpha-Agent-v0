@@ -77,3 +77,11 @@
 #comparison-contrasts>div{display:contents}
 #comparison-contrasts dt,#comparison-contrasts dd{min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:left}
 #comparison-attempts td{overflow-wrap:anywhere;max-width:24rem}
+
+#customer-funds .scenario-controls{grid-template-columns:minmax(0,1fr) auto auto}
+#customer-funds .scenario-controls>*{min-width:0}
+#customer-stage{min-width:0;max-width:100%}
+#customer-funds .finance-list>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem}
+#customer-funds dt,#customer-funds dd{min-width:0;overflow-wrap:anywhere}
+#customer-funds .finance-list dd{white-space:normal}
+@media(max-width:760px){#customer-funds .scenario-controls{grid-template-columns:1fr}#customer-funds .scenario-controls .button{white-space:normal}#customer-funds .finance-list>div{grid-template-columns:1fr}#customer-funds .finance-list dd{text-align:left}}

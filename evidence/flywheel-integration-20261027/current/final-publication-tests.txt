@@ -1,0 +1,22 @@
+{
+  "candidate": "proposed 1.47.0 after EN320 correction",
+  "started_at_epoch": 1793141011.3420918,
+  "page_sha256": "920f5b7a88cd6ec89337e1003130ebc88011767220abed39b00477544f5fd55a",
+  "fixture_sha256": "f822d05e087333fe607728744d1f12c562358d55787bdbe6ec04756f329bf9e1",
+  "preserved_first_fixture_sha256": "c8fb0a4c6b7812a52ed357c07481e50a466757561023a6924508f97b09e27772",
+  "independent_preservation": {
+    "all_predecessor_profiles": 19,
+    "earlier_source_profile_entries_unchanged": true,
+    "145_146_1461_worker_fixtures_unchanged": true,
+    "unqualified_old_mobile_attempt_preserved": true
+  }
+}
+{"check": "fresh-final-publication-and-static-source-tests", "command": ["/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3", "-m", "pytest", "--noconftest", "-o", "addopts=", "-q", "tests/test_flywheel_147_workers.py", "tests/test_capability_publication_edition.py", "tests/test_paper_reader_release.py", "tests/test_protected_flywheel_release.py", "tests/test_flywheel_147_release.py", "tests/test_strategy_research_compatibility_v2.py", "tests/test_held_native_source_guard.py"]}
+........................................................................ [ 67%]
+..................................                                       [100%]
+106 passed in 2.53s
+{"check": "fresh-final-publication-and-static-source-tests", "exit_code": 0}
+{"check": "ruff-all-owned-python-files", "command": ["/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3", "-m", "ruff", "check", "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py", "tests/runtime/test_flywheel_comparisons.py", "alpha_factory_v1/__init__.py", "scripts/check_strategy_research_compatibility_v2.py", "scripts/refresh_capability_checkout.py", "tests/test_protected_flywheel_release.py", "tests/test_paper_reader_release.py", "tests/test_capability_publication_edition.py", "tests/test_flywheel_147_release.py", "tests/test_flywheel_147_workers.py"]}
+All checks passed!
+{"check": "ruff-all-owned-python-files", "exit_code": 0}
+{"finished_at_epoch": 1793141014.8950677, "results": [{"check": "fresh-final-publication-and-static-source-tests", "exit_code": 0}, {"check": "ruff-all-owned-python-files", "exit_code": 0}]}

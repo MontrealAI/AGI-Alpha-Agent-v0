@@ -1,0 +1,34 @@
+{
+  "schema": "agi-alpha.shared-current-trust-regression.v1",
+  "meaning": "ProtectedLibrary must use the same current trust registry object as its CostLedger; identical initial public anchors do not share future revocation state. Reject before mutating journal, checkpoint or ledger callbacks.",
+  "sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "bced7dd1766714d3be510b2578445e41e7f5d62ee64073de3ce1eec5f9fa7a29",
+    "tests/runtime/test_flywheel_protected.py": "d6640009b4e2d2a1d8e407482ba8136f4c01386be6e523de93406de7977ff42f"
+  },
+  "before": {
+    "exit_code": 1,
+    "failed": 1,
+    "deselected": 107,
+    "failure": "Old constructor accepted initially equal but separately revoked registries."
+  },
+  "after": {
+    "exit_code": 0,
+    "passed": 1,
+    "deselected": 107
+  },
+  "ruff": {
+    "exit_code": 0,
+    "files": [
+      "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+      "tests/runtime/test_flywheel_protected.py"
+    ]
+  },
+  "test_command": "python -m pytest -q -o addopts= tests/runtime/test_flywheel_protected.py -k split_trust_registries",
+  "broader_qualification": "Not repeated here; final resulting source still requires root full selected qualification and hosted exact-source review.",
+  "scope": "Local synthetic signer regression; no registry, authority, credential, payment or external call added.",
+  "logs": {
+    "before.txt": "9e49a6c081c2419be217800e27b3add26a997e35030be9007006eac42a0c9ac8",
+    "after.txt": "12ef26eb2f9cc33fd18ff0e6d9567e3c61289cff95edf473b4fd08409a522b1a",
+    "ruff.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  }
+}

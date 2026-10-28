@@ -95,6 +95,7 @@ class CostLedger:
         self.checkpoint: DurableCheckpoint | None = None
         self.custody_check: Callable[[], None] | None = None
         self.general_delivery_check: Callable[[str, Any], dict[str, Any]] | None = None
+        self.invocation_reservation_check: Callable[[Charge, Any], None] | None = None
         with journal.transaction() as cx:
             try:
                 journal.latest(KEY, cx)
@@ -123,6 +124,106 @@ class CostLedger:
                     return self.snapshot(connection)
             self.checkpoint.verify(self.journal, cx)
         return self.journal.document(self.journal.latest(KEY, cx))
+
+    def current_signature(self, raw: Any, domain: str, role: str) -> dict[str, Any]:
+        signed = SignedEnvelope.model_validate(raw)
+        payload = self.trust.verify(signed, domain, role)
+        if payload.get("journal_identity") != self.journal.identity:
+            raise ValueError("supporting signature belongs to a different journal")
+        return dict(payload)
+
+    def _current_charge(self, row: dict[str, Any], cx: Any, depth: int = 0) -> None:
+        if depth > 1:
+            raise ValueError("cost reconciliation has unsupported ancestry")
+        from .flywheel_execution import ExecutionPermit, operation_key
+
+        charge = Charge.model_validate({name: row[name] for name in Charge.model_fields})
+        if row["signed"] is None:
+            if (
+                set(row) != {*Charge.model_fields, "signed"}
+                or charge.bucket != "B"
+                or charge.category != "compute"
+                or charge.activity_id != "reuse/" + charge.mission_id
+                or charge.accrued_micro_usd is not None
+                or charge.paid_micro_usd != 0
+                or self.invocation_reservation_check is None
+            ):
+                raise ValueError("unsigned cost requires its exact protected invocation reservation")
+            self.invocation_reservation_check(charge, cx)
+            return
+        signed = SignedEnvelope.model_validate(row["signed"])
+        if signed.domain == "flywheel-cost-command":
+            payload = self.current_signature(signed.model_dump(), "flywheel-cost-command", "accounting")
+            original = Charge.model_validate(payload["record"])
+            if (
+                set(payload) != {"journal_identity", "operation_id", "action", "record"}
+                or payload["action"] != ("resolve" if "original" in row else "charge")
+                or original.model_dump(exclude={"paid_micro_usd"}) != charge.model_dump(exclude={"paid_micro_usd"})
+                or original.paid_micro_usd > charge.paid_micro_usd
+            ):
+                raise ValueError("cost row differs from its signed accounting command")
+        elif signed.domain == "flywheel-execution-permit":
+            payload = self.current_signature(signed.model_dump(), "flywheel-execution-permit", "controller")
+            permit = ExecutionPermit.model_validate(payload["permit"])
+            execution = self.journal.latest(operation_key(permit.operation_id), cx)
+            if (
+                set(payload) != {"journal_identity", "permit"}
+                or charge.activity_id != "execution/" + permit.operation_id
+                or charge.mission_id != execution["mission"]["mission_id"]
+                or charge.bucket != permit.bucket
+                or charge.category != "model"
+                or charge.accrued_micro_usd is not None
+                or charge.paid_micro_usd != 0
+                or execution["permit"] != signed.model_dump()
+                or "original" in row
+            ):
+                raise ValueError("cost reservation differs from its actual signed execution")
+        elif signed.domain == "flywheel-gym-plan":
+            from .flywheel_gym import KEY as GYM_KEY, GymPlan
+
+            payload = self.current_signature(signed.model_dump(), "flywheel-gym-plan", "controller")
+            plan = GymPlan.model_validate(payload["plan"])
+            campaign = self.journal.latest(GYM_KEY + plan.campaign_id, cx)
+            if (
+                set(payload) != {"journal_identity", "plan"}
+                or charge.activity_id != "gym/" + plan.campaign_id
+                or charge.mission_id != plan.mission_id
+                or charge.bucket != "C"
+                or charge.category != "compute"
+                or charge.accrued_micro_usd is not None
+                or charge.paid_micro_usd != 0
+                or charge.evidence_digest != digest("gym-plan", plan)
+                or campaign["plan"] != signed.model_dump()
+                or "original" in row
+            ):
+                raise ValueError("cost reservation differs from its actual signed Gym campaign")
+        else:
+            raise ValueError("cost signature has an unsupported authority domain")
+        if "original" in row:
+            if any(row[name] != row["original"][name] for name in ("activity_id", "mission_id", "bucket", "category")):
+                raise ValueError("cost reconciliation differs from its original reservation")
+            self._current_charge(row["original"], cx, depth + 1)
+
+    def require_current_evidence(self, mission_id: str, buckets: list[str], cx: Any) -> None:
+        """Recheck supporting authority before a new protected use; leave history unchanged."""
+        ledger = self.snapshot(cx)
+        for row in ledger["charges"].values():
+            if row["mission_id"] == mission_id and row["bucket"] in buckets:
+                self._current_charge(row, cx)
+        for bucket in buckets:
+            name = {"A": "seals", "B": "reuse_seals", "C": "investment_seals"}[bucket]
+            seal = ledger.get(name, {}).get(mission_id)
+            if seal is None:
+                continue
+            payload = self.current_signature(seal["signed"], "flywheel-cost-command", "accounting")
+            allowed = {"A": {"seal"}, "B": {"seal-reuse", "seal-retention"}, "C": {"seal-investment"}}[bucket]
+            if (
+                set(payload) != {"journal_identity", "operation_id", "action", "record"}
+                or payload["action"] not in allowed
+                or CompletenessSeal.model_validate(payload["record"]).model_dump()
+                != {name: seal[name] for name in CompletenessSeal.model_fields}
+            ):
+                raise ValueError("completeness seal differs from its signed accounting command")
 
     @staticmethod
     def require_open(state: dict[str, Any], mission_id: str, bucket: str) -> None:

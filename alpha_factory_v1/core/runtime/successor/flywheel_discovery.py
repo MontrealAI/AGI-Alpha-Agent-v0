@@ -435,12 +435,12 @@ class Discovery:
         return spec
 
     def inspect(self, kind: str, identity: str) -> dict[str, Any]:
+        from .flywheel_insight import KINDS
+
         if kind == "comparison-result":
             from .flywheel_comparisons import comparison_report
 
             return comparison_report(self, identity)
-        from .flywheel_insight import KINDS
-
         if (
             kind
             not in {

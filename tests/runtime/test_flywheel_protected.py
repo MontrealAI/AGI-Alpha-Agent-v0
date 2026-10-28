@@ -229,6 +229,28 @@ def secrets_bytes() -> bytes:
     return secrets.token_bytes(32)
 
 
+def test_split_trust_registries_refuse_before_journal_or_checkpoint_changes(setup: dict[str, Any]) -> None:
+    s = setup
+    separate_trust = TrustRegistry(dict(s["trust"]._anchors))
+    assert separate_trust._anchors == s["trust"]._anchors
+    s["trust"].revoke("accountant")
+    with pytest.raises(ValueError, match="not currently trusted"):
+        s["trust"].anchor("accountant", "accounting")
+    assert separate_trust.anchor("accountant", "accounting")
+    separate_costs = CostLedger(s["journal"], separate_trust)
+    checkpoint = s["service"].checkpoint
+    before = s["journal"].verify()
+    checkpoint_before = checkpoint.path.read_bytes()
+    with pytest.raises(ValueError, match="one authoritative current trust registry"):
+        ProtectedLibrary(
+            s["library"], separate_costs, s["access"], s["service"].keys, s["service"].active_key, checkpoint
+        )
+    assert s["journal"].verify() == before
+    assert checkpoint.path.read_bytes() == checkpoint_before
+    assert separate_costs.checkpoint is None
+    assert separate_costs.custody_check is None and separate_costs.general_delivery_check is None
+
+
 def signed(s: dict[str, Any], domain: str, role: str, record: Any, operation: str) -> SignedEnvelope:
     if domain == "configure":
         record = {**record, "execution_digest": record.get("execution_digest", s["service"].execution_digest)}

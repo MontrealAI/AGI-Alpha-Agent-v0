@@ -1,0 +1,44 @@
+{
+  "scope": "Conflict reconciliation only; final full combined source remains separately qualified",
+  "parents": [
+    "a816e32bcf9e9db945021e47a611448e89e469dc",
+    "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff"
+  ],
+  "cases": {
+    "child": 50,
+    "owner": 59,
+    "distinct_union": 74,
+    "functions": 26
+  },
+  "failures": [
+    {
+      "output": "merge-comparison-tests.txt",
+      "exitcode": 1,
+      "result": "41 progress dots only; individual outcomes unclassified; no summary or cause established"
+    },
+    {
+      "output": "merge-comparison-tests-isolated.txt",
+      "result": "73 passed1 failed; older whole-cell-equality assertion contradicted new current cap fields after seal revocation; immutable history remains unchanged"
+    }
+  ],
+  "final": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "--confcutdir=tests/runtime",
+      "tests/runtime/test_flywheel_comparisons.py"
+    ],
+    "result": "74 passed in36.15s",
+    "ruff": "both owned files pass",
+    "mypy": "1 runtime source passes"
+  },
+  "files": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py": "41ba1d60198d34573ad6373bed372cd75909cf69ac31f2c41d08fa3b85eb631a",
+    "tests/runtime/test_flywheel_comparisons.py": "a20ed10bcedcd1347afd446c2981f1303a9f9236cd34848a3e3ebebe8c4b459e"
+  },
+  "semantics": "Owner monetary caps and authenticated historical approvals plus child durable model request evidence and shared CostLedger current-support verification; current eligibility and immutable historical observation stay distinct."
+}

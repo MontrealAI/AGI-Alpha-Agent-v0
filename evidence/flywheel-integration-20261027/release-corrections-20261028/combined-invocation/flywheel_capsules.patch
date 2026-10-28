@@ -1,0 +1,28 @@
+--- before/alpha_factory_v1/core/runtime/successor/flywheel_capsules.py
++++ after/alpha_factory_v1/core/runtime/successor/flywheel_capsules.py
+@@ -350,10 +350,24 @@
+         )
+         proof = AccessRequest(challenge_id=authority["challenge_id"], signature=challenge["signature"])
+         if (
+-            challenge["used"] is not True
++            set(payload)
++            != {
++                "service",
++                "journal_identity",
++                "name",
++                "wallet",
++                "resource",
++                "action",
++                "request_digest",
++                "issued_at",
++                "expires_at",
++                "nonce",
++            }
++            or challenge["used"] is not True
+             or digest("flywheel-challenge", payload) != proof.challenge_id
+             or challenge["message"] != message
+             or challenge["authorization"] != authority
++            or challenge["revision"] >= stored["revision"]
+             or payload["service"] != self.access.service.model_dump()
+             or payload["journal_identity"] != self.journal.identity
+             or payload["resource"] != ident

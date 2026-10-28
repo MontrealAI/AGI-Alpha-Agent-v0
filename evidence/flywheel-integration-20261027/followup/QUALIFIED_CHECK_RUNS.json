@@ -1,0 +1,99 @@
+[
+  {
+    "output": "qualified-publication.txt",
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "tests/test_flywheel_147_workers.py",
+      "tests/test_flywheel_147_release.py",
+      "tests/test_paper_checkout_bytes.py",
+      "tests/test_strategy_research_source.py",
+      "tests/test_ruff_targets.py",
+      "tests/test_generate_gallery_html.py",
+      "tests/test_mirror_demo_pages.py",
+      "tests/test_alpha_flywheel.py",
+      "tests/test_flywheel_discovery_ui.py",
+      "tests/test_flywheel_comparison_ui.py",
+      "tests/test_customer_funds_economics.py",
+      "tests/test_flywheel_arrangements.py"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 20.66770909501065
+  },
+  {
+    "output": "qualified-browser.txt",
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/flywheel-browser-qualified",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 30.316356397001073
+  },
+  {
+    "output": "qualified-insight.txt",
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/followup/qualified-insight.json",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 3.8988265080115525
+  },
+  {
+    "output": "qualified-ruff.txt",
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 0.6615356959955534
+  },
+  {
+    "output": "qualified-docs.txt",
+    "command": [
+      "python",
+      "-m",
+      "mkdocs",
+      "build",
+      "--strict",
+      "--site-dir",
+      "/workspace/scratch/9c7b9ec78746/mkdocs-qualified"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 4.681318807997741
+  },
+  {
+    "output": "qualified-wheel.txt",
+    "command": [
+      "python",
+      "-m",
+      "build",
+      "--wheel",
+      "--no-isolation",
+      "--outdir",
+      "/workspace/scratch/9c7b9ec78746/wheel-qualified"
+    ],
+    "exitcode": 0,
+    "elapsed_seconds": 2.7845720740006072
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "check": "privacy",
+    "command": [
+      "python",
+      "scripts/dp_scrubber.py"
+    ],
+    "exitcode": 0
+  },
+  {
+    "check": "binary-guard",
+    "command": [
+      "python",
+      "scripts/check_no_binary_diff.py"
+    ],
+    "exitcode": 0
+  },
+  {
+    "check": "held-native",
+    "command": [
+      "python",
+      "scripts/check_held_native_source.py"
+    ],
+    "exitcode": 0
+  }
+]

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Accept only the complete reviewed reader patch worker edition."""
+
 from __future__ import annotations
 import hashlib
 import json

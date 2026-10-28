@@ -75,9 +75,7 @@ def test_fixed_cli_reports_only_static_identity_and_refuses_selectors() -> None:
     assert refused.returncode == 2
 
 
-def assert_scoped_invocation(
-    filename: str, job_name: str, scope_name: str, folder: str, budget: int
-) -> None:
+def assert_scoped_invocation(filename: str, job_name: str, scope_name: str, folder: str, budget: int) -> None:
     workflow = yaml.safe_load((ROOT / ".github/workflows" / filename).read_text())
     job = workflow["jobs"][job_name]
     assert job["timeout-minutes"] == budget
@@ -105,7 +103,7 @@ def test_identity_guard_precedes_agent_invocation_without_weakening_it() -> None
         "regression",
         "Offline regression including notebooks (four held native tests excluded)",
         "evidence",
-        90,
+        120,
     )
 
 

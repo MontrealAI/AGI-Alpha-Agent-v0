@@ -609,3 +609,82 @@ def test_signed_execution_authority_is_snapshotted_before_environment_callbacks(
     charge = s["costs"].snapshot()["charges"]["execution/fixture-run"]
     assert charge["signed"] == original
     assert signed.payload["permit"]["max_authorized_micro_usd"] == 1
+
+
+@pytest.mark.parametrize("phase", ["before-model", "model-poll", "tool-poll"])
+def test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, phase: str
+) -> None:
+    import asyncio
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    s, task, p, env = setup, mission(), profile(), LocalExperiment()
+    p = p.model_copy(update={"model_request_cap_micro_usd": 17, "tool_request_caps_micro_usd": {"experiment": 29}})
+    call = response([{"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}])
+    transport: Any = ScriptedTransport([call, done()] if phase == "tool-poll" else [done()])
+    polling: list[str] = []
+    checks = 0
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        polling.append("request-started")
+        s["trust"].revoke("controller")
+        try:
+            await asyncio.sleep(0.4)
+            polling.append("effect-after-revocation")
+            if phase == "model-poll":
+                return httpx.Response(200, json=done())
+            return httpx.Response(200, json={"request_id": json.loads(request.content)["request_id"], "result": {}})
+        finally:
+            polling.append("request-closed")
+
+    client_type = httpx.AsyncClient
+    monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
+    if phase == "model-poll":
+        config = RuntimeConfig(llm_url="https://api.example/v1", llm_model=p.model_id, allow_remote_llm=True)
+        s["journal"].control(True)
+        s["journal"].configure(config)
+        s["journal"].control(False)
+        with s["journal"].transaction() as cx:
+            s["service"].checkpoint.advance(s["journal"], cx)
+        monkeypatch.setenv("ALPHA_AGENT_LLM_KEY", "fictional-test-credential")
+        transport = ResponsesTransport(s["journal"])
+        task = task.model_copy(update={"components": {**task.components, "model": "live"}})
+    elif phase == "tool-poll":
+        monkeypatch.setenv("TEST_SANDBOX_KEY", "fictional-test-credential")
+        env = HTTPToolEnvironment(
+            ToolEndpoint(
+                endpoint="https://sandbox.example/execute",
+                credential_env="TEST_SANDBOX_KEY",
+                sandbox_revision=ZERO,
+                session_id="revocation-fixture",
+                permitted_tools=["experiment"],
+            )
+        )
+        task = task.model_copy(update={"components": {**task.components, "tools": "live"}})
+
+    def qualification_check() -> None:
+        nonlocal checks
+        checks += 1
+        if phase == "before-model" and checks == 2:
+            s["trust"].revoke("controller")
+
+    signed = permit(s, task, p, env)
+    executor = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env, qualification_check)
+    result = executor.run(task, p, signed)
+    assert result["status"] == "failed-or-uncertain" and result["error_type"] == "ValueError"
+    assert "result" not in result and result["actual_charges_micro_usd"] is None
+    expected_pending = {"before-model": None, "model-poll": "model/0", "tool-poll": "tool/call-1/1"}[phase]
+    assert result.get("pending") == expected_pending
+    assert result["reserved_request_caps_micro_usd"] == {"before-model": 0, "model-poll": 17, "tool-poll": 46}[phase]
+    assert len(result["usage_events"]) == (1 if phase == "tool-poll" else 0)
+    if phase == "before-model":
+        assert not transport.requests and not polling
+    else:
+        assert polling == ["request-started", "request-closed"]
+    assert s["journal"].latest(operation_key("fixture-run"))["status"] == "failed-or-uncertain"
+    charge = s["costs"].snapshot()["charges"]["execution/fixture-run"]
+    assert charge["accrued_micro_usd"] is None and charge["signed"] == signed.model_dump()
+    assert s["journal"].verify()["valid"]
+    with pytest.raises(ValueError, match="not currently trusted"):
+        executor.run(task, p, signed)
+    assert "effect-after-revocation" not in polling

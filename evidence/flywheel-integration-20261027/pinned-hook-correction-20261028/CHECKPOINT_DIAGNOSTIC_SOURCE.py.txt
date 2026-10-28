@@ -1,0 +1,26 @@
+import hashlib,json,sqlite3,time
+from pathlib import Path
+from alpha_factory_v1.core.runtime.successor.flywheel_checkpoint import DurableCheckpoint
+from scripts.record_enterprise_flywheel import record
+out=Path('evidence/flywheel-integration-20261027/pinned-hook-correction-20261028')
+original=DurableCheckpoint.verify
+observed=[]
+def verify(self,journal,cx):
+ try: return original(self,journal,cx)
+ except Exception as exc:
+  with sqlite3.connect(self.path) as con:
+   rows=con.execute('SELECT identity,sequence,head FROM highwater').fetchall()
+  observed.append({'exception':type(exc).__name__,'custody':rows,'journal_head':cx.execute('SELECT seq,hash FROM events ORDER BY seq DESC LIMIT 1').fetchone(),'checkpoint_rows_in_journal':[(seq,cx.execute('SELECT hash FROM events WHERE seq=?',(seq,)).fetchone()) for _,seq,_ in rows]})
+  raise
+DurableCheckpoint.verify=verify
+runs=[]
+for n in range(3):
+ start=time.monotonic()
+ try:
+  result=record(); encoded=json.dumps(result,sort_keys=True).encode(); status='passed'
+  (out/f'enterprise-diagnostic-{n+1}.json').write_bytes(encoded+b'\n')
+ except Exception as exc:
+  status=type(exc).__name__
+ runs.append({'run':n+1,'result':status,'elapsed_seconds':time.monotonic()-start}); print(runs[-1],flush=True)
+(out/'CHECKPOINT_DIAGNOSTIC.json').write_text(json.dumps({'scope':'Three fresh serial enterprise conformance runs with a read-only wrapper that records custody/head rows only when original verification raises. Original journal, verification and refusal semantics unchanged. Not a live canary.','unexplained_original_failure':'replay-enterprise.txt; temporary original databases already removed by existing recorder; no root cause claimed','runs':runs,'verification_failures':observed},indent=2)+'\n')
+raise SystemExit(any(r['result']!='passed' for r in runs))

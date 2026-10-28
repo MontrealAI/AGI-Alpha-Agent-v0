@@ -79,6 +79,28 @@ runtime source or trust, mismatched receipts, incomplete usage and observed budg
 overruns withhold a qualified matched contrast. Tokens are reported usage, not a
 provider bill or an independently enforced total-token limiter.
 
+### Model I/O evidence
+
+A bound execution and its turn counter do not prove a model request. The executor
+increments the counter before checking the context cap. Each cell therefore exposes
+`model_io` separately: the declared component, a lower bound on durable request
+boundaries, recorded model-response events, processed usage records and unresolved
+request state. A persisted `pending=model/N` boundary without its response stays
+unresolved; a positive reservation without a response is also unresolved. Missing or
+inconsistent boundary data remains explicitly insufficient. The absence of a durable
+boundary means only that none was recorded, not that a provider independently confirms
+zero calls. `provider_call_count` stays unknown and `provider_provenance_verified`
+stays false in this report.
+
+`model_evidence` distinguishes no bound executions, bound executions without model-I/O
+evidence, unresolved requests, recorded scripted responses and recorded responses with
+unverified provider provenance. The `live` component is a declared transport condition;
+an observed local response does not independently authenticate its provider or establish
+frontier performance. Historical `actual-model-records-with-unqualified-attribution`
+exports remain readable as historical bound records whose I/O is unverified. Unknown
+future values render as unverified evidence, never as actual live operation. These
+labels change no acceptance, cost, denominator, commercial or operating authority.
+
 All present A/B/C charges under each original trial mission are read once.
 `additional_costs` declares disjoint B/C scopes that were not already charged to
 delivery. Duplicate scopes and overlaps with trial missions refuse. No second

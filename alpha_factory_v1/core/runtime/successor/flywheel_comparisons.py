@@ -15,6 +15,8 @@ from .flywheel_enterprise import EvidenceRef
 from .flywheel_execution import ExecutionPermit, ExecutionProfile, operation_key
 from .flywheel_learning import ACCEPTANCE_KEY, GeneralOriginAcceptance, accepted_general_origin, check_general_output
 from .protocol import digest
+from .transformation_library import _is_exact_type
+
 from .signatures import verify_ed25519
 from .trust import SignedEnvelope
 
@@ -92,6 +94,95 @@ def _execution(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, fro
     return record
 
 
+def _model_io(discovery: Any, trial: ComparisonTrial, record: dict[str, Any], cx: Any) -> dict[str, Any]:
+    """Read durable request boundaries without turning a declared mode into provider proof."""
+    result: dict[str, Any] = {
+        "status": "insufficient-executor-boundary-evidence",
+        "declared_component": trial.mission.components["model"],
+        "request_boundary_lower_bound": 0,
+        "recorded_response_count": 0,
+        "processed_usage_count": None,
+        "pending_model_request": None,
+        "unresolved_request": None,
+        "provider_call_count": None,
+        "provider_provenance_verified": False,
+    }
+    turn, reserved, usage = (
+        record.get("turn"),
+        record.get("reserved_request_caps_micro_usd"),
+        record.get("usage_events"),
+    )
+    if (
+        not isinstance(turn, int)
+        or not _is_exact_type(turn, int)
+        or not 0 <= turn <= trial.mission.max_turns
+        or not isinstance(reserved, int)
+        or not _is_exact_type(reserved, int)
+        or reserved < 0
+        or not isinstance(usage, list)
+        or not _is_exact_type(usage, list)
+        or len(usage) > turn
+    ):
+        return result
+    responses: dict[int, dict[str, Any]] = {}
+    valid = True
+    for index in range(turn):
+        label = "model/" + str(index)
+        try:
+            event = discovery.journal.latest(operation_key(trial.operation_id) + "/event/" + label, cx)
+        except KeyError:
+            continue
+        if (
+            event.get("attempt") != label
+            or event.get("components") != trial.mission.components
+            or not isinstance(event.get("value"), dict)
+        ):
+            valid = False
+            continue
+        responses[index] = event["value"]
+    for index, item in enumerate(usage):
+        body = responses.get(index)
+        if (
+            body is None
+            or not isinstance(item, dict)
+            or item.get("response_digest") != digest("flywheel-responses-response", body)
+            or item.get("usage") != body.get("usage")
+            or item.get("model") != body.get("model")
+        ):
+            valid = False
+    pending = record.get("pending")
+    unresolved = False
+    boundaries = set(responses)
+    if isinstance(pending, str) and pending.startswith("model/"):
+        suffix = pending.removeprefix("model/")
+        if not suffix.isdecimal() or suffix != str(int(suffix)) or not 0 <= int(suffix) < turn:
+            valid = False
+        else:
+            index = int(suffix)
+            boundaries.add(index)
+            unresolved = index not in responses
+        result["pending_model_request"] = pending
+    elif pending is not None and (not isinstance(pending, str) or not pending.startswith("tool/")):
+        valid = False
+    if reserved > 0 and not responses and not boundaries:
+        unresolved = True
+    result.update(
+        request_boundary_lower_bound=len(boundaries),
+        recorded_response_count=len(responses),
+        processed_usage_count=len(usage),
+        unresolved_request=unresolved if valid else None,
+        status=(
+            "insufficient-executor-boundary-evidence"
+            if not valid
+            else "request-boundary-unresolved"
+            if unresolved
+            else "response-recorded"
+            if responses
+            else "no-request-boundary-recorded"
+        ),
+    )
+    return result
+
 def _recorded_acceptance(discovery: Any, trial: ComparisonTrial, record: Any, cx: Any) -> tuple[bool, Any]:
     """Inspect signed historical terms; this flag never grants current eligibility."""
     try:
@@ -150,22 +241,21 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
         "model_component": trial.mission.components["model"],
         "mode": trial.mission.mode,
         "components": trial.mission.components,
+        "model_io": {"status": "not-attempted", "provider_call_count": None, "provider_provenance_verified": False},
     }
     try:
         record = _execution(discovery, plan, trial, frozen, cx)
     except (KeyError, ValueError, TypeError):
         cell["status"] = "binding-mismatch"
+        cell["model_io"]["status"] = "unbound-execution-record"
         return cell
     if record is None:
         return cell
     cell["execution_digest"] = record["digest"]
+    cell["model_io"] = _model_io(discovery, trial, record, cx)
     try:
-        authority = discovery.service.trust.verify(
-            SignedEnvelope.model_validate(record["permit"]), "flywheel-execution-permit", "controller"
-        )
-        if authority["journal_identity"] != discovery.journal.identity:
-            raise ValueError("supporting execution authority belongs to another journal")
-    except (KeyError, TypeError, ValueError):
+        discovery.costs.current_signature(record["permit"], "flywheel-execution-permit", "controller")
+    except (KeyError, ValueError, TypeError):
         cell["execution_authority_current"] = False
     else:
         cell["execution_authority_current"] = True
@@ -196,7 +286,7 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
     if reference is not None:
         cell["acceptance_digest"] = reference["record_digest"]
     try:
-        accepted_general_origin(discovery.service, trial.operation_id, cx)
+        accepted_general_origin(discovery.service, trial.operation_id, cx, require_current=False)
     except KeyError:
         cell["status"] = "acceptance-unassessed"
     except (ValueError, Conflict):
@@ -208,46 +298,21 @@ def _cell(discovery: Any, plan: ComparisonPlan, trial: ComparisonTrial, frozen: 
 
 def _costs(discovery: Any, mission_id: str, buckets: list[str], cx: Any) -> dict[str, Any]:
     report = discovery.costs.report(mission_id, cx)
-    ledger = discovery.costs.snapshot(cx)
-    signatures_current = True
-    supporting = [
-        (row, {"charge", "resolve"})
-        for row in ledger["charges"].values()
-        if row["mission_id"] == mission_id and row["bucket"] in buckets
-    ]
-    seals = {"A": "seals", "B": "reuse_seals", "C": "investment_seals"}
-    seal_actions = {"A": {"seal"}, "B": {"seal-reuse", "seal-retention"}, "C": {"seal-investment"}}
-    supporting.extend((ledger.get(seals[bucket], {}).get(mission_id), seal_actions[bucket]) for bucket in buckets)
-    for row, actions in supporting:
-        if row is None:
-            continue
-        try:
-            signed = SignedEnvelope.model_validate(row["signed"])
-            domain, role = (
-                ("flywheel-execution-permit", "controller")
-                if signed.domain == "flywheel-execution-permit"
-                and "activity_id" in row
-                and row["accrued_micro_usd"] is None
-                else ("flywheel-cost-command", "accounting")
-            )
-            payload = discovery.costs.trust.verify(signed, domain, role)
-            if payload["journal_identity"] != discovery.journal.identity:
-                raise ValueError("supporting accounting authority belongs to another journal")
-            if domain == "flywheel-cost-command" and (
-                payload.get("action") not in actions or payload["record"]["mission_id"] != mission_id
-            ):
-                raise ValueError("supporting accounting authority has different terms")
-        except (KeyError, TypeError, ValueError):
-            signatures_current = False
+    current = True
+    try:
+        discovery.costs.require_current_evidence(mission_id, buckets, cx)
+    except (KeyError, ValueError, TypeError):
+        current = False
     historical_complete = all(report["bucket_complete"][bucket] for bucket in buckets)
     return {
         "mission_id": mission_id,
         "buckets": buckets,
         "known_micro_usd": {bucket: str(report["costs"][bucket]) for bucket in buckets},
-        "complete": historical_complete and signatures_current,
+        "complete": historical_complete and current,
+        "current_evidence_valid": current,
         "historical_complete": historical_complete,
         "historical_bucket_complete": report["bucket_complete"],
-        "supporting_signatures_current": signatures_current,
+        "supporting_signatures_current": current,
         "basis": report["evidence_basis"],
     }
 
@@ -285,6 +350,7 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                     row["bucket"] for row in ledger["charges"].values() if row["mission_id"] == trial.mission.mission_id
                 }
                 row = _costs(discovery, trial.mission.mission_id, sorted(present | {"A"}), cx)
+                current = current and row["current_evidence_valid"]
                 row.update(role=trial.role, case_id=case.case_id, allocation="existing-delivery-costs")
                 cost_rows.append(row)
                 cap = next(arm.resource_budget.cost_cap_micro_usd for arm in plan.arms if arm.role == trial.role)
@@ -306,6 +372,7 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 )
         for scope in plan.additional_costs:
             row = _costs(discovery, scope.mission_id, [scope.bucket], cx)
+            current = current and row["current_evidence_valid"]
             row.update(role=scope.role, case_id=None, allocation="additional-not-already-charged")
             cost_rows.append(row)
         current = (
@@ -364,6 +431,12 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
                 ),
                 "cost_basis": "existing signed ledger attestations; not inferred from token usage",
             }
+        executed = [cell for cell in cells if cell["execution_digest"] is not None]
+        observed = [cell for cell in executed if cell["model_io"].get("recorded_response_count", 0) > 0]
+        unresolved = any(
+            cell["model_io"]["status"] in {"request-boundary-unresolved", "insufficient-executor-boundary-evidence"}
+            for cell in executed
+        )
         result = {
             "schema_name": "flywheel-operational-alpha-result/v1",
             "comparison_id": plan.comparison_id,
@@ -384,13 +457,15 @@ def comparison_report(discovery: Any, identity: str) -> dict[str, Any]:
             "cells": cells,
             "cost_allocations": cost_rows,
             "model_evidence": (
-                "simulated-model-protocol-fixture"
-                if any(
-                    cell["execution_digest"] is not None and cell["model_component"] == "simulated" for cell in cells
-                )
-                else "actual-model-records-with-unqualified-attribution"
-                if any(cell["execution_digest"] is not None for cell in cells)
-                else "no-executions"
+                "no-executions"
+                if not executed
+                else "model-request-evidence-unresolved"
+                if unresolved
+                else "bound-executions-without-model-io-evidence"
+                if not observed
+                else "simulated-model-protocol-fixture"
+                if all(cell["model_component"] == "simulated" for cell in observed)
+                else "recorded-model-responses-provider-unverified"
             ),
             "scope": plan.purpose.scope,
             "authority_granted": False,

@@ -509,13 +509,21 @@ class MissionExecutor:
         self.transport, self.environment = transport, environment
         self.qualification_check = qualification_check
 
-    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+    def run(
+        self,
+        mission: ExecutionMission,
+        profile: ExecutionProfile,
+        signed: SignedEnvelope,
+        *,
+        support_check: Callable[[], None] | None = None,
+    ) -> dict[str, Any]:
         mission = ExecutionMission.model_validate_json(canonical(mission))
         profile = ExecutionProfile.model_validate_json(canonical(profile))
         signed = SignedEnvelope.model_validate_json(canonical(signed))
         authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
         if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
             raise ValueError("execution permit must bind this exact journal")
+        authority_commitment = digest("flywheel-execution-current-authority", authority)
         permit = ExecutionPermit.model_validate(authority["permit"])
         config = self.journal.config.model_copy(deep=True)
         if (
@@ -579,7 +587,14 @@ class MissionExecutor:
 
         def active() -> bool:
             self.qualification_check()
-            self.trust.verify(signed, "flywheel-execution-permit", "controller")
+            if support_check is not None:
+                support_check()
+            current_authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+            if (
+                current_authority.get("journal_identity") != self.journal.identity
+                or digest("flywheel-execution-current-authority", current_authority) != authority_commitment
+            ):
+                raise Conflict("execution authority changed during the mission")
             if (
                 digest("flywheel-execution-environment-contract", self.environment.identity)
                 != permit.environment_digest

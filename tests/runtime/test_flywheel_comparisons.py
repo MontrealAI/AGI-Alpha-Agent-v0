@@ -164,11 +164,14 @@ def run_trial(
     *,
     fail: bool = False,
     accept: bool = True,
-    execution_principal: str = "controller",
+    controller: str = "controller",
+    transport: Any = None,
+    execution_principal: str | None = None,
 ) -> dict[str, Any]:
+    principal = controller if execution_principal is None else execution_principal
     environment = SystemsTool()
     instance = PlacementProblem.model_validate(trial.mission.inputs["problem"])
-    transport = ScriptedModel(instance)
+    transport = ScriptedModel(instance) if transport is None else transport
     if fail:
 
         def refuse(name: str, arguments: dict[str, Any], active: Any) -> dict[str, Any]:
@@ -188,8 +191,8 @@ def run_trial(
         bucket="A",
     )
     signed = sign_record(
-        state["keys"][execution_principal],
-        execution_principal,
+        state["keys"][principal],
+        principal,
         "flywheel-execution-permit",
         {"journal_identity": state["journal"].identity, "permit": terms.model_dump()},
     )
@@ -781,3 +784,308 @@ def test_historical_acceptance_requires_exact_bound_receipt_and_configured_signa
     }
     assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
     assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+
+
+def add_signer(state: dict[str, Any], principal: str, role: str) -> None:
+    key = f.Ed25519PrivateKey.generate()
+    state["keys"][principal] = key
+    state["trust"]._anchors[principal] = TrustAnchor(
+        key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+    )
+
+
+def account_as(state: dict[str, Any], action: str, record: Any, operation: str, principal: str) -> None:
+    state["costs"].apply(
+        sign_record(
+            state["keys"][principal],
+            principal,
+            "flywheel-cost-command",
+            {
+                "journal_identity": state["journal"].identity,
+                "operation_id": operation,
+                "action": action,
+                "record": record,
+            },
+        )
+    )
+
+
+def test_revoked_distinct_execution_controller_keeps_observations_without_current_contrasts(
+    setup: dict[str, Any],
+) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    add_signer(setup, "delivery-controller", "controller")
+    for trial in spec.cases[0].trials:
+        run_trial(setup, trial, controller="delivery-controller")
+    before = report(setup, spec)
+    assert before["current_evidence_valid"]
+    assert before["contrasts"]["operational"]["cost_saving_micro_usd"] == "0"
+    setup["trust"].revoke("delivery-controller")
+    after = report(setup, spec)
+    assert not after["current_evidence_valid"]
+    assert after["planned_cases"] == before["planned_cases"] == 1 and len(after["cells"]) == 3
+    assert all(arm["accepted"] == 0 and arm["historical_acceptance_recorded"] == arm["planned"] == 1
+               for arm in after["arms"].values())
+    assert [cell["execution_digest"] for cell in after["cells"]] == [
+        cell["execution_digest"] for cell in before["cells"]
+    ]
+    assert not any(cell["execution_authority_current"] for cell in after["cells"])
+    assert not any(row["complete_matched_outcomes"] for row in after["contrasts"].values())
+    assert all(row["cost_saving_micro_usd"] is None for row in after["contrasts"].values())
+
+
+@pytest.mark.parametrize("support", ["charge", "original-charge", "seal-A", "seal-B", "seal-C"])
+def test_revoked_supporting_accountant_invalidates_only_current_qualification(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+) -> None:
+    add_signer(setup, "retired-accountant", "accounting")
+    bucket = "C" if support == "seal-C" else "B"
+    spec = plan(setup, 1).model_copy(
+        update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra-assessment", bucket=bucket)]}
+    )
+    spec = freeze(setup, spec)
+    ordinary_account = f.account
+
+    def record_cost(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+        custom_seal = (
+            support == "seal-A"
+            and action == "seal"
+            and record["mission_id"] == spec.cases[0].trials[0].mission.mission_id
+        )
+        custom_seal = custom_seal or support == "seal-" + bucket and action in {"seal-retention", "seal-investment"}
+        if custom_seal:
+            account_as(state, action, record, operation, "retired-accountant")
+        else:
+            ordinary_account(state, action, record, operation)
+
+    monkeypatch.setattr(f, "account", record_cost)
+    for trial in spec.cases[0].trials:
+        run_trial(setup, trial)
+    extra = {
+        "activity_id": "extra-screen",
+        "mission_id": "extra-assessment",
+        "bucket": bucket,
+        "category": "human",
+        "accrued_micro_usd": None if support == "original-charge" else 77,
+        "paid_micro_usd": 0,
+        "basis": "unknown" if support == "original-charge" else "attested",
+        "evidence_digest": f.ZERO,
+        "note": "Fictional separately signed additional assessment; no actual provider bill",
+    }
+    account_as(
+        setup,
+        "charge",
+        extra,
+        "additional-screen",
+        "retired-accountant" if support in {"charge", "original-charge"} else "accountant",
+    )
+    s.seal(setup, "extra-assessment", bucket)
+    before = report(setup, spec)
+    assert before["current_evidence_valid"] and all(
+        row["complete_matched_outcomes"] for row in before["contrasts"].values()
+    )
+    snapshot = setup["costs"].snapshot()
+    setup["trust"].revoke("retired-accountant")
+    after = report(setup, spec)
+    assert not after["current_evidence_valid"]
+    assert len(after["cells"]) == 3
+    if support == "seal-A":
+        # The frozen delivery facts survive; the owner's current monetary-cap
+        # metadata must expose the revoked completeness signer separately.
+        stable = {
+            "status", "accepted", "outcome_known", "execution_digest", "acceptance_digest",
+            "historical_acceptance_recorded", "historical_acceptance_evidence", "model_io",
+        }
+        assert {name: after["cells"][0][name] for name in stable} == {
+            name: before["cells"][0][name] for name in stable
+        }
+        assert not after["cells"][0]["delivery_cost_complete"]
+        assert after["cells"][0]["delivery_cost_status"] == "incomplete"
+        assert not after["cells"][0]["within_observed_limits"]
+        assert after["cells"][1:] == before["cells"][1:]
+    else:
+        assert after["cells"] == before["cells"]
+    assert all(arm["accepted"] == arm["planned"] == 1 for arm in after["arms"].values())
+    assert not any(row["complete_matched_outcomes"] for row in after["contrasts"].values())
+    assert all(row["cost_saving_micro_usd"] is None for row in after["contrasts"].values())
+    assert setup["costs"].snapshot() == snapshot
+
+
+@pytest.mark.parametrize("attempted", [False, True])
+def test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence(
+    setup: dict[str, Any], attempted: bool
+) -> None:
+    spec = plan(setup, 1)
+    for trial in spec.cases[0].trials:
+        trial.mission.components["model"] = "live"
+    spec = freeze(setup, ComparisonPlan.model_validate(spec.model_dump()))
+    if attempted:
+        with setup["journal"].transaction() as cx:
+            setup["service"]._state(cx)
+            for trial in spec.cases[0].trials:
+                setup["journal"].append(cx, operation_key(trial.operation_id), {"profile": {}})
+            setup["service"].checkpoint.advance(setup["journal"], cx)
+    value = report(setup, spec)
+    assert value["model_evidence"] == "no-executions"
+    assert value["planned_cases"] == 1 and len(value["cells"]) == 3
+    assert all(cell["execution_digest"] is None for cell in value["cells"])
+    assert all(arm["execution_records"] == arm["accepted"] == 0 for arm in value["arms"].values())
+    assert all(arm["unassessed"] == arm["planned"] == 1 for arm in value["arms"].values())
+
+
+@pytest.mark.parametrize("attack", ["signature", "journal", "role"])
+def test_execution_signature_substitution_never_qualifies_current_contrasts(setup: dict[str, Any], attack: str) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    for trial in spec.cases[0].trials:
+        run_trial(setup, trial)
+
+    def change(value: dict[str, Any]) -> None:
+        if attack == "signature":
+            value["permit"]["signature"] = "AA=="
+            return
+        payload = copy.deepcopy(value["permit"]["payload"])
+        principal = "controller" if attack == "journal" else "accountant"
+        if attack == "journal":
+            payload["journal_identity"] = "urn:agialpha:ed25519:" + "a" * 64
+        value["permit"] = sign_record(
+            setup["keys"][principal], principal, "flywheel-execution-permit", payload
+        ).model_dump()
+
+    rewrite(setup, operation_key(spec.cases[0].trials[0].operation_id), change)
+    value = report(setup, spec)
+    assert not value["current_evidence_valid"]
+    assert len(value["cells"]) == 3 and value["cells"][0]["execution_digest"] is not None
+    assert not value["cells"][0]["execution_authority_current"]
+    assert not value["contrasts"]["operational"]["complete_matched_outcomes"]
+    assert value["contrasts"]["operational"]["cost_saving_micro_usd"] is None
+
+
+def configured_model_state(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
+    from alpha_factory_v1.core.runtime.models import RuntimeConfig
+
+    initialize = f.Journal.initialize
+
+    def configured_initialize(root: Any, **kwargs: Any) -> Any:
+        return initialize(root, RuntimeConfig(llm_url="http://127.0.0.1:9", llm_model=profile().model_id), **kwargs)
+
+    with monkeypatch.context() as local:
+        local.setattr(f.Journal, "initialize", staticmethod(configured_initialize))
+        return f.setup.__wrapped__(tmp_path)
+
+
+def declared_live_plan(state: dict[str, Any], context_cap: int = 750_000) -> tuple[ComparisonPlan, ExecutionProfile]:
+    selected = profile().model_copy(update={"model_request_cap_micro_usd": 1, "max_context_bytes": context_cap})
+    spec = plan(state, 1)
+    spec = spec.model_copy(
+        update={
+            "arms": [
+                arm.model_copy(update={"model_profile_digest": digest("flywheel-execution-profile", selected)})
+                for arm in spec.arms
+            ]
+        }
+    )
+    for trial in spec.cases[0].trials:
+        trial.mission.components["model"] = "live"
+    return freeze(state, ComparisonPlan.model_validate(spec.model_dump())), selected
+
+
+def run_declared_model_double(
+    state: dict[str, Any], spec: ComparisonPlan, selected: ExecutionProfile, transport: Any
+) -> Any:
+    trial, environment = spec.cases[0].trials[0], SystemsTool()
+    terms = ExecutionPermit(
+        operation_id=trial.operation_id,
+        request_digest=digest("flywheel-execution-request", trial.mission),
+        profile_digest=digest("flywheel-execution-profile", selected),
+        environment_digest=digest("flywheel-execution-environment-contract", environment.identity),
+        config_digest=runtime_digest(state["journal"].config.model_dump()),
+        quota_evidence_digest=f.ZERO,
+        pricing_evidence_digest=f.ZERO,
+        max_authorized_micro_usd=1000,
+        expires_at=int(time.time()) + 3600,
+        bucket="A",
+    )
+    signed = sign_record(
+        state["keys"]["controller"],
+        "controller",
+        "flywheel-execution-permit",
+        {"journal_identity": state["journal"].identity, "permit": terms.model_dump()},
+    )
+    return MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+        trial.mission, selected, signed
+    )
+
+
+@pytest.mark.parametrize("stop_before_request", [True, False])
+def test_bound_execution_never_promotes_zero_or_uncertain_model_io(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, stop_before_request: bool
+) -> None:
+    state = configured_model_state(tmp_path, monkeypatch)
+    spec, selected = declared_live_plan(state, 1024 if stop_before_request else 750_000)
+    snapshots = []
+
+    class NoProviderDouble:
+        component = "live"
+        calls = 0
+
+        def respond(self, *args: Any) -> Any:
+            self.calls += 1
+            snapshots.append(report(state, spec))
+            raise TimeoutError("Offline uncertain-request fixture; no actual provider")
+
+    transport = NoProviderDouble()
+    result = run_declared_model_double(state, spec, selected, transport)
+    value = report(state, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.calls == (0 if stop_before_request else 1)
+    assert result["turn"] == 1 and result["status"] == "failed-or-uncertain"
+    assert result["usage_events"] == [] and result["actions"] == 0
+    assert io["recorded_response_count"] == 0 and io["provider_call_count"] is None
+    assert not io["provider_provenance_verified"] and value["cells"][0]["execution_digest"] is not None
+    assert len(value["cells"]) == 3 and value["arms"]["U"]["planned"] == 1
+    if stop_before_request:
+        assert result["reserved_request_caps_micro_usd"] == 0 and snapshots == []
+        assert io["status"] == "no-request-boundary-recorded"
+        assert value["model_evidence"] == "bound-executions-without-model-io-evidence"
+    else:
+        assert result["reserved_request_caps_micro_usd"] == 1
+        assert io["status"] == "request-boundary-unresolved" and io["unresolved_request"] is True
+        assert io["request_boundary_lower_bound"] == 1
+        assert snapshots[0]["cells"][0]["model_io"]["status"] == "request-boundary-unresolved"
+        assert value["model_evidence"] == "model-request-evidence-unresolved"
+        rewrite(state, operation_key(spec.cases[0].trials[0].operation_id), lambda row: row.update(pending=None))
+        missing = report(state, spec)["cells"][0]["model_io"]
+        assert missing["unresolved_request"] is True and missing["provider_call_count"] is None
+
+
+def test_recorded_scripted_responses_preserve_call_counts_without_provider_promotion(setup: dict[str, Any]) -> None:
+    spec = freeze(setup, plan(setup, 1))
+    trial = spec.cases[0].trials[0]
+    transport = ScriptedModel(PlacementProblem.model_validate(trial.mission.inputs["problem"]))
+    run_trial(setup, trial, transport=transport)
+    value = report(setup, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.turn == io["recorded_response_count"] == io["processed_usage_count"] == 2
+    assert io["request_boundary_lower_bound"] == 2 and io["status"] == "response-recorded"
+    assert value["model_evidence"] == "simulated-model-protocol-fixture"
+    assert io["provider_call_count"] is None and not io["provider_provenance_verified"]
+    rewrite(setup, operation_key(trial.operation_id), lambda row: row.update(usage_events=[]))
+    assert report(setup, spec)["cells"][0]["model_io"]["recorded_response_count"] == 2
+
+
+def test_declared_live_double_responses_remain_provider_unverified(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = configured_model_state(tmp_path, monkeypatch)
+    spec, selected = declared_live_plan(state)
+
+    class DeclaredLiveFixture(ScriptedModel):
+        component = "live"
+
+    transport = DeclaredLiveFixture(PlacementProblem.model_validate(spec.cases[0].trials[0].mission.inputs["problem"]))
+    run_declared_model_double(state, spec, selected, transport)
+    value = report(state, spec)
+    io = value["cells"][0]["model_io"]
+    assert transport.turn == io["recorded_response_count"] == 2
+    assert io["declared_component"] == "live" and not io["provider_provenance_verified"]
+    assert value["model_evidence"] == "recorded-model-responses-provider-unverified"

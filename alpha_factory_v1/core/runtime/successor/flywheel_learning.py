@@ -8,7 +8,7 @@ from typing import Any
 from .protocol import Digest, Identifier, StrictModel
 
 from ..store import Conflict
-from .flywheel_execution import operation_key
+from .flywheel_execution import ExecutionPermit, operation_key
 from .flywheel_experiments import PlacementProblem, verify_placement
 from .protocol import digest
 
@@ -59,6 +59,21 @@ def check_general_output(service: Any, operation: str, cx: Any) -> tuple[dict[st
     return record, problem
 
 
+def _current_support(service: Any, operation: str, record: dict[str, Any], cx: Any) -> None:
+    payload = service.costs.current_signature(record["permit"], "flywheel-execution-permit", "controller")
+    permit = ExecutionPermit.model_validate(payload["permit"])
+    if (
+        set(payload) != {"journal_identity", "permit"}
+        or permit.operation_id != operation
+        or permit.request_digest != digest("flywheel-execution-request", record["mission"])
+        or permit.profile_digest != digest("flywheel-execution-profile", record["profile"])
+    ):
+        raise ValueError("accepted delivery differs from its currently authorized execution permit")
+    service.costs.require_current_evidence(record["mission"]["mission_id"], ["A"], cx)
+    if not service.costs.report(record["mission"]["mission_id"], cx)["bucket_complete"]["A"]:
+        raise ValueError("accepted delivery A costs must remain complete before a new protected use")
+
+
 def accept_general_origin(service: Any, signed: Any) -> dict[str, Any]:
     from .trust import SignedEnvelope
 
@@ -68,6 +83,7 @@ def accept_general_origin(service: Any, signed: Any) -> dict[str, Any]:
     with service.journal.transaction() as cx:
         service._state(cx)
         record, _ = check_general_output(service, terms["operation_id"], cx)
+        _current_support(service, terms["operation_id"], record, cx)
         if (
             record["digest"] != terms["execution_record_digest"]
             or digest("general-delivered-output", record["result"]) != terms["output_digest"]
@@ -89,7 +105,9 @@ def accept_general_origin(service: Any, signed: Any) -> dict[str, Any]:
         return value
 
 
-def accepted_general_origin(service: Any, operation: str, cx: Any) -> tuple[dict[str, Any], PlacementProblem]:
+def accepted_general_origin(
+    service: Any, operation: str, cx: Any, *, require_current: bool = True
+) -> tuple[dict[str, Any], PlacementProblem]:
     record, problem = check_general_output(service, operation, cx)
     accepted = service.journal.latest(ACCEPTANCE_KEY + operation, cx)
     from .trust import SignedEnvelope
@@ -99,4 +117,6 @@ def accepted_general_origin(service: Any, operation: str, cx: Any) -> tuple[dict
     terms = service._signed(signed, "general-acceptance", "acceptance")["record"]
     if accepted["record_digest"] != record["digest"] or terms["execution_record_digest"] != record["digest"]:
         raise ValueError("accepted general execution changed since independent acceptance")
+    if require_current:
+        _current_support(service, operation, record, cx)
     return record, problem

@@ -1,0 +1,37 @@
+______ test_identity_guard_precedes_agent_invocation_without_weakening_it ______
+2026-10-28T01:48:42.0266341Z 
+2026-10-28T01:48:42.0266603Z     def test_identity_guard_precedes_agent_invocation_without_weakening_it() -> None:
+2026-10-28T01:48:42.0267042Z >       assert_scoped_invocation(
+2026-10-28T01:48:42.0267320Z             "agent-release.yml",
+2026-10-28T01:48:42.0267598Z             "regression",
+2026-10-28T01:48:42.0267897Z             "Offline regression including notebooks (four held native tests excluded)",
+2026-10-28T01:48:42.0268167Z             "evidence",
+2026-10-28T01:48:42.0268331Z             90,
+2026-10-28T01:48:42.0268477Z         )
+2026-10-28T01:48:42.0268559Z 
+2026-10-28T01:48:42.0268683Z tests/test_held_native_source_guard.py:103: 
+2026-10-28T01:48:42.0268980Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+2026-10-28T01:48:42.0269133Z 
+2026-10-28T01:48:42.0269280Z filename = 'agent-release.yml', job_name = 'regression'
+2026-10-28T01:48:42.0269639Z scope_name = 'Offline regression including notebooks (four held native tests excluded)'
+2026-10-28T01:48:42.0270128Z folder = 'evidence', budget = 90
+2026-10-28T01:48:42.0270254Z 
+2026-10-28T01:48:42.0270345Z     def assert_scoped_invocation(
+2026-10-28T01:48:42.0270637Z         filename: str, job_name: str, scope_name: str, folder: str, budget: int
+2026-10-28T01:48:42.0271002Z     ) -> None:
+2026-10-28T01:48:42.0271263Z         workflow = yaml.safe_load((ROOT / ".github/workflows" / filename).read_text())
+2026-10-28T01:48:42.0271554Z         job = workflow["jobs"][job_name]
+2026-10-28T01:48:42.0271795Z >       assert job["timeout-minutes"] == budget
+2026-10-28T01:48:42.0272004Z E       assert 120 == 90
+2026-10-28T01:48:42.0272111Z 
+2026-10-28T01:48:42.0272269Z tests/test_held_native_source_guard.py:83: AssertionError
+2026-10-28T01:48:42.0272577Z =============================== warnings summary ===============================
+2026-10-28T01:48:42.0272838Z tests/test_paper_checkout_bytes.py:16
+2026-10-28T01:48:42.0273650Z   /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/tests/test_paper_checkout_bytes.py:16: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+2026-10-28T01:48:42.0274394Z     pytestmark = pytest.mark.smoke
+2026-10-28T01:48:42.0274511Z 
+2026-10-28T01:48:42.0274700Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+2026-10-28T01:48:42.0275255Z =========================== short test summary info ============================
+2026-10-28T01:48:42.0275810Z FAILED tests/test_held_native_source_guard.py::test_identity_guard_precedes_agent_invocation_without_weakening_it - assert 120 == 90
+2026-10-28T01:48:42.0276260Z 1 failed, 82 passed, 4 deselected, 1 warning in 5.80s
+2026-10-28T01:48:42.0605679Z

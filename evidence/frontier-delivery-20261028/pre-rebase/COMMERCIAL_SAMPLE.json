@@ -1,0 +1,524 @@
+{
+  "actual_complete_cost_usd": null,
+  "actual_customer_collections_usd": 0,
+  "actual_profit_usd": null,
+  "author": "Vincent Boucher \u2014 President of MONTREAL.AI",
+  "finite_check_passed": true,
+  "input": {
+    "cost_cap_micro_usd": 200000000,
+    "limitations": "Authored monotone predicates over synthetic facility/data examples; real capacity, rights, wait times and policy interpretation unverified",
+    "mission_id": "research-access-origin",
+    "mode": "synthetic",
+    "obligations": [
+      "preserve-original-acceptance",
+      "keep-protected-data-local",
+      "verify-method-scope"
+    ],
+    "required_outputs": [
+      "reviewable-outcome"
+    ],
+    "schema_name": "flywheel-conditional-access/v1",
+    "schema_version": 1,
+    "search_node_cap": 20000,
+    "seconds_cap": 6000,
+    "starting_facts": [
+      "eligible-team",
+      "sample-ready"
+    ],
+    "steps": [
+      {
+        "duration_seconds": 600,
+        "estimated_cost_micro_usd": 0,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "institution-approved"
+        ],
+        "purpose": "institution clearance",
+        "requires": [
+          "eligible-team"
+        ],
+        "schema_version": 1,
+        "step_id": "institution-clearance"
+      },
+      {
+        "duration_seconds": 300,
+        "estimated_cost_micro_usd": 5000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "resource-allocated"
+        ],
+        "purpose": "access award",
+        "requires": [
+          "eligible-team"
+        ],
+        "schema_version": 1,
+        "step_id": "access-award"
+      },
+      {
+        "duration_seconds": 300,
+        "estimated_cost_micro_usd": 10000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "method-in-scope"
+        ],
+        "purpose": "scope check",
+        "requires": [
+          "resource-allocated"
+        ],
+        "schema_version": 1,
+        "step_id": "scope-check"
+      },
+      {
+        "duration_seconds": 900,
+        "estimated_cost_micro_usd": 25000000,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "safe-input-ready"
+        ],
+        "purpose": "local adapter",
+        "requires": [
+          "sample-ready",
+          "institution-approved"
+        ],
+        "schema_version": 1,
+        "step_id": "local-adapter"
+      },
+      {
+        "duration_seconds": 900,
+        "estimated_cost_micro_usd": 40000000,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "reviewable-outcome"
+        ],
+        "purpose": "bounded run",
+        "requires": [
+          "method-in-scope",
+          "safe-input-ready"
+        ],
+        "schema_version": 1,
+        "step_id": "bounded-run"
+      },
+      {
+        "duration_seconds": 60,
+        "estimated_cost_micro_usd": 1000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance"
+        ],
+        "produces": [
+          "reviewable-outcome"
+        ],
+        "purpose": "external raw transfer",
+        "requires": [
+          "sample-ready"
+        ],
+        "schema_version": 1,
+        "step_id": "external-raw-transfer"
+      },
+      {
+        "duration_seconds": 1800,
+        "estimated_cost_micro_usd": 900000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "reviewable-outcome"
+        ],
+        "purpose": "ordinary full service",
+        "requires": [
+          "sample-ready"
+        ],
+        "schema_version": 1,
+        "step_id": "ordinary-full-service"
+      }
+    ],
+    "useful_purpose": "Produce a checkable access-plan feasibility packet while preserving original scientific and data obligations"
+  },
+  "instrument": {
+    "authorization": "Read-only local planning; no facility, model API, identity, spending or production authority created",
+    "call": "construct_access(AccessProblem.model_validate(input)); check_access(problem,result)",
+    "domain": "At most12 declared monotone steps; all input facts, rights and permission declarations need external confirmation. No interpretation of institutional policy.",
+    "failure_conditions": [
+      "invalid contract refuses",
+      "no-plan when no declared route exists",
+      "incomplete on node exhaustion; no completeness claim",
+      "pending permissions remain pending"
+    ],
+    "input_contract": {
+      "$defs": {
+        "AccessStep": {
+          "additionalProperties": false,
+          "properties": {
+            "duration_seconds": {
+              "maximum": 43200,
+              "minimum": 1,
+              "title": "Duration Seconds",
+              "type": "integer"
+            },
+            "estimated_cost_micro_usd": {
+              "maximum": 1000000000000,
+              "minimum": 0,
+              "title": "Estimated Cost Micro Usd",
+              "type": "integer"
+            },
+            "permission": {
+              "enum": [
+                "documented",
+                "required",
+                "denied"
+              ],
+              "title": "Permission",
+              "type": "string"
+            },
+            "permission_basis": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Permission Basis",
+              "type": "string"
+            },
+            "preserves": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 16,
+              "minItems": 1,
+              "title": "Preserves",
+              "type": "array"
+            },
+            "produces": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 16,
+              "minItems": 1,
+              "title": "Produces",
+              "type": "array"
+            },
+            "purpose": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Purpose",
+              "type": "string"
+            },
+            "requires": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 16,
+              "title": "Requires",
+              "type": "array"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "step_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Step Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "step_id",
+            "purpose",
+            "requires",
+            "produces",
+            "preserves",
+            "permission",
+            "permission_basis",
+            "estimated_cost_micro_usd",
+            "duration_seconds"
+          ],
+          "title": "AccessStep",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "cost_cap_micro_usd": {
+          "maximum": 1000000000000,
+          "minimum": 0,
+          "title": "Cost Cap Micro Usd",
+          "type": "integer"
+        },
+        "limitations": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Limitations",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "live",
+            "recorded",
+            "synthetic",
+            "calibrated"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "obligations": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Obligations",
+          "type": "array"
+        },
+        "required_outputs": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Required Outputs",
+          "type": "array"
+        },
+        "schema_name": {
+          "const": "flywheel-conditional-access/v1",
+          "default": "flywheel-conditional-access/v1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "search_node_cap": {
+          "default": 20000,
+          "maximum": 50000,
+          "minimum": 1,
+          "title": "Search Node Cap",
+          "type": "integer"
+        },
+        "seconds_cap": {
+          "maximum": 43200,
+          "minimum": 1,
+          "title": "Seconds Cap",
+          "type": "integer"
+        },
+        "starting_facts": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Starting Facts",
+          "type": "array"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/AccessStep"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "useful_purpose": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Useful Purpose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mission_id",
+        "useful_purpose",
+        "starting_facts",
+        "required_outputs",
+        "obligations",
+        "steps",
+        "cost_cap_micro_usd",
+        "seconds_cap",
+        "mode",
+        "limitations"
+      ],
+      "title": "AccessProblem",
+      "type": "object"
+    },
+    "module": "alpha_factory_v1/core/runtime/successor/flywheel_access_path.py",
+    "sha256": "d2698821596b6f3cc7a5f428a16b41dbdfc246bbe5b9ebad931ee3ca5e165d7d"
+  },
+  "output": {
+    "actual_experiment_performed": false,
+    "authority_granted": false,
+    "customer_acceptance": false,
+    "duration_seconds": 3000,
+    "estimated_cost_micro_usd": 80000000,
+    "mission_id": "research-access-origin",
+    "mode": "synthetic",
+    "pending_permissions": [
+      "institution-clearance",
+      "local-adapter",
+      "bounded-run"
+    ],
+    "preserved_obligations": [
+      "preserve-original-acceptance",
+      "keep-protected-data-local",
+      "verify-method-scope"
+    ],
+    "problem_digest": "ca92e49fc2256bab8b7d3d42fc82db2fed423bd61f256b0a928da8424b98148f",
+    "ranking_policy": "fewest pending permissions, then estimated cost, duration and step identities",
+    "schema": "flywheel-conditional-access-result/v1",
+    "scope": "finite declared monotone predicates; declaration correctness and external approval unverified",
+    "status": "conditional-plan",
+    "steps": [
+      {
+        "duration_seconds": 300,
+        "estimated_cost_micro_usd": 5000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "resource-allocated"
+        ],
+        "purpose": "access award",
+        "requires": [
+          "eligible-team"
+        ],
+        "schema_version": 1,
+        "step_id": "access-award"
+      },
+      {
+        "duration_seconds": 600,
+        "estimated_cost_micro_usd": 0,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "institution-approved"
+        ],
+        "purpose": "institution clearance",
+        "requires": [
+          "eligible-team"
+        ],
+        "schema_version": 1,
+        "step_id": "institution-clearance"
+      },
+      {
+        "duration_seconds": 900,
+        "estimated_cost_micro_usd": 25000000,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "safe-input-ready"
+        ],
+        "purpose": "local adapter",
+        "requires": [
+          "sample-ready",
+          "institution-approved"
+        ],
+        "schema_version": 1,
+        "step_id": "local-adapter"
+      },
+      {
+        "duration_seconds": 300,
+        "estimated_cost_micro_usd": 10000000,
+        "permission": "documented",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "method-in-scope"
+        ],
+        "purpose": "scope check",
+        "requires": [
+          "resource-allocated"
+        ],
+        "schema_version": 1,
+        "step_id": "scope-check"
+      },
+      {
+        "duration_seconds": 900,
+        "estimated_cost_micro_usd": 40000000,
+        "permission": "required",
+        "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+        "preserves": [
+          "preserve-original-acceptance",
+          "keep-protected-data-local",
+          "verify-method-scope"
+        ],
+        "produces": [
+          "reviewable-outcome"
+        ],
+        "purpose": "bounded run",
+        "requires": [
+          "method-in-scope",
+          "safe-input-ready"
+        ],
+        "schema_version": 1,
+        "step_id": "bounded-run"
+      }
+    ],
+    "visited_nodes": 25
+  },
+  "schema": "agi-alpha.access-plan-commercial-sample.v1",
+  "status": "synthetic delivery sample; no buyer acceptance or transaction"
+}

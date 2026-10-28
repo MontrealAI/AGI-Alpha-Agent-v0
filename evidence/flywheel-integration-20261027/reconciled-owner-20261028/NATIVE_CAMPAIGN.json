@@ -1,0 +1,48 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/runtime",
+    "--confcutdir=tests/runtime",
+    "--ignore=tests/runtime/test_budget_browser.py",
+    "--ignore=tests/runtime/test_ecosystem_browser.py",
+    "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    "-q",
+    "-o",
+    "addopts=",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "--junitxml=evidence/flywheel-integration-20261027/reconciled-owner-20261028/runtime.xml"
+  ],
+  "exitcode": 0,
+  "junit_suite": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "1589",
+    "time": "486.589",
+    "timestamp": "2026-10-27T21:05:14.949008-04:00",
+    "hostname": "c88d71100384"
+  },
+  "passed": 1588,
+  "skips": [
+    {
+      "case": {
+        "classname": "tests.runtime.test_successor_computer",
+        "name": "test_real_container_keyboard_screenshot_and_cleanup",
+        "time": "0.000"
+      },
+      "reason": {
+        "type": "pytest.skip",
+        "message": "real Docker image must be explicitly provided"
+      }
+    }
+  ],
+  "scope": "Full selected native campaign on frozen75runtime files. Collection precedes pure test-name collision repair; final discovery file separately passes81 and both12-case receipt tests remain. Runtime bytes unchanged.",
+  "stdout": "runtime.txt ends at progress capture; JUnit and process exit establish result. No stalled-test cause claimed.",
+  "stop_attempt": "A later exact-pattern SIGINT found no matching process (exit1) after completion; this campaign was not cancelled.",
+  "new_named_test": "MERGE_TEST_COLLISION.json and discovery-after-unique-name.txt",
+  "final_hosted_source_qualification": false
+}

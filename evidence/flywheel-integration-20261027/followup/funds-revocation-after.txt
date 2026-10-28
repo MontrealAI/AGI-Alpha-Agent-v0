@@ -1,0 +1,754 @@
+.................FFFF....................................                [100%]
+=================================== FAILURES ===================================
+_ test_new_general_earning_rechecks_supporting_authority_without_erasing_history[controller] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b0fb60>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7b94a10>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f82134db560>
+support = 'controller'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+        with pytest.raises(ValueError, match="revoked"):
+>           apply(setup, "customer-earn", {**earning, "event_id": "second-half-after-revocation"})
+
+tests/runtime/test_flywheel_customer.py:263: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_customer.py:68: in apply
+    f.account(state, action, record, operation or str(record.get("event_id", record.get("receipt_id"))))
+tests/runtime/test_flywheel_protected.py:244: in account
+    s["costs"].apply(
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:497: in apply
+    self._customer(state, action, record, signed, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:399: in _customer
+    delivery = self.general_delivery_check(event.operation_id, cx)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:284: in _customer_general_delivery
+    return accepted_general_origin(self, operation, cx)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:120: in accepted_general_origin
+    _current_support(service, operation, record, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:63: in _current_support
+    payload = service.costs.current_signature(record["permit"], "flywheel-execution-permit", "controller")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:129: in current_signature
+    payload = self.trust.verify(signed, domain, role)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/trust.py:66: in verify
+    anchor = self.anchor(envelope.principal, role)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.trust.TrustRegistry object at 0x7f82134da480>
+principal = 'retired-delivery-support', role = 'controller'
+
+    def anchor(self, principal: str, role: str) -> TrustAnchor:
+        """Require a currently trusted principal with this exact role."""
+        anchor = self._anchors.get(principal)
+        if anchor is None or principal in self._revoked or role not in anchor.roles:
+>           raise ValueError("principal is not currently trusted for the required role")
+E           ValueError: principal is not currently trusted for the required role
+
+alpha_factory_v1/core/runtime/successor/trust.py:59: ValueError
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b0fb60>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7b94a10>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f82134db560>
+support = 'controller'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+>       with pytest.raises(ValueError, match="revoked"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'revoked'
+E        Input: 'principal is not currently trusted for the required role'
+
+tests/runtime/test_flywheel_customer.py:262: AssertionError
+_ test_new_general_earning_rechecks_supporting_authority_without_erasing_history[charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b0e9c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7ad9f10>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81f7b0e270>
+support = 'charge'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+        with pytest.raises(ValueError, match="revoked"):
+>           apply(setup, "customer-earn", {**earning, "event_id": "second-half-after-revocation"})
+
+tests/runtime/test_flywheel_customer.py:263: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_customer.py:68: in apply
+    f.account(state, action, record, operation or str(record.get("event_id", record.get("receipt_id"))))
+tests/runtime/test_flywheel_protected.py:244: in account
+    s["costs"].apply(
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:497: in apply
+    self._customer(state, action, record, signed, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:399: in _customer
+    delivery = self.general_delivery_check(event.operation_id, cx)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:284: in _customer_general_delivery
+    return accepted_general_origin(self, operation, cx)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:120: in accepted_general_origin
+    _current_support(service, operation, record, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:72: in _current_support
+    service.costs.require_current_evidence(record["mission"]["mission_id"], ["A"], cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:198: in require_current_evidence
+    self._current_charge(row, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:143: in _current_charge
+    payload = self.current_signature( signed.model_dump(), "flywheel-cost-command", "accounting")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:129: in current_signature
+    payload = self.trust.verify(signed, domain, role)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/trust.py:66: in verify
+    anchor = self.anchor(envelope.principal, role)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.trust.TrustRegistry object at 0x7f81f7b0ede0>
+principal = 'retired-delivery-support', role = 'accounting'
+
+    def anchor(self, principal: str, role: str) -> TrustAnchor:
+        """Require a currently trusted principal with this exact role."""
+        anchor = self._anchors.get(principal)
+        if anchor is None or principal in self._revoked or role not in anchor.roles:
+>           raise ValueError("principal is not currently trusted for the required role")
+E           ValueError: principal is not currently trusted for the required role
+
+alpha_factory_v1/core/runtime/successor/trust.py:59: ValueError
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b0e9c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7ad9f10>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81f7b0e270>
+support = 'charge'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+>       with pytest.raises(ValueError, match="revoked"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'revoked'
+E        Input: 'principal is not currently trusted for the required role'
+
+tests/runtime/test_flywheel_customer.py:262: AssertionError
+_ test_new_general_earning_rechecks_supporting_authority_without_erasing_history[original-charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b9db20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7b964b0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81f7b9e060>
+support = 'original-charge'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+        with pytest.raises(ValueError, match="revoked"):
+>           apply(setup, "customer-earn", {**earning, "event_id": "second-half-after-revocation"})
+
+tests/runtime/test_flywheel_customer.py:263: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_customer.py:68: in apply
+    f.account(state, action, record, operation or str(record.get("event_id", record.get("receipt_id"))))
+tests/runtime/test_flywheel_protected.py:244: in account
+    s["costs"].apply(
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:497: in apply
+    self._customer(state, action, record, signed, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:399: in _customer
+    delivery = self.general_delivery_check(event.operation_id, cx)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:284: in _customer_general_delivery
+    return accepted_general_origin(self, operation, cx)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:120: in accepted_general_origin
+    _current_support(service, operation, record, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:72: in _current_support
+    service.costs.require_current_evidence(record["mission"]["mission_id"], ["A"], cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:198: in require_current_evidence
+    self._current_charge(row, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:190: in _current_charge
+    self._current_charge( row["original"], cx, depth + 1)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:143: in _current_charge
+    payload = self.current_signature( signed.model_dump(), "flywheel-cost-command", "accounting")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:129: in current_signature
+    payload = self.trust.verify(signed, domain, role)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/trust.py:66: in verify
+    anchor = self.anchor(envelope.principal, role)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.trust.TrustRegistry object at 0x7f81f7b9e000>
+principal = 'retired-delivery-support', role = 'accounting'
+
+    def anchor(self, principal: str, role: str) -> TrustAnchor:
+        """Require a currently trusted principal with this exact role."""
+        anchor = self._anchors.get(principal)
+        if anchor is None or principal in self._revoked or role not in anchor.roles:
+>           raise ValueError("principal is not currently trusted for the required role")
+E           ValueError: principal is not currently trusted for the required role
+
+alpha_factory_v1/core/runtime/successor/trust.py:59: ValueError
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f7b9db20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f7b964b0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81f7b9e060>
+support = 'original-charge'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+>       with pytest.raises(ValueError, match="revoked"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'revoked'
+E        Input: 'principal is not currently trusted for the required role'
+
+tests/runtime/test_flywheel_customer.py:262: AssertionError
+_ test_new_general_earning_rechecks_supporting_authority_without_erasing_history[seal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f78207a0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f73cbdf0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f82112a7440>
+support = 'seal'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+        with pytest.raises(ValueError, match="revoked"):
+>           apply(setup, "customer-earn", {**earning, "event_id": "second-half-after-revocation"})
+
+tests/runtime/test_flywheel_customer.py:263: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_customer.py:68: in apply
+    f.account(state, action, record, operation or str(record.get("event_id", record.get("receipt_id"))))
+tests/runtime/test_flywheel_customer.py:247: in delivery_account
+    ordinary_account(state, action, record, operation)
+tests/runtime/test_flywheel_protected.py:244: in account
+    s["costs"].apply(
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:497: in apply
+    self._customer(state, action, record, signed, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:399: in _customer
+    delivery = self.general_delivery_check(event.operation_id, cx)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:284: in _customer_general_delivery
+    return accepted_general_origin(self, operation, cx)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:120: in accepted_general_origin
+    _current_support(service, operation, record, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:72: in _current_support
+    service.costs.require_current_evidence(record["mission"]["mission_id"], ["A"], cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:204: in require_current_evidence
+    payload = self.current_signature(seal["signed"], "flywheel-cost-command", "accounting")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:129: in current_signature
+    payload = self.trust.verify(signed, domain, role)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/trust.py:66: in verify
+    anchor = self.anchor(envelope.principal, role)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.trust.TrustRegistry object at 0x7f81f7823170>
+principal = 'retired-delivery-support', role = 'accounting'
+
+    def anchor(self, principal: str, role: str) -> TrustAnchor:
+        """Require a currently trusted principal with this exact role."""
+        anchor = self._anchors.get(principal)
+        if anchor is None or principal in self._revoked or role not in anchor.roles:
+>           raise ValueError("principal is not currently trusted for the required role")
+E           ValueError: principal is not currently trusted for the required role
+
+alpha_factory_v1/core/runtime/successor/trust.py:59: ValueError
+
+During handling of the above exception, another exception occurred:
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81f78207a0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81f73cbdf0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f82112a7440>
+support = 'seal'
+
+    @pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+    def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        principal = "retired-delivery-support"
+        role = "controller" if support == "controller" else "accounting"
+        key = f.Ed25519PrivateKey.generate()
+        setup["keys"][principal] = key
+        setup["trust"]._anchors[principal] = TrustAnchor(
+            key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+        )
+    
+        def support_account(action: str, record: Any, operation: str) -> None:
+            setup["costs"].apply(
+                sign_record(
+                    key,
+                    principal,
+                    "flywheel-cost-command",
+                    {"journal_identity": setup["journal"].identity, "operation_id": operation,
+                     "action": action, "record": record},
+                )
+            )
+    
+        ordinary_execution = e.execution
+        if support == "controller":
+            def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+                executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+                return executor, mission, profile, sign_record(
+                    key, principal, "flywheel-execution-permit", permit.payload
+                )
+    
+            monkeypatch.setattr(e, "execution", delivery_execution)
+        result = e.launch(setup)
+        if support in {"charge", "original-charge"}:
+            support_account("charge", {
+                "activity_id": "supporting-delivery-cost", "mission_id": "placement-origin", "bucket": "A",
+                "category": "human", "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0, "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO, "note": "Fictional supporting cost; no paid or live operation",
+            }, "supporting-delivery-cost")
+        ordinary_account = f.account
+        if support == "seal":
+            def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+                if action == "seal" and record["mission_id"] == "placement-origin":
+                    support_account(action, record, operation)
+                else:
+                    ordinary_account(state, action, record, operation)
+    
+            monkeypatch.setattr(f, "account", delivery_account)
+        e.accept(setup, result)
+        apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+        acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+        earning = {
+            "event_id": "first-half-earned", "receipt_id": "service-receipt", "amount_micro_usd": 50,
+            "delivery_kind": "general", "operation_id": "placement-origin",
+            "execution_record_digest": result["digest"], "acceptance_record_digest": acceptance["digest"],
+        }
+        apply(setup, "customer-earn", earning)
+        before = setup["costs"].snapshot()
+        before_report = setup["costs"].report()
+        setup["trust"].revoke(principal)
+>       with pytest.raises(ValueError, match="revoked"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'revoked'
+E        Input: 'principal is not currently trusted for the required role'
+
+tests/runtime/test_flywheel_customer.py:262: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_customer.py::test_new_general_earning_rechecks_supporting_authority_without_erasing_history[controller]
+FAILED tests/runtime/test_flywheel_customer.py::test_new_general_earning_rechecks_supporting_authority_without_erasing_history[charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_new_general_earning_rechecks_supporting_authority_without_erasing_history[original-charge]
+FAILED tests/runtime/test_flywheel_customer.py::test_new_general_earning_rechecks_supporting_authority_without_erasing_history[seal]
+4 failed, 53 passed in 12.84s

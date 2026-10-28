@@ -1,0 +1,34 @@
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 96%]
+......................                                                   [100%]
+=============================== warnings summary ===============================
+tests/runtime/test_flywheel_protected.py::test_unconfigured_public_api_fails_closed
+  /root/.local/lib/python3.12/site-packages/starlette/testclient.py:51: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/release-corrections-20261028/combined-source/runtime.xml -
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.14-final-0 _______________
+
+Name                                                              Stmts   Miss  Cover
+-------------------------------------------------------------------------------------
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py        830     76    91%
+alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py     218      7    97%
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py           432     32    93%
+alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py      437     53    88%
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py       508     81    84%
+alpha_factory_v1/core/runtime/successor/flywheel_gym.py             306     37    88%
+alpha_factory_v1/core/runtime/successor/flywheel_insight.py         418     29    93%
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py         87     10    89%
+-------------------------------------------------------------------------------------
+TOTAL                                                              3236    325    90%
+Coverage JSON written to file /workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/release-corrections-20261028/combined-source/coverage.json
+Required test coverage of 80% reached. Total coverage: 89.96%
+598 passed, 1 warning in 390.56s (0:06:30)

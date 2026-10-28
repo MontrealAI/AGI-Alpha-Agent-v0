@@ -14,7 +14,7 @@ from alpha_factory_v1.core.runtime.successor.flywheel_costs import Charge
 from alpha_factory_v1.core.runtime.successor.flywheel_customer import CustomerDeposit, balances
 from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
 from alpha_factory_v1.core.runtime.successor.protocol import digest
-from alpha_factory_v1.core.runtime.successor.trust import sign_record
+from alpha_factory_v1.core.runtime.successor.trust import TrustAnchor, sign_record
 import test_flywheel_protected as f
 import test_flywheel_enterprise as e
 
@@ -196,6 +196,95 @@ def test_general_earning_uses_actual_existing_acceptance_and_mission(setup: dict
     apply(setup, "customer-deposit", live)
     with pytest.raises(ValueError, match="different missions"):
         apply(setup, "customer-earn", {**earning, "event_id": "cross-scope", "receipt_id": "live-receipt"})
+
+
+@pytest.mark.parametrize("support", ["controller", "charge", "original-charge", "seal"])
+def test_new_general_earning_rechecks_supporting_authority_without_erasing_history(
+    setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+) -> None:
+    principal = "retired-delivery-support"
+    role = "controller" if support == "controller" else "accounting"
+    key = f.Ed25519PrivateKey.generate()
+    setup["keys"][principal] = key
+    setup["trust"]._anchors[principal] = TrustAnchor(
+        key.public_key().public_bytes(f.Encoding.Raw, f.PublicFormat.Raw).hex(), frozenset({role})
+    )
+
+    def support_account(action: str, record: Any, operation: str) -> None:
+        setup["costs"].apply(
+            sign_record(
+                key,
+                principal,
+                "flywheel-cost-command",
+                {
+                    "journal_identity": setup["journal"].identity,
+                    "operation_id": operation,
+                    "action": action,
+                    "record": record,
+                },
+            )
+        )
+
+    ordinary_execution = e.execution
+    if support == "controller":
+
+        def delivery_execution(*args: Any, **kwargs: Any) -> Any:
+            executor, mission, profile, permit = ordinary_execution(*args, **kwargs)
+            return executor, mission, profile, sign_record(key, principal, "flywheel-execution-permit", permit.payload)
+
+        monkeypatch.setattr(e, "execution", delivery_execution)
+    result = e.launch(setup)
+    if support in {"charge", "original-charge"}:
+        support_account(
+            "charge",
+            {
+                "activity_id": "supporting-delivery-cost",
+                "mission_id": "placement-origin",
+                "bucket": "A",
+                "category": "human",
+                "accrued_micro_usd": None if support == "original-charge" else 5,
+                "paid_micro_usd": 0,
+                "basis": "unknown" if support == "original-charge" else "attested",
+                "evidence_digest": f.ZERO,
+                "note": "Fictional supporting cost; no paid or live operation",
+            },
+            "supporting-delivery-cost",
+        )
+    ordinary_account = f.account
+    if support == "seal":
+
+        def delivery_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            if action == "seal" and record["mission_id"] == "placement-origin":
+                support_account(action, record, operation)
+            else:
+                ordinary_account(state, action, record, operation)
+
+        monkeypatch.setattr(f, "account", delivery_account)
+    e.accept(setup, result)
+    apply(setup, "customer-deposit", deposit(mission_id="placement-origin"))
+    acceptance = setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+    earning = {
+        "event_id": "first-half-earned",
+        "receipt_id": "service-receipt",
+        "amount_micro_usd": 50,
+        "delivery_kind": "general",
+        "operation_id": "placement-origin",
+        "execution_record_digest": result["digest"],
+        "acceptance_record_digest": acceptance["digest"],
+    }
+    apply(setup, "customer-earn", earning)
+    before = setup["costs"].snapshot()
+    before_report = setup["costs"].report()
+    setup["trust"].revoke(principal)
+    with pytest.raises(ValueError, match="not currently trusted"):
+        apply(setup, "customer-earn", {**earning, "event_id": "second-half-after-revocation"})
+    assert setup["costs"].snapshot() == before
+    assert setup["costs"].report() == before_report
+    assert setup["journal"].latest(ACCEPTANCE_KEY + "placement-origin") == acceptance
+    assert setup["journal"].latest("@flywheel-customer-event:first-half-earned")["action"] == "customer-earn"
+    with pytest.raises(KeyError):
+        setup["journal"].latest("@flywheel-customer-event:second-half-after-revocation")
+    assert setup["journal"].verify()["valid"]
 
 
 def test_hybrid_general_acceptance_cannot_be_relabelled_live(setup: dict[str, Any]) -> None:
