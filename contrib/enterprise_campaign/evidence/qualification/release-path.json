@@ -1,0 +1,75 @@
+{
+  "assessment_date": "2026-10-28",
+  "source_base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "scope": "Actual local Linux/Python3.12 wheel build and scoped installation; no hosted review, merge, release or deployment qualification.",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "build_tools": {
+    "build": "1.6.1",
+    "setuptools": "80.9.0",
+    "wheel": "0.45.1",
+    "pip": "26.2.2",
+    "ruff": "0.12.5",
+    "pre-commit": "4.2.0"
+  },
+  "sources": {
+    "AGENTS.md": "c721f94b79415b14f6a1accd904525d17f49318796a1c4b41702471e12a4c0b4",
+    "pyproject.toml": "c6e3baa48848fb3865004c1f14c59678741c4ef6e90a513003d71b8821d657cb",
+    "docs/agent/RELEASE_READINESS.md": "0ec3305b266e4b7b59515146e2d46dbdaebf4273ec73fb5b9b5ddd17cefe30aa",
+    ".github/workflows/agent-release.yml": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+    ".pre-commit-config.yaml": "e4b016edad52d2c21372c89174b379e1aabb05883749f81a98ab55f601cce6c2",
+    "scripts/verify_branch_protection.py": "4dd37e8bfa43ca8072c0d6cba43e7c40d8ee814c95b2011395dd42ff96a9eaeb"
+  },
+  "packaging_changes": [
+    "Root existing alpha-factory-v1 distribution includes contrib.enterprise_campaign namespace.",
+    "Added alpha-enterprise-campaign console script targeting catalog_product.main; no new distribution."
+  ],
+  "local_results": {
+    "gen0_product": "Actual installed no-deps clean venv source identity, production, apply/restart, exact rollback and adverse CLI checks pass.",
+    "gen0_initial_runtime": "60 passed/22 failed due missing copied chain.py text fixture; original logs retained.",
+    "gen0_fixture_confirmation": "82 passed using exact-wheel chain.py text fixture, installed runtime imports independently confirmed.",
+    "root_runtime_dependencies": "FAILED: cryptography45.0.7 is below declared >=50.0.1,<51; no dependency-clean qualification claimed.",
+    "clean_root_dependencies": "FAILED: no-deps install intentionally omits root runtime dependencies; stdlib CLI only is qualified."
+  },
+  "release_gates": [
+    {
+      "condition": "Configured exact-source review",
+      "state": "NOT RUN for new candidate; same-session independent verification is separate."
+    },
+    {
+      "condition": "Applicable PR checks including Lint (ruff) and Smoke tests",
+      "state": "No new-candidate hosted result available in this local qualification."
+    },
+    {
+      "condition": "Full resulting-main security, integrity and >=80% coverage",
+      "state": "NOT RUN; no previous main results transferred."
+    },
+    {
+      "condition": "Locked dependencies and representative Python3.11/3.12/3.13 plus platforms",
+      "state": "HOLD; current Linux3.12 scoped run and known dependency conflict only."
+    },
+    {
+      "condition": "Complete generated worker edition acceptance where worker source changes",
+      "state": "Separate existing gate; no new worker admission claimed."
+    },
+    {
+      "condition": "Supported package installation/restart/idempotency/rollback",
+      "state": "Scoped stdlib CLI passes locally. Full dependency-clean operator/platform release remains HOLD."
+    },
+    {
+      "condition": "Tested-site publication and actual served bytes",
+      "state": "NOT RUN; offline demonstration is distinct from deployed service."
+    },
+    {
+      "condition": "Signing, immutable release and downloaded-asset acceptance",
+      "state": "NOT RUN; locally built wheel is unsigned research candidate."
+    }
+  ],
+  "hooks": {
+    "ruff_helper": "PASS ruff0.12.5 check/format and py_compile on qualify_install.py.",
+    "black_helper": "NOT AVAILABLE: python -m black failed No module named black; preserve output.",
+    "full_pre_commit": "NOT RUN here; current policy permits draft contribution while disclosing checks; hosted gates unchanged.",
+    "semgrep": "Not installed in execution environment; no security-hook pass claimed."
+  },
+  "next_concrete_action": "After final source freeze rebuild and repeat scoped installation; submit review-ready changes, then satisfy exact-candidate hosted review and all existing release gates before any merge/publication. No permissions or access settings changed."
+}

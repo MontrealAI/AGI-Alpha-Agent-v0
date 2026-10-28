@@ -1,0 +1,60 @@
+{
+  "schema": "catalog-product-qualification/v1",
+  "executed_at": "2026-10-28T18:01:21.158827+00:00",
+  "source_sha256": "e58154f18ff488dfd93c189f38d008a95022c9decdda702c98cad814513c15ef",
+  "checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "contrib.enterprise_campaign.test_catalog_product",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_bounds_and_future_capabilities_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_bounds_and_future_capabilities_refuse) ... ok\ntest_composite_identity_preserves_distinct_locales (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_composite_identity_preserves_distinct_locales) ... ok\ntest_decimal_and_alias_ambiguity_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_decimal_and_alias_ambiguity_refuse) ... ok\ntest_decimal_equivalence_and_explicit_aliases (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_decimal_equivalence_and_explicit_aliases) ... ok\ntest_descriptor_read_refuses_symlink_swap_and_nonregular_input (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_descriptor_read_refuses_symlink_swap_and_nonregular_input) ... ok\ntest_duplicate_and_malformed_inputs_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_duplicate_and_malformed_inputs_refuse) ... ok\ntest_formula_text_preserved_and_preview_escaped (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_formula_text_preserved_and_preview_escaped) ... ok\ntest_patch_and_exact_rollback (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_patch_and_exact_rollback) ... ok\ntest_stale_sources_and_revoked_authority (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_stale_sources_and_revoked_authority) ... ok\ntest_tamper_refusal_even_after_digest_recalculation (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_tamper_refusal_even_after_digest_recalculation) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.006s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/tmp/decisive-agent-venv/bin/ruff",
+        "check",
+        "contrib/enterprise_campaign/catalog_product.py",
+        "contrib/enterprise_campaign/test_catalog_product.py",
+        "contrib/enterprise_campaign/restore_stage.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/decisive-agent-venv/bin/mypy",
+        "--strict",
+        "--no-incremental",
+        "contrib/enterprise_campaign/catalog_product.py",
+        "contrib/enterprise_campaign/test_catalog_product.py",
+        "contrib/enterprise_campaign/restore_stage.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 3 source files\n",
+      "stderr": ""
+    }
+  ],
+  "all_passed": true,
+  "scope": "Only product, product tests and exact-stage restoration helper. No repository-wide/platform/hosted release qualification claim.",
+  "stage_restore_tests": {
+    "gen0": {
+      "passed": 6,
+      "directory": "restore-gen0-check"
+    },
+    "gen1": {
+      "passed": 7,
+      "directory": "restore-gen1-check"
+    },
+    "gen2": {
+      "passed": 10,
+      "directory": "restore-gen2-check"
+    }
+  }
+}

@@ -1,0 +1,197 @@
+"""Independent stdlib CSV reconciliation baseline, selective-field version.
+
+Aliases map supplier (after) column names to canonical (before) column names.
+Keys compare as exact strings; every component must be nonempty. Declared
+numeric columns are validated in both complete inputs. Rollback is the exact
+original before string, including its original line endings and quoting.
+"""
+
+import csv
+import io
+from collections.abc import Mapping
+from decimal import Decimal, InvalidOperation
+from threading import RLock
+
+
+_CSV_READER_LOCK = RLock()
+
+
+class TransformError(ValueError):
+    """Input does not satisfy the reconciliation contract."""
+
+
+def _validate_quotes(text, label):
+    # csv.reader(strict=True) still accepts bare quotes in unquoted fields.
+    # Enforce the CSV quote grammar before delegating field decoding to it.
+    state = "start"
+    pos = 0
+    while pos < len(text):
+        char = text[pos]
+        if state == "quoted":
+            if char == '"':
+                if pos + 1 < len(text) and text[pos + 1] == '"':
+                    pos += 2
+                    continue
+                state = "closed"
+        elif state == "closed":
+            if char == ',':
+                state = "start"
+            elif char in '\r\n':
+                state = "start"
+            else:
+                raise TransformError(f"{label}: characters after a closing quote at offset {pos}")
+        elif state == "start":
+            if char == '"':
+                state = "quoted"
+            elif char == ',' or char in '\r\n':
+                pass
+            else:
+                state = "unquoted"
+        else:
+            if char == '"':
+                raise TransformError(f"{label}: quote inside an unquoted field at offset {pos}")
+            if char == ',' or char in '\r\n':
+                state = "start"
+        pos += 1
+    if state == "quoted":
+        raise TransformError(f"{label}: unterminated quoted field")
+
+
+def _parse(text, label):
+    if not isinstance(text, str):
+        raise TransformError(f"{label}: CSV input must be a string")
+    _validate_quotes(text, label)
+    # Lift the parser's default field-size cap to accommodate this finite input.
+    # Serialize our own parses and restore the caller's previous global limit.
+    with _CSV_READER_LOCK:
+        previous_limit = csv.field_size_limit()
+        try:
+            csv.field_size_limit(max(previous_limit, len(text)))
+            records = list(csv.reader(io.StringIO(text, newline=""), strict=True))
+        except csv.Error as exc:
+            raise TransformError(f"{label}: malformed CSV: {exc}") from exc
+        finally:
+            csv.field_size_limit(previous_limit)
+    if not records:
+        raise TransformError(f"{label}: missing header")
+    header = records[0]
+    if not header or any(name == "" for name in header):
+        raise TransformError(f"{label}: header names must be nonempty")
+    if len(set(header)) != len(header):
+        raise TransformError(f"{label}: duplicate header names")
+    width = len(header)
+    rows = records[1:]
+    for row_number, row in enumerate(rows, 2):
+        if len(row) != width:
+            raise TransformError(f"{label}: record {row_number} has {len(row)} fields; expected {width}")
+    return header, rows
+
+
+def _column_names(names, label, allow_empty=False):
+    if isinstance(names, str):
+        result = [names]
+    else:
+        try:
+            result = list(names)
+        except TypeError as exc:
+            raise TransformError(f"{label}: expected column names") from exc
+    if (not allow_empty and not result) or any(not isinstance(name, str) or not name for name in result):
+        raise TransformError(f"{label}: column names must be nonempty strings")
+    if len(set(result)) != len(result):
+        raise TransformError(f"{label}: duplicate column names")
+    return result
+
+
+def _index_rows(header, rows, keys, decimal_columns, label):
+    key_indices = [header.index(name) for name in keys]
+    numeric_indices = [header.index(name) for name in decimal_columns]
+    indexed = {}
+    decimals = {}
+    for record_number, row in enumerate(rows, 2):
+        key = tuple(row[index] for index in key_indices)
+        if any(component == "" for component in key):
+            raise TransformError(f"{label}: empty key component in record {record_number}")
+        if key in indexed:
+            raise TransformError(f"{label}: duplicate key in record {record_number}")
+        indexed[key] = row
+        parsed = {}
+        for column, index in zip(decimal_columns, numeric_indices):
+            try:
+                number = Decimal(row[index])
+            except (InvalidOperation, ValueError) as exc:
+                raise TransformError(f"{label}: nonnumeric value in {column!r}, record {record_number}") from exc
+            if not number.is_finite():
+                raise TransformError(f"{label}: nonfinite value in {column!r}, record {record_number}")
+            parsed[column] = number
+        decimals[key] = parsed
+    return indexed, decimals
+
+
+def transform(before, after, keys, decimal_columns=[], aliases={}, update_fields=None):
+    """Reconcile two CSV strings and return output_csv and exact rollback_csv.
+
+    Output follows after's row membership/order and before's header order.
+    For matching exact keys, equal finite Decimal values in declared columns
+    retain before's original field text. All other field text comes from after.
+    If update_fields is a list, matched rows retain before's nonkey fields that
+    are absent from that list. New rows always take every field from after.
+    Invalid CSV, schemas, keys, decimal values, or update fields raise TransformError.
+    """
+    before_header, before_rows = _parse(before, "before")
+    after_header, after_rows = _parse(after, "after")
+    if not isinstance(aliases, Mapping):
+        raise TransformError("aliases: expected a mapping of supplier names to canonical names")
+    if any(not isinstance(source, str) or not source or not isinstance(target, str) or not target
+           for source, target in aliases.items()):
+        raise TransformError("aliases: names must be nonempty strings")
+    normalized_header = [aliases.get(name, name) for name in after_header]
+    if len(set(normalized_header)) != len(normalized_header):
+        raise TransformError("after: duplicate header names after aliases")
+    if set(before_header) != set(normalized_header):
+        raise TransformError("after: schema differs from before after aliases")
+    key_columns = _column_names(keys, "keys")
+    numeric_columns = _column_names(decimal_columns, "decimal_columns", allow_empty=True)
+    schema = set(before_header)
+    for name in key_columns + numeric_columns:
+        if name not in schema:
+            raise TransformError(f"unknown column: {name!r}")
+    if update_fields is None:
+        selected_updates = None
+    else:
+        if not isinstance(update_fields, list):
+            raise TransformError("update_fields: expected a list or None")
+        selected_updates = _column_names(update_fields, "update_fields", allow_empty=True)
+        for name in selected_updates:
+            if name not in schema:
+                raise TransformError(f"update_fields: unknown column: {name!r}")
+            if name in key_columns:
+                raise TransformError(f"update_fields: key column is not allowed: {name!r}")
+        selected_updates = set(selected_updates)
+    old_by_key, old_numbers = _index_rows(before_header, before_rows, key_columns, numeric_columns, "before")
+    _, new_numbers = _index_rows(normalized_header, after_rows, key_columns, numeric_columns, "after")
+    destination_indices = [normalized_header.index(name) for name in before_header]
+    key_indices = [normalized_header.index(name) for name in key_columns]
+    decimal_destinations = [(name, before_header.index(name)) for name in numeric_columns]
+    def encode_record(fields):
+        encoded = []
+        for field in fields:
+            if any(char in field for char in '\",\r\n'):
+                encoded.append('"' + field.replace('"', '""') + '"')
+            else:
+                encoded.append(field)
+        return ",".join(encoded) + "\n"
+
+    output_records = [encode_record(before_header)]
+    for new_row in after_rows:
+        key = tuple(new_row[index] for index in key_indices)
+        result_row = [new_row[index] for index in destination_indices]
+        if key in old_by_key:
+            if selected_updates is not None:
+                for destination, name in enumerate(before_header):
+                    if name not in key_columns and name not in selected_updates:
+                        result_row[destination] = old_by_key[key][destination]
+            for name, destination in decimal_destinations:
+                if old_numbers[key][name] == new_numbers[key][name]:
+                    result_row[destination] = old_by_key[key][destination]
+        output_records.append(encode_record(result_row))
+    return {"output_csv": "".join(output_records), "rollback_csv": before}

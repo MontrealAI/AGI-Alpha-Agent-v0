@@ -1,0 +1,47 @@
+{
+  "schema": "catalog-product-qualification/v1",
+  "executed_at": "2026-10-28T18:13:24.329718+00:00",
+  "source_sha256": "de39a73ef61fb02b97ad780f39a73e5cf597f3a02ef4545011cd736fb0ea3791",
+  "checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "contrib.enterprise_campaign.test_catalog_product",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_bounds_and_future_capabilities_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_bounds_and_future_capabilities_refuse) ... ok\ntest_composite_identity_preserves_distinct_locales (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_composite_identity_preserves_distinct_locales) ... ok\ntest_decimal_and_alias_ambiguity_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_decimal_and_alias_ambiguity_refuse) ... ok\ntest_decimal_equivalence_and_explicit_aliases (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_decimal_equivalence_and_explicit_aliases) ... ok\ntest_descriptor_read_refuses_symlink_swap_and_nonregular_input (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_descriptor_read_refuses_symlink_swap_and_nonregular_input) ... ok\ntest_duplicate_and_malformed_inputs_refuse (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_duplicate_and_malformed_inputs_refuse) ... ok\ntest_formula_text_preserved_and_preview_escaped (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_formula_text_preserved_and_preview_escaped) ... ok\ntest_patch_and_exact_rollback (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_patch_and_exact_rollback) ... ok\ntest_selective_update_policy_validation (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_selective_update_policy_validation) ... ok\ntest_selective_updates_preserve_local_fields_and_target_membership (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_selective_updates_preserve_local_fields_and_target_membership) ... ok\ntest_stale_sources_and_revoked_authority (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_stale_sources_and_revoked_authority) ... ok\ntest_tamper_refusal_even_after_digest_recalculation (contrib.enterprise_campaign.test_catalog_product.CatalogProductTests.test_tamper_refusal_even_after_digest_recalculation) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.008s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/tmp/decisive-agent-venv/bin/ruff",
+        "check",
+        "contrib/enterprise_campaign/catalog_product.py",
+        "contrib/enterprise_campaign/test_catalog_product.py",
+        "contrib/enterprise_campaign/restore_stage.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/decisive-agent-venv/bin/mypy",
+        "--strict",
+        "--no-incremental",
+        "contrib/enterprise_campaign/catalog_product.py",
+        "contrib/enterprise_campaign/test_catalog_product.py",
+        "contrib/enterprise_campaign/restore_stage.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 3 source files\n",
+      "stderr": ""
+    }
+  ],
+  "all_passed": true,
+  "scope": "Generation3 product, product tests and exact-stage restoration helper only. No repository-wide/platform/hosted release qualification claim.",
+  "prior_qualification": "product-qualification.json remains unchanged on generation2 e58154 source."
+}

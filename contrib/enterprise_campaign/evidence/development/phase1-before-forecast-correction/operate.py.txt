@@ -1,0 +1,801 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Bounded simulated commerce operating real catalog transformations.
+
+All financial quantities are modeled USD micro-units. No network, payment,
+customer contact or authority-bearing runtime command is implemented here.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import io
+import json
+import random
+import statistics
+import time
+from pathlib import Path
+from typing import Any
+
+CAMPAIGN = "alpha-catalog-20261028-v1"
+MICRO = 1_000_000
+ROOT = Path(__file__).resolve().parent
+POLICY_PATH = ROOT / "policy.json"
+PROTOCOL_PATH = ROOT / "protocol.json"
+ZERO = "0" * 64
+
+
+def canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+
+
+def digest(value: Any) -> str:
+    return hashlib.sha256(canonical(value)).hexdigest()
+
+
+def file_hash(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.write_bytes(canonical(value) + b"\n")
+
+
+def load_json(path: Path) -> Any:
+    return json.loads(path.read_bytes())
+
+
+def money(dollars: float) -> int:
+    return round(dollars * MICRO)
+
+
+def read_events(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    events = [json.loads(line) for line in path.read_text().splitlines()]
+    previous = ZERO
+    for seq, event in enumerate(events, 1):
+        if event["seq"] != seq or event["previous"] != previous:
+            raise ValueError("event sequence or previous hash differs")
+        claimed = event["hash"]
+        if digest({key: value for key, value in event.items() if key != "hash"}) != claimed:
+            raise ValueError("event digest differs")
+        previous = claimed
+    return events
+
+
+def balances(events: list[dict[str, Any]]) -> dict[str, int]:
+    cash = revenue = expense = receivable = liability = reserves = 0
+    unknown = 0
+    for event in events:
+        amount = event["amount_micro_usd"]
+        kind = event["type"]
+        if amount is None:
+            unknown += kind == "accrue_cost"
+            continue
+        if kind in {"opening_capital", "debt", "deposit"}:
+            cash += amount
+        elif kind == "earned":
+            revenue += amount
+            receivable += amount
+        elif kind == "collect":
+            cash += amount
+            receivable -= amount
+        elif kind == "accrue_cost":
+            expense += amount
+            liability += amount
+        elif kind == "pay_cost":
+            liability -= amount
+            cash -= amount
+        elif kind == "writeoff":
+            receivable -= amount
+            expense += amount
+        elif kind == "revenue_reversal":
+            revenue -= amount
+            reduction = event["details"]["receivable_reduction_micro_usd"]
+            receivable -= reduction
+            liability += amount - reduction
+        elif kind == "refund":
+            cash -= amount
+            liability -= amount
+        elif kind == "reserve":
+            reserves += amount
+        elif kind == "release_reserve":
+            reserves -= amount
+    return {
+        "cash_micro_usd": cash,
+        "revenue_micro_usd": revenue,
+        "expense_micro_usd": expense,
+        "receivable_micro_usd": receivable,
+        "liability_micro_usd": liability,
+        "reserves_micro_usd": reserves,
+        "profit_micro_usd": revenue - expense,
+        "unknown_cost_count": unknown,
+    }
+
+
+class Recorder:
+    """Portable event export; native Journal anchoring is a separate receipt."""
+
+    def __init__(self, directory: Path, world_id: str) -> None:
+        self.directory = directory
+        self.world_id = world_id
+        self.path = directory / "events.jsonl"
+        self.events = read_events(self.path)
+
+    def add(self, kind: str, day: int, amount: int | None = 0, **fields: Any) -> dict[str, Any]:
+        seq = len(self.events) + 1
+        event = {
+            "id": f"{self.world_id}/event/{seq:06d}",
+            "seq": seq,
+            "day": day,
+            "type": kind,
+            "amount_micro_usd": amount,
+            "order_id": fields.pop("order_id", None),
+            "activity_id": fields.pop("activity_id", None),
+            "quantity": fields.pop("quantity", None),
+            "unit_rate_micro_usd": fields.pop("unit_rate_micro_usd", None),
+            "basis": fields.pop("basis", "simulated_contract"),
+            "allocation": fields.pop("allocation", None),
+            "details": fields,
+            "previous": self.events[-1]["hash"] if self.events else ZERO,
+        }
+        event["hash"] = digest(event)
+        with self.path.open("ab") as stream:
+            stream.write(canonical(event) + b"\n")
+        self.events.append(event)
+        return event
+
+    def resource(
+        self,
+        day: int,
+        activity: str,
+        quantity: int,
+        unit_rate: int,
+        unit: str,
+        allocation: str,
+        **details: Any,
+    ) -> int:
+        amount = quantity * unit_rate
+        self.add(
+            "accrue_cost", day, amount, activity_id=activity, quantity=quantity,
+            unit_rate_micro_usd=unit_rate, unit=unit, allocation=allocation,
+            basis="modeled_resource_estimate", source="protocol.json#resource_rates", **details,
+        )
+        current = balances(self.events)
+        payable = min(amount, max(0, current["cash_micro_usd"] - current["reserves_micro_usd"]))
+        if payable:
+            self.add("pay_cost", day, payable, activity_id=activity, allocation=allocation, **details)
+        return amount
+
+
+def csv_text(headers: list[str], rows: list[list[str]]) -> str:
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream, lineterminator="\n")
+    writer.writerow(headers)
+    writer.writerows(rows)
+    return stream.getvalue()
+
+
+def make_request(seed: int, request_id: int, requirement: int, malformed: bool = False) -> dict[str, Any]:
+    """Fresh synthetic catalogs; no personal or proprietary records are used."""
+    rng = random.Random(seed * 1_000_003 + request_id)
+    size = rng.randint(8, 30)
+    rows = [
+        [f"SKU-{request_id}-{number}", "fr" if number % 2 else "en", f"{rng.randint(100, 9000) / 100:.2f}",
+         f"Pièce Ω {number}", f"local-{number}"]
+        for number in range(size)
+    ]
+    if requirement == 1:
+        rows[1][0] = rows[0][0]
+        rows[1][1] = "de"
+    after = [row[:] for row in rows[1:]]
+    after[0][3] = "Nouveau α"
+    after[-1][2] = f"{rng.randint(100, 9000) / 100:.2f}"
+    after.append([f"NEW-{request_id}", "fr", "12.50", "Édition nouvelle", "new-local"])
+    headers = ["sku", "locale", "price", "name", "note"]
+    options: dict[str, Any] = {}
+    keys = ["sku", "locale"] if requirement == 1 else ["sku"]
+    after_headers = headers[:]
+    if requirement == 2:
+        after_headers[2] = "prix"
+        options = {"decimal_columns": ["price"], "aliases": {"prix": "price"}}
+        for row in after:
+            row[2] = row[2] + "0"
+    if requirement == 3:
+        options = {"update_fields": ["price", "name"]}
+        for row in after:
+            row[4] = "external-annotation"
+    if malformed:
+        after.append(after[0][:])
+    return {
+        "before_csv": csv_text(headers, rows),
+        "after_csv": csv_text(after_headers, after),
+        "keys": keys,
+        "requirement": requirement,
+        "options": options,
+    }
+
+
+def world_definition(seed: int, scenario: str, protocol: dict[str, Any]) -> dict[str, Any]:
+    settings = protocol["scenarios"][scenario]
+    rng = random.Random(seed)
+    arrivals = []
+    for period in range(3):
+        count = max(1, round(protocol["arrivals_per_period"] * settings["demand_factor"] * rng.uniform(0.8, 1.2)))
+        for number in range(count):
+            requirement = rng.choices([0, 1, 2, 3], weights=[0.52, 0.22, 0.20, 0.06])[0]
+            effort = rng.uniform(0.18, 0.90) * (1 + requirement * 0.22)
+            arrivals.append({
+                "request_id": period * 1000 + number,
+                "day": period * 60 + rng.randint(1, 55),
+                "period": period,
+                "requirement": requirement,
+                "buyer_value": rng.uniform(12, 90) * settings["value_factor"],
+                "owner_hour_value": rng.uniform(18, 55),
+                "conventional_hours": effort,
+                "direct_ai_hours": rng.uniform(0.12, 0.55),
+                "human_hours": rng.uniform(0.25, 1.0),
+                "urgency_cost": rng.uniform(0, 6),
+                "switching": rng.uniform(0, 3),
+                "negotiation": rng.random(),
+                "payment_draw": rng.random(),
+                "warranty_draw": rng.random(),
+                "supplier_draw": rng.random(),
+                "malformed": rng.random() < 0.035,
+                "delay": rng.choice([0, 3, 7, 14, 28, 75]),
+            })
+    return {
+        "schema": "alpha-catalog-market/v1", "seed": seed, "scenario": scenario,
+        "settings": settings, "arrivals": sorted(arrivals, key=lambda value: (value["day"], value["request_id"])),
+        "period_capacity": [max(1, round(protocol["period_capacity"] * settings["capacity_factor"] * rng.uniform(0.85, 1.1)))
+                            for _ in range(3)],
+    }
+
+
+def alternative_costs(buyer: dict[str, Any], competitor_price: float, competitor_quality: float) -> dict[str, float]:
+    value = buyer["buyer_value"]
+    hourly = buyer["owner_hour_value"]
+    return {
+        "no_purchase": value,
+        "free_conventional": buyer["conventional_hours"] * hourly + 0.025 * value,
+        "direct_frontier_ai": 0.04 + buyer["direct_ai_hours"] * hourly + 0.035 * value,
+        "human_provider": buyer["human_hours"] * 35 + buyer["urgency_cost"],
+        "competing_ai_service": competitor_price + (1 - competitor_quality) * value + buyer["switching"],
+    }
+
+
+def next_investment(
+    generation: int, remaining_periods: int, policy: dict[str, Any], protocol: dict[str, Any],
+    settings: dict[str, Any] | None = None, capacity: int | None = None,
+) -> dict[str, Any]:
+    target = generation + 1
+    resource = protocol["construction_resources"].get(str(target))
+    if resource is None:
+        return {"target_generation": target, "eligible": False, "reason": "no_dependent_construction_in_scope"}
+    cost = resource["input_tokens"] + 5 * resource["output_tokens"] + resource["compute_millicpu_hours"] * 40
+    settings = settings or protocol["scenarios"]["reference"]
+    available_capacity = capacity if capacity is not None else protocol["period_capacity"]
+    forecast_arrivals = protocol["arrivals_per_period"] * settings["demand_factor"]
+    requested = forecast_arrivals * resource["requirement_share"] * resource["choice_probability"]
+    # Capacity displaced from the base service carries the same frozen estimated
+    # contribution; it is not treated as free extra productive capacity.
+    base_occupancy = forecast_arrivals * 0.52 * resource["choice_probability"]
+    incremental_slots = max(0.0, available_capacity - base_occupancy)
+    expected_orders = remaining_periods * min(requested, incremental_slots)
+    acceptance_probability = (1 - 0.035) * (1 - settings["supplier_failure"])
+    collected_fraction = (1 - settings["default_rate"]) * (1 - settings["warranty_rate"])
+    price = policy["price_usd"] * (1 - policy["negotiation_probability"] * (1 - policy["negotiation_discount"]))
+    variable_attempt_usd = (2440 + 10580 + 3780 + 1740 + 1940) / MICRO * settings["supplier_price_multiplier"]
+    expected_unit_contribution = price * acceptance_probability * collected_fraction - variable_attempt_usd
+    incremental = money(expected_orders * expected_unit_contribution) - cost
+    return {
+        "target_generation": target,
+        "cost_micro_usd": cost,
+        "expected_incremental_value_micro_usd": incremental,
+        "expected_incremental_orders": expected_orders,
+        "expected_unit_contribution_micro_usd": money(expected_unit_contribution),
+        "forecast_acceptance_probability": acceptance_probability,
+        "forecast_collected_fraction": collected_fraction,
+        "capacity_residual_slots_per_period": incremental_slots,
+        "eligible": incremental > 0,
+        "reason": "uncalibrated frozen full-variable-cost demand, default, warranty, supplier and residual-capacity forecast",
+    }
+
+
+def investment_gate(facts: dict[str, Any], decision: dict[str, Any], protocol: dict[str, Any]) -> bool:
+    """The production funding gate, separately exercised by decision fixtures."""
+    cost = decision.get("cost_micro_usd", 0)
+    available = facts["cash_micro_usd"] - facts["liability_micro_usd"] - facts["reserves_micro_usd"]
+    earned = min(facts["profit_micro_usd"], available - money(protocol["opening_capital_usd"]))
+    return bool(
+        facts.get("permit_investment", True) and facts.get("remaining_periods", 1) > 0
+        and decision.get("eligible") and decision.get("expected_incremental_value_micro_usd", 0) > 0
+        and facts["unknown_cost_count"] == 0 and earned >= cost
+        and available - cost >= money(protocol["protected_closeout_usd"])
+        and facts.get("prior_investment_micro_usd", 0) + cost <= money(protocol["hold_probe_investment_cap_usd"])
+        and facts.get("allocation", "bounded_commercial_probe") == "bounded_commercial_probe"
+    )
+
+
+def execute_request(directory: Path, buyer: dict[str, Any], world: dict[str, Any], generation: int) -> dict[str, Any]:
+    from .catalog_product import reconcile
+    from .verify import validate_delivery
+
+    request = make_request(world["seed"], buyer["request_id"], buyer["requirement"], buyer["malformed"])
+    prefix = f"request-{buyer['request_id']:04d}"
+    input_path = directory / "artifacts" / f"{prefix}-input.json"
+    input_path.parent.mkdir(exist_ok=True)
+    write_json(input_path, request)
+    start = time.process_time_ns()
+    try:
+        package = reconcile(
+            request["before_csv"], request["after_csv"], request["keys"], generation,
+            **request["options"],
+        )
+        acceptance = validate_delivery(
+            request["before_csv"], request["after_csv"], request["keys"], generation, package, request["options"],
+        )
+        output = {"package": package, "acceptance": acceptance}
+    except (ValueError, TypeError, KeyError) as error:
+        output = {"package": None, "acceptance": {"accepted": False, "errors": [str(error)]}}
+    output["cpu_time_ns"] = time.process_time_ns() - start
+    output_path = directory / "artifacts" / f"{prefix}-output.json"
+    write_json(output_path, output)
+    return {
+        "accepted": output["acceptance"]["accepted"], "input_path": str(input_path.relative_to(directory)),
+        "output_path": str(output_path.relative_to(directory)), "input_sha256": file_hash(input_path),
+        "output_sha256": file_hash(output_path), "acceptance": output["acceptance"],
+        "cpu_time_ns": output["cpu_time_ns"], "bytes": output_path.stat().st_size + input_path.stat().st_size,
+    }
+
+
+def charge_development(recorder: Recorder, protocol: dict[str, Any]) -> None:
+    for activity, resource in protocol["development_resources"].items():
+        recorder.resource(0, f"development/{activity}/input", resource["input_tokens"], 1,
+                          "input_token", "development", resource_quantity_assumption=resource["basis"])
+        recorder.resource(0, f"development/{activity}/output", resource["output_tokens"], 5,
+                          "output_token", "development", resource_quantity_assumption=resource["basis"])
+        recorder.resource(0, f"development/{activity}/compute", resource["compute_millicpu_hours"], 40,
+                          "millicpu_hour", "development", source_assumption="USD0.04/CPU-hour")
+
+
+def charge_order(recorder: Recorder, day: int, order: str, activity: str, multiplier: float = 1.0) -> int:
+    resources = {
+        "acquisition": (1400, 200, 1), "production": (6000, 900, 2),
+        "verification": (2200, 300, 2), "support": (900, 160, 1),
+        "correction": (3500, 550, 2), "maintenance": (1000, 180, 1),
+    }[activity]
+    input_tokens, output_tokens, cpu = resources
+    total = 0
+    for resource, quantity, rate, unit in [
+        ("input", input_tokens, 1, "input_token"),
+        ("output", output_tokens, 5, "output_token"),
+        ("compute", cpu, 40, "millicpu_hour"),
+    ]:
+        total += recorder.resource(
+            day, f"{order}/{activity}/{resource}", round(quantity * multiplier), rate, unit,
+            "delivery", order_id=order, resource_quantity_assumption="frozen per-attempt consumption estimate",
+        )
+    return total
+
+
+def order_receivable(events: list[dict[str, Any]], order_id: str) -> int:
+    result = 0
+    for event in events:
+        if event["order_id"] != order_id:
+            continue
+        amount = event["amount_micro_usd"] or 0
+        if event["type"] == "earned":
+            result += amount
+        elif event["type"] in {"collect", "writeoff"}:
+            result -= amount
+        elif event["type"] == "revenue_reversal":
+            result -= event["details"]["receivable_reduction_micro_usd"]
+    return result
+
+
+def settle(recorder: Recorder, state: dict[str, Any], until_day: int) -> None:
+    queue = sorted(state["pending"], key=lambda item: (item["day"], item["kind"], item["order_id"]))
+    remaining = []
+    for pending in queue:
+        if pending["day"] > until_day:
+            remaining.append(pending)
+            continue
+        order = pending["order_id"]
+        day = pending["day"]
+        amount = pending["amount"]
+        if pending["kind"] == "collection":
+            outstanding = order_receivable(recorder.events, order)
+            if outstanding:
+                if pending["default"]:
+                    recorder.add("writeoff", day, outstanding, order_id=order, reason="simulated_buyer_default")
+                else:
+                    recorder.add("collect", day, outstanding, order_id=order, invoice_id=f"{order}/invoice")
+        elif pending["kind"] == "warranty":
+            if pending["refund"]:
+                outstanding = order_receivable(recorder.events, order)
+                reduction = min(amount, outstanding)
+                recorder.add("revenue_reversal", day, amount, order_id=order,
+                             receivable_reduction_micro_usd=reduction, reason="simulated_warranty_claim")
+                payable = amount - reduction
+                if payable:
+                    available = balances(recorder.events)["cash_micro_usd"]
+                    paid = min(payable, max(0, available))
+                    if paid:
+                        recorder.add("refund", day, paid, order_id=order)
+                charge_order(recorder, day, order + "/warranty", "support")
+            recorder.add("release_reserve", day, amount, order_id=order, reserve_kind="warranty")
+        elif pending["kind"] == "support":
+            charge_order(recorder, day, order, "support")
+    state["pending"] = remaining
+
+
+def construct(
+    recorder: Recorder, state: dict[str, Any], protocol: dict[str, Any], generation: int,
+    day: int, receipt: dict[str, Any] | None, *, reference: bool,
+) -> None:
+    decision = state.get("pending_investment")
+    if not decision or decision["target_generation"] != generation:
+        raise ValueError("no exact reserved profitable investment decision")
+    if reference:
+        if receipt is None or receipt.get("generation") != generation or receipt.get("campaign_id") != CAMPAIGN:
+            raise ValueError("reference construction requires matching source-qualified receipt")
+        source = ROOT / "catalog_product.py"
+        if receipt.get("source_sha256") != file_hash(source):
+            raise ValueError("construction receipt differs from installed product source")
+    recorder.add("release_reserve", day, decision["cost_micro_usd"], investment_id=f"generation-{generation}")
+    resource = protocol["construction_resources"][str(generation)]
+    for kind, quantity, rate, unit in [
+        ("input", resource["input_tokens"], 1, "input_token"),
+        ("output", resource["output_tokens"], 5, "output_token"),
+        ("compute", resource["compute_millicpu_hours"], 40, "millicpu_hour"),
+    ]:
+        recorder.resource(day, f"investment/generation-{generation}/{kind}", quantity, rate, unit,
+                          "investment", investment_id=f"generation-{generation}",
+                          funding_source="earned_profit", construction_receipt=receipt,
+                          interpretation="actual staged construction" if reference else "modeled adaptation of executed asset")
+    recorder.add("capability_constructed", day, 0, generation=generation, construction_receipt=receipt,
+                 source_sha256=file_hash(ROOT / "catalog_product.py"),
+                 interpretation="actual staged construction" if reference else "modeled adaptation of executed asset")
+    state["generation"] = generation
+    state["pending_investment"] = None
+
+
+def run_period(
+    directory: Path, recorder: Recorder, state: dict[str, Any], world: dict[str, Any],
+    policy: dict[str, Any], protocol: dict[str, Any], period: int, *, permit_investment: bool,
+) -> None:
+    settings = world["settings"]
+    capacity = world["period_capacity"][period]
+    completed = 0
+    offered = 0
+    competitor_price = settings["competitor_initial_price"]
+    competitor_quality = settings["competitor_quality"]
+    if period:
+        prior_share = state["enterprise_orders"] / max(1, state["arrivals_seen"])
+        competitor_price = max(settings["competitor_floor"], competitor_price - settings["adoption_response"] * prior_share)
+        competitor_quality = min(0.999, competitor_quality + period * settings["quality_adoption"])
+    recorder.add("market_period", period * 60, 0, generation=state["generation"], capacity=capacity,
+                 competitor_price=competitor_price, competitor_quality=competitor_quality,
+                 supplier_price_multiplier=settings["supplier_price_multiplier"])
+    terminal_orders = {
+        event["order_id"] for event in recorder.events
+        if event["type"] in {"decline", "buyer_decline", "delivery_failed", "acceptance_refused", "earned"}
+    }
+    for buyer in world["arrivals"]:
+        if buyer["period"] != period:
+            continue
+        day = buyer["day"]
+        settle(recorder, state, day)
+        state["arrivals_seen"] += 1
+        order = f"{recorder.world_id}/order/{buyer['request_id']:04d}"
+        if order in terminal_orders:
+            continue
+        alternatives = alternative_costs(buyer, competitor_price, competitor_quality)
+        best = min(alternatives, key=alternatives.get)
+        current = balances(recorder.events)
+        if (
+            state["generation"] < buyer["requirement"] or completed >= capacity
+            or current["unknown_cost_count"] or current["cash_micro_usd"] - current["liability_micro_usd"]
+            - current["reserves_micro_usd"] < money(protocol["protected_closeout_usd"])
+        ):
+            recorder.add("decline", day, 0, order_id=order, reason="capability_capacity_or_protected_resources",
+                         requirement=buyer["requirement"], generation=state["generation"], chosen_alternative=best)
+            continue
+        charge_order(recorder, day, order, "acquisition", settings["supplier_price_multiplier"])
+        price = policy["price_usd"]
+        enterprise_cost = price + 0.02 * buyer["buyer_value"]
+        if enterprise_cost > alternatives[best] and buyer["negotiation"] < policy["negotiation_probability"]:
+            price = max(policy["minimum_price_usd"], price * policy["negotiation_discount"])
+            enterprise_cost = price + 0.02 * buyer["buyer_value"]
+            recorder.add("negotiate", day, 0, order_id=order, offered_price_usd=price)
+        recorder.add("quote", day, 0, order_id=order, offered_price_usd=price, alternatives=alternatives,
+                     buyer_value_usd=buyer["buyer_value"], benchmark_human_usd=buyer["human_hours"] * 35,
+                     benchmark_human_hours=buyer["human_hours"], equivalent_hours_basis="unmeasured matched-scope assumption")
+        offered += 1
+        if enterprise_cost >= alternatives[best]:
+            recorder.add("buyer_decline", day, 0, order_id=order, chosen_alternative=best)
+            continue
+        amount = money(price)
+        recorder.add("order", day, 0, order_id=order, price_micro_usd=amount,
+                     requirement=buyer["requirement"], generation=state["generation"],
+                     contract="acceptance-before-invoice; 7-day warranty; net selected delay; no deposit")
+        state["enterprise_orders"] += 1
+        completed += 1
+        charge_order(recorder, day, order, "production", settings["supplier_price_multiplier"])
+        if buyer["supplier_draw"] < settings["supplier_failure"]:
+            recorder.add("delivery_failed", day, 0, order_id=order, reason="simulated_supplier_outage_before_artifact")
+            continue
+        produced = execute_request(directory, buyer, world, state["generation"])
+        charge_order(recorder, day, order, "verification", settings["supplier_price_multiplier"])
+        recorder.add("artifact", day, 0, order_id=order, **produced)
+        if not produced["accepted"]:
+            recorder.add("acceptance_refused", day, 0, order_id=order, reason="actual_independent_artifact_check")
+            charge_order(recorder, day, order, "correction", settings["supplier_price_multiplier"])
+            recorder.add("correction_declined", day, 0, order_id=order,
+                         reason="duplicate-key or unsupported request needs changed input; no invented correction")
+            continue
+        recorder.add("acceptance", day, 0, order_id=order, input_sha256=produced["input_sha256"],
+                     output_sha256=produced["output_sha256"], generation=state["generation"], accepted=True,
+                     acceptance=produced["acceptance"])
+        recorder.add("delivery", day, 0, order_id=order, artifact_sha256=produced["output_sha256"])
+        recorder.add("invoice", day, 0, order_id=order, invoice_id=f"{order}/invoice", amount_due_micro_usd=amount)
+        recorder.add("earned", day, amount, order_id=order, invoice_id=f"{order}/invoice")
+        recorder.add("reserve", day, amount, order_id=order, reserve_kind="warranty")
+        state["accepted"] += 1
+        state["accepted_by_generation"][str(state["generation"])] = (
+            state["accepted_by_generation"].get(str(state["generation"]), 0) + 1
+        )
+        state["pending"].extend([
+            {"kind": "collection", "day": day + max(buyer["delay"], 14) if buyer["payment_draw"] < settings["default_rate"] else day + buyer["delay"], "order_id": order,
+             "amount": amount, "default": buyer["payment_draw"] < settings["default_rate"]},
+            {"kind": "warranty", "day": day + 7, "order_id": order, "amount": amount,
+             "refund": buyer["warranty_draw"] < settings["warranty_rate"]},
+            {"kind": "support", "day": day + 2, "order_id": order, "amount": 0},
+        ])
+    settle(recorder, state, (period + 1) * 60)
+    charge_order(recorder, (period + 1) * 60, f"{recorder.world_id}/period-{period}", "maintenance",
+                 settings["supplier_price_multiplier"])
+    current = balances(recorder.events)
+    decision = next_investment(state["generation"], 2 - period, policy, protocol, settings, capacity)
+    available = current["cash_micro_usd"] - current["liability_micro_usd"] - current["reserves_micro_usd"]
+    prior_investment = sum(
+        event["amount_micro_usd"] or 0 for event in recorder.events
+        if event["type"] == "accrue_cost" and event["allocation"] == "investment"
+    )
+    earned_fundable = min(current["profit_micro_usd"], available - money(protocol["opening_capital_usd"]))
+    eligible = investment_gate({
+        **current, "permit_investment": permit_investment, "remaining_periods": 2 - period,
+        "prior_investment_micro_usd": prior_investment,
+    }, decision, protocol)
+    recorder.add("investment_decision", (period + 1) * 60, 0, **decision, selected=eligible,
+                 comparator="no-investment and same-artifact ordinary library", metric="expected incremental net USD",
+                 threshold="strictly positive; collected earned surplus and protected cash cover cost",
+                 funding_source="earned_profit" if eligible else None, earned_fundable_micro_usd=earned_fundable,
+                 available_micro_usd=available, blue_sky="HOLD", main_flagship_allocation_authorized=False)
+    if eligible:
+        recorder.add("reserve", (period + 1) * 60, decision["cost_micro_usd"],
+                     investment_id=f"generation-{decision['target_generation']}", reserve_kind="construction")
+        state["pending_investment"] = decision
+    state["completed_periods"] = period + 1
+    write_json(directory / "state.json", state)
+    write_json(directory / "summary.json", summarize(recorder, state, protocol))
+
+
+def summarize(recorder: Recorder, state: dict[str, Any], protocol: dict[str, Any]) -> dict[str, Any]:
+    result: dict[str, Any] = balances(recorder.events)
+    payments = sum((event["amount_micro_usd"] or 0) for event in recorder.events if event["type"] == "pay_cost")
+    collections = sum((event["amount_micro_usd"] or 0) for event in recorder.events if event["type"] == "collect")
+    refunds = sum((event["amount_micro_usd"] or 0) for event in recorder.events if event["type"] == "refund")
+    result.update({
+        "campaign_id": CAMPAIGN, "world_id": recorder.world_id,
+        "collections_micro_usd": collections, "cost_payments_micro_usd": payments,
+        "cash_project_return_micro_usd": collections - payments - refunds,
+        "cumulative_project_payback": collections - payments - refunds >= 0,
+        "unrestricted_cash_micro_usd": result["cash_micro_usd"] - result["reserves_micro_usd"] - result["liability_micro_usd"],
+        "accepted_deliveries": state["accepted"], "accepted_by_generation": state["accepted_by_generation"],
+        "constructed_generation": state["generation"], "completed_periods": state["completed_periods"],
+        "pending_settlements": state["pending"], "pending_investment": state.get("pending_investment"),
+        "event_count": len(recorder.events), "event_head": recorder.events[-1]["hash"],
+        "actual_revenue_usd": 0, "actual_collections_usd": 0, "actual_complete_cost": "unknown",
+        "blue_sky_qualification": "HOLD", "commercial_record": "modeled; not realized earnings",
+        "resource_cost_basis": "resource estimates at published normalized rates; actual meters unavailable",
+        "source_policy_sha256": file_hash(POLICY_PATH), "source_protocol_sha256": file_hash(PROTOCOL_PATH),
+        "cutoff_day": state["completed_periods"] * 60 if state["completed_periods"] < 3 else protocol["cutoff_day"],
+    })
+    return result
+
+
+def initialize(directory: Path, seed: int, scenario: str, protocol: dict[str, Any]) -> tuple[Recorder, dict[str, Any], dict[str, Any]]:
+    directory.mkdir(parents=True, exist_ok=False)
+    world_id = f"{CAMPAIGN}/{scenario}/{seed}"
+    world = world_definition(seed, scenario, protocol)
+    write_json(directory / "world.json", world)
+    state: dict[str, Any] = {
+        "schema": "alpha-catalog-state/v1", "campaign_id": CAMPAIGN, "world_id": world_id,
+        "generation": 0, "completed_periods": 0, "pending": [], "pending_investment": None,
+        "accepted": 0, "accepted_by_generation": {}, "arrivals_seen": 0, "enterprise_orders": 0,
+    }
+    recorder = Recorder(directory, world_id)
+    recorder.add("opening_capital", 0, money(protocol["opening_capital_usd"]), funding_source="opening_equity")
+    recorder.add("reserve", 0, money(protocol["protected_closeout_usd"]), reserve_kind="protected_closeout")
+    charge_development(recorder, protocol)
+    write_json(directory / "state.json", state)
+    return recorder, state, world
+
+
+def operate(
+    directory: Path, seed: int, scenario: str, policy: dict[str, Any], protocol: dict[str, Any], *,
+    through_period: int = 3, reference: bool = False, construction_receipt: dict[str, Any] | None = None,
+    permit_investment: bool = True,
+) -> dict[str, Any]:
+    if directory.exists():
+        recorder = Recorder(directory, load_json(directory / "state.json")["world_id"])
+        state = load_json(directory / "state.json")
+        world = load_json(directory / "world.json")
+        if world["seed"] != seed or world["scenario"] != scenario:
+            raise ValueError("restart seed or scenario differs")
+        checkpoint = directory / "summary.json"
+        if checkpoint.exists():
+            previous = load_json(checkpoint)
+            if previous["event_head"] != recorder.events[-1]["hash"]:
+                raise ValueError("checkpoint differs from retained event history")
+        elif state["completed_periods"] == 0 and not any(event["type"] == "earned" for event in recorder.events):
+            # Narrow closeout of a first-attempt tool/import interruption. Every
+            # original accrual/payment remains; no uncertain delivery is retried.
+            existing_orders = {event["order_id"] for event in recorder.events if event["type"] == "order"}
+            terminal = {event["order_id"] for event in recorder.events if event["type"] in {
+                "delivery_failed", "acceptance_refused", "earned"}}
+            recovery_day = max(event["day"] for event in recorder.events)
+            for order in sorted(existing_orders - terminal):
+                recorder.add("delivery_failed", recovery_day, 0, order_id=order,
+                             reason="interrupted-before-artifact; incurred costs retained; no automatic retry")
+            recorder.add("interruption_recovery", recovery_day, 0,
+                         reason="first-period checkpoint absent; no earned invoice; close failed attempts only")
+            state["enterprise_orders"] = len(existing_orders)
+            state["arrivals_seen"] = len({event["order_id"] for event in recorder.events if event["order_id"]})
+        else:
+            raise ValueError("missing checkpoint needs independent reconciliation; do not replay")
+    else:
+        recorder, state, world = initialize(directory, seed, scenario, protocol)
+    for period in range(state["completed_periods"], through_period):
+        if state.get("pending_investment"):
+            target = state["pending_investment"]["target_generation"]
+            construct(recorder, state, protocol, target, period * 60, construction_receipt, reference=reference)
+        run_period(directory, recorder, state, world, policy, protocol, period, permit_investment=permit_investment)
+        if reference and state.get("pending_investment"):
+            break
+    if state["completed_periods"] == 3:
+        settle(recorder, state, protocol["cutoff_day"])
+        if not state["pending"] and state.get("pending_investment") is None:
+            # Protected execution capacity ends only after the declared runoff.
+            existing = [event for event in recorder.events if event["type"] == "closeout"]
+            if not existing:
+                recorder.add("release_reserve", protocol["cutoff_day"], money(protocol["protected_closeout_usd"]),
+                             reserve_kind="protected_closeout")
+                recorder.add("closeout", protocol["cutoff_day"], 0, pending_obligations="retained in summary")
+    write_json(directory / "state.json", state)
+    summary = summarize(recorder, state, protocol)
+    write_json(directory / "summary.json", summary)
+    return summary
+
+
+def anchor_native(directory: Path, result: dict[str, Any], journal_root: Path) -> dict[str, Any]:
+    """Bind evidence to the existing native Journal without granting permissions."""
+    from alpha_factory_v1.core.runtime.store import Journal
+
+    journal = Journal(journal_root) if journal_root.exists() else Journal.initialize(journal_root)
+    journal.verify()
+    with journal.transaction() as connection:
+        receipt = journal.append(connection, f"@commercial-probe/{digest(result['world_id'])}", {
+            "schema": "alpha-catalog-evidence-anchor/v1", "campaign_id": CAMPAIGN,
+            "world_id": result["world_id"], "event_head": result["event_head"],
+            "event_export_sha256": file_hash(directory / "events.jsonl"),
+            "summary_sha256": file_hash(directory / "summary.json"),
+            "evidence_mode": "simulated-finance-actual-catalog-computation", "authority": "none",
+        })
+    journal.verify()
+    write_json(directory / "native-anchor.json", receipt)
+    return receipt
+
+
+def train(output: Path, protocol: dict[str, Any]) -> dict[str, Any]:
+    output.mkdir(parents=True, exist_ok=False)
+    results = []
+    for price in protocol["candidate_prices_usd"]:
+        candidate = {
+            "schema": "alpha-catalog-policy/v1", "price_usd": price, "minimum_price_usd": 3,
+            "negotiation_probability": 0.5, "negotiation_discount": 0.85,
+        }
+        scores = []
+        for seed in protocol["training_seeds"]:
+            summary = operate(output / f"price-{price}-seed-{seed}", seed, "reference", candidate, protocol)
+            scores.append(summary["profit_micro_usd"])
+        results.append({"price_usd": price, "mean_profit_micro_usd": statistics.mean(scores), "profits": scores})
+    selected = max(results, key=lambda item: (item["mean_profit_micro_usd"], -item["price_usd"]))
+    policy = {
+        "schema": "alpha-catalog-policy/v1", "campaign_id": CAMPAIGN,
+        "price_usd": selected["price_usd"], "minimum_price_usd": 3,
+        "negotiation_probability": 0.5, "negotiation_discount": 0.85,
+        "selection": "maximum mean full-cost profit on twelve retired training worlds; ties lower price",
+        "online_adaptation": "competitor reacts to observed share; enterprise fixed price/discount and frozen liquidity/NPV investment rule",
+    }
+    write_json(output / "training-results.json", results)
+    write_json(output / "selected-policy.json", policy)
+    return policy
+
+
+def evaluate(output: Path, seeds: list[int], protocol: dict[str, Any], policy: dict[str, Any]) -> dict[str, Any]:
+    output.mkdir(parents=True, exist_ok=False)
+    summaries = []
+    for scenario in protocol["scenarios"]:
+        worlds = []
+        for seed in seeds:
+            result = operate(output / scenario / str(seed), seed, scenario, policy, protocol)
+            worlds.append(result)
+        profits = [item["profit_micro_usd"] for item in worlds]
+        cash = [item["unrestricted_cash_micro_usd"] for item in worlds]
+        success = sum(value > 0 for value in profits)
+        qualified = (
+            success / len(worlds) >= protocol["commercial_qualification"]["positive_profit_fraction"]
+            and min(cash) >= money(protocol["commercial_qualification"]["minimum_unrestricted_cash_usd"])
+            and max(item["liability_micro_usd"] for item in worlds) == 0
+        )
+        scenario_summary = {
+            "scenario": scenario, "worlds": len(worlds), "mean_profit_micro_usd": statistics.mean(profits),
+            "min_profit_micro_usd": min(profits), "max_profit_micro_usd": max(profits),
+            "positive_profit_fraction": success / len(worlds), "min_unrestricted_cash_micro_usd": min(cash),
+            "mean_accepted_deliveries": statistics.mean(item["accepted_deliveries"] for item in worlds),
+            "mean_constructed_generation": statistics.mean(item["constructed_generation"] for item in worlds),
+            "qualification": "GO_CONDITIONAL_SIMULATION" if qualified else "HOLD",
+            "world_summaries": [str((output / scenario / str(seed) / "summary.json").relative_to(output)) for seed in seeds],
+        }
+        summaries.append(scenario_summary)
+    result = {
+        "campaign_id": CAMPAIGN, "policy_sha256": file_hash(POLICY_PATH), "protocol_sha256": file_hash(PROTOCOL_PATH),
+        "seed_count": len(seeds), "scenarios": summaries,
+        "blue_sky": "HOLD", "actual_complete_cost": "unknown", "actual_revenue_usd": 0,
+        "qualification_scope": "explicit frozen modeled economic/resource conditions; buyers not observed",
+    }
+    write_json(output / "assessment.json", result)
+    return result
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=["reference", "train", "evaluate", "audit-state", "anchor"])
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--through-period", type=int, choices=[1, 2, 3], default=3)
+    parser.add_argument("--construction-receipt", type=Path)
+    parser.add_argument("--seeds", type=Path)
+    parser.add_argument("--journal", type=Path)
+    args = parser.parse_args()
+    protocol = load_json(PROTOCOL_PATH)
+    policy = load_json(POLICY_PATH)
+    if args.command == "reference":
+        receipt = load_json(args.construction_receipt) if args.construction_receipt else None
+        result = operate(args.output, protocol["reference_seed"], "reference", policy, protocol,
+                         through_period=args.through_period, reference=True, construction_receipt=receipt)
+    elif args.command == "train":
+        result = train(args.output, protocol)
+    elif args.command == "evaluate":
+        if args.seeds is None:
+            parser.error("evaluation requires verifier-issued --seeds")
+        issued = load_json(args.seeds)
+        seeds = issued["seeds"] if isinstance(issued, dict) else issued
+        if len(set(seeds)) != len(seeds) or not seeds or any(type(seed) is not int for seed in seeds):
+            raise ValueError("seeds must be distinct integers")
+        result = evaluate(args.output, seeds, protocol, policy)
+    elif args.command == "anchor":
+        if args.journal is None:
+            parser.error("anchor requires --journal")
+        result = anchor_native(args.output, load_json(args.output / "summary.json"), args.journal)
+    else:
+        result = balances(read_events(args.output / "events.jsonl"))
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()

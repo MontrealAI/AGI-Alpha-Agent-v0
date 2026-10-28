@@ -5,6 +5,35 @@
 This repository contains the Alpha-Factory v1 package and demos.
 The instructions below apply to all contributors and automated agents.
 
+## Mission: admit the possibility before building the flagship
+
+**AGI ALPHA FLYWHEEL — invent the possibility, construct the missing means, deliver the value, finance what comes next.**
+Start from a consequential activity a named beneficiary cannot adequately accomplish, then work backward to
+the missing means. Compare at least three materially different productive possibilities before substantial
+flagship construction. Use existing discovery/project histories and interfaces; do not create a competing registry.
+Record the seven admission questions in the [README mission](README.md#agi-alpha-flywheel--the-profitable-possibility-engine)
+and the [discovery/construction guide](docs/agent/DISCOVERY_CONSTRUCTION.md). Include the strongest accessible
+replacement, the current frontier evidence, independent acceptance, a removal test and a decisive experiment.
+An affordability claim requires a stated economic threshold and the consequential activity newly accessible.
+
+Keep ambition, candidate admission, demonstrated construction and commercial qualification separate. A populated
+form is not a demonstrated breakthrough. Technical parity alone does not veto a profitable conventional service;
+commercial profit alone does not admit a transformational flagship. A Blue Sky HOLD candidate may receive only
+a separately bounded commercial probe with a hypothesis, deliverables, allowance and stopping condition. It must
+not consume the main flagship construction, polish or publication allocation by default. Record failed conditions
+and preserve unsuccessful work. Reuse inspected implementations only with verified source identity.
+
+For an AI-native operating campaign, research, construction, verification, acquisition, support and investment
+decisions use AI/software within the authorized scope. Do not invent human operational labor or review. Unknown
+actual costs stay unknown; resource-based cost estimates belong in a separately modeled record. Preserve every
+incurred liability and distinguish accounting profit, project payback, available cash and investment funding.
+Inherited knowledge grants no permissions. Existing security, review, integration and publication gates remain.
+
+**FR · L’ambition, l’admission Blue Sky, la construction démontrée et la qualification commerciale sont distinctes.**
+Comparer trois possibilités, construire les moyens manquants et faire accepter les artefacts selon un protocole
+indépendant. Une sonde rentable sous HOLD conserve son allocation et son arrêt prévus; elle ne libère pas le budget
+principal du projet phare. Conserver coûts, échecs, obligations et limites de preuve dans l’historique existant.
+
 ## Table of Contents
 
 - [Development Environment](#development-environment)

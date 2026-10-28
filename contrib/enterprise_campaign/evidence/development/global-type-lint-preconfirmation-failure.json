@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-10-28T18:19:02.068475+00:00",
+  "scope": "pre-final-source integration review before final seed issuance",
+  "ruff_command": "python -m ruff check contrib/enterprise_campaign --exclude evidence/**",
+  "ruff": "FAILED9 E701/E702 diagnostics in preserved raw browser QA scripts; scripts subsequently made inert .py.txt without changing their bytes",
+  "mypy_command": "python -m mypy --strict --follow-imports=skip contrib/enterprise_campaign/*.py",
+  "mypy": "FAILED3 diagnostics: native_bridge.py:80 int>int|None; operate.py:358 inferred dict None value; operate.py:359 inferred dict int assignment",
+  "response": "Hold final seeds; owners repair explicit type narrowing/annotations only; preserve pre-fix scientific sources and scoped receipts. No final outcomes inspected."
+}

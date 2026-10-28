@@ -1,0 +1,419 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Independent artifact acceptance and event-level financial reconstruction."""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Any
+
+from .comparators import ACCEPTANCE_PROTOCOL, benchmark, conventional_transform, parse_csv, sha256
+
+
+def canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()
+
+
+def validate_delivery(
+    before: str,
+    after: str,
+    keys: list[str],
+    generation: int,
+    package: dict[str, Any],
+    options: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    options = options or {}
+    result: dict[str, Any] = {"accepted": False, "errors": errors, "protocol": ACCEPTANCE_PROTOCOL["id"]}
+    try:
+        expected = conventional_transform(before, after, keys, generation, options)
+        result["expected_sha256"] = sha256(expected)
+        result["comparator"] = benchmark(before, after, keys, generation, options)
+        if package.get("before_sha256") != sha256(before):
+            errors.append("before source hash mismatch")
+        if package.get("after_sha256") != sha256(after):
+            errors.append("after source hash mismatch")
+        output = package.get("output_csv")
+        if not isinstance(output, str):
+            errors.append("output absent or not text")
+        else:
+            if parse_csv(output) != parse_csv(expected):
+                errors.append("output does not equal independent semantic target")
+            if package.get("output_sha256") != sha256(output):
+                errors.append("output digest mismatch")
+        if package.get("rollback_csv") != before:
+            errors.append("rollback does not retain exact original bytes")
+        from .catalog_product import apply_patch, rollback
+
+        applied = apply_patch(before, package, authorized=True)
+        if applied != output:
+            errors.append("apply differs from delivered output")
+        if rollback(applied, package, authorized=True) != before:
+            errors.append("actual rollback differs from original bytes")
+        result["actual_output_sha256"] = sha256(applied)
+        result["rows_verified"] = len(parse_csv(expected)[1])
+    except (ValueError, TypeError, KeyError, csv.Error) as exc:
+        errors.append(f"{type(exc).__name__}: {exc}")
+    result["accepted"] = not errors
+    return result
+
+
+def _amount(event: dict[str, Any]) -> int:
+    amount = event.get("amount_micro_usd")
+    if type(amount) is not int or amount < 0:
+        raise ValueError("event amount must be a nonnegative exact integer")
+    return amount
+
+
+def audit_events(events: list[dict[str, Any]], expected_summary: dict[str, Any] | None = None) -> dict[str, Any]:
+    errors: list[str] = []
+    temporal_corrections: dict[str, dict[str, Any]] = {}
+    by_identity = {event.get("id"): event for event in events}
+    for correction in events:
+        if correction.get("type") != "temporal_annotation_correction":
+            continue
+        details = correction.get("details", {})
+        target_id = details.get("target_event_id")
+        target = by_identity.get(target_id, {})
+        effective = details.get("effective_day")
+        valid = (
+            correction.get("amount_micro_usd") == 0 and target.get("type") == "market_period"
+            and target.get("amount_micro_usd") == 0 and target.get("hash") == details.get("target_event_hash")
+            and target.get("day") == details.get("original_day")
+            and type(effective) is int and target.get("day", -1) <= effective <= correction.get("day", -1)
+            and target_id not in temporal_corrections
+        )
+        if not valid:
+            errors.append("invalid or duplicate zero-value temporal annotation correction")
+        else:
+            temporal_corrections[target_id] = details
+    raw_chronology_errors = []
+    raw_previous_day = -1
+    for event in events:
+        if event.get("day", -1) < raw_previous_day:
+            raw_chronology_errors.append({"event_id": event.get("id"), "day": event.get("day"),
+                                          "preceding_day": raw_previous_day})
+        raw_previous_day = event.get("day", raw_previous_day)
+    cash = capital = debt = revenue = expense = reserves = 0
+    dev_paid = production_paid = investment_paid = 0
+    receivables: defaultdict[str, int] = defaultdict(int)
+    costs: dict[str, int | None] = {}
+    cost_paid: defaultdict[str, int] = defaultdict(int)
+    cost_allocations: dict[str, str] = {}
+    refunds: defaultdict[str, int] = defaultdict(int)
+    deposits: defaultdict[str, int] = defaultdict(int)
+    collected: defaultdict[str, int] = defaultdict(int)
+    refunded: defaultdict[str, int] = defaultdict(int)
+    assets: defaultdict[str, int] = defaultdict(int)
+    seen: set[str] = set()
+    accepted: set[str] = set()
+    invoices: set[str] = set()
+    prior_day = -1
+    previous_hash: str | None = None
+    unknown_costs = 0
+    checks = 0
+    for offset, event in enumerate(events):
+        try:
+            identity = event["id"]
+            if not isinstance(identity, str) or identity in seen:
+                raise ValueError("duplicate or invalid event identity")
+            seen.add(identity)
+            if type(event.get("seq")) is not int or event.get("seq") != offset + 1:
+                raise ValueError("nonconsecutive event sequence")
+            day = temporal_corrections.get(identity, {}).get("effective_day", event["day"])
+            if type(day) is not int or day < prior_day:
+                raise ValueError("time moved backwards")
+            prior_day = day
+            if "hash" in event:
+                signed = {key: value for key, value in event.items() if key != "hash"}
+                actual_hash = hashlib.sha256(canonical(signed)).hexdigest()
+                if actual_hash != event["hash"]:
+                    raise ValueError("event content hash mismatch")
+                recorded_previous = event.get("previous")
+                if recorded_previous != (previous_hash if offset else "0" * 64):
+                    raise ValueError("event chain link mismatch")
+                previous_hash = actual_hash
+            kind = event["type"]
+            details = event.get("details", {})
+            order = event.get("order_id") or ""
+            activity = event.get("activity_id") or ""
+            amount = None if event.get("amount_micro_usd") is None else _amount(event)
+            if kind == "acceptance":
+                if details.get("accepted") is True:
+                    accepted.add(order)
+            elif kind == "invoice":
+                if order not in accepted:
+                    raise ValueError("invoice lacks prior accepted artifact")
+                invoices.add(order)
+            elif kind in {"opening_capital", "equity"}:
+                amount = _amount(event)
+                capital += amount
+                cash += amount
+            elif kind == "debt":
+                amount = _amount(event)
+                debt += amount
+                cash += amount
+            elif kind == "repay_debt":
+                amount = _amount(event)
+                if amount > debt:
+                    raise ValueError("debt repayment exceeds liability")
+                debt -= amount
+                cash -= amount
+            elif kind == "deposit":
+                amount = _amount(event)
+                cash += amount
+                deposits[order] += amount
+            elif kind == "earned":
+                amount = _amount(event)
+                if order not in accepted:
+                    raise ValueError("earned revenue lacks prior accepted artifact")
+                revenue += amount
+                deposit_applied = details.get("deposit_applied_micro_usd", 0)
+                if type(deposit_applied) is not int or not 0 <= deposit_applied <= min(amount, deposits[order]):
+                    raise ValueError("invalid deposit recognition")
+                deposits[order] -= deposit_applied
+                receivables[order] += amount - deposit_applied
+            elif kind == "collect":
+                amount = _amount(event)
+                if amount > receivables[order]:
+                    raise ValueError("collection exceeds earned receivable")
+                cash += amount
+                collected[order] += amount
+                receivables[order] -= amount
+            elif kind == "revenue_reversal":
+                amount = _amount(event)
+                reduction = details.get("receivable_reduction_micro_usd", min(amount, receivables[order]))
+                if type(reduction) is not int or not 0 <= reduction <= min(amount, receivables[order]):
+                    raise ValueError("invalid reversal receivable allocation")
+                revenue -= amount
+                receivables[order] -= reduction
+                if amount - reduction > collected[order] - refunded[order] - refunds[order]:
+                    raise ValueError("refund obligation exceeds prior net collection")
+                refunds[order] += amount - reduction
+            elif kind == "refund":
+                amount = _amount(event)
+                if amount > refunds[order] + deposits[order]:
+                    raise ValueError("refund exceeds recognized obligation")
+                applied = min(amount, refunds[order])
+                refunds[order] -= applied
+                deposits[order] -= amount - applied
+                cash -= amount
+                refunded[order] += applied
+            elif kind == "accrue_cost":
+                if not activity or activity in costs:
+                    raise ValueError("duplicate or missing cost activity")
+                costs[activity] = amount
+                cost_allocations[activity] = event.get("allocation", "")
+                if amount is None:
+                    unknown_costs += 1
+                else:
+                    expense += amount
+                    quantity, rate = event.get("quantity"), event.get("unit_rate_micro_usd")
+                    if quantity is not None and rate is not None:
+                        if not isinstance(quantity, (float, int)) or type(rate) is not int:
+                            raise ValueError("invalid resource cost quantities")
+                        if abs(round(quantity * rate) - amount) > 1:
+                            raise ValueError("resource quantity times rate does not reconcile")
+            elif kind == "resolve_cost":
+                amount = _amount(event)
+                if activity not in costs or costs[activity] is not None:
+                    raise ValueError("resolution must refer to one unknown cost")
+                costs[activity] = amount
+                expense += amount
+                unknown_costs -= 1
+            elif kind == "pay_cost":
+                amount = _amount(event)
+                accrued = costs.get(activity)
+                if accrued is None:
+                    raise ValueError("payment has no known accrued obligation")
+                if cost_paid[activity] + amount > accrued:
+                    raise ValueError("payment exceeds accrued obligation")
+                cash -= amount
+                cost_paid[activity] += amount
+                allocation = cost_allocations[activity]
+                if allocation in {"development", "discovery", "original_development"}:
+                    dev_paid += amount
+                elif allocation in {"investment", "capability_construction"}:
+                    investment_paid += amount
+                else:
+                    production_paid += amount
+            elif kind == "writeoff":
+                amount = _amount(event)
+                if amount > receivables[order]:
+                    raise ValueError("writeoff exceeds receivable")
+                receivables[order] -= amount
+                expense += amount
+            elif kind == "capitalize_development":
+                amount = _amount(event)
+                if not activity or activity in assets:
+                    raise ValueError("capitalized asset must have unique identity")
+                cash -= amount
+                assets[activity] = amount
+                dev_paid += amount
+            elif kind == "amortize":
+                amount = _amount(event)
+                if amount > assets[activity]:
+                    raise ValueError("amortization exceeds capitalized asset")
+                assets[activity] -= amount
+                expense += amount
+            elif kind == "reserve":
+                amount = _amount(event)
+                reserves += amount
+            elif kind == "release_reserve":
+                amount = _amount(event)
+                if amount > reserves:
+                    raise ValueError("release exceeds reserve")
+                reserves -= amount
+            elif kind in {"investment_decision", "investment_constructed", "interruption_recovery", "temporal_annotation_correction", "forecast_correction", "investment_forecast_correction", "capability_constructed", "market_period", "decline", "buyer_decline", "negotiate", "delivery_failed", "acceptance_refused", "correction_declined", "order", "quote", "delivery", "support", "decision", "refusal", "negotiation", "supplier", "closeout", "period", "generation", "artifact", "default", "policy", "failed_delivery", "correction", "competitor", "scenario", "warranty", "price", "investment_declined"}:
+                if amount not in {0, None}:
+                    raise ValueError("nonfinancial event carries a nonzero monetary amount")
+                if kind == "investment_decision" and details.get("selected"):
+                    required = details.get("cost_micro_usd", amount or 0)
+                    obligations = sum(value - cost_paid[key] for key, value in costs.items() if value is not None)
+                    obligations += sum(refunds.values()) + sum(deposits.values()) + debt
+                    funding = details.get("funding_source")
+                    if funding == "earned_profit" and required > revenue - expense:
+                        raise ValueError("earned-profit investment label unsupported by cumulative earnings")
+                    if funding == "earned_profit" and required > cash - reserves - obligations - capital:
+                        raise ValueError("earned-profit label lacks collected surplus beyond original capital")
+                    if unknown_costs or required > cash - reserves - obligations:
+                        raise ValueError("investment selected without unrestricted known resources")
+                    if details.get("blue_sky_state", details.get("blue_sky")) == "HOLD" and details.get("allocation") in {"flagship", "main_flagship", "publication"}:
+                        raise ValueError("Blue Sky HOLD consumed flagship allocation")
+            else:
+                raise ValueError(f"unknown event kind: {kind}")
+            if any(value < 0 for value in receivables.values()) or any(value < 0 for value in refunds.values()):
+                raise ValueError("negative obligation or receivable")
+            checks += 1
+        except (ValueError, TypeError, KeyError, AssertionError) as exc:
+            errors.append(f"event {offset + 1}: {exc}")
+    liability = sum(value - cost_paid[activity] for activity, value in costs.items() if value is not None)
+    liability += sum(refunds.values()) + sum(deposits.values()) + debt
+    profit = revenue - expense
+    summary = {
+        "cash_micro_usd": cash,
+        "capital_micro_usd": capital,
+        "debt_micro_usd": debt,
+        "revenue_micro_usd": revenue,
+        "expense_micro_usd": expense,
+        "receivable_micro_usd": sum(receivables.values()),
+        "liability_micro_usd": liability,
+        "reserves_micro_usd": reserves,
+        "unrestricted_cash_micro_usd": cash - reserves - liability,
+        "full_project_profit_micro_usd": profit,
+        "dev_paid_micro_usd": dev_paid,
+        "investment_paid_micro_usd": investment_paid,
+        "production_paid_micro_usd": production_paid,
+        "unknown_costs": unknown_costs,
+        "capitalized_asset_micro_usd": sum(assets.values()),
+        "unsettled_refunds_micro_usd": sum(refunds.values()),
+    }
+    summary["profit_micro_usd"] = profit
+    summary["unknown_cost_count"] = unknown_costs
+    collections = sum(_amount(event) for event in events if event.get("type") == "collect")
+    refunds_paid = sum(_amount(event) for event in events if event.get("type") == "refund")
+    summary["cumulative_project_payback_micro_usd"] = collections - refunds_paid - dev_paid - investment_paid - production_paid
+    equation_residual = cash + sum(receivables.values()) + sum(assets.values()) - liability - capital - profit
+    summary["accounting_equation_residual_micro_usd"] = equation_residual
+    if equation_residual and not unknown_costs:
+        errors.append(f"accounting equation residual {equation_residual}")
+    if expected_summary is not None:
+        for key, value in summary.items():
+            if key in expected_summary and expected_summary[key] != value:
+                errors.append(f"summary mismatch {key}: expected {expected_summary[key]}, reconstructed {value}")
+    return {"passed": not errors, "errors": errors, "events": len(events), "event_checks": checks, "summary": summary, "temporal_annotation_corrections": list(temporal_corrections.values()),
+            "raw_chronology_passed": not raw_chronology_errors, "raw_chronology_errors": raw_chronology_errors,
+            "corrected_semantic_passed": not errors}
+
+
+def _read_bound(directory: Path, relative: str, expected_digest: str) -> dict[str, Any]:
+    path = directory / relative
+    if Path(relative).is_absolute() or ".." in Path(relative).parts or path.is_symlink():
+        raise ValueError("artifact path escapes its campaign directory or is a link")
+    if not path.is_file() or not path.resolve().is_relative_to(directory.resolve()):
+        raise ValueError("artifact path is not a campaign regular file")
+    data = path.read_bytes()
+    if len(data) > 8_000_000 or hashlib.sha256(data).hexdigest() != expected_digest:
+        raise ValueError("artifact file size or digest mismatch")
+    value = json.loads(data)
+    if not isinstance(value, dict):
+        raise ValueError("artifact JSON must be an object")
+    return value
+
+
+def audit_world(directory: Path) -> dict[str, Any]:
+    event_path = directory / "events.jsonl"
+    rows = [json.loads(line) for line in event_path.read_text(encoding="utf-8").splitlines()]
+    summary = json.loads((directory / "summary.json").read_text(encoding="utf-8"))
+    result = audit_events(rows, summary)
+    verified: dict[str, dict[str, Any]] = {}
+    artifact_checks = 0
+    for event in rows:
+        try:
+            details = event.get("details", {})
+            order = event.get("order_id") or ""
+            if event["type"] == "artifact":
+                request = _read_bound(directory, details["input_path"], details["input_sha256"])
+                output = _read_bound(directory, details["output_path"], details["output_sha256"])
+                package = output["package"]
+                if package is None:
+                    actual_accepted = False
+                else:
+                    accepted = validate_delivery(request["before_csv"], request["after_csv"], request["keys"],
+                        package["generation"], package, request.get("options", {}))
+                    actual_accepted = accepted["accepted"]
+                if actual_accepted != details["accepted"] or actual_accepted != output["acceptance"]["accepted"]:
+                    raise ValueError("artifact acceptance claim differs from independent recheck")
+                verified[order] = {"accepted": actual_accepted, "input_sha256": details["input_sha256"],
+                                   "output_sha256": details["output_sha256"]}
+                artifact_checks += 1
+            elif event["type"] == "acceptance":
+                if order not in verified or not verified[order]["accepted"]:
+                    raise ValueError("acceptance lacks earlier independently accepted actual artifact")
+                for key in ("input_sha256", "output_sha256"):
+                    if details[key] != verified[order][key]:
+                        raise ValueError("acceptance source binding differs from actual artifact")
+        except (ValueError, TypeError, KeyError) as exc:
+            result["errors"].append(f"artifact event {event['seq']}: {exc}")
+    result["artifact_checks"] = artifact_checks
+    result["passed"] = not result["errors"]
+    result["world_id"] = summary.get("world_id")
+    return result
+
+
+def audit_path(path: Path) -> dict[str, Any]:
+    if path.is_dir():
+        if (path / "events.jsonl").is_file():
+            return audit_world(path)
+        paths = sorted({item.parent for item in path.rglob("events.jsonl")})
+        results = [audit_world(item) for item in paths]
+        return {"passed": bool(results) and all(result["passed"] for result in results),
+                "worlds": len(results), "events": sum(result["events"] for result in results),
+                "artifact_checks": sum(result["artifact_checks"] for result in results), "results": results}
+    if path.suffix == ".jsonl":
+        events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        return audit_events(events)
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return audit_events(data["events"] if isinstance(data, dict) else data,
+                       data.get("summary") if isinstance(data, dict) else None)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("journal", type=Path)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    result = audit_path(args.journal)
+    text = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.write_text(text, encoding="utf-8")
+    else:
+        print(text, end="")
+    raise SystemExit(0 if result["passed"] else 1)
+
+
+if __name__ == "__main__":
+    main()

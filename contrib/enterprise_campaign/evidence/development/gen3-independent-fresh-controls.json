@@ -1,0 +1,3080 @@
+{
+  "id": "generation3-independent-fresh-acceptance/v1",
+  "nonce": "d350b965b9000cccb99ca88c299ccef1",
+  "source_sha256": "de39a73ef61fb02b97ad780f39a73e5cf597f3a02ef4545011cd736fb0ea3791",
+  "baseline_sha256": "7db64554909d1f90d6848a853ae8420c8add5ba2d4becdf93a58a8d0ead90ff8",
+  "cases": [
+    {
+      "case": 0,
+      "before_csv": "sku,locale,price,name,note\nSKU-0,en,559.00,Pièce Ω 0,local-0\nSKU-1,fr,203.00,Pièce Ω 1,local-1\nSKU-2,en,867.00,Pièce Ω 2,local-2\nSKU-3,fr,751.00,Pièce Ω 3,local-3\nSKU-4,en,518.00,Pièce Ω 4,local-4\nSKU-5,fr,909.00,Pièce Ω 5,local-5\nSKU-6,en,815.00,Pièce Ω 6,local-6\nSKU-7,fr,77.00,Pièce Ω 7,local-7\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-7,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,815.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,909.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,518.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,751.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,867.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,203.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": []
+        },
+        "before_sha256": "f248a7e24d383c12c934ad73feecff6304b046093d0c660fb8d7a7fad5553bc8",
+        "after_sha256": "a7be5ee94f81f5ee34088a011a6518215ee036cd314d93fa16f7c0d7f276c649",
+        "after_csv": "sku,locale,price,name,note\nSKU-7,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,815.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,909.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,518.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,751.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,867.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,203.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "c1c50925da637cc6913d1a0cb0d632f2e10dfc37dec7a004256c534256b408ab",
+        "output_csv": "sku,locale,price,name,note\nSKU-7,fr,77.00,Pièce Ω 7,local-7\nSKU-6,en,815.00,Pièce Ω 6,local-6\nSKU-5,fr,909.00,Pièce Ω 5,local-5\nSKU-4,en,518.00,Pièce Ω 4,local-4\nSKU-3,fr,751.00,Pièce Ω 3,local-3\nSKU-2,en,867.00,Pièce Ω 2,local-2\nSKU-1,fr,203.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\nSKU-0,en,559.00,Pièce Ω 0,local-0\nSKU-1,fr,203.00,Pièce Ω 1,local-1\nSKU-2,en,867.00,Pièce Ω 2,local-2\nSKU-3,fr,751.00,Pièce Ω 3,local-3\nSKU-4,en,518.00,Pièce Ω 4,local-4\nSKU-5,fr,909.00,Pièce Ω 5,local-5\nSKU-6,en,815.00,Pièce Ω 6,local-6\nSKU-7,fr,77.00,Pièce Ω 7,local-7\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-7,fr,77.00,Pièce Ω 7,local-7\nSKU-6,en,815.00,Pièce Ω 6,local-6\nSKU-5,fr,909.00,Pièce Ω 5,local-5\nSKU-4,en,518.00,Pièce Ω 4,local-4\nSKU-3,fr,751.00,Pièce Ω 3,local-3\nSKU-2,en,867.00,Pièce Ω 2,local-2\nSKU-1,fr,203.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "559.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 8,
+          "after_rows": 8,
+          "changed_keys": 2,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "2a28db96622347c119d03ea246bba214102e0f0976212509818994cdcb752090"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "c1c50925da637cc6913d1a0cb0d632f2e10dfc37dec7a004256c534256b408ab",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 164974,
+          "output_sha256": "c1c50925da637cc6913d1a0cb0d632f2e10dfc37dec7a004256c534256b408ab",
+          "output_rows": 8,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "c1c50925da637cc6913d1a0cb0d632f2e10dfc37dec7a004256c534256b408ab",
+        "rows_verified": 8
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 536722,
+      "conventional_cpu_ns": 133885,
+      "direct_frontier_code_cpu_ns": 333500
+    },
+    {
+      "case": 1,
+      "before_csv": "sku,locale,price,name,note\r\nSKU-0,en,452.00,Pièce Ω 0,local-0\r\nSKU-1,fr,878.00,Pièce Ω 1,local-1\r\nSKU-2,en,706.00,Pièce Ω 2,local-2\r\nSKU-3,fr,188.00,Pièce Ω 3,local-3\r\nSKU-4,en,133.00,Pièce Ω 4,local-4\r\nSKU-5,fr,854.00,Pièce Ω 5,local-5\r\nSKU-6,en,930.00,Pièce Ω 6,local-6\r\nSKU-7,fr,542.00,Pièce Ω 7,local-7\r\nSKU-8,en,543.00,Pièce Ω 8,local-8\r\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-8,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,542.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,930.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,854.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,133.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,188.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,706.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,878.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": [
+            "price"
+          ]
+        },
+        "before_sha256": "df85fb393b13a46dc19e25afc003cd064335b1135a62ee4d02d461464cf07b8e",
+        "after_sha256": "39b039f868899ff6f4b41b4e728fcc98f27ea13dfe861d57b6c4dd29caf01519",
+        "after_csv": "sku,locale,price,name,note\nSKU-8,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,542.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,930.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,854.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,133.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,188.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,706.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,878.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "8dd7e03253333a82a0e721cb9258a95424c1e006857948bd7b151dccc73aa42b",
+        "output_csv": "sku,locale,price,name,note\nSKU-8,en,9999.50,Pièce Ω 8,local-8\nSKU-7,fr,542.0,Pièce Ω 7,local-7\nSKU-6,en,930.0,Pièce Ω 6,local-6\nSKU-5,fr,854.0,Pièce Ω 5,local-5\nSKU-4,en,133.0,Pièce Ω 4,local-4\nSKU-3,fr,188.0,Pièce Ω 3,local-3\nSKU-2,en,706.0,Pièce Ω 2,local-2\nSKU-1,fr,878.0,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\r\nSKU-0,en,452.00,Pièce Ω 0,local-0\r\nSKU-1,fr,878.00,Pièce Ω 1,local-1\r\nSKU-2,en,706.00,Pièce Ω 2,local-2\r\nSKU-3,fr,188.00,Pièce Ω 3,local-3\r\nSKU-4,en,133.00,Pièce Ω 4,local-4\r\nSKU-5,fr,854.00,Pièce Ω 5,local-5\r\nSKU-6,en,930.00,Pièce Ω 6,local-6\r\nSKU-7,fr,542.00,Pièce Ω 7,local-7\r\nSKU-8,en,543.00,Pièce Ω 8,local-8\r\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-8,en,9999.50,Pièce Ω 8,local-8\nSKU-7,fr,542.0,Pièce Ω 7,local-7\nSKU-6,en,930.0,Pièce Ω 6,local-6\nSKU-5,fr,854.0,Pièce Ω 5,local-5\nSKU-4,en,133.0,Pièce Ω 4,local-4\nSKU-3,fr,188.0,Pièce Ω 3,local-3\nSKU-2,en,706.0,Pièce Ω 2,local-2\nSKU-1,fr,878.0,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "452.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "878.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "878.0",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "706.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "706.0",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "188.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "188.0",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "133.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "133.0",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "854.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "854.0",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "930.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "930.0",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "542.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "542.0",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "SKU-8"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-8",
+              "en",
+              "543.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-8",
+              "en",
+              "9999.50",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "fields": [
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 9,
+          "after_rows": 9,
+          "changed_keys": 10,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "82bbfa913ba365a747a6527bbfb8aeb7c167853b5c4af34623f052495c336920"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "8dd7e03253333a82a0e721cb9258a95424c1e006857948bd7b151dccc73aa42b",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 159275,
+          "output_sha256": "8dd7e03253333a82a0e721cb9258a95424c1e006857948bd7b151dccc73aa42b",
+          "output_rows": 9,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "8dd7e03253333a82a0e721cb9258a95424c1e006857948bd7b151dccc73aa42b",
+        "rows_verified": 9
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 473437,
+      "conventional_cpu_ns": 144930,
+      "direct_frontier_code_cpu_ns": 278092
+    },
+    {
+      "case": 2,
+      "before_csv": "sku,locale,price,name,note\nSKU-0,en,512.00,Pièce Ω 0,local-0\nSKU-1,fr,466.00,Pièce Ω 1,local-1\nSKU-2,en,131.00,Pièce Ω 2,local-2\nSKU-3,fr,742.00,Pièce Ω 3,local-3\nSKU-4,en,5.00,Pièce Ω 4,local-4\nSKU-5,fr,253.00,Pièce Ω 5,local-5\nSKU-6,en,511.00,Pièce Ω 6,local-6\nSKU-7,fr,663.00,Pièce Ω 7,local-7\nSKU-8,en,238.00,Pièce Ω 8,local-8\nSKU-9,fr,70.00,Pièce Ω 9,local-9\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-9,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,238.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,663.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,511.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,253.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,5.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,742.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,131.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,466.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": [
+            "name"
+          ]
+        },
+        "before_sha256": "48d707d20927073531d0f26cb818dbd8851c8b507b220ad8069fb4e2b8a5659f",
+        "after_sha256": "ab313f5bb148ca847ab909e362a9ae5021c517c29098f642f9e2b41050719163",
+        "after_csv": "sku,locale,price,name,note\nSKU-9,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,238.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,663.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,511.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,253.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,5.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,742.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,131.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,466.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "18ae3462a8ff8b3f172b55b16f6ad3b86357fff9cb01f824852c862561a826b3",
+        "output_csv": "sku,locale,price,name,note\nSKU-9,fr,70.00,EXTERNAL NAME,local-9\nSKU-8,en,238.00,EXTERNAL NAME,local-8\nSKU-7,fr,663.00,EXTERNAL NAME,local-7\nSKU-6,en,511.00,EXTERNAL NAME,local-6\nSKU-5,fr,253.00,EXTERNAL NAME,local-5\nSKU-4,en,5.00,EXTERNAL NAME,local-4\nSKU-3,fr,742.00,EXTERNAL NAME,local-3\nSKU-2,en,131.00,EXTERNAL NAME,local-2\nSKU-1,fr,466.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\nSKU-0,en,512.00,Pièce Ω 0,local-0\nSKU-1,fr,466.00,Pièce Ω 1,local-1\nSKU-2,en,131.00,Pièce Ω 2,local-2\nSKU-3,fr,742.00,Pièce Ω 3,local-3\nSKU-4,en,5.00,Pièce Ω 4,local-4\nSKU-5,fr,253.00,Pièce Ω 5,local-5\nSKU-6,en,511.00,Pièce Ω 6,local-6\nSKU-7,fr,663.00,Pièce Ω 7,local-7\nSKU-8,en,238.00,Pièce Ω 8,local-8\nSKU-9,fr,70.00,Pièce Ω 9,local-9\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-9,fr,70.00,EXTERNAL NAME,local-9\nSKU-8,en,238.00,EXTERNAL NAME,local-8\nSKU-7,fr,663.00,EXTERNAL NAME,local-7\nSKU-6,en,511.00,EXTERNAL NAME,local-6\nSKU-5,fr,253.00,EXTERNAL NAME,local-5\nSKU-4,en,5.00,EXTERNAL NAME,local-4\nSKU-3,fr,742.00,EXTERNAL NAME,local-3\nSKU-2,en,131.00,EXTERNAL NAME,local-2\nSKU-1,fr,466.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "512.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "466.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "466.00",
+              "EXTERNAL NAME",
+              "local-1"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "131.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "131.00",
+              "EXTERNAL NAME",
+              "local-2"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "742.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "742.00",
+              "EXTERNAL NAME",
+              "local-3"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "5.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "5.00",
+              "EXTERNAL NAME",
+              "local-4"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "253.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "253.00",
+              "EXTERNAL NAME",
+              "local-5"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "511.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "511.00",
+              "EXTERNAL NAME",
+              "local-6"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "663.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "663.00",
+              "EXTERNAL NAME",
+              "local-7"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-8"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-8",
+              "en",
+              "238.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-8",
+              "en",
+              "238.00",
+              "EXTERNAL NAME",
+              "local-8"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-9"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-9",
+              "fr",
+              "70.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-9",
+              "fr",
+              "70.00",
+              "EXTERNAL NAME",
+              "local-9"
+            ],
+            "fields": [
+              "name"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 10,
+          "after_rows": 10,
+          "changed_keys": 11,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "f07dcb26a1d10759d9bbbef6f5423734997e09ae16441de054c66df9c7927acb"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "18ae3462a8ff8b3f172b55b16f6ad3b86357fff9cb01f824852c862561a826b3",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 144994,
+          "output_sha256": "18ae3462a8ff8b3f172b55b16f6ad3b86357fff9cb01f824852c862561a826b3",
+          "output_rows": 10,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "18ae3462a8ff8b3f172b55b16f6ad3b86357fff9cb01f824852c862561a826b3",
+        "rows_verified": 10
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 433105,
+      "conventional_cpu_ns": 175420,
+      "direct_frontier_code_cpu_ns": 283738
+    },
+    {
+      "case": 3,
+      "before_csv": "sku,locale,price,name,note\r\nSKU-0,en,230.00,Pièce Ω 0,local-0\r\nSKU-1,fr,440.00,Pièce Ω 1,local-1\r\nSKU-2,en,166.00,Pièce Ω 2,local-2\r\nSKU-3,fr,979.00,Pièce Ω 3,local-3\r\nSKU-4,en,529.00,Pièce Ω 4,local-4\r\nSKU-5,fr,41.00,Pièce Ω 5,local-5\r\nSKU-6,en,975.00,Pièce Ω 6,local-6\r\nSKU-7,fr,721.00,Pièce Ω 7,local-7\r\nSKU-8,en,132.00,Pièce Ω 8,local-8\r\nSKU-9,fr,622.00,Pièce Ω 9,local-9\r\nSKU-10,en,750.00,Pièce Ω 10,local-10\r\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-10,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-9,fr,622.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,132.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,721.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,975.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,41.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,529.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,979.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,166.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,440.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": [
+            "price",
+            "name"
+          ]
+        },
+        "before_sha256": "f2b4fcee5ab9f2e39b080f37ea97a8e0b79920180097b31cd795edebdb4ee1f8",
+        "after_sha256": "d7eee517b69a74c038312b32fa788360f0189555e1a0be5044340d17850d1fb7",
+        "after_csv": "sku,locale,price,name,note\nSKU-10,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-9,fr,622.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,132.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,721.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,975.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,41.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,529.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,979.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,166.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,440.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "a7e049aeff56b0d762753907b9d4793b600be7bab8762ed9ee84d9c387513b35",
+        "output_csv": "sku,locale,price,name,note\nSKU-10,en,9999.50,EXTERNAL NAME,local-10\nSKU-9,fr,622.0,EXTERNAL NAME,local-9\nSKU-8,en,132.0,EXTERNAL NAME,local-8\nSKU-7,fr,721.0,EXTERNAL NAME,local-7\nSKU-6,en,975.0,EXTERNAL NAME,local-6\nSKU-5,fr,41.0,EXTERNAL NAME,local-5\nSKU-4,en,529.0,EXTERNAL NAME,local-4\nSKU-3,fr,979.0,EXTERNAL NAME,local-3\nSKU-2,en,166.0,EXTERNAL NAME,local-2\nSKU-1,fr,440.0,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\r\nSKU-0,en,230.00,Pièce Ω 0,local-0\r\nSKU-1,fr,440.00,Pièce Ω 1,local-1\r\nSKU-2,en,166.00,Pièce Ω 2,local-2\r\nSKU-3,fr,979.00,Pièce Ω 3,local-3\r\nSKU-4,en,529.00,Pièce Ω 4,local-4\r\nSKU-5,fr,41.00,Pièce Ω 5,local-5\r\nSKU-6,en,975.00,Pièce Ω 6,local-6\r\nSKU-7,fr,721.00,Pièce Ω 7,local-7\r\nSKU-8,en,132.00,Pièce Ω 8,local-8\r\nSKU-9,fr,622.00,Pièce Ω 9,local-9\r\nSKU-10,en,750.00,Pièce Ω 10,local-10\r\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-10,en,9999.50,EXTERNAL NAME,local-10\nSKU-9,fr,622.0,EXTERNAL NAME,local-9\nSKU-8,en,132.0,EXTERNAL NAME,local-8\nSKU-7,fr,721.0,EXTERNAL NAME,local-7\nSKU-6,en,975.0,EXTERNAL NAME,local-6\nSKU-5,fr,41.0,EXTERNAL NAME,local-5\nSKU-4,en,529.0,EXTERNAL NAME,local-4\nSKU-3,fr,979.0,EXTERNAL NAME,local-3\nSKU-2,en,166.0,EXTERNAL NAME,local-2\nSKU-1,fr,440.0,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "230.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "440.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "440.0",
+              "EXTERNAL NAME",
+              "local-1"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-10"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-10",
+              "en",
+              "750.00",
+              "Pièce Ω 10",
+              "local-10"
+            ],
+            "after": [
+              "SKU-10",
+              "en",
+              "9999.50",
+              "EXTERNAL NAME",
+              "local-10"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "166.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "166.0",
+              "EXTERNAL NAME",
+              "local-2"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "979.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "979.0",
+              "EXTERNAL NAME",
+              "local-3"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "529.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "529.0",
+              "EXTERNAL NAME",
+              "local-4"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "41.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "41.0",
+              "EXTERNAL NAME",
+              "local-5"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "975.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "975.0",
+              "EXTERNAL NAME",
+              "local-6"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "721.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "721.0",
+              "EXTERNAL NAME",
+              "local-7"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-8"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-8",
+              "en",
+              "132.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-8",
+              "en",
+              "132.0",
+              "EXTERNAL NAME",
+              "local-8"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-9"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-9",
+              "fr",
+              "622.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-9",
+              "fr",
+              "622.0",
+              "EXTERNAL NAME",
+              "local-9"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 11,
+          "after_rows": 11,
+          "changed_keys": 12,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "afec448e6c0d7d9ac52c67e00085ed65984798d42ac344cb463a7b70342534a0"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "a7e049aeff56b0d762753907b9d4793b600be7bab8762ed9ee84d9c387513b35",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 267124,
+          "output_sha256": "a7e049aeff56b0d762753907b9d4793b600be7bab8762ed9ee84d9c387513b35",
+          "output_rows": 11,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "a7e049aeff56b0d762753907b9d4793b600be7bab8762ed9ee84d9c387513b35",
+        "rows_verified": 11
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 586129,
+      "conventional_cpu_ns": 345323,
+      "direct_frontier_code_cpu_ns": 331747
+    },
+    {
+      "case": 4,
+      "before_csv": "sku,locale,price,name,note\nSKU-0,en,773.00,Pièce Ω 0,local-0\nSKU-1,fr,238.00,Pièce Ω 1,local-1\nSKU-2,en,291.00,Pièce Ω 2,local-2\nSKU-3,fr,393.00,Pièce Ω 3,local-3\nSKU-4,en,520.00,Pièce Ω 4,local-4\nSKU-5,fr,326.00,Pièce Ω 5,local-5\nSKU-6,en,219.00,Pièce Ω 6,local-6\nSKU-7,fr,400.00,Pièce Ω 7,local-7\nSKU-8,en,187.00,Pièce Ω 8,local-8\nSKU-9,fr,487.00,Pièce Ω 9,local-9\nSKU-10,en,455.00,Pièce Ω 10,local-10\nSKU-11,fr,894.00,Pièce Ω 11,local-11\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-11,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-10,en,455.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-9,fr,487.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,187.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,400.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,219.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,326.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,520.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,393.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,291.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,238.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": [
+            "note"
+          ]
+        },
+        "before_sha256": "82c0a26f0c43cb547bf0c62d1533287e93190aa1e48d1dcc16ad9dabf562ba9b",
+        "after_sha256": "9128b47317291e7127a15712ca1684dbbee2d7584270ed4b4abf96733bcd0a06",
+        "after_csv": "sku,locale,price,name,note\nSKU-11,fr,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-10,en,455.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-9,fr,487.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-8,en,187.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-7,fr,400.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-6,en,219.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,326.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,520.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,393.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,291.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,238.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "be65a8811dbb8fa74911c1e92b7fa5507661732a8638ce4f2226264091159c2a",
+        "output_csv": "sku,locale,price,name,note\nSKU-11,fr,894.00,Pièce Ω 11,EXTERNAL NOTE\nSKU-10,en,455.00,Pièce Ω 10,EXTERNAL NOTE\nSKU-9,fr,487.00,Pièce Ω 9,EXTERNAL NOTE\nSKU-8,en,187.00,Pièce Ω 8,EXTERNAL NOTE\nSKU-7,fr,400.00,Pièce Ω 7,EXTERNAL NOTE\nSKU-6,en,219.00,Pièce Ω 6,EXTERNAL NOTE\nSKU-5,fr,326.00,Pièce Ω 5,EXTERNAL NOTE\nSKU-4,en,520.00,Pièce Ω 4,EXTERNAL NOTE\nSKU-3,fr,393.00,Pièce Ω 3,EXTERNAL NOTE\nSKU-2,en,291.00,Pièce Ω 2,EXTERNAL NOTE\nSKU-1,fr,238.00,Pièce Ω 1,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\nSKU-0,en,773.00,Pièce Ω 0,local-0\nSKU-1,fr,238.00,Pièce Ω 1,local-1\nSKU-2,en,291.00,Pièce Ω 2,local-2\nSKU-3,fr,393.00,Pièce Ω 3,local-3\nSKU-4,en,520.00,Pièce Ω 4,local-4\nSKU-5,fr,326.00,Pièce Ω 5,local-5\nSKU-6,en,219.00,Pièce Ω 6,local-6\nSKU-7,fr,400.00,Pièce Ω 7,local-7\nSKU-8,en,187.00,Pièce Ω 8,local-8\nSKU-9,fr,487.00,Pièce Ω 9,local-9\nSKU-10,en,455.00,Pièce Ω 10,local-10\nSKU-11,fr,894.00,Pièce Ω 11,local-11\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-11,fr,894.00,Pièce Ω 11,EXTERNAL NOTE\nSKU-10,en,455.00,Pièce Ω 10,EXTERNAL NOTE\nSKU-9,fr,487.00,Pièce Ω 9,EXTERNAL NOTE\nSKU-8,en,187.00,Pièce Ω 8,EXTERNAL NOTE\nSKU-7,fr,400.00,Pièce Ω 7,EXTERNAL NOTE\nSKU-6,en,219.00,Pièce Ω 6,EXTERNAL NOTE\nSKU-5,fr,326.00,Pièce Ω 5,EXTERNAL NOTE\nSKU-4,en,520.00,Pièce Ω 4,EXTERNAL NOTE\nSKU-3,fr,393.00,Pièce Ω 3,EXTERNAL NOTE\nSKU-2,en,291.00,Pièce Ω 2,EXTERNAL NOTE\nSKU-1,fr,238.00,Pièce Ω 1,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "773.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "238.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "238.00",
+              "Pièce Ω 1",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-10"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-10",
+              "en",
+              "455.00",
+              "Pièce Ω 10",
+              "local-10"
+            ],
+            "after": [
+              "SKU-10",
+              "en",
+              "455.00",
+              "Pièce Ω 10",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-11"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-11",
+              "fr",
+              "894.00",
+              "Pièce Ω 11",
+              "local-11"
+            ],
+            "after": [
+              "SKU-11",
+              "fr",
+              "894.00",
+              "Pièce Ω 11",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "291.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "291.00",
+              "Pièce Ω 2",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "393.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "393.00",
+              "Pièce Ω 3",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "520.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "520.00",
+              "Pièce Ω 4",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "326.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "326.00",
+              "Pièce Ω 5",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "219.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "219.00",
+              "Pièce Ω 6",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "400.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "400.00",
+              "Pièce Ω 7",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-8"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-8",
+              "en",
+              "187.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-8",
+              "en",
+              "187.00",
+              "Pièce Ω 8",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-9"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-9",
+              "fr",
+              "487.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-9",
+              "fr",
+              "487.00",
+              "Pièce Ω 9",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 12,
+          "after_rows": 12,
+          "changed_keys": 13,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "260506aef612cb1a85913c41335db42842aa08cfdd946660fbb44caab0696fd0"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "be65a8811dbb8fa74911c1e92b7fa5507661732a8638ce4f2226264091159c2a",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 276060,
+          "output_sha256": "be65a8811dbb8fa74911c1e92b7fa5507661732a8638ce4f2226264091159c2a",
+          "output_rows": 12,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "be65a8811dbb8fa74911c1e92b7fa5507661732a8638ce4f2226264091159c2a",
+        "rows_verified": 12
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 1609291,
+      "conventional_cpu_ns": 209144,
+      "direct_frontier_code_cpu_ns": 707600
+    },
+    {
+      "case": 5,
+      "before_csv": "sku,locale,price,name,note\r\nSKU-0,en,73.00,Pièce Ω 0,local-0\r\nSKU-0,fr,651.00,Pièce Ω 1,local-1\r\nSKU-1,en,783.00,Pièce Ω 2,local-2\r\nSKU-1,fr,886.00,Pièce Ω 3,local-3\r\nSKU-2,en,514.00,Pièce Ω 4,local-4\r\nSKU-2,fr,157.00,Pièce Ω 5,local-5\r\nSKU-3,en,606.00,Pièce Ω 6,local-6\r\nSKU-3,fr,301.00,Pièce Ω 7,local-7\r\nSKU-4,en,147.00,Pièce Ω 8,local-8\r\nSKU-4,fr,84.00,Pièce Ω 9,local-9\r\nSKU-5,en,663.00,Pièce Ω 10,local-10\r\nSKU-5,fr,22.00,Pièce Ω 11,local-11\r\nSKU-6,en,478.00,Pièce Ω 12,local-12\r\n",
+      "after_csv": "sku,locale,price,name,note\nSKU-6,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,22.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,en,663.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,fr,84.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,147.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,301.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,en,606.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,fr,157.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,514.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,886.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,en,783.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-0,fr,651.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": []
+        },
+        "before_sha256": "bd382da9c4af18aa696d9acae25e59965e5e79f805119f4e5c315119dd4c78fa",
+        "after_sha256": "2c891afd0311b15c6f3ab4813e56c49b93f714d342773b763496e895189f4a63",
+        "after_csv": "sku,locale,price,name,note\nSKU-6,en,9999.50,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,fr,22.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-5,en,663.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,fr,84.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-4,en,147.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,fr,301.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-3,en,606.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,fr,157.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-2,en,514.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,fr,886.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-1,en,783.0,EXTERNAL NAME,EXTERNAL NOTE\nSKU-0,fr,651.0,EXTERNAL NAME,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "output_sha256": "af7fe8ecf53af9ec079a908a764e37dca88ba20b2ecb75e9d76d042167ae2aaa",
+        "output_csv": "sku,locale,price,name,note\nSKU-6,en,478.00,Pièce Ω 12,local-12\nSKU-5,fr,22.00,Pièce Ω 11,local-11\nSKU-5,en,663.00,Pièce Ω 10,local-10\nSKU-4,fr,84.00,Pièce Ω 9,local-9\nSKU-4,en,147.00,Pièce Ω 8,local-8\nSKU-3,fr,301.00,Pièce Ω 7,local-7\nSKU-3,en,606.00,Pièce Ω 6,local-6\nSKU-2,fr,157.00,Pièce Ω 5,local-5\nSKU-2,en,514.00,Pièce Ω 4,local-4\nSKU-1,fr,886.00,Pièce Ω 3,local-3\nSKU-1,en,783.00,Pièce Ω 2,local-2\nSKU-0,fr,651.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\r\nSKU-0,en,73.00,Pièce Ω 0,local-0\r\nSKU-0,fr,651.00,Pièce Ω 1,local-1\r\nSKU-1,en,783.00,Pièce Ω 2,local-2\r\nSKU-1,fr,886.00,Pièce Ω 3,local-3\r\nSKU-2,en,514.00,Pièce Ω 4,local-4\r\nSKU-2,fr,157.00,Pièce Ω 5,local-5\r\nSKU-3,en,606.00,Pièce Ω 6,local-6\r\nSKU-3,fr,301.00,Pièce Ω 7,local-7\r\nSKU-4,en,147.00,Pièce Ω 8,local-8\r\nSKU-4,fr,84.00,Pièce Ω 9,local-9\r\nSKU-5,en,663.00,Pièce Ω 10,local-10\r\nSKU-5,fr,22.00,Pièce Ω 11,local-11\r\nSKU-6,en,478.00,Pièce Ω 12,local-12\r\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-6,en,478.00,Pièce Ω 12,local-12\nSKU-5,fr,22.00,Pièce Ω 11,local-11\nSKU-5,en,663.00,Pièce Ω 10,local-10\nSKU-4,fr,84.00,Pièce Ω 9,local-9\nSKU-4,en,147.00,Pièce Ω 8,local-8\nSKU-3,fr,301.00,Pièce Ω 7,local-7\nSKU-3,en,606.00,Pièce Ω 6,local-6\nSKU-2,fr,157.00,Pièce Ω 5,local-5\nSKU-2,en,514.00,Pièce Ω 4,local-4\nSKU-1,fr,886.00,Pièce Ω 3,local-3\nSKU-1,en,783.00,Pièce Ω 2,local-2\nSKU-0,fr,651.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "73.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 13,
+          "after_rows": 13,
+          "changed_keys": 2,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "addfa09ee9b5287c7416951ee783a74659ade61190e59ee314fee8b52471cffa"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "af7fe8ecf53af9ec079a908a764e37dca88ba20b2ecb75e9d76d042167ae2aaa",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 211576,
+          "output_sha256": "af7fe8ecf53af9ec079a908a764e37dca88ba20b2ecb75e9d76d042167ae2aaa",
+          "output_rows": 13,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "af7fe8ecf53af9ec079a908a764e37dca88ba20b2ecb75e9d76d042167ae2aaa",
+        "rows_verified": 13
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 714733,
+      "conventional_cpu_ns": 201351,
+      "direct_frontier_code_cpu_ns": 365085
+    },
+    {
+      "case": 6,
+      "before_csv": "sku,locale,price,name,note\nSKU-0,en,506.00,Pièce Ω 0,local-0\nSKU-0,fr,122.00,Pièce Ω 1,local-1\nSKU-1,en,480.00,Pièce Ω 2,local-2\nSKU-1,fr,778.00,Pièce Ω 3,local-3\nSKU-2,en,28.00,Pièce Ω 4,local-4\nSKU-2,fr,319.00,Pièce Ω 5,local-5\nSKU-3,en,435.00,Pièce Ω 6,local-6\nSKU-3,fr,715.00,Pièce Ω 7,local-7\nSKU-4,en,853.00,Pièce Ω 8,local-8\nSKU-4,fr,396.00,Pièce Ω 9,local-9\nSKU-5,en,501.00,Pièce Ω 10,local-10\nSKU-5,fr,674.00,Pièce Ω 11,local-11\nSKU-6,en,419.00,Pièce Ω 12,local-12\nSKU-6,fr,380.00,Pièce Ω 13,local-13\n",
+      "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,419.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,674.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,501.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,396.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,853.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,715.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,435.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,319.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,28.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,778.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,480.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,122.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "code": "sku",
+            "prix": "price",
+            "titre": "name"
+          },
+          "update_fields": [
+            "price"
+          ]
+        },
+        "before_sha256": "182b01641fe0e461ed06f9156a190d6e47411d06ac2f1264d0a6002fa838cb5e",
+        "after_sha256": "56974a70f4b47cf64928ebeac23ff6de0ad16ac29bf0cee1de0ace6d7179de8c",
+        "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,419.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,674.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,501.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,396.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,853.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,715.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,435.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,319.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,28.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,778.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,480.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,122.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+        "output_sha256": "30a99fee6e323e27593198eb4fb285e2dbb929dcbbc04b3a57eef8c2fa4ae9aa",
+        "output_csv": "sku,locale,price,name,note\nSKU-6,fr,9999.50,Pièce Ω 13,local-13\nSKU-6,en,419.00,Pièce Ω 12,local-12\nSKU-5,fr,674.00,Pièce Ω 11,local-11\nSKU-5,en,501.00,Pièce Ω 10,local-10\nSKU-4,fr,396.00,Pièce Ω 9,local-9\nSKU-4,en,853.00,Pièce Ω 8,local-8\nSKU-3,fr,715.00,Pièce Ω 7,local-7\nSKU-3,en,435.00,Pièce Ω 6,local-6\nSKU-2,fr,319.00,Pièce Ω 5,local-5\nSKU-2,en,28.00,Pièce Ω 4,local-4\nSKU-1,fr,778.00,Pièce Ω 3,local-3\nSKU-1,en,480.00,Pièce Ω 2,local-2\nSKU-0,fr,122.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\nSKU-0,en,506.00,Pièce Ω 0,local-0\nSKU-0,fr,122.00,Pièce Ω 1,local-1\nSKU-1,en,480.00,Pièce Ω 2,local-2\nSKU-1,fr,778.00,Pièce Ω 3,local-3\nSKU-2,en,28.00,Pièce Ω 4,local-4\nSKU-2,fr,319.00,Pièce Ω 5,local-5\nSKU-3,en,435.00,Pièce Ω 6,local-6\nSKU-3,fr,715.00,Pièce Ω 7,local-7\nSKU-4,en,853.00,Pièce Ω 8,local-8\nSKU-4,fr,396.00,Pièce Ω 9,local-9\nSKU-5,en,501.00,Pièce Ω 10,local-10\nSKU-5,fr,674.00,Pièce Ω 11,local-11\nSKU-6,en,419.00,Pièce Ω 12,local-12\nSKU-6,fr,380.00,Pièce Ω 13,local-13\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-6,fr,9999.50,Pièce Ω 13,local-13\nSKU-6,en,419.00,Pièce Ω 12,local-12\nSKU-5,fr,674.00,Pièce Ω 11,local-11\nSKU-5,en,501.00,Pièce Ω 10,local-10\nSKU-4,fr,396.00,Pièce Ω 9,local-9\nSKU-4,en,853.00,Pièce Ω 8,local-8\nSKU-3,fr,715.00,Pièce Ω 7,local-7\nSKU-3,en,435.00,Pièce Ω 6,local-6\nSKU-2,fr,319.00,Pièce Ω 5,local-5\nSKU-2,en,28.00,Pièce Ω 4,local-4\nSKU-1,fr,778.00,Pièce Ω 3,local-3\nSKU-1,en,480.00,Pièce Ω 2,local-2\nSKU-0,fr,122.00,Pièce Ω 1,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "506.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "fr",
+              "380.00",
+              "Pièce Ω 13",
+              "local-13"
+            ],
+            "after": [
+              "SKU-6",
+              "fr",
+              "9999.50",
+              "Pièce Ω 13",
+              "local-13"
+            ],
+            "fields": [
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 14,
+          "after_rows": 14,
+          "changed_keys": 3,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "bb9353ebcccc2b69982af627cc1333641892f95568a8ee93b40453e16b3158dc"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "30a99fee6e323e27593198eb4fb285e2dbb929dcbbc04b3a57eef8c2fa4ae9aa",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 230652,
+          "output_sha256": "30a99fee6e323e27593198eb4fb285e2dbb929dcbbc04b3a57eef8c2fa4ae9aa",
+          "output_rows": 14,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "30a99fee6e323e27593198eb4fb285e2dbb929dcbbc04b3a57eef8c2fa4ae9aa",
+        "rows_verified": 14
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 632209,
+      "conventional_cpu_ns": 260457,
+      "direct_frontier_code_cpu_ns": 411995
+    },
+    {
+      "case": 7,
+      "before_csv": "sku,locale,price,name,note\r\nSKU-0,en,458.00,Pièce Ω 0,local-0\r\nSKU-0,fr,976.00,Pièce Ω 1,local-1\r\nSKU-1,en,976.00,Pièce Ω 2,local-2\r\nSKU-1,fr,248.00,Pièce Ω 3,local-3\r\nSKU-2,en,248.00,Pièce Ω 4,local-4\r\nSKU-2,fr,417.00,Pièce Ω 5,local-5\r\nSKU-3,en,610.00,Pièce Ω 6,local-6\r\nSKU-3,fr,583.00,Pièce Ω 7,local-7\r\nSKU-4,en,760.00,Pièce Ω 8,local-8\r\nSKU-4,fr,708.00,Pièce Ω 9,local-9\r\nSKU-5,en,815.00,Pièce Ω 10,local-10\r\nSKU-5,fr,327.00,Pièce Ω 11,local-11\r\nSKU-6,en,229.00,Pièce Ω 12,local-12\r\nSKU-6,fr,860.00,Pièce Ω 13,local-13\r\nSKU-7,en,785.00,Pièce Ω 14,local-14\r\n",
+      "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,860.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,229.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,327.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,815.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,708.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,760.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,583.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,610.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,417.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,248.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,248.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,976.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,976.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "code": "sku",
+            "prix": "price",
+            "titre": "name"
+          },
+          "update_fields": [
+            "name"
+          ]
+        },
+        "before_sha256": "b148baea69b22c87bbdc083119347c7881b682075ecb2e546efbda9df893d453",
+        "after_sha256": "27198ffd0d7993b4f3fa766b55b962f07e13eea864dee0f07f85a2e3c2332680",
+        "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,860.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,229.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,327.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,815.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,708.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,760.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,583.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,610.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,417.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,248.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,248.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,976.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,976.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+        "output_sha256": "da407d5b34348b66882fc3b7067ba80a6b42b650340e00f0b5188639285956b2",
+        "output_csv": "sku,locale,price,name,note\nSKU-7,en,785.00,EXTERNAL NAME,local-14\nSKU-6,fr,860.00,EXTERNAL NAME,local-13\nSKU-6,en,229.00,EXTERNAL NAME,local-12\nSKU-5,fr,327.00,EXTERNAL NAME,local-11\nSKU-5,en,815.00,EXTERNAL NAME,local-10\nSKU-4,fr,708.00,EXTERNAL NAME,local-9\nSKU-4,en,760.00,EXTERNAL NAME,local-8\nSKU-3,fr,583.00,EXTERNAL NAME,local-7\nSKU-3,en,610.00,EXTERNAL NAME,local-6\nSKU-2,fr,417.00,EXTERNAL NAME,local-5\nSKU-2,en,248.00,EXTERNAL NAME,local-4\nSKU-1,fr,248.00,EXTERNAL NAME,local-3\nSKU-1,en,976.00,EXTERNAL NAME,local-2\nSKU-0,fr,976.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\r\nSKU-0,en,458.00,Pièce Ω 0,local-0\r\nSKU-0,fr,976.00,Pièce Ω 1,local-1\r\nSKU-1,en,976.00,Pièce Ω 2,local-2\r\nSKU-1,fr,248.00,Pièce Ω 3,local-3\r\nSKU-2,en,248.00,Pièce Ω 4,local-4\r\nSKU-2,fr,417.00,Pièce Ω 5,local-5\r\nSKU-3,en,610.00,Pièce Ω 6,local-6\r\nSKU-3,fr,583.00,Pièce Ω 7,local-7\r\nSKU-4,en,760.00,Pièce Ω 8,local-8\r\nSKU-4,fr,708.00,Pièce Ω 9,local-9\r\nSKU-5,en,815.00,Pièce Ω 10,local-10\r\nSKU-5,fr,327.00,Pièce Ω 11,local-11\r\nSKU-6,en,229.00,Pièce Ω 12,local-12\r\nSKU-6,fr,860.00,Pièce Ω 13,local-13\r\nSKU-7,en,785.00,Pièce Ω 14,local-14\r\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-7,en,785.00,EXTERNAL NAME,local-14\nSKU-6,fr,860.00,EXTERNAL NAME,local-13\nSKU-6,en,229.00,EXTERNAL NAME,local-12\nSKU-5,fr,327.00,EXTERNAL NAME,local-11\nSKU-5,en,815.00,EXTERNAL NAME,local-10\nSKU-4,fr,708.00,EXTERNAL NAME,local-9\nSKU-4,en,760.00,EXTERNAL NAME,local-8\nSKU-3,fr,583.00,EXTERNAL NAME,local-7\nSKU-3,en,610.00,EXTERNAL NAME,local-6\nSKU-2,fr,417.00,EXTERNAL NAME,local-5\nSKU-2,en,248.00,EXTERNAL NAME,local-4\nSKU-1,fr,248.00,EXTERNAL NAME,local-3\nSKU-1,en,976.00,EXTERNAL NAME,local-2\nSKU-0,fr,976.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "458.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-0",
+              "fr",
+              "976.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-0",
+              "fr",
+              "976.00",
+              "EXTERNAL NAME",
+              "local-1"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "en",
+              "976.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-1",
+              "en",
+              "976.00",
+              "EXTERNAL NAME",
+              "local-2"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "248.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "248.00",
+              "EXTERNAL NAME",
+              "local-3"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "248.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "248.00",
+              "EXTERNAL NAME",
+              "local-4"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "fr",
+              "417.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-2",
+              "fr",
+              "417.00",
+              "EXTERNAL NAME",
+              "local-5"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "en",
+              "610.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-3",
+              "en",
+              "610.00",
+              "EXTERNAL NAME",
+              "local-6"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "583.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "583.00",
+              "EXTERNAL NAME",
+              "local-7"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "760.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "760.00",
+              "EXTERNAL NAME",
+              "local-8"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "fr",
+              "708.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-4",
+              "fr",
+              "708.00",
+              "EXTERNAL NAME",
+              "local-9"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "en",
+              "815.00",
+              "Pièce Ω 10",
+              "local-10"
+            ],
+            "after": [
+              "SKU-5",
+              "en",
+              "815.00",
+              "EXTERNAL NAME",
+              "local-10"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "327.00",
+              "Pièce Ω 11",
+              "local-11"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "327.00",
+              "EXTERNAL NAME",
+              "local-11"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "229.00",
+              "Pièce Ω 12",
+              "local-12"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "229.00",
+              "EXTERNAL NAME",
+              "local-12"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "fr",
+              "860.00",
+              "Pièce Ω 13",
+              "local-13"
+            ],
+            "after": [
+              "SKU-6",
+              "fr",
+              "860.00",
+              "EXTERNAL NAME",
+              "local-13"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "en",
+              "785.00",
+              "Pièce Ω 14",
+              "local-14"
+            ],
+            "after": [
+              "SKU-7",
+              "en",
+              "785.00",
+              "EXTERNAL NAME",
+              "local-14"
+            ],
+            "fields": [
+              "name"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 15,
+          "after_rows": 15,
+          "changed_keys": 16,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "230830e75b4797a290ab77bf2af69d3503ead37fb55074520ded7d3e1c290b51"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "da407d5b34348b66882fc3b7067ba80a6b42b650340e00f0b5188639285956b2",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 376633,
+          "output_sha256": "da407d5b34348b66882fc3b7067ba80a6b42b650340e00f0b5188639285956b2",
+          "output_rows": 15,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "da407d5b34348b66882fc3b7067ba80a6b42b650340e00f0b5188639285956b2",
+        "rows_verified": 15
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 945154,
+      "conventional_cpu_ns": 451043,
+      "direct_frontier_code_cpu_ns": 580008
+    },
+    {
+      "case": 8,
+      "before_csv": "sku,locale,price,name,note\nSKU-0,en,176.00,Pièce Ω 0,local-0\nSKU-0,fr,266.00,Pièce Ω 1,local-1\nSKU-1,en,503.00,Pièce Ω 2,local-2\nSKU-1,fr,820.00,Pièce Ω 3,local-3\nSKU-2,en,201.00,Pièce Ω 4,local-4\nSKU-2,fr,299.00,Pièce Ω 5,local-5\nSKU-3,en,779.00,Pièce Ω 6,local-6\nSKU-3,fr,169.00,Pièce Ω 7,local-7\nSKU-4,en,434.00,Pièce Ω 8,local-8\nSKU-4,fr,109.00,Pièce Ω 9,local-9\nSKU-5,en,462.00,Pièce Ω 10,local-10\nSKU-5,fr,953.00,Pièce Ω 11,local-11\nSKU-6,en,861.00,Pièce Ω 12,local-12\nSKU-6,fr,573.00,Pièce Ω 13,local-13\nSKU-7,en,3.00,Pièce Ω 14,local-14\nSKU-7,fr,414.00,Pièce Ω 15,local-15\n",
+      "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-7,fr\nEXTERNAL NAME,EXTERNAL NOTE,3.0,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,573.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,861.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,953.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,462.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,109.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,434.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,169.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,779.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,299.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,201.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,820.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,503.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,266.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "code": "sku",
+            "prix": "price",
+            "titre": "name"
+          },
+          "update_fields": [
+            "price",
+            "name"
+          ]
+        },
+        "before_sha256": "f6175f02472085e4821df87f397f7b953a4dbd9dcbe589294916164641b68b26",
+        "after_sha256": "9d4e7a5568c1f2fc53ac7073cbc4cd61f6fa9e1d3cb143b3ff31d9c0a32a60bc",
+        "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-7,fr\nEXTERNAL NAME,EXTERNAL NOTE,3.0,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,573.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,861.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,953.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,462.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,109.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,434.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,169.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,779.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,299.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,201.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,820.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,503.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,266.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+        "output_sha256": "7432315b7de44f067c1a7969dcae22a748bccaa97b3b2b7e9caf581b808548a7",
+        "output_csv": "sku,locale,price,name,note\nSKU-7,fr,9999.50,EXTERNAL NAME,local-15\nSKU-7,en,3.00,EXTERNAL NAME,local-14\nSKU-6,fr,573.00,EXTERNAL NAME,local-13\nSKU-6,en,861.00,EXTERNAL NAME,local-12\nSKU-5,fr,953.00,EXTERNAL NAME,local-11\nSKU-5,en,462.00,EXTERNAL NAME,local-10\nSKU-4,fr,109.00,EXTERNAL NAME,local-9\nSKU-4,en,434.00,EXTERNAL NAME,local-8\nSKU-3,fr,169.00,EXTERNAL NAME,local-7\nSKU-3,en,779.00,EXTERNAL NAME,local-6\nSKU-2,fr,299.00,EXTERNAL NAME,local-5\nSKU-2,en,201.00,EXTERNAL NAME,local-4\nSKU-1,fr,820.00,EXTERNAL NAME,local-3\nSKU-1,en,503.00,EXTERNAL NAME,local-2\nSKU-0,fr,266.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\nSKU-0,en,176.00,Pièce Ω 0,local-0\nSKU-0,fr,266.00,Pièce Ω 1,local-1\nSKU-1,en,503.00,Pièce Ω 2,local-2\nSKU-1,fr,820.00,Pièce Ω 3,local-3\nSKU-2,en,201.00,Pièce Ω 4,local-4\nSKU-2,fr,299.00,Pièce Ω 5,local-5\nSKU-3,en,779.00,Pièce Ω 6,local-6\nSKU-3,fr,169.00,Pièce Ω 7,local-7\nSKU-4,en,434.00,Pièce Ω 8,local-8\nSKU-4,fr,109.00,Pièce Ω 9,local-9\nSKU-5,en,462.00,Pièce Ω 10,local-10\nSKU-5,fr,953.00,Pièce Ω 11,local-11\nSKU-6,en,861.00,Pièce Ω 12,local-12\nSKU-6,fr,573.00,Pièce Ω 13,local-13\nSKU-7,en,3.00,Pièce Ω 14,local-14\nSKU-7,fr,414.00,Pièce Ω 15,local-15\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-7,fr,9999.50,EXTERNAL NAME,local-15\nSKU-7,en,3.00,EXTERNAL NAME,local-14\nSKU-6,fr,573.00,EXTERNAL NAME,local-13\nSKU-6,en,861.00,EXTERNAL NAME,local-12\nSKU-5,fr,953.00,EXTERNAL NAME,local-11\nSKU-5,en,462.00,EXTERNAL NAME,local-10\nSKU-4,fr,109.00,EXTERNAL NAME,local-9\nSKU-4,en,434.00,EXTERNAL NAME,local-8\nSKU-3,fr,169.00,EXTERNAL NAME,local-7\nSKU-3,en,779.00,EXTERNAL NAME,local-6\nSKU-2,fr,299.00,EXTERNAL NAME,local-5\nSKU-2,en,201.00,EXTERNAL NAME,local-4\nSKU-1,fr,820.00,EXTERNAL NAME,local-3\nSKU-1,en,503.00,EXTERNAL NAME,local-2\nSKU-0,fr,266.00,EXTERNAL NAME,local-1\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "176.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-0",
+              "fr",
+              "266.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-0",
+              "fr",
+              "266.00",
+              "EXTERNAL NAME",
+              "local-1"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "en",
+              "503.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-1",
+              "en",
+              "503.00",
+              "EXTERNAL NAME",
+              "local-2"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "820.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "820.00",
+              "EXTERNAL NAME",
+              "local-3"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "201.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "201.00",
+              "EXTERNAL NAME",
+              "local-4"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "fr",
+              "299.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-2",
+              "fr",
+              "299.00",
+              "EXTERNAL NAME",
+              "local-5"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "en",
+              "779.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-3",
+              "en",
+              "779.00",
+              "EXTERNAL NAME",
+              "local-6"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "169.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "169.00",
+              "EXTERNAL NAME",
+              "local-7"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "434.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "434.00",
+              "EXTERNAL NAME",
+              "local-8"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "fr",
+              "109.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-4",
+              "fr",
+              "109.00",
+              "EXTERNAL NAME",
+              "local-9"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "en",
+              "462.00",
+              "Pièce Ω 10",
+              "local-10"
+            ],
+            "after": [
+              "SKU-5",
+              "en",
+              "462.00",
+              "EXTERNAL NAME",
+              "local-10"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "953.00",
+              "Pièce Ω 11",
+              "local-11"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "953.00",
+              "EXTERNAL NAME",
+              "local-11"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "861.00",
+              "Pièce Ω 12",
+              "local-12"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "861.00",
+              "EXTERNAL NAME",
+              "local-12"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "fr",
+              "573.00",
+              "Pièce Ω 13",
+              "local-13"
+            ],
+            "after": [
+              "SKU-6",
+              "fr",
+              "573.00",
+              "EXTERNAL NAME",
+              "local-13"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "en",
+              "3.00",
+              "Pièce Ω 14",
+              "local-14"
+            ],
+            "after": [
+              "SKU-7",
+              "en",
+              "3.00",
+              "EXTERNAL NAME",
+              "local-14"
+            ],
+            "fields": [
+              "name"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "414.00",
+              "Pièce Ω 15",
+              "local-15"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "9999.50",
+              "EXTERNAL NAME",
+              "local-15"
+            ],
+            "fields": [
+              "price",
+              "name"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 16,
+          "after_rows": 16,
+          "changed_keys": 17,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "c9f629c56c424948619ba7bf3b77ae6ca1d191909bdf7ebe90b8922f2b0984ac"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "7432315b7de44f067c1a7969dcae22a748bccaa97b3b2b7e9caf581b808548a7",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 263024,
+          "output_sha256": "7432315b7de44f067c1a7969dcae22a748bccaa97b3b2b7e9caf581b808548a7",
+          "output_rows": 16,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "7432315b7de44f067c1a7969dcae22a748bccaa97b3b2b7e9caf581b808548a7",
+        "rows_verified": 16
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 842560,
+      "conventional_cpu_ns": 276897,
+      "direct_frontier_code_cpu_ns": 484054
+    },
+    {
+      "case": 9,
+      "before_csv": "sku,locale,price,name,note\r\nSKU-0,en,209.00,Pièce Ω 0,local-0\r\nSKU-0,fr,870.00,Pièce Ω 1,local-1\r\nSKU-1,en,971.00,Pièce Ω 2,local-2\r\nSKU-1,fr,537.00,Pièce Ω 3,local-3\r\nSKU-2,en,489.00,Pièce Ω 4,local-4\r\nSKU-2,fr,256.00,Pièce Ω 5,local-5\r\nSKU-3,en,871.00,Pièce Ω 6,local-6\r\nSKU-3,fr,841.00,Pièce Ω 7,local-7\r\nSKU-4,en,609.00,Pièce Ω 8,local-8\r\nSKU-4,fr,465.00,Pièce Ω 9,local-9\r\nSKU-5,en,305.00,Pièce Ω 10,local-10\r\nSKU-5,fr,638.00,Pièce Ω 11,local-11\r\nSKU-6,en,968.00,Pièce Ω 12,local-12\r\nSKU-6,fr,31.00,Pièce Ω 13,local-13\r\nSKU-7,en,494.00,Pièce Ω 14,local-14\r\nSKU-7,fr,987.00,Pièce Ω 15,local-15\r\nSKU-8,en,966.00,Pièce Ω 16,local-16\r\n",
+      "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-8,en\nEXTERNAL NAME,EXTERNAL NOTE,987.0,SKU-7,fr\nEXTERNAL NAME,EXTERNAL NOTE,494.0,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,31.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,968.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,638.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,305.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,465.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,609.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,841.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,871.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,256.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,489.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,537.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,971.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,870.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 3,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [
+            "price"
+          ],
+          "aliases": {
+            "code": "sku",
+            "prix": "price",
+            "titre": "name"
+          },
+          "update_fields": [
+            "note"
+          ]
+        },
+        "before_sha256": "955022a2656a34bda89c559ecd6652e82ac39b71c7158a226bcab794658cd08c",
+        "after_sha256": "c46352e4f427de220df0b5b0c166aaec577a60717d9d8a5e06359ed3abc4eaa8",
+        "after_csv": "titre,note,prix,code,locale\nEXTERNAL NAME,EXTERNAL NOTE,9999.50,SKU-8,en\nEXTERNAL NAME,EXTERNAL NOTE,987.0,SKU-7,fr\nEXTERNAL NAME,EXTERNAL NOTE,494.0,SKU-7,en\nEXTERNAL NAME,EXTERNAL NOTE,31.0,SKU-6,fr\nEXTERNAL NAME,EXTERNAL NOTE,968.0,SKU-6,en\nEXTERNAL NAME,EXTERNAL NOTE,638.0,SKU-5,fr\nEXTERNAL NAME,EXTERNAL NOTE,305.0,SKU-5,en\nEXTERNAL NAME,EXTERNAL NOTE,465.0,SKU-4,fr\nEXTERNAL NAME,EXTERNAL NOTE,609.0,SKU-4,en\nEXTERNAL NAME,EXTERNAL NOTE,841.0,SKU-3,fr\nEXTERNAL NAME,EXTERNAL NOTE,871.0,SKU-3,en\nEXTERNAL NAME,EXTERNAL NOTE,256.0,SKU-2,fr\nEXTERNAL NAME,EXTERNAL NOTE,489.0,SKU-2,en\nEXTERNAL NAME,EXTERNAL NOTE,537.0,SKU-1,fr\nEXTERNAL NAME,EXTERNAL NOTE,971.0,SKU-1,en\nEXTERNAL NAME,EXTERNAL NOTE,870.0,SKU-0,fr\nnew name,new note,12.5,NEW,fr\n",
+        "output_sha256": "ec26b0556a68670296808f8ace730fba73098e7768fba64bdfd6d92979a5f3d0",
+        "output_csv": "sku,locale,price,name,note\nSKU-8,en,966.00,Pièce Ω 16,EXTERNAL NOTE\nSKU-7,fr,987.00,Pièce Ω 15,EXTERNAL NOTE\nSKU-7,en,494.00,Pièce Ω 14,EXTERNAL NOTE\nSKU-6,fr,31.00,Pièce Ω 13,EXTERNAL NOTE\nSKU-6,en,968.00,Pièce Ω 12,EXTERNAL NOTE\nSKU-5,fr,638.00,Pièce Ω 11,EXTERNAL NOTE\nSKU-5,en,305.00,Pièce Ω 10,EXTERNAL NOTE\nSKU-4,fr,465.00,Pièce Ω 9,EXTERNAL NOTE\nSKU-4,en,609.00,Pièce Ω 8,EXTERNAL NOTE\nSKU-3,fr,841.00,Pièce Ω 7,EXTERNAL NOTE\nSKU-3,en,871.00,Pièce Ω 6,EXTERNAL NOTE\nSKU-2,fr,256.00,Pièce Ω 5,EXTERNAL NOTE\nSKU-2,en,489.00,Pièce Ω 4,EXTERNAL NOTE\nSKU-1,fr,537.00,Pièce Ω 3,EXTERNAL NOTE\nSKU-1,en,971.00,Pièce Ω 2,EXTERNAL NOTE\nSKU-0,fr,870.00,Pièce Ω 1,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "rollback_csv": "sku,locale,price,name,note\r\nSKU-0,en,209.00,Pièce Ω 0,local-0\r\nSKU-0,fr,870.00,Pièce Ω 1,local-1\r\nSKU-1,en,971.00,Pièce Ω 2,local-2\r\nSKU-1,fr,537.00,Pièce Ω 3,local-3\r\nSKU-2,en,489.00,Pièce Ω 4,local-4\r\nSKU-2,fr,256.00,Pièce Ω 5,local-5\r\nSKU-3,en,871.00,Pièce Ω 6,local-6\r\nSKU-3,fr,841.00,Pièce Ω 7,local-7\r\nSKU-4,en,609.00,Pièce Ω 8,local-8\r\nSKU-4,fr,465.00,Pièce Ω 9,local-9\r\nSKU-5,en,305.00,Pièce Ω 10,local-10\r\nSKU-5,fr,638.00,Pièce Ω 11,local-11\r\nSKU-6,en,968.00,Pièce Ω 12,local-12\r\nSKU-6,fr,31.00,Pièce Ω 13,local-13\r\nSKU-7,en,494.00,Pièce Ω 14,local-14\r\nSKU-7,fr,987.00,Pièce Ω 15,local-15\r\nSKU-8,en,966.00,Pièce Ω 16,local-16\r\n",
+        "safe_preview_csv": "sku,locale,price,name,note\nSKU-8,en,966.00,Pièce Ω 16,EXTERNAL NOTE\nSKU-7,fr,987.00,Pièce Ω 15,EXTERNAL NOTE\nSKU-7,en,494.00,Pièce Ω 14,EXTERNAL NOTE\nSKU-6,fr,31.00,Pièce Ω 13,EXTERNAL NOTE\nSKU-6,en,968.00,Pièce Ω 12,EXTERNAL NOTE\nSKU-5,fr,638.00,Pièce Ω 11,EXTERNAL NOTE\nSKU-5,en,305.00,Pièce Ω 10,EXTERNAL NOTE\nSKU-4,fr,465.00,Pièce Ω 9,EXTERNAL NOTE\nSKU-4,en,609.00,Pièce Ω 8,EXTERNAL NOTE\nSKU-3,fr,841.00,Pièce Ω 7,EXTERNAL NOTE\nSKU-3,en,871.00,Pièce Ω 6,EXTERNAL NOTE\nSKU-2,fr,256.00,Pièce Ω 5,EXTERNAL NOTE\nSKU-2,en,489.00,Pièce Ω 4,EXTERNAL NOTE\nSKU-1,fr,537.00,Pièce Ω 3,EXTERNAL NOTE\nSKU-1,en,971.00,Pièce Ω 2,EXTERNAL NOTE\nSKU-0,fr,870.00,Pièce Ω 1,EXTERNAL NOTE\nNEW,fr,12.5,new name,new note\n",
+        "changes": [
+          {
+            "key": [
+              "NEW",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "NEW",
+              "fr",
+              "12.5",
+              "new name",
+              "new note"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "SKU-0",
+              "en",
+              "209.00",
+              "Pièce Ω 0",
+              "local-0"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "price",
+              "name",
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-0",
+              "fr",
+              "870.00",
+              "Pièce Ω 1",
+              "local-1"
+            ],
+            "after": [
+              "SKU-0",
+              "fr",
+              "870.00",
+              "Pièce Ω 1",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "en",
+              "971.00",
+              "Pièce Ω 2",
+              "local-2"
+            ],
+            "after": [
+              "SKU-1",
+              "en",
+              "971.00",
+              "Pièce Ω 2",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-1",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-1",
+              "fr",
+              "537.00",
+              "Pièce Ω 3",
+              "local-3"
+            ],
+            "after": [
+              "SKU-1",
+              "fr",
+              "537.00",
+              "Pièce Ω 3",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "en",
+              "489.00",
+              "Pièce Ω 4",
+              "local-4"
+            ],
+            "after": [
+              "SKU-2",
+              "en",
+              "489.00",
+              "Pièce Ω 4",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-2",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-2",
+              "fr",
+              "256.00",
+              "Pièce Ω 5",
+              "local-5"
+            ],
+            "after": [
+              "SKU-2",
+              "fr",
+              "256.00",
+              "Pièce Ω 5",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "en",
+              "871.00",
+              "Pièce Ω 6",
+              "local-6"
+            ],
+            "after": [
+              "SKU-3",
+              "en",
+              "871.00",
+              "Pièce Ω 6",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-3",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-3",
+              "fr",
+              "841.00",
+              "Pièce Ω 7",
+              "local-7"
+            ],
+            "after": [
+              "SKU-3",
+              "fr",
+              "841.00",
+              "Pièce Ω 7",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "en",
+              "609.00",
+              "Pièce Ω 8",
+              "local-8"
+            ],
+            "after": [
+              "SKU-4",
+              "en",
+              "609.00",
+              "Pièce Ω 8",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-4",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-4",
+              "fr",
+              "465.00",
+              "Pièce Ω 9",
+              "local-9"
+            ],
+            "after": [
+              "SKU-4",
+              "fr",
+              "465.00",
+              "Pièce Ω 9",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "en",
+              "305.00",
+              "Pièce Ω 10",
+              "local-10"
+            ],
+            "after": [
+              "SKU-5",
+              "en",
+              "305.00",
+              "Pièce Ω 10",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-5",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-5",
+              "fr",
+              "638.00",
+              "Pièce Ω 11",
+              "local-11"
+            ],
+            "after": [
+              "SKU-5",
+              "fr",
+              "638.00",
+              "Pièce Ω 11",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "en",
+              "968.00",
+              "Pièce Ω 12",
+              "local-12"
+            ],
+            "after": [
+              "SKU-6",
+              "en",
+              "968.00",
+              "Pièce Ω 12",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-6",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-6",
+              "fr",
+              "31.00",
+              "Pièce Ω 13",
+              "local-13"
+            ],
+            "after": [
+              "SKU-6",
+              "fr",
+              "31.00",
+              "Pièce Ω 13",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "en",
+              "494.00",
+              "Pièce Ω 14",
+              "local-14"
+            ],
+            "after": [
+              "SKU-7",
+              "en",
+              "494.00",
+              "Pièce Ω 14",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-7",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-7",
+              "fr",
+              "987.00",
+              "Pièce Ω 15",
+              "local-15"
+            ],
+            "after": [
+              "SKU-7",
+              "fr",
+              "987.00",
+              "Pièce Ω 15",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          },
+          {
+            "key": [
+              "SKU-8",
+              "en"
+            ],
+            "kind": "update",
+            "before": [
+              "SKU-8",
+              "en",
+              "966.00",
+              "Pièce Ω 16",
+              "local-16"
+            ],
+            "after": [
+              "SKU-8",
+              "en",
+              "966.00",
+              "Pièce Ω 16",
+              "EXTERNAL NOTE"
+            ],
+            "fields": [
+              "note"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 17,
+          "after_rows": 17,
+          "changed_keys": 18,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "a1fc3a84c46ccf8a305116c84a11a7ea61c671f7f17b8b85231d046ef45dc266"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "ec26b0556a68670296808f8ace730fba73098e7768fba64bdfd6d92979a5f3d0",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 406228,
+          "output_sha256": "ec26b0556a68670296808f8ace730fba73098e7768fba64bdfd6d92979a5f3d0",
+          "output_rows": 17,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "ec26b0556a68670296808f8ace730fba73098e7768fba64bdfd6d92979a5f3d0",
+        "rows_verified": 17
+      },
+      "gen2_refused": true,
+      "conventional_tie": true,
+      "direct_frontier_v2_tie": true,
+      "ordinary_library_tie": true,
+      "product_cpu_ns": 870310,
+      "conventional_cpu_ns": 293015,
+      "direct_frontier_code_cpu_ns": 509483
+    }
+  ],
+  "accepted": 10,
+  "gen2_refusals": 10,
+  "conventional_ties": 10,
+  "direct_frontier_v2_ties": 10,
+  "ordinary_library_ties": 10,
+  "verdict": "Fresh selective-policy construction works across compositional controls; all competent full-scope alternatives tie, including independently authored frontier code and ordinary reuse. No exclusive Alpha gain."
+}

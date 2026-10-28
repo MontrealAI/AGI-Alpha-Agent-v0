@@ -1,0 +1,435 @@
+{
+  "id": "generation1-independent-fresh-acceptance/v1",
+  "nonce": "1b13f86aac9bf6592c9271cb3984b73c",
+  "source_sha256": "aa30981e2a702cf208866d14d365eb244e9c8910df798b85c18030248f72ca28",
+  "cases": [
+    {
+      "case": 0,
+      "before_csv": "sku,locale,description,price\n\"item,0-0\",en,Québec Ω 0,10\n\"item,0-0\",fr,Québec Ω 1,11\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-3\",fr,Québec Ω 7,17\n",
+      "after_csv": "sku,locale,description,price\n\"item,0-3\",fr,Nouveau 1b13f8,17\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-0\",fr,Québec Ω 1,123.45\nnew-0,fr,nouvelle pièce,22\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 1,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "3fb52612ea5a6c29d85fe8f871a02c274f3c75c7b18c47fa4ea9e0280958eb7c",
+        "after_sha256": "5618034caef0c65fe067fbf8aa644c140590b09520bde17ed7acde0904575455",
+        "after_csv": "sku,locale,description,price\n\"item,0-3\",fr,Nouveau 1b13f8,17\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-0\",fr,Québec Ω 1,123.45\nnew-0,fr,nouvelle pièce,22\n",
+        "output_sha256": "5618034caef0c65fe067fbf8aa644c140590b09520bde17ed7acde0904575455",
+        "output_csv": "sku,locale,description,price\n\"item,0-3\",fr,Nouveau 1b13f8,17\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-0\",fr,Québec Ω 1,123.45\nnew-0,fr,nouvelle pièce,22\n",
+        "rollback_csv": "sku,locale,description,price\n\"item,0-0\",en,Québec Ω 0,10\n\"item,0-0\",fr,Québec Ω 1,11\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-3\",fr,Québec Ω 7,17\n",
+        "safe_preview_csv": "sku,locale,description,price\n\"item,0-3\",fr,Nouveau 1b13f8,17\n\"item,0-3\",en,Québec Ω 6,16\n\"item,0-2\",fr,Québec Ω 5,15\n\"item,0-2\",en,Québec Ω 4,14\n\"item,0-1\",fr,Québec Ω 3,13\n\"item,0-1\",en,Québec Ω 2,12\n\"item,0-0\",fr,Québec Ω 1,123.45\nnew-0,fr,nouvelle pièce,22\n",
+        "changes": [
+          {
+            "key": [
+              "item,0-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "item,0-0",
+              "en",
+              "Québec Ω 0",
+              "10"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,0-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,0-0",
+              "fr",
+              "Québec Ω 1",
+              "11"
+            ],
+            "after": [
+              "item,0-0",
+              "fr",
+              "Québec Ω 1",
+              "123.45"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,0-3",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,0-3",
+              "fr",
+              "Québec Ω 7",
+              "17"
+            ],
+            "after": [
+              "item,0-3",
+              "fr",
+              "Nouveau 1b13f8",
+              "17"
+            ],
+            "fields": [
+              "description"
+            ]
+          },
+          {
+            "key": [
+              "new-0",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "new-0",
+              "fr",
+              "nouvelle pièce",
+              "22"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 8,
+          "after_rows": 8,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "2960fbda2f8c4d13103894e3746232b299c964d227684ecf6354943b89012c9b"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "5618034caef0c65fe067fbf8aa644c140590b09520bde17ed7acde0904575455",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 132469,
+          "output_sha256": "5618034caef0c65fe067fbf8aa644c140590b09520bde17ed7acde0904575455",
+          "output_rows": 8,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "5618034caef0c65fe067fbf8aa644c140590b09520bde17ed7acde0904575455",
+        "rows_verified": 8
+      },
+      "gen0_refused": true,
+      "conventional_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    },
+    {
+      "case": 1,
+      "before_csv": "sku,locale,description,price\r\n\"item,1-0\",en,Québec Ω 0,10\r\n\"item,1-0\",fr,Québec Ω 1,11\r\n\"item,1-1\",en,Québec Ω 2,12\r\n\"item,1-1\",fr,Québec Ω 3,13\r\n\"item,1-2\",en,Québec Ω 4,14\r\n\"item,1-2\",fr,Québec Ω 5,15\r\n\"item,1-3\",en,Québec Ω 6,16\r\n\"item,1-3\",fr,Québec Ω 7,17\r\n\"item,1-4\",en,Québec Ω 8,18\r\n\"item,1-4\",fr,Québec Ω 9,19\r\n\"item,1-5\",en,Québec Ω 10,20\r\n\"item,1-5\",fr,Québec Ω 11,21\r\n\"item,1-6\",en,Québec Ω 12,22\r\n\"item,1-6\",fr,Québec Ω 13,23\r\n\"item,1-7\",en,Québec Ω 14,24\r\n\"item,1-7\",fr,Québec Ω 15,25\r\n\"item,1-8\",en,Québec Ω 16,26\r\n\"item,1-8\",fr,Québec Ω 17,27\r\n\"item,1-9\",en,Québec Ω 18,28\r\n\"item,1-9\",fr,Québec Ω 19,29\r\n",
+      "after_csv": "sku,locale,description,price\n\"item,1-9\",fr,Nouveau 1b13f8,29\n\"item,1-9\",en,Québec Ω 18,28\n\"item,1-8\",fr,Québec Ω 17,27\n\"item,1-8\",en,Québec Ω 16,26\n\"item,1-7\",fr,Québec Ω 15,25\n\"item,1-7\",en,Québec Ω 14,24\n\"item,1-6\",fr,Québec Ω 13,23\n\"item,1-6\",en,Québec Ω 12,22\n\"item,1-5\",fr,Québec Ω 11,21\n\"item,1-5\",en,Québec Ω 10,20\n\"item,1-4\",fr,Québec Ω 9,19\n\"item,1-4\",en,Québec Ω 8,18\n\"item,1-3\",fr,Québec Ω 7,17\n\"item,1-3\",en,Québec Ω 6,16\n\"item,1-2\",fr,Québec Ω 5,15\n\"item,1-2\",en,Québec Ω 4,14\n\"item,1-1\",fr,Québec Ω 3,13\n\"item,1-1\",en,Québec Ω 2,12\n\"item,1-0\",fr,Québec Ω 1,123.45\nnew-1,fr,nouvelle pièce,22\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 1,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "a03a12d0c7222eb0174b434a14850facaf10fb6b90f8548c79e5c40d85b96a9a",
+        "after_sha256": "eba476296749b6a474b3b3532d5db9aec0d22174b9e5f89c1e661125d0c53218",
+        "after_csv": "sku,locale,description,price\n\"item,1-9\",fr,Nouveau 1b13f8,29\n\"item,1-9\",en,Québec Ω 18,28\n\"item,1-8\",fr,Québec Ω 17,27\n\"item,1-8\",en,Québec Ω 16,26\n\"item,1-7\",fr,Québec Ω 15,25\n\"item,1-7\",en,Québec Ω 14,24\n\"item,1-6\",fr,Québec Ω 13,23\n\"item,1-6\",en,Québec Ω 12,22\n\"item,1-5\",fr,Québec Ω 11,21\n\"item,1-5\",en,Québec Ω 10,20\n\"item,1-4\",fr,Québec Ω 9,19\n\"item,1-4\",en,Québec Ω 8,18\n\"item,1-3\",fr,Québec Ω 7,17\n\"item,1-3\",en,Québec Ω 6,16\n\"item,1-2\",fr,Québec Ω 5,15\n\"item,1-2\",en,Québec Ω 4,14\n\"item,1-1\",fr,Québec Ω 3,13\n\"item,1-1\",en,Québec Ω 2,12\n\"item,1-0\",fr,Québec Ω 1,123.45\nnew-1,fr,nouvelle pièce,22\n",
+        "output_sha256": "eba476296749b6a474b3b3532d5db9aec0d22174b9e5f89c1e661125d0c53218",
+        "output_csv": "sku,locale,description,price\n\"item,1-9\",fr,Nouveau 1b13f8,29\n\"item,1-9\",en,Québec Ω 18,28\n\"item,1-8\",fr,Québec Ω 17,27\n\"item,1-8\",en,Québec Ω 16,26\n\"item,1-7\",fr,Québec Ω 15,25\n\"item,1-7\",en,Québec Ω 14,24\n\"item,1-6\",fr,Québec Ω 13,23\n\"item,1-6\",en,Québec Ω 12,22\n\"item,1-5\",fr,Québec Ω 11,21\n\"item,1-5\",en,Québec Ω 10,20\n\"item,1-4\",fr,Québec Ω 9,19\n\"item,1-4\",en,Québec Ω 8,18\n\"item,1-3\",fr,Québec Ω 7,17\n\"item,1-3\",en,Québec Ω 6,16\n\"item,1-2\",fr,Québec Ω 5,15\n\"item,1-2\",en,Québec Ω 4,14\n\"item,1-1\",fr,Québec Ω 3,13\n\"item,1-1\",en,Québec Ω 2,12\n\"item,1-0\",fr,Québec Ω 1,123.45\nnew-1,fr,nouvelle pièce,22\n",
+        "rollback_csv": "sku,locale,description,price\r\n\"item,1-0\",en,Québec Ω 0,10\r\n\"item,1-0\",fr,Québec Ω 1,11\r\n\"item,1-1\",en,Québec Ω 2,12\r\n\"item,1-1\",fr,Québec Ω 3,13\r\n\"item,1-2\",en,Québec Ω 4,14\r\n\"item,1-2\",fr,Québec Ω 5,15\r\n\"item,1-3\",en,Québec Ω 6,16\r\n\"item,1-3\",fr,Québec Ω 7,17\r\n\"item,1-4\",en,Québec Ω 8,18\r\n\"item,1-4\",fr,Québec Ω 9,19\r\n\"item,1-5\",en,Québec Ω 10,20\r\n\"item,1-5\",fr,Québec Ω 11,21\r\n\"item,1-6\",en,Québec Ω 12,22\r\n\"item,1-6\",fr,Québec Ω 13,23\r\n\"item,1-7\",en,Québec Ω 14,24\r\n\"item,1-7\",fr,Québec Ω 15,25\r\n\"item,1-8\",en,Québec Ω 16,26\r\n\"item,1-8\",fr,Québec Ω 17,27\r\n\"item,1-9\",en,Québec Ω 18,28\r\n\"item,1-9\",fr,Québec Ω 19,29\r\n",
+        "safe_preview_csv": "sku,locale,description,price\n\"item,1-9\",fr,Nouveau 1b13f8,29\n\"item,1-9\",en,Québec Ω 18,28\n\"item,1-8\",fr,Québec Ω 17,27\n\"item,1-8\",en,Québec Ω 16,26\n\"item,1-7\",fr,Québec Ω 15,25\n\"item,1-7\",en,Québec Ω 14,24\n\"item,1-6\",fr,Québec Ω 13,23\n\"item,1-6\",en,Québec Ω 12,22\n\"item,1-5\",fr,Québec Ω 11,21\n\"item,1-5\",en,Québec Ω 10,20\n\"item,1-4\",fr,Québec Ω 9,19\n\"item,1-4\",en,Québec Ω 8,18\n\"item,1-3\",fr,Québec Ω 7,17\n\"item,1-3\",en,Québec Ω 6,16\n\"item,1-2\",fr,Québec Ω 5,15\n\"item,1-2\",en,Québec Ω 4,14\n\"item,1-1\",fr,Québec Ω 3,13\n\"item,1-1\",en,Québec Ω 2,12\n\"item,1-0\",fr,Québec Ω 1,123.45\nnew-1,fr,nouvelle pièce,22\n",
+        "changes": [
+          {
+            "key": [
+              "item,1-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "item,1-0",
+              "en",
+              "Québec Ω 0",
+              "10"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,1-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,1-0",
+              "fr",
+              "Québec Ω 1",
+              "11"
+            ],
+            "after": [
+              "item,1-0",
+              "fr",
+              "Québec Ω 1",
+              "123.45"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,1-9",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,1-9",
+              "fr",
+              "Québec Ω 19",
+              "29"
+            ],
+            "after": [
+              "item,1-9",
+              "fr",
+              "Nouveau 1b13f8",
+              "29"
+            ],
+            "fields": [
+              "description"
+            ]
+          },
+          {
+            "key": [
+              "new-1",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "new-1",
+              "fr",
+              "nouvelle pièce",
+              "22"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 20,
+          "after_rows": 20,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "1375977729665789a6006410f9fc5512172cc179600149bc5200aab55d2c7baa"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "eba476296749b6a474b3b3532d5db9aec0d22174b9e5f89c1e661125d0c53218",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 130911,
+          "output_sha256": "eba476296749b6a474b3b3532d5db9aec0d22174b9e5f89c1e661125d0c53218",
+          "output_rows": 20,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "eba476296749b6a474b3b3532d5db9aec0d22174b9e5f89c1e661125d0c53218",
+        "rows_verified": 20
+      },
+      "gen0_refused": true,
+      "conventional_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    },
+    {
+      "case": 2,
+      "before_csv": "sku,locale,description,price\n\"item,2-0\",en,Québec Ω 0,10\n\"item,2-0\",fr,Québec Ω 1,11\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-15\",fr,Québec Ω 31,41\n",
+      "after_csv": "sku,locale,description,price\n\"item,2-15\",fr,Nouveau 1b13f8,41\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-0\",fr,Québec Ω 1,123.45\nnew-2,fr,nouvelle pièce,22\n",
+      "package": {
+        "schema": "catalog-change-set/v1",
+        "generation": 1,
+        "keys": [
+          "sku",
+          "locale"
+        ],
+        "options": {
+          "decimal_columns": [],
+          "aliases": {},
+          "update_fields": null
+        },
+        "before_sha256": "83987297fd77d50d45f110de0b16ffdb36a046a231a3dd98333b9f85a2d59abb",
+        "after_sha256": "1359b638d86a9cb9ce8a4a751985f0f96a45da33884c64e14a4aa6dfb05aff66",
+        "after_csv": "sku,locale,description,price\n\"item,2-15\",fr,Nouveau 1b13f8,41\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-0\",fr,Québec Ω 1,123.45\nnew-2,fr,nouvelle pièce,22\n",
+        "output_sha256": "1359b638d86a9cb9ce8a4a751985f0f96a45da33884c64e14a4aa6dfb05aff66",
+        "output_csv": "sku,locale,description,price\n\"item,2-15\",fr,Nouveau 1b13f8,41\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-0\",fr,Québec Ω 1,123.45\nnew-2,fr,nouvelle pièce,22\n",
+        "rollback_csv": "sku,locale,description,price\n\"item,2-0\",en,Québec Ω 0,10\n\"item,2-0\",fr,Québec Ω 1,11\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-15\",fr,Québec Ω 31,41\n",
+        "safe_preview_csv": "sku,locale,description,price\n\"item,2-15\",fr,Nouveau 1b13f8,41\n\"item,2-15\",en,Québec Ω 30,40\n\"item,2-14\",fr,Québec Ω 29,39\n\"item,2-14\",en,Québec Ω 28,38\n\"item,2-13\",fr,Québec Ω 27,37\n\"item,2-13\",en,Québec Ω 26,36\n\"item,2-12\",fr,Québec Ω 25,35\n\"item,2-12\",en,Québec Ω 24,34\n\"item,2-11\",fr,Québec Ω 23,33\n\"item,2-11\",en,Québec Ω 22,32\n\"item,2-10\",fr,Québec Ω 21,31\n\"item,2-10\",en,Québec Ω 20,30\n\"item,2-9\",fr,Québec Ω 19,29\n\"item,2-9\",en,Québec Ω 18,28\n\"item,2-8\",fr,Québec Ω 17,27\n\"item,2-8\",en,Québec Ω 16,26\n\"item,2-7\",fr,Québec Ω 15,25\n\"item,2-7\",en,Québec Ω 14,24\n\"item,2-6\",fr,Québec Ω 13,23\n\"item,2-6\",en,Québec Ω 12,22\n\"item,2-5\",fr,Québec Ω 11,21\n\"item,2-5\",en,Québec Ω 10,20\n\"item,2-4\",fr,Québec Ω 9,19\n\"item,2-4\",en,Québec Ω 8,18\n\"item,2-3\",fr,Québec Ω 7,17\n\"item,2-3\",en,Québec Ω 6,16\n\"item,2-2\",fr,Québec Ω 5,15\n\"item,2-2\",en,Québec Ω 4,14\n\"item,2-1\",fr,Québec Ω 3,13\n\"item,2-1\",en,Québec Ω 2,12\n\"item,2-0\",fr,Québec Ω 1,123.45\nnew-2,fr,nouvelle pièce,22\n",
+        "changes": [
+          {
+            "key": [
+              "item,2-0",
+              "en"
+            ],
+            "kind": "delete",
+            "before": [
+              "item,2-0",
+              "en",
+              "Québec Ω 0",
+              "10"
+            ],
+            "after": null,
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,2-0",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,2-0",
+              "fr",
+              "Québec Ω 1",
+              "11"
+            ],
+            "after": [
+              "item,2-0",
+              "fr",
+              "Québec Ω 1",
+              "123.45"
+            ],
+            "fields": [
+              "price"
+            ]
+          },
+          {
+            "key": [
+              "item,2-15",
+              "fr"
+            ],
+            "kind": "update",
+            "before": [
+              "item,2-15",
+              "fr",
+              "Québec Ω 31",
+              "41"
+            ],
+            "after": [
+              "item,2-15",
+              "fr",
+              "Nouveau 1b13f8",
+              "41"
+            ],
+            "fields": [
+              "description"
+            ]
+          },
+          {
+            "key": [
+              "new-2",
+              "fr"
+            ],
+            "kind": "insert",
+            "before": null,
+            "after": [
+              "new-2",
+              "fr",
+              "nouvelle pièce",
+              "22"
+            ],
+            "fields": [
+              "sku",
+              "locale",
+              "description",
+              "price"
+            ]
+          }
+        ],
+        "trace": {
+          "before_rows": 32,
+          "after_rows": 32,
+          "changed_keys": 4,
+          "authority": "none; in-memory transformation only",
+          "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+          "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+        },
+        "proof_digest": "1e0e0cebc7eb7f6b399b775b2853f67a3cb38add779707bc0f30a64c2877cd86"
+      },
+      "acceptance": {
+        "accepted": true,
+        "errors": [],
+        "protocol": "alpha-catalog-independent-acceptance/v1",
+        "expected_sha256": "1359b638d86a9cb9ce8a4a751985f0f96a45da33884c64e14a4aa6dfb05aff66",
+        "comparator": {
+          "name": "independent-conventional-csv-dictionary",
+          "elapsed_ns": 198607,
+          "output_sha256": "1359b638d86a9cb9ce8a4a751985f0f96a45da33884c64e14a4aa6dfb05aff66",
+          "output_rows": 32,
+          "resources": "one CPU Python standard-library process, no model calls",
+          "direct_frontier_ai_boundary": "same-session AI-authored implementation, not an API inference trial",
+          "ordinary_library_boundary": "identical implementation/artifacts available to ordinary reuse; no exclusive advantage",
+          "finite": true
+        },
+        "actual_output_sha256": "1359b638d86a9cb9ce8a4a751985f0f96a45da33884c64e14a4aa6dfb05aff66",
+        "rows_verified": 32
+      },
+      "gen0_refused": true,
+      "conventional_tie": true,
+      "ordinary_full_snapshot_plus_backup_tie": true
+    }
+  ],
+  "accepted": 3,
+  "gen0_refusals": 3,
+  "conventional_ties": 3,
+  "ordinary_full_snapshot_plus_backup_ties": 3,
+  "verdict": "Fresh range expansion over frozen gen0; conventional and ordinary backup arrangement tie; no technical superiority or exclusive successor advantage."
+}

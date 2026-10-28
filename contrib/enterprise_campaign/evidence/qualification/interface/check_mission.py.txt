@@ -1,0 +1,33 @@
+import json
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+root=Path('/dev/shm/alpha-20261028/repo')
+out=Path('/dev/shm/alpha-20261028/interface-qa')
+checks=[]
+with sync_playwright() as p:
+ b=p.chromium.launch(headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
+ for lang in ['en','fr']:
+  for width in [1440,768,390,320]:
+   page=b.new_page(viewport={'width':width,'height':1000})
+   errors=[]; external=[]
+   page.on('pageerror',lambda e:errors.append(str(e)))
+   page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') else None)
+   page.goto((root/'docs/successor/alpha/index.html').as_uri()+'?lang='+lang)
+   page.locator('#admission-title').wait_for()
+   assert page.locator('html').get_attribute('lang')==lang
+   assert page.locator('.admission-section').evaluate('(el)=>el.compareDocumentPosition(document.querySelector("#computer-mission")) & Node.DOCUMENT_POSITION_FOLLOWING')
+   page.locator('.admission-gate summary').focus(); page.keyboard.press('Enter')
+   assert page.locator('.admission-gate').get_attribute('open') is not None
+   assert page.locator('.admission-gate li').count()==7
+   page.locator('.admission-example summary').focus(); page.keyboard.press('Enter')
+   assert page.locator('.admission-facts dd').count()==5
+   assert page.locator('.admission-facts dd').last.is_visible()
+   assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'),(lang,width,page.evaluate('document.documentElement.scrollWidth'))
+   assert not errors,errors
+   assert not external,external
+   checks.append({'language':lang,'width':width,'seven_questions':True,'five_evidence_facts':True,'keyboard_details':True,'before_demo':True,'overflow':False,'errors':errors,'external':external})
+   if (lang,width) in [('en',1440),('fr',390)]: page.screenshot(path=str(out/f'mission-{lang}-{width}.png'),full_page=False)
+   page.close()
+ b.close()
+(out/'mission-interface-checks.json').write_text(json.dumps({'passed':True,'checks':checks},indent=2)+'\n')
+print(json.dumps({'passed':True,'viewport_language_checks':len(checks)}))

@@ -7,6 +7,25 @@
 **[Start the flagship →](../successor/alpha/index.html)** ·
 **[Démarrer le parcours phare →](../successor/alpha/index.html?lang=fr)**
 
+**The mission is the Profitable Possibility Engine.** Imagine a consequential possibility, challenge its
+constraint, invent the missing means, construct the capability, then find the first useful commercial delivery.
+Compare three materially different possibilities before substantial flagship construction. In the existing
+discovery history, record the beneficiary, strongest accessible alternative and remaining limitation, recent
+frontier change, missing means, decisive independent experiment, first delivery and further valuable activities.
+If affordability is the change, specify the threshold crossed and what it makes accessible.
+
+The interface below is a mission workspace. **Admission is not established by opening it or filling a form.**
+Keep four states distinct: ambition, admitted candidate, demonstrated construction, commercial qualification.
+A Blue Sky HOLD candidate gets only a bounded commercial probe with its own deliverables, allowance and stop;
+profit does not lift HOLD or release the main flagship construction/publication budget.
+See the [admission and evidence guide](SUCCESSOR_ALPHA.md#blue-sky-admission-before-flagship-construction).
+
+**FR · Le moteur des possibles rentables.** Imaginer une activité nouvelle, contester sa contrainte, inventer
+les moyens manquants, construire la capacité et livrer une première valeur utile. Comparer trois possibilités;
+préciser bénéficiaire, limite actuelle, changement récent, moyen à construire, expérience indépendante,
+première livraison et activités futures. Une fiche remplie ne prouve rien à elle seule. Admission Blue Sky,
+construction démontrée et qualification commerciale restent séparées. Une sonde rentable sous HOLD reste délimitée.
+
 Choose a valuable opportunity in software, research or mathematics. Prepare a Computer Use mission to
 investigate real public material and produce a concrete artifact. Discover and combine strategies at Level 3,
 then test a better problem formulation at Level 4 while preserving the required outcome and acceptance criteria.

@@ -1,0 +1,41 @@
+{
+  "experiment_role": "independent same-session model-assisted construction baseline",
+  "function": "baseline.transform",
+  "source_path": "/dev/shm/alpha-20261028/baseline/baseline.py",
+  "source_sha256": "58daae946a786a9cced9aeb44a525b436dde834f6cf9629d590b22148aec77f0",
+  "source_frozen": true,
+  "started_at_utc": "2026-10-28T17:55:12.652946+00:00",
+  "start_timestamp_basis": "birth time of dedicated baseline directory, created by first construction tool call",
+  "frozen_at_utc": "2026-10-28T17:59:29.707206+00:00",
+  "construction_elapsed_seconds": 257.05426,
+  "development_case_count": 33,
+  "development_cases_passed": 33,
+  "development_inputs_outputs_diagnostics": "/dev/shm/alpha-20261028/baseline/development_results.json",
+  "development_test_source": "/dev/shm/alpha-20261028/baseline/development_test.py",
+  "python_version": "3.12.14",
+  "implementation_dependencies": [
+    "Python standard library: csv, io, collections.abc, decimal, threading"
+  ],
+  "construction_tools": [
+    "exec_command shell access only, scoped to dedicated /dev/shm baseline directory",
+    "Python standard library for test execution, timestamps, and source hashing",
+    "collaboration.send_message to parent for status and frozen-source handoff"
+  ],
+  "external_network_or_service_calls": 0,
+  "external_purchases": 0,
+  "external_repository_or_product_code_reads": 0,
+  "other_implementation_reads": 0,
+  "human_review": false,
+  "additional_subagent_calls": 0,
+  "model_identifier": "Exact model identifier/version not exposed; Codex agent identified as GPT-6 family in developer context",
+  "model_token_metering": "Unavailable in this environment",
+  "model_cost_metering": "Unavailable in this environment",
+  "claim_scope": "One actual model-assisted construction episode; no per-order inference or cost claim",
+  "contract_notes": [
+    "aliases map after/supplier headers to before/canonical headers",
+    "decimal_columns controls Decimal validation and formatting preservation",
+    "Decimal accepts its native finite numeric syntax, including surrounding whitespace",
+    "rollback_csv is exactly the original input string; input bytes are not separately supplied",
+    "Parser temporarily raises csv.field_size_limit under an internal lock and restores it"
+  ]
+}

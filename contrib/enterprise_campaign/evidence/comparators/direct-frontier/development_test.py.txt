@@ -1,0 +1,90 @@
+"""Deterministic development fixtures, independent of campaign cases."""
+import json
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from baseline import transform, TransformError
+
+ROOT = Path(__file__).parent
+
+def valid(name, before, after, expected, keys=['id'], decimal_columns=[], aliases={}):
+    return dict(name=name, before=before, after=after, keys=keys,
+                decimal_columns=decimal_columns, aliases=aliases, expected_output_csv=expected)
+
+def invalid(name, before, after, keys=['id'], decimal_columns=[], aliases={}):
+    return dict(name=name, before=before, after=after, keys=keys,
+                decimal_columns=decimal_columns, aliases=aliases, expect_error=True)
+
+CASES = [
+    valid('alias_reorder_membership_decimal', 'sku,amount,note\r\nA,001.00,old\r\nB,2.0,gone\r\n',
+          'Supplier Note,Supplier Amount,Supplier SKU\r\nchanged,1,A\r\nnew,3.50,C\r\n',
+          'sku,amount,note\nA,001.00,changed\nC,3.50,new\n', ['sku'], ['amount'],
+          {'Supplier Note':'note','Supplier Amount':'amount','Supplier SKU':'sku'}),
+    valid('composite_exact_keys', 'region,sku,cost\nnorth,01,1.000\nnorth0,1,2.000\n',
+          'cost,sku,region\n2,1,north0\n1,01,north\n3,1,north\n',
+          'region,sku,cost\nnorth0,1,2.000\nnorth,01,1.000\nnorth,1,3\n', ['region','sku'], ['cost']),
+    valid('exact_key_not_numeric', 'id,v\n01,1.00\n', 'id,v\n1,1\n', 'id,v\n1,1\n', decimal_columns=['v']),
+    valid('decimal_exponents_signed_zero', 'id,a,b\nx,001e3,-0.00\n', 'id,a,b\nx,1000,0\n',
+          'id,a,b\nx,001e3,-0.00\n', decimal_columns=['a','b']),
+    valid('changed_decimal', 'id,v\nx,1.00\n', 'id,v\nx,2.0\n', 'id,v\nx,2.0\n', decimal_columns=['v']),
+    valid('undeclared_numeric_text', 'id,v\nx,1.00\n', 'id,v\nx,1\n', 'id,v\nx,1\n'),
+    valid('embedded_quote_comma_newline_cr', 'id,text\nx,old\n',
+          'id,text\nx,"a,b""c\nd\re"\n', 'id,text\nx,"a,b""c\nd\re"\n'),
+    valid('header_only_after_exact_rollback', '"id",v\r\nx,1.00', 'v,id\n', 'id,v\n'),
+    valid('no_final_newline', 'id,v\nx,old', 'id,v\nx,new', 'id,v\nx,new\n'),
+    valid('empty_before_rows', 'id,v\n', 'v,id\n3.50,new\n', 'id,v\nnew,3.50\n', decimal_columns=['v']),
+    valid('whitespace_key_is_exact_nonempty', 'id,v\n ,old\n', 'id,v\n ,new\n', 'id,v\n ,new\n'),
+    valid('large_finite_decimal_exact', 'id,v\nx,999999999999999999999999999999999999.000\n',
+          'id,v\nx,999999999999999999999999999999999999\n',
+          'id,v\nx,999999999999999999999999999999999999.000\n', decimal_columns=['v']),
+    valid('long_text_field', 'id,v\nx,old\n', 'id,v\nx,' + 'a'*140000 + '\n',
+          'id,v\nx,' + 'a'*140000 + '\n'),
+    invalid('unknown_key', 'id,v\nx,1\n', 'id,v\nx,1\n', keys=['missing']),
+    invalid('schema_missing', 'id,v\nx,1\n', 'id\nx\n'),
+    invalid('schema_extra', 'id\nx\n', 'id,v\nx,1\n'),
+    invalid('alias_collision', 'id,v\nx,1\n', 'id,supplier_v,v\nx,1,1\n', aliases={'supplier_v':'v'}),
+    invalid('duplicate_before_header', 'id,id\nx,y\n', 'id,v\nx,1\n'),
+    invalid('blank_header', 'id,\nx,1\n', 'id,v\nx,1\n'),
+    invalid('duplicate_before_keys', 'id,v\nx,1\nx,2\n', 'id,v\nx,1\n'),
+    invalid('duplicate_after_keys', 'id,v\nx,1\n', 'id,v\nx,1\nx,2\n'),
+    invalid('empty_composite_component', 'id,v\nx,1\n', 'id,v\nx,\n', keys=['id','v']),
+    invalid('ragged_row', 'id,v\nx,1\n', 'id,v\nx,1,z\n'),
+    invalid('invalid_deleted_before_decimal', 'id,v\nx,no\n', 'id,v\n', decimal_columns=['v']),
+    invalid('invalid_new_after_decimal', 'id,v\n', 'id,v\nx,no\n', decimal_columns=['v']),
+    invalid('empty_decimal', 'id,v\nx,1\n', 'id,v\nx,\n', decimal_columns=['v']),
+    invalid('nan_decimal', 'id,v\nx,1\n', 'id,v\nx,NaN\n', decimal_columns=['v']),
+    invalid('infinity_decimal', 'id,v\nx,1\n', 'id,v\nx,-Infinity\n', decimal_columns=['v']),
+    invalid('bare_quote', 'id,v\nx,1\n', 'id,v\nx,ab"cd\n'),
+    invalid('post_quote_characters', 'id,v\nx,1\n', 'id,v\nx,"a"b\n'),
+    invalid('unterminated_quote', 'id,v\nx,1\n', 'id,v\nx,"abc\n'),
+    invalid('missing_header', '', 'id\nx\n'),
+    invalid('blank_record', 'id,v\nx,1\n', 'id,v\n\nx,1\n'),
+]
+
+started = time.perf_counter()
+records = []
+for case in CASES:
+    args = {name: case[name] for name in ['before','after','keys','decimal_columns','aliases']}
+    record = dict(case)
+    try:
+        actual = transform(**args)
+        record['actual'] = actual
+        record['passed'] = not case.get('expect_error', False) and actual == {
+            'output_csv': case.get('expected_output_csv'), 'rollback_csv': case['before']}
+        if not record['passed']:
+            record['diagnostic'] = 'Unexpected output or expected rejection did not occur'
+    except Exception as exc:
+        record['exception_type'] = type(exc).__name__
+        record['diagnostic'] = str(exc)
+        record['passed'] = case.get('expect_error', False) and isinstance(exc, TransformError)
+    records.append(record)
+report = {'recorded_at_utc': datetime.now(timezone.utc).isoformat(),
+          'test_runtime_seconds': time.perf_counter() - started,
+          'passed': sum(record['passed'] for record in records), 'total': len(records),
+          'cases': records}
+ROOT.joinpath('development_results.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
+print(json.dumps({key: report[key] for key in ['passed','total','test_runtime_seconds']}))
+for record in records:
+    if not record['passed']:
+        print(record['name'], record.get('diagnostic'), record.get('actual'))
+raise SystemExit(report['passed'] != report['total'])
