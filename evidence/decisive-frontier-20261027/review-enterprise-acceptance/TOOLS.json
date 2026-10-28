@@ -1,0 +1,51 @@
+{
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py": "c74494099f6d1626d4c7a53752d1510be8059970c1e3932763a75fe46f47112b",
+    "tests/runtime/test_flywheel_enterprise_technical_authority.py": "7816204dc3ddd5d8d0232c708f2d1df4b65378a87b5260f424bf1ca825c001c3"
+  },
+  "checks": [
+    {
+      "name": "typing",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy-runtime.ini",
+        "--cache-dir=/tmp/enterprise-acceptance-review/mypy-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"
+      ],
+      "exit_code": 0,
+      "seconds": 12.741022444999999
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py",
+        "tests/runtime/test_flywheel_enterprise_technical_authority.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.031177162999938446
+    },
+    {
+      "name": "format",
+      "command": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py",
+        "tests/runtime/test_flywheel_enterprise_technical_authority.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04158630700021604
+    }
+  ]
+}

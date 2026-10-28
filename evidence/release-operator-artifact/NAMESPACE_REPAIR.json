@@ -1,0 +1,17 @@
+{
+  "schema": "operator-existing-namespace-repair/v1",
+  "reason": "Preserve the original exact bulk selector and five held source pins; new operator side artifact belongs to the already-excluded release-package namespace. Root held-selection incident is separately recorded.",
+  "baseline_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "only_workflow_delta": "One final allowlisted upload step after existing verified full package upload",
+  "whole_workflow_without_new_step_equals_baseline": true,
+  "artifact_name": "release-package-operator-${{ github.run_id }}-${{ github.run_attempt }}",
+  "full_upload_unchanged": true,
+  "bulk_pattern_unchanged": true,
+  "permissions_and_action_pins_unchanged": true,
+  "source_sha256": {
+    ".github/workflows/agent-release.yml": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+    "tests/test_release_artifact_handoffs.py": "fe5d1693e82b49bf79321ee1408e81703271ab09ada10e2dc21f5b1f528f1544"
+  },
+  "previous_qualified_namespace": "QUALIFICATION-before-namespace.json; original scope preserved, not claimed finalintegration",
+  "held_behavior_qualified": false
+}

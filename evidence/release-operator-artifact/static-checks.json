@@ -1,0 +1,51 @@
+{
+  "provenance": "Fresh post-restoration check, not reused old uncommitted qualification",
+  "workflow_semantic_delta": "Only package bulk exclusion adds operator-package and one explicit allowlisted operator upload follows full upload",
+  "full_workflow_semantic_preservation": "Complete YAML equality holds after those2declared packagejob changes",
+  "full_upload_output_and_all_gate_dependencies": "Unchanged original full release artifact remains first upload and authoritative package output",
+  "ruff": [
+    {
+      "command": [
+        "/tmp/release-operator-tools/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "tests/test_release_artifact_handoffs.py"
+      ],
+      "exit_code": 0,
+      "output": "All checks passed!\n"
+    },
+    {
+      "command": [
+        "/tmp/release-operator-tools/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "tests/test_release_artifact_handoffs.py"
+      ],
+      "exit_code": 0,
+      "output": "1 file already formatted\n"
+    }
+  ],
+  "tool_environment": {
+    "kind": "Isolated/tmpvenv; globalenvironment unchanged",
+    "python": "3.12.14",
+    "versions": {
+      "ruff": "0.12.5",
+      "pytest": "8.4.1",
+      "PyYAML": "6.0.2",
+      "iniconfig": "2.3.1",
+      "packaging": "26.3",
+      "pluggy": "1.7.0",
+      "Pygments": "2.21.0"
+    }
+  },
+  "actionlint": {
+    "status": "NOT_RUN_UNAVAILABLE",
+    "binary_on_path": null,
+    "reason": "Not installed after reset; no Go/actionlint/precommit provisioning. Required hostedhook remainsblocking."
+  }
+}

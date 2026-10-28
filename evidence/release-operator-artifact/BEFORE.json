@@ -1,0 +1,134 @@
+{
+  "source_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "source_sha256": {
+    ".github/workflows/agent-release.yml": "182217b3e43e89d21944310d704e7c7e221d722ed883757fadfb4abb9efac8dd",
+    "tests/test_release_artifact_handoffs.py": "9c444115d89bdfba6edaf79d64f4b4573bb70ef3d630a73149e52a8001da64fd"
+  },
+  "package_job": {
+    "if": "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}",
+    "needs": [
+      "paper-scope",
+      "mark-wallet",
+      "runtime",
+      "regression",
+      "browser-contracts",
+      "real-model",
+      "gallery",
+      "native-demos",
+      "sovereign-lab",
+      "finance-lab",
+      "muzero-lab",
+      "demo-distribution",
+      "quality",
+      "historical-ci",
+      "dependency-audit",
+      "successor-workbench",
+      "successor-journey",
+      "transformational-intelligence",
+      "successor-capability",
+      "strategy-engineering"
+    ],
+    "runs-on": "ubuntu-latest",
+    "timeout-minutes": 20,
+    "outputs": {
+      "artifact-name": "${{ steps.package-name.outputs.name }}"
+    },
+    "steps": [
+      {
+        "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+        "with": {
+          "fetch-depth": 0,
+          "persist-credentials": false
+        }
+      },
+      {
+        "uses": "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+        "with": {
+          "python-version": "3.12"
+        }
+      },
+      {
+        "name": "Require successful producer artifact names",
+        "env": {
+          "REGRESSION_ARTIFACT": "${{ needs.regression.outputs.artifact-name }}",
+          "FULL_GALLERY_ARTIFACT": "${{ needs.gallery.outputs.full-artifact-name }}",
+          "MINIMAL_GALLERY_ARTIFACT": "${{ needs.gallery.outputs.minimal-artifact-name }}"
+        },
+        "run": "[[ \"$REGRESSION_ARTIFACT\" =~ ^regression-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]\n[[ \"$FULL_GALLERY_ARTIFACT\" =~ ^gallery-full-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]\n[[ \"$MINIMAL_GALLERY_ARTIFACT\" =~ ^gallery-minimal-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]\n"
+      },
+      {
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "with": {
+          "pattern": "!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*",
+          "path": "release-producer-artifacts",
+          "digest-mismatch": "error"
+        }
+      },
+      {
+        "name": "Select remaining producer artifacts without rewriting evidence",
+        "run": "python - <<'PY'\nfrom pathlib import Path\nsource = Path('release-producer-artifacts')\ndestination = Path('evidence')\nif source.is_symlink() or not source.is_dir() or destination.is_symlink():\n    raise ValueError('Evidence staging requires ordinary directories')\nartifacts = sorted(source.iterdir())\nif any(path.is_symlink() or not path.is_dir() for path in artifacts):\n    raise ValueError('Producer artifact must be an ordinary directory')\nselected = [path for path in artifacts if path.name != 'regression'\n            and not path.name.startswith(('regression-', 'gallery-'))]\nif any((destination / path.name).exists() or (destination / path.name).is_symlink()\n       for path in selected):\n    raise ValueError('Refusing to overwrite retained evidence')\ndestination.mkdir(exist_ok=True)\nfor path in selected:\n    path.rename(destination / path.name)\nPY\n"
+      },
+      {
+        "name": "Download the successful regression job's exact evidence",
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "with": {
+          "name": "${{ needs.regression.outputs.artifact-name }}",
+          "path": "evidence/regression",
+          "digest-mismatch": "error"
+        }
+      },
+      {
+        "name": "Download the successful full gallery job's exact evidence",
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "with": {
+          "name": "${{ needs.gallery.outputs.full-artifact-name }}",
+          "path": "evidence/gallery-full",
+          "digest-mismatch": "error"
+        }
+      },
+      {
+        "name": "Download the successful minimal gallery job's exact evidence",
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "with": {
+          "name": "${{ needs.gallery.outputs.minimal-artifact-name }}",
+          "path": "evidence/gallery-minimal",
+          "digest-mismatch": "error"
+        }
+      },
+      {
+        "name": "Download the successful historical job's exact evidence",
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "with": {
+          "name": "${{ needs.historical-ci.outputs.artifact-name }}",
+          "path": "evidence/historical-ci",
+          "digest-mismatch": "error"
+        }
+      },
+      {
+        "name": "Build, verify and package the exact tested commit",
+        "run": "python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0 cryptography==50.0.1\npython -m scripts.package_agent_release --output release --evidence evidence\npython scripts/install_agent.py --release-dir release --check-only --venv \"$RUNNER_TEMP/release-preflight\"\npython scripts/install_agent.py --release-dir release --venv \"$RUNNER_TEMP/release-install\"\ncd release\nsha256sum -c SHA256SUMS\n"
+      },
+      {
+        "name": "Name this attempt's verified package",
+        "id": "package-name",
+        "run": "echo \"name=release-package-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}\" >> \"$GITHUB_OUTPUT\""
+      },
+      {
+        "uses": "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f",
+        "with": {
+          "name": "${{ steps.package-name.outputs.name }}",
+          "path": "release/",
+          "if-no-files-found": "error"
+        }
+      }
+    ]
+  },
+  "connector_limit": {
+    "full_release_package_artifact_id": 12780221756,
+    "full_artifact_bytes": 2345831234,
+    "maximum_connector_bytes": 536870912,
+    "source": "Root-observed original retrieval rejection; no repeated download"
+  },
+  "provenance": "Fresh reconstruction from restored exact8b2; original uncommitted evidence files were lost in workspace reset",
+  "authorized_delta": "Small explicit operator artifact after unchanged verified full upload; operator prefix excluded from retry bulk download"
+}

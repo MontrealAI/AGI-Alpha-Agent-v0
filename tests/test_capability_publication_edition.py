@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Keep each reviewed paper publication one complete three-worker byte edition."""
+
 from __future__ import annotations
 
 import hashlib
@@ -53,6 +54,7 @@ def current_profile():
         HELPER.INSIGHT_FRONTIER_147_EXTRA_FILES,
         HELPER.INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES,
         HELPER.INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES,
+        HELPER.INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES,
     )
     return matches[0]
 

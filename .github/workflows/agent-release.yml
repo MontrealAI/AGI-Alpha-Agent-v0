@@ -1266,6 +1266,18 @@ jobs:
           name: ${{ steps.package-name.outputs.name }}
           path: release/
           if-no-files-found: error
+      - name: Upload the verified operator package
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: release-package-operator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release/alpha_factory_v1-*.whl
+            release/requirements-agent.lock
+            release/install_agent.py
+            release/SHA256SUMS
+            release/source-manifest.json
+            release/release-manifest.json
+          if-no-files-found: error
 
   pages:
     needs: [paper-scope, package, historical-ci]

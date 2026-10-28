@@ -1,0 +1,44 @@
+[
+  {
+    "command": [
+      "python",
+      "scripts/dp_scrubber.py"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.3284774110006765,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_no_binary_diff.py"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 3.7857802769995033,
+    "stdout": "No binary changes detected.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_held_native_source.py"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.04710575199987943,
+    "stdout": "{\n  \"schema\": \"agialpha.held-native-source-preservation.v1\",\n  \"baselineCommit\": \"f9d2e3ff90ba6c8f1fcf85a3160d820e5dcb80c9\",\n  \"status\": \"STATIC_SOURCE_IDENTITY_PRESERVED\",\n  \"checks\": [\n    {\n      \"path\": \"tests/test_successor_capability_delivery.py\",\n      \"expectedBytes\": 40493,\n      \"expectedSha256\": \"db4fac243db988b418968d8fbb11ae38b5a88ca86d703d5643583ab2c57b84f1\",\n      \"bytes\": 40493,\n      \"sha256\": \"db4fac243db988b418968d8fbb11ae38b5a88ca86d703d5643583ab2c57b84f1\",\n      \"matched\": true\n    },\n    {\n      \"path\": \"tests/browser/fleet_receipt_native.mjs\",\n      \"expectedBytes\": 17520,\n      \"expectedSha256\": \"52e57f09122ddb0cbfa41e3932a5bc089d98234a330a4cae1747c405bd824c85\",\n      \"bytes\": 17520,\n      \"sha256\": \"52e57f09122ddb0cbfa41e3932a5bc089d98234a330a4cae1747c405bd824c85\",\n      \"matched\": true\n    },\n    {\n      \"path\": \"tests/browser/fleet_git_metadata.mjs\",\n      \"expectedBytes\": 4323,\n      \"expectedSha256\": \"6f778aef9b870b4560a507ca6479f9f004932f453b2d2c25ac27bec4153a4686\",\n      \"bytes\": 4323,\n      \"sha256\": \"6f778aef9b870b4560a507ca6479f9f004932f453b2d2c25ac27bec4153a4686\",\n      \"matched\": true\n    },\n    {\n      \"path\": \"tests/browser/fleet_module_boundary.mjs\",\n      \"expectedBytes\": 8953,\n      \"expectedSha256\": \"8d3575ece582c158c30f3cc1c5f438b9b32ad2a31f190d6867acf9712beedad5\",\n      \"bytes\": 8953,\n      \"sha256\": \"8d3575ece582c158c30f3cc1c5f438b9b32ad2a31f190d6867acf9712beedad5\",\n      \"matched\": true\n    },\n    {\n      \"path\": \"tests/browser/test_discovery_lab_continuation.py\",\n      \"expectedBytes\": 18984,\n      \"expectedSha256\": \"f3113b522c3f9264931fdce6f11b066a9203d0043a569385717444f97006a966\",\n      \"bytes\": 18984,\n      \"sha256\": \"f3113b522c3f9264931fdce6f11b066a9203d0043a569385717444f97006a966\",\n      \"matched\": true\n    }\n  ],\n  \"omittedBehaviorQualified\": false,\n  \"scope\": \"Regular-file identity only. No target test is imported or run; no omitted outcome or later invocation is qualified, and the original action restrictions remain unchanged.\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--cached"
+    ],
+    "exit_code": 2,
+    "wall_seconds": 0.04140543599987723,
+    "stdout": "evidence/decisive-frontier-20261027/review-enterprise-acceptance/original-tests.txt:16: trailing whitespace.\n+E         \nevidence/decisive-frontier-20261027/review-enterprise-acceptance/original-tests.txt:34: trailing whitespace.\n+E         \nevidence/decisive-frontier-20261027/review-enterprise-acceptance/original-tests.txt:52: trailing whitespace.\n+E         \nevidence/release-operator-artifact/recovered-source.patch:30: trailing whitespace.\n+ \nevidence/release-operator-artifact/recovered-source.patch:40: trailing whitespace.\n+ \n",
+    "stderr": ""
+  }
+]

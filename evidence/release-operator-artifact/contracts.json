@@ -1,0 +1,58 @@
+{
+  "schema": "operator-current-contract-subset/v2",
+  "command": [
+    "/tmp/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "--noconftest",
+    "-o",
+    "addopts=",
+    "tests/test_ci_install_bounds.py",
+    "tests/test_fast_release_policy.py",
+    "tests/test_release_contract_preflight.py",
+    "tests/test_release_artifact_handoffs.py",
+    "tests/test_insight_frontier_enterprise_acceptance_release.py",
+    "tests/test_insight_frontier_review_authority_release.py",
+    "tests/test_insight_frontier_post_guard_release.py",
+    "tests/test_insight_frontier_release.py",
+    "tests/test_paper_reader_release.py",
+    "tests/test_capability_publication_edition.py",
+    "tests/test_capability_checkout_release_versions.py",
+    "tests/test_flywheel_release.py",
+    "tests/test_protected_flywheel_release.py",
+    "tests/test_successor_capability_delivery.py",
+    "--deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands",
+    "--deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata",
+    "--deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer",
+    "--deselect=tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history",
+    "--basetemp=/tmp/decisive-final-authorized-tests",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "-o",
+    "tmp_path_retention_count=1",
+    "-q",
+    "--junitxml=/workspace/scratch/1602dd9e6810/agi-alpha/evidence/decisive-frontier-20261027/review-enterprise-integrated/authorized-editions-handoffs.xml"
+  ],
+  "exit_code": 0,
+  "qualified_ci_contract_cases": 76,
+  "whole_allowed_campaign_cases": 342,
+  "case_counts_by_file": {
+    "tests.test_ci_install_bounds": 30,
+    "tests.test_fast_release_policy": 7,
+    "tests.test_release_contract_preflight": 18,
+    "tests.test_release_artifact_handoffs": 21
+  },
+  "explicit_deselections": [
+    "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands",
+    "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata",
+    "tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer",
+    "tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history"
+  ],
+  "held_behavior_qualified": false,
+  "source_sha256": {
+    ".github/workflows/agent-release.yml": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+    "tests/test_release_artifact_handoffs.py": "fe5d1693e82b49bf79321ee1408e81703271ab09ada10e2dc21f5b1f528f1544"
+  },
+  "receipt_root": "repository",
+  "receipt": "evidence/decisive-frontier-20261027/review-enterprise-integrated/authorized-editions-handoffs.json"
+}

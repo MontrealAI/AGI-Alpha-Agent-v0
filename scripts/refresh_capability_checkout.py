@@ -318,6 +318,16 @@ INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES = INSIGHT_FRONTIER_147_POST_GU
     ),
 }
 
+# Exact current enterprise-acceptance candidate; keep all predecessor editions intact.
+INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES = INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "3e03df48a33790526091917aec7223b5b8c84eb820a5a927ea2cde7b803520de"),
+    "docs/assets/service-worker.js": (24089, "c0b2123977d6f95ac3c09ab9e20db418484107d0f8a14893bd2ba5e74b941127"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "06eca2a88af6bd6a50f15da4165a4e70c6015a388ecd9e4beba280ef3089d593",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -402,6 +412,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

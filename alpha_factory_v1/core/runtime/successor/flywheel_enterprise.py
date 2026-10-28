@@ -199,6 +199,23 @@ class Enterprise:
         self._evidence(assessment.evidence, cx)
         return assessment
 
+    def _technical_evidence(self, offering: dict[str, Any], cx: Any) -> None:
+        """Require the same qualified prototype to remain a currently accepted origin."""
+        operation = offering.get("prototype_operation")
+        if not isinstance(operation, str):
+            raise ValueError("offering has no qualified prototype origin")
+        execution, _ = accepted_general_origin(self.service, operation, cx)
+        launch = self._read("launch", operation, cx)
+        if (
+            launch is None
+            or launch["status"] != "completed"
+            or launch["source"] != self.service.execution_digest
+            or launch["offering_spec_digest"]
+            != digest("enterprise-offering", Offering.model_validate(offering["spec"]))
+            or launch["execution_digest"] != execution["digest"]
+        ):
+            raise Conflict("qualified prototype launch changed or belongs to another offering")
+
     def _context(self, cx: Any) -> dict[str, Any]:
         _, network = self.service._state(cx)
         active = self._read("active", "capacity", cx)
@@ -385,6 +402,7 @@ class Enterprise:
         else:
             if raw["execution_operation"] is not None or value["qualification_source"] != self.service.execution_digest:
                 raise ValueError("technical source requires requalification")
+            self._technical_evidence(value, cx)
             if stage == "commercially-assessed":
                 assessment = CommercialAssessment.model_validate(raw["commercial"])
                 self._evidence(assessment.evidence, cx)
@@ -427,6 +445,10 @@ class Enterprise:
                             self._commercial_evidence(offering, cx)
                         except (KeyError, ValueError):
                             reasons.append("commercial assessment evidence is missing or stale")
+                        try:
+                            self._technical_evidence(offering, cx)
+                        except (KeyError, ValueError):
+                            reasons.append("prototype acceptance is missing, changed or no longer eligible")
                     if (
                         alternative.price_micro_usd is not None
                         and alternative.price_micro_usd not in spec.price_candidates_micro_usd
@@ -554,6 +576,8 @@ class Enterprise:
             offering = self._read("offering", str(choice.offering_id), cx)
             if offering is None or offering["digest"] != row["offering_head"]:
                 raise Conflict("offering changed since decision")
+            if choice.action == "produce":
+                self._technical_evidence(offering, cx)
             spec = Offering.model_validate(offering["spec"])
             if spec.required_capabilities:
                 raise ValueError(
