@@ -1,0 +1,109 @@
+{
+  "schema": "independent-final-source-review-receipt/v1",
+  "reviewRole": "fresh independent read-only challenge of final composed source",
+  "source": {
+    "commit": "c5164a385f54b59a11b53d70cf491e5e21ad3b18",
+    "tree": "895e9dd85f6a2c5c292fd28432bfbbdef44d8bf5",
+    "baseCommit": "3947e4ec8fd74ad40e13e8ff825a149fa98a10e9",
+    "mainTrackingCommit": "3947e4ec8fd74ad40e13e8ff825a149fa98a10e9"
+  },
+  "identityVerification": {
+    "commitAndTreeUnchanged": true,
+    "mainTrackingRefUnchanged": true,
+    "worktreeInitiallyClean": true,
+    "worktreeFinallyClean": true,
+    "fiveHeldPinsUnchanged": true,
+    "heldGuardStatus": "STATIC_SOURCE_IDENTITY_PRESERVED"
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "title": "Revalidate enterprise decision and offering authorization during production",
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py",
+      "primaryLines": [
+        646,
+        655
+      ],
+      "otherLines": [
+        199,
+        202,
+        442,
+        460,
+        550,
+        558,
+        585,
+        589
+      ],
+      "contractPath": "alpha_factory_v1/core/runtime/successor/trust.py",
+      "contractLines": [
+        51,
+        52,
+        55,
+        56,
+        58,
+        59
+      ],
+      "impact": "A current execution permit can continue executing a production decision whose separate controller has been revoked. The active support callback rechecks the prototype but not its decision signer or decision expiry; persisted authorized-offering signatures are also not checked at decision/dispatch. No forging or journal mutation is required.",
+      "counterexample": {
+        "control": "Revoke the separate decision signer before dispatch: ValueError and zero model calls.",
+        "attack": "Revoke the same signer after the first model response while the independent execution-permit signer remains current: subsequent local tool action and second model call still execute; result reports delivered-awaiting-independent-acceptance-and-costs.",
+        "inflightResults": "decision-inflight-results.json",
+        "offeringVariants": "commercial-authority-results.json"
+      },
+      "suggestedCorrection": "Reverify the exact enterprise decision signature and its current expiry inside the per-run active support check, including production and prototype; validate the offering authorization support at decision and dispatch according to the intended current-authority contract. Keep failed attempts, liability and capacity reserved."
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/final-c516-review/probe_commercial_authority.py",
+      "exitCode": 0,
+      "raw": "commercial-authority-raw.txt",
+      "results": "commercial-authority-results.json",
+      "result": "Three revocation timings complete production despite the authorized offering signer no longer being currently trusted."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python /tmp/final-c516-review/probe_decision_inflight.py",
+      "exitCode": 0,
+      "raw": "decision-inflight-raw.txt",
+      "results": "decision-inflight-results.json",
+      "result": "Before-dispatch revocation refuses; in-flight decision-signer revocation permits one later tool action and second model response."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /tmp/decisive-agent-venv/bin/python scripts/check_held_native_source.py",
+      "exitCode": 0,
+      "raw": "held-source-static.json",
+      "result": "STATIC_SOURCE_IDENTITY_PRESERVED"
+    }
+  ],
+  "readScope": [
+    "AGENTS.md",
+    "docs/agent/FAST_RELEASE_POLICY.md",
+    "docs/agent/SCOPED_RELEASE_POLICY.md",
+    "docs/agent/ENTERPRISE_NEXT_ADVANTAGE.md",
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_customer.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py (diff and lifecycle, qualification, acceptance paths)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_access_path.py",
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py (command/provenance paths)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_insight.py (research-seed, research-plan and search assessment paths)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py (execution/model/acceptance/cost report paths)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_operator.py (CLI composition)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_specialists.py (exposure fingerprint)",
+    "alpha_factory_v1/core/runtime/successor/flywheel_arrangements.py (allocation and timeline assessment)",
+    "scripts/templates/alpha-flywheel/app.js (sampled UI labels and comparison helper)",
+    "scripts/templates/alpha-flywheel/insight.js",
+    ".github/workflows/agent-release.yml (diff)"
+  ],
+  "limitations": [
+    "Bounded read-only review; not exhaustive over all production changes and no blanket test rerun.",
+    "All dynamic probes used isolated ephemeral fictional signer/RPC/model fixtures and actual finite local placement execution; no external network or paid/model/wallet/publisher/merge API calls.",
+    "No held native node/helper or reserved canary input was executed. The static guard qualifies only source identity.",
+    "Legacy configured GitHub review of this primary head remains pending; this independent source review does not complete or replace it.",
+    "No technical discovery novelty, profitability, retained Alpha, live identity, or deployment qualification is established by this review."
+  ]
+}

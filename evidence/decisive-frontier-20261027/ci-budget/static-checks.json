@@ -1,0 +1,63 @@
+{
+  "workflow_byte_delta": "Exactly one regression-job timeout90->120; reconstructing90matches beforeSHA256",
+  "workflow_semantic_delta": "Onlyjobs.regression.timeout-minutes; full workflow deep equality passes after that change",
+  "test_byte_delta": "Only exact-equalityexpected90->120; reconstructing90matches beforeSHA256",
+  "legacy_catalog": "All3paths outside unchanged53sourcecatalog; no sourceprofile migration",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "tests/test_ci_install_bounds.py"
+      ],
+      "exit_code": 0,
+      "output": "All checks passed!\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pre_commit",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "pre-commit 4.2.0\n"
+    }
+  ],
+  "actionlint": {
+    "status": "NOT_RUN_UNAVAILABLE",
+    "exact_target": ".github/workflows/agent-release.yml",
+    "binary_on_path": null,
+    "existing_cache_binaries": [],
+    "configured_hook": [
+      {
+        "repo": "https://github.com/rhysd/actionlint",
+        "rev": "v1.7.7",
+        "hooks": [
+          {
+            "id": "actionlint"
+          }
+        ]
+      }
+    ],
+    "reason": "No existing binary/hook environment; running this hook would provision unavailable Go dependencies. No installation/access expansion authorized. Required hostedactionlint remains blocking."
+  },
+  "pre_commit_full_file_campaign": {
+    "status": "NOT_RUN_UNAVAILABLE",
+    "reason": "Uncachedactionlint and other hook environments would require provisioning; no skipped check is represented as passed"
+  },
+  "preserved": [
+    "All regression step run scripts and selection",
+    "All individual step/per-test timeouts",
+    "80%coveragefloor",
+    "Five heldsourcepins",
+    "Security and integrity verdicts",
+    "All actionSHAs",
+    "All workflowpermissions",
+    "All other enclosingjoblimits",
+    "Zero paidAPIspendingbudget"
+  ]
+}

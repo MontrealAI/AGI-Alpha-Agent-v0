@@ -1,0 +1,46 @@
+.....F                              [100%]
+=================================== FAILURES ===================================
+_ test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence[True] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f4906caa780>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f4920642330>, ...}, ...}
+attempted = True
+
+    @pytest.mark.parametrize("attempted", [False, True])
+    def test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence(
+        setup: dict[str, Any], attempted: bool
+    ) -> None:
+        spec = plan(setup, 1)
+        for trial in spec.cases[0].trials:
+            trial.mission.components["model"] = "live"
+        spec = freeze(setup, ComparisonPlan.model_validate(spec.model_dump()))
+        if attempted:
+            for trial in spec.cases[0].trials:
+>               rewrite(setup, operation_key(trial.operation_id), lambda value: value.update(profile={}))
+
+tests/runtime/test_flywheel_comparisons.py:582: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_comparisons.py:221: in rewrite
+    value = state["journal"].document(state["journal"].latest(journal_key, cx))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.store.Journal object at 0x7f4906cabe90>
+mission = '@flywheel-execution:95393dc3b61644ac3f63d18a9721097114e4225683c01ac729e1f86e879d9b95'
+cx = <sqlite3.Connection object at 0x7f491fcffa60>
+
+    def latest(self, mission: str, cx: sqlite3.Connection | None = None) -> dict[str, Any]:
+        """Read a signed state; verify the full chain with ``verify`` at startup."""
+        if cx is None:
+            with closing(sqlite3.connect(self.path)) as connection:
+                return self.latest(mission, connection)
+        row = cx.execute(
+            "SELECT seq,body,hash,signature FROM events WHERE mission=? ORDER BY seq DESC LIMIT 1", (mission,)
+        ).fetchone()
+        if row is None:
+>           raise KeyError(mission)
+E           KeyError: '@flywheel-execution:95393dc3b61644ac3f63d18a9721097114e4225683c01ac729e1f86e879d9b95'
+
+alpha_factory_v1/core/runtime/store.py:351: KeyError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence[True]
+1 failed, 42 passed in 18.74s

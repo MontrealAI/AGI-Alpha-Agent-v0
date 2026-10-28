@@ -1,0 +1,198 @@
+{
+  "schema": "protected-invocation-cost-authority-qualification/v1",
+  "review": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4997#discussion_r4395842078",
+  "scope": "Local correction for the existing unsigned protected invocation B/compute reservation. All identity/RPC/model/funding examples are explicit fictional fixtures; no live grant, ENS call, provider charge, customer acceptance or release is established.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "original_counterexamples": {
+    "failed": 3,
+    "passed_adverse_controls": 16,
+    "seconds": 14.83,
+    "exit_code": 1,
+    "log": "before-tests.txt",
+    "test_source": "test_flywheel_invocation_cost_authority.before.py.txt",
+    "production_sources": "BEFORE_SOURCE.json"
+  },
+  "first_correction": {
+    "passed": 19,
+    "seconds": 16.11,
+    "exit_code": 0,
+    "log": "first-fixed-tests.txt"
+  },
+  "expanded_preceding_candidate": {
+    "passed": 96,
+    "authority_cases": 22,
+    "comparison_cases": 74,
+    "seconds": 56.57,
+    "exit_code": 0,
+    "log": "final-focused.txt",
+    "source_note": "Preceding capsule helper still contained the later receipt expiry restriction; exact capsule bytes are retained in flywheel_capsules.first-fixed.py.txt."
+  },
+  "preserved_corrected_failure": {
+    "failed": 1,
+    "seconds": 2.03,
+    "exit_code": 1,
+    "log": "consumed-time-first-test.txt",
+    "reason": "An actually consumed valid grant followed by a simulated process pause is legitimate historical evidence even when the receipt is written after expiry. Removed only that unsupported receipt-time upper bound."
+  },
+  "final_authority_tests": {
+    "passed": 23,
+    "failed": 0,
+    "seconds": 14.35,
+    "exit_code": 0,
+    "log": "final-authority.txt"
+  },
+  "strict_typing": {
+    "source_files": 2,
+    "strict": true,
+    "cache_disabled": true,
+    "exit_code": 0,
+    "log": "final-strict.txt"
+  },
+  "ruff": {
+    "source_and_test_files": 3,
+    "exit_code": 0,
+    "log": "final-ruff-2.txt"
+  },
+  "behavior": [
+    "Only exact B/compute reuse/<mission> unknown unpaid reservation rows with no arbitrary metadata may use the explicitly wired service validator.",
+    "The durable request, attempt, input, policy/Beta, prerequisite, qualification and execution identities remain bound to current capsule and dependency support.",
+    "The previously consumed service/resource/request-bound EOA challenge and wallet signature are read and verified offline; no grant is prepared, consumed or renewed and no ENS reader is called.",
+    "Current producer, evaluator, validator, controller, executor, acceptor and accounting revocations still remove current qualification.",
+    "Orphan reservations, tampered attempts/requests, wrong scope, unsigned resolved rows, unconsumed proofs, invalid wallet signatures and authentic wrong-purpose/other-request grants refuse.",
+    "Executed, failed and interrupted actual local invocations and both supported invocation adapters retain their cost history.",
+    "Unknown interrupted liability remains unknown until explicit reconciliation; failed obligations and all 15 fictional micro-USD of reconciled B costs remain visible."
+  ],
+  "final_sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py": {
+      "bytes": 36239,
+      "sha256": "c9d332966c2ea29f195f22450fea326ba1cd77c8b7b02733ddebef59a348b8b2"
+    },
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": {
+      "bytes": 78550,
+      "sha256": "d752d6815dbc6fc9b0278d9832f97e3ce4dc7f25eef1c3588a31917c4e85bba0"
+    },
+    "tests/runtime/test_flywheel_invocation_cost_authority.py": {
+      "bytes": 12424,
+      "sha256": "10d8a9c0082a0a376770e5c9185e15a0b960b5df31da3d04a8fd1d4f691576eb"
+    }
+  },
+  "evidence": {
+    "BEFORE_SOURCE.json": {
+      "bytes": 348,
+      "sha256": "1798a7b9f17a1bdc26068545d2a3019de5895f3c308d3fb9eadab5f87cba390f"
+    },
+    "before-command.json": {
+      "bytes": 252,
+      "sha256": "fe9c730c65048dc65f9cb5e6a176beb91d6da3cae4afdf583dd0524ce88dec45"
+    },
+    "before-tests.txt": {
+      "bytes": 6560,
+      "sha256": "e47c62ada4d88355c8a2db104d94e944b0edfe7a4124106b037e0913c3c6ef4a"
+    },
+    "consumed-time-first-command.json": {
+      "bytes": 329,
+      "sha256": "006ef63db26d908cce5596ce59c7362e1f8e41b439114c01202d37d897a7e1e0"
+    },
+    "consumed-time-first-test.txt": {
+      "bytes": 2058,
+      "sha256": "91ab590516b3d58774047b2e46bb5b0d89390a77d9907e5253ffaa0976cc5332"
+    },
+    "final-authority-command.json": {
+      "bytes": 252,
+      "sha256": "631edaf8d66e7ace22bada2a8550bf4564a558b0bf0f8a97d654a4f61b881b1e"
+    },
+    "final-authority.txt": {
+      "bytes": 100,
+      "sha256": "ac3f5ec86d44f7ff33b841b49fb3ca91d0cd4166beb90345a2335956ec0f3a43"
+    },
+    "final-focused-command.json": {
+      "bytes": 302,
+      "sha256": "a6d99c89c2f438db24b56b360af4dd154440562a9f9a6d97a57297032c1285ee"
+    },
+    "final-focused.txt": {
+      "bytes": 180,
+      "sha256": "cb773134522aa07b1e6231df55281dc98411e97172aabaa5bf40de481953a843"
+    },
+    "final-ruff-2-command.json": {
+      "bytes": 336,
+      "sha256": "7035b3571b37a9ca408902ecbc999a72db466cc531270354801536e692aa1c6f"
+    },
+    "final-ruff-2.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "final-ruff-command.json": {
+      "bytes": 336,
+      "sha256": "7035b3571b37a9ca408902ecbc999a72db466cc531270354801536e692aa1c6f"
+    },
+    "final-ruff.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "final-strict-command.json": {
+      "bytes": 333,
+      "sha256": "33a7498dfe8a58a118b8635a3978b2e8d779618c7ab79f28e1b9ef9d3166b4ec"
+    },
+    "final-strict.txt": {
+      "bytes": 43,
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    "first-fixed-command.json": {
+      "bytes": 252,
+      "sha256": "631edaf8d66e7ace22bada2a8550bf4564a558b0bf0f8a97d654a4f61b881b1e"
+    },
+    "first-fixed-tests.txt": {
+      "bytes": 100,
+      "sha256": "fde151031e3ba0ad49c08b203655d5aedce3d24454bf039c9e37d21332334b82"
+    },
+    "first-ruff-command.json": {
+      "bytes": 336,
+      "sha256": "7035b3571b37a9ca408902ecbc999a72db466cc531270354801536e692aa1c6f"
+    },
+    "first-ruff.txt": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "first-strict-command.json": {
+      "bytes": 333,
+      "sha256": "33a7498dfe8a58a118b8635a3978b2e8d779618c7ab79f28e1b9ef9d3166b4ec"
+    },
+    "first-strict.txt": {
+      "bytes": 43,
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    "flywheel_capsules.before.py.txt": {
+      "bytes": 73013,
+      "sha256": "5ea563dbc81032818833f50af9a8695096fc3fe5acfe78609542d593c9fa92e6"
+    },
+    "flywheel_capsules.first-fixed.py.txt": {
+      "bytes": 78580,
+      "sha256": "27a860902486ed8ef73ce47bb48cdcceac8ba1762a71af051239ee19bc685ee7"
+    },
+    "flywheel_capsules.patch": {
+      "bytes": 6362,
+      "sha256": "25ee2d7b66dcb43b5605f808f65e51c97a48776318ecbf62bb098907056f87b4"
+    },
+    "flywheel_costs.before.py.txt": {
+      "bytes": 35525,
+      "sha256": "6c07c7f97de96ccc4802122656e3988f20d691f4194d396ff46163ea02d2f41d"
+    },
+    "flywheel_costs.patch": {
+      "bytes": 1603,
+      "sha256": "6c9d2b2779979ca7a4d2c5210e83902e24ec35c179bca6a2cd7d386c5416ba43"
+    },
+    "test_flywheel_invocation_cost_authority.before.py.txt": {
+      "bytes": 7681,
+      "sha256": "ffd22e10824414770eb070070a8ec37d9c3129e29543c4ddbb555064ead3ec17"
+    }
+  },
+  "unrun": [
+    "Final full Flywheel/native matrix, resulting-source hosted checks and coverage, current configured review and release qualification remain with the existing owner."
+  ],
+  "not_performed": [
+    "Staging or commits",
+    "GitHub comments/ref/workflow mutations",
+    "Gym changes",
+    "Frozen worker or restricted tests/pins/module changes"
+  ]
+}

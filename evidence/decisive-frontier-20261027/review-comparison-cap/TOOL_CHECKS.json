@@ -1,0 +1,45 @@
+[
+  {
+    "name": "typing",
+    "command": [
+      "python",
+      "-m",
+      "mypy",
+      "--config-file",
+      "mypy-runtime.ini",
+      "--cache-dir=/dev/null",
+      "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py"
+    ],
+    "exit_code": 0,
+    "seconds": 86.28608693199931
+  },
+  {
+    "name": "lint",
+    "command": [
+      "python",
+      "-m",
+      "ruff",
+      "check",
+      "--no-cache",
+      "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py",
+      "tests/runtime/test_flywheel_comparisons.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.06044057899271138
+  },
+  {
+    "name": "format",
+    "command": [
+      "python",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "--no-cache",
+      "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py",
+      "tests/runtime/test_flywheel_comparisons.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.057424843005719595
+  }
+]

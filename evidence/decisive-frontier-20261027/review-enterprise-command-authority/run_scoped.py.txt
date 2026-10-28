@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+import hashlib, json, sys
+from pathlib import Path
+repo=Path(sys.argv[1]); expected=sys.argv[2]; identity=Path(sys.argv[3])
+sys.path[:0]=[str(repo),str(repo/'tests/runtime')]
+from alpha_factory_v1.core.runtime.successor import flywheel_enterprise as implementation
+loaded=Path(implementation.__file__).resolve()
+assert loaded==repo/'alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py'
+assert hashlib.sha256(loaded.read_bytes()).hexdigest()==expected
+identity.write_text(json.dumps({'loaded_source':str(loaded),'sha256':expected},indent=2)+'\n')
+import test_flywheel_enterprise, test_flywheel_enterprise_technical_authority
+import pytest
+raise SystemExit(pytest.main(sys.argv[4:]))

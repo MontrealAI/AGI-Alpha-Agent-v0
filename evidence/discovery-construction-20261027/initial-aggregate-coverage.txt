@@ -1,0 +1,76 @@
+........................................................................ [ 80%]
+..................
+ERROR: Coverage failure: total of 41 is less than fail-under=80
+                                                                         [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.14-final-0 _______________
+
+Name                                                                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------------------------------
+alpha_factory_v1/__init__.py                                                9      1    89%   28
+alpha_factory_v1/core/__init__.py                                           0      0   100%
+alpha_factory_v1/core/evaluators/__init__.py                                3      0   100%
+alpha_factory_v1/core/evaluators/feasibility_critic.py                     32     21    34%   13-18, 25-26, 30-33, 37-45
+alpha_factory_v1/core/evaluators/lead_time.py                              31     26    16%   11-24, 35-48
+alpha_factory_v1/core/evaluators/logic_critic.py                           25     16    36%   14-19, 26-29, 33-38
+alpha_factory_v1/core/evaluators/novelty.py                                50     32    36%   33-40, 45-48, 55-59, 63-64, 71-74, 78-82, 86-92
+alpha_factory_v1/core/runtime/__init__.py                                   0      0   100%
+alpha_factory_v1/core/runtime/api.py                                      275    245    11%   12, 44, 47-113, 133-384
+alpha_factory_v1/core/runtime/budget.py                                    98     29    70%   44, 69, 83, 85-86, 88, 90, 92, 98-101, 104-106, 117, 119-122, 125, 127, 129, 136-140, 152
+alpha_factory_v1/core/runtime/chain.py                                    203    176    13%   30-32, 37-42, 49-52, 55-71, 75-104, 108-129, 144-145, 149-156, 160-175, 189-229, 233-316, 320-328
+alpha_factory_v1/core/runtime/cli.py                                      218    106    51%   122-124, 126-128, 130-159, 163-190, 195-289, 294-306
+alpha_factory_v1/core/runtime/engine.py                                   144     80    44%   18-46, 62-68, 74, 101, 105, 107, 147-152, 156-169, 210-231, 237-249, 268-272, 278-286
+alpha_factory_v1/core/runtime/models.py                                   124     25    80%   89-95, 142, 158-166, 199, 201-208
+alpha_factory_v1/core/runtime/provider.py                                  94     79    16%   20-22, 43-100, 105-144, 149-171, 178-194, 201-233
+alpha_factory_v1/core/runtime/store.py                                    355    181    49%   36-49, 54-77, 82-88, 92-97, 115-132, 146, 164, 166, 177, 180, 183, 190-192, 201-225, 239, 250-261, 280, 288-290, 354, 372-374, 392, 395, 398, 403-405, 423, 428, 430, 437, 439, 448-457, 461-511, 516-544, 549-566
+alpha_factory_v1/core/runtime/successor/__init__.py                         0      0   100%
+alpha_factory_v1/core/runtime/successor/campaign_experiment.py            436    366    16%   51-54, 57-62, 76-78, 90-92, 111-119, 123-132, 150-152, 155-157, 168-221, 225-234, 239-253, 266-297, 304-306, 309, 312, 315-329, 332-357, 360-369, 372-388, 392-473, 476-535, 538-562, 591-623, 626-764, 767-768, 771-780
+alpha_factory_v1/core/runtime/successor/campaign_experiment_cli.py         81     46    43%   18, 57-117
+alpha_factory_v1/core/runtime/successor/cli.py                            199    106    47%   130-168, 204, 208-211, 215-223, 227, 231-248, 265, 267-269, 271-273, 278-352, 356-377
+alpha_factory_v1/core/runtime/successor/computer.py                       528    436    17%   46-54, 58-70, 75, 95-111, 116-162, 178-200, 204-336, 343-354, 358-434, 441-492, 496-520, 524-551, 555-557, 561-571, 576, 582-592, 607-774, 787-799, 827-894
+alpha_factory_v1/core/runtime/successor/computer_dependencies.py           61     48    21%   19-27, 32-71
+alpha_factory_v1/core/runtime/successor/flywheel_access.py                197    142    28%   39, 42-51, 56-60, 65-70, 86-88, 92-99, 102-170, 205-216, 223-225, 228-266, 271-298, 302-312, 324-344
+alpha_factory_v1/core/runtime/successor/flywheel_arrangements.py          254     15    94%   46, 50, 68, 70, 133, 135, 163, 165, 167, 172, 189, 197, 205, 219, 308
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py              785    633    19%   59, 64-70, 79-99, 122-136, 160-166, 192-200, 242-277, 280-286, 289-334, 353, 356-364, 367-375, 379, 383-385, 388-400, 403-409, 412-438, 441-464, 468, 473-574, 577-634, 637-763, 766-837, 847-866, 869-896, 899-908, 917, 921-946, 955-1124, 1128-1216, 1219-1222, 1233-1256, 1260-1325, 1329-1356
+alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py             52     37    29%   19-28, 33-45, 48-57, 61-73
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py                 252    198    21%   29-45, 63-67, 84-86, 93-100, 116-123, 127-135, 139-148, 152-194, 199-210, 213-214, 217-345, 348-379
+alpha_factory_v1/core/runtime/successor/flywheel_discovery.py             446     23    95%   113, 116, 118, 120, 186, 356, 373, 378, 404, 412, 414, 462, 494, 514, 536, 545, 559, 575, 577, 617, 640, 642, 655
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py             502    393    22%   40-42, 47-50, 60-96, 116-138, 163-172, 228-239, 252-256, 259-263, 267, 270-327, 336-348, 351, 354-387, 396-399, 402-410, 423-432, 435-461, 464-465, 469-493, 508-513, 516-814
+alpha_factory_v1/core/runtime/successor/flywheel_experiments.py            99     83    16%   29-41, 46-94, 105-149
+alpha_factory_v1/core/runtime/successor/flywheel_frontier.py              139    106    24%   46-51, 54-68, 84-260
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py               75     58    23%   26-59, 63-89, 93-101
+alpha_factory_v1/core/runtime/successor/flywheel_operator.py              184    115    38%   41-68, 148-309
+alpha_factory_v1/core/runtime/successor/flywheel_probe.py                 101      5    95%   58, 133, 145, 150-151
+alpha_factory_v1/core/runtime/successor/flywheel_specialists.py           127     89    30%   33, 53-146, 170-173, 177, 190-205
+alpha_factory_v1/core/runtime/successor/model_program_operator.py          15      7    53%   17-26, 30
+alpha_factory_v1/core/runtime/successor/protocol.py                       641     61    90%   28-31, 58, 67, 70, 80, 83, 95, 106, 114, 121, 123, 126, 131, 138, 140-141, 143, 158, 181, 196, 220-222, 236-238, 307-309, 531-535, 575-580, 765-767, 834-839, 862-864, 901, 912-926, 939-941
+alpha_factory_v1/core/runtime/successor/signatures.py                      19     12    37%   37-41, 46-52
+alpha_factory_v1/core/runtime/successor/state.py                          730    607    17%   39, 44, 49-54, 67-69, 82-102, 188, 192-195, 202-206, 210-212, 216-218, 222-236, 249-268, 271-276, 283-296, 299-347, 351-375, 379-415, 418-433, 437-476, 479-546, 549-555, 560-577, 581-593, 609-664, 668-683, 687-710, 721-749, 761-785, 789-792, 796-816, 821-843, 848-869, 873-886, 890-904, 914-974, 988-1014, 1018-1066, 1077-1192
+alpha_factory_v1/core/runtime/successor/transformation.py                 757    234    69%   80, 101, 110-116, 118, 126, 141, 143, 175, 177, 193, 210, 238, 241, 244, 246, 251, 291, 293, 328, 330, 332, 355-557, 573, 582, 590, 629, 649, 673-677, 686, 713, 715, 721, 728, 749-754, 893, 900, 905, 908, 923, 966-968, 980, 989, 992, 994-1011, 1020, 1025-1046, 1063, 1065, 1067, 1070, 1092-1093, 1100, 1127, 1150, 1163, 1178, 1187-1190, 1198, 1204-1213, 1215, 1219, 1305-1312, 1336, 1347-1348, 1404-1405, 1470, 1520-1534, 1547, 1551, 1555, 1562, 1566
+alpha_factory_v1/core/runtime/successor/transformation_library.py         248    188    24%   23, 35-36, 66-69, 89-91, 98-105, 119, 123-146, 150-165, 169-178, 181-186, 189-193, 197-239, 243-289, 300-368, 372-433
+alpha_factory_v1/core/runtime/successor/transformation_library_cli.py      50     18    64%   54-85
+alpha_factory_v1/core/runtime/successor/transformation_model.py           284    213    25%   42, 64-66, 70-85, 100-104, 123-127, 131-151, 155-195, 202-203, 206, 209-210, 213-215, 222-230, 234-267, 270, 273-282, 286-294, 298-354, 358-386, 390-401, 405-407, 411-434, 439-552
+alpha_factory_v1/core/runtime/successor/transformation_model_cli.py        74     38    49%   49-86, 91-94, 98
+alpha_factory_v1/core/runtime/successor/transport.py                       70     44    37%   27, 32, 36, 42, 47-64, 69-114
+alpha_factory_v1/core/runtime/successor/trust.py                          172    130    24%   39-41, 48-49, 53, 57-60, 64-76, 83-86, 96-110, 123-132, 136-142, 147-148, 153-213, 218-241, 246-290
+alpha_factory_v1/core/runtime/successor/workbench.py                      230    176    23%   38-95, 108-115, 120-168, 172-174, 178-183, 188-258, 263-280, 323-402
+alpha_factory_v1/core/runtime/work.py                                     222    142    36%   19-31, 53, 56, 112-113, 151-165, 175-194, 207-216, 220, 225-245, 263-270, 287-297, 307, 309, 312, 314, 316-374
+alpha_factory_v1/core/self_edit/__init__.py                                 2      0   100%
+alpha_factory_v1/core/self_edit/safety.py                                  56     43    23%   44-49, 61-81, 94-110, 122-126
+alpha_factory_v1/core/self_edit/tools.py                                  108     69    36%   89-92, 104-106, 123-126, 141-148, 162-168, 182-183, 197-203, 217-226, 235-239, 248, 254-255, 259, 263, 267, 271-272, 276, 334, 356, 377-378, 400, 422, 444, 464-465, 475
+alpha_factory_v1/core/simulation/__init__.py                                4      0   100%
+alpha_factory_v1/core/simulation/forecast.py                               75     49    35%   49, 53, 68-70, 82-86, 90, 94, 115-138, 172-193, 197-202
+alpha_factory_v1/core/simulation/mats.py                                  150     13    91%   57-59, 73, 153, 234-240, 249
+alpha_factory_v1/core/simulation/mats_ops.py                               98     78    20%   24-26, 30-31, 38-39, 43-49, 57-60, 86-91, 95-118, 123-170, 188-196
+alpha_factory_v1/core/simulation/replay.py                                 97     68    30%   35-42, 48-51, 57-80, 95-96, 109-116, 121-131, 137-143, 150-157, 167-177
+alpha_factory_v1/core/simulation/sector.py                                 22     10    55%   34-53
+alpha_factory_v1/core/simulation/selector.py                               35     28    20%   15-23, 27-35, 40-49
+alpha_factory_v1/core/simulation/surrogate_fitness.py                      86      5    94%   23-24, 66, 92, 97
+alpha_factory_v1/utils/__init__.py                                          1      0   100%
+alpha_factory_v1/utils/disclaimer.py                                       15      3    80%   8, 20, 26
+scripts/test_support/sitecustomize.py                                      23      9    61%   14-15, 18-19, 22-23, 26-28
+-----------------------------------------------------------------------------------------------------
+TOTAL                                                                   10463   6161    41%
+Coverage XML written to file /workspace/scratch/8fb3cbfc1a70/qualification/new-module-coverage.xml
+FAIL Required test coverage of 80% not reached. Total coverage: 41.12%
+90 passed in 25.25s

@@ -1,0 +1,3497 @@
+{
+  "schema": "insight-conventional-challenge-freeze/v1",
+  "frozen_at": "2026-10-27T21:38:04.285545+00:00",
+  "source_sha256": "567f832a87779d54129559ff399e4352f483336bf1f8468bd3dd39865b560e1d",
+  "candidate_source_sha256": "d2698821596b6f3cc7a5f428a16b41dbdfc246bbe5b9ebad931ee3ca5e165d7d",
+  "requirements": "Same finite predicates, resource caps, permission declarations, original obligations and objective",
+  "conventional_method": "Uniform-cost shortest-path search with chosen-step subset caching; standard library heapq",
+  "objective": "Fewest pending permissions, then declared cost, elapsed duration, lexicographic step identities",
+  "budget": {
+    "max_cases": 24,
+    "max_process_cpu_seconds": 90,
+    "model_calls": 0
+  },
+  "acceptance": "Compare complete status and exact rank; independently verify every positive witness; retain incomplete runs",
+  "early_stop": "Execution parity stops the technical-breakthrough claim; do not infer discovery advantage or human impossibility",
+  "development_disclosure": "Original target and implementation inspected before freeze; no blinded discovery evaluation",
+  "freshness": "22 newly authored digital cases plus 2 disclosed original cases; structures are related finite planning problems",
+  "cases": [
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "research-access-origin",
+      "useful_purpose": "Produce a checkable access-plan feasibility packet while preserving original scientific and data obligations",
+      "starting_facts": [
+        "eligible-team",
+        "sample-ready"
+      ],
+      "required_outputs": [
+        "reviewable-outcome"
+      ],
+      "obligations": [
+        "preserve-original-acceptance",
+        "keep-protected-data-local",
+        "verify-method-scope"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "institution-clearance",
+          "purpose": "institution clearance",
+          "requires": [
+            "eligible-team"
+          ],
+          "produces": [
+            "institution-approved"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 0,
+          "duration_seconds": 600
+        },
+        {
+          "schema_version": 1,
+          "step_id": "access-award",
+          "purpose": "access award",
+          "requires": [
+            "eligible-team"
+          ],
+          "produces": [
+            "resource-allocated"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 5000000,
+          "duration_seconds": 300
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scope-check",
+          "purpose": "scope check",
+          "requires": [
+            "resource-allocated"
+          ],
+          "produces": [
+            "method-in-scope"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 10000000,
+          "duration_seconds": 300
+        },
+        {
+          "schema_version": 1,
+          "step_id": "local-adapter",
+          "purpose": "local adapter",
+          "requires": [
+            "sample-ready",
+            "institution-approved"
+          ],
+          "produces": [
+            "safe-input-ready"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 25000000,
+          "duration_seconds": 900
+        },
+        {
+          "schema_version": 1,
+          "step_id": "bounded-run",
+          "purpose": "bounded run",
+          "requires": [
+            "method-in-scope",
+            "safe-input-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 40000000,
+          "duration_seconds": 900
+        },
+        {
+          "schema_version": 1,
+          "step_id": "external-raw-transfer",
+          "purpose": "external raw transfer",
+          "requires": [
+            "sample-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 1000000,
+          "duration_seconds": 60
+        },
+        {
+          "schema_version": 1,
+          "step_id": "ordinary-full-service",
+          "purpose": "ordinary full service",
+          "requires": [
+            "sample-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 900000000,
+          "duration_seconds": 1800
+        }
+      ],
+      "cost_cap_micro_usd": 200000000,
+      "seconds_cap": 6000,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored monotone predicates over synthetic facility/data examples; real capacity, rights, wait times and policy interpretation unverified"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "research-data-origin",
+      "useful_purpose": "Produce a checkable access-plan feasibility packet while preserving original scientific and data obligations",
+      "starting_facts": [
+        "eligible-team",
+        "data-ready"
+      ],
+      "required_outputs": [
+        "reviewable-outcome"
+      ],
+      "obligations": [
+        "preserve-original-acceptance",
+        "keep-protected-data-local",
+        "verify-method-scope"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "institution-clearance",
+          "purpose": "institution clearance",
+          "requires": [
+            "eligible-team"
+          ],
+          "produces": [
+            "institution-approved"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 0,
+          "duration_seconds": 600
+        },
+        {
+          "schema_version": 1,
+          "step_id": "access-award",
+          "purpose": "access award",
+          "requires": [
+            "eligible-team"
+          ],
+          "produces": [
+            "resource-allocated"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 5000000,
+          "duration_seconds": 300
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scope-check",
+          "purpose": "scope check",
+          "requires": [
+            "resource-allocated"
+          ],
+          "produces": [
+            "method-in-scope"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 10000000,
+          "duration_seconds": 300
+        },
+        {
+          "schema_version": 1,
+          "step_id": "local-adapter",
+          "purpose": "local adapter",
+          "requires": [
+            "data-ready",
+            "institution-approved"
+          ],
+          "produces": [
+            "safe-input-ready"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 25000000,
+          "duration_seconds": 900
+        },
+        {
+          "schema_version": 1,
+          "step_id": "bounded-run",
+          "purpose": "bounded run",
+          "requires": [
+            "method-in-scope",
+            "safe-input-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "required",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 40000000,
+          "duration_seconds": 900
+        },
+        {
+          "schema_version": 1,
+          "step_id": "external-raw-transfer",
+          "purpose": "external raw transfer",
+          "requires": [
+            "data-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 1000000,
+          "duration_seconds": 60
+        },
+        {
+          "schema_version": 1,
+          "step_id": "ordinary-full-service",
+          "purpose": "ordinary full service",
+          "requires": [
+            "data-ready"
+          ],
+          "produces": [
+            "reviewable-outcome"
+          ],
+          "preserves": [
+            "preserve-original-acceptance",
+            "keep-protected-data-local",
+            "verify-method-scope"
+          ],
+          "permission": "documented",
+          "permission_basis": "Synthetic declarations; no institution or provider approved this example",
+          "estimated_cost_micro_usd": 900000000,
+          "duration_seconds": 1800
+        }
+      ],
+      "cost_cap_micro_usd": 200000000,
+      "seconds_cap": 6000,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored monotone predicates over synthetic facility/data examples; real capacity, rights, wait times and policy interpretation unverified"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-conditional",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-documented",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-denied",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-cost-refusal",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 2,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-time-refusal",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 2,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-obligation-refusal",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-missing-input",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-conditional",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-documented",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-denied",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-cost-refusal",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 2,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-time-refusal",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 2,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-obligation-refusal",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [
+        "public-feed",
+        "licence-text"
+      ],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-open-transport-missing-input",
+      "useful_purpose": "Produce a checkable conditional open-transport packet without external effects",
+      "starting_facts": [],
+      "required_outputs": [
+        "shareable-report"
+      ],
+      "obligations": [
+        "preserve-attribution",
+        "exclude-personal-data",
+        "preserve-error-report"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "rights",
+          "purpose": "Synthetic open-transport rights",
+          "requires": [
+            "licence-text"
+          ],
+          "produces": [
+            "scope-known"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "parse",
+          "purpose": "Synthetic open-transport parse",
+          "requires": [
+            "public-feed"
+          ],
+          "produces": [
+            "parsed-feed",
+            "error-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "minimise",
+          "purpose": "Synthetic open-transport minimise",
+          "requires": [
+            "parsed-feed",
+            "scope-known"
+          ],
+          "produces": [
+            "bounded-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "validate",
+          "purpose": "Synthetic open-transport validate",
+          "requires": [
+            "bounded-data",
+            "error-report"
+          ],
+          "produces": [
+            "checked-data"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic open-transport package",
+          "requires": [
+            "checked-data"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic open-transport managed-service",
+          "requires": [
+            "public-feed",
+            "licence-text"
+          ],
+          "produces": [
+            "shareable-report"
+          ],
+          "preserves": [
+            "preserve-attribution",
+            "exclude-personal-data",
+            "preserve-error-report"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-conditional",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-documented",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-denied",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "denied",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-cost-refusal",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 2,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-time-refusal",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 2,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-obligation-refusal",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [
+        "public-archive",
+        "declared-licence"
+      ],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-public-reproduction-missing-input",
+      "useful_purpose": "Produce a checkable conditional public-reproduction packet without external effects",
+      "starting_facts": [],
+      "required_outputs": [
+        "reproduction-packet",
+        "manifest"
+      ],
+      "obligations": [
+        "preserve-original-bytes",
+        "no-secret-material"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "inventory",
+          "purpose": "Synthetic public-reproduction inventory",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "source-inventory"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "hash",
+          "purpose": "Synthetic public-reproduction hash",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "reproduce",
+          "purpose": "Synthetic public-reproduction reproduce",
+          "requires": [
+            "source-inventory"
+          ],
+          "produces": [
+            "execution-result"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 5,
+          "duration_seconds": 8
+        },
+        {
+          "schema_version": 1,
+          "step_id": "compare",
+          "purpose": "Synthetic public-reproduction compare",
+          "requires": [
+            "execution-result",
+            "manifest"
+          ],
+          "produces": [
+            "comparison"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "package",
+          "purpose": "Synthetic public-reproduction package",
+          "requires": [
+            "comparison"
+          ],
+          "produces": [
+            "reproduction-packet"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic public-reproduction managed-service",
+          "requires": [
+            "public-archive",
+            "declared-licence"
+          ],
+          "produces": [
+            "reproduction-packet",
+            "manifest"
+          ],
+          "preserves": [
+            "preserve-original-bytes",
+            "no-secret-material"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 20000,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    },
+    {
+      "schema_version": 1,
+      "schema_name": "flywheel-conditional-access/v1",
+      "mission_id": "challenge-release-assurance-node-cap",
+      "useful_purpose": "Produce a checkable conditional release-assurance packet without external effects",
+      "starting_facts": [
+        "public-source",
+        "approved-scope"
+      ],
+      "required_outputs": [
+        "release-packet",
+        "recoverable-history"
+      ],
+      "obligations": [
+        "preserve-source-identity",
+        "no-production-authority"
+      ],
+      "steps": [
+        {
+          "schema_version": 1,
+          "step_id": "build",
+          "purpose": "Synthetic release-assurance build",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "package"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 3,
+          "duration_seconds": 5
+        },
+        {
+          "schema_version": 1,
+          "step_id": "scan",
+          "purpose": "Synthetic release-assurance scan",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "safety-report"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 4
+        },
+        {
+          "schema_version": 1,
+          "step_id": "accept",
+          "purpose": "Synthetic release-assurance accept",
+          "requires": [
+            "safety-report",
+            "approved-scope"
+          ],
+          "produces": [
+            "accepted"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "required",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "checkpoint",
+          "purpose": "Synthetic release-assurance checkpoint",
+          "requires": [
+            "package"
+          ],
+          "produces": [
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 1,
+          "duration_seconds": 2
+        },
+        {
+          "schema_version": 1,
+          "step_id": "assemble",
+          "purpose": "Synthetic release-assurance assemble",
+          "requires": [
+            "accepted",
+            "recoverable-history"
+          ],
+          "produces": [
+            "release-packet"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 2,
+          "duration_seconds": 3
+        },
+        {
+          "schema_version": 1,
+          "step_id": "managed-service",
+          "purpose": "Synthetic release-assurance managed-service",
+          "requires": [
+            "public-source"
+          ],
+          "produces": [
+            "release-packet",
+            "recoverable-history"
+          ],
+          "preserves": [
+            "preserve-source-identity",
+            "no-production-authority"
+          ],
+          "permission": "documented",
+          "permission_basis": "Authored declaration; no external approval or production authority",
+          "estimated_cost_micro_usd": 40,
+          "duration_seconds": 20
+        }
+      ],
+      "cost_cap_micro_usd": 50,
+      "seconds_cap": 60,
+      "search_node_cap": 1,
+      "mode": "synthetic",
+      "limitations": "Authored finite monotone declarations; no live service, buyer, frontier trial or market claim"
+    }
+  ]
+}

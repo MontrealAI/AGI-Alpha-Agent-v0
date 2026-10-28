@@ -30,6 +30,16 @@ CANONICAL_SOURCES = (
     "scripts/generate_alpha_flywheel.py",
     "scripts/templates/alpha-flywheel/index.html",
     "scripts/templates/alpha-flywheel/app.js",
+    "scripts/templates/alpha-flywheel/general-evidence.json",
+    "scripts/templates/alpha-flywheel/specialist-evidence.json",
+    "scripts/templates/alpha-flywheel/enterprise-evidence.json",
+    "scripts/templates/alpha-flywheel/discovery-evidence.json",
+    "scripts/templates/alpha-flywheel/opportunity-evidence.json",
+    "scripts/templates/alpha-flywheel/insight-evidence.json",
+    "scripts/templates/alpha-flywheel/insight-section.html",
+    "scripts/templates/alpha-flywheel/insight.js",
+    "scripts/templates/alpha-flywheel/customer-evidence.json",
+    "scripts/templates/alpha-flywheel/comparison-evidence.json",
     "scripts/templates/alpha-flywheel/style.css",
     "LICENSE",
 )
@@ -415,9 +425,88 @@ def browser_acceptance(
                 alpha.close()
                 checks.append("actual-existing-alpha-workspace-restoration")
             checks.append("existing-alpha-project-codec-with-hypothesis-only")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#general-case option")).to_have_count(12)
+                page.locator("#general-case").select_option("7311")
+                expect(page.locator("#general-metrics")).to_contain_text("46656")
+                expect(page.locator("#general-alpha-decision")).to_contain_text(
+                    "do not admit" if language == "en" else "ne pas admettre"
+                )
+                with page.expect_download() as evidence_download:
+                    page.locator("#general-export").click()
+                evidence_file = output / ("general-execution-" + language + ".json")
+                evidence_download.value.save_as(str(evidence_file))
+                general = json.loads(evidence_file.read_bytes())
+                assert general["summary"]["actual_provider_calls"] == 0
+                assert general["summary"]["actual_tool_invocations"] == 12
+                assert general["summary"]["candidate_decision"] == "do not admit"
+                assert all(not item["live_network_qualified"] for item in general["cases"])
+            checks.append("recorded-general-execution-evidence-en-fr-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#specialist-case option")).to_have_count(12)
+                page.locator("#specialist-case").select_option("fresh-contention-2505")
+                expect(page.locator("#specialist-artifacts")).to_contain_text("largest-demand")
+                expect(page.locator("#specialist-states")).to_contain_text(
+                    "DO NOT ADMIT" if language == "en" else "NE PAS ADMETTRE"
+                )
+                with page.expect_download() as relay_download:
+                    page.locator("#specialist-export").click()
+                relay_file = output / ("specialist-relay-" + language + ".json")
+                relay_download.value.save_as(str(relay_file))
+                relay = json.loads(relay_file.read_bytes())
+                assert relay["summary"]["independently_accepted_v2"] == 12
+                assert relay["summary"]["actual_admission"] == "do not admit"
+                assert not relay["summary"]["live_qualified"] and not relay["summary"]["net_alpha_positive"]
+            checks.append("specialist-artifact-change-transfer-and-distinct-states-en-fr-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#enterprise-offering option")).to_have_count(2)
+                page.locator("#enterprise-offering").select_option("resilient-placement")
+                expect(page.locator("#enterprise-stages")).to_contain_text("commercially-assessed")
+                expect(page.locator("#enterprise-states")).to_contain_text("USD 0")
+                expect(page.locator("#enterprise-alternatives")).to_contain_text("µUSD")
+                page.locator("#enterprise-offering").select_option("disruption-aware-rollout")
+                expect(page.locator("#enterprise-stages")).to_contain_text("hypothesis")
+                with page.expect_download() as enterprise_download:
+                    page.locator("#enterprise-export").click()
+                enterprise_file = output / ("enterprise-evidence-" + language + ".json")
+                enterprise_download.value.save_as(str(enterprise_file))
+                enterprise = json.loads(enterprise_file.read_bytes())
+                assert enterprise["summary"]["next_selected_action"] == "hold"
+                assert enterprise["summary"]["actual_admission"] == "rejected"
+                assert not enterprise["summary"]["live_qualified"]
+            checks.append("enterprise-offering-decision-qualification-en-fr-export-no-authority")
+            for language in ("en", "fr"):
+                page.locator("#lang-" + language).click()
+                expect(page.locator("#customer-stage option")).to_have_count(7)
+                for stage in range(7):
+                    page.locator("#customer-stage").select_option(str(stage))
+                    expect(page.locator("#customer-operating-boundary")).to_contain_text(
+                        "0,00" if language == "fr" else "$0.00"
+                    )
+                expect(page.locator("#customer-alpha")).to_contain_text(
+                    "non mesuré" if language == "fr" else "unmeasured"
+                )
+                with page.expect_download() as customer_download:
+                    page.locator("#customer-export").click()
+                customer_file = output / ("customer-evidence-" + language + ".json")
+                customer_download.value.save_as(str(customer_file))
+                customer = json.loads(customer_file.read_bytes())
+                assert customer["summary"]["actual_customer_collections_micro_usd"] == 0
+                assert customer["summary"]["production_authority_created"] is False
+                assert len(customer["connected_path"]["stages"]) == 7
+                stages = customer["connected_path"]["stages"]
+                assert len({row["report"]["cash"] for row in stages}) == 1
+                assert stages[3]["report"]["customer_funds_by_mode"]["synthetic"]["pending_refunds"] == 400_000_000
+                assert stages[4]["report"]["customer_funds_by_mode"]["synthetic"]["pending_refunds"] == 0
+            checks.append("customer-acceptance-deposit-refund-due-custody-en-fr-export-mode-isolation")
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
+                for link in page.locator("#prepare-link, a[href*='/try/']").all():
+                    assert parse_qs(urlsplit(link.get_attribute("href") or "").query).get("lang") == [language]
                 page.set_viewport_size({"width": width, "height": 1050})
                 assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (
                     f"Horizontal overflow: {width}"
@@ -425,7 +514,8 @@ def browser_acceptance(
                 if axe_script:
                     page.evaluate(axe_script.read_text() + ";void 0")
                     audit = page.evaluate(
-                        "axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
+                        "axe.run(document,{runOnly:{type:'tag',"
+                        "values:['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
                     )
                     report["accessibility"].append(
                         {"width": width, "language": language, "violations": audit["violations"]}

@@ -1,0 +1,43 @@
+import copy, datetime, hashlib, json, subprocess, sys, tempfile
+from pathlib import Path
+repo=Path('/workspace/scratch/1602dd9e6810/agi-alpha')
+sys.path[:0]=[str(repo),str(repo/'tests/runtime')]
+from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import Enterprise
+from alpha_factory_v1.core.runtime.successor.trust import SignedEnvelope
+import test_flywheel_enterprise as e
+import test_flywheel_enterprise_technical_authority as t
+
+def git(*args): return subprocess.check_output(['git',*args],cwd=repo,text=True).strip()
+names=['tests/test_successor_capability_delivery.py','tests/browser/fleet_receipt_native.mjs','tests/browser/fleet_git_metadata.mjs','tests/browser/fleet_module_boundary.mjs','tests/browser/test_discovery_lab_continuation.py']
+before={'schema':'independent-final-source-review/v1','startedAt':datetime.datetime.now(datetime.UTC).isoformat(),'sourceCommit':git('rev-parse','HEAD'),'sourceTree':git('rev-parse','HEAD^{tree}'),'remoteTrackingMainCommit':git('rev-parse','origin/main'),'baseCommit':'3947e4ec8fd74ad40e13e8ff825a149fa98a10e9','worktreeStatus':git('status','--porcelain'),'pinnedSources':[{'path':p,'bytes':len((repo/p).read_bytes()),'sha256':hashlib.sha256((repo/p).read_bytes()).hexdigest()} for p in names]}
+Path('/tmp/final-c516-review/before.json').write_text(json.dumps(before,indent=2)+'\n')
+rows=[]
+for phase in ('before-decision','after-decision-before-dispatch','during-production-model-response'):
+    with tempfile.TemporaryDirectory(prefix='final-commercial-probe-') as tmp:
+        state=t.setup.__wrapped__(Path(tmp))
+        offering=t.prepare(state)
+        enterprise=Enterprise(state['service'])
+        calls=[]
+        if phase=='before-decision':
+            state['trust'].revoke('commercial-controller')
+        decision=e.decision(state,'probe-decision',action='produce')
+        if phase=='after-decision-before-dispatch':
+            state['trust'].revoke('commercial-controller')
+        executor,mission,profile,permit=e.execution(state,'probe-production')
+        original=executor.transport.respond
+        def respond(*args):
+            body=original(*args)
+            calls.append('simulated-model-call')
+            if phase=='during-production-model-response':
+                state['trust'].revoke('commercial-controller')
+            return body
+        executor.transport.respond=respond
+        result=enterprise.run('probe-decision',executor,mission,profile,permit)
+        try:
+            state['trust'].verify(SignedEnvelope.model_validate(offering['signed']),'flywheel-enterprise-command','controller')
+            signature_still_current=True
+        except ValueError:
+            signature_still_current=False
+        rows.append({'case':phase,'commercialSigner':offering['signed']['principal'],'authorizedOfferingSignatureCurrentlyTrusted':signature_still_current,'selected':decision['selected'],'productionEligible':decision['alternatives'][0]['eligible'],'terminalStatus':result['status'],'executedToolActions':result['actions'],'modelCalls':len(calls),'decisionConsumed':enterprise.inspect('decision','probe-decision')['consumed'],'networkCalls':0,'testScope':'ephemeral fictional signer/RPC/model fixtures; actual bounded local placement tool'})
+print(json.dumps(rows,indent=2))
+Path('/tmp/final-c516-review/commercial-authority-results.json').write_text(json.dumps(rows,indent=2)+'\n')

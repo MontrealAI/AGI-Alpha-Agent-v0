@@ -1,0 +1,59 @@
+........................FFF...........................................   [100%]
+=================================== FAILURES ===================================
+_ test_production_decision_rechecks_its_original_accepted_prototype[acceptor] __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f04465e5940>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f0446443310>, ...}, ...}
+support = 'acceptor'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+        assert selected["selected"] == "hold"
+        assert not selected["alternatives"][0]["eligible"]
+>       assert "prototype acceptance is missing, changed or no longer eligible" in selected["alternatives"][0]["reasons"]
+E       AssertionError: assert 'prototype acceptance is missing, changed or no longer eligible' in ['prototype acceptance or supporting evidence is not currently eligible']
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:100: AssertionError
+_ test_production_decision_rechecks_its_original_accepted_prototype[prototype-controller] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f04465e5700>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f0446442f90>, ...}, ...}
+support = 'prototype-controller'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+        assert selected["selected"] == "hold"
+        assert not selected["alternatives"][0]["eligible"]
+>       assert "prototype acceptance is missing, changed or no longer eligible" in selected["alternatives"][0]["reasons"]
+E       AssertionError: assert 'prototype acceptance is missing, changed or no longer eligible' in ['prototype acceptance or supporting evidence is not currently eligible']
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:100: AssertionError
+_ test_production_decision_rechecks_its_original_accepted_prototype[changed-origin] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f04465e6150>, 'costs':...ontroller': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f0446441290>, ...}, ...}
+support = 'changed-origin'
+
+    @pytest.mark.parametrize("support", ["acceptor", "prototype-controller", "changed-origin"])
+    def test_production_decision_rechecks_its_original_accepted_prototype(setup: dict[str, Any], support: str) -> None:
+        qualified = prepare(setup)
+        original_costs = setup["costs"].snapshot()
+        withdraw(setup, support)
+        selected = e.decision(setup, "after-withdrawal", action="produce")
+        assert selected["selected"] == "hold"
+        assert not selected["alternatives"][0]["eligible"]
+>       assert "prototype acceptance is missing, changed or no longer eligible" in selected["alternatives"][0]["reasons"]
+E       AssertionError: assert 'prototype acceptance is missing, changed or no longer eligible' in ['prototype acceptance or supporting evidence is not currently eligible']
+
+tests/runtime/test_flywheel_enterprise_technical_authority.py:100: AssertionError
+- generated xml file: /workspace/scratch/b90e50262d61/agi-alpha/evidence/frontier-delivery-20261028/integrated-focused-2.xml -
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[acceptor]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[prototype-controller]
+FAILED tests/runtime/test_flywheel_enterprise_technical_authority.py::test_production_decision_rechecks_its_original_accepted_prototype[changed-origin]
+3 failed, 67 passed in 51.10s

@@ -1,0 +1,52 @@
+{
+  "scope": "Existing shared-runtime tools because minimalvenv lacks mypy/Ruff; strict runtime module typing and two changed source/test Ruff lint/format, no global release qualification",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "9981bf991d6b3d1dc15ebc5ebd31b6715a2dfaf21ac99806a3175ee91ae5577f",
+    "tests/runtime/test_flywheel_discovery.py": "f2010c08f0e3d28efa9e8e29cfc5dd24e2bc60c88c57b73c17ecb20113ee06e9"
+  },
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy-runtime.ini",
+        "--cache-dir=/dev/null",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py"
+      ],
+      "exit_code": 0,
+      "output": "Success: no issues found in 1 source file\n",
+      "output_sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+        "tests/runtime/test_flywheel_discovery.py"
+      ],
+      "exit_code": 0,
+      "output": "All checks passed!\n",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+        "tests/runtime/test_flywheel_discovery.py"
+      ],
+      "exit_code": 0,
+      "output": "2 files already formatted\n",
+      "output_sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"
+    }
+  ]
+}

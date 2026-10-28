@@ -1,0 +1,217 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[before-model] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81c7815e20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81c74f0570>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81cb3a53d0>
+phase = 'before-model'
+
+    @pytest.mark.parametrize("phase", ["before-model", "model-poll", "tool-poll"])
+    def test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, phase: str
+    ) -> None:
+        import asyncio
+        from alpha_factory_v1.core.runtime.models import RuntimeConfig
+    
+        s, task, p, env = setup, mission(), profile(), LocalExperiment()
+        p = p.model_copy(update={"model_request_cap_micro_usd": 17, "tool_request_caps_micro_usd": {"experiment": 29}})
+        call = response([{"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}])
+        transport: Any = ScriptedTransport([call, done()] if phase == "tool-poll" else [done()])
+        polling: list[str] = []
+        checks = 0
+    
+        async def handler(request: httpx.Request) -> httpx.Response:
+            polling.append("request-started")
+            s["trust"].revoke("controller")
+            try:
+                await asyncio.sleep(0.4)
+                polling.append("effect-after-revocation")
+                if phase == "model-poll":
+                    return httpx.Response(200, json=done())
+                return httpx.Response(200, json={"request_id": json.loads(request.content)["request_id"], "result": {}})
+            finally:
+                polling.append("request-closed")
+    
+        client_type = httpx.AsyncClient
+        monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
+        if phase == "model-poll":
+            s["journal"].config = RuntimeConfig(
+                llm_url="https://api.example/v1", llm_model=p.model_id, allow_remote_llm=True
+            )
+            with s["journal"].transaction() as cx:
+                control = s["journal"].document(s["journal"].latest("@control", cx))
+                control["config_hash"] = runtime_digest(s["journal"].config.model_dump())
+                s["journal"].append(cx, "@control", control)
+                s["service"].checkpoint.advance(s["journal"], cx)
+            monkeypatch.setenv("ALPHA_AGENT_LLM_KEY", "fictional-test-credential")
+            transport = ResponsesTransport(s["journal"])
+            task = task.model_copy(update={"components": {**task.components, "model": "live"}})
+        elif phase == "tool-poll":
+            monkeypatch.setenv("TEST_SANDBOX_KEY", "fictional-test-credential")
+            env = HTTPToolEnvironment(ToolEndpoint(
+                endpoint="https://sandbox.example/execute", credential_env="TEST_SANDBOX_KEY", sandbox_revision=ZERO,
+                session_id="revocation-fixture", permitted_tools=["experiment"],
+            ))
+            task = task.model_copy(update={"components": {**task.components, "tools": "live"}})
+    
+        def qualification_check() -> None:
+            nonlocal checks
+            checks += 1
+            if phase == "before-model" and checks == 2:
+                s["trust"].revoke("controller")
+    
+        signed = permit(s, task, p, env)
+        executor = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env, qualification_check)
+        result = executor.run(task, p, signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error_type"] == "ValueError"
+E       AssertionError: assert ('delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs)
+
+tests/runtime/test_flywheel_execution.py:671: AssertionError
+_ test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[model-poll] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81c707f7d0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81c92e5850>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81c707f710>
+phase = 'model-poll'
+
+    @pytest.mark.parametrize("phase", ["before-model", "model-poll", "tool-poll"])
+    def test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, phase: str
+    ) -> None:
+        import asyncio
+        from alpha_factory_v1.core.runtime.models import RuntimeConfig
+    
+        s, task, p, env = setup, mission(), profile(), LocalExperiment()
+        p = p.model_copy(update={"model_request_cap_micro_usd": 17, "tool_request_caps_micro_usd": {"experiment": 29}})
+        call = response([{"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}])
+        transport: Any = ScriptedTransport([call, done()] if phase == "tool-poll" else [done()])
+        polling: list[str] = []
+        checks = 0
+    
+        async def handler(request: httpx.Request) -> httpx.Response:
+            polling.append("request-started")
+            s["trust"].revoke("controller")
+            try:
+                await asyncio.sleep(0.4)
+                polling.append("effect-after-revocation")
+                if phase == "model-poll":
+                    return httpx.Response(200, json=done())
+                return httpx.Response(200, json={"request_id": json.loads(request.content)["request_id"], "result": {}})
+            finally:
+                polling.append("request-closed")
+    
+        client_type = httpx.AsyncClient
+        monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
+        if phase == "model-poll":
+            s["journal"].config = RuntimeConfig(
+                llm_url="https://api.example/v1", llm_model=p.model_id, allow_remote_llm=True
+            )
+            with s["journal"].transaction() as cx:
+                control = s["journal"].document(s["journal"].latest("@control", cx))
+                control["config_hash"] = runtime_digest(s["journal"].config.model_dump())
+                s["journal"].append(cx, "@control", control)
+                s["service"].checkpoint.advance(s["journal"], cx)
+            monkeypatch.setenv("ALPHA_AGENT_LLM_KEY", "fictional-test-credential")
+            transport = ResponsesTransport(s["journal"])
+            task = task.model_copy(update={"components": {**task.components, "model": "live"}})
+        elif phase == "tool-poll":
+            monkeypatch.setenv("TEST_SANDBOX_KEY", "fictional-test-credential")
+            env = HTTPToolEnvironment(ToolEndpoint(
+                endpoint="https://sandbox.example/execute", credential_env="TEST_SANDBOX_KEY", sandbox_revision=ZERO,
+                session_id="revocation-fixture", permitted_tools=["experiment"],
+            ))
+            task = task.model_copy(update={"components": {**task.components, "tools": "live"}})
+    
+        def qualification_check() -> None:
+            nonlocal checks
+            checks += 1
+            if phase == "before-model" and checks == 2:
+                s["trust"].revoke("controller")
+    
+        signed = permit(s, task, p, env)
+        executor = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env, qualification_check)
+        result = executor.run(task, p, signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error_type"] == "ValueError"
+E       AssertionError: assert ('delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs)
+
+tests/runtime/test_flywheel_execution.py:671: AssertionError
+_ test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[tool-poll] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f81c922e6c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f81c9281110>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81c7047950>
+phase = 'tool-poll'
+
+    @pytest.mark.parametrize("phase", ["before-model", "model-poll", "tool-poll"])
+    def test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, phase: str
+    ) -> None:
+        import asyncio
+        from alpha_factory_v1.core.runtime.models import RuntimeConfig
+    
+        s, task, p, env = setup, mission(), profile(), LocalExperiment()
+        p = p.model_copy(update={"model_request_cap_micro_usd": 17, "tool_request_caps_micro_usd": {"experiment": 29}})
+        call = response([{"type": "function_call", "name": "experiment", "call_id": "call-1", "arguments": "{}"}])
+        transport: Any = ScriptedTransport([call, done()] if phase == "tool-poll" else [done()])
+        polling: list[str] = []
+        checks = 0
+    
+        async def handler(request: httpx.Request) -> httpx.Response:
+            polling.append("request-started")
+            s["trust"].revoke("controller")
+            try:
+                await asyncio.sleep(0.4)
+                polling.append("effect-after-revocation")
+                if phase == "model-poll":
+                    return httpx.Response(200, json=done())
+                return httpx.Response(200, json={"request_id": json.loads(request.content)["request_id"], "result": {}})
+            finally:
+                polling.append("request-closed")
+    
+        client_type = httpx.AsyncClient
+        monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: client_type(transport=httpx.MockTransport(handler), **kw))
+        if phase == "model-poll":
+            s["journal"].config = RuntimeConfig(
+                llm_url="https://api.example/v1", llm_model=p.model_id, allow_remote_llm=True
+            )
+            with s["journal"].transaction() as cx:
+                control = s["journal"].document(s["journal"].latest("@control", cx))
+                control["config_hash"] = runtime_digest(s["journal"].config.model_dump())
+                s["journal"].append(cx, "@control", control)
+                s["service"].checkpoint.advance(s["journal"], cx)
+            monkeypatch.setenv("ALPHA_AGENT_LLM_KEY", "fictional-test-credential")
+            transport = ResponsesTransport(s["journal"])
+            task = task.model_copy(update={"components": {**task.components, "model": "live"}})
+        elif phase == "tool-poll":
+            monkeypatch.setenv("TEST_SANDBOX_KEY", "fictional-test-credential")
+            env = HTTPToolEnvironment(ToolEndpoint(
+                endpoint="https://sandbox.example/execute", credential_env="TEST_SANDBOX_KEY", sandbox_revision=ZERO,
+                session_id="revocation-fixture", permitted_tools=["experiment"],
+            ))
+            task = task.model_copy(update={"components": {**task.components, "tools": "live"}})
+    
+        def qualification_check() -> None:
+            nonlocal checks
+            checks += 1
+            if phase == "before-model" and checks == 2:
+                s["trust"].revoke("controller")
+    
+        signed = permit(s, task, p, env)
+        executor = MissionExecutor(s["journal"], s["trust"], s["costs"], transport, env, qualification_check)
+        result = executor.run(task, p, signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error_type"] == "ValueError"
+E       AssertionError: assert ('delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs)
+
+tests/runtime/test_flywheel_execution.py:671: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_execution.py::test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[before-model]
+FAILED tests/runtime/test_flywheel_execution.py::test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[model-poll]
+FAILED tests/runtime/test_flywheel_execution.py::test_execution_controller_revocation_stops_checkpoints_and_preserves_uncertain_attempt[tool-poll]
+3 failed, 33 deselected in 2.12s

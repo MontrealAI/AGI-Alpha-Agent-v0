@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="72" time="25.779" timestamp="2026-10-27T13:39:27.236019-04:00" hostname="0e37b274b897"><testcase classname="tests.runtime.test_flywheel_discovery" name="test_serious_candidate_keeps_prior_art_and_rechecks_its_evidence" time="0.227" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_selected_instrument_uses_the_same_journal_and_unknown_costs_pause" time="0.633" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_discovery_records_survive_reconstruction_without_authority" time="0.247" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[expired]" time="0.152" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[wrong-role]" time="0.184" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[wrong-journal]" time="0.240" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[replay]" time="0.190" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[signature]" time="0.185" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[stopped]" time="0.152" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_signed_command_authority_boundaries[source]" time="0.170" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_original_meaning_cannot_be_relaxed_or_witness_rebound" time="0.313" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[cycle]" time="0.344" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[missing]" time="0.173" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[cost]" time="0.201" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[time]" time="0.186" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[checkpoint]" time="0.192" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_bundle_bounds_and_dependencies[duplicate]" time="0.178" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[budget]" time="0.185" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[model]" time="0.218" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[tools]" time="0.188" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[retained]" time="0.190" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[workflow]" time="0.165" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_operational_alpha_plan_matches_resources_and_keeps_contrasts[roles]" time="0.157" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_unknown_costs_preserve_uncertainty_and_stop_next_steps" time="0.395" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_stop_checkpoint_does_not_require_fictional_profit" time="0.245" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_out_of_order_and_duplicate_observation_cas_refuse" time="0.508" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_complementary_falsification_pauses_and_requires_signed_decision" time="0.713" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_same_costs_cannot_be_allocated_twice_across_bundles" time="0.400" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_recorded_cost_overrun_remains_visible_and_terminal" time="0.347" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_actual_execution_and_accepted_original_artifact_bind_observation" time="0.729" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_executed_observation_and_checkpoint_use_actual_mission_ledger[False]" time="0.605"><failure message="ValueError: unsupported discovery inspection">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6736fe1040&gt;, 'costs':...evaluator': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f673714b1d0&gt;, ...}, ...}
+seal_before_observation = False
+
+    @pytest.mark.parametrize("seal_before_observation", [False, True])
+    def test_executed_observation_and_checkpoint_use_actual_mission_ledger(
+        setup: dict[str, Any], seal_before_observation: bool
+    ) -&gt; None:
+        state = setup
+        s.funding(state)
+        executor, mission, profile, permit = e.execution(state, mission_id="paid-delivery-mission")
+        executor.run(mission, profile, permit)
+        execution = state["journal"].latest(operation_key("placement-origin"))
+        register_witness(state)
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        raw = observation(state, spec).model_dump()
+        raw.update(
+            artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+            cost_operation="placement-origin",
+            execution_operation="placement-origin",
+            elapsed_seconds=1800,
+        )
+        # An unrelated sealed operation ID must never stand in for actual mission costs.
+        s.seal(state, "placement-origin", "A")
+        if seal_before_observation:
+            s.seal(state, mission.mission_id, "A")
+        api = Discovery(state["service"])
+        result = api.apply(command(state, "observe", raw, "distinct-ledger-observation", record["digest"]))
+        item = result["observations"][0]
+        assert item["execution_digest"] == execution["digest"]
+        assert item["ledger_mission_id"] == mission.mission_id
+        assert item["cost_report"] == state["costs"].report(mission.mission_id)
+        assert item["complete_selected_bucket"] is seal_before_observation
+&gt;       assert api.inspect("cost-allocation", mission.mission_id + "/A")["cost_operation"] == "placement-origin"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_flywheel_discovery.py:606: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;alpha_factory_v1.core.runtime.successor.flywheel_discovery.Discovery object at 0x7f6734f52630&gt;
+kind = 'cost-allocation', identity = 'paid-delivery-mission/A'
+
+    def inspect(self, kind: str, identity: str) -&gt; dict[str, Any]:
+        if kind not in {
+            "opportunity",
+            "witness",
+            "bundle",
+            "observation",
+            "comparison",
+            "decision",
+            "offering-link",
+            "arrangement",
+        }:
+&gt;           raise ValueError("unsupported discovery inspection")
+E           ValueError: unsupported discovery inspection
+
+alpha_factory_v1/core/runtime/successor/flywheel_discovery.py:373: ValueError</failure></testcase><testcase classname="tests.runtime.test_flywheel_discovery" name="test_executed_observation_and_checkpoint_use_actual_mission_ledger[True]" time="0.803"><failure message="ValueError: unsupported discovery inspection">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f67370c6030&gt;, 'costs':...evaluator': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f67351441f0&gt;, ...}, ...}
+seal_before_observation = True
+
+    @pytest.mark.parametrize("seal_before_observation", [False, True])
+    def test_executed_observation_and_checkpoint_use_actual_mission_ledger(
+        setup: dict[str, Any], seal_before_observation: bool
+    ) -&gt; None:
+        state = setup
+        s.funding(state)
+        executor, mission, profile, permit = e.execution(state, mission_id="paid-delivery-mission")
+        executor.run(mission, profile, permit)
+        execution = state["journal"].latest(operation_key("placement-origin"))
+        register_witness(state)
+        spec = bundle(state, mission=mission, bucket="A")
+        record = register_bundle(state, spec)
+        raw = observation(state, spec).model_dump()
+        raw.update(
+            artifact=evidence(state, operation_key("placement-origin")).model_dump(),
+            cost_operation="placement-origin",
+            execution_operation="placement-origin",
+            elapsed_seconds=1800,
+        )
+        # An unrelated sealed operation ID must never stand in for actual mission costs.
+        s.seal(state, "placement-origin", "A")
+        if seal_before_observation:
+            s.seal(state, mission.mission_id, "A")
+        api = Discovery(state["service"])
+        result = api.apply(command(state, "observe", raw, "distinct-ledger-observation", record["digest"]))
+        item = result["observations"][0]
+        assert item["execution_digest"] == execution["digest"]
+        assert item["ledger_mission_id"] == mission.mission_id
+        assert item["cost_report"] == state["costs"].report(mission.mission_id)
+        assert item["complete_selected_bucket"] is seal_before_observation
+&gt;       assert api.inspect("cost-allocation", mission.mission_id + "/A")["cost_operation"] == "placement-origin"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_flywheel_discovery.py:606: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;alpha_factory_v1.core.runtime.successor.flywheel_discovery.Discovery object at 0x7f67370c73b0&gt;
+kind = 'cost-allocation', identity = 'paid-delivery-mission/A'
+
+    def inspect(self, kind: str, identity: str) -&gt; dict[str, Any]:
+        if kind not in {
+            "opportunity",
+            "witness",
+            "bundle",
+            "observation",
+            "comparison",
+            "decision",
+            "offering-link",
+            "arrangement",
+        }:
+&gt;           raise ValueError("unsupported discovery inspection")
+E           ValueError: unsupported discovery inspection
+
+alpha_factory_v1/core/runtime/successor/flywheel_discovery.py:373: ValueError</failure></testcase><testcase classname="tests.runtime.test_flywheel_discovery" name="test_distinct_execution_operations_cannot_allocate_the_same_mission_costs_twice" time="0.649" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_checkpoint_refuses_changed_execution_receipt" time="0.547" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[bucket]" time="0.458" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[artifact]" time="0.489" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[elapsed]" time="0.508" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[inputs]" time="0.454" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[acceptance]" time="0.488" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_execution_cannot_substitute_costs_artifact_inputs_or_acceptance[mode]" time="0.473" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_stale_need_evidence_and_offer_recommendation_do_not_create_authority" time="0.254" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_link_and_arrangement_project_without_advancing_offering_or_money" time="0.355" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_arrangement_rechecks_current_evidence_and_evidence_mode[need]" time="0.289" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_arrangement_rechecks_current_evidence_and_evidence_mode[offering]" time="0.285" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_arrangement_rechecks_current_evidence_and_evidence_mode[commitment]" time="0.287" /><testcase classname="tests.runtime.test_flywheel_discovery" name="test_arrangement_rechecks_current_evidence_and_evidence_mode[mode]" time="0.296" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_connected_delivery_qualification_and_negative_commercial_decision" time="0.628" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_positive_fictional_qualification_can_produce_without_learning" time="0.752" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[tool]" time="0.259" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[beneficiary]" time="0.246" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[criteria]" time="0.225" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[mode]" time="0.272" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[budget]" time="0.383" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_execution_cannot_widen_offering[expiry]" time="0.234" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[stale-evidence]" time="0.171" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[cross-journal]" time="0.158" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[expired]" time="0.182" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[wrong-role]" time="0.187" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[replay]" time="0.218" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_commands_reject_authority_and_history_attacks[skip-stage]" time="0.190" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_revision_resets_qualification_and_stale_decision_refuses" time="0.236" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_unknown_costs_hold_and_replay_never_reexecutes" time="0.401" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_interrupted_attempt_keeps_capacity_and_unknown_liability" time="0.462" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_changed_forecast_evidence_refuses_before_consuming_or_io" time="0.242" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_terminal_executor_failure_recovers_after_lost_finalization" time="0.350" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_preflight_failure_reconciles_only_complete_original_mission_accounting[False]" time="0.421" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_preflight_failure_reconciles_only_complete_original_mission_accounting[True]" time="0.508" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_missing_receipt_cannot_clear_a_merely_attempting_launch" time="0.317" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_enterprise_distinct_identity_refuses_before_consumption" time="0.196" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_changed_commercial_assessment_evidence_cannot_authorize" time="0.430" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_withdrawn_authorized_commercial_evidence_blocks_decision_and_dispatch" time="0.671" /><testcase classname="tests.runtime.test_flywheel_enterprise" name="test_two_offerings_share_global_capacity_without_occupying_each_others_slots" time="0.507" /></testsuite></testsuites>

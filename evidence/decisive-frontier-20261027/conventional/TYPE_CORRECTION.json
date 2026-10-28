@@ -1,0 +1,10 @@
+{
+  "original_source_sha256": "04ee790ed9eb57ac5a427710617e4d7a1c719413bb0cb9897180a2d225ffe9ea",
+  "check": "python -m mypy --strict --follow-imports=silent scripts/insight_conventional_challenge.py",
+  "original_result": {
+    "exit_code": 1,
+    "diagnostic": "scripts/insight_conventional_challenge.py:180: error: Unsupported right operand type for in (\"object\") [operator]"
+  },
+  "correction": "Add list[dict[str, Any]] annotation to steps; no algorithm, cases, budgets or acceptance change",
+  "evidence_boundary": "Original freeze and results preserved; corrected campaign is a post-outcome unchanged-case confirmation, not fresh discovery evidence"
+}

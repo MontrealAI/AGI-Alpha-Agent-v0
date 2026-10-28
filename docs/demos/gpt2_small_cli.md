@@ -6,7 +6,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.46.1
+## Current runnable path — 1.47.0
 
 **Mode:** Local model. Generates text with the actual GPT-2 124M model.
 

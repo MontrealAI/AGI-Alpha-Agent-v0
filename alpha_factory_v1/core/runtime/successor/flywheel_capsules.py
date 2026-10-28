@@ -39,6 +39,15 @@ from .transformation import (
 )
 from .transformation_library import KEY, PROTECTED_BRANCH, TransformationLibrary, _is_exact_type
 from .trust import SignedEnvelope
+from .flywheel_experiments import PlacementProblem
+from .flywheel_specialists import (
+    CapabilityDescription,
+    PlacementWorkflow,
+    PlacementInvocation,
+    execute_workflow,
+    placement_fingerprint,
+)
+from .flywheel_learning import accepted_general_origin, accept_general_origin
 
 BRANCH = PROTECTED_BRANCH
 MAX_INVOCATION_INPUT_BYTES = 250_000
@@ -46,8 +55,15 @@ MAX_INVOCATION_RECORD_BYTES = 1_000_000
 REVOCATION_RESERVE_BYTES = 25_000
 
 
-def source_fingerprints(document: SourceDocument) -> set[str]:
+def input_digest(document: SourceDocument | PlacementProblem) -> str:
+    return digest("placement-input" if isinstance(document, PlacementProblem) else "ti-source", document)
+
+
+def source_fingerprints(document: SourceDocument | PlacementProblem) -> set[str]:
     """Exclude reused source identity or text despite superficial document rewrapping."""
+    if isinstance(document, PlacementProblem):
+        # Resource caps are not new work; identical instance data stays exposed.
+        return {placement_fingerprint(document)}
     uri = urlsplit(document.source_url)
     source_uri = uri._replace(scheme=uri.scheme.lower(), netloc=uri.netloc.lower(), query="", fragment="").geturl()
     text = " ".join(unicodedata.normalize("NFKC", " ".join(c.text for c in document.claims)).casefold().split())
@@ -91,7 +107,9 @@ class CapsuleManifest(StrictModel):
     origin_agent: str = Field(max_length=100)
     origin_wallet: str = Field(pattern=r"^0x[0-9a-f]{40}$")
     content_digest: Digest
-    supported_scope: Literal["bounded-public-source-selection/v1"]
+    supported_scope: Literal["bounded-public-source-selection/v1", "resilient-placement/v1"]
+    capability: CapabilityDescription | None = None
+    gym_campaign_id: Identifier | None = None
     prerequisites: list[Digest] = Field(max_length=16)
     limitations: Text
     rights: Literal["cleared-for-authenticated-network"]
@@ -105,6 +123,15 @@ class CapsuleManifest(StrictModel):
         address(self.origin_wallet)
         if len(set(self.dependency_digests)) != len(self.dependency_digests):
             raise ValueError("dependencies cannot repeat")
+        if self.supported_scope == "resilient-placement/v1" and (
+            self.capability is None
+            or not self.capability.supported
+            or self.capability.permissions != ["bounded-local-compute"]
+            or self.capability.dependencies != self.dependency_digests
+        ):
+            raise ValueError("placement requires a supported, permission-bounded executable capability manifest")
+        if self.supported_scope == "bounded-public-source-selection/v1" and self.capability is not None:
+            raise ValueError("legacy selector cannot claim a different operational capability form")
         assert_public_content(self.model_dump())
         return self
 
@@ -123,14 +150,14 @@ class EvaluationPlan(StrictModel):
     retention_cost_record: Identifier
     origin_input_digests: list[Digest] = Field(min_length=1, max_length=128)
     fresh_input_digests: list[Digest] = Field(min_length=2, max_length=128)
-    fresh_inputs: list[SourceDocument] = Field(min_length=2, max_length=128)
+    fresh_inputs: list[SourceDocument | PlacementProblem] = Field(min_length=2, max_length=128)
     planned_reuses: int = Field(ge=1, le=100_000)
     remaining_retention_micro_usd: int = Field(ge=0, le=10**15)
     prospective_basis: Text
 
     @model_validator(mode="after")
     def disjoint_inputs(self) -> EvaluationPlan:
-        if self.fresh_input_digests != [digest("ti-source", document) for document in self.fresh_inputs]:
+        if self.fresh_input_digests != [input_digest(document) for document in self.fresh_inputs]:
             raise ValueError("fresh source documents must match their exact ti-source commitments")
         if set(self.origin_input_digests) & set(self.fresh_input_digests) or len(set(self.fresh_input_digests)) != len(
             self.fresh_input_digests
@@ -214,6 +241,8 @@ class ProtectedLibrary:
     ) -> None:
         if library.journal is not costs.journal or library.journal is not access.journal:
             raise ValueError("one authoritative transactional journal is required")
+        if library.trust is not costs.trust:
+            raise ValueError("one authoritative current trust registry is required")
         if (
             not keys
             or active_key not in keys
@@ -233,6 +262,8 @@ class ProtectedLibrary:
             raise ValueError("bounded deployment, trust and key custody inventory required")
         self.costs.checkpoint = checkpoint
         self.costs.custody_check = self._check_custody_files
+        self.costs.general_delivery_check = self._customer_general_delivery
+        self.costs.invocation_reservation_check = self._current_invocation_reservation
         self._boot_execution_digest = self._execution_binding()
         with self.journal.transaction() as cx:
             state = self.library.snapshot()
@@ -248,6 +279,126 @@ class ProtectedLibrary:
                     "invocations": {},
                 }
                 self._commit(cx, state)
+
+    def _customer_general_delivery(self, operation: str, cx: Any) -> dict[str, Any]:
+        from .flywheel_learning import accepted_general_origin
+
+        self._state(cx)
+        return accepted_general_origin(self, operation, cx)[0]
+
+    def _current_invocation_reservation(self, charge: Charge, cx: Any) -> None:
+        """Inspect existing invocation support without issuing or consuming authority."""
+        from eth_account import Account
+        from eth_account.messages import encode_defunct
+        from eth_keys.exceptions import BadSignature
+
+        _, network = self._state(cx)
+        stored = self.journal.latest(self._invocation_key(charge.mission_id), cx)
+        if stored.get("legacy_unqualified"):
+            raise ValueError("legacy invocation cannot qualify current cost evidence")
+        request = stored["request"]
+        invocation: Invocation | PlacementInvocation = (
+            PlacementInvocation.model_validate(request) if "problem" in request else Invocation.model_validate(request)
+        )
+        receipt = stored["receipt"]
+        ident = receipt["candidate_digest"]
+        entry = self._eligible(network, ident, cx)
+        self._dependencies(network, entry, cx=cx)
+        request_hash = digest("flywheel-invocation", invocation)
+        attempt = digest(
+            "flywheel-invocation-attempt",
+            {"candidate_digest": ident, "mission_id": invocation.mission_id, "request_digest": request_hash},
+        )
+        expected = Charge(
+            activity_id="reuse/" + invocation.mission_id,
+            mission_id=invocation.mission_id,
+            bucket="B",
+            category="compute",
+            accrued_micro_usd=None,
+            paid_micro_usd=0,
+            basis="unknown",
+            evidence_digest=attempt,
+            note="Durably reserved before bounded execution, including crashes; all-resource reconciliation remains required",
+        )
+        document = invocation.problem if isinstance(invocation, PlacementInvocation) else invocation.document
+        if (
+            charge != expected
+            or receipt["request_digest"] != request_hash
+            or receipt["attempt_digest"] != attempt
+            or receipt["input_digest"] != input_digest(document)
+            or receipt["beta_digest"] != invocation.beta_digest
+            or invocation.beta_digest != network["beta_digest"]
+            or receipt["policy_digest"] != invocation.policy_digest
+            or invocation.policy_digest != network["policy_digest"]
+            or receipt["recipient_capabilities_digest"] != invocation.recipient_capabilities_digest
+            or receipt["cost_cap_micro_usd"] != invocation.cost_cap_micro_usd
+            or receipt["execution_digest"] != self.execution_digest
+            or receipt["qualification_digest"] != digest("flywheel-plan", entry["plan"])
+            or (entry["manifest"]["supported_scope"] == "resilient-placement/v1")
+            != isinstance(invocation, PlacementInvocation)
+            or not set(entry["manifest"]["prerequisites"]) <= set(invocation.prerequisite_digests)
+        ):
+            raise ValueError("cost reservation differs from its exact currently qualified invocation")
+
+        authority = receipt["authorization"]
+        challenge = self.journal.latest("@flywheel-challenge:" + authority["challenge_id"], cx)
+        payload = challenge["payload"]
+        message = (
+            "AGI Alpha resource authorization v1\n"
+            + canonical(payload).decode()
+            + "\nNo spending, settlement, deployment or external-system authority."
+        )
+        proof = AccessRequest(challenge_id=authority["challenge_id"], signature=challenge["signature"])
+        if (
+            set(payload)
+            != {
+                "service",
+                "journal_identity",
+                "name",
+                "wallet",
+                "resource",
+                "action",
+                "request_digest",
+                "issued_at",
+                "expires_at",
+                "nonce",
+            }
+            or challenge["used"] is not True
+            or digest("flywheel-challenge", payload) != proof.challenge_id
+            or challenge["message"] != message
+            or challenge["authorization"] != authority
+            or challenge["revision"] >= stored["revision"]
+            or payload["service"] != self.access.service.model_dump()
+            or payload["journal_identity"] != self.journal.identity
+            or payload["resource"] != ident
+            or payload["action"] != "invoke"
+            or payload["request_digest"] != request_hash
+            or payload["name"] != direct_name(authority["name"])
+            or payload["wallet"] != address(authority["wallet"])
+            or authority["request_committed_at"] != payload["issued_at"]
+            or authority["pins"] != self.access.authority.pins.model_dump()
+            or authority["chain_id"] != 1
+            or authority["rules"] != "ensv1-direct-registry-or-wrapped-owner/v1"
+            or not all(
+                _is_exact_type(value, int)
+                for value in (
+                    payload["issued_at"],
+                    payload["expires_at"],
+                    authority["checked_at"],
+                    receipt["started_at"],
+                )
+            )
+            or not payload["issued_at"] <= authority["checked_at"] < payload["expires_at"]
+            or authority["checked_at"] > receipt["started_at"]
+        ):
+            raise ValueError("invocation reservation lacks its exact consumed resource authorization")
+        # Expiry limits the original grant, not inspection of its consumed history.
+        try:
+            recovered = address(Account.recover_message(encode_defunct(text=message), signature=proof.signature))
+        except (BadSignature, TypeError, ValueError) as exc:
+            raise ValueError("consumed invocation wallet signature is invalid") from exc
+        if recovered != payload["wallet"]:
+            raise ValueError("consumed invocation wallet differs from its signed authorization")
 
     def _check_custody_files(self) -> None:
         for name, expected in self._custody_files.items():
@@ -279,6 +430,10 @@ class ProtectedLibrary:
             here / "protocol.py",
             here / "signatures.py",
             here / "transformation_library.py",
+            here / "computer.py",
+            here / "computer_dependencies.py",
+            here / "computer_worker.py",
+            here / "computer_read.py",
             *[
                 here.parent / name
                 for name in ("chain.py", "engine.py", "models.py", "provider.py", "store.py", "work.py")
@@ -432,9 +587,19 @@ class ProtectedLibrary:
                         entry["state"] = "requires-requalification"
             self._commit(cx, state)
 
-    def retain(self, manifest: CapsuleManifest, program: SelectionProgram, signed: SignedEnvelope) -> str:
+    def accept_general_origin(self, signed: SignedEnvelope) -> dict[str, Any]:
+        """Independent exact-delivery acceptance; never inferred from model completion."""
+        return accept_general_origin(self, signed)
+
+    def retain(
+        self, manifest: CapsuleManifest, program: SelectionProgram | PlacementWorkflow, signed: SignedEnvelope
+    ) -> str:
         manifest = CapsuleManifest.model_validate(manifest.model_dump())
-        program = SelectionProgram.model_validate(program.model_dump())
+        program = (
+            PlacementWorkflow.model_validate(program.model_dump())
+            if manifest.supported_scope == "resilient-placement/v1"
+            else SelectionProgram.model_validate(program.model_dump())
+        )
         ident = digest("flywheel-manifest", manifest)
         signed = SignedEnvelope.model_validate(copy.deepcopy(signed.model_dump()))
         payload = self._signed(signed, "candidate", "producer")
@@ -461,7 +626,43 @@ class ProtectedLibrary:
             ]
             if manifest.version != max(versions, default=0) + 1:
                 raise Conflict("capsule versions must advance without replacing history")
-            origin = accepted_native_delivery(self.journal, manifest.origin_mission, cx)
+            development_cost = 0
+            if manifest.supported_scope == "resilient-placement/v1":
+                origin, origin_problem = accepted_general_origin(self, manifest.origin_mission, cx)
+                origin_documents: list[SourceDocument | PlacementProblem] = [origin_problem]
+                origin_request = digest("general-origin-inputs", origin["mission"]["inputs"])
+                if manifest.capability is None or manifest.capability.provenance_digest != origin["digest"]:
+                    raise ValueError("capability provenance must bind the exact accepted useful delivery")
+                from .flywheel_learning import ACCEPTANCE_KEY
+
+                accepted = self.journal.latest(ACCEPTANCE_KEY + manifest.origin_mission, cx)
+                if accepted["acceptance"]["payload"]["record"]["rights_evidence"] != manifest.rights_evidence:
+                    raise ValueError("sharing rights differ from the independently accepted delivery")
+                observed_workflow = origin["result"]["deliverable"].get("workflow_digest")
+                if manifest.gym_campaign_id is not None:
+                    from .flywheel_gym import KEY as GYM_KEY, GymPlan
+
+                    campaign = self.journal.latest(GYM_KEY + manifest.gym_campaign_id, cx)
+                    campaign_plan = GymPlan.model_validate(campaign["plan"]["payload"]["plan"])
+                    self.trust.verify(
+                        SignedEnvelope.model_validate(campaign["plan"]), "flywheel-gym-plan", "controller"
+                    )
+                    if (
+                        campaign.get("status") != "frozen-awaiting-protected-evaluation"
+                        or campaign.get("candidate_digest") != manifest.content_digest
+                        or digest("flywheel-program", campaign_plan.original) != observed_workflow
+                        or campaign_plan.mission_id == manifest.origin_mission
+                        or not self.costs.report(campaign_plan.mission_id, cx)["bucket_complete"]["C"]
+                    ):
+                        raise ValueError("Gym candidate must link paid v1, frozen v2 and complete separate C costs")
+                    origin_documents.extend(task.problem for task in campaign_plan.tasks)
+                    development_cost = self.costs.report(campaign_plan.mission_id, cx)["costs"]["C"]
+                elif observed_workflow != manifest.content_digest:
+                    raise ValueError("untrained candidate must be the actual accepted delivery workflow")
+            else:
+                origin = accepted_native_delivery(self.journal, manifest.origin_mission, cx)
+                origin_documents = list(origin_source_documents(origin))
+                origin_request = origin["request_hash"]
             if origin["digest"] != manifest.origin_record_digest:
                 raise ValueError("candidate must originate in this journal's exact accepted delivery")
             if not self.costs.report(manifest.origin_mission, cx)["bucket_complete"]["A"]:
@@ -471,13 +672,13 @@ class ProtectedLibrary:
                 raise ValueError("origin wallet must be proved through the existing runtime wallet binding")
             if time.monotonic_ns() >= origin_deadline:
                 raise Conflict("origin authority evidence became stale before retention")
-            origin_documents = origin_source_documents(origin)
             network["entries"][ident] = {
                 "manifest": manifest.model_dump(),
+                "additional_development_cost_micro_usd": development_cost,
                 "origin_authorization": origin_authority,
                 "origin_input_digests": [
-                    origin["request_hash"],
-                    *[digest("ti-source", document) for document in origin_documents],
+                    origin_request,
+                    *[input_digest(document) for document in origin_documents],
                 ],
                 "origin_source_fingerprints": sorted(
                     {stamp for document in origin_documents for stamp in source_fingerprints(document)}
@@ -511,13 +712,19 @@ class ProtectedLibrary:
             ):
                 raise Conflict("candidate cannot receive a new plan in this lifecycle state")
             self.library._distinct(signed.principal, "verifier", entry["producer"], "producer")
-            origin = self.journal.latest(entry["manifest"]["origin_mission"], cx)
+            if entry["manifest"]["supported_scope"] == "resilient-placement/v1":
+                origin, _ = accepted_general_origin(self, entry["manifest"]["origin_mission"], cx)
+            else:
+                origin = self.journal.latest(entry["manifest"]["origin_mission"], cx)
             if origin["digest"] != entry["manifest"]["origin_record_digest"]:
                 raise ValueError("originating delivery changed since candidate retention")
             if not set(entry["origin_input_digests"]) <= set(plan.origin_input_digests):
                 raise ValueError(
                     "evaluation must exclude the actual originating source ti-source commitments and mission identity"
                 )
+            placement_scope = entry["manifest"]["supported_scope"] == "resilient-placement/v1"
+            if any(isinstance(value, PlacementProblem) != placement_scope for value in plan.fresh_inputs):
+                raise ValueError("evaluation input contract must match the capsule runtime")
             if plan.beta_digest != network["beta_digest"] or plan.policy_digest != network["policy_digest"]:
                 raise ValueError("evaluation plan uses stale Beta or policy")
             if (
@@ -655,20 +862,23 @@ class ProtectedLibrary:
                         "every matched evaluation invocation must be charged exactly once in incremental retention"
                     )
             b_cost = cost_report["costs"]["B"]
+            c_cost = entry.get("additional_development_cost_micro_usd", 0)
             benefit = evidence.lower_net_saving_per_use_micro_usd * plan.planned_reuses
             justified = (
                 all_correct
                 and not evidence.false_passes
                 and not evidence.abstentions
-                and benefit > b_cost + plan.remaining_retention_micro_usd
+                and benefit > b_cost + c_cost + plan.remaining_retention_micro_usd
             )
             entry.update(
                 state="assessed" if justified else "rejected",
                 evidence=signed.model_dump(),
                 decision={
                     "justified": justified,
-                    "net_lower_micro_usd": benefit - b_cost - plan.remaining_retention_micro_usd,
+                    "net_lower_micro_usd": benefit - b_cost - c_cost - plan.remaining_retention_micro_usd,
                     "retention_cost_micro_usd": b_cost,
+                    "additional_development_C_micro_usd": c_cost,
+                    "development_C_charged_again": False,
                     "originating_delivery_A_charged_again": False,
                     "basis": "configured executor, acceptance and evaluator attestations; prospective reuse count is an assumption",
                 },
@@ -745,7 +955,7 @@ class ProtectedLibrary:
                     self.library._distinct(signed.principal, role, entry["evidence"]["principal"], "verifier")
                     if entry["validation"]["payload"]["record"]["expires_at"] <= int(time.time()):
                         raise ValueError("validation expired")
-                    self._dependencies(network, entry)
+                    self._dependencies(network, entry, cx=cx)
                     entry.update(state="admitted", admission=signed.model_dump())
                     network["active"][entry["manifest"]["skill_id"]] = ident
             self._commit(cx, state)
@@ -757,6 +967,7 @@ class ProtectedLibrary:
         *,
         checked: set[str] | None = None,
         deadline_ns: int | None = None,
+        cx: Any = None,
     ) -> None:
         checked = set() if checked is None else checked
         deadline_ns = time.monotonic_ns() + 1_000_000_000 if deadline_ns is None else deadline_ns
@@ -774,12 +985,12 @@ class ProtectedLibrary:
                 raise ValueError("cyclic capsule dependencies are unsupported")
             if ident in checked:
                 continue
-            child = self._eligible(network, ident)
+            child = self._eligible(network, ident, cx) if cx is not None else self._eligible(network, ident)
             visiting.add(ident)
             stack.append((ident, True))
             stack.extend((dep, False) for dep in reversed(child["manifest"]["dependency_digests"]))
 
-    def _eligible(self, network: dict[str, Any], ident: str) -> dict[str, Any]:
+    def _eligible(self, network: dict[str, Any], ident: str, cx: Any = None) -> dict[str, Any]:
         entry = network["entries"][ident]
         if entry["state"] != "admitted" or network["active"].get(entry["manifest"]["skill_id"]) != ident:
             raise Conflict("capsule is not currently admitted and active")
@@ -792,6 +1003,10 @@ class ProtectedLibrary:
         if plan["beta_digest"] != network["beta_digest"] or plan["policy_digest"] != network["policy_digest"]:
             raise Conflict("capsule requires fresh Beta/policy requalification")
         self.trust.anchor(entry["producer"], "producer")
+        if entry["manifest"]["supported_scope"] == "resilient-placement/v1":
+            origin, _ = accepted_general_origin(self, entry["manifest"]["origin_mission"], cx)
+            if origin["digest"] != entry["manifest"]["origin_record_digest"]:
+                raise ValueError("originating delivery changed since candidate retention")
         for field, role, domain in (
             ("evidence", "verifier", "evidence"),
             ("validation", "verifier", "validate"),
@@ -815,8 +1030,8 @@ class ProtectedLibrary:
         )
         with self.journal.transaction() as cx:
             _, network = self._state(cx)
-            entry = self._eligible(network, ident)
-            self._dependencies(network, entry)
+            entry = self._eligible(network, ident, cx)
+            self._dependencies(network, entry, cx=cx)
             authorization = self.access.consume(prepared, cx)
             self.checkpoint.advance(self.journal, cx)
             return {
@@ -846,8 +1061,8 @@ class ProtectedLibrary:
                 if time.monotonic_ns() >= deadline:
                     raise Conflict("catalog verification budget exhausted; no partial disclosure")
                 try:
-                    entry = network["entries"][ident] if ident in checked else self._eligible(network, ident)
-                    self._dependencies(network, entry, checked=checked, deadline_ns=deadline)
+                    entry = network["entries"][ident] if ident in checked else self._eligible(network, ident, cx)
+                    self._dependencies(network, entry, checked=checked, deadline_ns=deadline, cx=cx)
                     checked.add(ident)
                 except (KeyError, ValueError, Conflict):
                     continue
@@ -865,8 +1080,13 @@ class ProtectedLibrary:
                 "export": "controlled-invocation-only",
             }
 
-    def invoke(self, ident: str, invocation: Invocation, proof: AccessRequest) -> dict[str, Any]:
-        invocation = Invocation.model_validate(invocation.model_dump())
+    def invoke(self, ident: str, invocation: Invocation | PlacementInvocation, proof: AccessRequest) -> dict[str, Any]:
+        invocation = (
+            PlacementInvocation.model_validate(invocation.model_dump())
+            if isinstance(invocation, PlacementInvocation)
+            else Invocation.model_validate(invocation.model_dump())
+        )
+        document = invocation.problem if isinstance(invocation, PlacementInvocation) else invocation.document
         if len(canonical(invocation)) > MAX_INVOCATION_INPUT_BYTES:
             raise ValueError("invocation input exceeds the durable record budget")
         request_hash = digest("flywheel-invocation", invocation)
@@ -889,21 +1109,25 @@ class ProtectedLibrary:
         )
         with self.journal.transaction() as cx:
             state, network = self._state(cx)
-            entry = self._eligible(network, ident)
-            self._dependencies(network, entry)
+            entry = self._eligible(network, ident, cx)
+            self._dependencies(network, entry, cx=cx)
+            if (entry["manifest"]["supported_scope"] == "resilient-placement/v1") != isinstance(
+                invocation, PlacementInvocation
+            ):
+                raise ValueError("invocation contract differs from the pinned capability runtime")
             if (
                 invocation.beta_digest != network["beta_digest"]
                 or invocation.policy_digest != network["policy_digest"]
                 or not set(entry["manifest"]["prerequisites"]) <= set(invocation.prerequisite_digests)
             ):
                 raise ValueError("invocation has stale context or missing prerequisites")
-            source = digest("ti-source", invocation.document)
+            source = input_digest(document)
             plan = entry["plan"]["payload"]["record"]
             if source in {*plan["fresh_input_digests"], *plan["origin_input_digests"]} or source in network.get(
                 "evaluation_inputs", {}
             ):
                 raise ValueError("reuse requires fresh work outside all historical development/evaluation exposure")
-            stamps = source_fingerprints(invocation.document)
+            stamps = source_fingerprints(document)
             if stamps & (set(entry["origin_source_fingerprints"]) | set(network.get("evaluation_sources", {}))):
                 raise ValueError(
                     "reuse requires fresh source material outside origin and historical evaluation exposure"
@@ -949,7 +1173,8 @@ class ProtectedLibrary:
                 "successful_peer_reuse": False,
                 "additional_value": None,
                 "cost_cap_micro_usd": invocation.cost_cap_micro_usd,
-                "execution": "installed-closed-selector; no frontier inference in this invocation",
+                "execution": entry["manifest"]["supported_scope"]
+                + "; installed closed interpreter; no frontier inference",
                 "execution_digest": self.execution_digest,
                 "qualification_digest": digest("flywheel-plan", entry["plan"]),
             }
@@ -971,7 +1196,9 @@ class ProtectedLibrary:
             used += units
             if used > invocation.logical_limit or time.monotonic_ns() - started > 2_000_000_000:
                 raise TimeoutError("bounded selector exhausted its logical or time allowance")
-            if self.journal.latest("@control")["state"] != "ready":
+            if (
+                not isinstance(invocation, PlacementInvocation) or used <= units or used % 128 < units
+            ) and self.journal.latest("@control")["state"] != "ready":
                 raise PermissionError("agent stopped during bounded execution")
 
         result, error = None, None
@@ -979,18 +1206,26 @@ class ProtectedLibrary:
             aad = canonical(
                 {"service": self.access.service.model_dump(), "journal": self.journal.identity, "manifest": ident}
             )
-            program = SelectionProgram.model_validate(
-                safe_json_loads(
-                    AESGCM(self.keys[entry["key_id"]]).decrypt(
-                        base64.b64decode(entry["nonce"], validate=True),
-                        base64.b64decode(entry["ciphertext"], validate=True),
-                        aad,
-                    )
+            raw_program = safe_json_loads(
+                AESGCM(self.keys[entry["key_id"]]).decrypt(
+                    base64.b64decode(entry["nonce"], validate=True),
+                    base64.b64decode(entry["ciphertext"], validate=True),
+                    aad,
                 )
+            )
+            program = (
+                PlacementWorkflow.model_validate(raw_program)
+                if isinstance(invocation, PlacementInvocation)
+                else SelectionProgram.model_validate(raw_program)
             )
             if digest("flywheel-program", program) != entry["manifest"]["content_digest"]:
                 raise ValueError("private implementation digest mismatch")
-            result = execute_selection(invocation.document, program, invocation.charter, charge)
+            if isinstance(invocation, PlacementInvocation) and isinstance(program, PlacementWorkflow):
+                result = execute_workflow(invocation.problem, program, charge)
+            elif isinstance(invocation, Invocation) and isinstance(program, SelectionProgram):
+                result = execute_selection(invocation.document, program, invocation.charter, charge)
+            else:
+                raise ValueError("private implementation differs from its runtime contract")
         except Exception as exc:
             error = type(exc).__name__
         receipt.update(
@@ -1029,8 +1264,8 @@ class ProtectedLibrary:
             if stored.get("legacy_unqualified"):
                 raise Conflict("legacy unqualified receipt cannot become qualified reuse")
             receipt = stored["receipt"]
-            entry = self._eligible(network, receipt["candidate_digest"])
-            self._dependencies(network, entry)
+            entry = self._eligible(network, receipt["candidate_digest"], cx)
+            self._dependencies(network, entry, cx=cx)
             current_plan = entry["plan"]["payload"]["record"]
             if (
                 receipt["beta_digest"] != current_plan["beta_digest"]
@@ -1095,9 +1330,9 @@ class ProtectedLibrary:
                 successful_peer_reuse=accepted and peer_identity,
                 additional_value=benefit if accepted else None,
                 comparison_cost_micro_usd=baseline.actual_cost_micro_usd,
-                operating_saving_before_comparison_micro_usd=benefit + baseline.actual_cost_micro_usd
-                if accepted
-                else None,
+                operating_saving_before_comparison_micro_usd=(
+                    benefit + baseline.actual_cost_micro_usd if accepted else None
+                ),
                 acceptance=signed.model_dump(),
                 baseline_output_digest=baseline.output_digest,
                 cost_report=costs,

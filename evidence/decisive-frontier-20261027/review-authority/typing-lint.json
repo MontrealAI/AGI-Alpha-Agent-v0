@@ -1,0 +1,59 @@
+{
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "f459ddf1c46a571f90b5c203847906e7554e452e8dc0630d557cc6524c7dcfa5",
+    "alpha_factory_v1/core/runtime/successor/flywheel_learning.py": "a1b7415d9542471c7c69d24f396ee6363fca95369c96a9e861e6fcd515835e1b",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "c54bb7b3eeb93f3068c60c3172cd71d36449629bdaf6ff878dd47593c275a608",
+    "tests/runtime/test_flywheel_authority.py": "74232ebf618ecbba9619c686f3f491b36cc7379f5daa769653d847660fe99448"
+  },
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy-runtime.ini",
+        "--cache-dir=/dev/null",
+        "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py"
+      ],
+      "exit_code": 0,
+      "output": "Success: no issues found in 3 source files\n",
+      "output_sha256": "8228fcc5ce46d42d01caf3cd941f4e9c5f2bcc372bb5b147a2f0572d2dd675a8"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+        "tests/runtime/test_flywheel_authority.py"
+      ],
+      "exit_code": 0,
+      "output": "All checks passed!\n",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+        "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+        "tests/runtime/test_flywheel_authority.py"
+      ],
+      "exit_code": 0,
+      "output": "4 files already formatted\n",
+      "output_sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de"
+    }
+  ]
+}

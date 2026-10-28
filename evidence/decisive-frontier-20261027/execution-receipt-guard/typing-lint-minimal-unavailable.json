@@ -1,0 +1,52 @@
+{
+  "scope": "Strict runtime module typing and two changed source/test file Ruff lint/format; no global release qualification",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "9981bf991d6b3d1dc15ebc5ebd31b6715a2dfaf21ac99806a3175ee91ae5577f",
+    "tests/runtime/test_flywheel_discovery.py": "e079ab9a6b9f016e61ef58b7acb8676062a823038a29f0ec5b9453c398f68b36"
+  },
+  "checks": [
+    {
+      "command": [
+        "/dev/shm/decisive-agent-venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy-runtime.ini",
+        "--cache-dir=/dev/null",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py"
+      ],
+      "exit_code": 1,
+      "output": "/dev/shm/decisive-agent-venv/bin/python: No module named mypy\n",
+      "output_sha256": "a02f1b1f77869a4e2b116c04d88cbbfec863eedb9acfad0b0f8127178f43ad48"
+    },
+    {
+      "command": [
+        "/dev/shm/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+        "tests/runtime/test_flywheel_discovery.py"
+      ],
+      "exit_code": 1,
+      "output": "/dev/shm/decisive-agent-venv/bin/python: No module named ruff\n",
+      "output_sha256": "a82f3ad651afed9fef292454a39c108584ee86b268775c31dee591d598f01e0b"
+    },
+    {
+      "command": [
+        "/dev/shm/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+        "tests/runtime/test_flywheel_discovery.py"
+      ],
+      "exit_code": 1,
+      "output": "/dev/shm/decisive-agent-venv/bin/python: No module named ruff\n",
+      "output_sha256": "a82f3ad651afed9fef292454a39c108584ee86b268775c31dee591d598f01e0b"
+    }
+  ]
+}

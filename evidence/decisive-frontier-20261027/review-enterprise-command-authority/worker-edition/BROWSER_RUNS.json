@@ -1,0 +1,59 @@
+{
+  "scope": "Local recorded page/loopback acceptance only; not public HTTPS or fresh installed canaries. No live model, identity, customer or market qualification.",
+  "page_sha256": "eaa6d4fce130dc35bfe1f355a927d7e43080f461ad9413a4eac23b55de2ad202",
+  "axe_script": {
+    "path": "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js",
+    "sha256": "880970c081707360e64f34cea25ff91892f5bc95675b0776925b9709dd8a68bb"
+  },
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "scripts.validate_alpha_flywheel",
+        "--site",
+        "docs",
+        "--output",
+        "/tmp/agi-alpha-commercial-fix-c516/evidence/decisive-frontier-20261027/review-enterprise-command-authority/worker-edition/browser",
+        "--axe-script",
+        "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js"
+      ],
+      "exit_code": 0,
+      "checks": 23,
+      "report": "browser/report.json",
+      "raw_log": "logs/browser-preserved.txt"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "scripts.validate_insight_frontier",
+        "--page",
+        "docs/flywheel/index.html",
+        "--report",
+        "/tmp/agi-alpha-commercial-fix-c516/evidence/decisive-frontier-20261027/review-enterprise-command-authority/worker-edition/browser-insight.json",
+        "--axe-script",
+        "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js"
+      ],
+      "exit_code": 0,
+      "checks": 54,
+      "report": "browser-insight.json",
+      "raw_log": "logs/browser-insight.txt"
+    },
+    {
+      "command": [
+        "python",
+        "tests/browser/test_flywheel_comparison_browser.py"
+      ],
+      "environment": {
+        "AXE_SCRIPT": "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js",
+        "COMPARISON_UI_REPORT": "/tmp/agi-alpha-commercial-fix-c516/evidence/decisive-frontier-20261027/review-enterprise-command-authority/worker-edition/browser-comparison.json"
+      },
+      "exit_code": 0,
+      "checks": 15,
+      "report": "browser-comparison.json",
+      "raw_log": "logs/browser-comparison.txt"
+    }
+  ],
+  "elapsed_seconds": "Not separately metered for these direct browser invocations."
+}

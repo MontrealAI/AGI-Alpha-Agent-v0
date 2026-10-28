@@ -1,0 +1,299 @@
+FFF...FFF                                                                [100%]
+=================================== FAILURES ===================================
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[U-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7dce3c5c70>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7dceaf6e30>, ...}, ...}
+role = 'U', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7db537da30>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7db5266530>, ...}, ...}
+role = 'E', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+_ test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E+-1001-False] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7dcb7e79e0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7dceab50b0>, ...}, ...}
+role = 'E+', amount = 1001, within = False
+
+    @pytest.mark.parametrize(
+        "role,amount,within",
+        [("U", 1001, False), ("E", 1001, False), ("E+", 1001, False), ("E", 0, True), ("E", 999, True), ("E", 1000, True)],
+    )
+    def test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap(
+        setup: dict[str, Any], role: str, amount: int, within: bool
+    ) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, amount if trial.role == role else 1)
+            seal_and_accept(setup, trial, record)
+        value = report(setup, spec)
+        target = next(cell for cell in value["cells"] if cell["role"] == role)
+        assert target["accepted"] and target["outcome_known"]
+        assert value["arms"][role]["known_costs_micro_usd"]["A"] == str(amount)
+        assert len(value["cells"]) == 3 and value["planned_cases"] == 1
+        assert value["current_evidence_valid"]
+>       assert target["within_observed_limits"] is within
+E       assert True is False
+
+tests/runtime/test_flywheel_comparisons.py:610: AssertionError
+__ test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7dcb7e4e30>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7db5267290>, ...}, ...}
+
+    def test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial(setup: dict[str, Any]) -> None:
+        spec = freeze(setup)
+        target = spec.cases[1].trials[1]
+        target_record = None
+        for case in spec.cases:
+            for trial in case.trials:
+>               record = run_trial(setup, trial, accept=trial != target)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_flywheel_comparisons.py:623:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/runtime/test_flywheel_comparisons.py:196: in run_trial
+    MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_execution.MissionExecutor object at 0x7f7db537f5f0>
+mission = ExecutionMission(schema_version=1, schema_name='flywheel-execution/v1', mission_id='comparison-1-Eplus', beneficiary='...model': 'simulated', 'tools': 'executed-local'}, max_turns=3, max_actions=2, max_seconds=30, max_history_bytes=1000000)
+profile = ExecutionProfile(schema_version=1, model_id='scripted-protocol-fixture/v1', model_revision=None, reasoning_mode='stand...', model_request_cap_micro_usd=None, tool_request_caps_micro_usd={}, max_output_tokens=16384, max_context_bytes=750000)
+signed = SignedEnvelope(domain='flywheel-execution-permit', principal='controller', payload={'journal_identity': 'urn:agialpha:...ma_version': 1}}, signature='4TbmPIPSGvMcGYbhLoearNCFFr9zS3Qx/VYlm6I77v8jx7KfrGYrtI1r7YNLAzgYS6viINzAn5ivdZIFQzSPBQ==')
+
+    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+        mission = ExecutionMission.model_validate_json(canonical(mission))
+        profile = ExecutionProfile.model_validate_json(canonical(profile))
+        signed = SignedEnvelope.model_validate_json(canonical(signed))
+        authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+        if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
+            raise ValueError("execution permit must bind this exact journal")
+        permit = ExecutionPermit.model_validate(authority["permit"])
+        config = self.journal.config.model_copy(deep=True)
+        if (
+            permit.request_digest != digest("flywheel-execution-request", mission)
+            or permit.profile_digest != digest("flywheel-execution-profile", profile)
+            or permit.environment_digest != digest("flywheel-execution-environment-contract", self.environment.identity)
+            or permit.config_digest != runtime_digest(config.model_dump())
+            or permit.expires_at <= int(time.time())
+        ):
+            raise ValueError("permit differs from the exact mission, profile, environment, configuration or time")
+        if self.transport.component != mission.components["model"]:
+            raise ValueError("model component label differs from actual transport")
+        if self.environment.component != mission.components["tools"]:
+            raise ValueError("tool component label differs from actual environment")
+        if self.transport.component == "live" and profile.model_id != config.llm_model:
+            raise ValueError("live model differs from approved runtime configuration")
+        if self.transport.component == "live" and profile.model_request_cap_micro_usd is None:
+            raise ValueError("live model requests require a qualified per-request liability cap")
+        tool_names = {t.get("name") if t["type"] == "function" else "computer" for t in profile.tools}
+        if self.environment.component == "live" and not tool_names <= set(profile.tool_request_caps_micro_usd):
+            raise ValueError("live tools require qualified per-request liability caps")
+        model_cap = profile.model_request_cap_micro_usd or 0
+        if model_cap > permit.max_authorized_micro_usd:
+            raise ValueError("the first model request exceeds the entire authorized envelope")
+        if isinstance(self.environment, LazyDockerEnvironment) and (
+            mission.max_turns > self.environment.task.max_turns
+            or mission.max_actions > self.environment.task.max_actions
+            or mission.max_seconds > self.environment.task.max_seconds
+        ):
+            raise ValueError("ExecutionMission limits exceed the independently approved ComputerTask contract")
+        if isinstance(self.environment, HTTPToolEnvironment):
+            self.environment.bind_operation(
+                digest(
+                    "flywheel-sandbox-operation",
+                    {
+                        "journal_identity": self.journal.identity,
+                        "permit": permit,
+                    },
+                )
+            )
+        key = operation_key(permit.operation_id)
+        started = time.monotonic()
+        state: dict[str, Any] = {
+            "schema_name": SCHEMA,
+            "mission": mission.model_dump(),
+            "profile": profile.model_dump(),
+            "permit": signed.model_dump(),
+            "status": "running",
+            "turn": 0,
+            "actions": 0,
+            "history": [{"role": "user", "content": json.dumps(mission.model_dump(), ensure_ascii=False)}],
+            "call_ids": [],
+            "usage_events": [],
+            "started_at": int(time.time()),
+            "actual_charges_micro_usd": None,
+            "reserved_request_caps_micro_usd": 0,
+            "acceptance": "unqualified",
+            "live_network_qualified": False,
+            "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+        }
+
+        def active() -> bool:
+            self.qualification_check()
+            if (
+                digest("flywheel-execution-environment-contract", self.environment.identity)
+                != permit.environment_digest
+            ):
+                raise Conflict("execution environment changed during the mission")
+            if (
+                self.transport.component != mission.components["model"]
+                or self.environment.component != mission.components["tools"]
+            ):
+                raise Conflict("component changed during the mission")
+            control = self.journal.latest("@control")
+            return (
+                control["state"] == "ready"
+                and control["config_hash"] == runtime_digest(config.model_dump())
+                and int(time.time()) < permit.expires_at
+                and time.monotonic() - started < mission.max_seconds
+            )
+
+        with self.journal.transaction() as cx:
+            self.checkpoint.verify(self.journal, cx)
+            try:
+                self.journal.latest(key, cx)
+            except KeyError:
+                pass
+            else:
+                raise Conflict("mission already attempted; reconciliation is required before any new permit")
+            if not active():
+                raise Conflict("mission is stopped or expired")
+            report = self.costs.report(cx=cx)
+            if report["available_funds"] is None or report["available_funds"] < permit.max_authorized_micro_usd:
+>               raise Conflict("reconciled available funds cannot cover the whole mission envelope")
+E               alpha_factory_v1.core.runtime.store.Conflict: reconciled available funds cannot cover the whole mission envelope
+
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:615: Conflict
+____ test_known_under_cap_amount_without_completeness_is_not_a_budget_pass _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7dcb7e4cb0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7db4f0ef90>, ...}, ...}
+
+    def test_known_under_cap_amount_without_completeness_is_not_a_budget_pass(setup: dict[str, Any]) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[1]
+        record = run_trial(setup, trial, accept=False)
+        reconcile_trial_cost(setup, trial, 1000)
+        before = report(setup, spec)
+        assert before["arms"]["E"]["known_costs_micro_usd"]["A"] == "1000"
+>       assert not before["cells"][1]["within_observed_limits"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:650: AssertionError
+_ test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f7db5215a60>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f7db5267d70>, ...}, ...}
+
+    def test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun(setup: dict[str, Any]) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        target = spec.cases[0].trials[1]
+        for trial in spec.cases[0].trials:
+            record = run_trial(setup, trial, accept=False)
+            reconcile_trial_cost(setup, trial, 1001 if trial == target else 1)
+            seal_and_accept(setup, trial, record)
+        f.account(
+            setup,
+            "customer-deposit",
+            {
+                "receipt_id": "comparison-fictional-deposit",
+                "mission_id": target.mission.mission_id,
+                "amount_micro_usd": 2000,
+                "purpose": "service",
+                "service_price_micro_usd": 2000,
+                "mode": "synthetic",
+                "evidence_digest": digest("comparison-fixture-deposit", {}),
+                "note": "Fictional receipt only; no actual collection or execution funds",
+            },
+            "comparison-deposit",
+        )
+        f.account(
+            setup,
+            "customer-refund",
+            {
+                "event_id": "comparison-fictional-refund",
+                "receipt_id": "comparison-fictional-deposit",
+                "amount_micro_usd": 2000,
+                "allocation": "unearned",
+                "evidence_digest": digest("comparison-fixture-refund", {}),
+                "reason": "Full fictional refund; incurred delivery cost remains incurred",
+            },
+            "comparison-refund",
+        )
+        before = setup["costs"].snapshot()
+        with pytest.raises(ValueError):
+            f.account(
+                setup,
+                "charge",
+                {
+                    "activity_id": "refused-negative-expense",
+                    "mission_id": "negative-expense-fixture",
+                    "bucket": "A",
+                    "category": "correction",
+                    "accrued_micro_usd": -1001,
+                    "paid_micro_usd": 0,
+                    "basis": "attested",
+                    "evidence_digest": f.ZERO,
+                    "note": "Forbidden negative expense cannot cancel another mission's cost",
+                },
+                "comparison-negative-expense",
+            )
+        assert before == setup["costs"].snapshot()
+        value = report(setup, spec)
+        assert value["arms"]["E"]["accepted"] == 1
+        assert value["arms"]["E"]["known_costs_micro_usd"]["A"] == "1001"
+>       assert not value["cells"][1]["within_observed_limits"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:715: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[U-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E+-1001-False]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial
+FAILED tests/runtime/test_flywheel_comparisons.py::test_known_under_cap_amount_without_completeness_is_not_a_budget_pass
+FAILED tests/runtime/test_flywheel_comparisons.py::test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun
+6 failed, 3 passed, 42 deselected in 8.05s

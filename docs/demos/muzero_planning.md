@@ -15,7 +15,7 @@ No API key, hosted model, Ollama service or public tunnel is required.
 <a id="start-here-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Start here — 1.46.1
+## Start here — 1.47.0
 
 **Mode:** Bounded MuZero-style research experiment. Demo revision **2.0.0**.
 

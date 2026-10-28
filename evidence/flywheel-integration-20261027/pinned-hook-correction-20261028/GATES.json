@@ -1,0 +1,44 @@
+[
+  {
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "output": "ruff-modern-staged.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.5409128090000195,
+    "tool_version": null
+  },
+  {
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "output": "ruff-pinned-staged.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.5342242730002909,
+    "tool_version": "0.2.1"
+  },
+  {
+    "command": [
+      "python",
+      "scripts/dp_scrubber.py"
+    ],
+    "output": "privacy.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.3958811620000233,
+    "tool_version": null
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_no_binary_diff.py"
+    ],
+    "output": "binary-guard.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 4.455831542999931,
+    "tool_version": null
+  }
+]

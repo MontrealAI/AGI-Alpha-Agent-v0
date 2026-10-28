@@ -1,0 +1,189 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "tests/test_flywheel_147_workers.py",
+      "tests/test_flywheel_147_release.py",
+      "tests/test_paper_checkout_bytes.py",
+      "tests/test_strategy_research_source.py",
+      "tests/test_ruff_targets.py",
+      "tests/test_generate_gallery_html.py",
+      "tests/test_mirror_demo_pages.py",
+      "tests/test_alpha_flywheel.py",
+      "tests/test_flywheel_discovery_ui.py",
+      "tests/test_flywheel_comparison_ui.py",
+      "tests/test_customer_funds_economics.py",
+      "tests/test_flywheel_arrangements.py",
+      "tests/test_insight_frontier_release.py",
+      "tests/test_insight_frontier_post_guard_release.py",
+      "tests/test_insight_frontier_review_authority_release.py",
+      "tests/test_flywheel_reconciliation_147_release.py",
+      "tests/test_insight_frontier_enterprise_acceptance_release.py",
+      "tests/test_connected_delivery_147_release.py",
+      "tests/test_protected_flywheel_release.py",
+      "tests/test_capability_publication_edition.py",
+      "tests/test_delivery_guard_147_release.py",
+      "tests/test_frontier_delivery_147_release.py"
+    ],
+    "output": "publication.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 41.04753218800033
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/test_release_publication.py",
+      "tests/test_release_artifact_handoffs.py",
+      "tests/test_release_ci_gate.py",
+      "tests/test_ci_install_bounds.py",
+      "tests/test_fast_release_policy.py",
+      "tests/test_held_native_source_guard.py",
+      "tests/test_release_contract_preflight.py",
+      "tests/test_capability_checkout_release_versions.py",
+      "tests/test_capability_publication_edition.py"
+    ],
+    "output": "release-contracts.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 38.094899314999566
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/flywheel-browser-combined-guards",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "browser.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 27.68025015100102
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/release-corrections-20261028/combined-source/insight-browser.json",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "insight-browser.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.92826801999945
+  },
+  {
+    "command": [
+      "python",
+      "scripts/generate_successor_capability.py"
+    ],
+    "output": "determinism-generate_successor_capability.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.16477109200059203
+  },
+  {
+    "command": [
+      "python",
+      "scripts/sync_demo_catalog_docs.py"
+    ],
+    "output": "determinism-sync_demo_catalog_docs.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.06400539400056005
+  },
+  {
+    "command": [
+      "python",
+      "scripts/generate_demo_docs.py"
+    ],
+    "output": "determinism-generate_demo_docs.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.1140546610004094
+  },
+  {
+    "command": [
+      "python",
+      "scripts/generate_gallery_html.py"
+    ],
+    "output": "determinism-generate_gallery_html.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 1.5198912510004448
+  },
+  {
+    "command": [
+      "python",
+      "scripts/mirror_demo_pages.py"
+    ],
+    "output": "determinism-mirror_demo_pages.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.2644429800002399
+  },
+  {
+    "command": [
+      "python",
+      "scripts/build_service_worker.py"
+    ],
+    "output": "determinism-build_service_worker.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.1641831929991895
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "mkdocs",
+      "build",
+      "--strict",
+      "--site-dir",
+      "/workspace/scratch/9c7b9ec78746/mkdocs-combined-guards"
+    ],
+    "output": "mkdocs.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 4.726592066001103
+  },
+  {
+    "command": [
+      "python",
+      "evidence/flywheel-integration-20261027/followup/compare_arrangements.py",
+      "--source",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/release-corrections-20261028/combined-source/replays/insight.json",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/release-corrections-20261028/combined-source/ARRANGEMENT_COMPARISON.json"
+    ],
+    "output": "arrangements.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 8.391017215999454
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "build",
+      "--wheel",
+      "--no-isolation",
+      "--outdir",
+      "/workspace/scratch/9c7b9ec78746/wheel-combined-guards"
+    ],
+    "output": "wheel.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.5719008999985817
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "source_commit": "6010e19bff857704827c3aa373121c98003d8965",
+  "retrieval": "Connected GitHub review-thread read; original public comment bodies",
+  "threads": [
+    {
+      "id": "PRRT_kwDONwDjTc6w7DQl",
+      "is_resolved": false,
+      "is_outdated": false,
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+      "line": 584,
+      "diff_side": "RIGHT",
+      "start_line": 583,
+      "start_diff_side": "RIGHT",
+      "original_line": 584,
+      "original_start_line": 583,
+      "resolved_by": null,
+      "comments": [
+        {
+          "id": "PRRC_kwDONwDjTc8AAAABBfo57Q",
+          "database_id": 4395252205,
+          "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Recheck the execution signer before subsequent external actions**\n\nIf the permit's controller is revoked through `TrustRegistry.revoke()` while a mission is running, `active()` still returns true and subsequent provider requests and tool actions remain authorized until expiry or an explicit pause. The permit signature is verified only at entry, and the production qualification callback checks source/configuration/custody changes, not the registry's in-memory revocation state. Check the permit principal's current controller eligibility in this recurring guard so revocation stops further spending and tool execution while preserving the uncertain attempt.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+          "created_at": "2026-10-27T23:15:36Z",
+          "updated_at": "2026-10-27T23:15:36Z",
+          "author": {
+            "login": "chatgpt-codex-connector",
+            "name": "chatgpt-codex-connector",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+            "id": null
+          },
+          "viewer_did_author": false
+        }
+      ]
+    },
+    {
+      "id": "PRRT_kwDONwDjTc6w7DQs",
+      "is_resolved": false,
+      "is_outdated": false,
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+      "line": 101,
+      "diff_side": "RIGHT",
+      "start_line": 97,
+      "start_diff_side": "RIGHT",
+      "original_line": 101,
+      "original_start_line": 97,
+      "resolved_by": null,
+      "comments": [
+        {
+          "id": "PRRC_kwDONwDjTc8AAAABBfo59w",
+          "database_id": 4395252215,
+          "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Revalidate supporting execution authority for accepted origins**\n\nAfter a placement delivery has been accepted, revoking the controller that signed its execution permit does not invalidate `accepted_general_origin()`: this function rechecks only the acceptance signer and execution digest. Consequently, a different, still-trusted caller can use that revoked execution as the basis for customer earning, candidate retention, or technical offering qualification. Unlike the comparison reporter, these callers have no additional execution-signer check. Revalidate the original execution permit against current trust before returning a currently eligible origin, without deleting the historical acceptance.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+          "created_at": "2026-10-27T23:15:36Z",
+          "updated_at": "2026-10-27T23:15:36Z",
+          "author": {
+            "login": "chatgpt-codex-connector",
+            "name": "chatgpt-codex-connector",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+            "id": null
+          },
+          "viewer_did_author": false
+        }
+      ]
+    },
+    {
+      "id": "PRRT_kwDONwDjTc6w7DQt",
+      "is_resolved": false,
+      "is_outdated": false,
+      "path": "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+      "line": 514,
+      "diff_side": "RIGHT",
+      "start_line": 513,
+      "start_diff_side": "RIGHT",
+      "original_line": 514,
+      "original_start_line": 513,
+      "resolved_by": null,
+      "comments": [
+        {
+          "id": "PRRC_kwDONwDjTc8AAAABBfo5-g",
+          "database_id": 4395252218,
+          "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Recheck originating acceptance when serving placement capsules**\n\nIf the originating acceptance signer is revoked after a placement capsule has been planned or admitted, peer discovery and invocation still succeed. This new branch checks `accepted_general_origin()` during retention, and `freeze()` checks it again, but `_eligible()`—used by discovery, invocation, and reuse acceptance—checks only the producer and evaluation/admission signers, never the originating acceptance. Thus revoking the signer whose approval established the capsule's delivery provenance does not remove its current eligibility. Recheck that originating acceptance at the eligibility boundary rather than relying on the earlier lifecycle checks.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+          "created_at": "2026-10-27T23:15:36Z",
+          "updated_at": "2026-10-27T23:15:36Z",
+          "author": {
+            "login": "chatgpt-codex-connector",
+            "name": "chatgpt-codex-connector",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+            "id": null
+          },
+          "viewer_did_author": false
+        }
+      ]
+    }
+  ]
+}

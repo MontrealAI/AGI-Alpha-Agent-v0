@@ -1,0 +1,41 @@
+{
+  "command": [
+    "/tmp/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/runtime",
+    "--confcutdir=tests/runtime",
+    "--ignore=tests/runtime/test_budget_browser.py",
+    "--ignore=tests/runtime/test_ecosystem_browser.py",
+    "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    "--basetemp=/tmp/decisive-enterprise-runtime/fixtures",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "-o",
+    "tmp_path_retention_count=1",
+    "-q",
+    "--junitxml=/workspace/scratch/1602dd9e6810/agi-alpha/evidence/decisive-frontier-20261027/review-enterprise-integrated/runtime.xml"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 440.606,
+  "runtime_source_stable": true,
+  "runtime_files": 75,
+  "scope": "Complete official minimal runtime selection with three named browser files excluded, separately recorded browser/tool dependencies; not complete repository or release qualification",
+  "junit_totals": {
+    "tests": 1570,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1
+  },
+  "skips": [
+    {
+      "name": "test_real_container_keyboard_screenshot_and_cleanup",
+      "class": "tests.runtime.test_successor_computer",
+      "reason": "real Docker image must be explicitly provided"
+    }
+  ],
+  "passed": 1569,
+  "skipped": 1,
+  "pytest_seconds": 439.63,
+  "note": "16 new enterprise cases plus two Studio browser cases enabled by recorded Playwright tooling; the former module import-skip is not a performance gain. The skipped real-container test requires an explicitly provided Docker image."
+}

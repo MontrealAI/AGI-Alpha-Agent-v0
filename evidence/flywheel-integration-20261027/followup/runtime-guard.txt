@@ -1,0 +1,164 @@
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+........................................................................ [ 65%]
+........................................................................ [ 81%]
+................................................FEEEEEEEEEEE.........EEE [ 97%]
+E.....EEEETraceback (most recent call last):
+  File "/root/.local/lib/python3.12/site-packages/_pytest/junitxml.py", line 675, in pytest_sessionfinish
+    logfile.write(ET.tostring(testsuites, encoding="unicode"))
+OSError: [Errno 28] No space left on device
+
+During handling of the above exception, another exception occurred:
+
+OSError: [Errno 28] No space left on device
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/root/.local/lib/python3.12/site-packages/pytest/__main__.py", line 9, in <module>
+    raise SystemExit(pytest.console_main())
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201, in console_main
+    code = main()
+           ^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175, in main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 336, in pytest_cmdline_main
+    return wrap_session(config, _main)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 324, in wrap_session
+    config.hook.pytest_sessionfinish(
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    raise exception
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/root/.local/lib/python3.12/site-packages/_pytest/logging.py", line 873, in pytest_sessionfinish
+    return (yield)
+            ^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/root/.local/lib/python3.12/site-packages/_pytest/terminal.py", line 934, in pytest_sessionfinish
+    result = yield
+             ^^^^^
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    teardown.throw(exception)
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+    return result.get_result()
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_result.py", line 103, in get_result
+INTERNALERROR> Traceback (most recent call last):
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 115, in _execute
+INTERNALERROR>     return self.con.execute(sql, parameters)    # type: ignore[arg-type]
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR> sqlite3.OperationalError: no such table: coverage_schema
+INTERNALERROR> 
+INTERNALERROR> During handling of the above exception, another exception occurred:
+INTERNALERROR> 
+INTERNALERROR> Traceback (most recent call last):
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 120, in _execute
+INTERNALERROR>     return self.con.execute(sql, parameters)    # type: ignore[arg-type]
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR> sqlite3.OperationalError: no such table: coverage_schema
+INTERNALERROR> 
+INTERNALERROR> The above exception was the direct cause of the following exception:
+INTERNALERROR> 
+INTERNALERROR> Traceback (most recent call last):
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 292, in _read_db
+INTERNALERROR>     row = db.execute_one("select version from coverage_schema")
+INTERNALERROR>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 187, in execute_one
+INTERNALERROR>     with self.execute(sql, parameters) as cur:
+INTERNALERROR>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py", line 137, in __enter__
+INTERNALERROR>     return next(self.gen)
+INTERNALERROR>            ^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 150, in execute
+INTERNALERROR>     cur = self._execute(sql, parameters)
+INTERNALERROR>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 138, in _execute
+INTERNALERROR>     raise DataError(f"Couldn't use data file {self.filename!r}: {msg}") from exc
+INTERNALERROR> coverage.exceptions.DataError: Couldn't use data file '/workspace/scratch/9c7b9ec78746/repo/.coverage.0e37b274b897.5.XbzQUNDx.c': no such table: coverage_schema
+INTERNALERROR> 
+INTERNALERROR> During handling of the above exception, another exception occurred:
+INTERNALERROR> 
+INTERNALERROR> Traceback (most recent call last):
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 289, in wrap_session
+INTERNALERROR>     session.exitstatus = doit(config, session) or 0
+INTERNALERROR>                          ^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 343, in _main
+INTERNALERROR>     config.hook.pytest_runtestloop(session=session)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+INTERNALERROR>     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+INTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+INTERNALERROR>     raise exception
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+INTERNALERROR>     teardown.throw(exception)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/_pytest/logging.py", line 801, in pytest_runtestloop
+INTERNALERROR>     return (yield)  # Run all the tests.
+INTERNALERROR>             ^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+INTERNALERROR>     teardown.throw(exception)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/_pytest/terminal.py", line 688, in pytest_runtestloop
+INTERNALERROR>     result = yield
+INTERNALERROR>              ^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 152, in _multicall
+INTERNALERROR>     teardown.send(result)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pytest_cov/plugin.py", line 346, in pytest_runtestloop
+INTERNALERROR>     self.cov_controller.finish()
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pytest_cov/engine.py", line 57, in ensure_topdir_wrapper
+INTERNALERROR>     return meth(self, *args, **kwargs)
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/pytest_cov/engine.py", line 316, in finish
+INTERNALERROR>     self.cov.save()
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/control.py", line 815, in save
+INTERNALERROR>     data = self.get_data()
+INTERNALERROR>            ^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/control.py", line 895, in get_data
+INTERNALERROR>     if self._collector.flush_data():
+INTERNALERROR>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/collector.py", line 488, in flush_data
+INTERNALERROR>     self.covdata.add_lines(self.mapped_file_dict(line_data))
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 123, in _wrapped
+INTERNALERROR>     return method(self, *args, **kwargs)
+INTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 494, in add_lines
+INTERNALERROR>     self._choose_lines_or_arcs(lines=True)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 563, in _choose_lines_or_arcs
+INTERNALERROR>     with self._connect() as con:
+INTERNALERROR>          ^^^^^^^^^^^^^^^
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 343, in _connect
+INTERNALERROR>     self._open_db()
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 286, in _open_db
+INTERNALERROR>     self._read_db()
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 296, in _read_db
+INTERNALERROR>     self._init_db(db)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqldata.py", line 325, in _init_db
+INTERNALERROR>     db.executescript(SCHEMA)
+INTERNALERROR>   File "/root/.local/lib/python3.12/site-packages/coverage/sqlitedb.py", line 226, in executescript
+INTERNALERROR>     self.con.executescript(script).close()
+INTERNALERROR>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+INTERNALERROR> sqlite3.OperationalError: database or disk is full

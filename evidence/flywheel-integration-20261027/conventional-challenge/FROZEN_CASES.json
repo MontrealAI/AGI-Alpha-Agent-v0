@@ -1,0 +1,3021 @@
+{
+  "acceptance": {
+    "counters_and_incomplete_preserved": true,
+    "exact_rank_and_sequence_on_complete_pairs": true,
+    "illegal_shortcuts_refused": true,
+    "independent_witness_check": true,
+    "validated_contract": true
+  },
+  "attribution": "Execution comparison only; not a discovery-search, real-buyer or frontier-model experiment",
+  "case_count": 32,
+  "cases": [
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-shared-fork-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "left-output",
+        "right-output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 11,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "left",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 12,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "right",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "bypass-left",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "bypass-right",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-right"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-approval-cost-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "cheap-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "cheap-pending"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "approved-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "approved-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "approved-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "approved-b"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "bad-zero",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bad-zero"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-cycle-entry-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "cycle-a",
+          "requires": [
+            "b"
+          ],
+          "step_id": "cycle-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "cycle-b",
+          "requires": [
+            "a"
+          ],
+          "step_id": "cycle-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "entry",
+          "requires": [
+            "start"
+          ],
+          "step_id": "entry"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-two-output-choice-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "x",
+        "y"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a",
+            "b"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "left",
+          "requires": [
+            "a"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "right",
+          "requires": [
+            "b"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "separate-x",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-x"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "separate-y",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-y"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x",
+            "y"
+          ],
+          "purpose": "joint-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "joint-pending"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 19,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-cost-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "first",
+          "requires": [
+            "start"
+          ],
+          "step_id": "first"
+        },
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "last",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "last"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "expensive",
+          "requires": [
+            "start"
+          ],
+          "step_id": "expensive"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 20,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-time-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 19,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "slow-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "slow-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "slow-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "slow-b"
+        },
+        {
+          "duration_seconds": 19,
+          "estimated_cost_micro_usd": 25,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "fast",
+          "requires": [
+            "start"
+          ],
+          "step_id": "fast"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-denied-obligation-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "raw-transfer",
+          "requires": [
+            "start"
+          ],
+          "step_id": "raw-transfer"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "denied",
+          "requires": [
+            "start"
+          ],
+          "step_id": "denied"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "pending-safe",
+          "requires": [
+            "start"
+          ],
+          "step_id": "pending-safe"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "safe-finish",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "safe-finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-search-budget-0",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 1,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "branch-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "branch-b",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "a",
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-shared-fork-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "left-output",
+        "right-output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 11,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 11,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "left",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 12,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "right",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "bypass-left",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "bypass-right",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-right"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-approval-cost-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "cheap-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "cheap-pending"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 31,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "approved-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "approved-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "approved-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "approved-b"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "bad-zero",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bad-zero"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-cycle-entry-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "cycle-a",
+          "requires": [
+            "b"
+          ],
+          "step_id": "cycle-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "cycle-b",
+          "requires": [
+            "a"
+          ],
+          "step_id": "cycle-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 6,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "entry",
+          "requires": [
+            "start"
+          ],
+          "step_id": "entry"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-two-output-choice-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "x",
+        "y"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 21,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a",
+            "b"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "left",
+          "requires": [
+            "a"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "right",
+          "requires": [
+            "b"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "separate-x",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-x"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "separate-y",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-y"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x",
+            "y"
+          ],
+          "purpose": "joint-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "joint-pending"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 20,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-cost-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "first",
+          "requires": [
+            "start"
+          ],
+          "step_id": "first"
+        },
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "last",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "last"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "expensive",
+          "requires": [
+            "start"
+          ],
+          "step_id": "expensive"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 20,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-time-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 20,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "slow-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "slow-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "slow-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "slow-b"
+        },
+        {
+          "duration_seconds": 19,
+          "estimated_cost_micro_usd": 25,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "fast",
+          "requires": [
+            "start"
+          ],
+          "step_id": "fast"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-denied-obligation-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "raw-transfer",
+          "requires": [
+            "start"
+          ],
+          "step_id": "raw-transfer"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "denied",
+          "requires": [
+            "start"
+          ],
+          "step_id": "denied"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "pending-safe",
+          "requires": [
+            "start"
+          ],
+          "step_id": "pending-safe"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "safe-finish",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "safe-finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-search-budget-1",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 2,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "branch-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "branch-b",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "a",
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-shared-fork-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "left-output",
+        "right-output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 12,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 11,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "left",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 12,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "right",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "bypass-left",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "bypass-right",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-right"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-approval-cost-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "cheap-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "cheap-pending"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 32,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "approved-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "approved-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "approved-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "approved-b"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "bad-zero",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bad-zero"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-cycle-entry-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "cycle-a",
+          "requires": [
+            "b"
+          ],
+          "step_id": "cycle-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "cycle-b",
+          "requires": [
+            "a"
+          ],
+          "step_id": "cycle-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 7,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "entry",
+          "requires": [
+            "start"
+          ],
+          "step_id": "entry"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-two-output-choice-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "x",
+        "y"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 22,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a",
+            "b"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "left",
+          "requires": [
+            "a"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "right",
+          "requires": [
+            "b"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "separate-x",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-x"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "separate-y",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-y"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x",
+            "y"
+          ],
+          "purpose": "joint-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "joint-pending"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 29,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-cost-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "first",
+          "requires": [
+            "start"
+          ],
+          "step_id": "first"
+        },
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "last",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "last"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "expensive",
+          "requires": [
+            "start"
+          ],
+          "step_id": "expensive"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 20,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-time-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 21,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "slow-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "slow-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "slow-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "slow-b"
+        },
+        {
+          "duration_seconds": 19,
+          "estimated_cost_micro_usd": 25,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "fast",
+          "requires": [
+            "start"
+          ],
+          "step_id": "fast"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-denied-obligation-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "raw-transfer",
+          "requires": [
+            "start"
+          ],
+          "step_id": "raw-transfer"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "denied",
+          "requires": [
+            "start"
+          ],
+          "step_id": "denied"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "pending-safe",
+          "requires": [
+            "start"
+          ],
+          "step_id": "pending-safe"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "safe-finish",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "safe-finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-search-budget-2",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 3,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "branch-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "branch-b",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "a",
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-shared-fork-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "left-output",
+        "right-output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 13,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 11,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "left",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 12,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "right",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "left-output"
+          ],
+          "purpose": "bypass-left",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "right-output"
+          ],
+          "purpose": "bypass-right",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bypass-right"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-approval-cost-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "cheap-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "cheap-pending"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 33,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "approved-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "approved-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "approved-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "approved-b"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "bad-zero",
+          "requires": [
+            "start"
+          ],
+          "step_id": "bad-zero"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-cycle-entry-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "cycle-a",
+          "requires": [
+            "b"
+          ],
+          "step_id": "cycle-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "cycle-b",
+          "requires": [
+            "a"
+          ],
+          "step_id": "cycle-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 8,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "entry",
+          "requires": [
+            "start"
+          ],
+          "step_id": "entry"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-two-output-choice-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "x",
+        "y"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 23,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a",
+            "b"
+          ],
+          "purpose": "shared",
+          "requires": [
+            "start"
+          ],
+          "step_id": "shared"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "left",
+          "requires": [
+            "a"
+          ],
+          "step_id": "left"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 5,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "right",
+          "requires": [
+            "b"
+          ],
+          "step_id": "right"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x"
+          ],
+          "purpose": "separate-x",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-x"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 20,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "y"
+          ],
+          "purpose": "separate-y",
+          "requires": [
+            "start"
+          ],
+          "step_id": "separate-y"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 1,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "x",
+            "y"
+          ],
+          "purpose": "joint-pending",
+          "requires": [
+            "start"
+          ],
+          "step_id": "joint-pending"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 30,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-cost-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "first",
+          "requires": [
+            "start"
+          ],
+          "step_id": "first"
+        },
+        {
+          "duration_seconds": 8,
+          "estimated_cost_micro_usd": 10,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "last",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "last"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 30,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "expensive",
+          "requires": [
+            "start"
+          ],
+          "step_id": "expensive"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 20,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-binding-time-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 1,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "mid"
+          ],
+          "purpose": "slow-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "slow-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "slow-b",
+          "requires": [
+            "mid"
+          ],
+          "step_id": "slow-b"
+        },
+        {
+          "duration_seconds": 19,
+          "estimated_cost_micro_usd": 25,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "fast",
+          "requires": [
+            "start"
+          ],
+          "step_id": "fast"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-denied-obligation-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 20000,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "raw-transfer",
+          "requires": [
+            "start"
+          ],
+          "step_id": "raw-transfer"
+        },
+        {
+          "duration_seconds": 1,
+          "estimated_cost_micro_usd": 0,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "denied",
+          "requires": [
+            "start"
+          ],
+          "step_id": "denied"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "required",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "ready"
+          ],
+          "purpose": "pending-safe",
+          "requires": [
+            "start"
+          ],
+          "step_id": "pending-safe"
+        },
+        {
+          "duration_seconds": 5,
+          "estimated_cost_micro_usd": 5,
+          "permission": "denied",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "safe-finish",
+          "requires": [
+            "ready"
+          ],
+          "step_id": "safe-finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    },
+    {
+      "cost_cap_micro_usd": 200,
+      "limitations": "Authored finite monotone facts; approvals, capacity, wait times and policy interpretation are unverified",
+      "mission_id": "fresh-search-budget-3",
+      "mode": "synthetic",
+      "obligations": [
+        "protected-data-local",
+        "original-purpose"
+      ],
+      "required_outputs": [
+        "output"
+      ],
+      "search_node_cap": 4,
+      "seconds_cap": 200,
+      "starting_facts": [
+        "start"
+      ],
+      "steps": [
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "a"
+          ],
+          "purpose": "branch-a",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-a"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "b"
+          ],
+          "purpose": "branch-b",
+          "requires": [
+            "start"
+          ],
+          "step_id": "branch-b"
+        },
+        {
+          "duration_seconds": 10,
+          "estimated_cost_micro_usd": 1,
+          "permission": "documented",
+          "permission_basis": "Authored synthetic declaration; no external approval exists",
+          "preserves": [
+            "protected-data-local",
+            "original-purpose"
+          ],
+          "produces": [
+            "output"
+          ],
+          "purpose": "finish",
+          "requires": [
+            "a",
+            "b"
+          ],
+          "step_id": "finish"
+        }
+      ],
+      "useful_purpose": "Produce a checked conditional feasibility packet"
+    }
+  ],
+  "cases_sha256": "230f1146280d13f6e37884a65e43f8b5602bf22deae84df42359cf54fa359684",
+  "created_at": "2026-10-27T22:16:57.241664+00:00",
+  "logical_budget_caveat": "A conventional subset examination and a target recursive state visit are algorithm-specific units, not matched CPU or monetary costs",
+  "requirements": [
+    "Same original purpose, declared facts, action set, goals, obligations, cost/time/node caps",
+    "Independent exact conventional construction may use every established primitive and a subset/topological solver",
+    "Minimize pending approvals, then cost, time and lexicographic step sequence",
+    "No authority, customer acceptance or actual scientific experiment follows from a plan",
+    "Incomplete search never establishes infeasibility or optimality"
+  ],
+  "resource_ceiling": {
+    "campaign_cpu_seconds": 90,
+    "output_bytes": 10000000,
+    "paid_external_calls": 0,
+    "wall_minutes": 35
+  },
+  "schema": "fresh-conventional-challenge-freeze/v1",
+  "stop_rules": [
+    "Stop novelty claim on competent ordinary parity",
+    "Stop on resource ceiling without replacing cases",
+    "Preserve every failure; no outcome-based substitution or rerun"
+  ],
+  "target_commit": "095c11fe33522be6c0e2d7a00043d7bbb5bcb457",
+  "target_git_blob": "058fea1672a06b6b0a1253aa7d78f56f8a86e7c1"
+}

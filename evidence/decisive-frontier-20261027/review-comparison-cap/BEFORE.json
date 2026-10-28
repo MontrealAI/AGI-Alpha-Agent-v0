@@ -1,0 +1,19 @@
+{
+  "schema": "comparison-cap-prereview-reproduction/v1",
+  "source_sha256": "7deed620418732cb2d74b19a61f17dec4d4aa4a8ecfab9c52a8223a9abd08bd6",
+  "command": [
+    "/dev/shm/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/runtime/test_flywheel_comparisons.py",
+    "--confcutdir=tests/runtime",
+    "--basetemp=/tmp/decisive-comparison-cap/original-fixtures",
+    "-q",
+    "-k",
+    "original_frozen_trial_cap or late_reconciliation or without_completeness or net_away_delivery_overrun"
+  ],
+  "exit_code": 1,
+  "seconds": 9.324965545994928,
+  "log_sha256": "e92a59f85dd511d3a8329acbaae1f87dbb481c42139b46bcd80e3d34f00a79ed",
+  "scope": "Original source; local synthetic execution and signed test accounting only; no actual model or receipt."
+}

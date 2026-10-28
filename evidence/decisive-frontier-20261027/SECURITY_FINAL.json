@@ -1,0 +1,28 @@
+{
+  "schema": "connected-insight-selected-security-integrity/v1",
+  "observed": [
+    {
+      "command": "python scripts/dp_scrubber.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/check_no_binary_diff.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/check_held_native_source.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m ruff check --no-cache alpha_factory_v1/core/runtime/successor/flywheel_discovery.py tests/runtime/test_flywheel_discovery.py scripts/refresh_capability_checkout.py tests/test_insight_frontier_release.py tests/test_insight_frontier_post_guard_release.py tests/test_capability_publication_edition.py",
+      "exit_code": 0
+    }
+  ],
+  "scope": "Selected direct checks on final staged source; full local blocking hooks remain failed/unqualified and hosted gates remain required",
+  "held_native_behavior_qualified": false,
+  "script_sha256": {
+    "scripts/dp_scrubber.py": "5fb28dfd24c75f24199dd2073400e59bf1cb3b3eff3dd01ba935ada8d6e23e26",
+    "scripts/check_no_binary_diff.py": "b5ef517b1dece69d6ca2ad89e34d1575f7d7d451d077f9367474facf7b2ba5bb",
+    "scripts/check_held_native_source.py": "c91da6e0f18974f219a3b3bbad03a1a048a895328c6ef02fc2ee13f83cc6e054"
+  }
+}

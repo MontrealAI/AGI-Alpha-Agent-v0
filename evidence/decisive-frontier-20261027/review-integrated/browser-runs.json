@@ -1,0 +1,45 @@
+[
+  {
+    "name": "insight-browser",
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "evidence/decisive-frontier-20261027/review-integrated/browser-insight.json",
+      "--screenshots",
+      "/tmp/decisive-review-insight-screens",
+      "--axe-script",
+      "/tmp/specialist-accessibility/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "seconds": 4.6
+  },
+  {
+    "name": "preserved-browser",
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/tmp/decisive-review-preserved-browser",
+      "--axe-script",
+      "/tmp/specialist-accessibility/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "seconds": 24.262
+  },
+  {
+    "name": "comparison-browser",
+    "command": [
+      "python",
+      "tests/browser/test_flywheel_comparison_browser.py"
+    ],
+    "exit_code": 0,
+    "seconds": 15.811
+  }
+]

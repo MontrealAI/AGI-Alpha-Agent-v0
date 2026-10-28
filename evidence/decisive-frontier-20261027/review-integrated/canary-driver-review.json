@@ -1,0 +1,42 @@
+{
+  "schema": "prospective-canary-driver-review/v1",
+  "scope": "Independent read-only contracts audit before either frozen canary is executed. No import/execution of driver or fresh inputs, credentials, authority or source-runtime edits.",
+  "findings": [
+    {
+      "issue": "Attempted command and partial output could be lost on timeout or spawn failure",
+      "status": "fixed before execution in both drivers",
+      "change": "Persist started attempt before spawn; preserve partial timeout output or spawn error class and wall time before raising"
+    },
+    {
+      "issue": "Native driver did not verify original freeze bytes against prospective addendum",
+      "status": "fixed before execution",
+      "change": "Verify original_freeze_sha256 equals the actual original FREEZE bytes"
+    }
+  ],
+  "observed_contracts": [
+    "Native twenty-command CLI order, JSON response streams, SQLite five-column public event shape, Ed25519 receipt signatures, budget failure/pause/explicit recovery and completed-request idempotency",
+    "Research isolated installed import,75file identity check, identical-declaration exhaustive ordinary comparator, original constraints and explicit authority refusal"
+  ],
+  "limitations": [
+    "Static inspection and syntax/lint only; actual released-source canaries remain required",
+    "Research check is library-only same-offering conformance; native canary is supporting software, not frontier handoff or customer acceptance"
+  ],
+  "drivers": [
+    {
+      "file": "evidence/decisive-frontier-20261027/native-canary/run_canary.py",
+      "sha256": "28bf351480164dd451452e00c4836311ca6c976dfdadaff616bfaf62742dea38",
+      "syntax_parsed": true,
+      "format_ast_unchanged": true,
+      "ruff_exit_code": 0,
+      "execution": "not run"
+    },
+    {
+      "file": "evidence/decisive-frontier-20261027/research-canary/run_canary.py",
+      "sha256": "b1f4975db9c0f6c8483a19ea255a551fff1c6ebee1602d4c22ac608f70fd45f5",
+      "syntax_parsed": true,
+      "format_ast_unchanged": true,
+      "ruff_exit_code": 0,
+      "execution": "not run"
+    }
+  ]
+}

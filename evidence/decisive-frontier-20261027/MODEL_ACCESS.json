@@ -1,0 +1,51 @@
+{
+  "schema": "insight-model-access-check/v1",
+  "checked_date": "2026-10-27",
+  "timezone": "America/Toronto",
+  "official_sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6-astra",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+    "https://developers.openai.com/api/docs/pricing"
+  ],
+  "proposed_profiles": [
+    {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "role": "demanding invention and judgment",
+      "standard_short_uncached_usd_per_million": {
+        "input": 10,
+        "output": 50
+      }
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "role": "execution and verification",
+      "standard_short_uncached_usd_per_million": {
+        "input": 2,
+        "output": 10
+      }
+    },
+    {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "high",
+      "role": "bounded computer execution",
+      "standard_short_uncached_usd_per_million": {
+        "input": 1,
+        "output": 5
+      }
+    }
+  ],
+  "transport": "Responses API for tool calling; exact allowed tool/environment/profile digests and signed permit still required",
+  "access": {
+    "environment_openai_key_configured": false,
+    "environment_anthropic_key_configured": false,
+    "account_quota_verified": false,
+    "paid_trial_budget_usd": 0,
+    "controlled_frontier_calls": 0
+  },
+  "limits": "Model identifiers are documented aliases, not pinned immutable snapshots. Account access, model limits, regional/service tier, cache, long-context and tool fees require operator verification before a paid trial.",
+  "actual_session_cost": "Unknown; hosted authorship, review and tool usage are not controlled API performance or zero-cost evidence",
+  "authority_granted": false
+}

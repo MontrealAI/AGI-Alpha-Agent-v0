@@ -1,0 +1,48 @@
+{
+  "full_runtime": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/runtime",
+    "--confcutdir=tests/runtime",
+    "--ignore=tests/runtime/test_budget_browser.py",
+    "--ignore=tests/runtime/test_ecosystem_browser.py",
+    "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    "-q",
+    "-o",
+    "addopts="
+  ],
+  "affected": "AFFECTED_COMMAND.json",
+  "typing": [
+    "/tmp/decisive-agent-venv/bin/python",
+    "-m",
+    "mypy",
+    "--config-file",
+    "mypy-runtime.ini",
+    "--cache-dir=/dev/null",
+    "alpha_factory_v1/core/runtime"
+  ],
+  "browser": [
+    "python",
+    "-m",
+    "scripts.validate_alpha_flywheel",
+    "--site",
+    "docs",
+    "--output",
+    "evidence/frontier-delivery-20261028/browser",
+    "--axe-script",
+    "/workspace/scratch/1602dd9e6810/agi-alpha/tests/browser/node_modules/axe-core/axe.min.js"
+  ],
+  "pre_commit": [
+    "timeout",
+    "180",
+    "python",
+    "-m",
+    "pre_commit",
+    "run",
+    "--files",
+    "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+    "tests/runtime/test_flywheel_invocation_cost_ancestry.py",
+    "tests/test_held_native_source_guard.py"
+  ]
+}

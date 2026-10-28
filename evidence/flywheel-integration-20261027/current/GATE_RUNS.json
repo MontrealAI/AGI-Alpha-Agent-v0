@@ -1,0 +1,33 @@
+[
+  {
+    "check": "privacy",
+    "exitcode": 0,
+    "command": [
+      "python",
+      "scripts/dp_scrubber.py"
+    ]
+  },
+  {
+    "check": "binary-guard",
+    "exitcode": 0,
+    "command": [
+      "python",
+      "scripts/check_no_binary_diff.py"
+    ]
+  },
+  {
+    "check": "ruff",
+    "exitcode": 0,
+    "command": [
+      "python",
+      "scripts/check_strategy_research_compatibility_v2.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+      "scripts/generate_alpha_flywheel.py",
+      "scripts/validate_alpha_flywheel.py",
+      "tests/runtime/test_flywheel_comparisons.py",
+      "tests/runtime/test_flywheel_discovery.py",
+      "tests/test_alpha_flywheel.py"
+    ]
+  }
+]

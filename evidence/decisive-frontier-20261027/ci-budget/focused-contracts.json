@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/dev/shm/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "-c",
+    "/dev/null",
+    "--noconftest",
+    "--rootdir=.",
+    "tests/test_ci_install_bounds.py",
+    "tests/test_fast_release_policy.py",
+    "tests/test_release_contract_preflight.py",
+    "tests/test_release_artifact_handoffs.py",
+    "-q",
+    "--tb=short",
+    "--basetemp=/tmp/decisive-ci-budget-tests",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.763322591781616,
+  "source_sha256": {
+    ".github/workflows/agent-release.yml": "182217b3e43e89d21944310d704e7c7e221d722ed883757fadfb4abb9efac8dd",
+    "tests/test_ci_install_bounds.py": "02bda953d3a78d3f91929e0657363f21233bf53752b88d236419b405b1cc0cf8",
+    "docs/agent/RELEASE_READINESS.md": "883ea9096867cc8e20118371ff80b796caa6bfe30dd7f2bc2826c31bd63c1a55"
+  },
+  "output_bytes": 180,
+  "output_sha256": "cf738100703cb0983c32ce57336ed1c938bc01183caa417296cdb35c962a2561",
+  "output_zlib_base64": "eJzT06MOUIhWsDRXjeUCsqgDog0NDIDmmZsoFCQWF6emKGTmKRga6JkYF3MBAKq9HtE="
+}

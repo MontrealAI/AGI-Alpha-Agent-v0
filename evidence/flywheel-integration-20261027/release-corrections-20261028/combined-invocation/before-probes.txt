@@ -1,0 +1,161 @@
+FF.F                                                                     [100%]
+=================================== FAILURES ===================================
+____ test_historical_costs_survive_without_reviving_fresh_authority[expiry] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f46241d9820>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f4623d2a550>, ...}, ...}
+change = 'expiry'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f462395fa40>
+
+    @pytest.mark.parametrize("change", ["expiry", "capsule-revocation", "ens-owner"])
+    def test_historical_costs_survive_without_reviving_fresh_authority(
+        setup: dict[str, Any], change: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        now = int(time.time())
+        monkeypatch.setattr(time, "time", lambda: now)
+        ident, request, _ = invoke(setup)
+        protected.close_zero_cost_attempt(setup, request.mission_id)
+        if change == "expiry":
+            monkeypatch.setattr(time, "time", lambda: now + 3600)
+        elif change == "capsule-revocation":
+            protected.control(setup, ident, "revoke")
+        else:
+            for rpc in setup["rpc"]:
+                rpc.owners[protected.namehash("two.agent.agi.eth").hex()] = "0x" + "12" * 20
+        before = setup["costs"].snapshot()
+        calls = [len(rpc.calls) for rpc in setup["rpc"]]
+>       current_costs(setup, request.mission_id)
+
+tests/runtime/test_flywheel_invocation_cost_ancestry.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_invocation_cost_ancestry.py:35: in current_costs
+    state["costs"].require_current_evidence(mission, ["B"], cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:210: in require_current_evidence
+    self._current_charge(row, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:203: in _current_charge
+    self._current_charge(row["original"], cx, depth + 1)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:152: in _current_charge
+    self.invocation_reservation_check(charge, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:305: in _current_invocation_reservation
+    entry = self._eligible(network, ident, cx)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_capsules.ProtectedLibrary object at 0x7f462395ce00>
+network = {'active': {'bounded-selector': '46a167960aa0b2bd1cc01c06ff0036e4720ddbc6e2f1c6480af7012863717fa7'}, 'beta_digest': 'b...0eaa95d8cb80812cbd90ee474ce9cafe2444dc37ae8': '46a167960aa0b2bd1cc01c06ff0036e4720ddbc6e2f1c6480af7012863717fa7'}, ...}
+ident = '46a167960aa0b2bd1cc01c06ff0036e4720ddbc6e2f1c6480af7012863717fa7'
+cx = <sqlite3.Connection object at 0x7f4623262c50>
+
+    def _eligible(self, network: dict[str, Any], ident: str, cx: Any = None) -> dict[str, Any]:
+        entry = network["entries"][ident]
+        if entry["state"] != "admitted" or network["active"].get(entry["manifest"]["skill_id"]) != ident:
+            raise Conflict("capsule is not currently admitted and active")
+        plan = entry["plan"]["payload"]["record"]
+        if (
+            plan.get("execution_digest") != self.execution_digest
+            or network.get("execution_digest") != self.execution_digest
+        ):
+            raise Conflict("capsule requires requalification in this execution environment")
+        if plan["beta_digest"] != network["beta_digest"] or plan["policy_digest"] != network["policy_digest"]:
+            raise Conflict("capsule requires fresh Beta/policy requalification")
+        self.trust.anchor(entry["producer"], "producer")
+        if entry["manifest"]["supported_scope"] == "resilient-placement/v1":
+            origin, _ = accepted_general_origin(self, entry["manifest"]["origin_mission"], cx)
+            if origin["digest"] != entry["manifest"]["origin_record_digest"]:
+                raise ValueError("originating delivery changed since candidate retention")
+        for field, role, domain in (
+            ("evidence", "verifier", "evidence"),
+            ("validation", "verifier", "validate"),
+            ("admission", "controller", "admit"),
+        ):
+            self._signed(SignedEnvelope.model_validate(entry[field]), domain, role)
+        evidence = AlphaEvidence.model_validate(entry["evidence"]["payload"]["record"])
+        for receipt in [*evidence.candidate_runs, *evidence.beta_runs]:
+            self.trust.verify(receipt, "flywheel-frontier-run", "execution")
+        for receipt in evidence.acceptance:
+            self.trust.verify(receipt, "flywheel-pair-acceptance", "acceptance")
+        if min(entry[field]["payload"]["record"]["expires_at"] for field in ("validation", "admission")) <= int(
+            time.time()
+        ):
+>           raise Conflict("capsule validation or admission expired")
+E           alpha_factory_v1.core.runtime.store.Conflict: capsule validation or admission expired
+
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:1010: Conflict
+_ test_historical_costs_survive_without_reviving_fresh_authority[capsule-revocation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f460a0c0f20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f4623d2b910>, ...}, ...}
+change = 'capsule-revocation'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f460a0c0140>
+
+    @pytest.mark.parametrize("change", ["expiry", "capsule-revocation", "ens-owner"])
+    def test_historical_costs_survive_without_reviving_fresh_authority(
+        setup: dict[str, Any], change: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        now = int(time.time())
+        monkeypatch.setattr(time, "time", lambda: now)
+        ident, request, _ = invoke(setup)
+        protected.close_zero_cost_attempt(setup, request.mission_id)
+        if change == "expiry":
+            monkeypatch.setattr(time, "time", lambda: now + 3600)
+        elif change == "capsule-revocation":
+            protected.control(setup, ident, "revoke")
+        else:
+            for rpc in setup["rpc"]:
+                rpc.owners[protected.namehash("two.agent.agi.eth").hex()] = "0x" + "12" * 20
+        before = setup["costs"].snapshot()
+        calls = [len(rpc.calls) for rpc in setup["rpc"]]
+>       current_costs(setup, request.mission_id)
+
+tests/runtime/test_flywheel_invocation_cost_ancestry.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_invocation_cost_ancestry.py:35: in current_costs
+    state["costs"].require_current_evidence(mission, ["B"], cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:210: in require_current_evidence
+    self._current_charge(row, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:203: in _current_charge
+    self._current_charge(row["original"], cx, depth + 1)
+alpha_factory_v1/core/runtime/successor/flywheel_costs.py:152: in _current_charge
+    self.invocation_reservation_check(charge, cx)
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:305: in _current_invocation_reservation
+    entry = self._eligible(network, ident, cx)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_capsules.ProtectedLibrary object at 0x7f460a0c2cf0>
+network = {'active': {}, 'beta_digest': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'entries': {'280c7c5...9f3d22f697290829d13281b8caaa8bccc950f21f88b': '280c7c5578df0b8c5bddf83a3b1e829d703661f74031ad8673ea614639885cbe'}, ...}
+ident = '280c7c5578df0b8c5bddf83a3b1e829d703661f74031ad8673ea614639885cbe'
+cx = <sqlite3.Connection object at 0x7f460a02f880>
+
+    def _eligible(self, network: dict[str, Any], ident: str, cx: Any = None) -> dict[str, Any]:
+        entry = network["entries"][ident]
+        if entry["state"] != "admitted" or network["active"].get(entry["manifest"]["skill_id"]) != ident:
+>           raise Conflict("capsule is not currently admitted and active")
+E           alpha_factory_v1.core.runtime.store.Conflict: capsule is not currently admitted and active
+
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:982: Conflict
+______ test_resolved_row_cannot_substitute_a_different_valid_reservation _______
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f4623741dc0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f4609d6ca50>, ...}, ...}
+
+    def test_resolved_row_cannot_substitute_a_different_valid_reservation(setup: dict[str, Any]) -> None:
+        ident, request, _ = invoke(setup)
+        protected.close_zero_cost_attempt(setup, request.mission_id)
+        second = request.model_copy(update={"mission_id": "another-valid-invocation"})
+        setup["service"].invoke(
+            ident, second, protected.proof(setup, ident, "invoke", digest("flywheel-invocation", second))
+        )
+        protected.close_zero_cost_attempt(setup, second.mission_id)
+        row = setup["costs"].snapshot()["charges"]["reuse/" + request.mission_id]
+        parent = copy.deepcopy(row)
+        parent["original"] = setup["costs"].snapshot()["charges"]["reuse/" + second.mission_id]["original"]
+        with setup["journal"].transaction() as cx:
+            setup["costs"]._current_charge(parent["original"], cx)
+>           with pytest.raises(ValueError, match="differs from its original reservation"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_invocation_cost_ancestry.py:189: Failed
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_invocation_cost_ancestry.py::test_historical_costs_survive_without_reviving_fresh_authority[expiry]
+FAILED tests/runtime/test_flywheel_invocation_cost_ancestry.py::test_historical_costs_survive_without_reviving_fresh_authority[capsule-revocation]
+FAILED tests/runtime/test_flywheel_invocation_cost_ancestry.py::test_resolved_row_cannot_substitute_a_different_valid_reservation
+3 failed, 1 passed, 21 deselected in 3.70s

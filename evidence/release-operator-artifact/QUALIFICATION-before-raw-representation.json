@@ -1,0 +1,93 @@
+{
+  "schema": "release-small-operator-artifact-qualification/v2",
+  "baseline_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "baseline_tree": "ba5ded943e63bc96be8fed63696efa20d316704c",
+  "provenance": "Fresh reconstruction and qualification after loss of original uncommitted workspace; old source hashes unknown",
+  "source_identities": {
+    ".github/workflows/agent-release.yml": {
+      "bytes": 84818,
+      "sha256": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+      "git_blob": "f4c3d866fd53df57402042fbe7fb7d8d8ed668ac"
+    },
+    "tests/test_release_artifact_handoffs.py": {
+      "bytes": 16099,
+      "sha256": "fe5d1693e82b49bf79321ee1408e81703271ab09ada10e2dc21f5b1f528f1544",
+      "git_blob": "6cd66a6e250025f8df7e9beceeb2a85cc87ff4bc"
+    }
+  },
+  "checks": {
+    "ci_contract_cases_passed": 76,
+    "allowed_campaign_cases": 342,
+    "contracts": "contracts.json",
+    "whole_workflow_preservation": "NAMESPACE_REPAIR.json; only final upload step differs from baseline",
+    "updater": "update-actions-current.json; script targets ci.yml, no release action-version freshness claim",
+    "local_actionlint": "NOT_RUN_UNAVAILABLE; hosted gate required"
+  },
+  "boundaries": {
+    "runtime_page_worker_or_source_pin_changes": false,
+    "permission_or_action_sha_changes": false,
+    "full_artifact_or_publication_gate_replacement": false,
+    "new_public_artifact_or_canary_execution_claim": false,
+    "model_calls": 0
+  },
+  "files": {
+    "BEFORE.json": {
+      "bytes": 6338,
+      "sha256": "b6471c843f7ec98d98123ca46a5554533dc4f592df2dcd8f162c854ff4da6c85"
+    },
+    "NAMESPACE_REPAIR.json": {
+      "bytes": 1135,
+      "sha256": "8657595028b79011e5c429fd93572f5e9949eba07bca341b6d6b1615d5aac468"
+    },
+    "QUALIFICATION-before-namespace.json": {
+      "bytes": 2427,
+      "sha256": "7d3596d89706bd1a98730d77690266d3c9bfc9741e064073fe036d9a3f1b97e9"
+    },
+    "README-before-namespace.md": {
+      "bytes": 2817,
+      "sha256": "94c16db9d79ecc5990e6e00091c99aca0d50f438c5fc7c3e1549497b7e49558b"
+    },
+    "README.md": {
+      "bytes": 968,
+      "sha256": "8427227fdff9daf52c90dd43b5d46715b079eded761f3b9e84bbbbb4eec10b67"
+    },
+    "RECOVERY_HISTORY.json": {
+      "bytes": 1335,
+      "sha256": "ef919a6ee72377802871f5dce0d3c6d3d76557af01f91572bde7b8725b3563fa"
+    },
+    "contracts-before-namespace.json": {
+      "bytes": 1135,
+      "sha256": "419dd7410bd7d052a5eedc2191afa9a7370449cd43efa73e402e3ad83b223186"
+    },
+    "contracts.json": {
+      "bytes": 3053,
+      "sha256": "6b7613a0d86db7996717e0e1d6f78fdd25d9dbd78dbc2821677b3d14a7e782aa"
+    },
+    "recovered-source.patch": {
+      "bytes": 6657,
+      "sha256": "3d8e15b491e5dae6ffc605f458db65a31c99bc1b928be5ba9fb2ca6107e55dc3"
+    },
+    "static-checks.json": {
+      "bytes": 1614,
+      "sha256": "a2e49a04ccd1cebc66ed354b467ce5aed8384b5fe94e12dedc9a30ab0f36b2d4"
+    },
+    "update-actions-current.json": {
+      "bytes": 953,
+      "sha256": "6da304ab1f73e3eb4c5f761884b1d258471d143c0138b72ddcf95409f2118153"
+    },
+    "update-actions-failed-isolation.json": {
+      "bytes": 1650,
+      "sha256": "bdeb50536a72165b07cd7fdea38ef827bc002f07825d7b15a38dd5fbdee06e7b"
+    },
+    "update-actions.json": {
+      "bytes": 803,
+      "sha256": "4ce6a7289729905f68125a894e25431c9a2f1ac69f7a83ee57d7c8296d735387"
+    }
+  },
+  "artifact_name": "release-package-operator-${{ github.run_id }}-${{ github.run_attempt }}",
+  "history": {
+    "previous_namespace": "QUALIFICATION-before-namespace.json and contracts-before-namespace.json preserve actual previous receipts",
+    "selection_incident": "../decisive-frontier-20261027/review-enterprise-integrated/HELD_SELECTION_INCIDENT.json; four held outcomes remain unqualified",
+    "earlier_updater_setup": "update-actions-failed-isolation.json; temporary ci.yml was missing. Requests absence was unrelated because the updater reads ci.yml before lazy import and current regex matches zero."
+  }
+}

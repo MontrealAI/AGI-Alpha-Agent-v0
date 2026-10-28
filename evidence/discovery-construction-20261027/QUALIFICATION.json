@@ -1,0 +1,179 @@
+{
+  "schema": "flywheel-discovery-qualification/v1",
+  "runtime_parent": "57ad82ca2c4e037f56a465edce2444ca06abbc52",
+  "refreshed_main": "47c17f6aca6b1bb8779dd3e47d5ba5f8af3329f4",
+  "dependencies": [
+    "#4960",
+    "#4961",
+    "#4963"
+  ],
+  "publication_owner": "Existing owner; preserve #4969 and its 1.46.1 publication. No version or publisher allocated.",
+  "implementation": "additive source candidate",
+  "runtime_tests": {
+    "passed": 274,
+    "report": "runtime-focused.junit.txt"
+  },
+  "ui_source_tests": {
+    "passed": 15,
+    "report": "ui-source.junit.txt"
+  },
+  "browser": {
+    "checks": 13,
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "report": "browser-final.json",
+    "initial_failures": [
+      "Full Chromium singleton socket denied; supported headless shell used",
+      "320px overflow fixed before fresh passing run"
+    ]
+  },
+  "typing": {
+    "passed": true,
+    "source_files": 71,
+    "configuration": "mypy-runtime.ini",
+    "report": "types-final.txt"
+  },
+  "hooks": {
+    "selected_blocking_checks": "passed",
+    "advisory_flake8": "failed: long lines and Black-compatible slice spacing; retained under unchanged fast release policy",
+    "report": "blocking-hooks.txt",
+    "initial_ruff_exact_type_feedback": "fixed using the existing exact-type helper, without relaxing type checks"
+  },
+  "wheel": {
+    "status": "PASS",
+    "scope": "Unpublished local development wheel source overlay; not an installed release profile",
+    "wheel_sha256": "a5194f099b484df6830dee3de0e83b167f26cb6e4db07b4a1d0c62c0ce0a3902",
+    "source_count": 71,
+    "all_runtime_bytes_match": true,
+    "files": [
+      "alpha_factory_v1/core/runtime/__init__.py",
+      "alpha_factory_v1/core/runtime/api.py",
+      "alpha_factory_v1/core/runtime/ascension.py",
+      "alpha_factory_v1/core/runtime/budget.py",
+      "alpha_factory_v1/core/runtime/chain.py",
+      "alpha_factory_v1/core/runtime/cli.py",
+      "alpha_factory_v1/core/runtime/container.py",
+      "alpha_factory_v1/core/runtime/ecosystem.py",
+      "alpha_factory_v1/core/runtime/ecosystem_operator.py",
+      "alpha_factory_v1/core/runtime/engine.py",
+      "alpha_factory_v1/core/runtime/fleet_work.py",
+      "alpha_factory_v1/core/runtime/models.py",
+      "alpha_factory_v1/core/runtime/provider.py",
+      "alpha_factory_v1/core/runtime/samples.py",
+      "alpha_factory_v1/core/runtime/store.py",
+      "alpha_factory_v1/core/runtime/successor/__init__.py",
+      "alpha_factory_v1/core/runtime/successor/aggregation.py",
+      "alpha_factory_v1/core/runtime/successor/ascension.py",
+      "alpha_factory_v1/core/runtime/successor/campaign_experiment.py",
+      "alpha_factory_v1/core/runtime/successor/campaign_experiment_cli.py",
+      "alpha_factory_v1/core/runtime/successor/campaign_operation.py",
+      "alpha_factory_v1/core/runtime/successor/cli.py",
+      "alpha_factory_v1/core/runtime/successor/computer.py",
+      "alpha_factory_v1/core/runtime/successor/computer_dependencies.py",
+      "alpha_factory_v1/core/runtime/successor/computer_handoff.py",
+      "alpha_factory_v1/core/runtime/successor/computer_read.py",
+      "alpha_factory_v1/core/runtime/successor/computer_worker.py",
+      "alpha_factory_v1/core/runtime/successor/evaluation.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_access.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_api.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_arrangements.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_costs.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_execution.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_experiments.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_frontier.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_gym.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_learning.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_operator.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_probe.py",
+      "alpha_factory_v1/core/runtime/successor/flywheel_specialists.py",
+      "alpha_factory_v1/core/runtime/successor/jobs.py",
+      "alpha_factory_v1/core/runtime/successor/measurement.py",
+      "alpha_factory_v1/core/runtime/successor/mission.py",
+      "alpha_factory_v1/core/runtime/successor/model_program_operator.py",
+      "alpha_factory_v1/core/runtime/successor/orchestration.py",
+      "alpha_factory_v1/core/runtime/successor/protocol.py",
+      "alpha_factory_v1/core/runtime/successor/signatures.py",
+      "alpha_factory_v1/core/runtime/successor/state.py",
+      "alpha_factory_v1/core/runtime/successor/studio.py",
+      "alpha_factory_v1/core/runtime/successor/studio_operator.py",
+      "alpha_factory_v1/core/runtime/successor/transformation.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_library.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_library_cli.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_math.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_model.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_model_cli.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "alpha_factory_v1/core/runtime/successor/transformation_source_audit_cli.py",
+      "alpha_factory_v1/core/runtime/successor/transport.py",
+      "alpha_factory_v1/core/runtime/successor/trust.py",
+      "alpha_factory_v1/core/runtime/successor/workbench.py",
+      "alpha_factory_v1/core/runtime/supplier_browser.py",
+      "alpha_factory_v1/core/runtime/supplier_browser_operator.py",
+      "alpha_factory_v1/core/runtime/supplier_browser_spec.py",
+      "alpha_factory_v1/core/runtime/transfer.py",
+      "alpha_factory_v1/core/runtime/work.py",
+      "alpha_factory_v1/core/runtime/work_spec.py"
+    ]
+  },
+  "full_repository": {
+    "status": "not-qualified",
+    "original_attempt": "Interrupted with exit 130 after an observed failure; no complete JUnit/coverage result",
+    "failure_reproduced": "tests/runtime/test_budget_browser.py::test_actual_forms_exact_units_keyboard_localization_and_accessibility",
+    "cause": "Missing lock-pinned axe-core 4.10.3 local test dependency",
+    "repair": "Unchanged npm lock installed with npm ci --prefix tests/browser --ignore-scripts; exact failing node passes",
+    "reproduction": "budget-browser-after-dependency.txt",
+    "held_test_count": 4,
+    "held_source_status": "Static identities preserved; no held behavioral qualification",
+    "complete_collection": "5662/5666 collected; four deselected"
+  },
+  "source": {
+    "flywheel_source_hash": "8b1a2e86b552441cda0be9c5ec4a374da7dc70ba26042f0b216caf05de7ac7c0",
+    "page_sha256": "784a27462e6c7ea082c954e40b43e93542c16b7513068795bf02236d60332c79"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "node": "v24.22.1",
+    "node22_qualification": false,
+    "clean_bootstrap": false,
+    "setup": "Required setup and environment checks ran; shared-environment dependency conflicts retained outside this source qualification"
+  },
+  "evidence_boundary": {
+    "selected_instrument": "executed-local computation, synthetic finite states, direct audit parity",
+    "original_admission": "rejected",
+    "selected_experiment": "paused-uncertain; commercial stop",
+    "controlled_frontier_calls": 0,
+    "actual_collections_micro_usd": 0,
+    "complete_actual_cost": "unknown",
+    "live_ens_qualified": false,
+    "live_qualified": false
+  },
+  "uncompleted": [
+    "Exact-head hosted review and CI",
+    "Eligible parent integration and successor immutable-worker/release closure",
+    "Complete final-source release coverage and installed/public acceptance",
+    "Approved provider quota/budget and qualified tool environment",
+    "Protected live custody, two approved mainnet readers and distinct eligible owner-controlled recipient wallets",
+    "Natural observation coverage, matched frontier comparisons, independent acceptance and actual commercial terms"
+  ],
+  "focused_coverage": {
+    "test_cases": 90,
+    "statement_percent": 94.63,
+    "statement_count": 801,
+    "missing_statements": 43,
+    "scope": "Only the three new modules; repository-wide release coverage remains unqualified",
+    "report": "three-module-coverage.txt",
+    "initial_attempt": "The first command inherited repository-wide coverage and failed at 41.12%; 90 tests passed, coverage gate failed. Preserved in initial-aggregate-coverage.txt."
+  },
+  "raw_evidence_whitespace": "Original pytest failure output retains three trailing-whitespace lines. Source-only diff check passes; raw failure bytes are preserved."
+}

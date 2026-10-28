@@ -1,5 +1,31 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.47.0 connected discovery and operating evidence
+
+This prospective additive candidate integrates the existing executor, specialist, enterprise,
+discovery, cancellation closure, customer-funds and Operational Alpha comparison paths. Its bilingual
+Insight experience joins the existing Flywheel. See [scope and limitations](RELEASE_NOTES_1.47.0.md).
+Conventional exact search matches the finite research-access construction; no technical-breakthrough,
+discovery superiority, paid demand, retained Alpha or autonomous compounding claim is established.
+
+The preceding 1.46.1 release and public installation succeeded on main `3947e4e`; preserve its immutable
+artifacts and keep its receipt separate. Configured review,
+applicable exact-head checks, full resulting-main security/coverage/integrity, representative platform
+and clean package installation, tested-site publication and actual public served bytes are required.
+The new complete generated worker edition needs its own acceptance; historical workers, fixtures,
+53-source scientific catalogue, five held source pins and validation/settlement authority stay intact.
+No old green result substitutes for qualification of the composed source.
+
+The 1.47 Agent release regression job allows 120 minutes for the expanded unchanged test campaign,
+cold strict-type checks and repository validation. The preceding main regression took 89 minutes
+39 seconds, including an 82-minute 18-second offline test step. This replaces the earlier 90-minute
+job allowance in the preserved recovery record below. The strict CI contract now expects exactly
+120 minutes; all other job limits, per-test deadlines, test selection, 80% coverage floor, held source
+pins, security checks, action SHAs, permissions and zero paid-API budget remain unchanged. This
+orchestration capacity change requires normal exact-source review and hosted qualification.
+
+## Preserved 1.46.1 preparation record
+
 # Release readiness — 1.46.1 exact research browser readers
 
 This publication-only successor adds two exact research PDFs and accessible browser readers,

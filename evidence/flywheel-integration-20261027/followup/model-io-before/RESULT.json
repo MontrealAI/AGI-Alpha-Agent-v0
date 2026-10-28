@@ -1,0 +1,948 @@
+{
+  "scope": "Local software conformance counterexample; no live model, identity, bill, quota or customer trial",
+  "transport": "Offline no-I/O test double declaring the live protocol component; not a provider transport",
+  "source_commit": "98b7fed13748530e5a9f2423113197b7185a934c",
+  "source_files": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py": "d97fc8584965ae207a385941636f69682cf36598f29efd4f54af648817771ae7",
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "2ae17f650a3826e29e21aad9da54ee599907b8430dbfd3a6f5577f01d18ca75a"
+  },
+  "model_respond_invocations": 0,
+  "actual_provider_calls": 0,
+  "status": "failed-or-uncertain",
+  "error_type": "ValueError",
+  "turn_counter": 1,
+  "usage_events": [],
+  "actions": 0,
+  "reserved_request_caps_micro_usd": 0,
+  "model_evidence": "actual-model-records-with-unqualified-attribution",
+  "cells": [
+    {
+      "role": "U",
+      "operation_id": "comparison-0-U",
+      "ledger_mission_id": "comparison-0-U",
+      "status": "failed-or-uncertain",
+      "accepted": false,
+      "outcome_known": true,
+      "within_observed_limits": false,
+      "execution_digest": "d284a859affe91eb74960422bcb2b15c777b83188fb182c34196f0317e541c19",
+      "acceptance_digest": null,
+      "elapsed_ms": 6,
+      "tokens": 0,
+      "usage_complete": false,
+      "actions": 0,
+      "model_component": "live",
+      "mode": "hybrid",
+      "components": {
+        "acceptance": "executed-local",
+        "identity": "simulated",
+        "market": "simulated",
+        "model": "live",
+        "tools": "executed-local"
+      },
+      "execution_authority_current": true,
+      "case_id": "case-0",
+      "phase": "primary",
+      "recipient_id": "origin-fixture"
+    },
+    {
+      "role": "E",
+      "operation_id": "comparison-0-E",
+      "ledger_mission_id": "comparison-0-E",
+      "status": "not-attempted",
+      "accepted": false,
+      "outcome_known": false,
+      "within_observed_limits": false,
+      "execution_digest": null,
+      "acceptance_digest": null,
+      "elapsed_ms": null,
+      "tokens": null,
+      "usage_complete": false,
+      "actions": null,
+      "model_component": "live",
+      "mode": "hybrid",
+      "components": {
+        "acceptance": "executed-local",
+        "identity": "simulated",
+        "market": "simulated",
+        "model": "live",
+        "tools": "executed-local"
+      },
+      "execution_authority_current": true,
+      "case_id": "case-0",
+      "phase": "primary",
+      "recipient_id": "origin-fixture"
+    },
+    {
+      "role": "E+",
+      "operation_id": "comparison-0-Eplus",
+      "ledger_mission_id": "comparison-0-Eplus",
+      "status": "not-attempted",
+      "accepted": false,
+      "outcome_known": false,
+      "within_observed_limits": false,
+      "execution_digest": null,
+      "acceptance_digest": null,
+      "elapsed_ms": null,
+      "tokens": null,
+      "usage_complete": false,
+      "actions": null,
+      "model_component": "live",
+      "mode": "hybrid",
+      "components": {
+        "acceptance": "executed-local",
+        "identity": "simulated",
+        "market": "simulated",
+        "model": "live",
+        "tools": "executed-local"
+      },
+      "execution_authority_current": true,
+      "case_id": "case-0",
+      "phase": "primary",
+      "recipient_id": "origin-fixture"
+    }
+  ],
+  "contrasts": {
+    "operational": {
+      "baseline": "U",
+      "candidate": "E",
+      "planned_denominator": 1,
+      "accepted_difference": 0,
+      "possible_difference_bounds": [
+        0,
+        1
+      ],
+      "complete_matched_outcomes": false,
+      "cost_saving_micro_usd": null,
+      "cost_basis": "existing signed ledger attestations; not inferred from token usage"
+    },
+    "retained": {
+      "baseline": "E",
+      "candidate": "E+",
+      "planned_denominator": 1,
+      "accepted_difference": 0,
+      "possible_difference_bounds": [
+        -1,
+        1
+      ],
+      "complete_matched_outcomes": false,
+      "cost_saving_micro_usd": null,
+      "cost_basis": "existing signed ledger attestations; not inferred from token usage"
+    }
+  },
+  "current_evidence_valid": true,
+  "unmodified_execution_record": {
+    "acceptance": "unqualified",
+    "actions": 0,
+    "actual_charges_micro_usd": null,
+    "call_ids": [],
+    "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+    "elapsed_ms": 6,
+    "error_type": "ValueError",
+    "finished_at": 1793142360,
+    "history": [
+      {
+        "content": "{\"schema_version\": 1, \"schema_name\": \"flywheel-execution/v1\", \"mission_id\": \"comparison-0-U\", \"beneficiary\": \"Internal protocol research team\", \"goal\": \"A checkable service placement surviving one failure-domain loss\", \"challenged_assumption\": \"A comparison plan alone establishes no measured advantage\", \"deliverable\": \"Executable placement result and independent exhaustive acceptance\", \"acceptance_criteria\": [\"Capacity and domain constraints\", \"Exact minimum or proven infeasibility\"], \"inputs\": {\"comparison_retained\": null, \"comparison_workflow\": \"Use the provided exact solver and inspect its constraint checks.\", \"problem\": {\"capacities\": [8, 10, 5, 5], \"costs\": [[24, 14, 32, 40], [4, 15, 27, 20], [7, 27, 31, 43]], \"demands\": [2, 4, 1], \"failure_domains\": [\"a\", \"b\", \"c\", \"a\"], \"node_budget\": 250000, \"schema_version\": 1}}, \"sharing_rights\": \"Original synthetic Apache-2.0 protocol fixtures\", \"stop_conditions\": [\"Finite local compute and existing separately signed permissions\"], \"mode\": \"hybrid\", \"components\": {\"acceptance\": \"executed-local\", \"identity\": \"simulated\", \"market\": \"simulated\", \"model\": \"live\", \"tools\": \"executed-local\"}, \"max_turns\": 3, \"max_actions\": 2, \"max_seconds\": 30, \"max_history_bytes\": 1000000}",
+        "role": "user"
+      }
+    ],
+    "live_network_qualified": false,
+    "mission": {
+      "acceptance_criteria": [
+        "Capacity and domain constraints",
+        "Exact minimum or proven infeasibility"
+      ],
+      "beneficiary": "Internal protocol research team",
+      "challenged_assumption": "A comparison plan alone establishes no measured advantage",
+      "components": {
+        "acceptance": "executed-local",
+        "identity": "simulated",
+        "market": "simulated",
+        "model": "live",
+        "tools": "executed-local"
+      },
+      "deliverable": "Executable placement result and independent exhaustive acceptance",
+      "goal": "A checkable service placement surviving one failure-domain loss",
+      "inputs": {
+        "comparison_retained": null,
+        "comparison_workflow": "Use the provided exact solver and inspect its constraint checks.",
+        "problem": {
+          "capacities": [
+            8,
+            10,
+            5,
+            5
+          ],
+          "costs": [
+            [
+              24,
+              14,
+              32,
+              40
+            ],
+            [
+              4,
+              15,
+              27,
+              20
+            ],
+            [
+              7,
+              27,
+              31,
+              43
+            ]
+          ],
+          "demands": [
+            2,
+            4,
+            1
+          ],
+          "failure_domains": [
+            "a",
+            "b",
+            "c",
+            "a"
+          ],
+          "node_budget": 250000,
+          "schema_version": 1
+        }
+      },
+      "max_actions": 2,
+      "max_history_bytes": 1000000,
+      "max_seconds": 30,
+      "max_turns": 3,
+      "mission_id": "comparison-0-U",
+      "mode": "hybrid",
+      "schema_name": "flywheel-execution/v1",
+      "schema_version": 1,
+      "sharing_rights": "Original synthetic Apache-2.0 protocol fixtures",
+      "stop_conditions": [
+        "Finite local compute and existing separately signed permissions"
+      ]
+    },
+    "permit": {
+      "domain": "flywheel-execution-permit",
+      "payload": {
+        "journal_identity": "urn:agialpha:ed25519:cdf2d3b4b16823eb1112c3282865d01ee65a25871ced8c37ab95cf8a3e030669",
+        "permit": {
+          "bucket": "A",
+          "config_digest": "6531af806ca34baf7aeec356bf98885c56d958cc442b617ff08e96758e32ea06",
+          "environment_digest": "31d13bed8d3991980f960ab86868fc4e4b284e3be8f72a70e16de6ef6852d3cf",
+          "expires_at": 1793145960,
+          "max_authorized_micro_usd": 1000,
+          "operation_id": "comparison-0-U",
+          "pricing_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "profile_digest": "3748ae03e9c50e71e9ea670ba34e64a582a9ccb263c426b2bab764fe395bb49b",
+          "quota_evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+          "request_digest": "61d8960c2fdfeac6ff01cac2c81f27474607ea269be8ab3e5b2666c82d03c319",
+          "schema_version": 1
+        }
+      },
+      "principal": "controller",
+      "signature": "hI7BEk4UFfrR4OVfvmkqmsHedtVfsy4f0UT11+mXfvP4HcGaWoZtThYZdfaJlVlCwGp/6PtW+LOQsKgraziaCA=="
+    },
+    "profile": {
+      "max_context_bytes": 1024,
+      "max_output_tokens": 16384,
+      "model_id": "OFFLINE-NO-IO-FIXTURE",
+      "model_request_cap_micro_usd": 1,
+      "model_revision": null,
+      "qualification_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "reasoning_effort": "high",
+      "reasoning_mode": "standard",
+      "schema_version": 1,
+      "supported_efforts": [
+        "high"
+      ],
+      "tool_request_caps_micro_usd": {},
+      "tools": [
+        {
+          "description": "Actual bounded placement computation",
+          "name": "placement_experiment",
+          "parameters": {
+            "additionalProperties": false,
+            "properties": {
+              "problem": {
+                "additionalProperties": false,
+                "properties": {
+                  "capacities": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "maxItems": 10,
+                    "minItems": 2,
+                    "title": "Capacities",
+                    "type": "array"
+                  },
+                  "costs": {
+                    "items": {
+                      "items": {
+                        "type": "integer"
+                      },
+                      "type": "array"
+                    },
+                    "maxItems": 16,
+                    "minItems": 1,
+                    "title": "Costs",
+                    "type": "array"
+                  },
+                  "demands": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "maxItems": 16,
+                    "minItems": 1,
+                    "title": "Demands",
+                    "type": "array"
+                  },
+                  "failure_domains": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 10,
+                    "minItems": 2,
+                    "title": "Failure Domains",
+                    "type": "array"
+                  },
+                  "node_budget": {
+                    "default": 250000,
+                    "maximum": 1000000,
+                    "minimum": 1,
+                    "title": "Node Budget",
+                    "type": "integer"
+                  },
+                  "schema_version": {
+                    "const": 1,
+                    "default": 1,
+                    "title": "Schema Version",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "capacities",
+                  "failure_domains",
+                  "demands",
+                  "costs"
+                ],
+                "title": "PlacementProblem",
+                "type": "object"
+              }
+            },
+            "required": [
+              "problem"
+            ],
+            "type": "object"
+          },
+          "strict": true,
+          "type": "function"
+        }
+      ]
+    },
+    "reserved_request_caps_micro_usd": 0,
+    "schema_name": "flywheel-execution/v1",
+    "started_at": 1793142360,
+    "status": "failed-or-uncertain",
+    "turn": 1,
+    "usage_events": [],
+    "id": "@flywheel-execution:95393dc3b61644ac3f63d18a9721097114e4225683c01ac729e1f86e879d9b95",
+    "revision": 24,
+    "digest": "d284a859affe91eb74960422bcb2b15c777b83188fb182c34196f0317e541c19"
+  },
+  "plan": {
+    "schema_version": 1,
+    "schema_name": "flywheel-operational-alpha-comparison/v1",
+    "comparison_id": "prospective-placement-protocol",
+    "opportunity_id": "resilient-placement-discovery",
+    "opportunity_spec_digest": "94f4e6c58c8f46f4f866bfa933012c433fabdacec2db6425ab0337e26a97a9f3",
+    "purpose": {
+      "schema_version": 1,
+      "useful_purpose": "A checkable service placement surviving one failure-domain loss",
+      "deliverable": "Executable placement result and independent exhaustive acceptance",
+      "acceptance_criteria": [
+        "Capacity and domain constraints",
+        "Exact minimum or proven infeasibility"
+      ],
+      "input_semantics": "Finite host capacity, service demands and correlated failure domains",
+      "output_semantics": "Placement with independent finite feasibility and optimality checks",
+      "scope": "Finite replicated-service placement prototype; no infrastructure deployment"
+    },
+    "human_reference": {
+      "schema_version": 1,
+      "service": "Equivalent solver prototype and independent verification",
+      "source": "Illustrative engineering estimate, not a market observation",
+      "basis": "estimated-team-hours",
+      "team_hours": 40,
+      "hourly_rate_micro_usd": 100000000,
+      "total_micro_usd": 4000000000
+    },
+    "arms": [
+      {
+        "schema_version": 1,
+        "role": "U",
+        "model_profile_digest": "3748ae03e9c50e71e9ea670ba34e64a582a9ccb263c426b2bab764fe395bb49b",
+        "access_and_tools_digest": "31d13bed8d3991980f960ab86868fc4e4b284e3be8f72a70e16de6ef6852d3cf",
+        "resource_budget": {
+          "schema_version": 1,
+          "tokens": 1000,
+          "tool_actions": 2,
+          "seconds": 30,
+          "cost_cap_micro_usd": 1000
+        },
+        "workflow_digest": "cb6f7a1af93990de7cbfcbd294044e7f379999644b16a3df5f44a8fe9daf89a8",
+        "retained_capability_digest": null,
+        "starting_capabilities": [
+          "Same available exact solver and independent finite checker"
+        ],
+        "baseline_definition": "Supplied protocol fixture, not a sampled ordinary frontier-model user"
+      },
+      {
+        "schema_version": 1,
+        "role": "E",
+        "model_profile_digest": "3748ae03e9c50e71e9ea670ba34e64a582a9ccb263c426b2bab764fe395bb49b",
+        "access_and_tools_digest": "31d13bed8d3991980f960ab86868fc4e4b284e3be8f72a70e16de6ef6852d3cf",
+        "resource_budget": {
+          "schema_version": 1,
+          "tokens": 1000,
+          "tool_actions": 2,
+          "seconds": 30,
+          "cost_cap_micro_usd": 1000
+        },
+        "workflow_digest": "d3e1d3ca3f3dc9e91c8bae57e8ab70cde19863826c372ed194ea4a0e0716ebb7",
+        "retained_capability_digest": null,
+        "starting_capabilities": [
+          "Same available exact solver and independent finite checker"
+        ],
+        "baseline_definition": "Supplied protocol fixture, not a sampled ordinary frontier-model user"
+      },
+      {
+        "schema_version": 1,
+        "role": "E+",
+        "model_profile_digest": "3748ae03e9c50e71e9ea670ba34e64a582a9ccb263c426b2bab764fe395bb49b",
+        "access_and_tools_digest": "31d13bed8d3991980f960ab86868fc4e4b284e3be8f72a70e16de6ef6852d3cf",
+        "resource_budget": {
+          "schema_version": 1,
+          "tokens": 1000,
+          "tool_actions": 2,
+          "seconds": 30,
+          "cost_cap_micro_usd": 1000
+        },
+        "workflow_digest": "d3e1d3ca3f3dc9e91c8bae57e8ab70cde19863826c372ed194ea4a0e0716ebb7",
+        "retained_capability_digest": "82680b57bb48b16fa2d3729c1f11fa0f7e2e6d806b5e43840105f90e37a339b3",
+        "starting_capabilities": [
+          "Same available exact solver and independent finite checker"
+        ],
+        "baseline_definition": "Supplied protocol fixture, not a sampled ordinary frontier-model user"
+      }
+    ],
+    "ordinary_use_basis": "Equal methods and resources; scripted controls are not representative human users",
+    "fresh_instance_policy": "Different frozen inputs and declared fixture recipient; training exposure unverified",
+    "complete_cost_policy": "Trial A, present B/C and declared extra costs, once; fictional amounts are not bills",
+    "evidence": [
+      {
+        "schema_version": 1,
+        "journal_key": "@discovery-internal-need",
+        "record_digest": "3e08de4225d91b61ea08acf61efe6491a2343639b5364de2ab87f226e6d1be28"
+      }
+    ],
+    "cases": [
+      {
+        "schema_version": 1,
+        "case_id": "case-0",
+        "recipient_id": "origin-fixture",
+        "phase": "primary",
+        "shared_inputs_digest": "40b02b59b0e7eab925a113b85bbebb195bf3c5cb0208170500d983f8a7faae30",
+        "trials": [
+          {
+            "schema_version": 1,
+            "role": "U",
+            "operation_id": "comparison-0-U",
+            "mission": {
+              "schema_version": 1,
+              "schema_name": "flywheel-execution/v1",
+              "mission_id": "comparison-0-U",
+              "beneficiary": "Internal protocol research team",
+              "goal": "A checkable service placement surviving one failure-domain loss",
+              "challenged_assumption": "A comparison plan alone establishes no measured advantage",
+              "deliverable": "Executable placement result and independent exhaustive acceptance",
+              "acceptance_criteria": [
+                "Capacity and domain constraints",
+                "Exact minimum or proven infeasibility"
+              ],
+              "inputs": {
+                "problem": {
+                  "schema_version": 1,
+                  "capacities": [
+                    8,
+                    10,
+                    5,
+                    5
+                  ],
+                  "failure_domains": [
+                    "a",
+                    "b",
+                    "c",
+                    "a"
+                  ],
+                  "demands": [
+                    2,
+                    4,
+                    1
+                  ],
+                  "costs": [
+                    [
+                      24,
+                      14,
+                      32,
+                      40
+                    ],
+                    [
+                      4,
+                      15,
+                      27,
+                      20
+                    ],
+                    [
+                      7,
+                      27,
+                      31,
+                      43
+                    ]
+                  ],
+                  "node_budget": 250000
+                },
+                "comparison_workflow": "Use the provided exact solver and inspect its constraint checks.",
+                "comparison_retained": null
+              },
+              "sharing_rights": "Original synthetic Apache-2.0 protocol fixtures",
+              "stop_conditions": [
+                "Finite local compute and existing separately signed permissions"
+              ],
+              "mode": "hybrid",
+              "components": {
+                "model": "live",
+                "tools": "executed-local",
+                "identity": "simulated",
+                "acceptance": "executed-local",
+                "market": "simulated"
+              },
+              "max_turns": 3,
+              "max_actions": 2,
+              "max_seconds": 30,
+              "max_history_bytes": 1000000
+            }
+          },
+          {
+            "schema_version": 1,
+            "role": "E",
+            "operation_id": "comparison-0-E",
+            "mission": {
+              "schema_version": 1,
+              "schema_name": "flywheel-execution/v1",
+              "mission_id": "comparison-0-E",
+              "beneficiary": "Internal protocol research team",
+              "goal": "A checkable service placement surviving one failure-domain loss",
+              "challenged_assumption": "A comparison plan alone establishes no measured advantage",
+              "deliverable": "Executable placement result and independent exhaustive acceptance",
+              "acceptance_criteria": [
+                "Capacity and domain constraints",
+                "Exact minimum or proven infeasibility"
+              ],
+              "inputs": {
+                "problem": {
+                  "schema_version": 1,
+                  "capacities": [
+                    8,
+                    10,
+                    5,
+                    5
+                  ],
+                  "failure_domains": [
+                    "a",
+                    "b",
+                    "c",
+                    "a"
+                  ],
+                  "demands": [
+                    2,
+                    4,
+                    1
+                  ],
+                  "costs": [
+                    [
+                      24,
+                      14,
+                      32,
+                      40
+                    ],
+                    [
+                      4,
+                      15,
+                      27,
+                      20
+                    ],
+                    [
+                      7,
+                      27,
+                      31,
+                      43
+                    ]
+                  ],
+                  "node_budget": 250000
+                },
+                "comparison_workflow": "Preserve original criteria, execute the provided exact solver, then independently check the output.",
+                "comparison_retained": null
+              },
+              "sharing_rights": "Original synthetic Apache-2.0 protocol fixtures",
+              "stop_conditions": [
+                "Finite local compute and existing separately signed permissions"
+              ],
+              "mode": "hybrid",
+              "components": {
+                "model": "live",
+                "tools": "executed-local",
+                "identity": "simulated",
+                "acceptance": "executed-local",
+                "market": "simulated"
+              },
+              "max_turns": 3,
+              "max_actions": 2,
+              "max_seconds": 30,
+              "max_history_bytes": 1000000
+            }
+          },
+          {
+            "schema_version": 1,
+            "role": "E+",
+            "operation_id": "comparison-0-Eplus",
+            "mission": {
+              "schema_version": 1,
+              "schema_name": "flywheel-execution/v1",
+              "mission_id": "comparison-0-Eplus",
+              "beneficiary": "Internal protocol research team",
+              "goal": "A checkable service placement surviving one failure-domain loss",
+              "challenged_assumption": "A comparison plan alone establishes no measured advantage",
+              "deliverable": "Executable placement result and independent exhaustive acceptance",
+              "acceptance_criteria": [
+                "Capacity and domain constraints",
+                "Exact minimum or proven infeasibility"
+              ],
+              "inputs": {
+                "problem": {
+                  "schema_version": 1,
+                  "capacities": [
+                    8,
+                    10,
+                    5,
+                    5
+                  ],
+                  "failure_domains": [
+                    "a",
+                    "b",
+                    "c",
+                    "a"
+                  ],
+                  "demands": [
+                    2,
+                    4,
+                    1
+                  ],
+                  "costs": [
+                    [
+                      24,
+                      14,
+                      32,
+                      40
+                    ],
+                    [
+                      4,
+                      15,
+                      27,
+                      20
+                    ],
+                    [
+                      7,
+                      27,
+                      31,
+                      43
+                    ]
+                  ],
+                  "node_budget": 250000
+                },
+                "comparison_workflow": "Preserve original criteria, execute the provided exact solver, then independently check the output.",
+                "comparison_retained": "82680b57bb48b16fa2d3729c1f11fa0f7e2e6d806b5e43840105f90e37a339b3"
+              },
+              "sharing_rights": "Original synthetic Apache-2.0 protocol fixtures",
+              "stop_conditions": [
+                "Finite local compute and existing separately signed permissions"
+              ],
+              "mode": "hybrid",
+              "components": {
+                "model": "live",
+                "tools": "executed-local",
+                "identity": "simulated",
+                "acceptance": "executed-local",
+                "market": "simulated"
+              },
+              "max_turns": 3,
+              "max_actions": 2,
+              "max_seconds": 30,
+              "max_history_bytes": 1000000
+            }
+          }
+        ]
+      }
+    ],
+    "additional_costs": []
+  },
+  "report": {
+    "schema_name": "flywheel-operational-alpha-result/v1",
+    "comparison_id": "prospective-placement-protocol",
+    "plan_record_digest": "83461ebaea3150698d8014865d2e6de33d4cbe7b6be551c16f7e1b1902f82cce",
+    "ledger_record_digest": "7560b7f424596a976fffd46dd88ca7d51cdd189b09e2f24b033b13ff027666e9",
+    "source_digest": "72ff0d7e16352ea2cc1a0ebeea2252eea5bf298e422692ea40390588fb8cf2be",
+    "opportunity_id": "resilient-placement-discovery",
+    "current_evidence_valid": true,
+    "stage": "derived-observations",
+    "planned_cases": 1,
+    "fresh_recipient_cases": 0,
+    "mode": "hybrid",
+    "human_reference": {
+      "schema_version": 1,
+      "service": "Equivalent solver prototype and independent verification",
+      "source": "Illustrative engineering estimate, not a market observation",
+      "basis": "estimated-team-hours",
+      "team_hours": 40,
+      "hourly_rate_micro_usd": 100000000,
+      "total_micro_usd": 4000000000
+    },
+    "human_reference_role": "commercial reference only; not another measured arm",
+    "arms": {
+      "U": {
+        "planned": 1,
+        "execution_records": 1,
+        "accepted": 0,
+        "known_outcomes": 1,
+        "failed": 1,
+        "unassessed": 0,
+        "within_observed_limits": false,
+        "cost_complete": false,
+        "retention_accounting_present": false,
+        "known_costs_micro_usd": {
+          "A": "0",
+          "B": "0",
+          "C": "0"
+        }
+      },
+      "E": {
+        "planned": 1,
+        "execution_records": 0,
+        "accepted": 0,
+        "known_outcomes": 0,
+        "failed": 0,
+        "unassessed": 1,
+        "within_observed_limits": false,
+        "cost_complete": false,
+        "retention_accounting_present": false,
+        "known_costs_micro_usd": {
+          "A": "0",
+          "B": "0",
+          "C": "0"
+        }
+      },
+      "E+": {
+        "planned": 1,
+        "execution_records": 0,
+        "accepted": 0,
+        "known_outcomes": 0,
+        "failed": 0,
+        "unassessed": 1,
+        "within_observed_limits": false,
+        "cost_complete": false,
+        "retention_accounting_present": false,
+        "known_costs_micro_usd": {
+          "A": "0",
+          "B": "0",
+          "C": "0"
+        }
+      }
+    },
+    "contrasts": {
+      "operational": {
+        "baseline": "U",
+        "candidate": "E",
+        "planned_denominator": 1,
+        "accepted_difference": 0,
+        "possible_difference_bounds": [
+          0,
+          1
+        ],
+        "complete_matched_outcomes": false,
+        "cost_saving_micro_usd": null,
+        "cost_basis": "existing signed ledger attestations; not inferred from token usage"
+      },
+      "retained": {
+        "baseline": "E",
+        "candidate": "E+",
+        "planned_denominator": 1,
+        "accepted_difference": 0,
+        "possible_difference_bounds": [
+          -1,
+          1
+        ],
+        "complete_matched_outcomes": false,
+        "cost_saving_micro_usd": null,
+        "cost_basis": "existing signed ledger attestations; not inferred from token usage"
+      }
+    },
+    "cells": [
+      {
+        "role": "U",
+        "operation_id": "comparison-0-U",
+        "ledger_mission_id": "comparison-0-U",
+        "status": "failed-or-uncertain",
+        "accepted": false,
+        "outcome_known": true,
+        "within_observed_limits": false,
+        "execution_digest": "d284a859affe91eb74960422bcb2b15c777b83188fb182c34196f0317e541c19",
+        "acceptance_digest": null,
+        "elapsed_ms": 6,
+        "tokens": 0,
+        "usage_complete": false,
+        "actions": 0,
+        "model_component": "live",
+        "mode": "hybrid",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "live",
+          "tools": "executed-local"
+        },
+        "execution_authority_current": true,
+        "case_id": "case-0",
+        "phase": "primary",
+        "recipient_id": "origin-fixture"
+      },
+      {
+        "role": "E",
+        "operation_id": "comparison-0-E",
+        "ledger_mission_id": "comparison-0-E",
+        "status": "not-attempted",
+        "accepted": false,
+        "outcome_known": false,
+        "within_observed_limits": false,
+        "execution_digest": null,
+        "acceptance_digest": null,
+        "elapsed_ms": null,
+        "tokens": null,
+        "usage_complete": false,
+        "actions": null,
+        "model_component": "live",
+        "mode": "hybrid",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "live",
+          "tools": "executed-local"
+        },
+        "execution_authority_current": true,
+        "case_id": "case-0",
+        "phase": "primary",
+        "recipient_id": "origin-fixture"
+      },
+      {
+        "role": "E+",
+        "operation_id": "comparison-0-Eplus",
+        "ledger_mission_id": "comparison-0-Eplus",
+        "status": "not-attempted",
+        "accepted": false,
+        "outcome_known": false,
+        "within_observed_limits": false,
+        "execution_digest": null,
+        "acceptance_digest": null,
+        "elapsed_ms": null,
+        "tokens": null,
+        "usage_complete": false,
+        "actions": null,
+        "model_component": "live",
+        "mode": "hybrid",
+        "components": {
+          "acceptance": "executed-local",
+          "identity": "simulated",
+          "market": "simulated",
+          "model": "live",
+          "tools": "executed-local"
+        },
+        "execution_authority_current": true,
+        "case_id": "case-0",
+        "phase": "primary",
+        "recipient_id": "origin-fixture"
+      }
+    ],
+    "cost_allocations": [
+      {
+        "mission_id": "comparison-0-U",
+        "buckets": [
+          "A"
+        ],
+        "known_micro_usd": {
+          "A": "0"
+        },
+        "complete": false,
+        "current_evidence_valid": true,
+        "basis": "configured accounting signer attestations",
+        "role": "U",
+        "case_id": "case-0",
+        "allocation": "existing-delivery-costs"
+      },
+      {
+        "mission_id": "comparison-0-E",
+        "buckets": [
+          "A"
+        ],
+        "known_micro_usd": {
+          "A": "0"
+        },
+        "complete": false,
+        "current_evidence_valid": true,
+        "basis": "configured accounting signer attestations",
+        "role": "E",
+        "case_id": "case-0",
+        "allocation": "existing-delivery-costs"
+      },
+      {
+        "mission_id": "comparison-0-Eplus",
+        "buckets": [
+          "A"
+        ],
+        "known_micro_usd": {
+          "A": "0"
+        },
+        "complete": false,
+        "current_evidence_valid": true,
+        "basis": "configured accounting signer attestations",
+        "role": "E+",
+        "case_id": "case-0",
+        "allocation": "existing-delivery-costs"
+      }
+    ],
+    "model_evidence": "actual-model-records-with-unqualified-attribution",
+    "scope": "Finite replicated-service placement prototype; no infrastructure deployment",
+    "authority_granted": false,
+    "customer_acceptance_established": false,
+    "commercial_profit_established": false,
+    "retained_invocation_established": false,
+    "limits": [
+      "Descriptive finite cohort, not generality or causal proof of model superiority",
+      "Workflow and recipient names are frozen declarations, not proof of independent operation or live ENS",
+      "Distinct prospective inputs do not by themselves prove absence of training exposure",
+      "Only the existing finite placement acceptance adapter is supported here",
+      "Trial costs and declared additional scopes count once; completeness remains signer-attested",
+      "Retained cost contrasts require explicit B accounting, including an attested zero where justified",
+      "A declared retained input proves neither payload use, transfer nor incremental benefit",
+      "Token counts are observed usage, not a provider bill or an enforced total-token limiter"
+    ],
+    "report_digest": "ce8faf37e104b9c22afd7b86842696697adab91d6f314350c92d7a973872b07f"
+  }
+}

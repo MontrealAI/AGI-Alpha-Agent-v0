@@ -1,0 +1,58 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "tests/test_flywheel_147_workers.py",
+      "tests/test_insight_frontier_release.py",
+      "tests/test_insight_frontier_post_guard_release.py",
+      "tests/test_insight_frontier_review_authority_release.py",
+      "tests/test_flywheel_reconciliation_147_release.py",
+      "tests/test_alpha_flywheel.py",
+      "tests/test_flywheel_comparison_ui.py",
+      "tests/test_flywheel_discovery_ui.py",
+      "tests/test_capability_publication_edition.py"
+    ],
+    "output": "publication-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 12.95137418899958
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/flywheel-browser-reconciled-final",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "browser-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 23.83951898400028
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "evidence/flywheel-integration-20261027/reconciled-owner-20261028/insight-final.json",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "insight-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.6218076719997043
+  }
+]

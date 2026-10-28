@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Inert operator verifier: copy to .py and inspect Git blobs, never local payloads."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import re
+import subprocess
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repository", type=Path, required=True)
+    parser.add_argument("--revision", default="HEAD")
+    parser.add_argument("--index", action="store_true")
+    args = parser.parse_args()
+    if not re.fullmatch(r"HEAD|[0-9a-f]{40}", args.revision):
+        parser.error("Use HEAD or an exact 40-character commit")
+
+    def git(*parts: str) -> bytes:
+        return subprocess.check_output(["git", *parts], cwd=args.repository)
+
+    blobs: dict[str, str] = {}
+    records = git("ls-files", "--stage", "-z") if args.index else git("ls-tree", "-r", "-z", args.revision)
+    for record in records.split(b"\0"):
+        if not record:
+            continue
+        metadata, raw_path = record.split(b"\t", 1)
+        fields = metadata.decode().split()
+        mode, identity = fields[:2] if args.index else (fields[0], fields[2])
+        if args.index and fields[2] != "0":
+            raise ValueError("Unmerged index entry")
+        if mode == "100644" or mode == "100755":
+            blobs[raw_path.decode()] = identity
+
+    prefix = "evidence/decisive-frontier-20261027/review-enterprise-command-authority"
+    manifests = [
+        (prefix + "/SOURCE_FINAL.json", ""),
+        (prefix + "/FILES.json", prefix),
+        (prefix + "/worker-edition/FILES.json", prefix + "/worker-edition"),
+    ]
+    failures = []
+    results = []
+    for manifest, base in manifests:
+        payload = json.loads(git("cat-file", "blob", blobs[manifest]))
+        checked = 0
+        for name, expected in payload["files"].items():
+            relative = PurePosixPath(name)
+            if relative.is_absolute() or ".." in relative.parts or relative.as_posix() != name:
+                raise ValueError("Noncanonical inventory path")
+            path = base + "/" + name if base else name
+            if path not in blobs:
+                failures.append({"manifest": manifest, "path": path, "reason": "absent from Git"})
+                continue
+            body = git("cat-file", "blob", blobs[path])
+            if len(body) != expected["bytes"] or hashlib.sha256(body).hexdigest() != expected["sha256"]:
+                failures.append({"manifest": manifest, "path": path, "reason": "Git blob identity mismatch"})
+            checked += 1
+        results.append({"manifest": manifest, "declared": len(payload["files"]), "present": checked})
+    print(json.dumps({"mode": "index" if args.index else args.revision, "manifests": results, "failures": failures}, indent=2))
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

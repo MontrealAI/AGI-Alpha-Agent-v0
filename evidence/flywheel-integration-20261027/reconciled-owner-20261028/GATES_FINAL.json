@@ -1,0 +1,54 @@
+[
+  {
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "output": "ruff-modern-final.txt",
+    "exitcode": 1,
+    "elapsed_seconds": 0.48388213500038546,
+    "tool_version": null
+  },
+  {
+    "command": [
+      "python",
+      "scripts/ruff_targets.py",
+      "--run"
+    ],
+    "output": "ruff-pinned-final.txt",
+    "exitcode": 1,
+    "elapsed_seconds": 0.47424840800067614,
+    "tool_version": "0.2.1"
+  },
+  {
+    "command": [
+      "python",
+      "scripts/dp_scrubber.py"
+    ],
+    "output": "privacy-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.41169054500005586,
+    "tool_version": null
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_no_binary_diff.py"
+    ],
+    "output": "binary-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 4.675865944999714,
+    "tool_version": null
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_held_native_source.py"
+    ],
+    "output": "held-final.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 0.04202803799944377,
+    "tool_version": null
+  }
+]

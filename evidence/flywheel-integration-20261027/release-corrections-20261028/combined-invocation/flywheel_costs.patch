@@ -1,0 +1,11 @@
+--- before/alpha_factory_v1/core/runtime/successor/flywheel_costs.py
++++ after/alpha_factory_v1/core/runtime/successor/flywheel_costs.py
+@@ -200,6 +200,8 @@
+         else:
+             raise ValueError("cost signature has an unsupported authority domain")
+         if "original" in row:
++            if any(row[name] != row["original"][name] for name in ("activity_id", "mission_id", "bucket", "category")):
++                raise ValueError("cost reconciliation differs from its original reservation")
+             self._current_charge(row["original"], cx, depth + 1)
+ 
+     def require_current_evidence(self, mission_id: str, buckets: list[str], cx: Any) -> None:

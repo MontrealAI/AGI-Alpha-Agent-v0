@@ -1,0 +1,32 @@
+{
+  "owner_commit": "a65387914777d9afe1a1d21a5b2d3e51cf37ed8d",
+  "retrieval": "Connected GitHub fetch_file, exact public owner commit",
+  "owner_files": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": {
+      "git_blob": "6eea8b009d3de47c091a839a9bca6f03324c9189",
+      "guard_lines": [
+        574,
+        575
+      ]
+    },
+    "tests/runtime/test_flywheel_discovery.py": {
+      "git_blob": "1c2c23f9aa72731a4392349e86c59e5dddd0865d",
+      "regression_lines": [
+        523,
+        574
+      ]
+    }
+  },
+  "owner_regression_text_sha256": "84a06e7a7d172495a3da9f0164bb41cd6822e814ed4c5bdadccc6397359683c9",
+  "integration_base_commit": "1028d7bc9ae68f6201849c84d3d9a224fa38edaa",
+  "integration_base_tree": "2dfa105714b3a9de649c761043664e1abb53ab70",
+  "adaptation": "Exact owner guard; owner12way regression additionally checks absence of current typed mission-cost-allocation key. Existing test imports/helpers and all old cases preserved.",
+  "pre_fix_source_with_regression": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_discovery.py": "85bba2d56aa66108eb20814be57b14c866d62223d947821661b20774c0dcde68",
+    "tests/runtime/test_flywheel_discovery.py": "e079ab9a6b9f016e61ef58b7acb8676062a823038a29f0ec5b9453c398f68b36"
+  },
+  "prerequisite_check": {
+    "minimal_venv": "check_python_deps.py reports missingpandas; no dependency installed",
+    "scope": "Targeted runtime tests do not requirepandas; sharedruntime dependency check recorded separately"
+  }
+}

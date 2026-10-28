@@ -1,0 +1,548 @@
+FFFFFFFF..                                                               [100%]
+=================================== FAILURES ===================================
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[before-first-task-revocation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f4581d0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f980f70>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f89207c4fe0>
+change = 'revocation', when = 'before-first-task'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[before-first-task-role-loss] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f4bd1c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f9835d0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f4bedb0>
+change = 'role-loss', when = 'before-first-task'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[during-step-revocation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f8921a238c0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f980770>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f5e0d70>
+change = 'revocation', when = 'during-step'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[during-step-role-loss] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f8921a19160>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f980e90>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f8921a19c70>
+change = 'role-loss', when = 'during-step'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[after-outcome-revocation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f9711f0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f9ab3b0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f970cb0>
+change = 'revocation', when = 'after-outcome'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[after-outcome-role-loss] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f972f90>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f9a81f0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f5e0da0>
+change = 'role-loss', when = 'after-outcome'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[candidate-selection-revocation] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f51d730>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f9a81d0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f51fa40>
+change = 'revocation', when = 'candidate-selection'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+_ test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[candidate-selection-role-loss] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f891f972150>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f891f981fb0>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f891f972de0>
+change = 'role-loss', when = 'candidate-selection'
+
+    @pytest.mark.parametrize("change", ["revocation", "role-loss"])
+    @pytest.mark.parametrize("when", ["before-first-task", "during-step", "after-outcome", "candidate-selection"])
+    def test_current_controller_loss_stops_training_and_freeze_without_erasing_liability(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, change: str, when: str
+    ) -> None:
+        state, signed = setup, signed_plan(setup)
+        steps: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        checks = 0
+    
+        def lose_authority() -> None:
+            if change == "revocation":
+                state["trust"].revoke("controller")
+            else:
+                prior = state["trust"]._anchors["controller"]
+                state["trust"]._anchors["controller"] = TrustAnchor(prior.public_key, frozenset())
+    
+        def current_environment() -> str:
+            nonlocal checks
+            checks += 1
+            if when == "before-first-task" and checks == 2:
+                lose_authority()
+            return state["service"]._execution_binding()
+    
+        step = gym.PlacementEnvironment.step
+        outcome = gym.PlacementEnvironment.outcome
+    
+        def tracked_step(env: Any, action: Any, active: Any) -> Any:
+            steps.append(env.task.task_id)
+            if when == "during-step" and len(steps) == 1:
+                lose_authority()
+            return step(env, action, active)
+    
+        def tracked_outcome(env: Any) -> dict[str, Any]:
+            value = outcome(env)
+            outcomes.append(value)
+            if when == "after-outcome" and len(outcomes) == 1:
+                lose_authority()
+            return value
+    
+        def select(*args: Any, **kwargs: Any) -> Any:
+            value = builtins.min(*args, **kwargs)
+            if when == "candidate-selection":
+                lose_authority()
+            return value
+    
+        monkeypatch.setattr(gym.PlacementEnvironment, "step", tracked_step)
+        monkeypatch.setattr(gym.PlacementEnvironment, "outcome", tracked_outcome)
+        monkeypatch.setattr(gym, "min", select, raising=False)
+        campaign = gym.GymCampaign(
+            state["costs"], state["service"].checkpoint, state["service"].execution_digest,
+            current_environment=current_environment,
+        )
+        result = campaign.run(signed)
+>       assert result["status"] == "failed-or-uncertain" and result["error"] == "ValueError"
+E       AssertionError: assert ('frozen-await...ed-evaluation' == 'failed-or-uncertain'
+E         
+E         - failed-or-uncertain
+E         + frozen-awaiting-protected-evaluation)
+
+tests/runtime/test_flywheel_gym_authority.py:107: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[before-first-task-revocation]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[before-first-task-role-loss]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[during-step-revocation]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[during-step-role-loss]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[after-outcome-revocation]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[after-outcome-role-loss]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[candidate-selection-revocation]
+FAILED tests/runtime/test_flywheel_gym_authority.py::test_current_controller_loss_stops_training_and_freeze_without_erasing_liability[candidate-selection-role-loss]
+8 failed, 2 passed in 11.98s

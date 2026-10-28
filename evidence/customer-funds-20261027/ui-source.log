@@ -1,0 +1,23 @@
+..........F....                                                          [100%]
+=================================== FAILURES ===================================
+_ DiscoveryPlanningTests.test_current_discovery_evidence_binds_the_actual_executable_sources _
+
+self = <tests.test_flywheel_discovery_ui.DiscoveryPlanningTests testMethod=test_current_discovery_evidence_binds_the_actual_executable_sources>
+
+    def test_current_discovery_evidence_binds_the_actual_executable_sources(self) -> None:
+        for name in ("discovery-evidence.json", "opportunity-evidence.json"):
+            value = json.loads((ROOT / "scripts/templates/alpha-flywheel" / name).read_bytes())
+            self.assertTrue(value["sources"])
+            for path, expected in value["sources"].items():
+                source = ROOT / path
+                self.assertFalse(source.is_symlink())
+>               self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(), expected, path)
+E               AssertionError: '05fdddae8e7bcbb010315c19d0decee23cc6bb335dba3698fcc4633f254da8f9' != '25323ff5c66ef51052500dc34d8ddb2ec03841a357ab864fc422516e5ecc9cf1'
+E               - 05fdddae8e7bcbb010315c19d0decee23cc6bb335dba3698fcc4633f254da8f9
+E               + 25323ff5c66ef51052500dc34d8ddb2ec03841a357ab864fc422516e5ecc9cf1
+E                : alpha_factory_v1/core/runtime/successor/flywheel_capsules.py
+
+tests/test_flywheel_discovery_ui.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_flywheel_discovery_ui.py::DiscoveryPlanningTests::test_current_discovery_evidence_binds_the_actual_executable_sources
+1 failed, 14 passed in 2.32s

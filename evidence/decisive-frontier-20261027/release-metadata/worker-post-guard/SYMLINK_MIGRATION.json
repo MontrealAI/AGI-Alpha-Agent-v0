@@ -1,0 +1,8 @@
+{
+  "scope": "Historical147 test diagnosis; no helper, admission or immutable pin change",
+  "before_source_sha256": "9c73aa7dc76596237d1574bbb38402d21dc19fa7035c6814cec601b6e1e85cc0",
+  "original_failed_output": "tests-overlay.txt",
+  "original_failed_junit": "tests-overlay.xml",
+  "cause": "The profile loop preserves its final ValueError. After a new profile is appended, an older complete worker body can fail that later profile before it reaches the deliberately symlinked worker. Public refresh still refuses before backup, while its final message need not be the earlier symlink diagnostic.",
+  "correction": "Check the exact bounded regular-file refusal directly at _read, then require public refresh ValueError plus the unchanged no-backup/no-mutation/symlink/outside-byte assertions."
+}

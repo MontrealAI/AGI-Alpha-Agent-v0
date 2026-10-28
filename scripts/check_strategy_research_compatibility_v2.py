@@ -19,7 +19,7 @@ from types import ModuleType
 from typing import Any
 
 PROFILE_NAME = "strategy_research_e721_compatibility_v2.json"
-PROFILE_SHA256 = "9a3e221d7db2d71f04360e0c901150b4a73837e74848e5983a0a71eeee1749f3"
+PROFILE_SHA256 = "52da567a438bdd76926d43c944b5db1855f32588892fda7bd7d08ee0d56a08bc"
 LEGACY_PATH = "scripts/check_strategy_research_source.py"
 CONFIG_NAMES = ("ruff.toml", ".ruff.toml", "pyproject.toml")
 

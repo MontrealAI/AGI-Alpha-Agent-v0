@@ -15,6 +15,7 @@ from typing import Any
 from scripts.generate_alpha_flywheel import build
 from scripts.validate_alpha_flywheel import (
     CANONICAL_SOURCES,
+    MAX_PAGE_BYTES,
     flagship_url,
     manifest_data,
     sha256,
@@ -72,6 +73,14 @@ class FlywheelSourceTests(unittest.TestCase):
         expected = verify_packaged(self.site, self.root)
         self.assertEqual(expected["sourcesChecked"], len(CANONICAL_SOURCES))
         verify_received(self.page, (self.destination / "sources.json").read_bytes(), expected)
+
+    def test_composed_evidence_page_retains_a_finite_download_limit(self) -> None:
+        self.assertLess(len(self.page), MAX_PAGE_BYTES)
+        self.page += b" " * (MAX_PAGE_BYTES + 1 - len(self.page))
+        self.manifest = self.make_manifest(self.page, self.manifest["sources"])
+        self.write_package()
+        with self.assertRaises(ValueError):
+            verify_packaged(self.site, self.root)
 
     def test_self_consistent_historical_page_cannot_qualify_current_release(self) -> None:
         expected = verify_packaged(self.site, self.root)

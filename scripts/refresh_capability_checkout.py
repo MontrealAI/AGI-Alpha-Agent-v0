@@ -288,6 +288,102 @@ PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
     ),
 }
 
+# Exact connected Insight 1.47 edition; every historical profile remains immutable.
+INSIGHT_FRONTIER_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "de5815981d4eef8056a8dda1302fc7ed60f1d48b3bb09e70c15502f4e383926d"),
+    "docs/assets/service-worker.js": (24089, "70c2e651da23c750b2d0ba834e092aa6904a4347e04bf3393477ca7f6b457fbf"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "bd55ce1a7de1db9d5b0b4f8088b793a047199bd49fd387796a1f56126f7ae965",
+    ),
+}
+
+# Exact post-receipt-guard candidate; keep the original unpublished 1.47 edition intact.
+INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES = INSIGHT_FRONTIER_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "926119de5946ece7233bac3084deb735c5ce63964d32708c6146cc535f0e695c"),
+    "docs/assets/service-worker.js": (24089, "5028ae800f527ecec69054d90ea764ec03447a35a1f8e0e7da74780b9c373f34"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "c9c1b5787dc78f2c6a0da5aba7b80950b6a78844b440768bfecc04fa4e3979dc",
+    ),
+}
+
+# Exact current-authority review candidate; retain all earlier complete byte editions.
+INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES = INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "357308e5afd03495e75cfe557ccff8fc42c6c008e8c1b2b814138b92642eade9"),
+    "docs/assets/service-worker.js": (24089, "0b0f9987d46e5c652d54f961b631cc68db78688da30321ff6b1b6e9b645183dd"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "e8a05eaf3ccfbeea86ea9318bc66f2f382682c483a40792d76f9087eb2d32f65",
+    ),
+}
+
+# Complete proposed discovery Flywheel successor; every predecessor remains exact.
+FLYWHEEL_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "f585d406396e500da306a8d10bb27498573332a9149e04794fbddb97365b1836"),
+    "docs/assets/service-worker.js": (24089, "74990f5b2c3d134a00d1958383f8332ffd1fdfcd350ffd9235ecf832eb72dc65"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "2edba968136cf0aa8c9911990b1fe244950e620fae032ceb91b363768a9b9a9e",
+    ),
+}
+
+# Exact cross-owner successor; every earlier owner/child profile remains immutable.
+RECONCILED_FLYWHEEL_147_EXTRA_FILES = INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "dc60056fcda731f1cc61c47d3dfd449210e82d0356760d053911b536f51a0485"),
+    "docs/assets/service-worker.js": (24089, "bb66233d182bf8cadd96bd7bbdfdb7b66bd7dc06c6c27290f85aedffb75c0ef6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "58dd9778d1304277e0e3709cac531faa4e7cf8b8a1c02fd2df82261e9f131fd3",
+    ),
+}
+
+# Exact current enterprise-acceptance candidate; keep all predecessor editions intact.
+INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES = INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "3e03df48a33790526091917aec7223b5b8c84eb820a5a927ea2cde7b803520de"),
+    "docs/assets/service-worker.js": (24089, "c0b2123977d6f95ac3c09ab9e20db418484107d0f8a14893bd2ba5e74b941127"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "06eca2a88af6bd6a50f15da4165a4e70c6015a388ecd9e4beba280ef3089d593",
+    ),
+}
+
+# One complete connected owner delivery edition; preserve all25 predecessors.
+CONNECTED_DELIVERY_147_EXTRA_FILES = INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "923be9f30774f7e2f64992279cec28998a422e02e1fac65427db122ea8decd94"),
+    "docs/assets/service-worker.js": (24089, "9b6538d46269b194f585fda6dcdef08f01a2b6e1b124010d2f48e6ec22e5da60"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "ce562f326447e99f0c3cf2cc623bdcb7e9873f27a0cd0f89bb34d14f9ec839ad",
+    ),
+}
+
+FRONTIER_DELIVERY_147_EXTRA_FILES = CONNECTED_DELIVERY_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "b10442101f412c84313369d628c80aa2ed731bb99b04058209b75eb82f790265"),
+    "docs/assets/service-worker.js": (24089, "7285d054d941b0ca75df99972385505b2dec6cdff73ef0ecc4f9ec68a5db08e2"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "22d839d6ede9cd38ca791f98f07b2d5d2aa27ba96bb803813673e85ab3b1dba3",
+    ),
+}
+
+# One complete combined guard edition; retain all27 predecessor profiles.
+DELIVERY_GUARD_147_EXTRA_FILES = FRONTIER_DELIVERY_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "28e9c043ada34846a4c14ef06e9de93c832206e3e1a7eb25ba7b359cdab92d9f"),
+    "docs/assets/service-worker.js": (24089, "522125cbeddb1a39944de2aa5949faf67d556dfe67f0e5a95e1d0009fa7ab185"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "cff1b9b5ccb5f1525d5fc584749ec04be5ff2e1ff58fb14df901b07e4a1b5fb1",
+    ),
+}
+
+# Complete current commercial-command authority edition; preserve all28 predecessors.
+ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES = DELIVERY_GUARD_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "5aeca3f233b79647232761891e41139b4e0454af3a3c617343852b910f5660c4"),
+    "docs/assets/service-worker.js": (24089, "6270bf90b223f76fb98b1c1289240704559dcfc0b2bce2f338996f858b076eb5"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (26729, "fa65f514c9995ba5c329ba61f5a925e13a634fc0ea8379cae655ee2e38a91fd4"),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -369,6 +465,16 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, RECONCILED_FLYWHEEL_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, CONNECTED_DELIVERY_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, FRONTIER_DELIVERY_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, DELIVERY_GUARD_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

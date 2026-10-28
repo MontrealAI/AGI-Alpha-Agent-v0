@@ -1,0 +1,34 @@
+import copy,json,sys,tempfile
+from pathlib import Path
+repo=Path('/workspace/scratch/1602dd9e6810/agi-alpha')
+sys.path[:0]=[str(repo),str(repo/'tests/runtime')]
+from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import Enterprise
+from alpha_factory_v1.core.runtime.successor.trust import sign_record
+import test_flywheel_enterprise as e
+import test_flywheel_enterprise_technical_authority as t
+rows=[]
+for revoke_after_start in (False,True):
+  with tempfile.TemporaryDirectory(prefix='final-decision-probe-') as tmp:
+    state=t.setup.__wrapped__(Path(tmp))
+    t.prepare(state)
+    first=e.decision(state,'request-template',action='produce')
+    request=copy.deepcopy(first['signed']['payload']['record']);request['decision_id']='independent-decision'
+    enterprise=Enterprise(state['service'])
+    decision=enterprise.apply(e.command(state,'decide',request,'independent-decision',principal='commercial-controller'))
+    executor,mission,profile,permit=e.execution(state,'inflight-production')
+    original=executor.transport.respond
+    model_calls=[]
+    def respond(*args):
+      value=original(*args);model_calls.append('simulated-model-call')
+      if revoke_after_start: state['trust'].revoke('commercial-controller')
+      return value
+    executor.transport.respond=respond
+    if not revoke_after_start: state['trust'].revoke('commercial-controller')
+    try:
+      result=enterprise.run('independent-decision',executor,mission,profile,permit)
+      outcome={'status':result['status'],'actions':result['actions'],'calls':len(model_calls)}
+    except ValueError as exc:
+      outcome={'errorType':type(exc).__name__,'error':str(exc),'calls':len(model_calls)}
+    rows.append({'case':'revoke-decision-controller-after-first-response' if revoke_after_start else 'control-revoke-decision-controller-before-dispatch','decisionSigner':decision['signed']['principal'],'permitSigner':permit.principal,**outcome})
+print(json.dumps(rows,indent=2))
+Path('/tmp/final-c516-review/decision-inflight-results.json').write_text(json.dumps(rows,indent=2)+'\n')

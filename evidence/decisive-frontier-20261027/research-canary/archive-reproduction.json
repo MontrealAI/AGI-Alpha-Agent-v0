@@ -1,0 +1,79 @@
+{
+  "schema_name": "flywheel-conditional-access/v1",
+  "mission_id": "released-research-archive-reproduction",
+  "useful_purpose": "Refuse a claimed reproduction route when required rights are denied, preserving the original scientific purpose and obligations",
+  "starting_facts": [
+    "public-description"
+  ],
+  "required_outputs": [
+    "licensed-reproduction-route"
+  ],
+  "obligations": [
+    "keep-source-local",
+    "preserve-method",
+    "respect-rights"
+  ],
+  "steps": [
+    {
+      "step_id": "check-public-manifest",
+      "purpose": "check public manifest",
+      "requires": [
+        "public-description"
+      ],
+      "produces": [
+        "manifest-checked"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method",
+        "respect-rights"
+      ],
+      "permission": "documented",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 10000000,
+      "duration_seconds": 30
+    },
+    {
+      "step_id": "denied-protected-material",
+      "purpose": "denied protected material",
+      "requires": [
+        "manifest-checked"
+      ],
+      "produces": [
+        "licensed-reproduction-route"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method",
+        "respect-rights"
+      ],
+      "permission": "denied",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 20000000,
+      "duration_seconds": 60
+    },
+    {
+      "step_id": "skip-rights",
+      "purpose": "skip rights",
+      "requires": [
+        "public-description"
+      ],
+      "produces": [
+        "licensed-reproduction-route"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method"
+      ],
+      "permission": "documented",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 1000000,
+      "duration_seconds": 10
+    }
+  ],
+  "cost_cap_micro_usd": 100000000,
+  "seconds_cap": 300,
+  "search_node_cap": 2000,
+  "mode": "synthetic",
+  "limitations": "Authored adverse digital case; no actual archive or protected material accessed; no customer acceptance"
+}

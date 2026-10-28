@@ -1,0 +1,144 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "tests/test_flywheel_147_workers.py",
+      "tests/test_flywheel_147_release.py",
+      "tests/test_paper_checkout_bytes.py",
+      "tests/test_strategy_research_source.py",
+      "tests/test_ruff_targets.py",
+      "tests/test_generate_gallery_html.py",
+      "tests/test_mirror_demo_pages.py",
+      "tests/test_alpha_flywheel.py",
+      "tests/test_flywheel_discovery_ui.py",
+      "tests/test_flywheel_comparison_ui.py",
+      "tests/test_customer_funds_economics.py",
+      "tests/test_flywheel_arrangements.py"
+    ],
+    "output": "publication.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 15.670441545999893
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/workspace/scratch/9c7b9ec78746/flywheel-browser-pinned",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "browser.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 24.64307127500024
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/workspace/scratch/9c7b9ec78746/repo/evidence/flywheel-integration-20261027/pinned-hook-correction-20261028/insight.json",
+      "--axe-script",
+      "tests/browser/node_modules/axe-core/axe.min.js"
+    ],
+    "output": "insight.txt",
+    "exitcode": 0,
+    "elapsed_seconds": 2.7766282200000205
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "build",
+      "--wheel",
+      "--no-isolation",
+      "--outdir",
+      "/workspace/scratch/9c7b9ec78746/wheel-pinned"
+    ],
+    "output": "wheel.txt",
+    "exitcode": 1,
+    "elapsed_seconds": 0.6344935679999253
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "tests/test_release_publication.py"
+    ],
+    "output": "release-publication.txt",
+    "exitcode": 0,
+    "result": "147 passed"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "mypy",
+      "--config-file",
+      "mypy-runtime.ini",
+      "--cache-dir=/dev/null"
+    ],
+    "output": "types.txt",
+    "exitcode": 0,
+    "result": "75 source files"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "tests/runtime/test_flywheel_comparisons.py"
+    ],
+    "output": "comparisons.txt",
+    "exitcode": 0,
+    "result": "50 passed"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "mkdocs",
+      "build",
+      "--strict",
+      "--site-dir",
+      "/workspace/scratch/9c7b9ec78746/mkdocs-pinned"
+    ],
+    "output": "mkdocs-retry.txt",
+    "exitcode": 0,
+    "previous_attempt": "mkdocs.txt missing exclude plugin before restoring requirements-docs.txt"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "build",
+      "--wheel",
+      "--no-isolation",
+      "--outdir",
+      "/workspace/scratch/9c7b9ec78746/wheel-pinned"
+    ],
+    "output": "wheel-retry.txt",
+    "exitcode": 0,
+    "previous_attempt": "wheel.txt unmet pinned build dependencies before restoring setuptools80.9.0/wheel0.45.1"
+  }
+]

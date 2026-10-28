@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="18" skipped="0" tests="22" time="11.422" timestamp="2026-10-28T00:11:31.749201-04:00" hostname="c88d71100384"><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_revoked_commercial_authorizer_cannot_start_production[decision]" time="0.404"><failure message="AssertionError: assert 'deliver' == 'hold'&#10;  &#10;  - hold&#10;  + deliver">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7b1fcef0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad686f0&gt;, ...}, ...}
+when = 'decision'
+
+    @pytest.mark.parametrize("when", ["decision", "dispatch"])
+    def test_revoked_commercial_authorizer_cannot_start_production(setup: dict[str, Any], when: str) -&gt; None:
+        original = prepare(setup, "produce")
+        enterprise = Enterprise(setup["service"])
+        costs = setup["costs"].snapshot()
+        if when == "decision":
+            setup["trust"].revoke("commercial-controller")
+            held = e.decision(setup, "after-commercial-withdrawal", action="produce")
+&gt;           assert held["selected"] == "hold"
+E           AssertionError: assert 'deliver' == 'hold'
+E
+E             - hold
+E             + deliver
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:76: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_revoked_commercial_authorizer_cannot_start_production[dispatch]" time="0.669"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae9b4d0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6b870&gt;, ...}, ...}
+when = 'dispatch'
+
+    @pytest.mark.parametrize("when", ["decision", "dispatch"])
+    def test_revoked_commercial_authorizer_cannot_start_production(setup: dict[str, Any], when: str) -&gt; None:
+        original = prepare(setup, "produce")
+        enterprise = Enterprise(setup["service"])
+        costs = setup["costs"].snapshot()
+        if when == "decision":
+            setup["trust"].revoke("commercial-controller")
+            held = e.decision(setup, "after-commercial-withdrawal", action="produce")
+            assert held["selected"] == "hold"
+            assert not held["alternatives"][0]["eligible"]
+            assert "commercial authorization is no longer eligible" in held["alternatives"][0]["reasons"]
+        else:
+            chosen = decision(setup, "produce")
+            setup["trust"].revoke("commercial-controller")
+            executor, mission, profile, permit = e.execution(setup, "commercial-refusal")
+            calls: list[str] = []
+            respond = executor.transport.respond
+
+            def model(*args: Any) -&gt; dict[str, Any]:
+                calls.append("simulated-response")
+                return respond(*args)
+
+            executor.transport.respond = model
+&gt;           with pytest.raises(ValueError, match="trusted|authorization"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:91: Failed</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-produce-decision-controller-revoke]" time="0.644"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af23860&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6a650&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af228d0&gt;
+action = 'produce', principal = 'decision-controller', kind = 'revoke'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-produce-decision-controller-rotate]" time="0.651"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae9bfb0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad68fb0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae9af90&gt;
+action = 'produce', principal = 'decision-controller', kind = 'rotate'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-produce-decision-controller-expire]" time="0.649"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7dffdf70&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6a9b0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7afc49b0&gt;
+action = 'produce', principal = 'decision-controller', kind = 'expire'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-produce-commercial-controller-revoke]" time="0.663"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae914c0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6ae30&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af225a0&gt;
+action = 'produce', principal = 'commercial-controller', kind = 'revoke'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-produce-commercial-controller-rotate]" time="0.658"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af26060&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7adffe70&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af26420&gt;
+action = 'produce', principal = 'commercial-controller', kind = 'rotate'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-prototype-decision-controller-revoke]" time="0.208"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af214f0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6b550&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af219d0&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'revoke'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-prototype-decision-controller-rotate]" time="0.216"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af21130&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad68c70&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af22840&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'rotate'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[model-response-prototype-decision-controller-expire]" time="0.199"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae915e0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6b170&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae929c0&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'expire'
+when = 'model-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-produce-decision-controller-revoke]" time="0.666"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae9b3b0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7adfd2f0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae9a6f0&gt;
+action = 'produce', principal = 'decision-controller', kind = 'revoke'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-produce-decision-controller-rotate]" time="0.651"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af25a00&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7adfe5b0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af274a0&gt;
+action = 'produce', principal = 'decision-controller', kind = 'rotate'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-produce-decision-controller-expire]" time="0.677"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae9b3b0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6a7f0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae9a8a0&gt;
+action = 'produce', principal = 'decision-controller', kind = 'expire'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-produce-commercial-controller-revoke]" time="0.692"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae91550&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6a5b0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae90ec0&gt;
+action = 'produce', principal = 'commercial-controller', kind = 'revoke'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-produce-commercial-controller-rotate]" time="0.647"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af20f50&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7ad6b3b0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af22f60&gt;
+action = 'produce', principal = 'commercial-controller', kind = 'rotate'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-prototype-decision-controller-revoke]" time="0.208"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7af246e0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7adfd630&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7af27d70&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'revoke'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-prototype-decision-controller-rotate]" time="0.214"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ac895b0&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7adedc70&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ac8a900&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'rotate'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities[tool-response-prototype-decision-controller-expire]" time="0.202"><failure message="AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'&#10;  &#10;  - failed-or-uncertain&#10;  + delivered-awaiting-independent-acceptance-and-costs">setup = {'access': &lt;alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f6f7ae8b590&gt;, 'costs':...ontroller': &lt;cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f6f7b34dab0&gt;, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f6f7ae89100&gt;
+action = 'prototype', principal = 'decision-controller', kind = 'expire'
+when = 'tool-response'
+
+    @pytest.mark.parametrize("action,principal,kind", ACTIVE_CASES)
+    @pytest.mark.parametrize("when", ["model-response", "tool-response"])
+    def test_active_enterprise_authority_stops_later_actions_and_preserves_liabilities(
+        setup: dict[str, Any],
+        monkeypatch: pytest.MonkeyPatch,
+        action: str,
+        principal: str,
+        kind: str,
+        when: str,
+    ) -&gt; None:
+        original = prepare(setup, action)
+        chosen = decision(setup, action, short_expiry=kind == "expire")
+        deadline = chosen["signed"]["payload"]["expires_at"]
+        executor, mission, profile, permit = e.execution(setup, "active-enterprise")
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+        prior_calls: list[str] = []
+        respond, perform = executor.transport.respond, executor.environment.perform
+
+        def prior() -&gt; None:
+            prior_calls.append("existing-qualification")
+
+        def changed() -&gt; None:
+            if kind == "expire":
+                monkeypatch.setattr(time, "time", lambda: deadline + 1)
+            else:
+                withdraw(setup, principal, kind)
+
+        def model(*args: Any) -&gt; dict[str, Any]:
+            model_calls.append("simulated-model")
+            result = respond(*args)
+            if when == "model-response":
+                changed()
+            return result
+
+        def tool(*args: Any) -&gt; dict[str, Any]:
+            tool_calls.append("bounded-local-placement")
+            result = perform(*args)
+            if when == "tool-response":
+                changed()
+            return result
+
+        executor.qualification_check = prior
+        executor.transport.respond, executor.environment.perform = model, tool
+        enterprise = Enterprise(setup["service"])
+        result = enterprise.run("independent-decision", executor, mission, profile, permit)
+&gt;       assert result["status"] == "failed-or-uncertain"
+E       AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E
+E         - failed-or-uncertain
+E         + delivered-awaiting-independent-acceptance-and-costs
+
+/tmp/agi-alpha-commercial-fix-c516/tests/runtime/test_flywheel_enterprise_command_authority.py:160: AssertionError</failure></testcase><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_current_independent_controllers_allow_the_original_delivery[produce]" time="0.657" /><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_current_independent_controllers_allow_the_original_delivery[prototype]" time="0.215" /><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_consumed_commercial_command_deadline_is_not_a_new_offering_lease" time="0.702" /><testcase classname="tests.runtime.test_flywheel_enterprise_command_authority" name="test_unrelated_revocation_does_not_stop_independently_authorized_production" time="0.683" /></testsuite></testsuites>

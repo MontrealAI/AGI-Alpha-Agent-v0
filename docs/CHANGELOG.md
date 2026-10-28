@@ -1,3 +1,13 @@
+## 1.47.0 — Connected discovery and checked delivery (source candidate)
+
+- Integrate the existing executor, specialist, enterprise, discovery and frozen Insight lineage.
+- Keep cancellation, frozen execution receipts, accepted-income/refund custody and current signer checks connected.
+- Preserve complete comparison denominators and distinguish declared models from actual bound executions.
+- Add a complete successor cache edition while retaining historical metadata, papers, workers and held source pins.
+- Retain the independent conventional tie, incomplete searches, negative controls and original failed attempts.
+- Keep commercial modeling, actual collections, complete costs, live operation and retained Alpha separate.
+- Require exact-source review, full release gates and public verification through the existing publisher.
+
 ## 1.44.0 — Checked planning and repair (source candidate)
 
 - Connect the browser to an explicitly approved fixed-method executor over the existing Journal/ActionGateway.

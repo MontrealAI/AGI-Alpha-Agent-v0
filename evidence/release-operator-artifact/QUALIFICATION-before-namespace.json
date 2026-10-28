@@ -1,0 +1,63 @@
+{
+  "schema": "release-small-operator-artifact-qualification/v1",
+  "baseline_commit": "8b2bb77c59aaf066f2837f387c7f38d5a5fc1aff",
+  "baseline_tree": "ba5ded943e63bc96be8fed63696efa20d316704c",
+  "provenance": "Fresh reconstruction and qualification after loss of original uncommitted workspace; old source hashes unknown",
+  "source_identities": {
+    ".github/workflows/agent-release.yml": {
+      "bytes": 84827,
+      "sha256": "4ac68e1d5a6ea3896541bb403441dd41e5a8d9ad8a739dabb851a43ddbb0e813",
+      "git_blob": "9475d065c2f118ab3008eb71281214d9978abf3e"
+    },
+    "tests/test_release_artifact_handoffs.py": {
+      "bytes": 16100,
+      "sha256": "c889be8e5addc5d02570b22e3e3595c3c71837482b9a4c150fd9370b1aeb6265",
+      "git_blob": "71df8bdafdd47b6c8e7381055ed098b1fec8cd00"
+    }
+  },
+  "checks": {
+    "ci_contract_cases_passed": 76,
+    "ruff_lint": "pass",
+    "ruff_format": "pass",
+    "full_workflow_semantic_preservation": "pass; only two declared packagejob changes",
+    "action_updater": "pass as isolated script execution only;0regex matches, no actionversion freshness",
+    "local_actionlint": "NOT_RUN_UNAVAILABLE; existing hostedgate remains required"
+  },
+  "boundaries": {
+    "runtime_page_worker_or_source_pin_changes": false,
+    "permission_or_action_sha_changes": false,
+    "full_artifact_or_publication_gate_replacement": false,
+    "new_public_artifact_or_canary_execution_claim": false,
+    "model_calls": 0
+  },
+  "files": {
+    "BEFORE.json": {
+      "bytes": 6338,
+      "sha256": "b6471c843f7ec98d98123ca46a5554533dc4f592df2dcd8f162c854ff4da6c85"
+    },
+    "README.md": {
+      "bytes": 2817,
+      "sha256": "94c16db9d79ecc5990e6e00091c99aca0d50f438c5fc7c3e1549497b7e49558b"
+    },
+    "RECOVERY_HISTORY.json": {
+      "bytes": 1335,
+      "sha256": "ef919a6ee72377802871f5dce0d3c6d3d76557af01f91572bde7b8725b3563fa"
+    },
+    "contracts.json": {
+      "bytes": 1135,
+      "sha256": "419dd7410bd7d052a5eedc2191afa9a7370449cd43efa73e402e3ad83b223186"
+    },
+    "recovered-source.patch": {
+      "bytes": 6657,
+      "sha256": "3d8e15b491e5dae6ffc605f458db65a31c99bc1b928be5ba9fb2ca6107e55dc3"
+    },
+    "static-checks.json": {
+      "bytes": 1614,
+      "sha256": "a2e49a04ccd1cebc66ed354b467ce5aed8384b5fe94e12dedc9a30ab0f36b2d4"
+    },
+    "update-actions.json": {
+      "bytes": 803,
+      "sha256": "4ce6a7289729905f68125a894e25431c9a2f1ac69f7a83ee57d7c8296d735387"
+    }
+  }
+}

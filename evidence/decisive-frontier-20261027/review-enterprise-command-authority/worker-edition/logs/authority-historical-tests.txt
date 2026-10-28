@@ -1,0 +1,541 @@
+..F........F........F........F........F........F........F........F...... [ 53%]
+...............................................................          [100%]
+=================================== FAILURES ===================================
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[0-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an0')
+predecessor = 'connected', mask = 0
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[1-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an1')
+predecessor = 'connected', mask = 1
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[2-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an2')
+predecessor = 'connected', mask = 2
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[3-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an3')
+predecessor = 'connected', mask = 3
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[4-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an4')
+predecessor = 'connected', mask = 4
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[5-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an5')
+predecessor = 'connected', mask = 5
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[6-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an6')
+predecessor = 'connected', mask = 6
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[7-connected] _
+
+tmp_path = PosixPath('/tmp/decisive-enterprise-worker-tests/test_complete_editions_pass_an7')
+predecessor = 'connected', mask = 7
+
+    @pytest.mark.parametrize(
+        "predecessor",
+        [
+            "frontier",
+            "connected",
+            "latest-owner",
+            "reconciled-child",
+            "owner",
+            "child",
+            "post-guard",
+            "original",
+            "readers",
+        ],
+    )
+    @pytest.mark.parametrize("mask", range(8))
+    def test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse(
+        tmp_path: Path, predecessor: str, mask: int
+    ) -> None:
+>       old = {
+            "frontier": frontier_edition_files,
+            "connected": connected_edition_files,
+            "latest-owner": latest_owner_files,
+            "reconciled-child": reconciled_edition_files,
+            "owner": owner_edition_files,
+            "child": child_edition_files,
+            "post-guard": post_guard_edition_files,
+            "original": original_edition_files,
+            "readers": predecessor_workers,
+        }[predecessor]()
+
+tests/test_delivery_guard_147_release.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:69: in current_files
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
+                                                              ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == 'ac9601e0b76c...16eb4e20cfab6'
+E         
+E         - ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[0-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[1-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[2-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[3-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[4-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[5-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[6-connected]
+FAILED tests/test_delivery_guard_147_release.py::test_complete_editions_pass_and_partial_cross_owner_mixtures_refuse[7-connected]
+8 failed, 127 passed in 10.17s
