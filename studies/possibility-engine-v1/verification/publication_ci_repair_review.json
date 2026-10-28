@@ -1,0 +1,190 @@
+{
+  "status": "pass",
+  "scope": "Independent local verification of additive publication CI repair",
+  "source_sha256": {
+    "publication/build_publication.py": "89d78cb1f1a0069866402ff0778d91747ed3e63049e0eb0b6e46d81c3951e35e",
+    "publication/fill_results.py": "8e35f818df0172443a2469a657b6e8911587e5f4100c533db3d84f574f70c591",
+    "publication/make_figures.py": "9d6c88a23385a43cee63aeffbd6528c18560669a97064bb214bca9fc5d879375",
+    "package_study.py": "49ed41972b50b28540d04f1177c77b643d685c83e1c67fbab4acfee8549abfb9"
+  },
+  "ast_comparisons": {
+    "build_publication.py": {
+      "exact_ast_equal": true,
+      "preserved_original_sha256": "d492732e600c045970384383a3c6730f669c59fb7d018fd9c30b7fc230975e1a",
+      "current_sha256": "89d78cb1f1a0069866402ff0778d91747ed3e63049e0eb0b6e46d81c3951e35e"
+    },
+    "fill_results.py": {
+      "exact_ast_equal": true,
+      "preserved_original_sha256": "e007e2714aa4077bd7edb043b4bfe2dd7d640d5b12fb160d4c533c495fe872e0",
+      "current_sha256": "8e35f818df0172443a2469a657b6e8911587e5f4100c533db3d84f574f70c591"
+    },
+    "make_figures.py": {
+      "equals_declared_two_edit_ast": true,
+      "declared_edits": [
+        "Remove unused math import",
+        "Move unchanged engine import into main"
+      ],
+      "original_math_name_uses": 0,
+      "preserved_original_sha256": "e4bb4d9db300793aa946e6c4246789ee763f513648188d71fc7d934e2505d6f2",
+      "current_sha256": "9d6c88a23385a43cee63aeffbd6528c18560669a97064bb214bca9fc5d879375"
+    }
+  },
+  "isolated_builder_commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "publication/fill_results.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.04108400300174253,
+      "stdout": "complete manuscript words 7078\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "publication/make_figures.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.82593217700196,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "publication/build_publication.py",
+        "--html-only"
+      ],
+      "returncode": 0,
+      "seconds": 0.5794248520032852,
+      "stdout": "{\"paper_pdf_bytes\": 1004924, \"browser_bytes\": 1327742, \"sections\": 14}\n",
+      "stderr": ""
+    }
+  ],
+  "regenerated_output_comparisons": {
+    "publication/PAPER.md": {
+      "original_sha256": "1c9141c9f9d52628320943cbbb8bedf61b00f2e834c8957cd9e696aa34111dd1",
+      "regenerated_sha256": "1c9141c9f9d52628320943cbbb8bedf61b00f2e834c8957cd9e696aa34111dd1",
+      "byte_identical": true
+    },
+    "publication/result_insertions.json": {
+      "original_sha256": "1fb42db4e46f2668006760b7a8a3506291a84f3a37a82c5ab88afa2c952c9314",
+      "regenerated_sha256": "1fb42db4e46f2668006760b7a8a3506291a84f3a37a82c5ab88afa2c952c9314",
+      "byte_identical": true
+    },
+    "publication/body.html": {
+      "original_sha256": "75f65aa55c0a1869bb21262578eb69d3cd28e226e05bda9ca4489ec2a7e61037",
+      "regenerated_sha256": "75f65aa55c0a1869bb21262578eb69d3cd28e226e05bda9ca4489ec2a7e61037",
+      "byte_identical": true
+    },
+    "publication/BROWSER_EDITION.html": {
+      "original_sha256": "cc8cb6815204c33d700e4499c4fee9773c13d23844b33987c34a2c0b5a6972be",
+      "regenerated_sha256": "cc8cb6815204c33d700e4499c4fee9773c13d23844b33987c34a2c0b5a6972be",
+      "byte_identical": true
+    },
+    "publication/READING_EDITION.md": {
+      "original_sha256": "2da2f311060fd239a82346e842aa8fff6411ea731759776e78494ad03ee3a296",
+      "regenerated_sha256": "2da2f311060fd239a82346e842aa8fff6411ea731759776e78494ad03ee3a296",
+      "byte_identical": true
+    },
+    "figures/complementarity.png": {
+      "original_sha256": "e2e5f407cfb4b1c22a4a57a23224c4e38d81642d3f860288d449e50907c29612",
+      "regenerated_sha256": "e2e5f407cfb4b1c22a4a57a23224c4e38d81642d3f860288d449e50907c29612",
+      "byte_identical": true
+    },
+    "figures/economics.png": {
+      "original_sha256": "89043ab1fae5e6ec906c87ce176e059b8bf8e348de1d0b4df12dad10e5b97c80",
+      "regenerated_sha256": "89043ab1fae5e6ec906c87ce176e059b8bf8e348de1d0b4df12dad10e5b97c80",
+      "byte_identical": true
+    },
+    "figures/response_bands.png": {
+      "original_sha256": "298a17d302b2f691bbc77b9abe15ebdd36c3254504d94c25faf4a35e260db232",
+      "regenerated_sha256": "298a17d302b2f691bbc77b9abe15ebdd36c3254504d94c25faf4a35e260db232",
+      "byte_identical": true
+    },
+    "figures/successor.png": {
+      "original_sha256": "02aabd22e4e006e810b00261359b3c245bc8d5ecf1c54b0d5de6a15d05153d5b",
+      "regenerated_sha256": "02aabd22e4e006e810b00261359b3c245bc8d5ecf1c54b0d5de6a15d05153d5b",
+      "byte_identical": true
+    }
+  },
+  "publication_pdf_files_not_rebuilt": true,
+  "original_pdf_hashes_unchanged": {
+    "figures/complementarity.pdf": "c175ad916d0b947c80db0c21360ef0f2e3c46898765f4e39fa046a87df3e1ead",
+    "figures/economics.pdf": "55714b8281fbd60b5705ab405d4d81407643e1b4308923b46ab75779bb35693a",
+    "figures/response_bands.pdf": "d0b80bacae4caaf316f420a984cc75dbcdad07dcb1aae2819dbef39225ba383f",
+    "figures/successor.pdf": "7f3010b62c4037d5e0a8704f1ca7baddfd9da37a8a3d7cb3cabfd6ee3914cd65",
+    "publication/AGI_ALPHA_FLYWHEEL.pdf": "240819b61afccda64f8c54f15cb63b9c616369fa6f6ce953e2e9ea4c89d65e3c",
+    "publication/EXECUTIVE_BRIEF.pdf": "aec5c3e659c1110fcaea198c5c9ce278fbac7fb12cf1caf025d2905272eeece4"
+  },
+  "compact_checkout_packaging_guard": {
+    "status": "correctly refused before writes",
+    "files_in_compact_fixture": 34,
+    "command": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "package_study.py"
+      ],
+      "returncode": 1,
+      "seconds": 0.07789017499453621,
+      "stdout": "",
+      "stderr": "Cannot repackage: 3592 existing manifest members are absent. Extract the full companion into a new directory first; the archive, manifest and receipt have not been changed.\n"
+    },
+    "protected_hashes_before": {
+      "MANIFEST.sha256": "0779a8d6544d5637a12400ab0e665d721c8e58b6aababe39d49a3a5cc4082b32",
+      "PACKAGE_RECEIPT.json": "ffa747623cc614e891b8417eef2bab48f35da24d2d42e0ef07aa283211417a2e",
+      "AGI_ALPHA_FLYWHEEL_COMPANION_v1.zip": "e474c5df407268cd50657eb7500c25f099f495a0747ba0a76b97562a49bcfb9e"
+    },
+    "protected_hashes_after": {
+      "MANIFEST.sha256": "0779a8d6544d5637a12400ab0e665d721c8e58b6aababe39d49a3a5cc4082b32",
+      "PACKAGE_RECEIPT.json": "ffa747623cc614e891b8417eef2bab48f35da24d2d42e0ef07aa283211417a2e",
+      "AGI_ALPHA_FLYWHEEL_COMPANION_v1.zip": "e474c5df407268cd50657eb7500c25f099f495a0747ba0a76b97562a49bcfb9e"
+    }
+  },
+  "local_default_ruff": {
+    "command": [
+      "/tmp/release-operator-tools/bin/ruff",
+      "check",
+      "/workspace/scratch/45c4479d4355/agi-alpha/studies/possibility-engine-v1/publication/build_publication.py",
+      "/workspace/scratch/45c4479d4355/agi-alpha/studies/possibility-engine-v1/publication/fill_results.py",
+      "/workspace/scratch/45c4479d4355/agi-alpha/studies/possibility-engine-v1/publication/make_figures.py",
+      "/workspace/scratch/45c4479d4355/agi-alpha/studies/possibility-engine-v1/package_study.py"
+    ],
+    "returncode": 0,
+    "seconds": 0.01287928599776933,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  "frozen_files_verified_unchanged": 22,
+  "freeze_sha256": "e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7",
+  "seed_bank_sha256": "e721d18d75f2c6f95bd3d25668d4799a4d7d54e85db24cd8ff414e801ec0fea1",
+  "temporary_workspace": "/tmp/possibility-engine-ci-repair-m47diii2",
+  "limitations": [
+    "Full TeX/PDF compilation was not rerun; reviewed PDFs are unchanged",
+    "This receipt does not report the forthcoming hosted CI result",
+    "No frozen scientific source, issued seed, original figure or original publication artifact was rewritten"
+  ],
+  "checker_source": {
+    "path": "evidence/publication_failures/repair_checker_final.py.txt",
+    "sha256": "aad36e12c7584fe389406b97f0b29cbc92390baf33229077697e27b03fa5f154"
+  },
+  "retained_logs_prefix": "evidence/publication_failures/repair_final_",
+  "first_checker_attempt": {
+    "status": "checker-only expected-error wording mismatch; corrected before final run",
+    "passed_before_mismatch": [
+      "Both exact AST comparisons",
+      "Figure AST matches exactly the two declared import changes",
+      "All nine regenerated-output byte comparisons",
+      "Compact guard refused and archive/manifest/receipt hashes were unchanged"
+    ],
+    "reason": "Checker expected missing, while the correct implementation reports existing manifest members are absent. The final checker matches the actual declared guard message.",
+    "source": "evidence/publication_failures/repair_checker_attempt1.py.txt",
+    "record": "evidence/publication_failures/repair_checker_attempt1_failure.txt"
+  },
+  "hosted_ci": "Not evaluated by this local repair review; root owns the subsequent corrected commit and hosted checks."
+}

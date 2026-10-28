@@ -1,0 +1,50 @@
+\usepackage{fontspec}
+\AtBeginDocument{\setmainfont[Scale=.94,ItalicFont={DejaVu Serif},ItalicFeatures={FakeSlant=.2},BoldItalicFont={DejaVu Serif Bold},BoldItalicFeatures={FakeSlant=.2}]{DejaVu Serif}}
+\setsansfont{DejaVu Sans}[Scale=.94]
+\setmonofont{DejaVu Sans Mono}[Scale=.72]
+\usepackage{titlesec,fancyhdr,needspace,xurl}
+\definecolor{ink}{HTML}{142B42}
+\definecolor{teal}{HTML}{087F8C}
+\definecolor{pale}{HTML}{EAF3F4}
+\definecolor{muted}{HTML}{526477}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{.55em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{teal}}{\thesubsection}{.55em}{}
+\titlespacing*{\section}{0pt}{19pt}{8pt}
+\titlespacing*{\subsection}{0pt}{13pt}{6pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\scriptsize\sffamily\color{muted}AGI ALPHA FLYWHEEL}
+\fancyhead[R]{\scriptsize\sffamily\color{muted}THE POSSIBILITY ENGINE}
+\fancyfoot[L]{\scriptsize\sffamily\color{muted}MONTREAL.AI / Research edition 01}
+\fancyfoot[R]{\small\sffamily\thepage}
+\setlength{\headheight}{15pt}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.42em}
+\widowpenalty=10000\clubpenalty=10000
+\setcounter{tocdepth}{1}
+\AtBeginDocument{\hypersetup{linkcolor=ink,urlcolor=teal,citecolor=teal}}
+\makeatletter
+\patchcmd{\l@section}{1.5em}{2.3em}{}{}
+\renewcommand{\maketitle}{%
+\begin{titlepage}\raggedright\color{ink}
+{\sffamily\small\color{teal}MONTREAL.AI\quad /\quad RESEARCH EDITION 01}\par
+\vspace{1.0in}
+{\sffamily\bfseries\fontsize{17}{21}\selectfont AGI ALPHA FLYWHEEL}\par
+\vspace{.3in}
+{\sffamily\bfseries\fontsize{39}{44}\selectfont THE POSSIBILITY\\ENGINE}\par
+\vspace{.3in}
+{\sffamily\large\color{teal}INVENT WHAT BECOMES POSSIBLE.}\par
+\vspace{.55in}
+{\large Transformational Intelligence, Experience-Trained Specialists and the Expanding Frontier of Profitable Work}\par
+\vspace{.45in}
+\colorbox{pale}{\begin{minipage}{.92\linewidth}\vspace{.14in}
+\large Two capabilities can be insufficient separately.\\Together, they can make a new question answerable.\par
+\vspace{.08in}\normalsize An executed construction of complementary observability, a harder successor task, and a complete conditional enterprise decision.
+\vspace{.14in}\end{minipage}}\par
+\vfill
+{\sffamily\bfseries\large Vincent Boucher}\par
+{\sffamily President of MONTREAL.AI}\par
+\vspace{.15in}
+{\sffamily\small\color{muted}28 October 2026\quad /\quad Computational research and simulated enterprise}\par
+\end{titlepage}}
+\makeatother

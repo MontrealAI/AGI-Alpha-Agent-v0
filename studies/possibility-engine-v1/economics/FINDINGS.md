@@ -1,0 +1,76 @@
+# Enterprise findings: a useful instrument does not yet support this paid offer
+
+**Decision: stop the selected repeatable commercial offering under the tested assumptions. Preserve the instrument and consider a separately justified, capped research experiment only when external evidence improves the decision.** The strongest attempted policy still loses money after one bounded pricing redesign. Its ordinary same-AI alternative ties by construction; an equally useful free implementation eliminates purchases in the modeled choice set.
+
+## Scope and the proposed first delivery
+
+All buyers, demand, contracts, operational acceptance, payments and accounts below are simulated. Technical evidence is reported separately. The completed financial horizon contains twelve possible selling months and six runoff months, including closure of refunds, collections, support and financing. Values are USD. Calendar labels begin in November 2026 and are hypothetical.
+
+The Experiment Construction Pack would let a lab or circuit research team turn supplied, labeled candidate networks into an executable ambiguity witness, jointly selected actuator and sensor access, a forcing and measurement protocol, a model uncertainty envelope and RC netlists. Its current scope is the validated finite family of 16-vertex strongly regular networks. It does not establish the behavior of arbitrary thermal systems or physical apparatus. The intended value is access to a previously unanswerable experimental question. A technical witness alone does not establish willingness to pay for this narrow service. [Protocol](PROTOCOL.md)
+
+## What was frozen and executed
+
+Development tested an initial grid of twelve policies and one lower-price redesign of twelve policies on the same twelve development seeds. The twenty-four entries contain twenty unique price/deposit/capacity combinations. Initial prices were $6,000/$8,000/$10,000; the redesign tested $3,000/$4,500/$6,000. Deposits were 30% or 50%, and capacity two or four packs monthly. Selection included the strongest free alternative. No demand or buyer value was raised to rescue the offer. Original source and output, intermediate corrections and failed checks remain in the archives and failure log. [Selection](development/selection.json), [failures](FAILURES.md)
+
+The selected attempted policy quotes **$4,500, takes a 50% restricted deposit and accepts at most two packs monthly**. It stops new sales from month five when the last three months' operating contribution is below −$3,000 or usable cash is below $15,000. Existing obligations continue to completion. Selection found the least-loss attempted policy within this bounded search; it did not establish a globally optimal commercial strategy.
+
+The independent checker issued 128 fresh seeds after the 22-file study freeze. The unchanged economic source executed ten scenarios, an ordinary conventional reference and stop after research. This produced 1,536 preserved world records. The supplementary reference records replay exactly the original seed bank and functions; they introduce no new samples. The study freeze digest is `e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7`. [Summary](confirmation/summary.json), [reference persistence](confirmation/supplementary_references/persistence_report.json)
+
+## Fresh results
+
+Every scenario has 128 worlds. The observed fraction with a full-project loss is **128/128 in every scenario**. This is a conditional simulation result, not certainty about real markets. All commercial worlds stop new sales; all reference worlds do so at month five. No natural confirmation world renews a contract or funds successor investment. Lifecycle branch controls exercise those paths separately without counting them as demand observations.
+
+| Scenario | Mean full-project profit | Mean operating contribution | 5th percentile profit | Mean accepted packs | Maximum required cash |
+|---|---:|---:|---:|---:|---:|
+| Reference | −$53,187.20 | −$15,887.20 | −$57,403.12 | 1.617 | $59,091.50 |
+| Lower demand | −$49,293.28 | −$11,993.28 | −$51,608.49 | 0.602 | $54,932.50 |
+| Same-AI price war | −$53,735.23 | −$16,435.23 | −$58,100.89 | 1.125 | $59,091.50 |
+| Supplier stress | −$53,359.49 | −$16,059.49 | −$58,165.00 | 1.594 | $59,558.63 |
+| Strategic payment stress | −$54,054.56 | −$16,754.56 | −$58,659.00 | 1.617 | $61,111.48 |
+| Deterministic buyer best response | −$55,407.00 | −$18,107.00 | −$58,474.00 | 0 | $59,151.00 |
+| More leads and higher need | −$59,480.93 | −$22,180.93 | −$65,704.71 | 3.773 | $70,241.74 |
+| Correlated delivery failures | −$54,091.56 | −$16,791.56 | −$58,963.50 | 1.484 | $66,565.17 |
+| Strongest free alternative | −$55,407.00 | −$18,107.00 | −$58,474.00 | 0 | $59,151.00 |
+| Lower labor cost, strong free alternative | −$50,199.90 | −$12,899.90 | −$52,346.80 | 0 | $52,820.70 |
+| Conventional same arrangement | −$53,187.20 | −$15,887.20 | −$57,403.12 | 1.617 | $59,091.50 |
+| Stop after completed research | −$36,950.00 | −$750.00 | −$36,950.00 | 0 | $36,950.00 |
+
+The reference mean has Monte Carlo standard error $231.12. Its 5th–95th percentile simulated profit range is −$57,403.12 to −$49,832.99; its worst sampled loss is $59,091.50. Across all scenarios, the worst sampled loss is $68,654.39, while the greatest temporary financing requirement is $70,241.74. Those differ because collections and cash expenses occur at different times. Increasing assumed need worsens total loss here: more costly qualification and delivery does not compensate for weak conversion. Sampling precision is much narrower than the unmeasured uncertainty in market and operating assumptions. [Raw summaries](confirmation/summary.json)
+
+Stop after research retains $36,200 of already-estimated research cost and pays $750 for archival closure. It avoids $16,237.20 of additional mean full-project loss relative to the reference attempted launch. Before research began, doing nothing would have cost zero; that is a different decision date. The study does not recover sunk research cost by labeling it an asset.
+
+## Costs, collections and usable cash
+
+Research and development are charged once: 96 research hours at $125 ($12,000), 40 hours of failed discovery at $125 ($5,000), 120 development hours at $100 ($12,000), 32 independent-validation hours at $125 ($4,000), 16 documentation hours at $100 ($1,600), and $1,600 of startup inference, compute and tools. This is 304 estimated hours and $36,200. It is a complete economic allowance for the campaign, not measured historical labor or token usage.
+
+Reference mean total cost is **$59,836.02**, composed of that startup block plus $6,128.00 acquisition/administration, $7,229.00 qualification, $171.56 negotiation, $1,873.44 delivery, $1,047.81 operational verification, $147.81 correction, $357.21 support, $4,298.44 maintenance, $204.38 operating inference/compute/tools, $245.75 warranty refunds, $82.62 collections/bad debt, $1,100 financing fees and $750 exit. Mean recognized revenue is $6,648.82. The ratio of mean profit to mean cost is −88.89%; this is an aggregate simulation ratio. [Cost categories](confirmation/reporting_metrics.json)
+
+Gross collections average $6,778.76, including restricted deposits. Refunds average $423.15, leaving $6,355.61 net collections. Revenue recognition, deposit release and refunds have separate journal entries. The mean peak unrestricted cash requirement is $53,877.96. Opening equity of $80,000 is journaled as financing, never revenue; mean final usable cash is $26,812.80. A finite $20,000 credit facility at an assumed 12% APR is available, with fees; branch controls test borrowing and repayment. No restricted customer deposits can finance operations. All end-of-run receivables, deposits, support/refund obligations, debt and restricted cash are zero.
+
+Loaded hourly rates of $80–$140 are explicit estimates. For context, BLS reports May 2025 median annual wages of $135,980 for software developers and $120,630 for electrical engineers, approximately $65.38 and $58.00 per hour at 2,080 hours before benefits, overhead and nonbillable time. These wage data do not establish a specialist consulting quotation. [BLS software](https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm), [BLS electrical engineering](https://www.bls.gov/ooh/architecture-and-engineering/electrical-and-electronics-engineers.htm)
+
+## Strategic alternatives and the operating burden
+
+Buyers choose among the offer, a same-AI competitor, competent internal delivery, free tools, waiting and declining. Budgets, internal capacity, private value and urgency constrain these choices. The reference uses noisy maximization; deterministic best response is a separate challenge. Competitors can match, cut, use a premium quote or bundle; suppliers can raise inference prices and restrict capacity. Buyers may withhold balances when expected private gains exceed principal recovery and relationship costs. Enterprise collection decisions compare expected recovery with cost. These are specified behavioral assumptions, not game-theoretic identification of unknown demand. [Model](model.py), [inputs](assumptions.json)
+
+The strongest free option has the same assumed 0.90 usefulness and delivery delay as the paid offer, with four hours of extraction/validation. It yields zero sales. The reduced-labor scenario lowers operating labor rates 30%, assigns the free route eight hours and retains equal usefulness/delay; it also yields zero sales. The usefulness probabilities are not inferred from mathematical confirmation. Conventional economic parity is imposed by giving the alternative identical capabilities, artifacts, rights and costs. It is a transparent counterfactual, not an empirical operating benchmark or proof of a retained-capability advantage.
+
+The reference generates 70.75 leads, 38.55 qualified prospects, 1.91 negotiations, 1.70 signed and 1.62 accepted deliveries on average. Qualified choices favor the competitor (14.60), internal delivery (13.05), free tools (6.00) and waiting (2.93). Total modeled human effort averages 512.75 hours including startup. Operations include 17.03 delivery hours, 7.48 verification hours, 1.34 correction hours and 3.57 support hours. The mean exception workload includes 0.336 corrections, 0.086 failed deliveries, 0.141 withheld invoices and 0.031 capacity declines. These are simulated burdens, not measured interventions in the technical experiment. All exception queues are closed at exit. [Operating metrics](confirmation/reporting_metrics.json)
+
+## Break-even and the joint arrangement
+
+An intentionally optimistic full-year threshold assumes 168 leads, full quoted prices, no bad debt or collection cost, no shared quality shock and no support overrun. Fixed full-project cost is $79,567; variable nonprice cost is $2,192.40 per signed pack. With the assumed acceptance and warranty rates, expected net price contribution is `0.93508 × price − $2,192.40`. At $4,500, full-project break-even requires **39.48 signed packs annually**, above the selected 24-pack capacity. The corresponding operating threshold after sunk research is 21.52 packs; the optimistic full-capacity price floor is $5,890.08. A necessary price floor does not show that customers will buy at that price. Negotiated discounts and other excluded adverse factors raise these thresholds. [Arithmetic](break_even_analysis.json)
+
+Three sponsors could share a generic instrument while retaining private model data. At an assumed $4,000 each, shared integration, coordination and individual validation cost $4,500; contribution before research is $7,500. Charging shared research once gives a simple development-cost recovery threshold of twelve committed sponsors. This calculation excludes further acquisition, financing, warranty and exit costs; it is not the full enterprise return from the lifecycle simulation. With independent 70% consent, unanimous three-sponsor commitment occurs with probability 34.3%; the assumed expected contribution per attempt is $2,079.75 after failed coordination cost. A shared refusal shock reduces it to $947.85. These are sensitivity calculations, not estimated participation rates. Conditional pledges must stay restricted and be refunded if the cohort does not form. Future open availability creates a reason to wait, and complementary technical access does not ensure economically stable collaboration. The same conventional arrangement ties. [Arrangement model](arrangements.py), [outputs](arrangement_analysis.json)
+
+## Successor investment and billion-plus significance
+
+The frozen gate requires twelve accepted deliveries, two renewals, $12,000 operating contribution, adequate retained cash and a conservative expected incremental benefit above a $4,000 pilot cost. Its current lower bound is 0.2 × $8,000 = $1,600, so the gate holds investment. No future successor value is booked, and the later $20,000 integration stage remains uncommitted. A capped information purchase could be reconsidered after evidence about an external task, transfer costs and value versus alternatives. It has not been justified by these commercial results.
+
+Billion-plus significance is defined as **$1 billion of net incremental beneficiary value relative to the best alternative over ten years**, not revenue, profit or valuation. At an assumed $2,500 incremental value per accepted pack, this requires 400,000 packs, 40,000 per year, and 10,000 active beneficiaries commissioning four per year. At current capacity it requires approximately 1,667 delivery teams and 160,000 annual verification hours before acquisition and exceptions. Reachable demand, adoption and incremental value are not established; this threshold makes the missing evidence concrete instead of inferring scale from an industry total. [Scale and pilot scenarios](arrangement_analysis.json)
+
+## Independent reconciliation and reproducibility
+
+The independent checker reconstructed **1,536 saved worlds, 385,682 journal events and 1,828 contracts**, with 228 aggregate checks. It checked nonnegative cash at every event, deposit restrictions, terminal closure, reported balances, profit and cash requirements without importing the simulator. All 22 frozen files remained unchanged. Six controlled branch worlds exercised twelve lifecycle branches; four deliberately corrupted ledgers were rejected. Those controls are excluded from the economic samples. [Scenario audit](../verification/economic_confirmation_audit.json), [aggregate audit](../verification/economic_aggregate_audit.json), [reference audit](../verification/reference_accounting_audit.json), [branch controls](../evidence/development/economic_branch_controls_v3/summary.json)
+
+Run the frozen confirmation with the supplied seed bank as documented in [README](README.md). `persist_confirmation_references.py` saves the same reference calculations, and `report_confirmation.py` derives the operating breakdown from hash-checked saved worlds. The reproducible outputs support a narrow conclusion: this bounded construction merits preservation, while this paid launch should stop unless materially different externally supported demand, delivery scope or cost assumptions justify a new frozen study.

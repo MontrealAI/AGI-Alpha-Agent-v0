@@ -1,0 +1,48 @@
+{
+  "status": "pass",
+  "scope": "Additive handoff/reproduction wrapper qualification; original frozen campaign unchanged",
+  "quick": {
+    "frozen_files": 22,
+    "original_used_files_unchanged": 28,
+    "joint_and_successor_exact_json_parity": true,
+    "independent_optimum_costs": [
+      14,
+      66
+    ],
+    "unit_control_tests": "14/14 pass",
+    "logs": "handoff_smoke_v1/quick_logs"
+  },
+  "stage_full": {
+    "isolated_full_copy": "pass",
+    "copied_original_results_preserved": true,
+    "generated_shell_syntax": "pass",
+    "full_generated_recipe_executed_in_this_smoke": false,
+    "staged_recipe_wrapper_ast_equals_final_wrapper": true
+  },
+  "stage_circuits": {
+    "byte_identical_netlists": 336,
+    "ordinary_library_duplicates_excluded": true,
+    "simulator_executed_in_this_smoke": false
+  },
+  "output_guards": {
+    "existing_directory": "correctly rejected",
+    "inside_study_directory": "correctly rejected"
+  },
+  "lint": {
+    "wrapper_ruff_E_F_line120": "pass",
+    "first_attempt": "one E501 long prose-string line; corrected by equivalent string-literal wrapping before final quick smoke"
+  },
+  "final_freeze_sha256": "e1ccee55bf1269fd3fc0932538782a2eaaa1eeda31cf06880435708fd74e33d7",
+  "seed_bank_sha256": "e721d18d75f2c6f95bd3d25668d4799a4d7d54e85db24cd8ff414e801ec0fea1",
+  "handoff_files": {
+    "README.md": "bf4aef38885a8e1baf20685d0274f16dd51a231facb58888b954cf605100fbea",
+    "DEVELOPER_HANDOFF.md": "ecfeee7fb8709eea7a0f0b3bae234e808380e97e9fe3f37fb27eb653fbe796b2",
+    "reproduce.py": "05a34b632c26449b114a756c66a506c414cdc5d70d3934a1206e7a5dadfa8b3a",
+    "requirements-study.txt": "1668a3152e33680d94637b13421c15e68bd97cd8701f7f555c691f5bc5c0b9f3"
+  },
+  "limitations": [
+    "No full repository gates, coverage, hosted CI, release or publication performed by this handoff",
+    "Full generated recipe staged and syntax-checked; underlying full campaign commands have their separate execution receipts",
+    "Native ngspice replay requires separately provisioned executable; no package installation performed by wrapper"
+  ]
+}

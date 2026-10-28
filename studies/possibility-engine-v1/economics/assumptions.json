@@ -1,0 +1,254 @@
+{
+  "schema": "possibility-enterprise-assumptions-v1",
+  "currency": "USD",
+  "simulation_scope": "All buyers, contracts, commercial deliveries, payments and enterprise decisions are simulated. The technical construction is executed separately; no simulated commercial acceptance constitutes physical validation or market evidence.",
+  "horizon_months": 12,
+  "runoff_months": 6,
+  "opening_equity_cents": 8000000,
+  "credit_limit_cents": 2000000,
+  "credit_apr": 0.12,
+  "facility_fee_cents": 50000,
+  "monthly_facility_cents": 5000,
+  "startup": [
+    [
+      "research",
+      96,
+      125
+    ],
+    [
+      "failed_discovery",
+      40,
+      125
+    ],
+    [
+      "development",
+      120,
+      100
+    ],
+    [
+      "independent_validation",
+      32,
+      125
+    ],
+    [
+      "documentation",
+      16,
+      100
+    ]
+  ],
+  "startup_inference_cents": 80000,
+  "startup_compute_cents": 50000,
+  "startup_tools_cents": 30000,
+  "hourly": {
+    "acquisition": 80,
+    "qualification": 125,
+    "negotiation": 90,
+    "delivery": 110,
+    "verification": 140,
+    "correction": 110,
+    "support": 100,
+    "maintenance": 100
+  },
+  "hours": {
+    "acquisition": 0.8,
+    "qualification": 1.5,
+    "negotiation": 1,
+    "delivery": 10,
+    "verification": 4,
+    "correction": 4,
+    "support": 2,
+    "maintenance_monthly": 8,
+    "operations_monthly": 4
+  },
+  "lead_mean": 14,
+  "qualification_probability": 0.55,
+  "first_pass_probability": 0.82,
+  "repair_success_probability": 0.8,
+  "warranty_probability": 0.06,
+  "warranty_refund_fraction": 0.5,
+  "delivery_inference_cents": 8000,
+  "delivery_compute_cents": 2500,
+  "delivery_tools_cents": 1500,
+  "mean_buyer_value_cents": 2400000,
+  "value_log_sigma": 0.7,
+  "internal_hourly_cents": 12500,
+  "choice_temperature_cents": 40000,
+  "collection_enforcement_probability": 0.75,
+  "collection_cost_cents": 25000,
+  "late_penalty_fraction": 0,
+  "liquidity_failure_probability": 0.04,
+  "joint": {
+    "sponsors": 3,
+    "rights_consent_probability": 0.7,
+    "coordination_hours": 6,
+    "shared_integration_hours": 12,
+    "per_sponsor_hours": 6,
+    "rate": 125,
+    "standalone_hours": 24,
+    "price_total_cents": 1200000
+  },
+  "successor": {
+    "earliest_month": 9,
+    "min_accepted": 12,
+    "min_renewals": 2,
+    "min_operating_contribution_cents": 1200000,
+    "experiment_cost_cents": 400000,
+    "min_cash_after_cents": 2000000,
+    "conditional_stage2_cost_cents": 2000000,
+    "lower_bound_success_probability": 0.2,
+    "lower_bound_incremental_value_cents": 800000
+  },
+  "policies": {
+    "prices_cents": [
+      600000,
+      800000,
+      1000000
+    ],
+    "deposit_fractions": [
+      0.3,
+      0.5
+    ],
+    "monthly_capacities": [
+      2,
+      4
+    ],
+    "stop_month": 5,
+    "stop_trailing_contribution_cents": -300000,
+    "redesign_prices_cents": [
+      300000,
+      450000,
+      600000
+    ]
+  },
+  "development_seeds": [
+    12001,
+    12002,
+    12003,
+    12004,
+    12005,
+    12006,
+    12007,
+    12008,
+    12009,
+    12010,
+    12011,
+    12012
+  ],
+  "scenarios": {
+    "reference": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1
+    },
+    "low_demand": {
+      "lead_factor": 0.55,
+      "value_factor": 0.7,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1
+    },
+    "same_ai_price_war": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "imitate",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1
+    },
+    "supplier_shock": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 3,
+      "capacity_factor": 0.65,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1.3
+    },
+    "payment_deviation": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.15,
+      "rationality": "logit",
+      "failure_factor": 1
+    },
+    "rational_buyers": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "best_response",
+      "failure_factor": 1
+    },
+    "high_need": {
+      "lead_factor": 1.8,
+      "value_factor": 1.5,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1
+    },
+    "correlated_failure": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 2.5
+    },
+    "strongest_free": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1,
+      "free_quality": 0.9,
+      "free_hours": 4,
+      "free_delay": 1
+    },
+    "low_labor": {
+      "lead_factor": 1,
+      "value_factor": 1,
+      "compete": "adaptive",
+      "supplier_factor": 1,
+      "capacity_factor": 1,
+      "enforcement": 0.75,
+      "rationality": "logit",
+      "failure_factor": 1,
+      "labor_factor": 0.7,
+      "free_quality": 0.9,
+      "free_hours": 8,
+      "free_delay": 1
+    }
+  },
+  "selection_weights": {
+    "reference": 0.35,
+    "low_demand": 0.1,
+    "same_ai_price_war": 0.15,
+    "payment_deviation": 0.1,
+    "supplier_shock": 0.1,
+    "strongest_free": 0.2
+  }
+}
