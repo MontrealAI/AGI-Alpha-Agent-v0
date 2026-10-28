@@ -1,0 +1,87 @@
+[
+  {
+    "label": "after-exact-archives",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/test_connected_delivery_147_release.py",
+      "tests/test_delivery_guard_147_release.py",
+      "tests/test_frontier_delivery_147_release.py"
+    ],
+    "exitcode": 0,
+    "elapsedSeconds": 6.277866210999491,
+    "output": "after-exact-archives.txt",
+    "expected": "162 passed"
+  },
+  {
+    "label": "after-current-module-page-workers-drift",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/test_connected_delivery_147_release.py",
+      "tests/test_delivery_guard_147_release.py",
+      "tests/test_frontier_delivery_147_release.py"
+    ],
+    "exitcode": 0,
+    "elapsedSeconds": 6.76409851200151,
+    "output": "after-current-module-page-workers-drift.txt",
+    "expected": "162 passed"
+  },
+  {
+    "label": "after-archive-tamper-refusals",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/test_connected_delivery_147_release.py::test_connected_edition_preserves_its_frozen_source_and_both_histories",
+      "tests/test_delivery_guard_147_release.py::test_reconciled_edition_preserves_frozen_source_and_both_histories",
+      "tests/test_frontier_delivery_147_release.py::test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source"
+    ],
+    "exitcode": 1,
+    "elapsedSeconds": 0.8733425030004582,
+    "output": "after-archive-tamper-refusals.txt",
+    "expected": "3 failed"
+  },
+  {
+    "label": "ruff-current",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "tests/test_connected_delivery_147_release.py",
+      "tests/test_delivery_guard_147_release.py",
+      "tests/test_frontier_delivery_147_release.py"
+    ],
+    "exitcode": 0,
+    "elapsedSeconds": 0.03430316700178082,
+    "output": "ruff-current.txt"
+  },
+  {
+    "label": "ruff-pinned",
+    "command": [
+      "/workspace/scratch/9c7b9ec78746/pinned-ruff-021/bin/ruff",
+      "check",
+      "tests/test_connected_delivery_147_release.py",
+      "tests/test_delivery_guard_147_release.py",
+      "tests/test_frontier_delivery_147_release.py"
+    ],
+    "exitcode": 0,
+    "elapsedSeconds": 0.013111119998939103,
+    "output": "ruff-pinned.txt"
+  }
+]

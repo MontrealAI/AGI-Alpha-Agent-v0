@@ -1,0 +1,89 @@
+{
+  "scope": "scripted local prototype authority regression; no provider, customer or deployed canary",
+  "sourceCommit": "76164f966f5af69c662ac0ae159b72b1a0d874a1",
+  "moduleSha256": "ac9601e0b76c3c425ef854ea2ce48e7462fd99b0777b040b09b16eb4e20cfab6",
+  "wallSeconds": 0.8005427819989563,
+  "resourceCeilingSeconds": 30,
+  "providerApiCalls": 0,
+  "customerAcceptance": false,
+  "completeActualCostUsd": null,
+  "results": [
+    {
+      "fault": "none",
+      "status": "delivered-awaiting-independent-acceptance-and-costs",
+      "calls": {
+        "model": 2,
+        "tool": 1
+      },
+      "checks": {
+        "expected_status": true,
+        "bounded_handoff": true,
+        "expected_actions": true,
+        "decision_consumed": true,
+        "launch_retained": true,
+        "reservation_preserved_or_released": true,
+        "unknown_cost_not_erased": true,
+        "execution_controller_current": true,
+        "journal_verifies": true
+      }
+    },
+    {
+      "fault": "unrelated-revocation",
+      "status": "delivered-awaiting-independent-acceptance-and-costs",
+      "calls": {
+        "model": 2,
+        "tool": 1
+      },
+      "checks": {
+        "expected_status": true,
+        "bounded_handoff": true,
+        "expected_actions": true,
+        "decision_consumed": true,
+        "launch_retained": true,
+        "reservation_preserved_or_released": true,
+        "unknown_cost_not_erased": true,
+        "execution_controller_current": true,
+        "journal_verifies": true
+      }
+    },
+    {
+      "fault": "decision-revocation",
+      "status": "failed-or-uncertain",
+      "calls": {
+        "model": 1,
+        "tool": 0
+      },
+      "checks": {
+        "expected_status": true,
+        "bounded_handoff": true,
+        "expected_actions": true,
+        "decision_consumed": true,
+        "launch_retained": true,
+        "reservation_preserved_or_released": true,
+        "unknown_cost_not_erased": true,
+        "execution_controller_current": true,
+        "journal_verifies": true
+      }
+    },
+    {
+      "fault": "decision-expiry",
+      "status": "failed-or-uncertain",
+      "calls": {
+        "model": 1,
+        "tool": 0
+      },
+      "checks": {
+        "expected_status": true,
+        "bounded_handoff": true,
+        "expected_actions": true,
+        "decision_consumed": true,
+        "launch_retained": true,
+        "reservation_preserved_or_released": true,
+        "unknown_cost_not_erased": true,
+        "execution_controller_current": true,
+        "journal_verifies": true
+      }
+    }
+  ],
+  "passed": true
+}

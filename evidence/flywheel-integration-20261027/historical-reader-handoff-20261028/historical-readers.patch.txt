@@ -1,0 +1,154 @@
+diff --git a/tests/test_connected_delivery_147_release.py b/tests/test_connected_delivery_147_release.py
+index bc8630a70..2a4e69fc5 100644
+--- a/tests/test_connected_delivery_147_release.py
++++ b/tests/test_connected_delivery_147_release.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: Apache-2.0
+-"""Bind the combined edition while retaining each owner's exact frozen closure."""
++"""Retain the historical connected edition and each owner's exact frozen closure."""
+ 
+ from __future__ import annotations
+ 
+@@ -37,6 +37,16 @@ PREDECESSOR_NAMES = (
+     "INSIGHT_FRONTIER_147_ENTERPRISE_ACCEPTANCE_EXTRA_FILES",
+ )
+ PREDECESSOR_SHA256 = "a28136ab1dac6c4c34f63af33f5fa7c4c6d0e2a212373e03006a79f7138576d7"
++ENTERPRISE_ARCHIVE = "tests/fixtures/flywheel-enterprise-before-commercial-authority-147.py.txt"
++ENTERPRISE_SHA256 = "fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1"
++
++
++def historical_enterprise_bytes() -> bytes:
++    """Return exact pre-correction source as data, never as a current authority check."""
++    raw = (ROOT / ENTERPRISE_ARCHIVE).read_bytes()
++    assert len(raw) == 37_034
++    assert hashlib.sha256(raw).hexdigest() == ENTERPRISE_SHA256
++    return raw
+ 
+ 
+ def fixture() -> dict:
+@@ -53,9 +63,7 @@ def fixture() -> dict:
+     )
+     assert (
+         value["enterpriseModuleSha256"]
+-        == hashlib.sha256(
+-            (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+-        ).hexdigest()
++        == hashlib.sha256(historical_enterprise_bytes()).hexdigest()
+     )
+     assert set(value["files"]) == set(WORKERS)
+     return value
+diff --git a/tests/test_delivery_guard_147_release.py b/tests/test_delivery_guard_147_release.py
+index 03fc2b27c..e28613b47 100644
+--- a/tests/test_delivery_guard_147_release.py
++++ b/tests/test_delivery_guard_147_release.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: Apache-2.0
+-"""Bind the combined edition while retaining each owner's exact frozen closure."""
++"""Retain the historical delivery-guard edition and exact predecessor closures."""
+ 
+ from __future__ import annotations
+ 
+@@ -12,7 +12,10 @@ import pytest
+ from scripts import refresh_capability_checkout as checkout
+ from tests.test_flywheel_147_workers import closure as child_edition_files
+ from tests.test_frontier_delivery_147_release import current_files as frontier_edition_files
+-from tests.test_connected_delivery_147_release import current_files as connected_edition_files
++from tests.test_connected_delivery_147_release import (
++    current_files as connected_edition_files,
++    historical_enterprise_bytes,
++)
+ from tests.test_flywheel_reconciliation_147_release import current_files as reconciled_edition_files
+ from tests.test_insight_frontier_enterprise_acceptance_release import edition_files as latest_owner_files
+ from tests.test_insight_frontier_post_guard_release import edition_files as post_guard_edition_files
+@@ -58,9 +61,7 @@ def fixture() -> dict:
+     )
+     assert (
+         value["enterpriseModuleSha256"]
+-        == hashlib.sha256(
+-            (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+-        ).hexdigest()
++        == hashlib.sha256(historical_enterprise_bytes()).hexdigest()
+     )
+     assert set(value["files"]) == set(WORKERS)
+     return value
+@@ -70,17 +71,21 @@ def current_files() -> dict[str, bytes]:
+     catalog = json.loads((ROOT / checkout.CATALOG).read_bytes())
+     names = set(catalog["sources"]) | set(checkout.DELIVERY_GUARD_147_EXTRA_FILES)
+     assert len(names) == 61
+-    return {name: (ROOT / name).read_bytes() for name in names}
++    rows = fixture()["files"]
++    return {name: rows[name]["text"].encode() if name in rows else (ROOT / name).read_bytes() for name in names}
+ 
+ 
+-def test_reconciled_edition_matches_current_source_and_preserves_both_histories() -> None:
++def test_reconciled_edition_preserves_frozen_source_and_both_histories(tmp_path: Path) -> None:
+     value = fixture()
+     profiles = {name: getattr(checkout, name) for name in PREDECESSOR_NAMES}
+     assert len(profiles) == 27
+     assert hashlib.sha256(json.dumps(profiles, sort_keys=True, separators=(",", ":")).encode()).hexdigest() == (
+         PREDECESSOR_SHA256
+     )
+-    assert value["pageSha256"] == hashlib.sha256((ROOT / "docs/flywheel/index.html").read_bytes()).hexdigest()
++    assert (
++        value["pageSha256"]
++        == hashlib.sha256((ROOT / "tests/fixtures/delivery-guard-147-page.html.txt").read_bytes()).hexdigest()
++    )
+     before = current_files()
+     for name, record in value["files"].items():
+         body = before[name]
+@@ -88,7 +93,8 @@ def test_reconciled_edition_matches_current_source_and_preserves_both_histories(
+         assert (len(body), hashlib.sha256(body).hexdigest()) == checkout.DELIVERY_GUARD_147_EXTRA_FILES[name]
+         assert (record["bytes"], record["sha256"]) == checkout.DELIVERY_GUARD_147_EXTRA_FILES[name]
+         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]
+-    report = checkout.refresh(ROOT)
++    write_files(tmp_path, before)
++    report = checkout.refresh(tmp_path)
+     assert report["checked"] == 61 and report["needsRefresh"] == []
+     assert report["applied"] is False and report["backupDirectory"] is None
+     assert current_files() == before
+diff --git a/tests/test_frontier_delivery_147_release.py b/tests/test_frontier_delivery_147_release.py
+index fd960a6e0..03d447f22 100644
+--- a/tests/test_frontier_delivery_147_release.py
++++ b/tests/test_frontier_delivery_147_release.py
+@@ -11,6 +11,7 @@ import pytest
+ 
+ from scripts import refresh_capability_checkout as checkout
+ from tests.test_connected_delivery_147_release import current_files as reconciled_files
++from tests.test_connected_delivery_147_release import historical_enterprise_bytes
+ from tests.test_insight_frontier_enterprise_acceptance_release import edition_files as owner_files
+ from tests.test_insight_frontier_release import ROOT, WORKERS, snapshot, write_files
+ 
+@@ -33,6 +34,7 @@ def historical_sources() -> dict[str, bytes]:
+     assert value["commit"] == "372e88f6274ae803c80f8b8c95c3810d52de01ca"
+     files = {name: body.encode() for name, body in value["files"].items()}
+     files["docs/flywheel/index.html"] = (ROOT / "tests/fixtures/frontier-delivery-147-page.html.txt").read_bytes()
++    files["alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"] = historical_enterprise_bytes()
+     return files
+ 
+ 
+@@ -45,6 +47,7 @@ def current_files() -> dict[str, bytes]:
+ 
+ def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source(tmp_path: Path) -> None:
+     value = fixture()
++    historical = historical_sources()
+     assert value["version"] == "1.47.0" and len(value["predecessorProfiles"]) == 26
+     assert value["orderedParents"] == ["4be5a593ac08275fc72a446f42502f6de80cd426"]
+     for name, expected in value["predecessorProfiles"].items():
+@@ -55,7 +58,7 @@ def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrat
+         ("pageSha256", "docs/flywheel/index.html"),
+         ("sourceManifestSha256", "docs/flywheel/sources.json"),
+     ):
+-        body = historical_sources().get(name, (ROOT / name).read_bytes())
++        body = historical[name] if name in historical else (ROOT / name).read_bytes()
+         assert hashlib.sha256(body).hexdigest() == value[field]
+     for name, row in value["files"].items():
+         body = current_files()[name]
+@@ -68,7 +71,7 @@ def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrat
+     frozen = json.loads(raw)
+     assert sum(name.startswith("alpha_factory_v1/core/runtime/") for name in frozen["sources"]) == 75
+     for name, expected in frozen["sources"].items():
+-        body = historical_sources().get(name, (ROOT / name).read_bytes())
++        body = historical[name] if name in historical else (ROOT / name).read_bytes()
+         assert hashlib.sha256(body).hexdigest() == expected, name
+     before = current_files()
+     write_files(tmp_path, before)

@@ -1,0 +1,114 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+____ test_connected_edition_preserves_its_frozen_source_and_both_histories _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-61/test_connected_edition_preserv0')
+
+    def test_connected_edition_preserves_its_frozen_source_and_both_histories(tmp_path: Path) -> None:
+>       value = fixture()
+                ^^^^^^^^^
+
+tests/test_connected_delivery_147_release.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "509376b62f46973ac730e39cbc809c528ee495fa",
+            "dae93bd3ed5fc8978e83d8d53f98594e0e9125a0",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == '283825034c2b...b8ece431de892'
+E         
+E         - 283825034c2b058a645c412285a192f6859a0d665d8ff310488b8ece431de892
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_connected_delivery_147_release.py:54: AssertionError
+_ test_reconciled_edition_matches_current_source_and_preserves_both_histories __
+
+    def test_reconciled_edition_matches_current_source_and_preserves_both_histories() -> None:
+>       value = fixture()
+                ^^^^^^^^^
+
+tests/test_delivery_guard_147_release.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fixture() -> dict:
+        raw = (ROOT / FIXTURE).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == FIXTURE_SHA256
+        value = json.loads(raw)
+        assert value["version"] == "1.47.0"
+        assert value["orderedParents"] == [
+            "4be5a593ac08275fc72a446f42502f6de80cd426",
+            "372e88f6274ae803c80f8b8c95c3810d52de01ca",
+            "d41fc0d2687a9b44079b3c88206cf0fa2c97d59d",
+        ]
+        assert (
+            value["generatorSha256"] == hashlib.sha256((ROOT / "scripts/build_service_worker.py").read_bytes()).hexdigest()
+        )
+>       assert (
+            value["enterpriseModuleSha256"]
+            == hashlib.sha256(
+                (ROOT / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py").read_bytes()
+            ).hexdigest()
+        )
+E       AssertionError: assert 'fa79c1f3ef9d...388d56371ade1' == '283825034c2b...b8ece431de892'
+E         
+E         - 283825034c2b058a645c412285a192f6859a0d665d8ff310488b8ece431de892
+E         + fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+
+tests/test_delivery_guard_147_release.py:59: AssertionError
+_ test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-61/test_historical_edition_preser0')
+
+    def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source(tmp_path: Path) -> None:
+        value = fixture()
+        assert value["version"] == "1.47.0" and len(value["predecessorProfiles"]) == 26
+        assert value["orderedParents"] == ["4be5a593ac08275fc72a446f42502f6de80cd426"]
+        for name, expected in value["predecessorProfiles"].items():
+            raw = json.dumps(getattr(checkout, name), sort_keys=True, separators=(",", ":")).encode()
+            assert hashlib.sha256(raw).hexdigest() == expected
+        for field, name in (
+            ("generatorSha256", "scripts/build_service_worker.py"),
+            ("pageSha256", "docs/flywheel/index.html"),
+            ("sourceManifestSha256", "docs/flywheel/sources.json"),
+        ):
+            body = historical_sources().get(name, (ROOT / name).read_bytes())
+            assert hashlib.sha256(body).hexdigest() == value[field]
+        for name, row in value["files"].items():
+            body = current_files()[name]
+            assert body == row["text"].encode()
+            assert (len(body), hashlib.sha256(body).hexdigest()) == (row["bytes"], row["sha256"])
+            assert (row["bytes"], row["sha256"]) == checkout.FRONTIER_DELIVERY_147_EXTRA_FILES[name]
+            assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == row["gitBlob"]
+        raw = (ROOT / "evidence/frontier-delivery-20261028/SOURCE_FREEZE.json").read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == SOURCE_FREEZE_SHA256
+        frozen = json.loads(raw)
+        assert sum(name.startswith("alpha_factory_v1/core/runtime/") for name in frozen["sources"]) == 75
+        for name, expected in frozen["sources"].items():
+            body = historical_sources().get(name, (ROOT / name).read_bytes())
+>           assert hashlib.sha256(body).hexdigest() == expected, name
+E           AssertionError: alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py
+E           assert '283825034c2b...b8ece431de892' == 'fa79c1f3ef9d...388d56371ade1'
+E             
+E             - fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+E             + 283825034c2b058a645c412285a192f6859a0d665d8ff310488b8ece431de892
+
+tests/test_frontier_delivery_147_release.py:72: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_connected_delivery_147_release.py::test_connected_edition_preserves_its_frozen_source_and_both_histories
+FAILED tests/test_delivery_guard_147_release.py::test_reconciled_edition_matches_current_source_and_preserves_both_histories
+FAILED tests/test_frontier_delivery_147_release.py::test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source
+3 failed in 0.47s
