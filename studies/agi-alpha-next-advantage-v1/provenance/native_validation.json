@@ -1,0 +1,57 @@
+{
+  "schema": "next-advantage-native-validation/v1",
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "dependencies": {
+    "pydantic": "2.11.7",
+    "cryptography": "50.0.2",
+    "eth-account": "0.14.0",
+    "eth-utils": "6.0.0",
+    "httpx": "0.28.1",
+    "pytest": "8.4.1"
+  },
+  "environment_checks": [
+    "python scripts/check_python_deps.py: passed",
+    "python check_env.py --auto-install: passed; Google ADK installed by existing checker"
+  ],
+  "checks": [
+    {
+      "command": "python -m pytest -q studies/agi-alpha-next-advantage-v1/tests/test_native_integration.py --noconftest",
+      "result": "10 passed in 1.43s",
+      "scope": "Standalone study tests; root conftest deliberately not part of this distinct research test invocation."
+    },
+    {
+      "command": "python studies/agi-alpha-next-advantage-v1/src/native_integration.py --self-test --output studies/agi-alpha-next-advantage-v1/evidence/native-controls",
+      "result": "PASS native controls; PASS existing public lifecycle four negative controls"
+    },
+    {
+      "command": "python -m ruff check studies/agi-alpha-next-advantage-v1/src/native_integration.py studies/agi-alpha-next-advantage-v1/tests/test_native_integration.py",
+      "result": "All checks passed"
+    },
+    {
+      "command": "python -m pytest -q studies/agi-alpha-next-advantage-v1/tests/test_economics.py --noconftest",
+      "result": "14 passed in 0.34s",
+      "scope": "Synthetic control worlds only; no empirical economic inference"
+    },
+    {
+      "command": "python -m ruff check studies/agi-alpha-next-advantage-v1/tests/test_economics.py",
+      "result": "All checks passed"
+    }
+  ],
+  "not_run": [
+    "Full repository test suite",
+    "full software release campaign",
+    "live ENS authority",
+    "actual provider model calls",
+    "customer payment verification"
+  ],
+  "keys": "Fresh synthetic identities used only inside temporary directories; no private keys or tokens in published evidence.",
+  "development_corrections": [
+    {
+      "kind": "test fixture correction",
+      "original": "One horizon-1d test demanded immediate $1000 new-offering launch despite forecast not recovering that cost; 1 failed/13 passed.",
+      "correction": "Set this synthetic test launch+assessment total to$2 to exercise a pre-outcome action; economic implementation and registered scenario costs unchanged.",
+      "final": "14 passed"
+    }
+  ]
+}

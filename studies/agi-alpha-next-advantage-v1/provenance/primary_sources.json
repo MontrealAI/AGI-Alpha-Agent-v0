@@ -1,0 +1,146 @@
+{
+  "research_date": "2026-10-27",
+  "purpose": "Primary-source calibration for AGI Alpha Flywheel production-scheduling hybrid study. No live model calls, customer interviews or sales were conducted by the source researcher.",
+  "classification": "intermediate source research, not an experiment result",
+  "models": {
+    "currency": "USD",
+    "rates_unit": "per million tokens, Standard speed, requests with at most 272000 input tokens",
+    "gpt-6-astra": {
+      "role": "complex reasoning, strategy, coding, research and independent checking",
+      "role_status": "study configuration choice, supported by documented model capabilities",
+      "input": 10.0,
+      "cached_input": 1.0,
+      "cache_write_30m": 12.5,
+      "cache_write_12h": 25.0,
+      "output": 50.0,
+      "context": 1050000,
+      "max_output": 128000,
+      "reasoning_effort": ["low", "medium", "high", "xhigh", "max"],
+      "fine_tuning": "not supported",
+      "source_id": "openai_astra"
+    },
+    "gpt-6.1-terra": {
+      "role": "visual computer use, screen interpretation and packaging",
+      "role_status": "study configuration choice, supported by documented model capabilities",
+      "input": 1.0,
+      "cached_input": 0.05,
+      "cache_write_30m": 1.25,
+      "cache_write_12h": 2.5,
+      "output": 5.0,
+      "context": 1050000,
+      "max_output": 128000,
+      "reasoning_effort": ["none", "low", "medium", "high", "xhigh", "max"],
+      "fine_tuning": "not supported",
+      "tool_calling": "Responses API required",
+      "source_id": "openai_terra"
+    },
+    "gpt-6.1-sol": {
+      "role": "optional efficient coding/production alternative",
+      "input": 2.0,
+      "cached_input": 0.1,
+      "cache_write_30m": 2.5,
+      "cache_write_12h": 5.0,
+      "output": 10.0,
+      "context": 1050000,
+      "max_output": 128000,
+      "reasoning_effort": ["low", "medium", "high", "xhigh", "max"],
+      "tool_calling": "Responses API required",
+      "source_id": "openai_sol"
+    },
+    "pricing_adjustments": {
+      "long_context_threshold_input_tokens": 272000,
+      "long_context_full_request_input_and_cache_multiplier": 2.0,
+      "long_context_full_request_output_multiplier": 1.5,
+      "fast_multiplier": 2.0,
+      "batch_and_flex_multiplier": 0.5,
+      "ultrafast_astra_and_sol_multiplier": 6.0,
+      "regional_processing_uplift": 0.1,
+      "web_search_per_1000_calls": 10.0,
+      "web_search_extra": "search content tokens billed at model rates",
+      "containers": "1 GB $0.03; 4 GB $0.12; 16 GB $0.48; 64 GB $1.92 per 20-minute session. Eligible sessions billed per minute with a five-minute minimum.",
+      "source_id": "openai_pricing"
+    },
+    "published_rate_limits": {
+      "applies_to": ["gpt-6-astra", "gpt-6.1-terra"],
+      "free": "not supported",
+      "build": {"requests_per_minute": 5000, "tokens_per_minute": 1000000, "batch_queue_tokens": 3000000},
+      "launch": {"requests_per_minute": 10000, "tokens_per_minute": 4000000, "batch_queue_tokens": 200000000},
+      "grow": {"requests_per_minute": 15000, "tokens_per_minute": 40000000, "batch_queue_tokens": 15000000000},
+      "qualification": "Published tiers are not evidence that this user's organization has a given tier or API entitlement. User account access was not inspected. A ChatGPT Pro subscription is distinct from API key billing and limits."
+    },
+    "configuration_recommendation": {
+      "status": "assumed research configuration, not benchmarked here",
+      "reasoning": {"model": "gpt-6-astra", "reasoning_effort": "high", "api": "Responses", "speed": "Standard"},
+      "computer_use": {"model": "gpt-6.1-terra", "reasoning_effort": "medium", "api": "Responses", "speed": "Standard"},
+      "snapshot_limit": "Model pages expose the aliases above; no immutable dated snapshot was verified. Record returned model identifiers and API responses for a future live run, and revalidate aliases before qualification.",
+      "training_boundary": "Learn executable policies/heuristics or authorized open components. Do not represent a proprietary Astra/Terra weight update as supported.",
+      "cost_sensitivity": "Report total prompt, cached, cache-write, output and tool tokens, iterations, failed calls and corrections. Token counts per job, success probabilities and orchestration competence are uncalibrated assumptions until measured. Suggested stress factors 0.5x, 1x, 2x and 4x are scenarios, not forecasts."
+    }
+  },
+  "commercial_calibration": {
+    "preferred_method": "Estimated scope-matched human hours multiplied by primary-source engineering consulting charge-out rates; disclose that hours are researcher estimates and a binding quote has not been obtained.",
+    "afg_quebec_2026": {
+      "currency": "CAD",
+      "engineer_intermediate_3_to_7_years_hourly": 135.0,
+      "engineer_intermediate_7_to_11_years_hourly": 154.0,
+      "engineer_senior_11_to_15_years_hourly": 173.0,
+      "engineer_senior_15_to_20_years_hourly": 189.0,
+      "engineer_senior_20_to_25_years_hourly": 203.0,
+      "engineer_senior_25plus_years_hourly": 219.0,
+      "source_id": "afg2026",
+      "limits": "Professional-engineering association fee guidance; not observed average transaction prices and not a firm quote for manufacturing scheduling. Exclude construction signoff or licensed engineering approval from an unqualified automation offering."
+    },
+    "illustrative_bounded_package": {
+      "status": "assumed hours and package scope, not an observed market price",
+      "scope": "One facility, validated existing input data, one bounded scheduling model and acceptance report; no ERP integration, plant deployment or ongoing support",
+      "intermediate_hours": 16,
+      "intermediate_rate_cad": 154,
+      "senior_hours": 4,
+      "senior_rate_cad": 189,
+      "human_reference_cad": 3220,
+      "sensitivity": "0.5x to 2x estimated hours, plus source rate range. Keep CAD and USD separate or state a sourced/as-assumed FX conversion explicitly. This example is not a recommended selling price."
+    },
+    "arinti_offer": {
+      "amount": 15000,
+      "currency": "EUR",
+      "duration_weeks": 4,
+      "scope": "Production, planning or scheduling consulting: analysis, technique selection, prototype and stakeholder validation, proof-of-value development, final recommendations.",
+      "source_id": "arinti",
+      "limits": "Broader implementation engagement than a bounded schedule computation. Source explicitly says production readiness depends on constraints and complexity. Posted asking price, not an observed sale or evidence that our product will attract buyers."
+    },
+    "bitbros_offer": {
+      "amount": 22500,
+      "currency": "dollar currency unspecified on retrieved page",
+      "duration_weeks": "3-4",
+      "scope": "One decision-system diagnostic: objectives/constraints/business-rules audit, replay of historical decisions, ranked roadmap; production planning/scheduling is an offered domain.",
+      "source_id": "bitbros",
+      "limits": "Broad consulting diagnostic, not a direct same-scope quote. Use only as category evidence. Do not silently call this USD."
+    },
+    "demand_evidence_status": "Existing supplier offerings establish a service category, not demand for AGI Alpha. Conversion, willingness to pay, trust, churn, job arrival rates, customer input effort and cancellation/refund behavior remain assumptions requiring prospective customer validation.",
+    "residual_human_cost": "Record actual residual obligations if measured; otherwise label scenario costs. Do not impose a fixed arbitrary review time as a physical necessity or claim zero residual work as demonstrated."
+  },
+  "sources": [
+    {"id":"openai_astra","title":"GPT-6 Astra model","author":"OpenAI","url":"https://developers.openai.com/api/docs/models/gpt-6-astra","type":"official documentation","ref":"turn1view0","verified":"opened and inspected relevant lines","scope":"Identifier, capabilities, reasoning levels, prices, context/output limits, tool support, no fine-tuning, published access tiers"},
+    {"id":"openai_terra","title":"GPT-6.1 Terra model","author":"OpenAI","url":"https://developers.openai.com/api/docs/models/gpt-6.1-terra","type":"official documentation","ref":"turn1view1","verified":"opened and inspected relevant lines","scope":"Identifier, visual/computer-use role, reasoning levels, Responses-only tools, prices, context/output limits, no fine-tuning, published access tiers"},
+    {"id":"openai_sol","title":"GPT-6.1 Sol model","author":"OpenAI","url":"https://developers.openai.com/api/docs/models/gpt-6.1-sol","type":"official documentation","ref":"turn1view2","verified":"opened and inspected relevant lines","scope":"Identifier, coding/computer-use role, reasoning levels, Responses-only tools, prices, context/output limits"},
+    {"id":"openai_pricing","title":"API pricing","author":"OpenAI","url":"https://developers.openai.com/api/docs/pricing","type":"official documentation","ref":"turn1view3","verified":"opened and inspected relevant lines","scope":"Standard/Flex/Batch/Fast/Ultrafast and cache pricing, web tools, containers"},
+    {"id":"chatgpt_pricing","title":"ChatGPT Work and Codex pricing","author":"OpenAI","url":"https://learn.chatgpt.com/docs/pricing","type":"official documentation","ref":"turn7view1","verified":"opened and inspected API-key section","scope":"Plan usage differs from API-key billing; key access follows API model availability; account entitlement not verified"},
+    {"id":"afg2026","title":"Barème des honoraires, édition 2026","author":"Association des firmes de génie-conseil du Québec","year":2026,"url":"https://afg.quebec/wp-content/uploads/2026/01/AFG_Bareme_des_honoraires_2026.pdf","type":"primary association fee guideline","ref":"turn4view0","verified":"opened PDF, table on printed page 32","scope":"Engineering consulting charge-out rate reference in CAD; fixed-scope agreements should specify deliverables and timing"},
+    {"id":"arinti","title":"AI Production & Planning Optimization: 4 wk impl.","author":"Arinti, listing on Microsoft Marketplace","url":"https://marketplace.microsoft.com/fr-fr/marketplace/consulting-services/arinti.production-scheduling-optimization","type":"first-party advertised service","ref":"turn11view2","verified":"opened","scope":"EUR 15000 four-week scheduling/planning proof-of-value engagement; not a same-scope quote or transaction record"},
+    {"id":"bitbros","title":"Services: Production Planning & Scheduling; Decision System Diagnostic","author":"Bit Bros","url":"https://bitbros.consulting/services/","type":"first-party advertised service","ref":"turn11view0","verified":"opened","scope":"Market category and a broad diagnostic asking price; currency not explicitly identified in retrieved text"},
+    {"id":"ortools_jobshop","title":"The Job Shop Problem","author":"Google OR-Tools documentation","url":"https://developers.google.com/optimization/scheduling/job_shop","type":"official technical documentation","ref":"turn12view1","verified":"opened","scope":"Nonpreemptive precedence/no-overlap scheduling and CP-SAT makespan formulation; sample not itself evidence for our variants"},
+    {"id":"pyjobshop2025","title":"PyJobShop: Solving scheduling problems with constraint programming in Python","author":"Leon Lan and Joost Berkhout","year":2025,"url":"https://arxiv.org/abs/2502.13483","doi":"10.48550/arXiv.2502.13483","type":"primary research preprint","ref":"turn12view2","verified":"opened abstract","scope":"More than 9000 benchmark comparisons: OR-Tools competitive on job/project scheduling, CP Optimizer stronger on permutation/larger problems. Supports a competent CP baseline, not automatic dominance on our instances."},
+    {"id":"reijnen2025","title":"Job Shop Scheduling Benchmark: Environments and Instances for Learning and Non-learning Methods","author":"Robbert Reijnen, Igor G. Smit, Hongxiang Zhang, Yaoxin Wu, Zaharah Bukhsh and Yingqian Zhang","year":2025,"url":"https://arxiv.org/abs/2308.12794v2","doi":"10.48550/arXiv.2308.12794","type":"primary research preprint, v2 dated 2025-03-17","ref":"turn12view3","verified":"opened abstract","scope":"Unified classic, flexible, assembly, setup-dependent and online-arrival variants with heuristics, metaheuristics, exact and RL methods. Supports varied benchmarks and fair comparisons."},
+    {"id":"zhang2020","title":"Learning to Dispatch for Job Shop Scheduling via Deep Reinforcement Learning","author":"Cong Zhang, Wen Song, Zhiguang Cao, Jie Zhang, Puay Siew Tan and Chi Xu","year":2020,"venue":"Advances in Neural Information Processing Systems 33, pp. 1621-1632","url":"https://proceedings.neurips.cc/paper/2020/hash/11958dfee29b6709f48a9ba0387a2431-Abstract.html","type":"primary research paper","ref":"turn16view0","verified":"opened abstract","scope":"Graph-based learned dispatch rules generalized to larger unfamiliar instances in their experiments. Does not establish our transfer, profitability, or state-of-the-art performance."},
+    {"id":"offline_ld2025","title":"Offline Reinforcement Learning for Learning to Dispatch for Job Shop Scheduling","author":"Jesse van Remmerden, Zaharah Bukhsh and Yingqian Zhang","year":2025,"url":"https://arxiv.org/abs/2409.10589v4","doi":"10.48550/arXiv.2409.10589","type":"primary research paper, v4 dated 2025-07-03, accepted in Machine Learning","ref":"turn16view1","verified":"opened abstract","scope":"Offline dispatch learning from historical schedules and CP solutions; reports improvement over online RL using 100 CP solutions. Supports economical learning from productive artifacts, not guaranteed gain on this study."},
+    {"id":"satzilla2008","title":"SATzilla: Portfolio-based Algorithm Selection for SAT","author":"Lin Xu, Frank Hutter, Holger H. Hoos and Kevin Leyton-Brown","year":2008,"venue":"Journal of Artificial Intelligence Research 32, pp. 565-606","url":"https://arxiv.org/abs/1111.2249","doi":"10.1613/jair.2490","type":"primary research paper","ref":"turn6view2","verified":"opened abstract","scope":"Per-instance empirical algorithm portfolio selection; useful conceptual precedent but not scheduling evidence."},
+    {"id":"rezk2023","title":"Is Scaling Learned Optimizers Worth It? Evaluating The Value of VeLO’s 4000 TPU Months","author":"Fady Rezk, Antreas Antoniou, Henry Gouk and Timothy Hospedales","year":2023,"venue":"PMLR 239, pp. 65-83","url":"https://proceedings.mlr.press/v239/rezk23a.html","type":"primary independent empirical evaluation","ref":"turn6view0","verified":"opened abstract","scope":"Independent evaluation found tuning requirements and no general quality/speed advantage for VeLO; motivates independent complete-cost comparison and allowing training to fail."}
+  ],
+  "implementation_implications": [
+    "Compare learned dispatch/portfolio policies against competent generic solvers under declared equal resources. A heuristic-only Beta proxy is not verified frontier AI competence.",
+    "Separate objective quality, validity, latency, model-call costs, CPU time and training costs. A faster scheduler can be worse on tardiness or stability.",
+    "Use independently held-out facilities, demand patterns and disruptions. Train on historical schedules only where rights permit; disclose generated data.",
+    "A novel adjacent robustness offering still needs independent acceptance and prospective buyer validation. A simulation can show conditional modeled viability only.",
+    "No source here supplies this study's conversion rate, willingness-to-pay distribution, training-success probability, retention advantage or residual-human burden. Those must be observed or labeled assumed."
+  ]
+}

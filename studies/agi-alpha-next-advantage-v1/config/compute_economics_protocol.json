@@ -1,0 +1,59 @@
+{
+  "automated_program_costs_usd": [
+    10.0,
+    35.0,
+    120.0
+  ],
+  "collection_scope": "Per booked job; expected collection conditional on technical pass, 0.975 systemic success and 0.22 correction recovery. Collections are expected eventual receipts after settlement, not actual earned revenue. Corrections and refunds have their original costs. No agent chooses this solver after inspecting the same fresh case.",
+  "common_costs": "Existing automation2400, general daily overhead38, lead acquisition38 per lead, and offering launch850+validation150 are common to the matched methods and do not enter incremental break-even. Full enterprise absolute profitability is reported in the separate matched enterprise simulation. Dividing program cost by delivery contribution alone is not a full-business profit claim.",
+  "cpu_floor": "Observed v2 Gym seconds times assumed USD3/hour is an incomplete lower bound: it excludes assessment, integration, sharing, composition, upkeep and researcher effort. It is never labeled a complete-cost program.",
+  "freeze_utc": "2026-10-27T12:37:58.311363+00:00",
+  "grid": [
+    0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "inputs": {
+    "config/economics.json": "c9981cf5befd48dc38de9c81c6d96aa788398dbd91fe842a677c7d02118d5795",
+    "config/numerical_quality_frontier.json": "f12f3303c033090dcc1426c84793a558522a56bb4daab729493888f3a683abb1",
+    "evidence/numerical/beta144_confirmation/calibration.json": "acd6beeca660b61e37cc8476f739cf14171f922d32ecf201ca693273da734b26",
+    "evidence/numerical/policy_v2.json": "8d61f237a3ff8103f3c3e9fcf05f592aa99c61b7ce113d024a90557f99baf15b",
+    "src/compute_economics.py": "96f6b05c7f0168acc70b9aeaf582d0e03dd4d5f441f2b2b9534e022d6fa3f03e",
+    "src/economics.py": "05ccb8e35033fcc5c01cbdc931d1639e3141ad9da96ab3d128cffd91f6d26c2f"
+  },
+  "invocation_B_usd_per_use": [
+    0.0,
+    3.0
+  ],
+  "methods": [
+    "beta48",
+    "learned48",
+    "beta144"
+  ],
+  "offers": [
+    "nominal",
+    "robust"
+  ],
+  "paired_bootstrap_repetitions": 5000,
+  "paired_bootstrap_seed": 130000,
+  "pricing": "A common price is selected from the original bounded grid using only Beta48 development success and the original buyer prior. All three methods face this same quote. No willingness to pay for a stricter tier is empirically established.",
+  "program_scope": "Original v1 learning belongs to A and is not charged again. B/C program scenarios cover retention, assessment/sharing, additional Gym, composition for robust, and maintenance over a55-day life. Assumed automated envelopes10/35/120 are total program B+C budgets; no measured allocation between them is asserted. Primary assumption uses retain120,share90,Gym420,composition180 for robust, plus two35 maintenance cycles. Local invocation0 and hypothetical service invocation3 are separate B sensitivities; no live protected scheduling service exists.",
+  "registration_status": "Supplementary economic analysis declared after viewing Beta144 technical results; all tiers and methods retained. Not a prespecified primary claim.",
+  "resource_comparison": "Beta144 uses three times the candidate evaluations; it is not an equal-compute control. Measured wall-clock scheduler time is converted at assumed USD3/hour. Only its difference from Beta48 replaces the already-budgeted CPU slice in A.",
+  "reuse_grid": [
+    1,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "schema": "next-advantage-compute-economics-supplement/v1",
+  "uncertainty": "Descriptive paired case-bootstrap intervals over12 fresh synthetic numerical cases, conditional on all economic assumptions. These are not market confidence intervals. Correlated market/outage uncertainty, demand, attainable reuse, and capacity are not resolved by the bootstrap. Fresh cases are not iid real buyers."
+}

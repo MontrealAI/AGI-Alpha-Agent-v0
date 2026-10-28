@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "command": "python -m pytest -q tests/test_economics.py tests/test_compute_economics.py tests/test_expansion_frontier.py tests/test_native_integration.py",
+      "result": "35 passed in1.54s"
+    },
+    {
+      "command": "python -m ruff check src/native_integration.py src/replay_expansion.py src/compute_economics.py src/expansion_frontier.py tests/test_economics.py tests/test_compute_economics.py tests/test_expansion_frontier.py tests/test_native_integration.py",
+      "result": "All checks passed"
+    },
+    {
+      "command": "node --check src/native_lifecycle.mjs",
+      "result": "exit0"
+    },
+    {
+      "command": "python src/replay_expansion.py --output /tmp/next-advantage-expansion-unused --verify-only",
+      "result": "PASS all frozen inputs verified"
+    },
+    {
+      "command": "python src/compute_economics.py --freeze; python src/compute_economics.py",
+      "result": "Frozen before economic computation;504case rows and280program rows"
+    },
+    {
+      "command": "python src/native_integration.py --input evidence/economics/native_input.json --output evidence/native-accounting",
+      "result": "PASS;449source events,68independently verified signed journal events"
+    }
+  ],
+  "compute_interpretation": [
+    "Conditional per-booked-job contribution and incremental program break-even, not a complete enterprise or actual sale.",
+    "One executed successful v2 artifact underlies the cost sensitivity. Repeated speculative development success, failed prospective campaigns and attainable reuse are not estimated by this per-contract addendum; the enterprise study models optional campaign failures separately.",
+    "Observed Gym elapsed time6.421357918996364seconds priced at assumedUSD3/hour givesUSD0.0053511315991636365. This is an incomplete lower bound and not an observed cloud bill.",
+    "The10/35/120complete additional program envelopes are assumptions. The700nominal/880robust primary envelope includes two35maintenance cycles over55days. Invocation0or3per use is separate.",
+    "Identical common price from Beta48 development; no hidden fresh outcomes enter the quote. Stricter-tier buyer willingness to pay remains unvalidated.",
+    "Bootstrap intervals describe12synthetic case pairs and fixed cost/demand assumptions; they are not real-market confidence intervals."
+  ],
+  "execution_corrections": [
+    "A Python Ruff invocation accidentally included native_lifecycle.mjs and correctly rejected JavaScript as Python; no source changes followed. Reissued Python-only Ruff and Node syntax check both passed."
+  ],
+  "funding_test": {
+    "kind": "synthetic unit-test control; not market evidence",
+    "new_source": "Same world rejects expansion; source eligibility only changes the expansion arm.",
+    "old_source": "Allows expansion onday14 from abundant seedcash while accumulated operating cash is insufficient.",
+    "test": "test_seed_cash_cannot_finance_the_surplus_expansion_arm"
+  },
+  "not_claimed": [
+    "Live ENS or protected scheduling admission",
+    "Live frontier model calls",
+    "actual customer sales",
+    "full repository CI or release gates",
+    "independent external laboratory replication"
+  ],
+  "protocols": {
+    "config/compute_economics_protocol.json": "1887a933684cf4a44d17b6eb68031c958ff5b63d27512f6dd413952f62f1a579",
+    "config/expansion_frontier_protocol.json": "7c42124eaa337ffa26c8b412739300be48049d854fb8f741fb88a5aa4b6fbbba"
+  },
+  "recorded_utc": "2026-10-27T12:40:33.955812+00:00",
+  "schema": "next-advantage-supplement-validation/v1",
+  "supplement_replay": {
+    "command": "python src/replay_expansion.py --output NEW_OUTPUT_DIRECTORY",
+    "current_economics_sha256": "05ccb8e35033fcc5c01cbdc931d1639e3141ad9da96ab3d128cffd91f6d26c2f",
+    "frozen_economics_sha256": "4ccf2e885799eeab97dd51c399f6f0d15171e68389761d2890624e59b2993382",
+    "full_second_replay_not_run": "Hash verification and staging verified; original14336histories retained. An optional duplicate14336-history run would add no new scientific cases.",
+    "source_diff": "--- evidence/expansion_source_snapshot/economics.py\n\n+++ src/economics.py\n\n@@ -417,7 +417,14 @@\n\n             net = gain - cost - shadow * cfg[\"investment_hours\"][\"launch\"]\n             if net > cfg[\"decision_margin\"] * cost:\n                 investments.append((net / cfg[\"investment_hours\"][\"launch\"], \"launch\", cost))\n-        if policy.expand and not flags[\"expand\"] and day >= 14 and stats[\"capacity_declined\"] >= 5:\n+        earned_surplus = max(0.0, cash - cfg[\"capital_usd\"] - cfg[\"reserve_usd\"])\n+        if (\n+            policy.expand\n+            and not flags[\"expand\"]\n+            and day >= 14\n+            and stats[\"capacity_declined\"] >= 5\n+            and earned_surplus >= cfg[\"expansion_usd\"]\n+        ):\n             gain = (cfg[\"days\"] - day) * max(0.0, shadow - cfg[\"expansion_daily_usd\"])\n             if gain > cfg[\"expansion_usd\"] * (1 + cfg[\"decision_margin\"]):\n                 investments.append((gain / 2, \"expand\", cfg[\"expansion_usd\"]))",
+    "why_snapshot": "The primary policy later received an earned-surplus expansion guard. The supplement contains no expansion-enabled arm, so the only source difference is outside its policy support. Replay uses the exact frozen source to preserve provenance, not a second production implementation."
+  }
+}

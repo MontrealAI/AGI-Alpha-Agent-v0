@@ -1,0 +1,42 @@
+{
+  "schema": "next-advantage-native-controls/v1",
+  "source": {
+    "commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+    "files": 18,
+    "verified": true
+  },
+  "duplicate_across_buckets_refused": "activity already charged; A, B and C cannot overlap",
+  "invoice_not_revenue": true,
+  "unknown_cost_not_zero": true,
+  "incomplete_seal_refused": "missing or unknown delivery costs prevent a complete-cost claim",
+  "revoked_accounting_signer_refused": "principal is not currently trusted for the required role",
+  "unsupported_scheduling_scope_refused": "1 validation error for CapsuleManifest\nsupported_scope\n  Input should be 'bounded-public-source-selection/v1' [type=literal_error, input_value='manufacturing-scheduling/v1', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/literal_error",
+  "access": {
+    "mode": "SYNTHETIC_ENSV1_RESPONSES_REAL_EIP191_CHECKS",
+    "authorized_names": [
+      "producer.agent.agi.eth",
+      "recipient.agent.agi.eth"
+    ],
+    "different_wallets": true,
+    "unauthorized_refusal": "requesting wallet has no current direct-label authority",
+    "revoked_authority_refusal": "requesting wallet has no current direct-label authority",
+    "replay_refusals": 2,
+    "rpc_calls": 78,
+    "network_requests": 0,
+    "journal": {
+      "valid": true,
+      "events": 11,
+      "head": "e6e574d27ae76ac5928bc27c509ecba42dd028e7aba3ce300abfad0e2bda5042",
+      "identity": "urn:agialpha:ed25519:59dc75ac91b43e2c9d2994662cc8158c26bd3bbb8cb961ed93a8673f7178872a"
+    },
+    "live_ens_qualified": false,
+    "scheduling_execution_authorized": false
+  },
+  "journal": {
+    "valid": true,
+    "events": 8,
+    "head": "0f509336d31e5a84556357dfbb9aea11edfeb997a1142453bfdb3115243af9b3",
+    "identity": "urn:agialpha:ed25519:334465f962ee03fe26793ad12a33133f8ba8387c1acbd538c5aced56f8f1983a"
+  },
+  "boundary": "Native accounting and access controls execute; scheduling artifacts cannot enter the protected main capsule scope. No live model, sales, ENS, settlement, or production admission."
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "next-advantage-native-accounting/v1",
+  "label": "central opportunity seed 70000, simulated amounts / executed native accounting",
+  "input_sha256": "be129ec26397e9edd421ce4296e5a49441600defa549ea745ab782a309fabdcc",
+  "artifact_digest": "28f89888d10fb474501b8d4a5b1bfaea83bc720f3ff3fb7a582b00950fba0c4e",
+  "source": {
+    "commit": "80b345828f34fd8a6e592977dd17ef37141305f4",
+    "files": 18,
+    "verified": true
+  },
+  "source_event_count": 449,
+  "report": {
+    "currency": "USD",
+    "unit": "micro_usd",
+    "costs": {
+      "A": 13297500000,
+      "B": 150000000,
+      "C": 850000000
+    },
+    "collected_revenue": 144796960000,
+    "delivery_profit": 131499460000,
+    "complete_cost_profit": 130499460000,
+    "cash": 138499460000,
+    "obligations": 0,
+    "known_obligations": 0,
+    "reserve": 1800000000,
+    "available_funds": 136699460000,
+    "complete": true,
+    "bucket_complete": {
+      "A": true,
+      "B": true,
+      "C": true
+    },
+    "unknown_costs": false,
+    "token_movements_included": false,
+    "evidence_basis": "configured accounting signer attestations"
+  },
+  "independent_expected": {
+    "costs": {
+      "A": 13297500000,
+      "B": 150000000,
+      "C": 850000000
+    },
+    "collected_revenue": 144796960000,
+    "complete_cost_profit": 130499460000,
+    "cash": 138499460000,
+    "obligations": 0,
+    "reserve": 1800000000,
+    "available_funds": 136699460000
+  },
+  "journal_verification": {
+    "valid": true,
+    "events": 68,
+    "head": "432a7208e414cd28cf410553ffa532de97c0d65087a12bd5401db6be6520db85",
+    "identity": "urn:agialpha:ed25519:f439a7bf16686a79876445baf0146e4d06c7837afa9275356091d98172d7b657"
+  },
+  "public_signatures_verified": 68,
+  "accounting_public_key": "50a43930e11efb399cc072ad4c3bb1c2ae5b709f1fddb577062b973f5a2c0fcf",
+  "economic_values": "SIMULATED",
+  "identity": "LOCAL_SYNTHETIC_ACCOUNTANT",
+  "live_sales": false,
+  "live_ens": false,
+  "native_scheduling_admission": false,
+  "projection": "Distinct source events aggregate into bounded native A/B/C category charges. No source activity is charged twice. Missing category maps to overhead. Explicit zero categories mean zero in the supplied model, not observed zero costs.",
+  "replay_variability": "Economic totals and source hashes are deterministic; fresh local keys, journal identity, timestamps and signatures vary."
+}
