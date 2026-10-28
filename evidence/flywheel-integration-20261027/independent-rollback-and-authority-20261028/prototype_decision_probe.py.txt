@@ -1,0 +1,132 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Replay four role-separated prototype checks without external authority or I/O."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source-root", type=Path, required=True)
+    parser.add_argument("--expected-module-sha256", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    root = args.source_root.resolve()
+    module = root / "alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"
+    actual = hashlib.sha256(module.read_bytes()).hexdigest()
+    assert actual == args.expected_module_sha256
+    assert not args.output.exists()
+    sys.path[:0] = [str(root), str(root / "tests/runtime")]
+
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+    from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
+    from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import Enterprise, key
+    from alpha_factory_v1.core.runtime.successor.trust import TrustAnchor, sign_record
+    import test_flywheel_enterprise as e
+    import test_flywheel_specialists as s
+
+    original_command, real_time = e.command, time.time
+    started = time.monotonic()
+    results = []
+    for fault in ("none", "unrelated-revocation", "decision-revocation", "decision-expiry"):
+        with tempfile.TemporaryDirectory(prefix="alpha-role-probe-") as directory:
+            state = e.setup.__wrapped__(Path(directory))
+            s.funding(state)
+            e.register(state)
+            signer = "independent-decision-controller"
+            signing_key = Ed25519PrivateKey.generate()
+            state["keys"][signer] = signing_key
+            state["trust"]._anchors[signer] = TrustAnchor(
+                signing_key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw).hex(),
+                frozenset({"controller"}),
+            )
+            expiry = int(real_time()) + 30
+
+            def command(*call_args, **kwargs):
+                envelope = original_command(*call_args, **kwargs)
+                if call_args[1] == "decide":
+                    payload = dict(envelope.payload)
+                    payload["expires_at"] = expiry
+                    return sign_record(signing_key, signer, "flywheel-enterprise-command", payload)
+                return envelope
+
+            e.command = command
+            try:
+                decision = e.decision(state, identity="separate-prototype-decision")
+            finally:
+                e.command = original_command
+            assert decision["signed"]["principal"] == signer and decision["selected"] == "deliver"
+            executor, mission, profile, permit = e.execution(state, "separate-prototype-run")
+            respond, perform = executor.transport.respond, executor.environment.perform
+            calls = {"model": 0, "tool": 0}
+
+            def model(*call_args):
+                calls["model"] += 1
+                value = respond(*call_args)
+                if calls["model"] == 1:
+                    if fault == "decision-revocation":
+                        state["trust"].revoke(signer)
+                    elif fault == "unrelated-revocation":
+                        state["trust"].revoke("evaluator")
+                    elif fault == "decision-expiry":
+                        time.time = lambda: expiry + 1
+                return value
+
+            def tool(*call_args):
+                calls["tool"] += 1
+                return perform(*call_args)
+
+            executor.transport.respond, executor.environment.perform = model, tool
+            try:
+                enterprise = Enterprise(state["service"])
+                result = enterprise.run("separate-prototype-decision", executor, mission, profile, permit)
+                adverse = fault in {"decision-revocation", "decision-expiry"}
+                expected = "failed-or-uncertain" if adverse else "delivered-awaiting-independent-acceptance-and-costs"
+                launch = enterprise.inspect("launch", "separate-prototype-run")
+                reservation = state["journal"].latest(key("active", "capacity"))["reservations"]
+                charge = state["costs"].snapshot()["charges"]["execution/separate-prototype-run"]
+                checks = {
+                    "expected_status": result["status"] == expected,
+                    "bounded_handoff": calls == ({"model": 1, "tool": 0} if adverse else {"model": 2, "tool": 1}),
+                    "expected_actions": result["actions"] == (0 if adverse else 1),
+                    "decision_consumed": enterprise.inspect("decision", "separate-prototype-decision")["consumed"],
+                    "launch_retained": launch["status"] == ("failed-or-uncertain" if adverse else "completed"),
+                    "reservation_preserved_or_released": ("separate-prototype-run" in reservation) == adverse,
+                    "unknown_cost_not_erased": charge["accrued_micro_usd"] is None,
+                    "execution_controller_current": bool(state["trust"].anchor(permit.principal, "controller")),
+                    "journal_verifies": bool(state["journal"].verify()),
+                }
+                results.append({"fault": fault, "status": result["status"], "calls": dict(calls), "checks": checks})
+            finally:
+                time.time = real_time
+        assert time.monotonic() - started < 30
+    report = {
+        "scope": "scripted local prototype authority regression; no provider, customer or deployed canary",
+        "sourceCommit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+        "moduleSha256": actual,
+        "wallSeconds": time.monotonic() - started,
+        "resourceCeilingSeconds": 30,
+        "providerApiCalls": 0,
+        "customerAcceptance": False,
+        "completeActualCostUsd": None,
+        "results": results,
+        "passed": all(all(row["checks"].values()) for row in results),
+    }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    with args.output.open("x") as output:
+        json.dump(report, output, indent=2)
+        output.write("\n")
+    print(json.dumps(report))
+
+
+if __name__ == "__main__":
+    main()
