@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "--noconftest",
+    "-o",
+    "addopts=",
+    "-q",
+    "tests/test_connected_delivery_147_release.py::test_connected_edition_preserves_its_frozen_source_and_both_histories",
+    "tests/test_delivery_guard_147_release.py::test_reconciled_edition_matches_current_source_and_preserves_both_histories",
+    "tests/test_frontier_delivery_147_release.py::test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source"
+  ],
+  "exitcode": 1,
+  "elapsedSeconds": 1.0233762220013887,
+  "sourceCommit": "c5164a385f54b59a11b53d70cf491e5e21ad3b18",
+  "changedCurrentModule": "inert comment only, restored in finally",
+  "expectation": "three old-edition readers incorrectly bind current enterprise bytes",
+  "output": "before-current-module-drift.txt"
+}

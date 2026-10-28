@@ -1,0 +1,86 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+____ test_connected_edition_preserves_its_frozen_source_and_both_histories _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_connected_edition_preserv0')
+
+    def test_connected_edition_preserves_its_frozen_source_and_both_histories(tmp_path: Path) -> None:
+>       value = fixture()
+                ^^^^^^^^^
+
+tests/test_connected_delivery_147_release.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_connected_delivery_147_release.py:66: in fixture
+    == hashlib.sha256(historical_enterprise_bytes()).hexdigest()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def historical_enterprise_bytes() -> bytes:
+        """Return exact pre-correction source as data, never as a current authority check."""
+        raw = (ROOT / ENTERPRISE_ARCHIVE).read_bytes()
+        assert len(raw) == 37_034
+>       assert hashlib.sha256(raw).hexdigest() == ENTERPRISE_SHA256
+E       AssertionError: assert 'daa345d25f95...c35ede9bff258' == 'fa79c1f3ef9d...388d56371ade1'
+E         
+E         - fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+E         + daa345d25f951ea61bbb4b487dc2bdda0e421a6269625b92b91c35ede9bff258
+
+tests/test_connected_delivery_147_release.py:48: AssertionError
+______ test_reconciled_edition_preserves_frozen_source_and_both_histories ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_reconciled_edition_preser0')
+
+    def test_reconciled_edition_preserves_frozen_source_and_both_histories(tmp_path: Path) -> None:
+>       value = fixture()
+                ^^^^^^^^^
+
+tests/test_delivery_guard_147_release.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_delivery_guard_147_release.py:64: in fixture
+    == hashlib.sha256(historical_enterprise_bytes()).hexdigest()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def historical_enterprise_bytes() -> bytes:
+        """Return exact pre-correction source as data, never as a current authority check."""
+        raw = (ROOT / ENTERPRISE_ARCHIVE).read_bytes()
+        assert len(raw) == 37_034
+>       assert hashlib.sha256(raw).hexdigest() == ENTERPRISE_SHA256
+E       AssertionError: assert 'daa345d25f95...c35ede9bff258' == 'fa79c1f3ef9d...388d56371ade1'
+E         
+E         - fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+E         + daa345d25f951ea61bbb4b487dc2bdda0e421a6269625b92b91c35ede9bff258
+
+tests/test_connected_delivery_147_release.py:48: AssertionError
+_ test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_historical_edition_preser0')
+
+    def test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source(tmp_path: Path) -> None:
+        value = fixture()
+>       historical = historical_sources()
+                     ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_frontier_delivery_147_release.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_frontier_delivery_147_release.py:37: in historical_sources
+    files["alpha_factory_v1/core/runtime/successor/flywheel_enterprise.py"] = historical_enterprise_bytes()
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def historical_enterprise_bytes() -> bytes:
+        """Return exact pre-correction source as data, never as a current authority check."""
+        raw = (ROOT / ENTERPRISE_ARCHIVE).read_bytes()
+        assert len(raw) == 37_034
+>       assert hashlib.sha256(raw).hexdigest() == ENTERPRISE_SHA256
+E       AssertionError: assert 'daa345d25f95...c35ede9bff258' == 'fa79c1f3ef9d...388d56371ade1'
+E         
+E         - fa79c1f3ef9d587b382aaf9a01c0a09b133109fde4bc2d471d0388d56371ade1
+E         + daa345d25f951ea61bbb4b487dc2bdda0e421a6269625b92b91c35ede9bff258
+
+tests/test_connected_delivery_147_release.py:48: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_connected_delivery_147_release.py::test_connected_edition_preserves_its_frozen_source_and_both_histories
+FAILED tests/test_delivery_guard_147_release.py::test_reconciled_edition_preserves_frozen_source_and_both_histories
+FAILED tests/test_frontier_delivery_147_release.py::test_historical_edition_preserves_all_twenty_six_profiles_and_exact_integrated_source
+3 failed in 0.27s
