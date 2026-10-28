@@ -8,7 +8,9 @@ records retain stopped, rejected and uncertain work without automatic replay.
 
 from __future__ import annotations
 
+import sqlite3
 import time
+from contextlib import closing
 from typing import Any, Literal
 
 from pydantic import Field, model_validator
@@ -199,6 +201,23 @@ class Enterprise:
         self._evidence(assessment.evidence, cx)
         return assessment
 
+    def _technical_origin(self, offering: dict[str, Any], cx: Any) -> None:
+        """Recheck current support while preserving the historical qualification."""
+        operation = offering.get("prototype_operation")
+        if not isinstance(operation, str) or offering["qualification_source"] != self.service.execution_digest:
+            raise Conflict("prototype technical source requires requalification")
+        launch = self._read("launch", operation, cx)
+        record, _ = accepted_general_origin(self.service, operation, cx)
+        if (
+            launch is None
+            or launch["status"] != "completed"
+            or launch["source"] != self.service.execution_digest
+            or launch["offering_spec_digest"]
+            != digest("enterprise-offering", Offering.model_validate(offering["spec"]))
+            or launch["execution_digest"] != record["digest"]
+        ):
+            raise Conflict("prototype acceptance differs from the qualified offering execution")
+
     def _context(self, cx: Any) -> dict[str, Any]:
         _, network = self.service._state(cx)
         active = self._read("active", "capacity", cx)
@@ -385,6 +404,7 @@ class Enterprise:
         else:
             if raw["execution_operation"] is not None or value["qualification_source"] != self.service.execution_digest:
                 raise ValueError("technical source requires requalification")
+            self._technical_origin(value, cx)
             if stage == "commercially-assessed":
                 assessment = CommercialAssessment.model_validate(raw["commercial"])
                 self._evidence(assessment.evidence, cx)
@@ -423,6 +443,10 @@ class Enterprise:
                     ):
                         reasons.append("offering not currently authorized")
                     elif alternative.action == "produce":
+                        try:
+                            self._technical_origin(offering, cx)
+                        except (KeyError, ValueError):
+                            reasons.append("prototype acceptance or supporting evidence is not currently eligible")
                         try:
                             self._commercial_evidence(offering, cx)
                         except (KeyError, ValueError):
@@ -544,6 +568,7 @@ class Enterprise:
                             and alternative.action == "produce"
                             and current_offering["stage"] == "authorized"
                         ):
+                            self._technical_origin(current_offering, cx)
                             self._commercial_evidence(current_offering, cx)
             row = next(
                 x for x in decision["alternatives"] if x["alternative"]["alternative_id"] == decision["selected"]
@@ -609,8 +634,24 @@ class Enterprise:
             updated["consumed"] = True
             self.journal.append(cx, key("decision", decision_id), updated)
             self.service.checkpoint.advance(self.journal, cx)
+
+        def current_support() -> None:
+            if choice.action == "produce":
+                # active() also runs inside the executor's writer transaction.
+                # Use one read-only snapshot, avoiding a nested writer lock.
+                with closing(sqlite3.connect(self.journal.path.as_uri() + "?mode=ro", uri=True)) as cx:
+                    cx.execute("BEGIN")
+                    current_offering = self._read("offering", spec.offering_id, cx)
+                    if current_offering is None or current_offering["digest"] != offering["digest"]:
+                        raise Conflict("offering changed during production; reassess")
+                    self._technical_origin(current_offering, cx)
+
         try:
-            result = executor.run(mission, profile, permit)
+            result = (
+                executor.run(mission, profile, permit, support_check=current_support)
+                if choice.action == "produce"
+                else executor.run(mission, profile, permit)
+            )
         except Exception:
             self._finish(terms.operation_id, pending["digest"], "failed-or-uncertain")
             raise

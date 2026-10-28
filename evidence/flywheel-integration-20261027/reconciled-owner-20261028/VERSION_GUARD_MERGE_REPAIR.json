@@ -1,0 +1,8 @@
+{
+  "failure": "ruff-modern-final.txt and ruff-pinned-final.txt F821",
+  "cause": "Automatic merge retained a historical variable reference inside the newer current147 metadata test.",
+  "repair": "Use current guard file bytes in current147 test; historical1461 test continues to use frozen metadata. Both separate metadata fixtures remain unchanged.",
+  "affected_check": "tests/test_protected_flywheel_release.py",
+  "runtime_changed": false,
+  "replays_changed": false
+}

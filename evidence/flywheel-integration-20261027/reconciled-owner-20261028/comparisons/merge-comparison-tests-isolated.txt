@@ -1,0 +1,473 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-8.4.2, pluggy-1.7.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python
+rootdir: /workspace/scratch/9c7b9ec78746/repo
+configfile: ../../../../dev/null
+collecting ... collected 74 items
+
+tests/runtime/test_flywheel_comparisons.py::test_complete_denominator_is_read_only_and_legacy_plans_stay_unmeasured PASSED [  1%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_equal_protocol_runs_preserve_zero_alpha_and_component_provenance PASSED [  2%]
+tests/runtime/test_flywheel_comparisons.py::test_failures_and_unassessed_work_cannot_disappear_from_the_cohort PASSED [  4%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[inputs] PASSED [  5%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[criteria] PASSED [  6%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[workflow] PASSED [  8%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[retained] PASSED [  9%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[purpose] PASSED [ 10%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[budget] PASSED [ 12%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[roles] PASSED [ 13%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[mission] PASSED [ 14%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[operation] PASSED [ 16%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[mode] PASSED [ 17%]
+tests/runtime/test_flywheel_comparisons.py::test_frozen_cases_reject_substitution_and_unmatched_controls[beneficiary] PASSED [ 18%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_work_declarations_have_prospective_distinct_inputs[repeat-input] PASSED [ 20%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_work_declarations_have_prospective_distinct_inputs[same-recipient] PASSED [ 21%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_work_declarations_have_prospective_distinct_inputs[no-primary] PASSED [ 22%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_work_declarations_have_prospective_distinct_inputs[cross-mode] PASSED [ 24%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_work_declarations_have_prospective_distinct_inputs[duplicate-case] PASSED [ 25%]
+tests/runtime/test_flywheel_comparisons.py::test_retrospective_freeze_and_duplicate_plan_claims_refuse_atomically PASSED [ 27%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[mission] PASSED [ 28%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[profile] PASSED [ 29%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[environment] PASSED [ 31%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[cap] PASSED [ 32%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[configuration] PASSED [ 33%]
+tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[bucket] PASSED [ 35%]
+tests/runtime/test_flywheel_comparisons.py::test_original_mission_cost_identity_is_used_even_when_operation_text_differs PASSED [ 36%]
+tests/runtime/test_flywheel_comparisons.py::test_additional_costs_count_once_and_unknowns_hold_the_cost_contrast PASSED [ 37%]
+tests/runtime/test_flywheel_comparisons.py::test_stale_evidence_keeps_historical_cells_but_withholds_current_comparison PASSED [ 39%]
+tests/runtime/test_flywheel_comparisons.py::test_resource_and_acceptance_limits_do_not_turn_into_confirmed_alpha[missing-usage] PASSED [ 40%]
+tests/runtime/test_flywheel_comparisons.py::test_resource_and_acceptance_limits_do_not_turn_into_confirmed_alpha[token-overrun] PASSED [ 41%]
+tests/runtime/test_flywheel_comparisons.py::test_resource_and_acceptance_limits_do_not_turn_into_confirmed_alpha[stale-acceptance] PASSED [ 43%]
+tests/runtime/test_flywheel_comparisons.py::test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes[source] PASSED [ 44%]
+tests/runtime/test_flywheel_comparisons.py::test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes[controller-revocation] PASSED [ 45%]
+tests/runtime/test_flywheel_comparisons.py::test_requalification_does_not_inherit_current_evidence_after_source_or_trust_changes[acceptor-revocation] PASSED [ 47%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[execution] PASSED [ 48%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[charge] PASSED [ 50%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[seal] PASSED [ 51%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[extra-retention-charge] PASSED [ 52%]
+tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[not-attempted] PASSED [ 54%]
+tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[binding-mismatch] PASSED [ 55%]
+tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[bound-fixture] PASSED [ 56%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[U-1001-False] PASSED [ 58%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1001-False] PASSED [ 59%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E+-1001-False] PASSED [ 60%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-0-True] PASSED [ 62%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-999-True] PASSED [ 63%]
+tests/runtime/test_flywheel_comparisons.py::test_current_delivery_accrual_must_fit_the_original_frozen_trial_cap[E-1000-True] PASSED [ 64%]
+tests/runtime/test_flywheel_comparisons.py::test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial PASSED [ 66%]
+tests/runtime/test_flywheel_comparisons.py::test_known_under_cap_amount_without_completeness_is_not_a_budget_pass PASSED [ 67%]
+tests/runtime/test_flywheel_comparisons.py::test_customer_refund_and_refused_negative_expense_do_not_net_away_delivery_overrun PASSED [ 68%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[operation] PASSED [ 70%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[execution] PASSED [ 71%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[output] PASSED [ 72%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[journal] PASSED [ 74%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[signature] PASSED [ 75%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[receipt] PASSED [ 77%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[role] PASSED [ 78%]
+tests/runtime/test_flywheel_comparisons.py::test_historical_acceptance_requires_exact_bound_receipt_and_configured_signature[key] PASSED [ 79%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_distinct_execution_controller_keeps_observations_without_current_contrasts PASSED [ 81%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[charge] PASSED [ 82%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[original-charge] PASSED [ 83%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[seal-A] FAILED [ 85%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[seal-B] PASSED [ 86%]
+tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[seal-C] PASSED [ 87%]
+tests/runtime/test_flywheel_comparisons.py::test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence[False] PASSED [ 89%]
+tests/runtime/test_flywheel_comparisons.py::test_declared_live_model_with_no_bound_execution_has_no_actual_model_evidence[True] PASSED [ 90%]
+tests/runtime/test_flywheel_comparisons.py::test_execution_signature_substitution_never_qualifies_current_contrasts[signature] PASSED [ 91%]
+tests/runtime/test_flywheel_comparisons.py::test_execution_signature_substitution_never_qualifies_current_contrasts[journal] PASSED [ 93%]
+tests/runtime/test_flywheel_comparisons.py::test_execution_signature_substitution_never_qualifies_current_contrasts[role] PASSED [ 94%]
+tests/runtime/test_flywheel_comparisons.py::test_bound_execution_never_promotes_zero_or_uncertain_model_io[True] PASSED [ 95%]
+tests/runtime/test_flywheel_comparisons.py::test_bound_execution_never_promotes_zero_or_uncertain_model_io[False] PASSED [ 97%]
+tests/runtime/test_flywheel_comparisons.py::test_recorded_scripted_responses_preserve_call_counts_without_provider_promotion PASSED [ 98%]
+tests/runtime/test_flywheel_comparisons.py::test_declared_live_double_responses_remain_provider_unverified PASSED [100%]
+
+=================================== FAILURES ===================================
+_ test_revoked_supporting_accountant_invalidates_only_current_qualification[seal-A] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f45b54b7fb0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f45b54b3d90>, ...}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f45b54b5190>
+support = 'seal-A'
+
+    @pytest.mark.parametrize("support", ["charge", "original-charge", "seal-A", "seal-B", "seal-C"])
+    def test_revoked_supporting_accountant_invalidates_only_current_qualification(
+        setup: dict[str, Any], monkeypatch: pytest.MonkeyPatch, support: str
+    ) -> None:
+        add_signer(setup, "retired-accountant", "accounting")
+        bucket = "C" if support == "seal-C" else "B"
+        spec = plan(setup, 1).model_copy(
+            update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra-assessment", bucket=bucket)]}
+        )
+        spec = freeze(setup, spec)
+        ordinary_account = f.account
+    
+        def record_cost(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            custom_seal = (
+                support == "seal-A"
+                and action == "seal"
+                and record["mission_id"] == spec.cases[0].trials[0].mission.mission_id
+            )
+            custom_seal = custom_seal or support == "seal-" + bucket and action in {"seal-retention", "seal-investment"}
+            if custom_seal:
+                account_as(state, action, record, operation, "retired-accountant")
+            else:
+                ordinary_account(state, action, record, operation)
+    
+        monkeypatch.setattr(f, "account", record_cost)
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial)
+        extra = {
+            "activity_id": "extra-screen",
+            "mission_id": "extra-assessment",
+            "bucket": bucket,
+            "category": "human",
+            "accrued_micro_usd": None if support == "original-charge" else 77,
+            "paid_micro_usd": 0,
+            "basis": "unknown" if support == "original-charge" else "attested",
+            "evidence_digest": f.ZERO,
+            "note": "Fictional separately signed additional assessment; no actual provider bill",
+        }
+        account_as(
+            setup,
+            "charge",
+            extra,
+            "additional-screen",
+            "retired-accountant" if support in {"charge", "original-charge"} else "accountant",
+        )
+        s.seal(setup, "extra-assessment", bucket)
+        before = report(setup, spec)
+        assert before["current_evidence_valid"] and all(
+            row["complete_matched_outcomes"] for row in before["contrasts"].values()
+        )
+        snapshot = setup["costs"].snapshot()
+        setup["trust"].revoke("retired-accountant")
+        after = report(setup, spec)
+        assert not after["current_evidence_valid"]
+>       assert after["cells"] == before["cells"] and len(after["cells"]) == 3
+E       AssertionError: assert ([{'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': False, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': False, 'delivery_cost_status': 'incomplete'}, {'role': 'E', 'operation_id': 'comparison-0-E', 'ledger_mission_id': 'comparison-0-E', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9', 'execution_authority_current': True, 'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-E', 'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94'}, 'elapsed_ms': 67, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E+', 'operation_id': 'comparison-0-Eplus', 'ledger_mission_id': 'comparison-0-Eplus', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c', 'execution_authority_current': True, 'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus', 'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a'}, 'elapsed_ms': 69, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}] == [{'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E', 'operation_id': 'comparison-0-E', 'ledger_mission_id': 'comparison-0-E', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9', 'execution_authority_current': True, 'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-E', 'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94'}, 'elapsed_ms': 67, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E+', 'operation_id': 'comparison-0-Eplus', 'ledger_mission_id': 'comparison-0-Eplus', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c', 'execution_authority_current': True, 'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus', 'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a'}, 'elapsed_ms': 69, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}]
+E         
+E         At index 0 diff: {'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': False, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': False, 'delivery_cost_status': 'incomplete'} != {'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}
+E         
+E         Full diff:
+E           [
+E               {
+E                   'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe',
+E                   'accepted': True,
+E                   'actions': 1,
+E                   'case_id': 'case-0',
+E                   'components': {
+E                       'acceptance': 'executed-local',
+E                       'identity': 'simulated',
+E                       'market': 'simulated',
+E                       'model': 'simulated',
+E                       'tools': 'executed-local',
+E                   },
+E                   'delivery_cost_cap_micro_usd': '1000',
+E         -         'delivery_cost_complete': True,
+E         ?                                   ^^^
+E         +         'delivery_cost_complete': False,
+E         ?                                   ^^^^
+E         -         'delivery_cost_status': 'within-cap',
+E         ?                                  ----  - ^
+E         +         'delivery_cost_status': 'incomplete',
+E         ?                                     ^^ ++++
+E                   'elapsed_ms': 71,
+E                   'execution_authority_current': True,
+E                   'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e',
+E                   'historical_acceptance_evidence': {
+E                       'journal_key': '@flywheel-general-acceptance:comparison-0-U',
+E                       'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe',
+E                       'schema_version': 1,
+E                   },
+E                   'historical_acceptance_recorded': True,
+E                   'known_delivery_cost_micro_usd': '1',
+E                   'ledger_mission_id': 'comparison-0-U',
+E                   'mode': 'hybrid',
+E                   'model_component': 'simulated',
+E                   'model_io': {
+E                       'declared_component': 'simulated',
+E                       'pending_model_request': None,
+E                       'processed_usage_count': 2,
+E                       'provider_call_count': None,
+E                       'provider_provenance_verified': False,
+E                       'recorded_response_count': 2,
+E                       'request_boundary_lower_bound': 2,
+E                       'status': 'response-recorded',
+E                       'unresolved_request': False,
+E                   },
+E                   'operation_id': 'comparison-0-U',
+E                   'outcome_known': True,
+E                   'phase': 'primary',
+E                   'recipient_id': 'origin-fixture',
+E                   'role': 'U',
+E                   'status': 'accepted-finite-placement',
+E                   'tokens': 0,
+E                   'usage_complete': True,
+E         -         'within_observed_limits': True,
+E         ?                                   ^^^
+E         +         'within_observed_limits': False,
+E         ?                                   ^^^^
+E               },
+E               {
+E                   'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94',
+E                   'accepted': True,
+E                   'actions': 1,
+E                   'case_id': 'case-0',
+E                   'components': {
+E                       'acceptance': 'executed-local',
+E                       'identity': 'simulated',
+E                       'market': 'simulated',
+E                       'model': 'simulated',
+E                       'tools': 'executed-local',
+E                   },
+E                   'delivery_cost_cap_micro_usd': '1000',
+E                   'delivery_cost_complete': True,
+E                   'delivery_cost_status': 'within-cap',
+E                   'elapsed_ms': 67,
+E                   'execution_authority_current': True,
+E                   'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9',
+E                   'historical_acceptance_evidence': {
+E                       'journal_key': '@flywheel-general-acceptance:comparison-0-E',
+E                       'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94',
+E                       'schema_version': 1,
+E                   },
+E                   'historical_acceptance_recorded': True,
+E                   'known_delivery_cost_micro_usd': '1',
+E                   'ledger_mission_id': 'comparison-0-E',
+E                   'mode': 'hybrid',
+E                   'model_component': 'simulated',
+E                   'model_io': {
+E                       'declared_component': 'simulated',
+E                       'pending_model_request': None,
+E                       'processed_usage_count': 2,
+E                       'provider_call_count': None,
+E                       'provider_provenance_verified': False,
+E                       'recorded_response_count': 2,
+E                       'request_boundary_lower_bound': 2,
+E                       'status': 'response-recorded',
+E                       'unresolved_request': False,
+E                   },
+E                   'operation_id': 'comparison-0-E',
+E                   'outcome_known': True,
+E                   'phase': 'primary',
+E                   'recipient_id': 'origin-fixture',
+E                   'role': 'E',
+E                   'status': 'accepted-finite-placement',
+E                   'tokens': 0,
+E                   'usage_complete': True,
+E                   'within_observed_limits': True,
+E               },
+E               {
+E                   'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a',
+E                   'accepted': True,
+E                   'actions': 1,
+E                   'case_id': 'case-0',
+E                   'components': {
+E                       'acceptance': 'executed-local',
+E                       'identity': 'simulated',
+E                       'market': 'simulated',
+E                       'model': 'simulated',
+E                       'tools': 'executed-local',
+E                   },
+E                   'delivery_cost_cap_micro_usd': '1000',
+E                   'delivery_cost_complete': True,
+E                   'delivery_cost_status': 'within-cap',
+E                   'elapsed_ms': 69,
+E                   'execution_authority_current': True,
+E                   'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c',
+E                   'historical_acceptance_evidence': {
+E                       'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus',
+E                       'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a',
+E                       'schema_version': 1,
+E                   },
+E                   'historical_acceptance_recorded': True,
+E                   'known_delivery_cost_micro_usd': '1',
+E                   'ledger_mission_id': 'comparison-0-Eplus',
+E                   'mode': 'hybrid',
+E                   'model_component': 'simulated',
+E                   'model_io': {
+E                       'declared_component': 'simulated',
+E                       'pending_model_request': None,
+E                       'processed_usage_count': 2,
+E                       'provider_call_count': None,
+E                       'provider_provenance_verified': False,
+E                       'recorded_response_count': 2,
+E                       'request_boundary_lower_bound': 2,
+E                       'status': 'response-recorded',
+E                       'unresolved_request': False,
+E                   },
+E                   'operation_id': 'comparison-0-Eplus',
+E                   'outcome_known': True,
+E                   'phase': 'primary',
+E                   'recipient_id': 'origin-fixture',
+E                   'role': 'E+',
+E                   'status': 'accepted-finite-placement',
+E                   'tokens': 0,
+E                   'usage_complete': True,
+E                   'within_observed_limits': True,
+E               },
+E           ])
+
+tests/runtime/test_flywheel_comparisons.py:891: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_accountant_invalidates_only_current_qualification[seal-A] - AssertionError: assert ([{'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': False, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': False, 'delivery_cost_status': 'incomplete'}, {'role': 'E', 'operation_id': 'comparison-0-E', 'ledger_mission_id': 'comparison-0-E', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9', 'execution_authority_current': True, 'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-E', 'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94'}, 'elapsed_ms': 67, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E+', 'operation_id': 'comparison-0-Eplus', 'ledger_mission_id': 'comparison-0-Eplus', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c', 'execution_authority_current': True, 'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus', 'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a'}, 'elapsed_ms': 69, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}] == [{'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E', 'operation_id': 'comparison-0-E', 'ledger_mission_id': 'comparison-0-E', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9', 'execution_authority_current': True, 'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-E', 'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94'}, 'elapsed_ms': 67, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}, {'role': 'E+', 'operation_id': 'comparison-0-Eplus', 'ledger_mission_id': 'comparison-0-Eplus', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c', 'execution_authority_current': True, 'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus', 'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a'}, 'elapsed_ms': 69, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}]
+  
+  At index 0 diff: {'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': False, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': False, 'delivery_cost_status': 'incomplete'} != {'role': 'U', 'operation_id': 'comparison-0-U', 'ledger_mission_id': 'comparison-0-U', 'status': 'accepted-finite-placement', 'accepted': True, 'outcome_known': True, 'within_observed_limits': True, 'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e', 'execution_authority_current': True, 'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe', 'historical_acceptance_recorded': True, 'historical_acceptance_evidence': {'schema_version': 1, 'journal_key': '@flywheel-general-acceptance:comparison-0-U', 'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe'}, 'elapsed_ms': 71, 'tokens': 0, 'usage_complete': True, 'actions': 1, 'model_component': 'simulated', 'mode': 'hybrid', 'components': {'acceptance': 'executed-local', 'identity': 'simulated', 'market': 'simulated', 'model': 'simulated', 'tools': 'executed-local'}, 'model_io': {'status': 'response-recorded', 'declared_component': 'simulated', 'request_boundary_lower_bound': 2, 'recorded_response_count': 2, 'processed_usage_count': 2, 'pending_model_request': None, 'unresolved_request': False, 'provider_call_count': None, 'provider_provenance_verified': False}, 'case_id': 'case-0', 'phase': 'primary', 'recipient_id': 'origin-fixture', 'known_delivery_cost_micro_usd': '1', 'delivery_cost_cap_micro_usd': '1000', 'delivery_cost_complete': True, 'delivery_cost_status': 'within-cap'}
+  
+  Full diff:
+    [
+        {
+            'acceptance_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe',
+            'accepted': True,
+            'actions': 1,
+            'case_id': 'case-0',
+            'components': {
+                'acceptance': 'executed-local',
+                'identity': 'simulated',
+                'market': 'simulated',
+                'model': 'simulated',
+                'tools': 'executed-local',
+            },
+            'delivery_cost_cap_micro_usd': '1000',
+  -         'delivery_cost_complete': True,
+  ?                                   ^^^
+  +         'delivery_cost_complete': False,
+  ?                                   ^^^^
+  -         'delivery_cost_status': 'within-cap',
+  ?                                  ----  - ^
+  +         'delivery_cost_status': 'incomplete',
+  ?                                     ^^ ++++
+            'elapsed_ms': 71,
+            'execution_authority_current': True,
+            'execution_digest': 'e0a5ebd39119c6f942f65312d3ca194701182969f283e6a5bd2ae58c20ee0a6e',
+            'historical_acceptance_evidence': {
+                'journal_key': '@flywheel-general-acceptance:comparison-0-U',
+                'record_digest': 'e91853d811c02f7ea603a6c5d5cc981f87f05184e178fa42d3009e3e968483fe',
+                'schema_version': 1,
+            },
+            'historical_acceptance_recorded': True,
+            'known_delivery_cost_micro_usd': '1',
+            'ledger_mission_id': 'comparison-0-U',
+            'mode': 'hybrid',
+            'model_component': 'simulated',
+            'model_io': {
+                'declared_component': 'simulated',
+                'pending_model_request': None,
+                'processed_usage_count': 2,
+                'provider_call_count': None,
+                'provider_provenance_verified': False,
+                'recorded_response_count': 2,
+                'request_boundary_lower_bound': 2,
+                'status': 'response-recorded',
+                'unresolved_request': False,
+            },
+            'operation_id': 'comparison-0-U',
+            'outcome_known': True,
+            'phase': 'primary',
+            'recipient_id': 'origin-fixture',
+            'role': 'U',
+            'status': 'accepted-finite-placement',
+            'tokens': 0,
+            'usage_complete': True,
+  -         'within_observed_limits': True,
+  ?                                   ^^^
+  +         'within_observed_limits': False,
+  ?                                   ^^^^
+        },
+        {
+            'acceptance_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94',
+            'accepted': True,
+            'actions': 1,
+            'case_id': 'case-0',
+            'components': {
+                'acceptance': 'executed-local',
+                'identity': 'simulated',
+                'market': 'simulated',
+                'model': 'simulated',
+                'tools': 'executed-local',
+            },
+            'delivery_cost_cap_micro_usd': '1000',
+            'delivery_cost_complete': True,
+            'delivery_cost_status': 'within-cap',
+            'elapsed_ms': 67,
+            'execution_authority_current': True,
+            'execution_digest': '922969cd283ae7430af98dd8ff2a25c30d9b1c2f5e92853052fa8667f8e2b9c9',
+            'historical_acceptance_evidence': {
+                'journal_key': '@flywheel-general-acceptance:comparison-0-E',
+                'record_digest': 'f2058fb000c10298354fc04c7072eff5ae3cbcf51432e37cbbc5eec3d94f7b94',
+                'schema_version': 1,
+            },
+            'historical_acceptance_recorded': True,
+            'known_delivery_cost_micro_usd': '1',
+            'ledger_mission_id': 'comparison-0-E',
+            'mode': 'hybrid',
+            'model_component': 'simulated',
+            'model_io': {
+                'declared_component': 'simulated',
+                'pending_model_request': None,
+                'processed_usage_count': 2,
+                'provider_call_count': None,
+                'provider_provenance_verified': False,
+                'recorded_response_count': 2,
+                'request_boundary_lower_bound': 2,
+                'status': 'response-recorded',
+                'unresolved_request': False,
+            },
+            'operation_id': 'comparison-0-E',
+            'outcome_known': True,
+            'phase': 'primary',
+            'recipient_id': 'origin-fixture',
+            'role': 'E',
+            'status': 'accepted-finite-placement',
+            'tokens': 0,
+            'usage_complete': True,
+            'within_observed_limits': True,
+        },
+        {
+            'acceptance_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a',
+            'accepted': True,
+            'actions': 1,
+            'case_id': 'case-0',
+            'components': {
+                'acceptance': 'executed-local',
+                'identity': 'simulated',
+                'market': 'simulated',
+                'model': 'simulated',
+                'tools': 'executed-local',
+            },
+            'delivery_cost_cap_micro_usd': '1000',
+            'delivery_cost_complete': True,
+            'delivery_cost_status': 'within-cap',
+            'elapsed_ms': 69,
+            'execution_authority_current': True,
+            'execution_digest': 'ef5551ae941917f7aece7ba6375e69eb3aba77dc2c5dcd23ed0a474a2be0859c',
+            'historical_acceptance_evidence': {
+                'journal_key': '@flywheel-general-acceptance:comparison-0-Eplus',
+                'record_digest': '8310b985900a34ca7412831aa5e19acea7c2deae54f7cb7159864d3f11ade19a',
+                'schema_version': 1,
+            },
+            'historical_acceptance_recorded': True,
+            'known_delivery_cost_micro_usd': '1',
+            'ledger_mission_id': 'comparison-0-Eplus',
+            'mode': 'hybrid',
+            'model_component': 'simulated',
+            'model_io': {
+                'declared_component': 'simulated',
+                'pending_model_request': None,
+                'processed_usage_count': 2,
+                'provider_call_count': None,
+                'provider_provenance_verified': False,
+                'recorded_response_count': 2,
+                'request_boundary_lower_bound': 2,
+                'status': 'response-recorded',
+                'unresolved_request': False,
+            },
+            'operation_id': 'comparison-0-Eplus',
+            'outcome_known': True,
+            'phase': 'primary',
+            'recipient_id': 'origin-fixture',
+            'role': 'E+',
+            'status': 'accepted-finite-placement',
+            'tokens': 0,
+            'usage_complete': True,
+            'within_observed_limits': True,
+        },
+    ])
+======================== 1 failed, 73 passed in 39.67s =========================

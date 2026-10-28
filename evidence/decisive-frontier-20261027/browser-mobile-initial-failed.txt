@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/1602dd9e6810/agi-alpha/scripts/validate_insight_frontier.py", line 139, in <module>
+    main()
+  File "/workspace/scratch/1602dd9e6810/agi-alpha/scripts/validate_insight_frontier.py", line 129, in main
+    report = validate(args.page, args.screenshots, args.axe_script)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1602dd9e6810/agi-alpha/scripts/validate_insight_frontier.py", line 44, in validate
+    assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (language, width)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('en', 320)

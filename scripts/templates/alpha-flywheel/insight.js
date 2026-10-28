@@ -13,6 +13,8 @@ function renderInsight(){
   setText('insight-candidate-detail',findings[candidate.id]);
   const ordinary=evidence.search_report.arms.find(row=>row.arm==='U');
   setText('insight-search-denominator',say(`Frozen search denominator: ${ordinary.denominator} units per arm. U: ${ordinary.counts.missing} missing; E: one supplied candidate, two rejected paths. No measured search advantage.`,`Dénominateur figé : ${ordinary.denominator} unités par groupe. U : ${ordinary.counts.missing} absentes ; E : une candidate fournie, deux pistes écartées. Aucun avantage de recherche mesuré.`));
+  const challenge=evidence.conventional_challenge.summary;
+  setText('insight-conventional',say(`Independent conventional construction matched ${challenge.exact_execution_parity} / ${challenge.complete} complete comparisons across ${challenge.total} authored cases; ${challenge.incomplete_cases.length} case stayed incomplete in both. The technical-breakthrough claim stops. This post-disclosure execution challenge leaves discovery advantage and customer usefulness untested.`,`La construction conventionnelle indépendante égale ${challenge.exact_execution_parity} / ${challenge.complete} comparaisons complètes sur ${challenge.total} cas rédigés ; ${challenge.incomplete_cases.length} cas reste incomplet dans les deux méthodes. La prétention de percée technique est abandonnée. Ce test d’exécution après divulgation ne mesure ni avantage de découverte ni utilité pour des clients.`));
   const episode=evidence.construction_cases.find(row=>row.case_id===$('insight-case').value), result=episode.result;
   const names={
     'institution-clearance':say('Institutional clearance required','Autorisation de l’institution requise'),
@@ -44,6 +46,7 @@ function renderInsight(){
     [say('C: optional research, separate from delivery','C : recherche facultative, distincte de la livraison'),say('USD 0 / 100 / 500 scenarios','Scénarios de 0 / 100 / 500 USD')],
     [say('Actual profit / collections','Profit réel / encaissements'),say('Unknown / USD 0','Inconnu / 0 USD')]
   ]);
+  table($('insight-arrangements'),[say('Arrangement','Organisation'),say('A: low / base / high USD','A : basse / centrale / haute USD')],evidence.economics.arrangement_comparison.map(row=>[row[language==='fr'?'name_fr':'name_en'],row.cost_range_usd?row.cost_range_usd.map(value=>usd(value)).join(' / '):say('Complete outcome unestablished','Résultat complet non établi')]),say('Conditional full-outcome comparison; no actual sales','Comparaison conditionnelle du résultat complet ; aucune vente réelle'));
   setText('insight-transfer',say('Two fresh synthetic local processes reproduced checked paths; an ordinary library with identical information ties. Live authenticated transfer and retained-skill benefit remain unqualified.','Deux processus locaux sur de nouveaux cas synthétiques ont reproduit les chemins vérifiés ; une bibliothèque ordinaire au contenu identique les égale. Le transfert authentifié réel et le bénéfice de rétention restent non qualifiés.'));
   const sources=$('insight-sources');sources.replaceChildren();
   for(const source of evidence.sources){const p=document.createElement('p'),a=document.createElement('a');a.href=source.url;a.textContent=source.title;a.rel='noreferrer';p.appendChild(a);sources.appendChild(p);}

@@ -1,0 +1,36 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_insight_frontier",
+      "--page",
+      "docs/flywheel/index.html",
+      "--report",
+      "/tmp/decisive-postguard-insight-browser.json",
+      "--screenshots",
+      "/tmp/decisive-postguard-screens",
+      "--axe-script",
+      "/tmp/specialist-accessibility/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "scripts.validate_alpha_flywheel",
+      "--site",
+      "docs",
+      "--output",
+      "/tmp/decisive-postguard-preserved-browser",
+      "--axe-script",
+      "/tmp/specialist-accessibility/node_modules/axe-core/axe.min.js"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"passed\": true, \"pageSha256\": \"2ebb88a3e694b8ff23fd4b2e5e88ec3dc26e74aa781e4f6844644e62d5eb0136\", \"checks\": 23}\n",
+    "stderr": ""
+  }
+]

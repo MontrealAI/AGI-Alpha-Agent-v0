@@ -1,0 +1,6 @@
+{
+  "failure": "ruff-modern.txt and ruff-pinned.txt F811 in discovery test module",
+  "cause": "Both parents retained same named parametrized regression; Python shadowed first definition. Earlier fullnative invocation collected original pre-rename selection, not final test inventory.",
+  "repair": "Rename only the first test definition, preserving both complete bodies and12cases each. No runtime source or requirement changes.",
+  "qualification": "Fresh full discovery-file and final hosted selection required; no shadowed test outcome is counted as passed."
+}

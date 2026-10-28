@@ -1,0 +1,167 @@
+.......................F........................F..                      [100%]
+=================================== FAILURES ===================================
+___________ test_actual_receipt_must_match_the_frozen_condition[cap] ___________
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb8968972f0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb87d70de50>, ...}, ...}
+attack = 'cap'
+
+    @pytest.mark.parametrize("attack", ["mission", "profile", "environment", "cap", "configuration", "bucket"])
+    def test_actual_receipt_must_match_the_frozen_condition(setup: dict[str, Any], attack: str) -> None:
+        spec = freeze(setup, plan(setup, 1))
+        trial = spec.cases[0].trials[0]
+>       run_trial(setup, trial)
+
+tests/runtime/test_flywheel_comparisons.py:380:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/runtime/test_flywheel_comparisons.py:201: in run_trial
+    seal_and_accept(state, trial, record)
+tests/runtime/test_flywheel_comparisons.py:207: in seal_and_accept
+    state["service"].accept_general_origin(
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:475: in accept_general_origin
+    return accept_general_origin(self, signed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/flywheel_learning.py:69: in accept_general_origin
+    service._state(cx)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_capsules.ProtectedLibrary object at 0x7fb898bab9e0>
+cx = <sqlite3.Connection object at 0x7fb896881210>
+
+    def _state(self, cx: Any) -> tuple[dict[str, Any], dict[str, Any]]:
+        if self._execution_binding() != self._boot_execution_digest:
+>           raise Conflict("installed runtime changed; restart and requalify affected claims")
+E           alpha_factory_v1.core.runtime.store.Conflict: installed runtime changed; restart and requalify affected claims
+
+alpha_factory_v1/core/runtime/successor/flywheel_capsules.py:375: Conflict
+__ test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7fb87d7e9640>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb87d56ef70>, ...}, ...}
+
+    def test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial(setup: dict[str, Any]) -> None:
+        spec = freeze(setup)
+        target = spec.cases[1].trials[1]
+        target_record = None
+        for case in spec.cases:
+            for trial in case.trials:
+>               record = run_trial(setup, trial, accept=trial != target)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_flywheel_comparisons.py:623:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/runtime/test_flywheel_comparisons.py:196: in run_trial
+    MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_execution.MissionExecutor object at 0x7fb898a09e50>
+mission = ExecutionMission(schema_version=1, schema_name='flywheel-execution/v1', mission_id='comparison-1-Eplus', beneficiary='...model': 'simulated', 'tools': 'executed-local'}, max_turns=3, max_actions=2, max_seconds=30, max_history_bytes=1000000)
+profile = ExecutionProfile(schema_version=1, model_id='scripted-protocol-fixture/v1', model_revision=None, reasoning_mode='stand...', model_request_cap_micro_usd=None, tool_request_caps_micro_usd={}, max_output_tokens=16384, max_context_bytes=750000)
+signed = SignedEnvelope(domain='flywheel-execution-permit', principal='controller', payload={'journal_identity': 'urn:agialpha:...ma_version': 1}}, signature='1xF+PWk1NFt89z3M6RQMaPgC6QeEElZUPQh+bUMwpLZuYpldEo5k2a1S/gUKf3gxTeKhdl428A3Ek8NgeYQzAw==')
+
+    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+        mission = ExecutionMission.model_validate_json(canonical(mission))
+        profile = ExecutionProfile.model_validate_json(canonical(profile))
+        signed = SignedEnvelope.model_validate_json(canonical(signed))
+        authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+        if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
+            raise ValueError("execution permit must bind this exact journal")
+        permit = ExecutionPermit.model_validate(authority["permit"])
+        config = self.journal.config.model_copy(deep=True)
+        if (
+            permit.request_digest != digest("flywheel-execution-request", mission)
+            or permit.profile_digest != digest("flywheel-execution-profile", profile)
+            or permit.environment_digest != digest("flywheel-execution-environment-contract", self.environment.identity)
+            or permit.config_digest != runtime_digest(config.model_dump())
+            or permit.expires_at <= int(time.time())
+        ):
+            raise ValueError("permit differs from the exact mission, profile, environment, configuration or time")
+        if self.transport.component != mission.components["model"]:
+            raise ValueError("model component label differs from actual transport")
+        if self.environment.component != mission.components["tools"]:
+            raise ValueError("tool component label differs from actual environment")
+        if self.transport.component == "live" and profile.model_id != config.llm_model:
+            raise ValueError("live model differs from approved runtime configuration")
+        if self.transport.component == "live" and profile.model_request_cap_micro_usd is None:
+            raise ValueError("live model requests require a qualified per-request liability cap")
+        tool_names = {t.get("name") if t["type"] == "function" else "computer" for t in profile.tools}
+        if self.environment.component == "live" and not tool_names <= set(profile.tool_request_caps_micro_usd):
+            raise ValueError("live tools require qualified per-request liability caps")
+        model_cap = profile.model_request_cap_micro_usd or 0
+        if model_cap > permit.max_authorized_micro_usd:
+            raise ValueError("the first model request exceeds the entire authorized envelope")
+        if isinstance(self.environment, LazyDockerEnvironment) and (
+            mission.max_turns > self.environment.task.max_turns
+            or mission.max_actions > self.environment.task.max_actions
+            or mission.max_seconds > self.environment.task.max_seconds
+        ):
+            raise ValueError("ExecutionMission limits exceed the independently approved ComputerTask contract")
+        if isinstance(self.environment, HTTPToolEnvironment):
+            self.environment.bind_operation(
+                digest(
+                    "flywheel-sandbox-operation",
+                    {
+                        "journal_identity": self.journal.identity,
+                        "permit": permit,
+                    },
+                )
+            )
+        key = operation_key(permit.operation_id)
+        started = time.monotonic()
+        state: dict[str, Any] = {
+            "schema_name": SCHEMA,
+            "mission": mission.model_dump(),
+            "profile": profile.model_dump(),
+            "permit": signed.model_dump(),
+            "status": "running",
+            "turn": 0,
+            "actions": 0,
+            "history": [{"role": "user", "content": json.dumps(mission.model_dump(), ensure_ascii=False)}],
+            "call_ids": [],
+            "usage_events": [],
+            "started_at": int(time.time()),
+            "actual_charges_micro_usd": None,
+            "reserved_request_caps_micro_usd": 0,
+            "acceptance": "unqualified",
+            "live_network_qualified": False,
+            "context_strategy": "full-transcript-bounded; no lossy compaction or hidden context substitution",
+        }
+
+        def active() -> bool:
+            self.qualification_check()
+            if (
+                digest("flywheel-execution-environment-contract", self.environment.identity)
+                != permit.environment_digest
+            ):
+                raise Conflict("execution environment changed during the mission")
+            if (
+                self.transport.component != mission.components["model"]
+                or self.environment.component != mission.components["tools"]
+            ):
+                raise Conflict("component changed during the mission")
+            control = self.journal.latest("@control")
+            return (
+                control["state"] == "ready"
+                and control["config_hash"] == runtime_digest(config.model_dump())
+                and int(time.time()) < permit.expires_at
+                and time.monotonic() - started < mission.max_seconds
+            )
+
+        with self.journal.transaction() as cx:
+            self.checkpoint.verify(self.journal, cx)
+            try:
+                self.journal.latest(key, cx)
+            except KeyError:
+                pass
+            else:
+                raise Conflict("mission already attempted; reconciliation is required before any new permit")
+            if not active():
+                raise Conflict("mission is stopped or expired")
+            report = self.costs.report(cx=cx)
+            if report["available_funds"] is None or report["available_funds"] < permit.max_authorized_micro_usd:
+>               raise Conflict("reconciled available funds cannot cover the whole mission envelope")
+E               alpha_factory_v1.core.runtime.store.Conflict: reconciled available funds cannot cover the whole mission envelope
+
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:615: Conflict
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_actual_receipt_must_match_the_frozen_condition[cap]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_fresh_recipient_late_reconciliation_cannot_requalify_an_overcap_trial
+2 failed, 49 passed in 24.66s

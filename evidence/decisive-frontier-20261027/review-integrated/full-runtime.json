@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/dev/shm/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/runtime",
+    "--confcutdir=tests/runtime",
+    "--ignore=tests/runtime/test_budget_browser.py",
+    "--ignore=tests/runtime/test_ecosystem_browser.py",
+    "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    "--basetemp=/tmp/decisive-review-runtime/fixtures",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "-o",
+    "tmp_path_retention_count=1",
+    "-q"
+  ],
+  "exit_code": 0,
+  "seconds": 426.004,
+  "runtime_source_stable": true,
+  "runtime_files": 75,
+  "scope": "Complete hash-locked minimal runtime selection with the three named browser files excluded. Separate Insight/Flywheel/comparison browser validators are recorded; this is not the full release campaign.",
+  "passed": 1551,
+  "skipped": 2,
+  "warnings": 1,
+  "pytest_seconds": 424.55
+}

@@ -112,6 +112,7 @@ def accepted_general_origin(
     accepted = service.journal.latest(ACCEPTANCE_KEY + operation, cx)
     from .trust import SignedEnvelope
 
+    service.trust.verify(SignedEnvelope.model_validate(record["permit"]), "flywheel-execution-permit", "controller")
     signed = SignedEnvelope.model_validate(accepted["acceptance"])
     terms = service._signed(signed, "general-acceptance", "acceptance")["record"]
     if accepted["record_digest"] != record["digest"] or terms["execution_record_digest"] != record["digest"]:

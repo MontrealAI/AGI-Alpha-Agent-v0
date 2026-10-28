@@ -1,0 +1,18 @@
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+tests/test_protected_flywheel_release.py:132:13: F821 Undefined name `historical`
+    |
+130 |     profile["files"]["pyproject.toml"] = old["files"]["pyproject.toml"]
+131 |     assert profile == old
+132 |     guard = historical["scripts/check_strategy_research_compatibility_v2.py"].encode()
+    |             ^^^^^^^^^^ F821
+133 |     old_hash = (
+134 |         hashlib.sha256(previous["scripts/strategy_research_e721_compatibility_v2.json"].encode()).hexdigest().encode()
+    |
+
+Found 1 error.

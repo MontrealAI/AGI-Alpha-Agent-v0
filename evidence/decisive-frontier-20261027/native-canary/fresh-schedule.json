@@ -1,0 +1,51 @@
+{
+  "goal": "Permission-cleared native canary: construct a finite audit schedule, preserving each job sequence and exclusive machine use. Authored durations are test units, not observed service turnaround.",
+  "work": {
+    "kind": "schedule",
+    "unit": "authored canary slots",
+    "jobs": [
+      {
+        "id": "english_packet",
+        "due": 9,
+        "operations": [
+          {
+            "machine": "source_check",
+            "duration": 2
+          },
+          {
+            "machine": "language_check",
+            "duration": 3
+          }
+        ]
+      },
+      {
+        "id": "french_packet",
+        "due": 11,
+        "operations": [
+          {
+            "machine": "language_check",
+            "duration": 2
+          },
+          {
+            "machine": "source_check",
+            "duration": 4
+          }
+        ]
+      },
+      {
+        "id": "receipt_packet",
+        "due": 12,
+        "operations": [
+          {
+            "machine": "source_check",
+            "duration": 3
+          },
+          {
+            "machine": "language_check",
+            "duration": 1
+          }
+        ]
+      }
+    ]
+  }
+}

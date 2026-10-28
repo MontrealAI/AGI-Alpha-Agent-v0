@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Exercise frozen original report logic without editing installed runtime source.
+
+This is a local in-process regression overlay, not an old-tree release test.
+All signed execution, custody, funding and acceptance checks stay current.
+"""
+from pathlib import Path
+import importlib.machinery
+import importlib.util
+import sys
+import pytest
+
+root = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(root))
+from alpha_factory_v1.core.runtime.successor import flywheel_comparisons
+
+name = "alpha_factory_v1.core.runtime.successor._original_cap_report"
+loader = importlib.machinery.SourceFileLoader(name, str(Path(__file__).with_name("ORIGINAL_SOURCE.py.txt")))
+spec = importlib.util.spec_from_loader(name, loader)
+assert spec is not None
+original = importlib.util.module_from_spec(spec)
+loader.exec_module(original)
+flywheel_comparisons.comparison_report = original.comparison_report
+raise SystemExit(pytest.main([
+    str(root / "tests/runtime/test_flywheel_comparisons.py"),
+    "--confcutdir=" + str(root / "tests/runtime"),
+    "--basetemp=/tmp/decisive-comparison-cap/original-report-overlay-fixtures",
+    "-q", "-k",
+    "original_frozen_trial_cap or late_reconciliation or without_completeness or net_away_delivery_overrun",
+]))

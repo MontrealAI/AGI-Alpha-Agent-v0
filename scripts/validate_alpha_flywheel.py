@@ -18,7 +18,7 @@ from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-MAX_PAGE_BYTES = 3_000_000
+MAX_PAGE_BYTES = 2_000_000
 MAX_MANIFEST_BYTES = 100_000
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 CANONICAL_SOURCES = (
@@ -344,9 +344,9 @@ def browser_acceptance(
             manual_receipt = json.loads(page.locator("#result-receipt").text_content() or "{}")
             assert manual_receipt["summary"]["offeredPrice"] == 10000
             page.locator("#replay").click()
-            assert (
-                json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt
-            ), "Repeating an imported replay must preserve its explicit price and economics"
+            assert json.loads(page.locator("#result-receipt").text_content() or "{}") == manual_receipt, (
+                "Repeating an imported replay must preserve its explicit price and economics"
+            )
             expect(page.locator("#price-mode")).to_be_visible()
             for preset in ("stress", "frontier", "baseline"):
                 page.locator("#preset").select_option(preset)
@@ -505,13 +505,12 @@ def browser_acceptance(
             for width, language in ((1440, "en"), (1440, "fr"), (390, "en"), (390, "fr"), (320, "en"), (320, "fr")):
                 page.locator("#lang-" + language).click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
-                for selector in ("#prepare-link", "a[href*='/try/']"):
-                    href = page.locator(selector).get_attribute("href")
-                    assert href is not None and parse_qs(urlsplit(href).query).get("lang") == [language]
+                for link in page.locator("#prepare-link, a[href*='/try/']").all():
+                    assert parse_qs(urlsplit(link.get_attribute("href") or "").query).get("lang") == [language]
                 page.set_viewport_size({"width": width, "height": 1050})
-                assert page.evaluate(
-                    "document.documentElement.scrollWidth<=innerWidth+1"
-                ), f"Horizontal overflow: {width}"
+                assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (
+                    f"Horizontal overflow: {width}"
+                )
                 if axe_script:
                     page.evaluate(axe_script.read_text() + ";void 0")
                     audit = page.evaluate(

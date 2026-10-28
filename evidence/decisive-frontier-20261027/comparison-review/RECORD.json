@@ -1,0 +1,48 @@
+{
+  "schema": "comparison-review-correction/v1",
+  "original_source_commit": "de62cdcdbb1c6d0d73a4212f750510b6d2809bb6",
+  "original_module_sha256": "32f038372ede4f0e47cdaedbb346df63935b5c5a32c5f9171bb2548afe75fb9a",
+  "current_sources": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py": "7deed620418732cb2d74b19a61f17dec4d4aa4a8ecfab9c52a8223a9abd08bd6",
+    "tests/runtime/test_flywheel_comparisons.py": "4340a94f1900eccdf42ce1ec333df978f79622a58fab1717f54a9a13c6428a69"
+  },
+  "findings": [
+    {
+      "review_comment_id": 4392951801,
+      "correction": "Revalidate current supporting execution-controller and accounting charge/seal signatures before qualifying contrasts; retain original observations and counts."
+    },
+    {
+      "review_comment_id": 4392951815,
+      "correction": "Derive model evidence from bound execution records; planned and rejected receipts stay in the denominator without becoming model evidence."
+    }
+  ],
+  "original_corrected_regressions": {
+    "failed": 6,
+    "passed_positive_control": 1,
+    "deselected": 35,
+    "meaning": "Six original behavioral violations. The prior initial run also contains two expected transport-label refusals from an invalid test attempt; those are not claimed as product defects."
+  },
+  "final_directed_suite": {
+    "passed": 42,
+    "seconds": 16.57,
+    "scope": "Existing comparison suite plus seven added trust/provenance conditions; actual local synthetic protocol execution only."
+  },
+  "checks": {
+    "ruff": "passed",
+    "strict_runtime_mypy": "passed for changed module",
+    "diff_check": "passed"
+  },
+  "authority_or_live_model_calls": false,
+  "actual_collections_micro_usd": 0,
+  "actual_complete_cost_micro_usd": null,
+  "history": "No old record, denominator, acceptance observation or cost total is erased. Current authority validity and historical accounting completeness are separate fields.",
+  "evidence_sha256": {
+    "corrected-tests.txt": "e68ee3addce614a5262a1bf07714a1bb74a08e83b6cb9501442ad0852d78c970",
+    "final-tests.txt": "f22c7f292034e82da0c70de36ae9da2124e4327c88b297eac2b2398a362df614",
+    "final-types.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+    "lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "original-corrected-regressions.txt": "5b39216477c5d50fe1c524497632f84ac376050ef28bd6a5326527252aa5ccab",
+    "original-regressions.txt": "a2d68f840111ab5341f1f73ee2f4b125581e78c21d7c0e7d5947e8bc7e17dbfc",
+    "types.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  }
+}

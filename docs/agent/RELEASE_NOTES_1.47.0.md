@@ -1,70 +1,82 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Alpha Agent 1.47.0 candidate — connected discovery and checked delivery
+For installation and the existing operator path, see [Start here](START_HERE.md).
 
-Vincent Boucher — President of MONTREAL.AI
+# Alpha Agent 1.47.0 candidate — connected discovery and operating evidence
 
-Use [Start here](START_HERE.md) for the maintained installation and guided entry points.
+This additive engineering candidate connects the existing general executor, specialist lifecycle,
+enterprise decisions and signed discovery history. The English/French Flywheel lets a reader inspect
+the opportunity, original obligations, finite construction, research Nova-Seed, native FusionPlan and
+conditional economics of the same proposed deliverable. Existing routes, research editions, papers,
+examples, ERC-721 functionality and immutable evidence remain available.
 
-This proposed successor integrates the existing general executor, specialist, enterprise and bounded
-discovery owners with the frozen Insight research-access construction. One existing Journal and A/B/C
-ledger connect the original need, evidence, useful finite artifact, acceptance, unknown costs, research
-Nova-Seed and native FusionPlan exports. Historical papers, editions, routes and negative results remain.
+Frozen discovery protocols preserve source dates and commitments, declared resources, fixed search
+denominators, missing attempts, adverse reviews, construction falsifiers and current linked costs.
+An integrity commitment does not establish truth, novel foresight, a market monopoly or ownership.
+Unknown, incomplete, contradictory or over-budget evidence prevents stronger qualification.
 
-The English/French Flywheel presents the same conditional research-access feasibility packet, separate
-customer deposits, earned service income, refunds and procurement custody, and execution-derived U/E/E+
-comparisons. A language switch also updates the existing comparison link. The combined self-contained
-evidence page uses an explicit three-million-byte download ceiling; oversize, source drift and CSP
-failures still refuse. Project/import, permission and financial limits remain unchanged.
+The integrated customer-funds path distinguishes deposits and procurement custody from accepted
+service income, refunds owed and refunds paid. Reconciliation closes cancelled no-execution permits
+before releasing reservations; recovery cannot revive their authority. Separate comparison results
+retain Operational Alpha (E versus U) and retained Alpha (E+ versus E), original mission accounting,
+missing cases and current supporting authorization. A declared model profile is not an executed trial.
 
-Cancellation closes an unused permit before releasing its reservation. A frozen experiment cannot use
-a receipt-free observation. Paid-charge evidence cannot be repurposed through cost reconciliation.
-Comparison qualification now rechecks current execution/accounting signers, original reconciled charges
-and completeness seals. Historical observations stay visible when current contrasts must be withheld.
-Declaring a live model without a bound execution does not create actual model evidence.
+The research-access checker constructs a finite obligation-preserving conditional path and refuses
+denied or incomplete cases. An independently authored conventional exact search matches all 23 complete
+comparisons; one deliberately node-limited case is incomplete in both arms. Five adverse witness probes
+refuse. This stops the technical-breakthrough claim for that target. The experiment does not measure
+discovery advantage, frontier-model performance, real institutional access or customer acceptance.
 
-Execution checkpoints recheck current permit authority before and during model/tool work. New earning
-rechecks the accepted delivery's execution and complete accounting support; prior observations remain.
-Embedded services must pass the same TrustRegistry instance to TransformationLibrary and CostLedger.
-The existing operator already does this. Split registries now refuse before state changes, so revocation
-cannot silently diverge between the delivery and accounting views.
+A separate independent 32-case authored challenge also remains available in
+`evidence/flywheel-integration-20261027/conventional-challenge/`: 28 complete exact ties,
+four shared incomplete pairs and 63 refused native negative controls. Its initial witness-harness
+failure and stored-output-only correction remain preserved. Neither study establishes discovery advantage.
 
-The strongest supported discovery result is exploratory ordinary planning. In a new independently
-implemented, frozen 32-case challenge, all 28 complete pairs tie; four searches per arm remain incomplete.
-Twenty-one plans and seven no-plan results agree; 63 native negative controls refuse. An initial
-independent witness-harness serialization error and its stored-output-only correction are preserved.
-These finite authored cases establish no technical novelty, discovery superiority or customer demand.
+The access-plan feasibility packet's economics remain explicitly hypothetical. Production cost,
+selling price, buyer value, participation, failure, defaults, refunds, prefunding and reserves are
+separate. Actual customer collections are zero; complete actual monetary cost and profit are unknown.
+The implemented delivery path is useful engineering, not proof of profitable demand or compounding.
+No retained capability is admitted by this research replay.
 
-Actual customer collections are USD0. Complete actual research/delivery cost and profit are unknown.
-Price, participation, failure, refund, financing and human-service amounts remain conditional assumptions
-for their respective offerings. Customer savings, deposits and seed capital are not operating profit.
-No paid retention, live peer advantage or growing Alpha is established.
+## Operating and release boundaries
 
-This is a source candidate, not a release receipt. The existing 1.46.1 publication and public-install
-acceptance completed on main `3947e4e`; the predecessor receipt remains separate from this candidate.
-Configured exact-source review, applicable PR checks, complete resulting-source security/regression,
-platform/install/site gates, immutable release artifacts and served-byte verification remain required
-through the existing publisher. A protected post-deployment canary additionally needs approved provider
-access, quotas, tariffs, hard budgets, tools, custody and signed mission authority. Two real accepted
-buyer briefs and live authenticated peer reuse have not been run.
+Fixtures, imports, research artifacts and browser replays grant no live identity or production authority.
+Model execution requires the existing approved account, exact model/tool profile, metered budget and
+mission permit. Live protected sharing requires current authenticated authorization, separate validator
+roles and a fresh meaning/rights check; a typed agent name does not suffice. No funding, minting,
+listing, trade, customer contact or expansion of access follows from generating a Nova-Seed or plan.
 
-Reproduction, exact source evidence, known failures and the release decision are in the repository's
-`evidence/flywheel-integration-20261027` directory.
-The existing [operating guide](PROTECTED_FLYWHEEL.md), [Insight guide](INSIGHT_FRONTIER.md),
-[customer-funds contract](CUSTOMER_FUNDS.md) and [comparison contract](OPERATIONAL_ALPHA_RESULTS.md)
-retain their explicit operating boundaries. Rollback uses the last qualified immutable release and a
-separately preserved stopped private home; never migrate keys, revive permits or overwrite history.
+Version 1.47.0 is a prospective source candidate until its own configured review, required exact-source
+checks, complete resulting-main regression/security/integrity, immutable package, clean installation,
+tested-site publication and actual served-byte verification pass. The existing publisher owns those
+steps. The preceding 1.46.1 publication and public installation succeeded on main `3947e4e`; their
+receipt does not qualify this successor. Earlier tests qualify only their recorded
+source and scope. The existing 80% coverage floor, representative platform campaign, blocking hooks,
+five held native-source pins and separately unqualified native outcomes remain unchanged.
+
+The previous 1.46.1 metadata is preserved byte-for-byte in a new committed fixture. Historical
+1.45/1.46/1.46.1 metadata and worker editions retain their original identities; only the new complete
+worker edition can qualify the new source. The finite compatibility profile changes solely to bind
+the necessary package-version bytes, preserving all rules and other source identities.
+
+Rollback uses the preceding immutable release and the existing stopped-home/export procedure;
+do not restore a journal to reuse a consumed permit, merge live authority from an import or mutate an
+earlier tag. Preserve both old and new evidence when reverting an integration.
 
 ## Français
 
-Cette candidate relie les propriétaires existants de l’exécution, des spécialistes, de l’entreprise et
-de la découverte, dans le même Journal et les mêmes comptes A/B/C. Le parcours bilingue distingue
-livrable fini, acceptation, coûts inconnus, acomptes, revenu gagné, remboursements et fonds d’achat.
-Les observations historiques restent visibles après révocation d’un signataire ; les comparaisons
-actuelles non qualifiées sont retenues. Une déclaration de modèle n’est pas une exécution.
+Cette candidate relie l’exécution, les spécialistes, les décisions d’entreprise, la découverte signée,
+la Nova-Seed de recherche et le compilateur FusionPlan existants. Le parcours bilingue conserve les
+obligations initiales, les essais manquants ou défavorables, les coûts incomplets et les refus.
+Les dépôts, les recettes d’un service accepté et les remboursements restent distincts.
 
-Le contrôle conventionnel indépendant donne 28 égalités complètes et quatre recherches incomplètes
-par méthode. Les 63 contrôles négatifs refusent ; l’erreur initiale du vérificateur est conservée.
-Ni nouveauté, demande, bénéfice réel, Alpha retenu ni effet cumulatif ne sont établis. Encaissements
-réels : 0 USD ; coût réel complet et bénéfice : inconnus. La publication suit le propriétaire existant
-après tous les contrôles exacts. Le canari protégé et deux vrais mandats acceptés restent non exécutés.
+Le contrôle conventionnel égale les 23 comparaisons complètes du chemin d’accès ; un cas reste
+incomplet dans les deux méthodes. Ce résultat ne démontre aucune percée technique, supériorité de
+découverte, demande payante ou progression autonome. Encaissements réels : zéro ; coût monétaire
+complet et profit réel : inconnus. Aucune rétention n’est admise par ce rejeu de recherche.
+
+La publication exige les propres vérifications de cette source et la clôture de la version 1.46.1.
+Les autorisations réelles, les budgets, l’identité et les rôles de validation restent séparés des
+artefacts, des simulations et de l’expérience publique en lecture seule.
+
+Vincent Boucher — President of MONTREAL.AI

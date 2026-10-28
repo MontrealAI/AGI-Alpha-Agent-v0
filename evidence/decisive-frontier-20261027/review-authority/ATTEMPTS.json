@@ -1,0 +1,16 @@
+{
+  "initial_fixed_run": {
+    "passed": 10,
+    "failed": 2,
+    "actual_refusals": "All stale-authority actions refused; manifest/invoke post-refusal atomicity assertions included two legitimate fixture proof-preparation events",
+    "correction": "Prepare signed access proof before capturing pre-action journal boundary, then revoke origin approval and perform refused action",
+    "production_changes": "None for this correction; no acceptance/atomicity checks removed",
+    "original_output_preserved": "focused-before-proof-order-correction.json"
+  },
+  "environment": {
+    "dependency_check": "Shared check_python_deps.py passes; no new dependencies",
+    "ENOSPC": "Overlay filled during tiny receipt writes; static-check outcomes and first family attempt were unrecorded and are unqualified",
+    "recovery": "Verified original pre/fixed-failure receipt payloads; removed only8.59MBofown disposable fixture/extraction copies; original candidate/manifest and exact failure logs retained;64KB write probe passed"
+  },
+  "fixture_boundary": "Proof preparation creates legitimate challenge/authentication history; refusal must not append execution/cost/acceptance records after that boundary"
+}

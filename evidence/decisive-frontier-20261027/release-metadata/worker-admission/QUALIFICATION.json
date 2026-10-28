@@ -1,0 +1,38 @@
+{
+  "schema": "insight-worker-admission-local-qualification/v1",
+  "scope": "Exact finite checkout byte identity and refusal behavior; not public deployment, entire release acceptance or live authority",
+  "version": "1.47.0",
+  "capture": "CAPTURE.json",
+  "source_sha256": {
+    "scripts/refresh_capability_checkout.py": "12f0ba08f578fb87d2912e4fb99d7e27e73feb372cf5047a6f4557829e8a9b85",
+    "tests/fixtures/capability-checkout-insight-frontier-147-workers.json": "7323b478b7d2e901b32411062683f50ab6a059823d7891134555b39eaa86725b",
+    "tests/test_paper_reader_release.py": "cacb4f0b9d2e8cef2dfa61018a8012ab4dc6338b2c75b707ac92a593085389cf",
+    "tests/test_capability_publication_edition.py": "d62b1a882d24e00b5113c8cf761fb41bfa9aa11a052157ca9bdf300652f8bde1",
+    "tests/test_insight_frontier_release.py": "72b6df32ea7866b375c8fa98d981556fbaeb24747147f03548c7fb76dfe68e9a"
+  },
+  "observed": {
+    "selected_tests": 93,
+    "new_cases_in_selection": 22,
+    "final_new_source_rerun": 22,
+    "unique_test_cases": 93,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "ruff_lint": "pass",
+    "new_test_format": "pass",
+    "new_test_strict_types": "pass; --strict --follow-imports=silent",
+    "historical_profiles_preserved": 19,
+    "new_complete_profile": 1,
+    "scientific_sources_preserved": 53,
+    "closure_files": 61,
+    "successful_temp_copies": "removed"
+  },
+  "limitations": {
+    "direct_helper_strict_types": "five existing errors reproduced unchanged in types-unchanged-base.txt; not qualified",
+    "configured_review": "not run by this workstream",
+    "full_release": "not run by this workstream",
+    "publication_and_public_bytes": "not run by this workstream"
+  },
+  "historical_tests_migration": "1461 test loads exact old immutable fixture bytes; all old checks/mixture/tampering assertions retained",
+  "authority_granted": false
+}

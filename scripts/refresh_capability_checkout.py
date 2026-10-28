@@ -288,6 +288,36 @@ PAPER_READERS_1461_EXTRA_FILES = PROTECTED_FLYWHEEL_146_EXTRA_FILES | {
     ),
 }
 
+# Exact connected Insight 1.47 edition; every historical profile remains immutable.
+INSIGHT_FRONTIER_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "de5815981d4eef8056a8dda1302fc7ed60f1d48b3bb09e70c15502f4e383926d"),
+    "docs/assets/service-worker.js": (24089, "70c2e651da23c750b2d0ba834e092aa6904a4347e04bf3393477ca7f6b457fbf"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "bd55ce1a7de1db9d5b0b4f8088b793a047199bd49fd387796a1f56126f7ae965",
+    ),
+}
+
+# Exact post-receipt-guard candidate; keep the original unpublished 1.47 edition intact.
+INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES = INSIGHT_FRONTIER_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "926119de5946ece7233bac3084deb735c5ce63964d32708c6146cc535f0e695c"),
+    "docs/assets/service-worker.js": (24089, "5028ae800f527ecec69054d90ea764ec03447a35a1f8e0e7da74780b9c373f34"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "c9c1b5787dc78f2c6a0da5aba7b80950b6a78844b440768bfecc04fa4e3979dc",
+    ),
+}
+
+# Exact current-authority review candidate; retain all earlier complete byte editions.
+INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES = INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "357308e5afd03495e75cfe557ccff8fc42c6c008e8c1b2b814138b92642eade9"),
+    "docs/assets/service-worker.js": (24089, "0b0f9987d46e5c652d54f961b631cc68db78688da30321ff6b1b6e9b645183dd"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "e8a05eaf3ccfbeea86ea9318bc66f2f382682c483a40792d76f9087eb2d32f65",
+    ),
+}
+
 # Complete proposed discovery Flywheel successor; every predecessor remains exact.
 FLYWHEEL_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
     "docs/service-worker.js": (23649, "f585d406396e500da306a8d10bb27498573332a9149e04794fbddb97365b1836"),
@@ -295,6 +325,16 @@ FLYWHEEL_147_EXTRA_FILES = PAPER_READERS_1461_EXTRA_FILES | {
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26729,
         "2edba968136cf0aa8c9911990b1fe244950e620fae032ceb91b363768a9b9a9e",
+    ),
+}
+
+# Exact cross-owner successor; every earlier owner/child profile remains immutable.
+RECONCILED_FLYWHEEL_147_EXTRA_FILES = INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES | {
+    "docs/service-worker.js": (23649, "dc60056fcda731f1cc61c47d3dfd449210e82d0356760d053911b536f51a0485"),
+    "docs/assets/service-worker.js": (24089, "bb66233d182bf8cadd96bd7bbdfdb7b66bd7dc06c6c27290f85aedffb75c0ef6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26729,
+        "58dd9778d1304277e0e3709cac531faa4e7cf8b8a1c02fd2df82261e9f131fd3",
     ),
 }
 
@@ -379,7 +419,11 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_145_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PROTECTED_FLYWHEEL_146_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPER_READERS_1461_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_POST_GUARD_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INSIGHT_FRONTIER_147_REVIEW_AUTHORITY_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FLYWHEEL_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, RECONCILED_FLYWHEEL_147_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

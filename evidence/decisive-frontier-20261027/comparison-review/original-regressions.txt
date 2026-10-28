@@ -1,0 +1,368 @@
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+_ test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[execution] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68feed3b90>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68fedeb430>, ...}, ...}
+support = 'execution'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f68ff0a3380>
+
+    @pytest.mark.parametrize("support", ["execution", "charge", "seal", "extra-retention-charge"])
+    def test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history(
+        setup: dict[str, Any], support: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        principal = "separate-executor" if support == "execution" else "separate-accounting"
+        role = "controller" if support == "execution" else "accounting"
+        additional_principal(setup, principal, "controller" if support == "execution" else "accountant", role)
+        original_account = f.account
+    
+        def selective_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            selected = (
+                support == "charge" and action == "charge"
+                or support == "seal" and action in {"seal", "seal-retention", "seal-investment"}
+                or support == "extra-retention-charge" and action == "charge" and record["bucket"] == "B"
+            )
+            if not selected:
+                original_account(state, action, record, operation)
+                return
+            state["costs"].apply(
+                sign_record(
+                    state["keys"][principal],
+                    principal,
+                    "flywheel-cost-command",
+                    {
+                        "journal_identity": state["journal"].identity,
+                        "operation_id": operation,
+                        "action": action,
+                        "record": record,
+                    },
+                )
+            )
+    
+        monkeypatch.setattr(f, "account", selective_account)
+        spec = plan(setup, 1)
+        if support == "extra-retention-charge":
+            spec = spec.model_copy(update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra", bucket="B")]})
+        spec = freeze(setup, spec)
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial, execution_principal=principal if support == "execution" else "controller")
+        if support == "extra-retention-charge":
+            s.seal(setup, "extra", "B")
+        before = report(setup, spec)
+        assert before["current_evidence_valid"]
+        assert before["contrasts"]["operational"]["complete_matched_outcomes"]
+        assert before["contrasts"]["operational"]["cost_saving_micro_usd"] == "0"
+        setup["trust"].revoke(principal)
+        after = report(setup, spec)
+>       assert not after["current_evidence_valid"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:546: AssertionError
+_ test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68e52aa300>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68e53f3290>, ...}, ...}
+support = 'charge'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f68e52ab8c0>
+
+    @pytest.mark.parametrize("support", ["execution", "charge", "seal", "extra-retention-charge"])
+    def test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history(
+        setup: dict[str, Any], support: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        principal = "separate-executor" if support == "execution" else "separate-accounting"
+        role = "controller" if support == "execution" else "accounting"
+        additional_principal(setup, principal, "controller" if support == "execution" else "accountant", role)
+        original_account = f.account
+    
+        def selective_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            selected = (
+                support == "charge" and action == "charge"
+                or support == "seal" and action in {"seal", "seal-retention", "seal-investment"}
+                or support == "extra-retention-charge" and action == "charge" and record["bucket"] == "B"
+            )
+            if not selected:
+                original_account(state, action, record, operation)
+                return
+            state["costs"].apply(
+                sign_record(
+                    state["keys"][principal],
+                    principal,
+                    "flywheel-cost-command",
+                    {
+                        "journal_identity": state["journal"].identity,
+                        "operation_id": operation,
+                        "action": action,
+                        "record": record,
+                    },
+                )
+            )
+    
+        monkeypatch.setattr(f, "account", selective_account)
+        spec = plan(setup, 1)
+        if support == "extra-retention-charge":
+            spec = spec.model_copy(update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra", bucket="B")]})
+        spec = freeze(setup, spec)
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial, execution_principal=principal if support == "execution" else "controller")
+        if support == "extra-retention-charge":
+            s.seal(setup, "extra", "B")
+        before = report(setup, spec)
+        assert before["current_evidence_valid"]
+        assert before["contrasts"]["operational"]["complete_matched_outcomes"]
+        assert before["contrasts"]["operational"]["cost_saving_micro_usd"] == "0"
+        setup["trust"].revoke(principal)
+        after = report(setup, spec)
+>       assert not after["current_evidence_valid"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:546: AssertionError
+_ test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[seal] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68e52aa420>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68e53f2890>, ...}, ...}
+support = 'seal'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f68e52aa660>
+
+    @pytest.mark.parametrize("support", ["execution", "charge", "seal", "extra-retention-charge"])
+    def test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history(
+        setup: dict[str, Any], support: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        principal = "separate-executor" if support == "execution" else "separate-accounting"
+        role = "controller" if support == "execution" else "accounting"
+        additional_principal(setup, principal, "controller" if support == "execution" else "accountant", role)
+        original_account = f.account
+    
+        def selective_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            selected = (
+                support == "charge" and action == "charge"
+                or support == "seal" and action in {"seal", "seal-retention", "seal-investment"}
+                or support == "extra-retention-charge" and action == "charge" and record["bucket"] == "B"
+            )
+            if not selected:
+                original_account(state, action, record, operation)
+                return
+            state["costs"].apply(
+                sign_record(
+                    state["keys"][principal],
+                    principal,
+                    "flywheel-cost-command",
+                    {
+                        "journal_identity": state["journal"].identity,
+                        "operation_id": operation,
+                        "action": action,
+                        "record": record,
+                    },
+                )
+            )
+    
+        monkeypatch.setattr(f, "account", selective_account)
+        spec = plan(setup, 1)
+        if support == "extra-retention-charge":
+            spec = spec.model_copy(update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra", bucket="B")]})
+        spec = freeze(setup, spec)
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial, execution_principal=principal if support == "execution" else "controller")
+        if support == "extra-retention-charge":
+            s.seal(setup, "extra", "B")
+        before = report(setup, spec)
+        assert before["current_evidence_valid"]
+        assert before["contrasts"]["operational"]["complete_matched_outcomes"]
+        assert before["contrasts"]["operational"]["cost_saving_micro_usd"] == "0"
+        setup["trust"].revoke(principal)
+        after = report(setup, spec)
+>       assert not after["current_evidence_valid"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:546: AssertionError
+_ test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[extra-retention-charge] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68e514a570>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68e51b8710>, ...}, ...}
+support = 'extra-retention-charge'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f68e514b5f0>
+
+    @pytest.mark.parametrize("support", ["execution", "charge", "seal", "extra-retention-charge"])
+    def test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history(
+        setup: dict[str, Any], support: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        principal = "separate-executor" if support == "execution" else "separate-accounting"
+        role = "controller" if support == "execution" else "accounting"
+        additional_principal(setup, principal, "controller" if support == "execution" else "accountant", role)
+        original_account = f.account
+    
+        def selective_account(state: dict[str, Any], action: str, record: Any, operation: str) -> None:
+            selected = (
+                support == "charge" and action == "charge"
+                or support == "seal" and action in {"seal", "seal-retention", "seal-investment"}
+                or support == "extra-retention-charge" and action == "charge" and record["bucket"] == "B"
+            )
+            if not selected:
+                original_account(state, action, record, operation)
+                return
+            state["costs"].apply(
+                sign_record(
+                    state["keys"][principal],
+                    principal,
+                    "flywheel-cost-command",
+                    {
+                        "journal_identity": state["journal"].identity,
+                        "operation_id": operation,
+                        "action": action,
+                        "record": record,
+                    },
+                )
+            )
+    
+        monkeypatch.setattr(f, "account", selective_account)
+        spec = plan(setup, 1)
+        if support == "extra-retention-charge":
+            spec = spec.model_copy(update={"additional_costs": [ComparisonCost(role="E+", mission_id="extra", bucket="B")]})
+        spec = freeze(setup, spec)
+        for trial in spec.cases[0].trials:
+            run_trial(setup, trial, execution_principal=principal if support == "execution" else "controller")
+        if support == "extra-retention-charge":
+            s.seal(setup, "extra", "B")
+        before = report(setup, spec)
+        assert before["current_evidence_valid"]
+        assert before["contrasts"]["operational"]["complete_matched_outcomes"]
+        assert before["contrasts"]["operational"]["cost_saving_micro_usd"] == "0"
+        setup["trust"].revoke(principal)
+        after = report(setup, spec)
+>       assert not after["current_evidence_valid"]
+E       assert not True
+
+tests/runtime/test_flywheel_comparisons.py:546: AssertionError
+_ test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[not-attempted] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68e52aade0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68e51b91d0>, ...}, ...}
+attempt = 'not-attempted'
+
+    @pytest.mark.parametrize("attempt", ["not-attempted", "binding-mismatch", "bound-fixture"])
+    def test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells(
+        setup: dict[str, Any], attempt: str
+    ) -> None:
+        raw = plan(setup, 1).model_dump()
+        for trial in raw["cases"][0]["trials"]:
+            trial["mission"]["components"]["model"] = "live"
+        spec = freeze(setup, ComparisonPlan.model_validate(raw))
+        if attempt != "not-attempted":
+            trial = spec.cases[0].trials[0]
+            run_trial(setup, trial)
+            if attempt == "binding-mismatch":
+                rewrite(setup, operation_key(trial.operation_id), lambda value: value["profile"].update(model_id="wrong"))
+        value = report(setup, spec)
+        assert value["planned_cases"] == 1 and len(value["cells"]) == 3
+>       assert value["model_evidence"] == (
+            "actual-model-records-with-unqualified-attribution" if attempt == "bound-fixture" else "no-executions"
+        )
+E       AssertionError: assert 'actual-model...d-attribution' == 'no-executions'
+E         
+E         - no-executions
+E         + actual-model-records-with-unqualified-attribution
+
+tests/runtime/test_flywheel_comparisons.py:570: AssertionError
+_ test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[binding-mismatch] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68fe33aa20>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68e53f2cb0>, ...}, ...}
+attempt = 'binding-mismatch'
+
+    @pytest.mark.parametrize("attempt", ["not-attempted", "binding-mismatch", "bound-fixture"])
+    def test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells(
+        setup: dict[str, Any], attempt: str
+    ) -> None:
+        raw = plan(setup, 1).model_dump()
+        for trial in raw["cases"][0]["trials"]:
+            trial["mission"]["components"]["model"] = "live"
+        spec = freeze(setup, ComparisonPlan.model_validate(raw))
+        if attempt != "not-attempted":
+            trial = spec.cases[0].trials[0]
+>           run_trial(setup, trial)
+
+tests/runtime/test_flywheel_comparisons.py:565: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_comparisons.py:195: in run_trial
+    MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_execution.MissionExecutor object at 0x7f6900c78110>
+mission = ExecutionMission(schema_version=1, schema_name='flywheel-execution/v1', mission_id='comparison-0-U', beneficiary='Inte...d', 'model': 'live', 'tools': 'executed-local'}, max_turns=3, max_actions=2, max_seconds=30, max_history_bytes=1000000)
+profile = ExecutionProfile(schema_version=1, model_id='scripted-protocol-fixture/v1', model_revision=None, reasoning_mode='stand...', model_request_cap_micro_usd=None, tool_request_caps_micro_usd={}, max_output_tokens=16384, max_context_bytes=750000)
+signed = SignedEnvelope(domain='flywheel-execution-permit', principal='controller', payload={'journal_identity': 'urn:agialpha:...ma_version': 1}}, signature='nDXyDxKBhUUo1W15fEDkCqK6JunHdxJug1QYqvTLztCNof4kJ3MItqIayxCT2HeXjR/d3GIVh16XUWqmPw2RDg==')
+
+    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+        mission = ExecutionMission.model_validate_json(canonical(mission))
+        profile = ExecutionProfile.model_validate_json(canonical(profile))
+        signed = SignedEnvelope.model_validate_json(canonical(signed))
+        authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+        if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
+            raise ValueError("execution permit must bind this exact journal")
+        permit = ExecutionPermit.model_validate(authority["permit"])
+        config = self.journal.config.model_copy(deep=True)
+        if (
+            permit.request_digest != digest("flywheel-execution-request", mission)
+            or permit.profile_digest != digest("flywheel-execution-profile", profile)
+            or permit.environment_digest != digest("flywheel-execution-environment-contract", self.environment.identity)
+            or permit.config_digest != runtime_digest(config.model_dump())
+            or permit.expires_at <= int(time.time())
+        ):
+            raise ValueError("permit differs from the exact mission, profile, environment, configuration or time")
+        if self.transport.component != mission.components["model"]:
+>           raise ValueError("model component label differs from actual transport")
+E           ValueError: model component label differs from actual transport
+
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:533: ValueError
+_ test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[bound-fixture] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f68e52ab410>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f68ff175cb0>, ...}, ...}
+attempt = 'bound-fixture'
+
+    @pytest.mark.parametrize("attempt", ["not-attempted", "binding-mismatch", "bound-fixture"])
+    def test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells(
+        setup: dict[str, Any], attempt: str
+    ) -> None:
+        raw = plan(setup, 1).model_dump()
+        for trial in raw["cases"][0]["trials"]:
+            trial["mission"]["components"]["model"] = "live"
+        spec = freeze(setup, ComparisonPlan.model_validate(raw))
+        if attempt != "not-attempted":
+            trial = spec.cases[0].trials[0]
+>           run_trial(setup, trial)
+
+tests/runtime/test_flywheel_comparisons.py:565: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/runtime/test_flywheel_comparisons.py:195: in run_trial
+    MissionExecutor(state["journal"], state["trust"], state["costs"], transport, environment).run(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <alpha_factory_v1.core.runtime.successor.flywheel_execution.MissionExecutor object at 0x7f68e52a8530>
+mission = ExecutionMission(schema_version=1, schema_name='flywheel-execution/v1', mission_id='comparison-0-U', beneficiary='Inte...d', 'model': 'live', 'tools': 'executed-local'}, max_turns=3, max_actions=2, max_seconds=30, max_history_bytes=1000000)
+profile = ExecutionProfile(schema_version=1, model_id='scripted-protocol-fixture/v1', model_revision=None, reasoning_mode='stand...', model_request_cap_micro_usd=None, tool_request_caps_micro_usd={}, max_output_tokens=16384, max_context_bytes=750000)
+signed = SignedEnvelope(domain='flywheel-execution-permit', principal='controller', payload={'journal_identity': 'urn:agialpha:...ma_version': 1}}, signature='LS+VbbFsjJcnJIfEoCfRvFhNA3s5Y8K7Ll17NNgzfBNUe4EU6OlMqCnoe/9bz35yvJh7/DqDgE42kPl0ROUNCA==')
+
+    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+        mission = ExecutionMission.model_validate_json(canonical(mission))
+        profile = ExecutionProfile.model_validate_json(canonical(profile))
+        signed = SignedEnvelope.model_validate_json(canonical(signed))
+        authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
+        if set(authority) != {"journal_identity", "permit"} or authority["journal_identity"] != self.journal.identity:
+            raise ValueError("execution permit must bind this exact journal")
+        permit = ExecutionPermit.model_validate(authority["permit"])
+        config = self.journal.config.model_copy(deep=True)
+        if (
+            permit.request_digest != digest("flywheel-execution-request", mission)
+            or permit.profile_digest != digest("flywheel-execution-profile", profile)
+            or permit.environment_digest != digest("flywheel-execution-environment-contract", self.environment.identity)
+            or permit.config_digest != runtime_digest(config.model_dump())
+            or permit.expires_at <= int(time.time())
+        ):
+            raise ValueError("permit differs from the exact mission, profile, environment, configuration or time")
+        if self.transport.component != mission.components["model"]:
+>           raise ValueError("model component label differs from actual transport")
+E           ValueError: model component label differs from actual transport
+
+alpha_factory_v1/core/runtime/successor/flywheel_execution.py:533: ValueError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[execution]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[charge]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[seal]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_revoked_supporting_signer_withholds_current_qualification_without_erasing_history[extra-retention-charge]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[not-attempted]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[binding-mismatch]
+FAILED tests/runtime/test_flywheel_comparisons.py::test_model_evidence_comes_from_bound_receipts_instead_of_declared_live_cells[bound-fixture]
+7 failed, 35 deselected in 4.99s

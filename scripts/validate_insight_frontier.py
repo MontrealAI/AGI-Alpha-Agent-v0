@@ -31,12 +31,18 @@ def validate(page_path: Path, screenshots: Path | None = None, axe_script: Path 
         page.on("request", lambda request: requests.append(request.url))
         page.goto(page_path.as_uri())
         page.locator("#insight-frontier").wait_for()
+        assert "23 / 23" in page.locator("#insight-conventional").inner_text()
+        checks.append("conventional-parity-stops-technical-claim")
         assert page.locator("#insight-frontier a[href='../ascension-protocol/']").count() == 1
         assert (ROOT / "docs/ascension-protocol/index.html").is_file()
         checks.append("existing-mark-route")
         for language in ("en", "fr"):
             page.locator("#lang-" + language).click()
             assert page.locator("html").get_attribute("lang") == language
+            if not page.locator("#insight-arrangements").is_visible():
+                page.locator("details:has(#insight-arrangements) > summary").click()
+            assert page.locator("#insight-arrangements tbody tr").count() == 5
+            checks.append("complete-arrangement-comparison-" + language)
             for width in (320, 390, 1440):
                 page.set_viewport_size({"width": width, "height": 900})
                 assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), (language, width)

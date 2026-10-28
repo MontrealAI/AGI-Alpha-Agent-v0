@@ -31,6 +31,7 @@ def test_reader_patch_exact_workers_and_mixed_or_unknown_rejection(tmp_path: Pat
     assert set(fixture["files"]) == set(old["files"])
     for name, record in fixture["files"].items():
         body = record["text"].encode()
+        # The exact historical edition remains accepted after a separately pinned successor.
         bodies[name] = body
         assert (len(body), hashlib.sha256(body).hexdigest()) == checkout.PAPER_READERS_1461_EXTRA_FILES[name]
         assert (record["bytes"], record["sha256"]) == checkout.PAPER_READERS_1461_EXTRA_FILES[name]

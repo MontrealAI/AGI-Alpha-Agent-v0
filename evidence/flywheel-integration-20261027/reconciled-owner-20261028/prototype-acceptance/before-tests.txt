@@ -1,0 +1,284 @@
+FFFFFFFFF..                                                              [100%]
+=================================== FAILURES ===================================
+_ test_revoked_prototype_acceptance_blocks_further_authorization[technically-qualified] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bee1430>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c3fa470>, ...}, ...}
+stage = 'technically-qualified'
+
+    @pytest.mark.parametrize("stage", ["technically-qualified", "commercially-assessed"])
+    def test_revoked_prototype_acceptance_blocks_further_authorization(setup: dict[str, Any], stage: str) -> None:
+        old = qualified(setup, stage)
+        original = historical(setup)
+        setup["trust"].revoke("acceptor")
+        next_stage = "commercially-assessed" if stage == "technically-qualified" else "authorized"
+>       with pytest.raises(ValueError, match="trusted|prototype"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_enterprise_authority.py:56: Failed
+_ test_revoked_prototype_acceptance_blocks_further_authorization[commercially-assessed] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf2be00>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c3fb310>, ...}, ...}
+stage = 'commercially-assessed'
+
+    @pytest.mark.parametrize("stage", ["technically-qualified", "commercially-assessed"])
+    def test_revoked_prototype_acceptance_blocks_further_authorization(setup: dict[str, Any], stage: str) -> None:
+        old = qualified(setup, stage)
+        original = historical(setup)
+        setup["trust"].revoke("acceptor")
+        next_stage = "commercially-assessed" if stage == "technically-qualified" else "authorized"
+>       with pytest.raises(ValueError, match="trusted|prototype"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_enterprise_authority.py:56: Failed
+_____ test_revoked_prototype_support_makes_production_ineligible[acceptor] _____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf2a750>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c4255b0>, ...}, ...}
+principal = 'acceptor'
+
+    @pytest.mark.parametrize("principal", ["acceptor", "accountant"])
+    def test_revoked_prototype_support_makes_production_ineligible(setup: dict[str, Any], principal: str) -> None:
+        old = qualified(setup)
+        original = historical(setup)
+        setup["trust"].revoke(principal)
+        held = e.decision(setup, "after-prototype-revocation", action="produce")
+>       assert held["selected"] == "hold"
+E       AssertionError: assert 'deliver' == 'hold'
+E         
+E         - hold
+E         + deliver
+
+tests/runtime/test_flywheel_enterprise_authority.py:68: AssertionError
+____ test_revoked_prototype_support_makes_production_ineligible[accountant] ____
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf9e0f0>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c426d50>, ...}, ...}
+principal = 'accountant'
+
+    @pytest.mark.parametrize("principal", ["acceptor", "accountant"])
+    def test_revoked_prototype_support_makes_production_ineligible(setup: dict[str, Any], principal: str) -> None:
+        old = qualified(setup)
+        original = historical(setup)
+        setup["trust"].revoke(principal)
+        held = e.decision(setup, "after-prototype-revocation", action="produce")
+>       assert held["selected"] == "hold"
+E       AssertionError: assert 'deliver' == 'hold'
+E         
+E         - hold
+E         + deliver
+
+tests/runtime/test_flywheel_enterprise_authority.py:68: AssertionError
+___ test_production_dispatch_rechecks_prototype_before_consumption[acceptor] ___
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf29f40>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c3fb770>, ...}, ...}
+principal = 'acceptor'
+
+    @pytest.mark.parametrize("principal", ["acceptor", "accountant"])
+    def test_production_dispatch_rechecks_prototype_before_consumption(setup: dict[str, Any], principal: str) -> None:
+        qualified(setup)
+        frozen = e.decision(setup, "before-prototype-revocation", action="produce")
+        original = historical(setup)
+        ledger = copy.deepcopy(setup["costs"].snapshot())
+        setup["trust"].revoke(principal)
+        enterprise = Enterprise(setup["service"])
+>       with pytest.raises(ValueError, match="trusted|prototype"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_enterprise_authority.py:87: Failed
+__ test_production_dispatch_rechecks_prototype_before_consumption[accountant] __
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf28a40>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c3fa4d0>, ...}, ...}
+principal = 'accountant'
+
+    @pytest.mark.parametrize("principal", ["acceptor", "accountant"])
+    def test_production_dispatch_rechecks_prototype_before_consumption(setup: dict[str, Any], principal: str) -> None:
+        qualified(setup)
+        frozen = e.decision(setup, "before-prototype-revocation", action="produce")
+        original = historical(setup)
+        ledger = copy.deepcopy(setup["costs"].snapshot())
+        setup["trust"].revoke(principal)
+        enterprise = Enterprise(setup["service"])
+>       with pytest.raises(ValueError, match="trusted|prototype"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_enterprise_authority.py:87: Failed
+_ test_in_memory_prototype_revocation_stops_subsequent_production_actions[preflight] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf9d610>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c424670>, ...}, ...}
+when = 'preflight'
+
+    @pytest.mark.parametrize("when", ["preflight", "model-response", "tool-response"])
+    def test_in_memory_prototype_revocation_stops_subsequent_production_actions(
+        setup: dict[str, Any], when: str
+    ) -> None:
+        qualified(setup)
+        e.decision(setup, "active-production", action="produce")
+        original = historical(setup)
+        executor, mission, profile, permit = e.execution(setup, "interrupted-production")
+        prior_checks: list[str] = []
+    
+        def prior() -> None:
+            prior_checks.append("checked")
+            if when == "preflight":
+                setup["trust"].revoke("acceptor")
+    
+        executor.qualification_check = prior
+        respond = executor.transport.respond
+        perform = executor.environment.perform
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+    
+        def model(*args: Any) -> dict[str, Any]:
+            model_calls.append("scripted-offline-response")
+            result = respond(*args)
+            if when == "model-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        def tool(*args: Any) -> dict[str, Any]:
+            tool_calls.append("local-placement-tool")
+            result = perform(*args)
+            if when == "tool-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        executor.transport.respond = model
+        executor.environment.perform = tool
+        enterprise = Enterprise(setup["service"])
+        if when == "preflight":
+>           with pytest.raises(ValueError, match="trusted|prototype"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/runtime/test_flywheel_enterprise_authority.py:137: Failed
+_ test_in_memory_prototype_revocation_stops_subsequent_production_actions[model-response] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bfc9040>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c424170>, ...}, ...}
+when = 'model-response'
+
+    @pytest.mark.parametrize("when", ["preflight", "model-response", "tool-response"])
+    def test_in_memory_prototype_revocation_stops_subsequent_production_actions(
+        setup: dict[str, Any], when: str
+    ) -> None:
+        qualified(setup)
+        e.decision(setup, "active-production", action="produce")
+        original = historical(setup)
+        executor, mission, profile, permit = e.execution(setup, "interrupted-production")
+        prior_checks: list[str] = []
+    
+        def prior() -> None:
+            prior_checks.append("checked")
+            if when == "preflight":
+                setup["trust"].revoke("acceptor")
+    
+        executor.qualification_check = prior
+        respond = executor.transport.respond
+        perform = executor.environment.perform
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+    
+        def model(*args: Any) -> dict[str, Any]:
+            model_calls.append("scripted-offline-response")
+            result = respond(*args)
+            if when == "model-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        def tool(*args: Any) -> dict[str, Any]:
+            tool_calls.append("local-placement-tool")
+            result = perform(*args)
+            if when == "tool-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        executor.transport.respond = model
+        executor.environment.perform = tool
+        enterprise = Enterprise(setup["service"])
+        if when == "preflight":
+            with pytest.raises(ValueError, match="trusted|prototype"):
+                enterprise.run("active-production", executor, mission, profile, permit)
+            with pytest.raises(KeyError):
+                setup["journal"].latest(operation_key("interrupted-production"))
+            assert not model_calls and not tool_calls
+            assert "execution/interrupted-production" not in setup["costs"].snapshot()["charges"]
+        else:
+            result = enterprise.run("active-production", executor, mission, profile, permit)
+>           assert result["status"] == "failed-or-uncertain"
+E           AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E             
+E             - failed-or-uncertain
+E             + delivered-awaiting-independent-acceptance-and-costs
+
+tests/runtime/test_flywheel_enterprise_authority.py:145: AssertionError
+_ test_in_memory_prototype_revocation_stops_subsequent_production_actions[tool-response] _
+
+setup = {'access': <alpha_factory_v1.core.runtime.successor.flywheel_access.ResourceAccess object at 0x7f549bf9cf50>, 'costs':...evaluator': <cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7f549c425f90>, ...}, ...}
+when = 'tool-response'
+
+    @pytest.mark.parametrize("when", ["preflight", "model-response", "tool-response"])
+    def test_in_memory_prototype_revocation_stops_subsequent_production_actions(
+        setup: dict[str, Any], when: str
+    ) -> None:
+        qualified(setup)
+        e.decision(setup, "active-production", action="produce")
+        original = historical(setup)
+        executor, mission, profile, permit = e.execution(setup, "interrupted-production")
+        prior_checks: list[str] = []
+    
+        def prior() -> None:
+            prior_checks.append("checked")
+            if when == "preflight":
+                setup["trust"].revoke("acceptor")
+    
+        executor.qualification_check = prior
+        respond = executor.transport.respond
+        perform = executor.environment.perform
+        model_calls: list[str] = []
+        tool_calls: list[str] = []
+    
+        def model(*args: Any) -> dict[str, Any]:
+            model_calls.append("scripted-offline-response")
+            result = respond(*args)
+            if when == "model-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        def tool(*args: Any) -> dict[str, Any]:
+            tool_calls.append("local-placement-tool")
+            result = perform(*args)
+            if when == "tool-response":
+                setup["trust"].revoke("acceptor")
+            return result
+    
+        executor.transport.respond = model
+        executor.environment.perform = tool
+        enterprise = Enterprise(setup["service"])
+        if when == "preflight":
+            with pytest.raises(ValueError, match="trusted|prototype"):
+                enterprise.run("active-production", executor, mission, profile, permit)
+            with pytest.raises(KeyError):
+                setup["journal"].latest(operation_key("interrupted-production"))
+            assert not model_calls and not tool_calls
+            assert "execution/interrupted-production" not in setup["costs"].snapshot()["charges"]
+        else:
+            result = enterprise.run("active-production", executor, mission, profile, permit)
+>           assert result["status"] == "failed-or-uncertain"
+E           AssertionError: assert 'delivered-aw...nce-and-costs' == 'failed-or-uncertain'
+E             
+E             - failed-or-uncertain
+E             + delivered-awaiting-independent-acceptance-and-costs
+
+tests/runtime/test_flywheel_enterprise_authority.py:145: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_revoked_prototype_acceptance_blocks_further_authorization[technically-qualified]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_revoked_prototype_acceptance_blocks_further_authorization[commercially-assessed]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_revoked_prototype_support_makes_production_ineligible[acceptor]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_revoked_prototype_support_makes_production_ineligible[accountant]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_production_dispatch_rechecks_prototype_before_consumption[acceptor]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_production_dispatch_rechecks_prototype_before_consumption[accountant]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_in_memory_prototype_revocation_stops_subsequent_production_actions[preflight]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_in_memory_prototype_revocation_stops_subsequent_production_actions[model-response]
+FAILED tests/runtime/test_flywheel_enterprise_authority.py::test_in_memory_prototype_revocation_stops_subsequent_production_actions[tool-response]
+9 failed, 2 passed in 6.20s

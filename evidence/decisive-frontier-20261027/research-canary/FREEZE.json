@@ -1,0 +1,54 @@
+{
+  "schema": "released-research-package-canary-freeze/v1",
+  "frozen_at": "2026-10-28T00:00:27.181706+00:00",
+  "execution_state": "not run",
+  "purpose": "Fresh checks of the published research-access library for the same modeled offering; separate from native-runtime20-command canary",
+  "inputs": [
+    {
+      "id": "released-research-compute-summary",
+      "file": "compute-summary.json",
+      "sha256": "b9a6311306de904f1ddb605ebfec58201d8bd5f193e8c86577a1964297385077",
+      "expected_status": "conditional-plan"
+    },
+    {
+      "id": "released-research-archive-reproduction",
+      "file": "archive-reproduction.json",
+      "sha256": "b7a64e1699e121d556a3d8f5759f6b93c0381d37516bdf0893f0b222ef7beb6e",
+      "expected_status": "no-plan"
+    }
+  ],
+  "budget": {
+    "child_processes_max": 2,
+    "per_process_seconds": 20,
+    "aggregate_wall_seconds": 45,
+    "paid_api_budget_usd": 0,
+    "model_calls": 0,
+    "network_actions": 0
+  },
+  "required_publication": {
+    "version": "1.47.0",
+    "verify_installed_runtime_files": 75,
+    "must_match_release_source_and_wheel_sha256": true,
+    "outside_checkout": true
+  },
+  "acceptance": [
+    "Original useful purpose, all obligations, permission declarations and cost/time caps remain fixed",
+    "Compute case yields a conditional route, not granted authority; independent exhaustive standard-library comparator must match",
+    "Archive case refuses a route; independent exhaustive comparator must also find none",
+    "Independent predicate checks and deliberate overclaimed-authority tamper must reject",
+    "Record elapsed execution and exact input/output/package identities; complete monetary cost remains unknown if unmet metering exists"
+  ],
+  "claims": {
+    "discovery_advantage": false,
+    "frontier_model_performance": false,
+    "live_identity": false,
+    "external_research_executed": false,
+    "customer_acceptance": false,
+    "revenue_or_profit_measured": false,
+    "retained_alpha": false
+  },
+  "stop_rules": [
+    "Stop on publication or runtime byte mismatch",
+    "Stop on either input/hash mutation, timeout, comparator mismatch or acceptance failure; preserve failure without changing this freeze"
+  ]
+}

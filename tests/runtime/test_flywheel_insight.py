@@ -16,6 +16,7 @@ from alpha_factory_v1.core.runtime.successor.flywheel_discovery import Discovery
 from alpha_factory_v1.core.runtime.successor.flywheel_costs import Charge
 from alpha_factory_v1.core.runtime.successor.flywheel_discovery import key
 from alpha_factory_v1.core.runtime.successor.flywheel_enterprise import EvidenceRef
+from alpha_factory_v1.core.runtime.successor.flywheel_learning import ACCEPTANCE_KEY
 from alpha_factory_v1.core.runtime.successor.flywheel_insight import (
     ResearchPlan,
     ResearchSeed,
@@ -667,6 +668,78 @@ def test_late_accounting_cannot_inherit_old_qualified_disposition(setup: dict[st
     )
     with pytest.raises(Conflict, match="dependencies changed"):
         apply(state, "research-plan", plan, "plan")
+
+
+@pytest.mark.parametrize("boundary", ["assessment", "seed", "plan"])
+@pytest.mark.parametrize("revoked", [False, True])
+def test_construction_authority_rechecked_at_qualification_boundary(
+    setup: dict[str, Any], boundary: str, revoked: bool
+) -> None:
+    from alpha_factory_v1.core.runtime.ascension import JobSpec
+
+    state = setup
+    assessed, _, witness, bundle = constructed_assessment(state, "supports")
+    assert assessed["disposition"] == "bounded-discovery-candidate"
+    seed = ResearchSeed(
+        seed_id="authority-bound-seed",
+        version=1,
+        assessment=EvidenceRef(journal_key=assessed["id"], record_digest=assessed["digest"]),
+        witness_id=witness.witness_id,
+        witness_spec_digest=digest("discovery-witness", witness),
+        rights_evidence=[d.evidence(state)],
+        rights_statement="Fictional source fixture only",
+        uncertainty="No real discovery, model performance or current live identity established",
+        next_experiment="Separate current authority and independently accepted fresh work",
+    )
+    terms: Any
+    if boundary == "assessment":
+        terms = SearchAssessment.model_validate(assessed["spec"]).model_copy(
+            update={"assessment_id": "current-authority-assessment"}
+        )
+        action = "search-assess"
+    elif boundary == "seed":
+        terms, action = seed, "research-seed"
+    else:
+        seeded = apply(state, "research-seed", seed, "seed-before-revocation")
+        terms = ResearchPlan(
+            plan_id="authority-bound-plan",
+            seed=EvidenceRef(journal_key=seeded["id"], record_digest=seeded["digest"]),
+            bundle_id=bundle.bundle_id,
+            bundle_spec_digest=digest("discovery-bundle", bundle),
+            draft_jobs=[
+                JobSpec(
+                    goal=step.question,
+                    successMetric=step.decisive_check,
+                    duration=step.seconds_cap,
+                    bounty="100",
+                    priceWeight=0,
+                )
+                for step in bundle.steps
+            ],
+            required_permissions=["Separate current authorization; no authority from this fixture"],
+            commercial_assumptions="No customer commitment or earned revenue",
+        )
+        action = "research-plan"
+    historical_acceptance = state["journal"].latest(ACCEPTANCE_KEY + "placement-origin")
+    before_costs = state["costs"].report()
+    if revoked:
+        state["trust"].revoke("acceptor")
+    before = state["journal"].verify()
+    if revoked and boundary != "assessment":
+        with pytest.raises(Conflict, match="dependencies changed"):
+            apply(state, action, terms, "current-authority-boundary")
+        assert state["journal"].verify() == before
+    else:
+        result = apply(state, action, terms, "current-authority-boundary")
+        if boundary == "assessment":
+            assert result["disposition"] == ("exploratory" if revoked else "bounded-discovery-candidate")
+            assert ("construction-acceptance-currently-ineligible" in result["limitations"]) == revoked
+            assert result["construction"]["inventory"][0].get("acceptance_currently_eligible", True) is (not revoked)
+        else:
+            assert result["spec"] == terms.model_dump()
+    assert state["journal"].latest(assessed["id"]) == assessed
+    assert state["journal"].latest(historical_acceptance["id"]) == historical_acceptance
+    assert state["costs"].report() == before_costs
 
 
 def test_seventeenth_review_refuses_before_it_can_exceed_assessment_capacity(setup: dict[str, Any]) -> None:

@@ -149,7 +149,7 @@ def test_acceptance_commands_remain_separate_required_and_unchanged():
     jobs = workflow("agent-release.yml")["jobs"]
     regression = jobs["regression"]
     gallery = jobs["gallery"]
-    assert regression["timeout-minutes"] == 90
+    assert regression["timeout-minutes"] == 120
     assert gallery["timeout-minutes"] == 35
     assert gallery["strategy"]["matrix"]["assets"] == ["minimal", "full"]
     for job, name in [

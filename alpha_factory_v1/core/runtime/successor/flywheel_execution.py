@@ -509,7 +509,14 @@ class MissionExecutor:
         self.transport, self.environment = transport, environment
         self.qualification_check = qualification_check
 
-    def run(self, mission: ExecutionMission, profile: ExecutionProfile, signed: SignedEnvelope) -> dict[str, Any]:
+    def run(
+        self,
+        mission: ExecutionMission,
+        profile: ExecutionProfile,
+        signed: SignedEnvelope,
+        *,
+        support_check: Callable[[], None] | None = None,
+    ) -> dict[str, Any]:
         mission = ExecutionMission.model_validate_json(canonical(mission))
         profile = ExecutionProfile.model_validate_json(canonical(profile))
         signed = SignedEnvelope.model_validate_json(canonical(signed))
@@ -580,6 +587,8 @@ class MissionExecutor:
 
         def active() -> bool:
             self.qualification_check()
+            if support_check is not None:
+                support_check()
             current_authority = self.trust.verify(signed, "flywheel-execution-permit", "controller")
             if (
                 current_authority.get("journal_identity") != self.journal.identity

@@ -97,7 +97,48 @@ def main() -> None:
                     page.set_viewport_size({"width": 1440, "height": 1000})
                     page.locator("#operational-results").screenshot(path=screenshot)
                 path = root / "scripts/templates/alpha-flywheel/comparison-evidence.json"
-                value = json.loads(path.read_bytes())
+                original = json.loads(path.read_bytes())
+                # These injected render cases complement the real ledger/trust regressions.
+                # An accepted observation survives a cap overrun, while its matched claim does not.
+                for boundary in ("monetary-overrun", "revoked-origin"):
+                    value = json.loads(json.dumps(original))
+                    stage = value["stages"]["reconciled-fixture"]
+                    cell = stage["cells"][0]
+                    stage["complete_matched_outcomes"] = False
+                    if boundary == "monetary-overrun":
+                        cell.update(
+                            delivery_cost_status="over-cap",
+                            known_delivery_cost_micro_usd="1001",
+                            delivery_cost_cap_micro_usd="1000",
+                            within_observed_limits=False,
+                        )
+                    else:
+                        cell.update(accepted=False, outcome_known=False, status="acceptance-invalid-or-unsupported")
+                        stage["current_evidence_valid"] = False
+                    path.write_text(json.dumps(value))
+                    build(root)
+                    for language in ("en", "fr"):
+                        page.goto(url + "?boundary=" + boundary + "#operational-results")
+                        page.locator("#lang-" + language).click()
+                        expect(page.locator("#comparison-status")).to_contain_text(
+                            "6/6" if boundary == "monetary-overrun" else "5/6"
+                        )
+                        expect(page.locator("#comparison-contrasts")).to_contain_text(
+                            "6/6 original approval records" if language == "en" else "6/6 approbations d’origine"
+                        )
+                        expect(page.locator("#comparison-contrasts")).to_contain_text(
+                            "Matched comparison unqualified" if language == "en" else "Comparaison non qualifiée"
+                        )
+                        if boundary == "monetary-overrun":
+                            expect(page.locator("#comparison-attempts")).to_contain_text(
+                                "above frozen monetary cap"
+                                if language == "en"
+                                else "au-dessus du plafond monétaire figé"
+                            )
+                        checks.append(
+                            f"{language}: {boundary} withholds current claim and preserves historical approvals"
+                        )
+                value = json.loads(json.dumps(original))
                 value["stages"]["reconciled-fixture"]["cells"][0]["acceptance_digest"] = None
                 path.write_text(json.dumps(value))
                 build(root)

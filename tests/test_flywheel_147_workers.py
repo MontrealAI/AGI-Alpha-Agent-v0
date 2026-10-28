@@ -49,10 +49,11 @@ def closure() -> dict[str, bytes]:
         name: (ROOT / name).read_bytes() for name in set(catalog["sources"]) | set(checkout.FLYWHEEL_147_EXTRA_FILES)
     }
     assert len(bodies) == 61
+    bodies.update({name: row["text"].encode() for name, row in workers()["files"].items()})
     return bodies
 
 
-def test_147_fixture_is_the_exact_current_complete_worker_profile() -> None:
+def test_147_fixture_preserves_its_exact_historical_complete_worker_profile() -> None:
     fixture = workers()
     previous = checkout.PAPER_READERS_1461_EXTRA_FILES
     successor = checkout.FLYWHEEL_147_EXTRA_FILES
@@ -62,7 +63,7 @@ def test_147_fixture_is_the_exact_current_complete_worker_profile() -> None:
     }
     for name, record in fixture["files"].items():
         body = record["text"].encode()
-        assert body == (ROOT / name).read_bytes()
+        assert body == closure()[name]
         assert b"agialpha-gallery-89c2a6e9cd771594" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == successor[name]
         assert (record["bytes"], record["sha256"]) == successor[name]
@@ -73,13 +74,14 @@ def test_147_fixture_is_the_exact_current_complete_worker_profile() -> None:
     )
 
 
-def test_147_actual_checkout_is_read_only_and_needs_no_repair() -> None:
+def test_147_historical_checkout_is_read_only_and_needs_no_repair(tmp_path: Path) -> None:
     before = closure()
-    result = checkout.refresh(ROOT)
+    write_closure(tmp_path, before)
+    result = checkout.refresh(tmp_path)
     assert result["checked"] == 61 and result["needsRefresh"] == []
     assert result["sourceHash"] == checkout.ENTERPRISE_SOURCE_HASH
     assert result["applied"] is False and result["backupDirectory"] is None
-    assert closure() == before
+    assert {name: (tmp_path / name).read_bytes() for name in before} == before
 
 
 def test_147_and_1461_whole_editions_pass_but_every_mixture_refuses(tmp_path: Path) -> None:

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/dev/shm/decisive-agent-venv/bin/python",
+    "-m",
+    "pytest",
+    "-c",
+    "/dev/null",
+    "--noconftest",
+    "--rootdir=.",
+    "tests/runtime/test_flywheel_authority.py",
+    "tests/runtime/test_flywheel_execution.py",
+    "tests/runtime/test_flywheel_specialists.py",
+    "-q",
+    "--tb=short",
+    "--basetemp=/tmp/decisive-authority-families",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 14.484315633773804,
+  "scope": "Focused authority plus existing execution/specialist families; full protected/runtime campaign belongs to root combined-source qualification",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_execution.py": "f459ddf1c46a571f90b5c203847906e7554e452e8dc0630d557cc6524c7dcfa5",
+    "alpha_factory_v1/core/runtime/successor/flywheel_learning.py": "a1b7415d9542471c7c69d24f396ee6363fca95369c96a9e861e6fcd515835e1b",
+    "alpha_factory_v1/core/runtime/successor/flywheel_capsules.py": "c54bb7b3eeb93f3068c60c3172cd71d36449629bdaf6ff878dd47593c275a608",
+    "tests/runtime/test_flywheel_authority.py": "74232ebf618ecbba9619c686f3f491b36cc7379f5daa769653d847660fe99448"
+  },
+  "output_bytes": 100,
+  "output_sha256": "426fe2244da7fdc919de9f98faba704a9884cf2d53558bcf2d0f03c6fb0b7a71",
+  "output_zlib_base64": "eJzT06MYKIBBtKGBgWosl5m5QkFicXFqikJmnoKhsZ6laTEXAKEUE+Q="
+}

@@ -262,6 +262,7 @@ def _construction_state(
     discovery: Any, ref: EvidenceRef | None, sub: SearchSubmission, cx: Any
 ) -> tuple[dict[str, Any] | None, list[str]]:
     from .flywheel_discovery import ExperimentObservation
+    from .flywheel_learning import accepted_general_origin
 
     if ref is None:
         return None, ["no-linked-construction"]
@@ -311,12 +312,24 @@ def _construction_state(
             reasons.append("construction-budget-overrun")
         if terms.interpretation != "supports":
             reasons.append("construction-has-adverse-or-inconclusive-observations")
+        acceptance_current: bool | None = None
+        if terms.acceptance == "existing-placement-acceptance":
+            acceptance_current = False
+            if terms.execution_operation is not None:
+                try:
+                    accepted, _ = accepted_general_origin(discovery.service, terms.execution_operation, cx)
+                    acceptance_current = accepted["digest"] == row["execution_digest"]
+                except (KeyError, ValueError, Conflict):
+                    pass
+            if not acceptance_current:
+                reasons.append("construction-acceptance-currently-ineligible")
         inventory.append(
             {
                 "step_id": terms.step_id,
                 "interpretation": terms.interpretation,
                 "ledger_mission_id": current_mission,
                 "current_cost_report": report,
+                "acceptance_currently_eligible": acceptance_current,
             }
         )
     if total_cost > bundle.total_cost_cap_micro_usd or elapsed > bundle.total_seconds_cap:

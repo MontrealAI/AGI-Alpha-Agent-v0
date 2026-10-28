@@ -4,13 +4,24 @@
 from __future__ import annotations
 
 import base64
+import gzip
 import hashlib
 import html
+import io
 import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def compressed_evidence(value: object) -> str:
+    """Losslessly package inert JSON inside the existing self-contained page budget."""
+    raw = json.dumps(value, ensure_ascii=True, separators=(",", ":")).encode()
+    output = io.BytesIO()
+    with gzip.GzipFile(filename="", fileobj=output, mode="wb", mtime=0) as archive:
+        archive.write(raw)
+    return base64.b64encode(output.getvalue()).decode("ascii")
 
 
 def build(root: Path = ROOT) -> None:
@@ -59,7 +70,7 @@ def build(root: Path = ROOT) -> None:
         if path.is_file():
             sources[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    code = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
+    code = "\n(async()=>{\n'use strict';\n" + "\n".join(chunks)
     code += f"\nconst flywheel={engine},project={project},SOURCE_HASH={json.dumps(source_hash)};\n"
     general_evidence = json.loads((template / "general-evidence.json").read_text(encoding="utf-8"))
     code += "\nconst GENERAL_EVIDENCE=" + json.dumps(general_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
@@ -89,7 +100,9 @@ def build(root: Path = ROOT) -> None:
     code += "\nconst INSIGHT_EVIDENCE=" + json.dumps(insight_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
     customer_evidence = json.loads((template / "customer-evidence.json").read_text(encoding="utf-8"))
     code += (
-        "\nconst CUSTOMER_EVIDENCE=" + json.dumps(customer_evidence, ensure_ascii=True, separators=(",", ":")) + ";\n"
+        "\nconst CUSTOMER_EVIDENCE=JSON.parse(await new Response(new Blob([Uint8Array.from(atob("
+        + json.dumps(compressed_evidence(customer_evidence))
+        + "),c=>c.charCodeAt(0))]).stream().pipeThrough(new DecompressionStream('gzip'))).text());\n"
     )
     comparison_evidence = json.loads((template / "comparison-evidence.json").read_text(encoding="utf-8"))
     code += (

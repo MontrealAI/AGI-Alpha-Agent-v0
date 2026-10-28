@@ -1,0 +1,99 @@
+{
+  "schema_name": "flywheel-conditional-access/v1",
+  "mission_id": "released-research-compute-summary",
+  "useful_purpose": "Return a bounded feasibility packet for a local aggregate computation while retaining all original data and method obligations",
+  "starting_facts": [
+    "local-nonpersonal-fixture",
+    "compute-award"
+  ],
+  "required_outputs": [
+    "checkable-summary-route"
+  ],
+  "obligations": [
+    "keep-source-local",
+    "preserve-method",
+    "respect-rights"
+  ],
+  "steps": [
+    {
+      "step_id": "review-method",
+      "purpose": "review method",
+      "requires": [
+        "compute-award"
+      ],
+      "produces": [
+        "method-cleared"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method",
+        "respect-rights"
+      ],
+      "permission": "documented",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 20000000,
+      "duration_seconds": 60
+    },
+    {
+      "step_id": "approve-local-run",
+      "purpose": "approve local run",
+      "requires": [
+        "local-nonpersonal-fixture",
+        "method-cleared"
+      ],
+      "produces": [
+        "checkable-summary-route"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method",
+        "respect-rights"
+      ],
+      "permission": "required",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 140000000,
+      "duration_seconds": 120
+    },
+    {
+      "step_id": "export-raw-shortcut",
+      "purpose": "export raw shortcut",
+      "requires": [
+        "local-nonpersonal-fixture"
+      ],
+      "produces": [
+        "checkable-summary-route"
+      ],
+      "preserves": [
+        "preserve-method"
+      ],
+      "permission": "documented",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 1000000,
+      "duration_seconds": 10
+    },
+    {
+      "step_id": "ordinary-full-service",
+      "purpose": "ordinary full service",
+      "requires": [
+        "local-nonpersonal-fixture"
+      ],
+      "produces": [
+        "checkable-summary-route"
+      ],
+      "preserves": [
+        "keep-source-local",
+        "preserve-method",
+        "respect-rights"
+      ],
+      "permission": "documented",
+      "permission_basis": "Authored nonpersonal declaration for package qualification; no external authority or resource commitment",
+      "estimated_cost_micro_usd": 800000000,
+      "duration_seconds": 90
+    }
+  ],
+  "cost_cap_micro_usd": 200000000,
+  "seconds_cap": 300,
+  "search_node_cap": 2000,
+  "mode": "synthetic",
+  "limitations": "Researcher-authored declarations; no protected data, actual compute access, institutional approval, buyer acceptance or measured service costs"
+}

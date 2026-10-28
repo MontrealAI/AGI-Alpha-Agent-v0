@@ -1,0 +1,99 @@
+{
+  "schema": "comparison-cap-qualification/v1",
+  "review_thread": "PRRT_kwDONwDjTc6w7IaQ",
+  "scope": "Derived comparison report only; existing runtime, Journal, ledger, current origin validator and trust roots remain authoritative",
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/flywheel_comparisons.py": "2aafa6721f5c37c9d62176e9ad44c46ac5c24e6216e05cf99b1a113787816095",
+    "tests/runtime/test_flywheel_comparisons.py": "ebad3b32afe310b350f96c572469df8d22217fdd78b69be2728a7eaa739a6d4b"
+  },
+  "original_source_sha256": "7deed620418732cb2d74b19a61f17dec4d4aa4a8ecfab9c52a8223a9abd08bd6",
+  "before_corrected_fixture_overlay": {
+    "failed": 6,
+    "passed_boundary_controls": 3,
+    "raw": "original-report-overlay.txt",
+    "scope": "Original report logic in a process-local overlay against stable current dependencies; not an old-tree release pass"
+  },
+  "final_tests": {
+    "passed": 59,
+    "seconds": 23.4,
+    "source_stable": true,
+    "raw": "final-qualified-tests.txt",
+    "record": "FINAL_QUALIFIED_RUN.json"
+  },
+  "checks": {
+    "final_focused_strict_typing": "pass; native config with imports skipped,1owned module",
+    "earlier_native_config_typing": "pass at earlier cap stage; final historical metadata was added afterward, so this does not qualify final whole runtime",
+    "final_ruff_lint": "pass;2owned files",
+    "final_ruff_format": "pass;2owned files",
+    "diff_check": "pass;2owned files",
+    "full_final_native_runtime_typing": "parent-managed resulting-source qualification,not claimed by this packet"
+  },
+  "accounting": {
+    "source": "Current existing CostLedger A accrual, completeness and signature support on the original mission identity",
+    "monetary_rule": "Known A over cap refuses immediately; unresolved or unsealed A cannot pass; exact complete cap passes",
+    "no_netting": "Customer receipts/refunds never reduce incurred A cost. Existing model rejects negative expenses atomically. Extra B/C accounting remains separate."
+  },
+  "history": {
+    "cell_fields": [
+      "historical_acceptance_recorded",
+      "historical_acceptance_evidence",
+      "acceptance_digest"
+    ],
+    "arm_field": "historical_acceptance_recorded",
+    "current_accepted_basis": "current-origin-eligibility; authenticated historical receipts counted separately",
+    "historical_check": "Read-only existing installed acceptance-role public-key signature check, ignoring revocation only for this narrow metadata; exact Journal, operation, execution/output and actual finite artifact bindings plus actual EvidenceRef",
+    "current_authority": "Always the existing accepted_general_origin; historical flag never used to qualify accepted counts, contrasts, costs or authority",
+    "adverse_cases": [
+      "changed operation",
+      "changed execution digest",
+      "changed output digest",
+      "changed journal",
+      "invalid signature",
+      "changed receipt binding",
+      "wrong role",
+      "uninstalled key"
+    ],
+    "revocation": "Controller or acceptor revocation preserves authenticated recorded history and denominator, while current accepted count becomes zero."
+  },
+  "claims": {
+    "authority_granted": false,
+    "actual_frontier_calls": 0,
+    "actual_customer_collections_micro_usd": 0,
+    "actual_complete_cost_micro_usd": null,
+    "commercial_or_alpha_claim": false
+  },
+  "evidence_sha256": {
+    "ATTEMPTS.json": "19b93650fc08ae21ea512940a9df99989249ca7c8d6056067602b3c97f5df85d",
+    "BEFORE.json": "a0dd6d651e74d5c128b89c22769a333a92a9e22ddaf2c1bba73d43fe4c382ad7",
+    "CAPACITY_PREFLIGHT.json": "ea8794c156f69b4758987a7aa8d058b606a19f309916695d9c9fd2029d81f409",
+    "CORRECTED_RUN.json": "da491cc2b35d9a26bb2583b7947b1d38ded16f21af479a105edb0e182a21ab5b",
+    "FINAL_HISTORY_RUN.json": "4d7797afc08c45e6fd26bc245c64effc65bcbc3520724f551912f4dcc48f2f6d",
+    "FINAL_QUALIFIED_RUN.json": "9e25bb022d284478e9391ea5d64258538b18cab04865682933be17e90dea127f",
+    "FINAL_RUN.json": "fb67fd57e15185484bde2203d076dc425e7a9018978fbc01b6086020ad6af326",
+    "ORIGINAL_SOURCE.py.txt": "7deed620418732cb2d74b19a61f17dec4d4aa4a8ecfab9c52a8223a9abd08bd6",
+    "TOOL_CHECKS.json": "44bb8d95504108d2e83d6ba173c9bb0cd9e7538558c00e7411528c60a9e4b793",
+    "corrected-tests.txt": "5f5efa9ce5b86e71e49670e04f523bd4a9560a80a96f765d36bf6c811c72cf32",
+    "environment.txt": "f471b7567593f6ae7d8b4f9fb6e5291793acacc575ad293e84d92f009d0dc67c",
+    "final-focused-typing.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+    "final-format.txt": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "final-history-tests.txt": "f3b27271be1727ccd63a74666892f85c3a70892462a8fef0be7cc6147be2008f",
+    "final-lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "final-qualified-tests.txt": "27d6d907812cbb8a2965ea1962fb0e3e5136109bcfb9b142e776d2f3c59bb1ca",
+    "final-suite.json": "cc765db303081bb7655576e6f5b0aa3e94731820e482980502e19431fc6dcc09",
+    "final-tests-disk.txt": "1e98501caa7094fffeddc6da313a68ce95fd616b86c47b60f29eb10f16ccef23",
+    "final-tests-storage-failed.json": "60875953ddf790b946e2143f51cdf81bb4c2ce874f99e5602c5c07db8921abbb",
+    "format.txt": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "original-overlay.json": "27fc5fad2eff62e462b76bc721cd95da4bead3ea0f4ed7964b0902eacb739fed",
+    "original-regressions.txt": "fc4fbb19083b520dd5d495536ba572262b7318e173b8f812618dabdf694e1ff9",
+    "original-report-overlay.txt": "9c8de84f5479112b5c763d535db0e65ce1decdd47b9b7c45b4a81bb53f16f08e",
+    "replay-original-report.py.txt": "11c70522b30ce7fdee85382e3776321a8ac0e071d611582b91476b7b064e6c1a",
+    "typing.txt": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+    "corrected-tests.txt.raw.json": "954553c8604c61829e6429ae242ebea23c0577a19d8e35b5dd04a06b1b69d34e",
+    "final-history-tests.txt.raw.json": "9bba0056fe3aa10a1437fae46e201a9e94baaa7ff402a0b98c71167ce9f291a8",
+    "final-tests-disk.txt.raw.json": "95c90329452470790c92e71c7ceb301102fc69b4880d95c63cb076614b0e4c79",
+    "original-regressions.txt.raw.json": "96cb4d55a661b606e2a76895bb7e3e9135e56dc745ceed3dae4744d0c37dc7fc",
+    "RAW_LOG_MIGRATION.json": "6ba363d8b77043b15375ea0080beabf83bda64a9e88cc2533868e51dd57ea456"
+  },
+  "raw_log_representation": "RAW_LOG_MIGRATION.json binds exact original gzip/base64 bytes and readable whitespace-normalized displays. Original outcome evidence remains unchanged."
+}

@@ -1,0 +1,17 @@
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+All checks passed!
+tests/runtime/test_flywheel_discovery.py:973:5: F811 Redefinition of unused `test_frozen_execution_cannot_be_replaced_by_receipt_free_research` from line 51
+    |
+971 | @pytest.mark.parametrize("sealed_costs", [False, True])
+972 | @pytest.mark.parametrize("receipt_field", ["omitted", "null"])
+973 | def test_frozen_execution_cannot_be_replaced_by_receipt_free_research(
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ F811
+974 |     setup: dict[str, Any], interpretation: str, sealed_costs: bool, receipt_field: str
+975 | ) -> None:
+    |
+    = help: Remove definition: `test_frozen_execution_cannot_be_replaced_by_receipt_free_research`
+
+Found 1 error.
