@@ -1,0 +1,180 @@
+{
+  "schema": "agi-alpha-claim-register-v1",
+  "date": "2026-10-28",
+  "flagship_qualified": false,
+  "claims": [
+    {
+      "id": "I-correctness",
+      "class": "measured",
+      "status": "passed_in_declared_envelope",
+      "claim": "Finite exact counts, rank/unrank, and concentration-conditioned outputs pass the frozen tiny-case oracle.",
+      "values": {
+        "cases": 128,
+        "exhaustive_bijections": 504,
+        "conditioned_output_checks": 270,
+        "all_match": true
+      },
+      "evidence": [
+        "results/confirmation_v2/confirmation.json",
+        "configs/scientific_protocol_v2.json"
+      ],
+      "limits": "Authored synthetic cases; internal independent implementation, not external peer review or a general performance proof."
+    },
+    {
+      "id": "I-production",
+      "class": "measured",
+      "status": "constructed",
+      "claim": "Twelve larger synthetic cases completed, with 100 accepted tables per case.",
+      "values": {
+        "larger_cases": 12,
+        "accepted_tables": 1200,
+        "independent_counts_during_confirmation": 11,
+        "independent_counts_after_adapted_ordering_challenge": 1
+      },
+      "evidence": [
+        "results/confirmation_v2/performance.json",
+        "alternatives/ordering/ordering_results.json"
+      ],
+      "limits": "Do not rewrite the confirmation as twelve contemporaneously corroborated counts. Timings are single local observations."
+    },
+    {
+      "id": "I-useful-delivery",
+      "class": "measured",
+      "status": "accepted_computationally",
+      "claim": "The separate example delivers 1,000 tables plus the reusable 20,322-world instrument.",
+      "evidence": [
+        "results/delivery_example/receipt.json",
+        "results/delivery_example/delivery_acceptance.json"
+      ],
+      "limits": "Not a paying customer or a new confirmation sample."
+    },
+    {
+      "id": "I-novelty",
+      "class": "unestablished",
+      "status": "not_qualified",
+      "claim": "Consequential algorithmic novelty or general superiority over the strongest prior art is not established.",
+      "evidence": [
+        "scientific_review.md",
+        "results/confirmation_v2/published_comparator.json",
+        "alternatives/ordering/ordering_review.md"
+      ],
+      "limits": "Miller-Harrison prior art supplies counting, symmetry, and count-guided uniform sampling. A row-order repair removes the conspicuous apparent time-budget advantage."
+    },
+    {
+      "id": "II-unit-contribution",
+      "class": "simulated",
+      "status": "positive_under_assumptions",
+      "claim": "The USD449 qualified-instrument policy has positive contribution per retained accepted order.",
+      "values": {
+        "mean_usd": 339.8410546875
+      },
+      "evidence": [
+        "economics/confirmation-v2/SUMMARY.json"
+      ],
+      "limits": "Mean of per-world ratios; excludes fixed costs. Price, buyer behavior and demand are assumptions."
+    },
+    {
+      "id": "II-enterprise",
+      "class": "simulated",
+      "status": "failed",
+      "claim": "Complete-cost enterprise profit and sustained operation fail in the fresh worlds.",
+      "values": {
+        "mean_base_project_profit_usd": -26397.7125390625,
+        "loss_frequency": 1.0,
+        "full_horizon_operation_frequency": 0.0,
+        "mean_cash_end_usd": 3602.2874609375
+      },
+      "evidence": [
+        "economics/confirmation-v2/SUMMARY.json",
+        "ECONOMICS.md"
+      ],
+      "limits": "Synthetic participants. Early closure preserves reserves; zero insolvency is not sustainable cash generation. Historical research cost is unmeasured."
+    },
+    {
+      "id": "II-revision",
+      "class": "simulated",
+      "status": "loss_contained_no_enterprise",
+      "claim": "Paid contingent-cohort search lowers loss but never launches in the base confirmation.",
+      "values": {
+        "base_worlds": 256,
+        "launch_frequency": 0.0,
+        "mean_project_profit_usd": -3050.0,
+        "conditional_on_launch_mean_profit": null
+      },
+      "evidence": [
+        "economics_config_revision.json",
+        "economics/confirmation-v2/SUMMARY.json"
+      ],
+      "limits": "No launch-conditioned profit exists; null is not zero profit. No commitment is real."
+    },
+    {
+      "id": "II-real-money",
+      "class": "measured_execution_scope",
+      "status": "none",
+      "claim": "No real customer, contract, purchase, outreach, or receipt was executed.",
+      "values": {
+        "actual_customers": 0,
+        "actual_revenue_usd": 0,
+        "actual_complete_cost_usd": null,
+        "actual_profit_usd": null
+      },
+      "evidence": [
+        "results/delivery_example/receipt.json",
+        "economics/confirmation-v2/SUMMARY.json"
+      ],
+      "limits": "Actual session/API and historical labor cost are unavailable, not assumed zero."
+    },
+    {
+      "id": "III-inheritance",
+      "class": "measured",
+      "status": "useful_but_no_comparative_advantage",
+      "claim": "The inherited instrument produces 400 fresh conditioned outputs, but cold all-statistics reuse is slower than fresh conventional construction in both sizes.",
+      "values": [
+        {
+          "columns": 14,
+          "cold_seconds": 0.28311615599523066,
+          "fresh_seconds": 0.24741937500220956,
+          "same_asset_conventional_match": true
+        },
+        {
+          "columns": 18,
+          "cold_seconds": 2.2567772780021187,
+          "fresh_seconds": 1.5192573829990579,
+          "same_asset_conventional_match": true
+        }
+      ],
+      "evidence": [
+        "results/confirmation_v2/successor.json"
+      ],
+      "limits": "Same-asset control reuses the same code; independent conventional distribution computation is a separate control. No economic transfer revenue assumed."
+    },
+    {
+      "id": "alternative-matrix-action",
+      "class": "measured",
+      "status": "not_qualified",
+      "claim": "The matrix-action alternative produces valid numerical outputs, but stronger available bounds remove its proposed new advantage.",
+      "values": {
+        "cases": 144,
+        "wins_against_strong_portfolio": 0,
+        "ties": 92,
+        "losses": 52
+      },
+      "evidence": [
+        "alternatives/matrix_action/matrix_probe_assessment.json",
+        "alternatives/matrix_action/negative_assessment.md"
+      ],
+      "limits": "Comparison to a numerical reference is not a full floating-point error certificate. The October complete matrix-valued theorem is not required by this scalar-function workload."
+    },
+    {
+      "id": "frontier-causality",
+      "class": "unestablished",
+      "status": "not_tested",
+      "claim": "No controlled evidence attributes a new practical advantage to the latest model release.",
+      "evidence": [
+        "research/sources.json",
+        "research/findings.md"
+      ],
+      "limits": "Vendor prices and benchmarks are source facts, not our invoice or an old/new-model comparison."
+    }
+  ]
+}

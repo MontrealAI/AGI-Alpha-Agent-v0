@@ -1,0 +1,25 @@
+{
+  "type": "Post-confirmation reporting correction, no changes to economic policy or simulated paths",
+  "changed_top_level_definitions": [
+    "csv_audit"
+  ],
+  "frozen_source_sha256": "a8d55274da35d8c6ef8f85d02075bc1afa0e9b4269f75c45cb3625d070f8b053",
+  "corrected_source_sha256": "cf336d4024af987f5c965fed5e3f2a8060623ad0ade3f37c12a66522543070ae",
+  "economic_ast_sha256": "63d47a4b6b18ff81a1cb26c5df2368dff70fc9be66f87ce8cb90a75db477cb5f",
+  "correction": "The original count allocated two checks for each account on month0, when no prior month exists. Each world has six fewer performed checks than reported. Numeric ledgers and outcomes remain exact and unchanged.",
+  "v1": {
+    "reported": 1777664,
+    "performed": 1756160,
+    "worlds": 3584
+  },
+  "v2": {
+    "reported": 3555328,
+    "performed": 3512320,
+    "worlds": 7168
+  },
+  "development_smoke": {
+    "reported": 27776,
+    "performed": 27440,
+    "worlds": 56
+  }
+}

@@ -1,0 +1,5406 @@
+{
+  "protocol": {
+    "declared_at": "2026-10-28T14:47:22.064155+00:00",
+    "source_sha256": "9ad13f3c0a6e519e27526096743941e136e8a0bf2689ed9490fff4a084f20f62",
+    "configuration": {
+      "seed": 32520261028,
+      "sizes": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "families": [
+        {
+          "name": "jordan",
+          "upper": 1.0,
+          "lower": 0.0
+        },
+        {
+          "name": "symmetric_diffusion",
+          "upper": 1.0,
+          "lower": 1.0
+        },
+        {
+          "name": "convection_diffusion_4",
+          "upper": 4.0,
+          "lower": 1.0
+        },
+        {
+          "name": "convection_diffusion_12",
+          "upper": 12.0,
+          "lower": 1.0
+        }
+      ],
+      "times": [
+        0.25,
+        1.0,
+        4.0
+      ],
+      "absolute_tolerances_unit_vector": [
+        1e-06,
+        1e-10,
+        1e-12
+      ],
+      "timing_repetitions": 5,
+      "decision": "Advance only with a substantive gain beyond existing specialized bounds and executable production.",
+      "reference": "scipy.linalg.expm; numerical reference, not a rigorous interval oracle",
+      "scipy_tolerance": "Stock expm_multiply has no public tolerance parameter and generally computes more accurately.",
+      "rounding": "Analytical truncation bounds only; no certified total floating-point error."
+    }
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "summary": {
+    "cases": 144,
+    "distinct_matrices": 48,
+    "all_observed_tolerances_pass": true,
+    "new_vs_2017_cases_reducing_degree": 18,
+    "new_vs_2017_max_degree_reduction": 1,
+    "new_vs_2017_total_matvecs": {
+      "old": 4194,
+      "new": 4176
+    },
+    "new_vs_conventional_cases_reducing_degree": 5,
+    "new_vs_conventional_cases_equal_degree": 87,
+    "new_vs_conventional_cases_more_degree": 52,
+    "nonnormal_new_vs_conventional_degree_wins": 5,
+    "nonnormal_cases": 72,
+    "new_vs_2017_median_runtime_ratio": 0.9909172683650077,
+    "new_vs_conventional_median_runtime_ratio": 1.0154549531757968,
+    "new_vs_scipy_median_runtime_ratio": 0.12167757457974854
+  },
+  "rows": [
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.24574328874225948,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.00044894800521433353,
+      "scipy_error": 1.719390143229397e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.6196998078376055e-05,
+          "absolute_error": 2.566593113404262e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.960463623969458e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.308600232936442e-05,
+          "absolute_error": 2.566593113404262e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.937809742159279e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.1570995158981532e-05,
+          "absolute_error": 2.566593113404262e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.7385974681209805e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.24574328874225948,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.00044894800521433353,
+      "scipy_error": 1.719390143229397e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.4272001357749104e-05,
+          "absolute_error": 2.860568423484675e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.7361204210782282e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.331899642944336e-05,
+          "absolute_error": 2.860568423484675e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.4382492486469803e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.3108000934589654e-05,
+          "absolute_error": 2.860568423484675e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.396896671779893e-12
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.24574328874225948,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.00044894800521433353,
+      "scipy_error": 1.719390143229397e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.647400444606319e-05,
+          "absolute_error": 6.345979152675364e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.256650358492764e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.6491997889243066e-05,
+          "absolute_error": 6.345979152675364e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.5263246175359964e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.659700450953096e-05,
+          "absolute_error": 6.345979152675364e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0943422512753282e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.9829731549690379,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0004508900019573048,
+      "scipy_error": 1.162555970610204e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.727999865077436e-05,
+          "absolute_error": 3.080170676418375e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.263542181317921e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.709099837578833e-05,
+          "absolute_error": 3.080170676418375e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.8751797410109262e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.685499541461468e-05,
+          "absolute_error": 3.080170676418375e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1151548315933294e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.9829731549690379,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0004508900019573048,
+      "scipy_error": 1.162555970610204e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.157199484528974e-05,
+          "absolute_error": 2.0920407478842542e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.572182507452609e-12
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.125600000610575e-05,
+          "absolute_error": 2.0920407478842542e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.10142850744857e-12
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 4.7640001866966486e-05,
+          "absolute_error": 1.2125824988676369e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.362237616471311e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.9829731549690379,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0004508900019573048,
+      "scipy_error": 1.162555970610204e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.591000081039965e-05,
+          "absolute_error": 1.2892959144636296e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.592969857788209e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.691400292562321e-05,
+          "absolute_error": 1.2892959144636296e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.63336793807959e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.588999920291826e-05,
+          "absolute_error": 1.2892959144636296e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.0007832748889585e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.9318926198761517,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0005121859940118156,
+      "scipy_error": 1.6099318022729673e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.176100189099088e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.39320337935015e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.013800495769829e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.639448843980287e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.334999488899484e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 0.0
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.9318926198761517,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0005121859940118156,
+      "scipy_error": 1.6099318022729673e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 22,
+          "compile_plus_action_seconds": 9.03530017239973e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.697193807403901e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 22,
+          "compile_plus_action_seconds": 9.262700041290373e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.033418383974223e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.55759940855205e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 0.0
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.9318926198761517,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0005121859940118156,
+      "scipy_error": 1.6099318022729673e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 21,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010180599929299206,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.698055268873019e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010356499842600897,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.063569293544971e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.683800165774301e-05,
+          "absolute_error": 1.657092273689327e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 0.0
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.24886798090170706,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0004469150007935241,
+      "scipy_error": 2.1411189486779324e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.4312001187354326e-05,
+          "absolute_error": 2.401113399725154e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.432875608961167e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.3603002773597836e-05,
+          "absolute_error": 2.401113399725154e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.329168644581601e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.303600194863975e-05,
+          "absolute_error": 2.401113399725154e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.7385974681209805e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.24886798090170706,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0004469150007935241,
+      "scipy_error": 2.1411189486779324e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.487899812171236e-05,
+          "absolute_error": 6.586736767774413e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.94583143228364e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.5555000067688525e-05,
+          "absolute_error": 6.586736767774413e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.6119795386874954e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.486900095595047e-05,
+          "absolute_error": 6.586736767774413e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.396896671779893e-12
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.24886798090170706,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0004469150007935241,
+      "scipy_error": 2.1411189486779324e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.990799450548366e-05,
+          "absolute_error": 1.633474930314675e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.83134182430625e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.849499626085162e-05,
+          "absolute_error": 1.633474930314675e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.0024146161760504e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.8940001104492694e-05,
+          "absolute_error": 1.633474930314675e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0943422512753282e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.9954719236068282,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005252189948805608,
+      "scipy_error": 1.219908131025044e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.0184997487813234e-05,
+          "absolute_error": 8.215173919156014e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.571605848935353e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.982699854532257e-05,
+          "absolute_error": 8.215173919156014e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.1303880394140013e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.978800668846816e-05,
+          "absolute_error": 8.215173919156014e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1151548315933294e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.9954719236068282,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005252189948805608,
+      "scipy_error": 1.219908131025044e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.5791999329812825e-05,
+          "absolute_error": 2.3360841575865357e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.024004466471555e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.507300375029445e-05,
+          "absolute_error": 2.3360841575865357e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.48313075886286e-12
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.207399954088032e-05,
+          "absolute_error": 4.1210781770828886e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.362237616471311e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.9954719236068282,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005252189948805608,
+      "scipy_error": 1.219908131025044e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.043400208000094e-05,
+          "absolute_error": 1.43280043398948e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.765726990100159e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.0026999562978745e-05,
+          "absolute_error": 1.43280043398948e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.604911757226384e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.0530997870955616e-05,
+          "absolute_error": 1.43280043398948e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.0007832748889585e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.981887694427313,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0006948669979465194,
+      "scipy_error": 2.9614529346679435e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.225100125651807e-05,
+          "absolute_error": 9.364530544844546e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.533464350687058e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.37450027372688e-05,
+          "absolute_error": 9.364530544844546e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.584071961925235e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.328399806283414e-05,
+          "absolute_error": 9.364530544844546e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.490136980338225e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.981887694427313,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0006948669979465194,
+      "scipy_error": 2.9614529346679435e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.730300371302292e-05,
+          "absolute_error": 2.7612610366800153e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.1398067611868382e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.594799485057592e-05,
+          "absolute_error": 2.7612610366800153e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.7726739626824745e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 22,
+          "compile_plus_action_seconds": 9.217399929184467e-05,
+          "absolute_error": 1.8644889358338223e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.982582420998675e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.981887694427313,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0006948669979465194,
+      "scipy_error": 2.9614529346679435e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010386199573986232,
+          "absolute_error": 5.751171698390953e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.147388783284484e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010550500155659392,
+          "absolute_error": 5.751171698390953e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.2642364896871515e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010352899698773399,
+          "absolute_error": 5.751171698390953e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.4010364231432656e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.24970805671250765,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0005017079965909943,
+      "scipy_error": 1.658704600532718e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.430899621685967e-05,
+          "absolute_error": 2.5802525475406905e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.565085428093942e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.4477005354128778e-05,
+          "absolute_error": 2.5802525475406905e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.43869484490897e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.407500141998753e-05,
+          "absolute_error": 2.5802525475406905e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.7385974681209805e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.24970805671250765,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0005017079965909943,
+      "scipy_error": 1.658704600532718e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.685200499603525e-05,
+          "absolute_error": 7.882899762375966e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.005923685248157e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.615600144257769e-05,
+          "absolute_error": 7.882899762375966e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.661761591030417e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.72159993276e-05,
+          "absolute_error": 7.882899762375966e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.396896671779893e-12
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.24970805671250765,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0005017079965909943,
+      "scipy_error": 1.658704600532718e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.196800000499934e-05,
+          "absolute_error": 1.96997338446368e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.997318244581862e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.109400470042601e-05,
+          "absolute_error": 1.96997338446368e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.1399139848006253e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.127500142203644e-05,
+          "absolute_error": 1.96997338446368e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0943422512753282e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.9988322268500306,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005098519977764226,
+      "scipy_error": 1.540061768136826e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.1920997318811715e-05,
+          "absolute_error": 9.646486228925216e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.6606368699421103e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.2575993575155735e-05,
+          "absolute_error": 9.646486228925216e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.2041437521598473e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.154499765718356e-05,
+          "absolute_error": 9.646486228925216e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1151548315933294e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.9988322268500306,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005098519977764226,
+      "scipy_error": 1.540061768136826e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.752400466008112e-05,
+          "absolute_error": 3.876070256383096e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.0737310142278963e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.781399522675201e-05,
+          "absolute_error": 3.876070256383096e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.895078968676259e-12
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.3870004194322973e-05,
+          "absolute_error": 5.562708303961101e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.362237616471311e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.9988322268500306,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005098519977764226,
+      "scipy_error": 1.540061768136826e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.233099702512845e-05,
+          "absolute_error": 2.586261399687916e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.11811007867713e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.246199336601421e-05,
+          "absolute_error": 2.586261399687916e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.896835466105388e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.387900066329166e-05,
+          "absolute_error": 2.586261399687916e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.0007832748889585e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.9953289074001224,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0007022139980108477,
+      "scipy_error": 2.8909888543710956e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.328799983952194e-05,
+          "absolute_error": 1.637293455087737e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.884770549785206e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.287700282176957e-05,
+          "absolute_error": 1.637293455087737e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.87510354634961e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 8.096500096144155e-05,
+          "absolute_error": 1.637293455087737e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.490136980338225e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.9953289074001224,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0007022139980108477,
+      "scipy_error": 2.8909888543710956e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.841699647950009e-05,
+          "absolute_error": 6.697529753580945e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.3215450293180454e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.284900443162769e-05,
+          "absolute_error": 6.697529753580945e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.923230873606763e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 22,
+          "compile_plus_action_seconds": 8.751299901632592e-05,
+          "absolute_error": 4.031118090718631e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.982582420998675e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.9953289074001224,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0007022139980108477,
+      "scipy_error": 2.8909888543710956e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010099599603563547,
+          "absolute_error": 1.6043740177054467e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.622020731439699e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010209999891230837,
+          "absolute_error": 1.6043740177054467e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.657434469810059e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00011001199891325086,
+          "absolute_error": 1.6043740177054467e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.4010364231432656e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.2499258674613573,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0006265180054469965,
+      "scipy_error": 1.5912837907983998e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.593800309114158e-05,
+          "absolute_error": 2.5759755510241174e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.599732224153144e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.5239998649340123e-05,
+          "absolute_error": 2.5759755510241174e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.467397190549972e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 5,
+          "compile_plus_action_seconds": 2.5631001335568726e-05,
+          "absolute_error": 2.5759755510241174e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.7385974681209805e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.2499258674613573,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0006265180054469965,
+      "scipy_error": 1.5912837907983998e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.966299846069887e-05,
+          "absolute_error": 7.934764652788269e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0217711159156312e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 3.856600233120844e-05,
+          "absolute_error": 7.934764652788269e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.674890032452887e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 8,
+          "compile_plus_action_seconds": 4.1205996240023524e-05,
+          "absolute_error": 7.934764652788269e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.396896671779893e-12
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.2499258674613573,
+      "operator_norm_upper": 0.25,
+      "scipy_seconds": 0.0006265180054469965,
+      "scipy_error": 1.5912837907983998e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 16,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.273599915904924e-05,
+          "absolute_error": 1.9790286922211112e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.041181567398001e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.37440030509606e-05,
+          "absolute_error": 1.9790286922211112e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.176251551203014e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.288499621907249e-05,
+          "absolute_error": 1.9790286922211112e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0943422512753282e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.9997034698454292,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005653469997923821,
+      "scipy_error": 1.5067149438252925e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.204499418847263e-05,
+          "absolute_error": 9.879993011924337e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.6841697193508826e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.348500078776851e-05,
+          "absolute_error": 9.879993011924337e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.2236390029326417e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.3282001570332795e-05,
+          "absolute_error": 9.879993011924337e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1151548315933294e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.9997034698454292,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005653469997923821,
+      "scipy_error": 1.5067149438252925e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 6.185800157254562e-05,
+          "absolute_error": 4.078749867467086e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.0869852954521666e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 6.137699529062957e-05,
+          "absolute_error": 4.078749867467086e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.004881029528255e-12
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.6539000070188195e-05,
+          "absolute_error": 5.7153015291014676e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.362237616471311e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.9997034698454292,
+      "operator_norm_upper": 1.0,
+      "scipy_seconds": 0.0005653469997923821,
+      "scipy_error": 1.5067149438252925e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 22,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.596899766009301e-05,
+          "absolute_error": 2.713951025232814e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.212232572656582e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.558000313816592e-05,
+          "absolute_error": 2.713951025232814e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.974809093166705e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.636900070589036e-05,
+          "absolute_error": 2.713951025232814e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.0007832748889585e-13
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.998813879381717,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0009498180006630719,
+      "scipy_error": 2.7073576824271975e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.796200225129724e-05,
+          "absolute_error": 1.9013698263772795e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.979242587161489e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.782600005157292e-05,
+          "absolute_error": 1.9013698263772795e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.953366744642159e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.842099876143038e-05,
+          "absolute_error": 1.9013698263772795e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.490136980338225e-07
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.998813879381717,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0009498180006630719,
+      "scipy_error": 2.7073576824271975e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010572699829936028,
+          "absolute_error": 7.81589126783824e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.3710289248626003e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010165500134462491,
+          "absolute_error": 7.81589126783824e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.9642246749139796e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 22,
+          "compile_plus_action_seconds": 9.780399705050513e-05,
+          "absolute_error": 4.6962628426237346e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.982582420998675e-11
+        }
+      }
+    },
+    {
+      "family": "jordan",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.998813879381717,
+      "operator_norm_upper": 4.0,
+      "scipy_seconds": 0.0009498180006630719,
+      "scipy_error": 2.7073576824271975e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 36,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010867800301639363,
+          "absolute_error": 1.8666834274716047e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.751792685810354e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.0001108840006054379,
+          "absolute_error": 1.8666834274716047e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.764941076842033e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00011214800179004669,
+          "absolute_error": 1.8666834274716047e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.4010364231432656e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.49148657748451896,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00042360000225016847,
+      "scipy_error": 1.5899003276961253e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.2326999644283205e-05,
+          "absolute_error": 2.8447567114016506e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3079466683162789e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.103500057477504e-05,
+          "absolute_error": 2.8447567114016506e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.0835384977546126e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 6,
+          "compile_plus_action_seconds": 2.7342997782398015e-05,
+          "absolute_error": 4.803579509507936e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.88259539397444e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.49148657748451896,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00042360000225016847,
+      "scipy_error": 1.5899003276961253e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.336400161264464e-05,
+          "absolute_error": 3.1189561016910294e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.5461905794126997e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.3304004066158086e-05,
+          "absolute_error": 3.1189561016910294e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2809062160125072e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.2931998905260116e-05,
+          "absolute_error": 3.1189561016910294e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.4045310800625475e-12
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.49148657748451896,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00042360000225016847,
+      "scipy_error": 1.5899003276961253e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.7150999307632446e-05,
+          "absolute_error": 1.2456294816490856e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.312030292837079e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 6.290899909799919e-05,
+          "absolute_error": 1.2456294816490856e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.229057106805868e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.735500260721892e-05,
+          "absolute_error": 1.2456294816490856e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.6145285534029297e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.9659463099380758,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0005997400003252551,
+      "scipy_error": 1.767857919959633e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.1748000259976834e-05,
+          "absolute_error": 7.609724058204195e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.9999446877917643e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.1601004088297486e-05,
+          "absolute_error": 7.609724058204195e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.313662676851131e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.214100383454934e-05,
+          "absolute_error": 7.609724058204195e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.6568313384255653e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.9659463099380758,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0005997400003252551,
+      "scipy_error": 1.767857919959633e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.174100028350949e-05,
+          "absolute_error": 1.9332961840804047e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.0953957347490925e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 6.912599928909913e-05,
+          "absolute_error": 1.8040980766526266e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.362185364726575e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 6.849600322311744e-05,
+          "absolute_error": 1.8040980766526266e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.1810926823632796e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.9659463099380758,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0005997400003252551,
+      "scipy_error": 1.767857919959633e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 7.939000352052972e-05,
+          "absolute_error": 1.940687254055877e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1020039992247882e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 18,
+          "compile_plus_action_seconds": 7.596399518661201e-05,
+          "absolute_error": 1.9616212144286705e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.335647739037008e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 18,
+          "compile_plus_action_seconds": 7.557900244137272e-05,
+          "absolute_error": 1.9616212144286705e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.667823869518495e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 7.863785239752303,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0007891920031397603,
+      "scipy_error": 4.1241317705570274e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010355799895478413,
+          "absolute_error": 8.712592129798665e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.479378297683158e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010154800111195073,
+          "absolute_error": 8.712592129798665e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.539265608546328e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 24,
+          "compile_plus_action_seconds": 9.699399379314855e-05,
+          "absolute_error": 2.94173339609047e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.624586113219585e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 7.863785239752303,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0007891920031397603,
+      "scipy_error": 4.1241317705570274e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00012746699940180406,
+          "absolute_error": 6.770548566641749e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.363295588410538e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00013085499813314527,
+          "absolute_error": 6.770548566641749e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.6146724187246744e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 31,
+          "compile_plus_action_seconds": 0.00012712999887298793,
+          "absolute_error": 2.874507143352645e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.654187201781796e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 7.863785239752303,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0007891920031397603,
+      "scipy_error": 4.1241317705570274e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00017282000044360757,
+          "absolute_error": 7.450483118740199e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.834955412862647e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.0001409089963999577,
+          "absolute_error": 7.450483118740199e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.0054082109538565e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00013820300227962434,
+          "absolute_error": 3.445342161693144e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.237530398336467e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.4977359618034141,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00046908200602047145,
+      "scipy_error": 1.5014943614344573e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.264499537181109e-05,
+          "absolute_error": 2.105179864869732e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.4481315063694686e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.2174000807572156e-05,
+          "absolute_error": 2.105179864869732e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.199671420076029e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 6,
+          "compile_plus_action_seconds": 2.7783993573393673e-05,
+          "absolute_error": 3.579582714923203e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.71209685148605e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.4977359618034141,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00046908200602047145,
+      "scipy_error": 1.5014943614344573e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.302999877836555e-05,
+          "absolute_error": 2.3255089306151953e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.777705677739333e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.293099482310936e-05,
+          "absolute_error": 2.3255089306151953e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.4726996032545717e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.385899956105277e-05,
+          "absolute_error": 2.3255089306151953e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.363498016272844e-12
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.4977359618034141,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.00046908200602047145,
+      "scipy_error": 1.5014943614344573e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.8506000894121826e-05,
+          "absolute_error": 9.369229313180066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.349104211826437e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.805000207852572e-05,
+          "absolute_error": 9.369229313180066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.088197271663485e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.7622001147828996e-05,
+          "absolute_error": 9.369229313180066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.0440986358317477e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.9909438472136565,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000541209003131371,
+      "scipy_error": 3.856038361825365e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.1859002269338816e-05,
+          "absolute_error": 5.151133018108647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.723813166975261e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.2481002057902515e-05,
+          "absolute_error": 5.151133018108647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.9133349597555063e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.150999641045928e-05,
+          "absolute_error": 5.151133018108647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.956667479877753e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.9909438472136565,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000541209003131371,
+      "scipy_error": 3.856038361825365e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.195299986051396e-05,
+          "absolute_error": 1.4325362317430646e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3771501411592526e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.323599857045338e-05,
+          "absolute_error": 1.4325362317430646e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1408685317843685e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 6.945600034669042e-05,
+          "absolute_error": 1.3114165663412433e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.191017470752647e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.9909438472136565,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000541209003131371,
+      "scipy_error": 3.856038361825365e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.052500197663903e-05,
+          "absolute_error": 1.7068863894007667e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.4206957198800307e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 0.00012118100130464882,
+          "absolute_error": 1.7068863894007667e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.1769428703594355e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 18,
+          "compile_plus_action_seconds": 7.879100303398445e-05,
+          "absolute_error": 1.455653021837124e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.942602391351746e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 7.963775388854626,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0010642549968906678,
+      "scipy_error": 4.081672002419366e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 47,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.0001032230065902695,
+          "absolute_error": 5.754196192324331e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.650288544853922e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010171799658564851,
+          "absolute_error": 5.754196192324331e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.337706542692044e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010204400314250961,
+          "absolute_error": 5.754196192324331e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.168853271346016e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 7.963775388854626,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0010642549968906678,
+      "scipy_error": 4.081672002419366e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 47,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.0001664949959376827,
+          "absolute_error": 5.041347777492013e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.646027559768379e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00012861000141128898,
+          "absolute_error": 5.041347777492013e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.5057495023228514e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.0001290340005652979,
+          "absolute_error": 5.041347777492013e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.7528747511614205e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 7.963775388854626,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0010642549968906678,
+      "scipy_error": 4.081672002419366e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 47,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00014278200251283124,
+          "absolute_error": 5.796719685808863e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.645930620735077e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00014572800137102604,
+          "absolute_error": 5.796719685808863e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.334096320144453e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00014515899965772405,
+          "absolute_error": 5.796719685808863e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.16704816007222e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.4994161134250153,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005123629962326959,
+      "scipy_error": 1.7865983974412903e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.308700252091512e-05,
+          "absolute_error": 2.688299957730463e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.487997074262258e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.247800486860797e-05,
+          "absolute_error": 2.688299957730463e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2326971378618243e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 6,
+          "compile_plus_action_seconds": 2.7676003810483962e-05,
+          "absolute_error": 4.4589853454399586e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.946149684517157e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.4994161134250153,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005123629962326959,
+      "scipy_error": 1.7865983974412903e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.4927000999450684e-05,
+          "absolute_error": 3.090498754909242e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.845109471855291e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.579200322041288e-05,
+          "absolute_error": 3.090498754909242e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.5285387346110385e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.48059945483692e-05,
+          "absolute_error": 3.090498754909242e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.642693673055178e-12
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.4994161134250153,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005123629962326959,
+      "scipy_error": 1.7865983974412903e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 5.023099947720766e-05,
+          "absolute_error": 1.2521159946311974e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.653412834704887e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 4.959299985785037e-05,
+          "absolute_error": 1.2521159946311974e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.340294789150174e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 5.03289993503131e-05,
+          "absolute_error": 1.2521159946311974e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.170147394575081e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.9976644537000612,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0006941600004211068,
+      "scipy_error": 4.8946787328392685e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.4732998250983655e-05,
+          "absolute_error": 6.887129042511357e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.938120929393024e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.365000106394291e-05,
+          "absolute_error": 6.887129042511357e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.090873323186043e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 8.82480017025955e-05,
+          "absolute_error": 6.887129042511357e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0454366615930216e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.9976644537000612,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0006941600004211068,
+      "scipy_error": 4.8946787328392685e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.434999861288816e-05,
+          "absolute_error": 1.9115376850611808e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.463849649681533e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 7.329400250455365e-05,
+          "absolute_error": 1.9115376850611808e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2126927563463931e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 6.948200461920351e-05,
+          "absolute_error": 1.75367398071073e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.499394377537717e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.9976644537000612,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.0006941600004211068,
+      "scipy_error": 4.8946787328392685e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.318499749293551e-05,
+          "absolute_error": 2.2801370969152116e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.520285853124467e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.338799671037123e-05,
+          "absolute_error": 2.2801370969152116e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.259446038096214e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 18,
+          "compile_plus_action_seconds": 7.782800093991682e-05,
+          "absolute_error": 1.9353233902262496e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.337906879985678e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 7.990657814800245,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0009317700023530051,
+      "scipy_error": 4.793569248129336e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010943300003418699,
+          "absolute_error": 7.546193393178291e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.36263886199229e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010782600293168798,
+          "absolute_error": 7.546193393178291e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.927836867731018e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010811600077431649,
+          "absolute_error": 7.546193393178291e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.4639184338655024e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 7.990657814800245,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0009317700023530051,
+      "scipy_error": 4.793569248129336e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00013471699639922008,
+          "absolute_error": 6.4927757895716465e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.435450513514975e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.0001599770039319992,
+          "absolute_error": 6.4927757895716465e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.159728890103787e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.000133834000735078,
+          "absolute_error": 6.4927757895716465e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.079864445051888e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 7.990657814800245,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0009317700023530051,
+      "scipy_error": 4.793569248129336e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00014783900405745953,
+          "absolute_error": 7.417074177421086e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.640118910158421e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00014749099500477314,
+          "absolute_error": 7.417074177421086e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.15770886620777e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00017490400205133483,
+          "absolute_error": 7.417074177421086e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.5788544331038783e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 0.4998517349227146,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005045959987910464,
+      "scipy_error": 2.0413767810535058e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.5577002563513815e-05,
+          "absolute_error": 2.2716775205475263e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.498489002539316e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.4980999771505594e-05,
+          "absolute_error": 2.2716775205475263e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.241388935837433e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 7,
+          "compile_plus_action_seconds": 3.440099681029096e-05,
+          "absolute_error": 2.2716775205475263e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.206944679187164e-08
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 0.4998517349227146,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005045959987910464,
+      "scipy_error": 2.0413767810535058e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.910500138066709e-05,
+          "absolute_error": 2.629344697249968e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.8629610502491626e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.8588997742626816e-05,
+          "absolute_error": 2.629344697249968e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.543327466372055e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.8822003009263426e-05,
+          "absolute_error": 2.629344697249968e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.716637331860287e-12
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 0.4998517349227146,
+      "operator_norm_upper": 0.5,
+      "scipy_seconds": 0.0005045959987910464,
+      "scipy_error": 2.0413767810535058e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 18,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 5.4108997574076056e-05,
+          "absolute_error": 1.0696786393752076e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.734177132695707e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 5.360400245990604e-05,
+          "absolute_error": 1.0696786393752076e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.407202124316832e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 11,
+          "compile_plus_action_seconds": 5.329600389814004e-05,
+          "absolute_error": 1.0696786393752076e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.20360106215841e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.9994069396908585,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000626394001301378,
+      "scipy_error": 3.5517447725979828e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.8605000958777964e-05,
+          "absolute_error": 6.38833358998395e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.995135444862545e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.788900307379663e-05,
+          "absolute_error": 6.38833358998395e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.138105694305255e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 12,
+          "compile_plus_action_seconds": 5.7729004765860736e-05,
+          "absolute_error": 6.38833358998395e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0690528471526272e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.9994069396908585,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000626394001301378,
+      "scipy_error": 3.5517447725979828e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 8.012200123630464e-05,
+          "absolute_error": 1.7960989553261978e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.4871567381049066e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 17,
+          "compile_plus_action_seconds": 8.044899732340127e-05,
+          "absolute_error": 1.7960989553261978e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2320009805951694e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 7.562799873994663e-05,
+          "absolute_error": 1.6438162036742993e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.5821212261402705e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.9994069396908585,
+      "operator_norm_upper": 2.0,
+      "scipy_seconds": 0.000626394001301378,
+      "scipy_error": 3.5517447725979828e-15,
+      "scipy_counts": {
+        "forward_vector_equivalents": 27,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.913900092011318e-05,
+          "absolute_error": 1.962030685577535e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.5471703922095793e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 9.214299643645063e-05,
+          "absolute_error": 1.962030685577535e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2817179195106157e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 18,
+          "compile_plus_action_seconds": 8.614800026407465e-05,
+          "absolute_error": 1.845442083995091e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.444397265607715e-13
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 7.997627758763434,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0008386059998883866,
+      "scipy_error": 7.390188122329036e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00011407000420149416,
+          "absolute_error": 8.806276232803885e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.557513535600753e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00011502199777169153,
+          "absolute_error": 8.806276232803885e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.089276333274328e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00011509099567774683,
+          "absolute_error": 8.806276232803885e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.544638166637158e-07
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 7.997627758763434,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0008386059998883866,
+      "scipy_error": 7.390188122329036e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.000149096995301079,
+          "absolute_error": 7.619320187933439e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.654542575147399e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00014760399790247902,
+          "absolute_error": 7.619320187933439e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.341230696776651e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 32,
+          "compile_plus_action_seconds": 0.00014656900020781904,
+          "absolute_error": 7.619320187933439e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.17061534838832e-11
+        }
+      }
+    },
+    {
+      "family": "symmetric_diffusion",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 7.997627758763434,
+      "operator_norm_upper": 8.0,
+      "scipy_seconds": 0.0008386059998883866,
+      "scipy_error": 7.390188122329036e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 46,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00018894299864768982,
+          "absolute_error": 8.708325296854513e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.917756221144398e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.0001621470000827685,
+          "absolute_error": 8.708325296854513e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.387711145470149e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 35,
+          "compile_plus_action_seconds": 0.00015731199528090656,
+          "absolute_error": 8.708325296854513e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.693855572735067e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.2287164437112974,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0004913480006507598,
+      "scipy_error": 3.9052474629806013e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.4105996494181454e-05,
+          "absolute_error": 4.309412475031052e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.860518644453329e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.421700577950105e-05,
+          "absolute_error": 4.309412475031052e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.5413041111611493e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 3.9274003938771784e-05,
+          "absolute_error": 3.992713466924662e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.295776906024416e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.2287164437112974,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0004913480006507598,
+      "scipy_error": 3.9052474629806013e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.902499833609909e-05,
+          "absolute_error": 2.5137413716804904e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2585914450805238e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.209200364537537e-05,
+          "absolute_error": 2.5137413716804904e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.0426512920782097e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.5681004596408457e-05,
+          "absolute_error": 3.203788005521524e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.151776961591838e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.2287164437112974,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0004913480006507598,
+      "scipy_error": 3.9052474629806013e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.391799979610369e-05,
+          "absolute_error": 1.7855479180660536e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.618261865124733e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.356299854815006e-05,
+          "absolute_error": 1.7855479180660536e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.968029021981231e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.432600639527664e-05,
+          "absolute_error": 1.7855479180660536e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.250986179376356e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 4.91486577484519,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008174320028047077,
+      "scipy_error": 4.559419619182198e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 37,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.009699376998469e-05,
+          "absolute_error": 7.498814272107647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.904817766531914e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 7.866200030548498e-05,
+          "absolute_error": 7.498814272107647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.891711204478267e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 7.92399951023981e-05,
+          "absolute_error": 7.498814272107647e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.4665891420899e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 4.91486577484519,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008174320028047077,
+      "scipy_error": 4.559419619182198e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 37,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010488899715710431,
+          "absolute_error": 2.742473196442909e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.701659514732359e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010161899990634993,
+          "absolute_error": 2.742473196442909e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.8949822733252916e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010372299584560096,
+          "absolute_error": 2.742473196442909e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.055411857772613e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 4.91486577484519,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008174320028047077,
+      "scipy_error": 4.559419619182198e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 37,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00011604699830058962,
+          "absolute_error": 9.023117261106055e-15,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.4906200010409975e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00011760499910451472,
+          "absolute_error": 9.023117261106055e-15,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.0632971662977446e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 27,
+          "compile_plus_action_seconds": 0.00011047499720007181,
+          "absolute_error": 6.277666173879522e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.947951191185386e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 19.65946309938076,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0015551939941360615,
+      "scipy_error": 3.2547432552558095e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 114,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00020027000573463738,
+          "absolute_error": 6.331025246709149e-10,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.964816646872878e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 44,
+          "compile_plus_action_seconds": 0.0001751079980749637,
+          "absolute_error": 1.9025148393195583e-09,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.776560517638493e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018399100372334942,
+          "absolute_error": 6.331025246709149e-10,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.5883291331971393e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 19.65946309938076,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0015551939941360615,
+      "scipy_error": 3.2547432552558095e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 114,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.0002373589959461242,
+          "absolute_error": 1.6763806050313895e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.461413949644656e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.00021709800057578832,
+          "absolute_error": 1.6763806050313895e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.009664829591469e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.00021593100245809183,
+          "absolute_error": 1.6763806050313895e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.09839816546523e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 19.65946309938076,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0015551939941360615,
+      "scipy_error": 3.2547432552558095e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 114,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00030065200553508475,
+          "absolute_error": 7.503919869756158e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.6304804622792013e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 58,
+          "compile_plus_action_seconds": 0.0002924170039477758,
+          "absolute_error": 6.76422333431409e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.252388614736825e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.0003456070044194348,
+          "absolute_error": 7.503919869756158e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.2489461860196497e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.2443399045085355,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005934569999226369,
+      "scipy_error": 4.998881282350532e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.372299736132845e-05,
+          "absolute_error": 3.575447706956991e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.1410428401240998e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.3719002860598266e-05,
+          "absolute_error": 3.575447706956991e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.773697964002426e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.004700167570263e-05,
+          "absolute_error": 3.2096103843564285e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.295776906024416e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.2443399045085355,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005934569999226369,
+      "scipy_error": 4.998881282350532e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.907900049351156e-05,
+          "absolute_error": 2.454333278562297e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.5228416344070395e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 5.967100150883198e-05,
+          "absolute_error": 2.454333278562297e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.2615633166356112e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.543199949897826e-05,
+          "absolute_error": 3.002149401783318e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.151776961591838e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.2443399045085355,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005934569999226369,
+      "scipy_error": 4.998881282350532e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 6.886500341352075e-05,
+          "absolute_error": 1.3451559040130975e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.588424820729061e-14
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.470800144597888e-05,
+          "absolute_error": 1.8677394236154225e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.762905293966822e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.402999861165881e-05,
+          "absolute_error": 1.8677394236154225e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.250986179376356e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 4.977359618034142,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007243509971885942,
+      "scipy_error": 2.799093380902167e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 39,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.179699943866581e-05,
+          "absolute_error": 1.0809821045060536e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.632103795148187e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.10939964139834e-05,
+          "absolute_error": 1.0809821045060536e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.322641802779115e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 7.889499829616398e-05,
+          "absolute_error": 1.0809821045060536e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.4665891420899e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 4.977359618034142,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007243509971885942,
+      "scipy_error": 2.799093380902167e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 39,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010496499453438446,
+          "absolute_error": 8.950464038554615e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.54867059863491e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010607200238155201,
+          "absolute_error": 8.950464038554615e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.425096354937025e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010405699867988005,
+          "absolute_error": 8.950464038554615e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.055411857772613e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 4.977359618034142,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007243509971885942,
+      "scipy_error": 2.799093380902167e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 39,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00014224799815565348,
+          "absolute_error": 4.7151979459547894e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.601837833039425e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00011779399937950075,
+          "absolute_error": 4.7151979459547894e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.9838601598268965e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 27,
+          "compile_plus_action_seconds": 0.00011251799878664315,
+          "absolute_error": 2.8291951630574424e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.947951191185386e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 19.909438472136568,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.00152737699681893,
+      "scipy_error": 2.441457791936294e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00021276100596878678,
+          "absolute_error": 5.5702778032986244e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.96005603604585e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018403399735689163,
+          "absolute_error": 5.5702778032986244e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.422753459506254e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018221299978904426,
+          "absolute_error": 5.5702778032986244e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.5883291331971393e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 19.909438472136568,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.00152737699681893,
+      "scipy_error": 2.441457791936294e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.00022430099488701671,
+          "absolute_error": 1.4560149883976287e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.010815394910795e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.00024359799863304943,
+          "absolute_error": 1.4560149883976287e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.9795225149861153e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.00022133799939183518,
+          "absolute_error": 4.516169996828144e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.09839816546523e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 19.909438472136568,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.00152737699681893,
+      "scipy_error": 2.441457791936294e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00026837799669010565,
+          "absolute_error": 1.1097444648792636e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.795422091566137e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00023235700064105913,
+          "absolute_error": 1.1097444648792636e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.457939109499106e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.0002646329958224669,
+          "absolute_error": 1.1097444648792636e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.2489461860196497e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.2485402835625383,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005379610011004843,
+      "scipy_error": 5.979835380846873e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.596799408318475e-05,
+          "absolute_error": 3.9979641896319716e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.2227664363781663e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.5606000639963895e-05,
+          "absolute_error": 3.9979641896319716e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.841400007871098e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.058299964526668e-05,
+          "absolute_error": 3.627579999979741e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.295776906024416e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.2485402835625383,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005379610011004843,
+      "scipy_error": 5.979835380846873e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.18900012341328e-05,
+          "absolute_error": 2.669003095655523e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.602253928759412e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.0913000197615474e-05,
+          "absolute_error": 2.669003095655523e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3273506153154451e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 5.8081997849512845e-05,
+          "absolute_error": 3.283637683889822e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.151776961591838e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.2485402835625383,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005379610011004843,
+      "scipy_error": 5.979835380846873e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 0.00017817899788497016,
+          "absolute_error": 1.463728149116255e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.097088555100646e-14
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 7.119300425983965e-05,
+          "absolute_error": 1.463728149116255e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.536274915263493e-14
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.581100024050102e-05,
+          "absolute_error": 2.039039150010673e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.250986179376356e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 4.994161134250153,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007433310020132922,
+      "scipy_error": 2.892622137214107e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.252599945990369e-05,
+          "absolute_error": 1.1177577507804756e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.172793468860697e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.245099888881668e-05,
+          "absolute_error": 1.1177577507804756e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.770563794552726e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.112299838103354e-05,
+          "absolute_error": 1.1177577507804756e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.4665891420899e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 4.994161134250153,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007433310020132922,
+      "scipy_error": 2.892622137214107e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.0001071900042006746,
+          "absolute_error": 8.593967929509753e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.153793485142037e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00024593600392108783,
+          "absolute_error": 8.593967929509753e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.926396567924239e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00010685699817258865,
+          "absolute_error": 8.593967929509753e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.055411857772613e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 4.994161134250153,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0007433310020132922,
+      "scipy_error": 2.892622137214107e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00011861899838550016,
+          "absolute_error": 4.585677551649329e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.9742780480356696e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00017338699399260804,
+          "absolute_error": 4.585677551649329e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.292399736276087e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 27,
+          "compile_plus_action_seconds": 0.00011636999988695607,
+          "absolute_error": 2.7086667361768036e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.947951191185386e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 19.976644537000613,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.001948310004081577,
+      "scipy_error": 2.6705835974918803e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00019420299940975383,
+          "absolute_error": 3.043740370052493e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.390349218689258e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00019225200230721384,
+          "absolute_error": 7.474566434703153e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.688927531389473e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.0002769979982986115,
+          "absolute_error": 7.474566434703153e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.5883291331971393e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 19.976644537000613,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.001948310004081577,
+      "scipy_error": 2.6705835974918803e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.00023158599651651457,
+          "absolute_error": 4.071604992782585e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.272416326316591e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.0002278809988638386,
+          "absolute_error": 4.071604992782585e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.02466694716774e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.0002744090015767142,
+          "absolute_error": 1.1755111110120324e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.09839816546523e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 19.976644537000613,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.001948310004081577,
+      "scipy_error": 2.6705835974918803e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00024290799774462357,
+          "absolute_error": 5.055269350150275e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.557897422858604e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.0002715680020628497,
+          "absolute_error": 5.055269350150275e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.918021480637823e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00023846599651733413,
+          "absolute_error": 5.055269350150275e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.2489461860196497e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 1.2496293373067866,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005610500011243857,
+      "scipy_error": 5.407652645808752e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.9071997636929154e-05,
+          "absolute_error": 3.741575732863676e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.2444142111642903e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 10,
+          "compile_plus_action_seconds": 4.7964000259526074e-05,
+          "absolute_error": 3.741575732863676e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.8593336116943196e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 9,
+          "compile_plus_action_seconds": 4.2981999285984784e-05,
+          "absolute_error": 3.3862925888219425e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.295776906024416e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 1.2496293373067866,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005610500011243857,
+      "scipy_error": 5.407652645808752e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.4594998548273e-05,
+          "absolute_error": 2.534803685105842e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.62346603906682e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 14,
+          "compile_plus_action_seconds": 6.556199514307082e-05,
+          "absolute_error": 2.534803685105842e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3449233028672105e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 13,
+          "compile_plus_action_seconds": 6.10149945714511e-05,
+          "absolute_error": 3.10399723397538e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.151776961591838e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 1.2496293373067866,
+      "operator_norm_upper": 1.25,
+      "scipy_seconds": 0.0005610500011243857,
+      "scipy_error": 5.407652645808752e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 23,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 7.36680012778379e-05,
+          "absolute_error": 1.4001306251186493e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.233529979463031e-14
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 16,
+          "compile_plus_action_seconds": 7.62350027798675e-05,
+          "absolute_error": 1.4001306251186493e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.6493066921443e-14
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.961100007174537e-05,
+          "absolute_error": 1.9424178775821456e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.250986179376356e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 4.998517349227146,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008529580009053461,
+      "scipy_error": 2.3600674618253115e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.976500248536468e-05,
+          "absolute_error": 1.0597981122764293e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.318821493990879e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 8.866600546753034e-05,
+          "absolute_error": 1.0597981122764293e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.891537371543688e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 19,
+          "compile_plus_action_seconds": 9.038200369104743e-05,
+          "absolute_error": 1.0597981122764293e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.4665891420899e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 4.998517349227146,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008529580009053461,
+      "scipy_error": 2.3600674618253115e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.0001162469998234883,
+          "absolute_error": 8.816995809233143e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.319263195846759e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.00017365600069751963,
+          "absolute_error": 8.816995809233143e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.063476164595934e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 25,
+          "compile_plus_action_seconds": 0.0001853600042522885,
+          "absolute_error": 8.816995809233143e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.055411857772613e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 4.998517349227146,
+      "operator_norm_upper": 5.0,
+      "scipy_seconds": 0.0008529580009053461,
+      "scipy_error": 2.3600674618253115e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 38,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00021091600501677021,
+          "absolute_error": 4.752998776430381e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.076757296589168e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 28,
+          "compile_plus_action_seconds": 0.00014930299948900938,
+          "absolute_error": 4.752998776430381e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.3772963255014123e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 27,
+          "compile_plus_action_seconds": 0.000125528997159563,
+          "absolute_error": 2.810885097575809e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.947951191185386e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 19.994069396908586,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0016737900004955009,
+      "scipy_error": 2.0211329007480834e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.0002305149973835796,
+          "absolute_error": 3.9539859829539414e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.5768417662035964e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.0002062620042124763,
+          "absolute_error": 9.455516266776807e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.050328698619153e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00020404600218171254,
+          "absolute_error": 9.455516266776807e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.5883291331971393e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 19.994069396908586,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0016737900004955009,
+      "scipy_error": 2.0211329007480834e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.0002856010032701306,
+          "absolute_error": 6.402018110037604e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.639901573861601e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 55,
+          "compile_plus_action_seconds": 0.0002497409950592555,
+          "absolute_error": 6.402018110037604e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.329101694178097e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 54,
+          "compile_plus_action_seconds": 0.00024288399436045438,
+          "absolute_error": 1.816651345660003e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.09839816546523e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_4",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 19.994069396908586,
+      "operator_norm_upper": 20.0,
+      "scipy_seconds": 0.0016737900004955009,
+      "scipy_error": 2.0211329007480834e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 121,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 60,
+          "compile_plus_action_seconds": 0.0002720850025070831,
+          "absolute_error": 2.6954687020942894e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.2766899293335865e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.00026375400193501264,
+          "absolute_error": 8.328522090472942e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.346807166124853e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 59,
+          "compile_plus_action_seconds": 0.0002855620041373186,
+          "absolute_error": 8.328522090472942e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.2489461860196497e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.1946627536493732,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0005873909976799041,
+      "scipy_error": 3.358059782479548e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 31,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 9.189399861497805e-05,
+          "absolute_error": 4.2751850902299435e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.484869194520837e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.464600301114842e-05,
+          "absolute_error": 4.2751850902299435e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.372241541172053e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.340599793475121e-05,
+          "absolute_error": 4.2751850902299435e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.549795535829396e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.1946627536493732,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0005873909976799041,
+      "scipy_error": 3.358059782479548e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 31,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.448000153293833e-05,
+          "absolute_error": 5.986642219446308e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.395404929337113e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.369799616048113e-05,
+          "absolute_error": 5.986642219446308e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.95498116669073e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.393399912165478e-05,
+          "absolute_error": 5.986642219446308e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.002314716325668e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.1946627536493732,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0005873909976799041,
+      "scipy_error": 3.358059782479548e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 31,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010915600432781503,
+          "absolute_error": 7.191744704928677e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.2089739315100444e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.676699846750125e-05,
+          "absolute_error": 7.191744704928677e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.8299739227201519e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.501699969405308e-05,
+          "absolute_error": 7.191744704928677e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3852197486562016e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 12.778651014597493,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0010570540034677833,
+      "scipy_error": 9.425501221599975e-17,
+      "scipy_counts": {
+        "forward_vector_equivalents": 71,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00019617000361904502,
+          "absolute_error": 1.1905597837925914e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.366215502191539e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00013663499703397974,
+          "absolute_error": 1.1905597837925914e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.6170913545028013e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 33,
+          "compile_plus_action_seconds": 0.00013292700168676674,
+          "absolute_error": 9.961005773158741e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.114366187299495e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 12.778651014597493,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0010570540034677833,
+      "scipy_error": 9.425501221599975e-17,
+      "scipy_counts": {
+        "forward_vector_equivalents": 71,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.0001686890027485788,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.826776389933947e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00016722700092941523,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.9986324865057995e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00016811699606478214,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.213860908239923e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 12.778651014597493,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0010570540034677833,
+      "scipy_error": 9.425501221599975e-17,
+      "scipy_counts": {
+        "forward_vector_equivalents": 71,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00018417999672237784,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.907438772872231e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018134499987354502,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.927774603575967e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018246399849886075,
+          "absolute_error": 9.584369286351589e-17,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.899543981757052e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 51.11460405838997,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.002645517000928521,
+      "scipy_error": 1.1547283526255657e-21,
+      "scipy_counts": {
+        "forward_vector_equivalents": 215,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 89,
+          "compile_plus_action_seconds": 0.000371422000171151,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.685968035008026e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 88,
+          "compile_plus_action_seconds": 0.00034826400224119425,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.413655620921712e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 90,
+          "compile_plus_action_seconds": 0.0003756540027097799,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.364171369563415e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 51.11460405838997,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.002645517000928521,
+      "scipy_error": 1.1547283526255657e-21,
+      "scipy_counts": {
+        "forward_vector_equivalents": 215,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 103,
+          "compile_plus_action_seconds": 0.0004429159962455742,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.821906013956578e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 102,
+          "compile_plus_action_seconds": 0.00043081500189146027,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.903465593621882e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 104,
+          "compile_plus_action_seconds": 0.0004486370016820729,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.177365532961483e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 16,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 51.11460405838997,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.002645517000928521,
+      "scipy_error": 1.1547283526255657e-21,
+      "scipy_counts": {
+        "forward_vector_equivalents": 215,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 109,
+          "compile_plus_action_seconds": 0.000452485001005698,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.404675762808256e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 109,
+          "compile_plus_action_seconds": 0.00042254800064256415,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.305807127114888e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 110,
+          "compile_plus_action_seconds": 0.00045981499715708196,
+          "absolute_error": 6.940119339215268e-22,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.277214943081486e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.235283751722192,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0007741940062260255,
+      "scipy_error": 4.064745520448391e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.514400593005121e-05,
+          "absolute_error": 9.693106951402354e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.961203215027482e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.791499617975205e-05,
+          "absolute_error": 9.693106951402354e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.595276688945358e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.468199717346579e-05,
+          "absolute_error": 9.693106951402354e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.549795535829396e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.235283751722192,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0007741940062260255,
+      "scipy_error": 4.064745520448391e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 21,
+          "compile_plus_action_seconds": 8.973600051831454e-05,
+          "absolute_error": 1.623057981804271e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.6012589300704002e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.409500151174143e-05,
+          "absolute_error": 1.1267822255149196e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.08802695114133e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.364200039068237e-05,
+          "absolute_error": 1.1267822255149196e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.002314716325668e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.235283751722192,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0007741940062260255,
+      "scipy_error": 4.064745520448391e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.557299927109852e-05,
+          "absolute_error": 2.925018023925964e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.997070694971509e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.659699571784586e-05,
+          "absolute_error": 2.925018023925964e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.4828546584963194e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.670599683886394e-05,
+          "absolute_error": 2.925018023925964e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3852197486562016e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 12.941135006888768,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0013021979975746945,
+      "scipy_error": 4.0078333641331483e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 79,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00014142099826131016,
+          "absolute_error": 1.7090197482053554e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.842459332655645e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.0001370310055790469,
+          "absolute_error": 1.7090197482053554e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.668478911144686e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 33,
+          "compile_plus_action_seconds": 0.00013697399845113978,
+          "absolute_error": 6.335293553904531e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.114366187299495e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 12.941135006888768,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0013021979975746945,
+      "scipy_error": 4.0078333641331483e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 79,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00017252399993594736,
+          "absolute_error": 9.088310775508423e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.353715247506521e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.0001718179992167279,
+          "absolute_error": 9.088310775508423e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.920444303440278e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00017273599951295182,
+          "absolute_error": 9.088310775508423e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.213860908239923e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 12.941135006888768,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.0013021979975746945,
+      "scipy_error": 4.0078333641331483e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 79,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00019035999866900966,
+          "absolute_error": 3.510311214996181e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.289620916395786e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00018971000099554658,
+          "absolute_error": 3.510311214996181e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.3820654467670955e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018421300046611577,
+          "absolute_error": 5.746225754140983e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.899543981757052e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 51.76454002755507,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0031474939969484694,
+      "scipy_error": 4.686778299733374e-18,
+      "scipy_counts": {
+        "forward_vector_equivalents": 236,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 91,
+          "compile_plus_action_seconds": 0.00043640699732350186,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.609017254978017e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 90,
+          "compile_plus_action_seconds": 0.0006319719977909699,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.372657117056431e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 90,
+          "compile_plus_action_seconds": 0.00036263799847802147,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.364171369563415e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 51.76454002755507,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0031474939969484694,
+      "scipy_error": 4.686778299733374e-18,
+      "scipy_counts": {
+        "forward_vector_equivalents": 236,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 105,
+          "compile_plus_action_seconds": 0.0004770899977302179,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.1852247420797704e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 104,
+          "compile_plus_action_seconds": 0.00041466400580247864,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.874668420543892e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 104,
+          "compile_plus_action_seconds": 0.0004375060016172938,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.177365532961483e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 32,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 51.76454002755507,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0031474939969484694,
+      "scipy_error": 4.686778299733374e-18,
+      "scipy_counts": {
+        "forward_vector_equivalents": 236,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 111,
+          "compile_plus_action_seconds": 0.0007690439961152151,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.517008829027636e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 110,
+          "compile_plus_action_seconds": 0.0005813329989905469,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.964006110837576e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 110,
+          "compile_plus_action_seconds": 0.0005351350046112202,
+          "absolute_error": 9.22503230791749e-18,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.277214943081486e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.2462047372625995,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0006788319951738231,
+      "scipy_error": 3.9089913597397077e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.614099402213469e-05,
+          "absolute_error": 1.3763161201626353e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.408913917349886e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.583199865417555e-05,
+          "absolute_error": 1.3763161201626353e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.966172378788382e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 6.676000339211896e-05,
+          "absolute_error": 1.3763161201626353e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.549795535829396e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.2462047372625995,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0006788319951738231,
+      "scipy_error": 3.9089913597397077e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 21,
+          "compile_plus_action_seconds": 9.03229956747964e-05,
+          "absolute_error": 2.342078901101903e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.7254376593243303e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.695399446878582e-05,
+          "absolute_error": 1.7015073089129453e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.760151955446677e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 8.669299859320745e-05,
+          "absolute_error": 1.7015073089129453e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.002314716325668e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.2462047372625995,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.0006788319951738231,
+      "scipy_error": 3.9089913597397077e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.860900172498077e-05,
+          "absolute_error": 4.139319885134066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.2511701089457806e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.790199692361057e-05,
+          "absolute_error": 4.139319885134066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.6933575054147176e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 9.836899698711932e-05,
+          "absolute_error": 4.139319885134066e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3852197486562016e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 12.984818949050398,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001250646004336886,
+      "scipy_error": 3.656604753768165e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 81,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00014372500299941748,
+          "absolute_error": 5.40720869725404e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.713639276607249e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.000159344999701716,
+          "absolute_error": 5.40720869725404e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.390188007249064e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 33,
+          "compile_plus_action_seconds": 0.00013682599819730967,
+          "absolute_error": 1.5561876834049125e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.114366187299495e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 12.984818949050398,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001250646004336886,
+      "scipy_error": 3.656604753768165e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 81,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00017763800133252516,
+          "absolute_error": 5.915737944311389e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.669916897922198e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00017428800492780283,
+          "absolute_error": 5.915737944311389e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.010821452280334e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00017768399993656203,
+          "absolute_error": 5.915737944311389e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.213860908239923e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 12.984818949050398,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001250646004336886,
+      "scipy_error": 3.656604753768165e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 81,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00019522199727362022,
+          "absolute_error": 3.6811127864515274e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.205145384639134e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.0001917409972520545,
+          "absolute_error": 3.6811127864515274e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.140510749628721e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00018849300249712542,
+          "absolute_error": 1.3519249840402658e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.899543981757052e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 51.93927579620159,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0033170910028275102,
+      "scipy_error": 1.2226564998879648e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 268,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 91,
+          "compile_plus_action_seconds": 0.00040172199805965647,
+          "absolute_error": 7.971510767905173e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.680258297721257e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 91,
+          "compile_plus_action_seconds": 0.0003904650002368726,
+          "absolute_error": 7.971510767905173e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.362534298889328e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 90,
+          "compile_plus_action_seconds": 0.0003896999987773597,
+          "absolute_error": 1.6604812390919665e-10,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.364171369563415e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 51.93927579620159,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0033170910028275102,
+      "scipy_error": 1.2226564998879648e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 268,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 105,
+          "compile_plus_action_seconds": 0.00044009200064465404,
+          "absolute_error": 1.5643479603127043e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.434947049469203e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 105,
+          "compile_plus_action_seconds": 0.000427740000304766,
+          "absolute_error": 1.5643479603127043e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.159311806831979e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 104,
+          "compile_plus_action_seconds": 0.0004436450035427697,
+          "absolute_error": 1.8040576429218154e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.177365532961483e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 64,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 51.93927579620159,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0033170910028275102,
+      "scipy_error": 1.2226564998879648e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 268,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 111,
+          "compile_plus_action_seconds": 0.0005002059988328256,
+          "absolute_error": 1.4677509492997502e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.069751020221399e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 111,
+          "compile_plus_action_seconds": 0.0004727909981738776,
+          "absolute_error": 1.4677509492997502e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.685200635099689e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 110,
+          "compile_plus_action_seconds": 0.00046879400179022923,
+          "absolute_error": 1.4677509492997502e-16,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.277214943081486e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 3.249036276997645,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.000696857001457829,
+      "scipy_error": 3.686080465441831e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 7.241099956445396e-05,
+          "absolute_error": 1.2561955946466883e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.528797007331956e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 7.182199624367058e-05,
+          "absolute_error": 1.2561955946466883e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.065486782327917e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 15,
+          "compile_plus_action_seconds": 7.056700269458815e-05,
+          "absolute_error": 1.2561955946466883e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.549795535829396e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 3.249036276997645,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.000696857001457829,
+      "scipy_error": 3.686080465441831e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 21,
+          "compile_plus_action_seconds": 9.879300341708586e-05,
+          "absolute_error": 2.394760584330285e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.759105562037033e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 9.364099969388917e-05,
+          "absolute_error": 1.666406141395563e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.942002659756998e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 20,
+          "compile_plus_action_seconds": 9.229900024365634e-05,
+          "absolute_error": 1.666406141395563e-11,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.002314716325668e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 0.25,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 3.249036276997645,
+      "operator_norm_upper": 3.25,
+      "scipy_seconds": 0.000696857001457829,
+      "scipy_error": 3.686080465441831e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 33,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010699600534280762,
+          "absolute_error": 4.4091697766572324e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 3.320350302491537e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010706400644266978,
+          "absolute_error": 4.4091697766572324e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.750668254243214e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 23,
+          "compile_plus_action_seconds": 0.00010784999903989956,
+          "absolute_error": 4.4091697766572324e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 1.3852197486562016e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 12.99614510799058,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001372518003336154,
+      "scipy_error": 4.293051931581135e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 82,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00015412300126627088,
+          "absolute_error": 7.866747185519812e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.956571440583883e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 34,
+          "compile_plus_action_seconds": 0.00018424299923935905,
+          "absolute_error": 7.866747185519812e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.591439601360598e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 33,
+          "compile_plus_action_seconds": 0.0001485130051150918,
+          "absolute_error": 2.150630444722981e-07,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.114366187299495e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 12.99614510799058,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001372518003336154,
+      "scipy_error": 4.293051931581135e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 82,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 43,
+          "compile_plus_action_seconds": 0.0001942730013979599,
+          "absolute_error": 2.8305931878963744e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 2.938993148235331e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00023438000062014908,
+          "absolute_error": 9.855311558536567e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.319893524312646e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 42,
+          "compile_plus_action_seconds": 0.00022021099721314386,
+          "absolute_error": 9.855311558536567e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 4.213860908239923e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 1.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 12.99614510799058,
+      "operator_norm_upper": 13.0,
+      "scipy_seconds": 0.001372518003336154,
+      "scipy_error": 4.293051931581135e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 82,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00020921100076520815,
+          "absolute_error": 6.10465154470089e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.466796089157863e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 46,
+          "compile_plus_action_seconds": 0.00022927700047148392,
+          "absolute_error": 6.10465154470089e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 5.357269290460989e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 45,
+          "compile_plus_action_seconds": 0.00020678200235124677,
+          "absolute_error": 2.2281747580635805e-13,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 9.899543981757052e-13
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-06,
+      "numerical_radius_upper": 51.98458043196232,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0035724440022022463,
+      "scipy_error": 7.745876616080322e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 269,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 91,
+          "compile_plus_action_seconds": 0.0004273119993740693,
+          "absolute_error": 3.895905004552814e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.330889506858515e-07
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 91,
+          "compile_plus_action_seconds": 0.00042859600216615945,
+          "absolute_error": 3.895905004552814e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.901534840745048e-07
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 90,
+          "compile_plus_action_seconds": 0.00040030299714999273,
+          "absolute_error": 6.985684999647605e-08,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.364171369563415e-07
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-10,
+      "numerical_radius_upper": 51.98458043196232,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0035724440022022463,
+      "scipy_error": 7.745876616080322e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 269,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 105,
+          "compile_plus_action_seconds": 0.0004903129956801422,
+          "absolute_error": 3.0438332718976856e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.161549473367221e-11
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 105,
+          "compile_plus_action_seconds": 0.0004890229974989779,
+          "absolute_error": 3.0438332718976856e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 6.761248963695431e-11
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 104,
+          "compile_plus_action_seconds": 0.0004756799971801229,
+          "absolute_error": 6.606490089566603e-12,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.177365532961483e-11
+        }
+      }
+    },
+    {
+      "family": "convection_diffusion_12",
+      "n": 128,
+      "t": 4.0,
+      "tolerance": 1e-12,
+      "numerical_radius_upper": 51.98458043196232,
+      "operator_norm_upper": 52.0,
+      "scipy_seconds": 0.0035724440022022463,
+      "scipy_error": 7.745876616080322e-16,
+      "scipy_counts": {
+        "forward_vector_equivalents": 269,
+        "transpose_vector_equivalents": 2
+      },
+      "methods": {
+        "general_complete_2017": {
+          "degree_matvecs": 111,
+          "compile_plus_action_seconds": 0.0005879919990547933,
+          "absolute_error": 2.4472528525762368e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.904133274730177e-13
+        },
+        "general_crouzeix_2": {
+          "degree_matvecs": 111,
+          "compile_plus_action_seconds": 0.0005125360039528459,
+          "absolute_error": 2.4472528525762368e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 7.376425527141644e-13
+        },
+        "conventional_norm_or_special": {
+          "degree_matvecs": 110,
+          "compile_plus_action_seconds": 0.0005062730051577091,
+          "absolute_error": 5.855110661553649e-14,
+          "observed_tolerance_pass": true,
+          "analytical_truncation_bound": 8.277214943081486e-13
+        }
+      }
+    }
+  ]
+}

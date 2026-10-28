@@ -1,0 +1,17 @@
+{
+  "original_source": "/workspace/scratch/3f41f9cf7269/agi-alpha/studies/agi-alpha-profitable-possibility-v1/independent_reference.py",
+  "original_sha256": "3cd8da809cf04ee3320c2c938db43d6935797251a6ee3634edffcf5eb0553c3d",
+  "adapted_sha256": "0305e5fabb51b0ef649662257dd643792fa4149a3b0b795bbfccaff23eef3fe9",
+  "changes": [
+    {
+      "old": "    collision_target: int | None = None,\n) -> dict[str, Any]:\n    \"\"\"Count using conventional permutation orbits of equivalent future columns.",
+      "new": "    collision_target: int | None = None, row_order: Sequence[int] | None = None,\n) -> dict[str, Any]:\n    \"\"\"Count using conventional permutation orbits of equivalent future columns."
+    },
+    {
+      "old": "    order = sorted(range(m), key=lambda i: (-r[i], u[i]))",
+      "new": "    order = sorted(range(m), key=lambda i: (-r[i], u[i])) if row_order is None else list(row_order)"
+    }
+  ],
+  "status": "post-confirmation conventional repair; not held-out",
+  "case_record_sha256": "c90c5ec008c3ef8d59bb32120628e6df4fcbba6b9346d8baa37244786a2489b6"
+}

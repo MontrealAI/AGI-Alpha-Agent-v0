@@ -1,0 +1,50 @@
+{
+  "declared_at": "2026-10-28T14:47:22.064155+00:00",
+  "source_sha256": "9ad13f3c0a6e519e27526096743941e136e8a0bf2689ed9490fff4a084f20f62",
+  "configuration": {
+    "seed": 32520261028,
+    "sizes": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "families": [
+      {
+        "name": "jordan",
+        "upper": 1.0,
+        "lower": 0.0
+      },
+      {
+        "name": "symmetric_diffusion",
+        "upper": 1.0,
+        "lower": 1.0
+      },
+      {
+        "name": "convection_diffusion_4",
+        "upper": 4.0,
+        "lower": 1.0
+      },
+      {
+        "name": "convection_diffusion_12",
+        "upper": 12.0,
+        "lower": 1.0
+      }
+    ],
+    "times": [
+      0.25,
+      1.0,
+      4.0
+    ],
+    "absolute_tolerances_unit_vector": [
+      1e-06,
+      1e-10,
+      1e-12
+    ],
+    "timing_repetitions": 5,
+    "decision": "Advance only with a substantive gain beyond existing specialized bounds and executable production.",
+    "reference": "scipy.linalg.expm; numerical reference, not a rigorous interval oracle",
+    "scipy_tolerance": "Stock expm_multiply has no public tolerance parameter and generally computes more accurately.",
+    "rounding": "Analytical truncation bounds only; no certified total floating-point error."
+  }
+}

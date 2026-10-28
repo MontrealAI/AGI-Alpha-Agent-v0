@@ -1,0 +1,279 @@
+{
+  "schema": "agi-alpha-strategic-economy/v1",
+  "currency": "USD",
+  "evidence": "ALL BUYERS, DEMAND, PRICES, ACCEPTANCE, COST ALLOCATIONS AND TRANSACTIONS ARE SIMULATED ASSUMPTIONS. NO ACTUAL REVENUE OR PROFIT.",
+  "months": 24,
+  "runoff_months": 6,
+  "equity_cents": 3000000,
+  "credit_limit_cents": 0,
+  "credit_apr": 0.12,
+  "tax_rate_assumption": 0.2,
+  "startup_development_hours": 80,
+  "startup_administration_cents": 80000,
+  "equipment_cents": 120000,
+  "equipment_life_months": 24,
+  "engineering_hour_cents": 9500,
+  "operations_hour_cents": 6500,
+  "maintenance_hours_month": 18,
+  "administration_hours_month": 6,
+  "sales_hours_month": 4,
+  "hosting_cents_month": 5000,
+  "accounting_insurance_cents_month": 10000,
+  "settlement_admin_cents_month": 10000,
+  "processor_fraction": 0.029,
+  "processor_fixed_cents": 30,
+  "compute_usd_per_gb_second": 1.66667e-05,
+  "compute_gb": 2,
+  "compute_seconds_per_attempt": 0.6,
+  "compute_input_status": "Executed root prototype compile approximately0.55s for4x16 bounded case, rounded to0.6s illustration; not a production distribution or actual hosting bill",
+  "delivery_storage_cents": 100,
+  "supplier_review_hours_month": 30,
+  "supplier_outage_probability": 0.04,
+  "supplier_outage_capacity_fraction": 0.35,
+  "supplier_annual_inflation": 0.06,
+  "initial_awareness_fraction": 0.08,
+  "awareness_per_marketing_dollar": 0.012,
+  "organic_awareness_per_month": 1.5,
+  "word_of_mouth_per_acceptance": 0.06,
+  "awareness_decay_month": 0.03,
+  "market_buyers": 240,
+  "buyer_log_dispersion": 0.35,
+  "negotiation_fraction": 0.45,
+  "accepted_quality_probability": 0.95,
+  "retry_probability": 0.08,
+  "retry_cost_fraction": 0.75,
+  "post_acceptance_refund_probability": 0.025,
+  "invoice_default_probability": 0.025,
+  "default_delay_months": 1,
+  "extra_delay_probability": 0.15,
+  "buyer_churn_probability": 0.04,
+  "competitor_initial_price_cents": 34900,
+  "competitor_floor_price_cents": 12900,
+  "competitor_initial_quality": 0.9,
+  "competitor_initial_coverage": 0.45,
+  "competitor_initial_distribution": 0.65,
+  "competitor_learning_month": 0.012,
+  "competitor_distribution_growth": 0.004,
+  "competitor_response_share": 0.25,
+  "competitor_response_price_fraction": 0.93,
+  "competitor_imitation_increment": 0.045,
+  "buyer_new_vendor_integration_cents": 11000,
+  "buyer_repeat_vendor_integration_cents": 2000,
+  "buyer_competitor_integration_cents": 6500,
+  "segments": [
+    {
+      "name": "Academic methods lab",
+      "prefix": "SYN-LAB",
+      "fraction": 0.45,
+      "monthly_need": 0.18,
+      "value_cents": 70000,
+      "budget_cents": 30000,
+      "diy_cost_cents": 18000,
+      "diy_reliability": 0.78,
+      "in_scope_probability": 0.65,
+      "second_outcome_probability": 0.1
+    },
+    {
+      "name": "Industrial validation team",
+      "prefix": "SYN-VAL",
+      "fraction": 0.35,
+      "monthly_need": 0.32,
+      "value_cents": 220000,
+      "budget_cents": 100000,
+      "diy_cost_cents": 50000,
+      "diy_reliability": 0.72,
+      "in_scope_probability": 0.45,
+      "second_outcome_probability": 0.35
+    },
+    {
+      "name": "Data generation studio",
+      "prefix": "SYN-DATA",
+      "fraction": 0.2,
+      "monthly_need": 0.26,
+      "value_cents": 130000,
+      "budget_cents": 65000,
+      "diy_cost_cents": 32000,
+      "diy_reliability": 0.76,
+      "in_scope_probability": 0.55,
+      "second_outcome_probability": 0.25
+    }
+  ],
+  "policies": [
+    {
+      "name": "stop",
+      "mode": "stop",
+      "price_cents": 0,
+      "advance_fraction": 0,
+      "review_hours": 0,
+      "support_hours": 0,
+      "marketing_cents_month": 0,
+      "discount_fraction": 0,
+      "industrial_only": false,
+      "cash_reserve_cents": 0
+    },
+    {
+      "name": "self_service_149",
+      "mode": "instrument",
+      "price_cents": 14900,
+      "advance_fraction": 1,
+      "review_hours": 0.12,
+      "support_hours": 0.1,
+      "marketing_cents_month": 35000,
+      "discount_fraction": 0,
+      "industrial_only": false,
+      "cash_reserve_cents": 100000
+    },
+    {
+      "name": "qualified_instrument_449",
+      "mode": "instrument",
+      "price_cents": 44900,
+      "advance_fraction": 0.5,
+      "review_hours": 0.6,
+      "support_hours": 0.25,
+      "marketing_cents_month": 45000,
+      "discount_fraction": 0.12,
+      "industrial_only": false,
+      "cash_reserve_cents": 200000
+    },
+    {
+      "name": "subscription_349",
+      "mode": "subscription",
+      "price_cents": 34900,
+      "advance_fraction": 1,
+      "review_hours": 0.22,
+      "support_hours": 0.15,
+      "marketing_cents_month": 40000,
+      "discount_fraction": 0.08,
+      "industrial_only": false,
+      "cash_reserve_cents": 200000
+    },
+    {
+      "name": "industrial_instrument_449",
+      "mode": "instrument",
+      "price_cents": 44900,
+      "advance_fraction": 0.5,
+      "review_hours": 0.75,
+      "support_hours": 0.3,
+      "marketing_cents_month": 25000,
+      "discount_fraction": 0.15,
+      "industrial_only": true,
+      "cash_reserve_cents": 200000
+    },
+    {
+      "name": "commitment_gated_449",
+      "mode": "instrument",
+      "price_cents": 44900,
+      "advance_fraction": 1,
+      "review_hours": 0.6,
+      "support_hours": 0.25,
+      "marketing_cents_month": 45000,
+      "discount_fraction": 0.12,
+      "industrial_only": false,
+      "cash_reserve_cents": 200000,
+      "commitment_gate": true,
+      "presale_months_limit": 6,
+      "presale_delay_value_fraction": 0.1,
+      "prelaunch_marketing_cents": 20000
+    }
+  ],
+  "scenarios": {
+    "base": {},
+    "competitive_pressure": {
+      "competitor_initial_coverage": 0.8,
+      "competitor_initial_price_multiplier": 0.65,
+      "competitor_learning_multiplier": 2.0
+    },
+    "demand_shortfall": {
+      "demand_multiplier": 0.5,
+      "awareness_multiplier": 0.7
+    },
+    "supplier_disruption": {
+      "outage_probability": 0.3,
+      "capacity_multiplier": 0.6,
+      "supplier_cost_multiplier": 1.3,
+      "outage_capacity_fraction": 0.0
+    },
+    "cost_inflation": {
+      "labor_cost_multiplier": 1.5,
+      "supplier_cost_multiplier": 2.0
+    },
+    "late_payments": {
+      "payment_delay_months": 3,
+      "default_probability": 0.1
+    },
+    "combined_downside": {
+      "demand_multiplier": 0.55,
+      "awareness_multiplier": 0.7,
+      "competitor_initial_coverage": 0.8,
+      "competitor_initial_price_multiplier": 0.7,
+      "competitor_learning_multiplier": 1.5,
+      "outage_probability": 0.2,
+      "capacity_multiplier": 0.7,
+      "labor_cost_multiplier": 1.35,
+      "supplier_cost_multiplier": 1.5,
+      "payment_delay_months": 3,
+      "default_probability": 0.1,
+      "outage_capacity_fraction": 0.0
+    }
+  },
+  "selection": {
+    "training_seeds_start": 141000,
+    "training_worlds": 64,
+    "confirmation_seeds_start": 3000000,
+    "confirmation_worlds": 256,
+    "rule": "Among policies with positive mean after-tax full-project profit, loss frequency <=0.25 and insolvency frequency <=0.05 on base training worlds, maximize the tenth-percentile full-project profit. Tie-break by mean then lexicographic policy name. If none qualify, select stop. Always evaluate the highest-mean active policy on holdout as a diagnostic, regardless of stop selection."
+  },
+  "source_anchors": [
+    {
+      "id": "BLS-2024",
+      "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+      "observed": "Median software developer annual wage USD133080 in May2024; QA/tester USD102610. Retrieved2026-10-28.",
+      "use": "USD95 engineering and USD65 operations hourly are assumed loaded fractional staffing rates, not BLS quoted hourly rates. Hours and loadings are unvalidated."
+    },
+    {
+      "id": "AWS-LAMBDA",
+      "url": "https://aws.amazon.com/lambda/pricing/",
+      "observed": "Example x86 duration USD0.0000166667 per GB-second; architecture/region/tier dependent.",
+      "use": "Illustrative compute tariff only; no free tier used. No deployment/access or actual paid bill is inferred."
+    },
+    {
+      "id": "STRIPE-US",
+      "url": "https://stripe.com/pricing",
+      "observed": "Published domestic online card standard headline 2.9% plus30c; exact currency and region matter.",
+      "use": "Assumed USD processor tariff, not a quote to this Canadian enterprise. No account or payment is created."
+    },
+    {
+      "id": "MOCKAROO",
+      "url": "https://www.mockaroo.com/pricing",
+      "observed": "Posted adjacent synthetic-data plans60,500,7500 USD annually, per source research; does not price exact contingency instruments",
+      "use": "Competitive affordability warning, not WTP or direct equivalent"
+    }
+  ],
+  "startup_replacement_hours_sensitivity": [
+    40,
+    80,
+    160
+  ],
+  "competitor_share_definition": "Accepted orders divided by eligible contested publicly visible requests in preceding active month; synthetic observability assumption, not total market share.",
+  "development_exposure": {
+    "exposed_holdout_like_seeds": [
+      920000,
+      920001,
+      920002,
+      920003
+    ],
+    "excluded_from_confirmation": true,
+    "notes": "Development source/config and results preserved in economics/development-smoke. No final confirmation uses these seeds. Source then corrected typing, audit behavior under -O, cost metric names, and made competitor/supplier boundary definitions explicit.",
+    "initial_frozen_holdout_interval": [
+      2000000,
+      2000255
+    ],
+    "revision_training_and_confirmation_are_disjoint": true
+  },
+  "always_confirm_policies": [
+    "subscription_349",
+    "qualified_instrument_449",
+    "commitment_gated_449"
+  ],
+  "revision": "After frozen v1 rejected launch, add a6-month contingent-order gate while retaining base demand, WTP, prices, core maintenance, review and support. Presale search costs USD475/month at base rates. Launch requires estimated cohort contribution >=startup+equipment+3months fixed and marketing+reserve; all buyer advances remain refundable custody until accepted delivery. Commitments expire after3months and can withdraw10%/month. No actual commitments exist."
+}
