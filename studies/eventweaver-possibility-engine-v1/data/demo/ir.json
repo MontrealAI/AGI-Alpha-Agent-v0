@@ -1,0 +1,680 @@
+{
+  "schema": "eventweaver.ir.v1",
+  "patterns": [
+    {
+      "name": "heralded_probe",
+      "a": 0,
+      "b": 1,
+      "c": 2,
+      "veto": 3,
+      "l1": 1,
+      "u1": 3,
+      "l2": 1,
+      "u2": 2,
+      "deadline": 7
+    },
+    {
+      "name": "independent_control",
+      "a": 4,
+      "b": 5,
+      "c": 6,
+      "veto": 7,
+      "l1": 1,
+      "u1": 2,
+      "l2": 2,
+      "u2": 3,
+      "deadline": 8
+    }
+  ],
+  "spec_sha256": "4e7c0e01b2275d113a044fd8298f90b4c0231ca782218903a8185e2b38f5cc76",
+  "states": [
+    {
+      "pattern": 0,
+      "kind": "anchor",
+      "coordinates": [
+        0
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "anchor",
+      "coordinates": [
+        1
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "anchor",
+      "coordinates": [
+        2
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        1,
+        0
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        1,
+        1
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        2,
+        0
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        2,
+        1
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        3,
+        0
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "prefix",
+      "coordinates": [
+        3,
+        1
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        2
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        3
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        4
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        5
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        6
+      ]
+    },
+    {
+      "pattern": 0,
+      "kind": "matched",
+      "coordinates": [
+        7
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "anchor",
+      "coordinates": [
+        0
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "anchor",
+      "coordinates": [
+        1
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        1,
+        0
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        1,
+        1
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        1,
+        2
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        2,
+        0
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        2,
+        1
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "prefix",
+      "coordinates": [
+        2,
+        2
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        3
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        4
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        5
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        6
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        7
+      ]
+    },
+    {
+      "pattern": 1,
+      "kind": "matched",
+      "coordinates": [
+        8
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "event",
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            0
+          ],
+          [
+            "event",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            3
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            1
+          ],
+          [
+            "event",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            5
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            2
+          ],
+          [
+            "event",
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            7
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            3
+          ],
+          [
+            "event",
+            2
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            9
+          ]
+        ],
+        [
+          [
+            "state",
+            4
+          ],
+          [
+            "event",
+            2
+          ]
+        ],
+        [
+          [
+            "state",
+            5
+          ],
+          [
+            "event",
+            2
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            10
+          ]
+        ],
+        [
+          [
+            "state",
+            6
+          ],
+          [
+            "event",
+            2
+          ]
+        ],
+        [
+          [
+            "state",
+            7
+          ],
+          [
+            "event",
+            2
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            11
+          ]
+        ],
+        [
+          [
+            "state",
+            8
+          ],
+          [
+            "event",
+            2
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            12
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 3,
+      "any": [
+        [
+          [
+            "state",
+            13
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "event",
+            4
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            15
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            15
+          ],
+          [
+            "event",
+            5
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            17
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            18
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            16
+          ],
+          [
+            "event",
+            5
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            20
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            21
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            18
+          ],
+          [
+            "event",
+            6
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            23
+          ]
+        ],
+        [
+          [
+            "state",
+            19
+          ],
+          [
+            "event",
+            6
+          ]
+        ],
+        [
+          [
+            "state",
+            21
+          ],
+          [
+            "event",
+            6
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            24
+          ]
+        ],
+        [
+          [
+            "state",
+            22
+          ],
+          [
+            "event",
+            6
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            25
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            26
+          ]
+        ]
+      ]
+    },
+    {
+      "veto": 7,
+      "any": [
+        [
+          [
+            "state",
+            27
+          ]
+        ]
+      ]
+    }
+  ],
+  "outputs": [
+    14,
+    28
+  ]
+}

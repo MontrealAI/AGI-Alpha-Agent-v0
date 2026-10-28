@@ -1,0 +1,26 @@
+\subsection{What is necessary for the outcome?}
+The proposed transformational kernel is \emph{bounded temporal composition}: independent sequence windows, an inclusive veto interval that remains open until the decision deadline, and a decided event that can become a later instrument's input. These functions are exercised by the offered design pack. Their necessity for a selected contract must be distinguished from the necessity of our implementation, scientific novelty, or a newly viable business.
+
+We therefore declared a separate, postconfirmation ablation protocol. Six explicit traces, the exact operator removals, the expected outputs, the comparison methods and the stopping rule were frozen at 14:19:23 UTC on 28 October 2026, before the ablation run. The retained main compiler, successor, independent conventional implementations, oracle and verifiers were checked against their recorded source hashes before and after execution; all remained unchanged. This extension does not enlarge the original fresh-confirmation sample.
+
+The first mutation accepts an anchor irreversibly at its earliest valid C event, without waiting for future vetoes. The second pools all declared A channels, all B channels, all C channels and all veto channels across groups while retaining each predicate's own lag bounds. The third disconnects every virtual event by setting it to zero, preserving raw inputs and stage logic. Each mutation was executed both as a Python model and as generated RTL evaluated through Yosys CXXRTL. The full implementation was also compared with the independent oracle and conventional RTL on exactly the same traces.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{L{0.35\textwidth}L{0.25\textwidth}L{0.25\textwidth}}
+\toprule Predeclared fixture & Full contract & Operator removed\\
+\midrule
+Late veto at tick 7 & No output & $0@2$ (false acceptance)\\
+Same sequence, no veto & $0@7$ & $0@2$ (wrong time)\\
+Events drawn from different groups & No output & $0@7,\;1@8$\\
+Valid independent groups & $0@7,\;1@8$ & $0@7,\;1@8$\\
+Virtual event activates second predicate & $0@8,\;1@14$ & $0@8$ only\\
+Raw-stage control & $0@8$ & $0@8$\\
+\bottomrule
+\end{tabular}
+\caption{Kernel counterfactuals. The notation $j@t$ means output bit $j$ at zero-based logical tick $t$. All six fixtures and 88 ticks matched their predeclared full and mutated outputs in executable models and actual RTL. The no-veto control preserves the existence of a match but reveals the early-accept mutation's changed decision time. No unexpected error occurred.}
+\end{table}
+
+\textbf{Removing our compiler did not remove the outcome.} Substituting the independently implemented conventional history-formula RTL, including the conventional successor network, preserved every result in all six fixtures. This counterfactual defeats a claim that EventWeaver itself was necessary for these outcomes. Temporal composition is a functional requirement of the selected contracts; EventWeaver is one implemented means of satisfying it. Existing conventional software and custom digital logic remain strong alternatives.
+
+The result is therefore a tested construction with a necessary \emph{semantic} kernel, not an earned claim of exclusive transformational capability. The fixtures were deliberately chosen to expose the specified removals. They are not a blinded causal experiment on agent skill, a random estimate of field failure, or evidence that current frontier intelligence uniquely made the commercial opportunity feasible. Nor does an ablation establish customer willingness to pay. Full traces, source integrity records, generated mutant RTL and discrepancies are retained in \texttt{protocol/kernel\_ablation\_v1.json}, \texttt{protocol/kernel\_ablation\_freeze.json}, and \texttt{results/kernel\_ablation.json}.

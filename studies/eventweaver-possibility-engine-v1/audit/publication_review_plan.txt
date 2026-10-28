@@ -1,0 +1,263 @@
+EVENTWEAVER V1 — COMPLETE ADDITIVE REVIEW AND OWNER PUBLICATION PLAN
+Prepared 2026-10-28. Status: local preparation only; zero external writes by this reviewer.
+
+RECOMMENDED ROUTE
+
+Place the completed readable study and exact companion transport in a new isolated
+branch, under studies/eventweaver-possibility-engine-v1/. Open one draft PR. This
+provides a complete, version-pinned review package while preserving the current
+sole publisher, main, release versions, workers, runtime and original studies.
+The complete companion is carried once, as bounded binary parts plus an ordered
+manifest and exact reconstruction script. The large journal stays inside that
+archive rather than being uploaded again as a separate 56.3 MB Git object.
+
+The draft branch is a public research review record, not a qualified software
+release or rendered canonical Pages edition. The existing publication owner must
+ingest the complete archive, perform source-specific integration/qualification,
+publish one exact ZIP research-release asset and verify actual downloads before
+catalog/resource linkage. The review transport parts are not a replacement for
+that final one-file companion asset.
+
+CURRENT OWNERSHIP EVIDENCE
+
+Main rechecked during this preparation:
+  12770c22b4a9f90f2013bbfb64242f912ba5071e
+Tree:
+  e334beeaa54ab4979999e4bb2352b885a3501aec
+Issue #4850 rechecked: 717 comments, updated 2026-10-28T11:55:00Z.
+The existing source snapshot is research/source_editions/issue4850_snapshot.json.
+
+Authoritative coordination receipts:
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6461806212
+    Normal main integration of #4988; exact-main release qualification is separate.
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6462468127
+    Dev-UI readiness failure; preserve the sole publication lane and no blind retry.
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6468316846
+    #5007 bounded diagnostic branch, no public v1.47 release or waived gate.
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6460300721
+    Earlier #5004 complete 4,326,321-byte companion direct large-blob upload failed;
+    it remains with its owner for the research-release asset route. The failure's
+    exact transport cause is not established by the comment.
+
+The latest inspected public software remains v1.46.1. Recheck refs immediately
+before any new remote mutation. No reviewer may create a parallel publisher,
+advance main, reserve a competing software release, bypass required checks, alter
+held native-source pins, or relabel an earlier source's evidence.
+
+POLICY READ DIRECTLY
+
+The exact inspected copies are research/source_editions/AGENTS.md,
+research/source_editions/PAPER_UPLOADS.md, and FAST_RELEASE_POLICY.md.
+
+AGENTS permits opening a draft PR when local hooks are unavailable, provided
+failed/unrun checks are disclosed. It does not waive hosted merge/release checks.
+PR title convention: [alpha_factory] followed by a concise title.
+
+PAPER_UPLOADS requires full source qualification for new or changed HTML/code.
+Do not claim the passive PDF/TeX-only upload lane for this mixed package.
+Existing paper originals and resource identities are immutable; this study needs
+a new versioned record, not a rewrite of an existing edition.
+
+Canonical experience shape:
+  docs/reports/<versioned-study-name>/<simple-name>.html
+  exact lowercase SHA256, ordinary UTF-8 file, less than 25,000,000 bytes.
+Canonical companion shape:
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/<research-tag>/<asset>.zip
+  exact SHA256 and integer byte count below 2 GiB.
+Canonical source/evidence shape:
+  https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/<same-research-tag>
+The actual release asset must exist and its downloaded bytes must be checked
+before these URLs are installed in the catalog. An intended URL is not evidence
+of publication. A research release does not replace the latest software release.
+
+SMALLEST COMPLETE REMOTE REVIEW SET
+
+1. Human-readable entry point (README and exact manifest), explaining technical
+   scope, modeled commerce, STOP decision, complete archive reconstruction and
+   remaining owner steps. Link the existing issue rather than creating a second
+   coordination system. Include the outstanding LinkedIn draft without posting.
+2. Complete paper PDF, LaTeX master and all section/figure dependencies; the
+   two-page Executive_Brief.pdf and its source; final browser index.html and its
+   source/build helpers. Current index embeds its CSS/JS; its relative download
+   links must continue working in the extracted companion. When moved to the
+   canonical docs path, update only the newly versioned edition's links to the
+   real, verified canonical assets and then qualify the resulting exact bytes.
+3. Directly readable runnable source, requirements, acceptance/protocol files,
+   key demonstration inputs, result summaries, independent audits, assumptions,
+   source and claim-to-evidence maps, preserved-failure index, and handoff. Full
+   generated traces, all raw logs, fetched source editions and detailed histories
+   can remain inside the companion, indexed by its complete inner manifest.
+4. review_transport/manifest.json, reconstruct_companion.py, and all ordered
+   binary parts. The manifest binds each part's byte count, SHA256 and Git blob
+   SHA1 plus the full archive byte count and SHA256. Never publish only a pointer
+   to an absent journal or describe the compact summaries as the complete audit.
+
+Do not duplicate the full archive plus journal plus archive parts in Git. Store
+the complete archive once in transport. Keep .deps, .cache, __pycache__, .git,
+.pytest_cache, node_modules, LaTeX transient logs and other regenerable build
+temporaries out of the companion and review tree. The workspace's Yosys WASM
+cache alone was about 220 MB at inspection. Retain its pinned installation recipe
+and version identity, not the cache. Preserve genuinely necessary original logs
+and failed scientific results; they are evidence rather than disposable caches.
+
+Treat transport parts as draft-review custody artifacts. The integration owner
+may publish the reconstructed ZIP and integrate only the needed sources/canonical
+documents through a reviewed squash or selected additive commit. Do not normal-
+merge a large transport-only history into main merely because its bytes match.
+
+LOCAL PREPARATION UTILITIES
+
+Written and checked:
+  audit/prepare_review_transport.py
+  audit/reconstruct_companion.py
+  audit/read_review_payload.py
+  audit/review_transport_controls.json
+
+After the final complete ZIP is closed, run from the study root:
+  python audit/prepare_review_transport.py \
+    release/AGI_Alpha_Possibility_Engine_Companion.zip \
+    --output .review_transport
+
+The default part size is 524,286 bytes. It produces at most 699,048 base64
+characters per part and fits the verified local command-to-orchestration bridge.
+The staging directory must be excluded from the archive input set. Use a new
+directory for a changed edition; do not silently mutate already-pinned parts.
+
+Then verify the complete actual companion:
+  python .review_transport/reconstruct_companion.py \
+    --manifest .review_transport/manifest.json --verify-only
+
+Or reconstruct to a new file and compare its exact SHA256 with the original:
+  python .review_transport/reconstruct_companion.py \
+    --manifest .review_transport/manifest.json \
+    --output release/Companion_Reconstructed.zip
+
+The reader can use the same script after downloading the parts. It can also fetch
+parts from a --base-url containing the final 40-hex commit and the exact isolated
+study's review_transport path. It requires no credentials. It verifies each part,
+the ordered full archive, and byte counts. It never extracts or executes content.
+Existing output files are refused. A failed reconstruction leaves no output.
+
+Local controls passed: exact ZIP round trip, existing-output refusal, one-byte
+corruption refusal, and no final output after failed reconstruction. These test
+the transport utilities, not remote service limits or scientific outcomes.
+
+AVAILABLE CONNECTOR PRIMITIVES
+
+The active GitHub connector advertises:
+  create_blob(repository_full_name, content, encoding='base64'|'utf-8')
+  create_tree(repository_full_name, base_tree_sha, tree_elements)
+  create_commit(repository_full_name, parent_sha, tree_sha, message)
+  create_branch(repository_full_name, branch_name, sha OR base_ref)
+  update_ref(repository_full_name, branch_name, sha, expected_sha, force)
+  create_pull_request(repository_full_name, base, head, title, body, draft)
+  fetch_blob, fetch_file, fetch_commit, compare_commits, approved GET fetch.
+There is no release creation or release-asset upload primitive in the discovered
+connector. No undocumented endpoint or credentials workaround is proposed.
+
+Blob content accepts base64. Trees accept either a blob SHA or inline UTF-8
+content per entry, not both. Small source files can be grouped into bounded tree
+requests with inline content, avoiding a separate blob mutation for each file.
+Keep such JSON payloads comfortably below the verified local text limit and
+check their exact encoded size. Binary parts/PDFs use explicit blob uploads.
+
+EFFICIENCY AND EXACTNESS
+
+A local probe emitting 1,048,576 binary bytes as base64 was truncated at about
+1 MiB of text despite a larger token budget; its JSON was invalid. Do not use
+that read size. A 524,286-byte probe arrived intact with exactly 699,048 base64
+characters. This is a measured local bridge bound, not a discovered connector
+upload ceiling. The connector schema declares no request-size limit. The earlier
+4.3 MB blob failure makes large untested requests an unnecessary risk.
+
+In functions.exec, call read_review_payload.py through exec_command with
+max_output_tokens=250000; parse the returned JSON directly into a JS variable.
+Validate exit code, byte count and base64 length. Do not text()/notify() the
+content. Pass it to create_blob. Compare the returned SHA to git_blob_sha1 from
+the local helper. After constructing the additive tree and an unreferenced
+commit, use fetch_file with encoding='base64', ref=<that exact commit SHA>, and
+the exact repository path. Normalize only base64 line wrapping, then compare
+the entire returned base64 content with the original local payload. This exact
+readback route was verified with a 522,050-byte existing module. The connector's
+fetch_blob and generic /git/blobs GET normalize content to UTF-8; do not use them
+for binary-byte verification. Complete readback before creating the branch or
+PR. This verifies actual remote file bytes without printing binaries or passing
+megabyte command strings through a shell.
+
+Read larger standalone PDFs in multiple bounded slices if needed. Use chunk
+lengths divisible by three so their base64 strings concatenate correctly; only
+the final slice may contain '=' padding. Compare the final remote blob SHA with
+the complete local file's independently calculated Git blob identity. An explicit
+manifest should hold full-file identities before any upload begins.
+
+Use ordinary shell quoting for helper paths, not JSON.stringify as shell escaping.
+The upload loop should log only ordinal, remote path, bytes, expected/returned
+hash and readback status. Keep a local receipt of created object SHAs so an
+interruption resumes without rewriting data or creating duplicate commits.
+
+Perform content mutations sequentially. GitHub documents general secondary
+limits of 80 content-generating requests per minute and 500 per hour, with lower
+endpoint-specific limits possible. A roughly one-second spacing plus normal
+response latency stays below the general per-minute ceiling for this small
+campaign, but observe any actual Retry-After/rate-limit response. Stop on an
+error, record it, and respect the returned wait; do not blind-retry or switch
+accounts to evade limits. All source/text batches plus approximately 115–130
+archive parts should fit the ordinary hourly budget if other activity permits.
+
+SINGLE-COMMIT ADDITIVE BRANCH PROCEDURE
+
+1. Freeze final artifact identities and the review-file manifest. Recheck current
+   main/owner state, and verify the proposed new branch and study path are absent.
+2. Upload all new blobs and compare each returned Git SHA to its exact local
+   identity. Build a study-only tree from the planned
+   source entries and complete companion transport. It is safe to start this
+   subtree from an empty tree because it is not itself the repository root.
+3. Create the final repository tree using the inspected main tree as base and
+   adding only studies/eventweaver-possibility-engine-v1 as a tree entry. Never
+   use an empty tree as the repository root: that would delete existing files.
+4. Create one unreferenced commit whose sole parent is the inspected main SHA.
+   Keep the new branch absent until exact byte readback below is complete. No
+   main update, force push, branch replacement, merge, release tag or workflow
+   dispatch is required.
+5. Compare the exact parent and new commit. Require only additions under the
+   isolated study path; check mode/blob identities against the staged manifest.
+   Read back every staged file, including paper PDF, brief, browser and all
+   companion parts, using fetch_file(encoding='base64', ref=<new commit SHA>).
+   Compare complete base64 contents against the local exact files and verify
+   companion reconstruction before describing the handoff as fully ingested.
+6. Recheck unique branch/path availability, create the new branch at the verified
+   commit, and open one draft PR with the repository's title convention. Describe the useful
+   construction, conventional/library parity, negative economics, seven terminal
+   stress insolvencies, measured versus modeled scope, completed local checks,
+   and every unrun repository-wide/full-release check. Link issue #4850. Do not
+   claim draft creation completes hosted qualification or canonical publication.
+7. Produce a receipt of exact commit/tree/artifact identities and working pinned
+   GitHub review/raw paths. These are real review/download links after creation;
+   do not present planned URLs or raw HTML as a deployed reading experience.
+
+OWNER'S REMAINING CANONICAL ACTION
+
+Review the complete reconstructed package; accept the new versioned paper and
+experience through the existing source-qualified integration lane; publish the
+single exact companion ZIP as a distinct research-release asset; verify its
+actual bytes and source/evidence tag; add the versioned catalog record; complete
+the existing exact-main, installed-artifact, Pages and public-byte/browser gates.
+The research decision remains STOP standalone expansion even if publication
+qualification passes. LinkedIn remains a draft awaiting separate posting approval.
+
+PRIMARY API REFERENCES CHECKED 2026-10-28
+
+https://docs.github.com/en/rest/git/blobs
+  Create supports UTF-8/base64; Get supports blobs up to 100 MB. The latter is
+  not proof that an intermediary connector accepts a 100 MB write request.
+https://docs.github.com/en/rest/git/trees
+  Inline content or SHA, preserved base_tree semantics, and nested entries.
+  The documented 100,000-entry/7 MB limit concerns recursive GET tree responses,
+  not a blanket safe create_tree payload size.
+https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+  Content-creation limits and required backoff on actual rate-limit responses.
+https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+  Up to 1,000 assets; each asset below 2 GiB.
+https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github
+  Git warns above 50 MiB and blocks above 100 MiB; releases are the recommended
+  distribution path for large binary deliverables.

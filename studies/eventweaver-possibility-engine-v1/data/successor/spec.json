@@ -1,0 +1,29 @@
+{
+  "channels": 8,
+  "stages": [
+    {
+      "name": "heralded_probe",
+      "a": "raw:0",
+      "b": "raw:1",
+      "c": "raw:2",
+      "veto": "raw:3",
+      "l1": 1,
+      "u1": 3,
+      "l2": 1,
+      "u2": 2,
+      "deadline": 7
+    },
+    {
+      "name": "conditioned_calibration",
+      "a": "stage:heralded_probe",
+      "b": "raw:4",
+      "c": "raw:5",
+      "veto": "raw:6",
+      "l1": 1,
+      "u1": 2,
+      "l2": 1,
+      "u2": 2,
+      "deadline": 5
+    }
+  ]
+}

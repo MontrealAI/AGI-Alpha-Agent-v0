@@ -1,0 +1,91 @@
+{
+  "edition": "AGI ALPHA FLYWHEEL / THE POSSIBILITY ENGINE / EventWeaver v1",
+  "selected_on": "2026-10-28",
+  "decision_before_construction": true,
+  "beneficiary": "Small scientific-instrument OEM or experimental photonics team with an existing digitized event interface",
+  "offering": "Verified firmware design pack for independent bounded temporal predicates; functional design acceptance, with board integration and timing qualification outside this edition",
+  "input": {
+    "channels": 8,
+    "sample": "One 8-bit event mask per logical clock tick; multiple channels may be true; multiplicity within a bin is not represented",
+    "rst": "Synchronous active-high reset dominates events; reset clears all history and outputs",
+    "backpressure": "None. Every tick advances time, a zero mask is an empty tick. Buyer must supply lossless clocked bins. No timestamp parser, TDC or physical I/O is promised."
+  },
+  "predicate": {
+    "fields": [
+      "name",
+      "a",
+      "b",
+      "c",
+      "veto",
+      "l1",
+      "u1",
+      "l2",
+      "u2",
+      "deadline"
+    ],
+    "constraints": "Channel ids 0..7, all four channels distinct within a pattern; 1 <= l1 <= u1; 1 <= l2 <= u2; u1+u2 <= deadline <= 20; nonempty list of at most four patterns with unique names",
+    "semantics": "At tick t, output j is true iff an anchor A occurred at t-deadline, there exist b and c with l1 <= b-(t-deadline) <= u1 and l2 <= c-b <= u2, B occurred at b, C occurred at c, and no VETO occurred at any tick from t-deadline through t inclusive. Every anchor is independent; overlapping anchors allowed. A,B,C,VETO may coexist in a sample, but positive lag bounds disallow same-tick A-to-B or B-to-C matches. A veto at either endpoint cancels. At most one output per pattern per tick. Multiple B/C paths do not double count. Reset erases pending anchors; after reset a complete new deadline-length history is required.",
+    "groups": "Each predicate uses only its declared channels and maintains independent state. Sharing a channel across predicates is allowed and intentional; cross-triggering from undeclared channels is forbidden."
+  },
+  "first_demo": [
+    {
+      "name": "heralded_probe",
+      "a": 0,
+      "b": 1,
+      "c": 2,
+      "veto": 3,
+      "l1": 1,
+      "u1": 3,
+      "l2": 1,
+      "u2": 2,
+      "deadline": 7
+    },
+    {
+      "name": "independent_control",
+      "a": 4,
+      "b": 5,
+      "c": 6,
+      "veto": 7,
+      "l1": 1,
+      "u1": 2,
+      "l2": 2,
+      "u2": 3,
+      "deadline": 8
+    }
+  ],
+  "acceptance": [
+    "Reject malformed or unsupported specifications before code generation",
+    "Exact match to separately written mathematical oracle and conventional RTL on directed boundary cases, seeded random traces and reset tests",
+    "Synthesis without latches or unresolved modules; report generic cells only, no fabricated Fmax/power/area",
+    "Bounded symbolic equivalence of generated RTL and independent history-formula RTL for arbitrary input masks under explicit reset; report exact depth and assumptions",
+    "Independent group isolation and late-veto cancellation",
+    "Fresh confirmation cases created only after development freeze; preserve failures and any protocol amendments"
+  ],
+  "development_seeds": [
+    1103,
+    2207,
+    3313,
+    4421
+  ],
+  "confirmation_plan": {
+    "specifications": 24,
+    "traces_per_specification": 32,
+    "ticks_per_trace": 256,
+    "seeds_rule": "Independent evaluator chooses fresh fixed seeds after immutable development freeze; all results retained",
+    "no_tuning": true
+  },
+  "claim_limits": [
+    "Functional digital kernel only, not a calibrated instrument",
+    "No physical FPGA, optical data, metastability, timestamp-loss or real-time deadline validation",
+    "No universal claim of scientific novelty or human-unforeseeability",
+    "No causal estimate of model superiority from a single multi-agent construction",
+    "Conventional and identical-library ties must be reported"
+  ],
+  "stop_conditions": [
+    "Uncorrected functional mismatch",
+    "Unstated semantic restriction needed for acceptance",
+    "No credible buyer surplus against current AI-assisted alternatives",
+    "Full-project losses or cash risk not justified by bounded information value"
+  ],
+  "successor": "Fresh mission: a two-stage experiment in which a verified first-stage decision becomes a virtual event channel for a later independent temporal predicate. Add an acyclic instrument-network grammar with a mandatory one-clock interface delay, explicit reset and shared raw channels; prior compiler alone rejects virtual channels. Compare new direct conventional network, a successor using retained EventWeaver compiler, and ordinary library using exactly the same artifact. Charge extraction, validation, integration, storage and upkeep. Parameter changes alone are not the successor result."
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "possibility-engine.review-transport-controls.v1",
+  "scope": "Local transport controls only; no remote writes or remote size-limit claim.",
+  "controls": {
+    "exact_zip_roundtrip": true,
+    "existing_output_refused": true,
+    "one_byte_tamper_refused": true,
+    "failed_reconstruction_leaves_no_output": true
+  },
+  "roundtrip": {
+    "verified": true,
+    "parts": 27,
+    "bytes": 2573,
+    "sha256": "4aadec34a56471a555ba42292117c395d9122aa5c90167c25c7ef5e9deeae611",
+    "output": "/tmp/eventweaver-transport-x4hcv2ng/roundtrip.zip"
+  },
+  "source_sha256": {
+    "prepare_review_transport.py": "7fff008ae155768768c1f39b785c9e3943110c4fb42d2fd3e4dc73c92115830d",
+    "reconstruct_companion.py": "706e3cf1247b2fc0dada5df499047de2e5cb2289fdeb0d711b27443ec70312a9",
+    "read_review_payload.py": "5f735401a5d5db536c334395b06960c2382678671407e04d3b2399a6836ab334"
+  },
+  "passed": true
+}

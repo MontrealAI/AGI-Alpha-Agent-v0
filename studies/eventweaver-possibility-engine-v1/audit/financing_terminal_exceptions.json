@@ -1,0 +1,104 @@
+{
+  "schema": "possibility-engine.financing-terminal-exceptions.v1",
+  "source": "results/business_confirmation_journals.jsonl.gz",
+  "cases": [
+    {
+      "seed": 700589,
+      "scenario": "no_collection_recourse",
+      "full_profit": -47524.62,
+      "final_cash": 0.0,
+      "final_debt": 2524.62,
+      "funding_shortfall": 0.0,
+      "final_day": 360,
+      "last_cash_event_day": 360,
+      "accepted": 12,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700282,
+      "scenario": "high_demand",
+      "full_profit": -45018.39,
+      "final_cash": 0.0,
+      "final_debt": 18.39,
+      "funding_shortfall": 0.0,
+      "final_day": 330,
+      "last_cash_event_day": 330,
+      "accepted": 8,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700291,
+      "scenario": "high_demand",
+      "full_profit": -46344.52,
+      "final_cash": 0.0,
+      "final_debt": 1344.52,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700441,
+      "scenario": "high_demand",
+      "full_profit": -45094.89,
+      "final_cash": 0.0,
+      "final_debt": 94.89,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700616,
+      "scenario": "high_demand",
+      "full_profit": -47734.31,
+      "final_cash": 0.0,
+      "final_debt": 2734.31,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700687,
+      "scenario": "high_demand",
+      "full_profit": -46532.25,
+      "final_cash": 0.0,
+      "final_debt": 1532.25,
+      "funding_shortfall": 0.0,
+      "final_day": 390,
+      "last_cash_event_day": 390,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700925,
+      "scenario": "high_demand",
+      "full_profit": -45560.75,
+      "final_cash": 0.0,
+      "final_debt": 560.75,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 7,
+      "terminal_insolvent": true
+    }
+  ],
+  "interpretation": "All customer deposits, receivables and refund balances close; these seven cases exhaust project equity and retain unpaid lender claims after available cash repayment. They are terminal modeled insolvencies, not successful financing closure. No debt forgiveness or repayment is invented. Scenario frequencies are conditional, not an unconditional bankruptcy probability.",
+  "conditional_frequency": {
+    "no_collection_recourse": {
+      "insolvent": 1,
+      "runs": 1024,
+      "frequency": 0.0009765625
+    },
+    "high_demand": {
+      "insolvent": 6,
+      "runs": 1024,
+      "frequency": 0.005859375
+    }
+  },
+  "scope": "Additive extraction from frozen results; no policy, source or outcome changed."
+}

@@ -1,0 +1,108 @@
+{
+  "edition": "EventWeaver successor Ω instrument network v1",
+  "created": "2026-10-28",
+  "parent_protocol": "technical_v1.json",
+  "retained_asset": {
+    "path": "src/eventweaver.py",
+    "sha256": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+    "rule": "Parent compiler stays byte-identical; virtual input references are rejected by it."
+  },
+  "mission": "A verified heralded-probe decision becomes an event that starts a separate delayed calibration predicate. This adds composition across instrument decisions, not just different timing parameters.",
+  "grammar": {
+    "top_level": [
+      "channels",
+      "stages"
+    ],
+    "channels": 8,
+    "stages": "1..4 uniquely named predicates; same lag/deadline constraints as parent",
+    "source_reference": "a,b,c,veto are strings raw:0 through raw:7 or stage:<exact stage name>; four distinct references per stage",
+    "graph": "All stage references must resolve; self-reference and directed cycles rejected; input list need not be topologically sorted.",
+    "outputs": "One bit per stage, in the supplied list order."
+  },
+  "semantics": {
+    "virtual_delay": "At logical tick t, a consumer sees producer output(t-1). All stages read the previous-output snapshot, then simultaneously update. Producer outputs start at zero.",
+    "rtl_boundary": "Each core output is a registered-state bit. Direct wiring into another synchronous core therefore supplies the previous edge's output; no extra delay register is inserted.",
+    "reset": "Shared synchronous rst dominates raw and virtual inputs, clears every stage and output; producer pre-reset pulses cannot survive reset.",
+    "raw": "The same eight raw event bits are shared across stages. Empty masks still advance all clocks.",
+    "predicate": "Identical A-B-C lag/window/endpoint-veto semantics to parent after remapping declared source references into a stage-local four-channel interface."
+  },
+  "development_demo": {
+    "channels": 8,
+    "stages": [
+      {
+        "name": "heralded_probe",
+        "a": "raw:0",
+        "b": "raw:1",
+        "c": "raw:2",
+        "veto": "raw:3",
+        "l1": 1,
+        "u1": 3,
+        "l2": 1,
+        "u2": 2,
+        "deadline": 7
+      },
+      {
+        "name": "conditioned_calibration",
+        "a": "stage:heralded_probe",
+        "b": "raw:4",
+        "c": "raw:5",
+        "veto": "raw:6",
+        "l1": 1,
+        "u1": 2,
+        "l2": 1,
+        "u2": 2,
+        "deadline": 5
+      }
+    ]
+  },
+  "acceptance": [
+    "Parent virtual-channel rejection explicitly demonstrated.",
+    "Directed trace proves exactly one interface tick and expected final conditioned decision.",
+    "Late veto and reset cancel pending consumer decisions.",
+    "Invalid, unknown and cyclic references rejected before generation.",
+    "Separate conventional network plus mathematical oracle agree with generated network model and actual RTL.",
+    "Bounded symbolic equivalence against independent conventional RTL under explicit reset; depth recorded.",
+    "Fresh successor cases generated only after source/protocol freeze; no tuning from confirmation."
+  ],
+  "comparison": [
+    "Direct conventional network wrapping independently implemented history cores",
+    "Successor wrapper using retained frozen EventWeaver compiler",
+    "Ordinary library containing the exact same EventWeaver artifact and same wrapper; expected identity/tie is reported"
+  ],
+  "cost_policy": {
+    "currency": "USD",
+    "classification": "Explicit planning estimates, not billed or observed engineering invoices",
+    "one_time_extension": {
+      "grammar_design_and_integration_hours": 16,
+      "rate_per_hour": 100,
+      "independent_validation_hours": 8,
+      "verification_rate_per_hour": 125,
+      "fixtures_hours": 4,
+      "fixture_rate_per_hour": 100,
+      "inference_and_tools": 100,
+      "failure_allowance": 400,
+      "total": 3500
+    },
+    "retained_asset": {
+      "extraction": 150,
+      "validation": 250,
+      "integration": 100,
+      "storage_and_upkeep_first_year": 100,
+      "total": 600
+    },
+    "accounting": "Successor exploration is an additional $4,100 unfunded research option. Do not count its costs inside the predecessor project twice; do not presume commercial surplus exists or finances it. Identical library incurs the same retention costs. No economic superiority is inferred from functional equivalence.",
+    "stop": "Do not fund physical integration without a buyer-backed acceptance gate and separate capital allocation."
+  },
+  "claim_limits": [
+    "No new learned weights or independently learned specialist superiority",
+    "No physical hardware or optical feedback test",
+    "Functional network extension does not establish willingness to pay",
+    "Main commercial confirmation remains separate from this extension"
+  ],
+  "fresh_confirmation_plan": {
+    "networks": 6,
+    "traces_per_network": 8,
+    "ticks_per_trace": 128,
+    "selection": "Independent evaluator selects fresh fixed seeds and specifications after immutable successor freeze; all failures preserved."
+  }
+}

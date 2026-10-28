@@ -1,0 +1,171 @@
+{
+  "schema": "possibility-engine.terminal-insolvencies.v1",
+  "source": "results/business_confirmation_journals.jsonl.gz",
+  "source_sha256": "873c520a270327db192f2490b5192e2b5af8afbe5f01ca2ff0cf544cf5a9bb8b",
+  "source_audit": "audit/accounting_confirmation.json",
+  "generated_utc": "2026-10-28T14:06:17.699688+00:00",
+  "currency": "USD",
+  "cases": [
+    {
+      "seed": 700589,
+      "scenario": "no_collection_recourse",
+      "full_profit": -47524.62,
+      "final_cash": 0.0,
+      "final_debt": 2524.62,
+      "funding_shortfall": 0.0,
+      "final_day": 360,
+      "last_cash_event_day": 360,
+      "accepted": 12,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700282,
+      "scenario": "high_demand",
+      "full_profit": -45018.39,
+      "final_cash": 0.0,
+      "final_debt": 18.39,
+      "funding_shortfall": 0.0,
+      "final_day": 330,
+      "last_cash_event_day": 330,
+      "accepted": 8,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700291,
+      "scenario": "high_demand",
+      "full_profit": -46344.52,
+      "final_cash": 0.0,
+      "final_debt": 1344.52,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700441,
+      "scenario": "high_demand",
+      "full_profit": -45094.89,
+      "final_cash": 0.0,
+      "final_debt": 94.89,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700616,
+      "scenario": "high_demand",
+      "full_profit": -47734.31,
+      "final_cash": 0.0,
+      "final_debt": 2734.31,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700687,
+      "scenario": "high_demand",
+      "full_profit": -46532.25,
+      "final_cash": 0.0,
+      "final_debt": 1532.25,
+      "funding_shortfall": 0.0,
+      "final_day": 390,
+      "last_cash_event_day": 390,
+      "accepted": 11,
+      "terminal_insolvent": true
+    },
+    {
+      "seed": 700925,
+      "scenario": "high_demand",
+      "full_profit": -45560.75,
+      "final_cash": 0.0,
+      "final_debt": 560.75,
+      "funding_shortfall": 0.0,
+      "final_day": 300,
+      "last_cash_event_day": 300,
+      "accepted": 7,
+      "terminal_insolvent": true
+    }
+  ],
+  "scenario_frequencies": {
+    "base": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "price_war": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "weak_demand": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "supplier_shock": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "slow_payment": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "correlated_downturn": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "identical_free_library": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "conditional_ai_improvement": {
+      "terminal_insolvencies": 0,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0,
+      "conditional_frequency_percent": 0.0,
+      "unpaid_debt_usd": 0.0
+    },
+    "no_collection_recourse": {
+      "terminal_insolvencies": 1,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.0009765625,
+      "conditional_frequency_percent": 0.09765625,
+      "unpaid_debt_usd": 2524.62
+    },
+    "high_demand": {
+      "terminal_insolvencies": 6,
+      "histories": 1024,
+      "conditional_probability_estimate": 0.005859375,
+      "conditional_frequency_percent": 0.5859375,
+      "unpaid_debt_usd": 6285.11
+    }
+  },
+  "terminal_insolvency_count": 7,
+  "total_unpaid_debt_across_listed_histories_usd": 8809.73,
+  "scope": "Additive extraction from frozen results; no policy, source or outcome changed.",
+  "interpretation": "All customer deposits, receivables and refund balances close; these seven cases exhaust project equity and retain unpaid lender claims after available cash repayment. They are terminal modeled insolvencies, not successful financing closure. No debt forgiveness or repayment is invented. Scenario frequencies are conditional, not an unconditional bankruptcy probability.",
+  "additional_qualification": "The ten scenarios have no assigned probabilities. These are conditional empirical frequencies among 1,024 simulations per scenario, not calibrated real-world bankruptcy probabilities. The sum of unpaid balances across histories is an audit total, not one enterprise liability. A zero emergency-funding-shortfall metric does not imply lender solvency."
+}

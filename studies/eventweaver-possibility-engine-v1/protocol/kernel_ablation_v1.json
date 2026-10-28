@@ -1,0 +1,557 @@
+{
+  "schema": "kernel.ablation.v1",
+  "declared_at_utc": "2026-10-28T14:18:37.405838+00:00",
+  "phase": "Separate postconfirmation diagnostic ablation; not part of original fresh confirmation",
+  "selection": "Six hand-constructed, declared counterexamples/controls selected for semantic contrast before this ablation is run. They are not a random sample, estimate of production error rate, or discovery of unexpected superiority.",
+  "baseline_patterns": [
+    {
+      "name": "heralded_probe",
+      "a": 0,
+      "b": 1,
+      "c": 2,
+      "veto": 3,
+      "l1": 1,
+      "u1": 3,
+      "l2": 1,
+      "u2": 2,
+      "deadline": 7
+    },
+    {
+      "name": "independent_control",
+      "a": 4,
+      "b": 5,
+      "c": 6,
+      "veto": 7,
+      "l1": 1,
+      "u1": 2,
+      "l2": 2,
+      "u2": 3,
+      "deadline": 8
+    }
+  ],
+  "successor_spec": {
+    "channels": 8,
+    "stages": [
+      {
+        "name": "heralded_probe",
+        "a": "raw:0",
+        "b": "raw:1",
+        "c": "raw:2",
+        "veto": "raw:3",
+        "l1": 1,
+        "u1": 3,
+        "l2": 1,
+        "u2": 2,
+        "deadline": 7
+      },
+      {
+        "name": "conditioned_calibration",
+        "a": "stage:heralded_probe",
+        "b": "raw:4",
+        "c": "raw:5",
+        "veto": "raw:6",
+        "l1": 1,
+        "u1": 2,
+        "l2": 1,
+        "u2": 2,
+        "deadline": 5
+      }
+    ]
+  },
+  "initial_condition": "Each trace starts from cleared state, represented by a reset tick before tick 0 in RTL. All listed tick indices are zero-based.",
+  "mutations": {
+    "delayed_veto": "Accept each anchor irreversibly at the earliest C that completes A-B-C within original lag windows with no veto observed from A through that C. Keep original positive lags and group isolation. Do not wait until the original deadline. A later veto cannot retract an emitted output. One pulse per anchor, OR when anchors coincide.",
+    "group_isolation": "Pool all declared A channels by OR, all B channels by OR, all C channels by OR, and all VETO channels by OR. Each pattern uses these pooled roles while preserving its own original lag/deadline parameters.",
+    "virtual_link": "Set every stage-derived input to constant zero, retaining all raw inputs, stage cores, original timing and reset. No substitute representation of the missing derived event is introduced.",
+    "our_compiler": "Replace EventWeaver with the independently implemented conventional history-formula RTL; replace successor with independent conventional network RTL. Keep the complete same functional contract and raw traces."
+  },
+  "fixtures": [
+    {
+      "name": "late_veto_counterexample",
+      "operator_removed": "delayed_veto",
+      "trace": [
+        {
+          "events": 1,
+          "rst": false
+        },
+        {
+          "events": 2,
+          "rst": false
+        },
+        {
+          "events": 4,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 8,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 2,
+          "mask": 1
+        }
+      ]
+    },
+    {
+      "name": "late_veto_positive_control",
+      "operator_removed": "delayed_veto",
+      "trace": [
+        {
+          "events": 1,
+          "rst": false
+        },
+        {
+          "events": 2,
+          "rst": false
+        },
+        {
+          "events": 4,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        }
+      ],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 2,
+          "mask": 1
+        }
+      ]
+    },
+    {
+      "name": "cross_group_counterexample",
+      "operator_removed": "group_isolation",
+      "trace": [
+        {
+          "events": 1,
+          "rst": false
+        },
+        {
+          "events": 32,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 64,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ]
+    },
+    {
+      "name": "group_positive_control",
+      "operator_removed": "group_isolation",
+      "trace": [
+        {
+          "events": 17,
+          "rst": false
+        },
+        {
+          "events": 34,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 68,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 7,
+          "mask": 1
+        },
+        {
+          "tick": 8,
+          "mask": 2
+        }
+      ]
+    },
+    {
+      "name": "virtual_link_counterexample",
+      "operator_removed": "virtual_link",
+      "trace": [
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 1,
+          "rst": false
+        },
+        {
+          "events": 2,
+          "rst": false
+        },
+        {
+          "events": 4,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 16,
+          "rst": false
+        },
+        {
+          "events": 32,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        },
+        {
+          "tick": 14,
+          "mask": 2
+        }
+      ],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ]
+    },
+    {
+      "name": "raw_stage_positive_control",
+      "operator_removed": "virtual_link",
+      "trace": [
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 1,
+          "rst": false
+        },
+        {
+          "events": 2,
+          "rst": false
+        },
+        {
+          "events": 4,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        },
+        {
+          "events": 0,
+          "rst": false
+        }
+      ],
+      "expected_full_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ],
+      "expected_ablation_nonzero": [
+        {
+          "tick": 8,
+          "mask": 1
+        }
+      ]
+    }
+  ],
+  "predeclared_evaluation": {
+    "execute": [
+      "frozen EventWeaver Python",
+      "independent mathematical oracle",
+      "unchanged competent conventional Python",
+      "actual generated EventWeaver and conventional RTL via Yosys CXXRTL",
+      "operator mutants in executable Python and actual Yosys CXXRTL"
+    ],
+    "pass": "All full implementations agree with predeclared full outputs; each mutant agrees with its predeclared ablation outputs; report every per-tick contract discrepancy. A mutant mismatch is evidence of contract violation, not a product defect.",
+    "stop": "Record any unexpected mismatch or build error and stop claims; do not retune fixtures, relax acceptance, or edit frozen main/successor source.",
+    "reporting": "Publish compiler-removal tie prominently. Useful temporal composition is required by these contracts; the specific EventWeaver compiler is not. Pre-existing conventional implementations defeat necessity, exclusive novelty and newly feasible commercial claims. No ablation provides customer willingness-to-pay evidence."
+  },
+  "frozen_dependency_sha256": {
+    "src/eventweaver.py": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+    "src/successor.py": "2778f4ff615abdeb153c085a706de051aa3f3251469e797a712f1a6468a9a350",
+    "src/conventional.py": "74d7978096016c6aaff77ae897995b839cfb7fd2c5e9167f090bc4a007fcbfe6",
+    "src/conventional_network.py": "42d60cbb58b5d3e14011f3fb14eaf48de8aa934b5724fdfa339825b3e345a65b",
+    "src/reference_oracle.py": "90110b4a8969cc16ce6eaccd648253fa93e6b18ab9b9569fbc59a7837287af73",
+    "audit/technical_verifier.py": "a4a1330678ca79f5b850ca04c765ba07da9c3471917bbead8a6b96ef1385ff41",
+    "audit/successor_verifier.py": "074bdbb575dc1bae2c5aa102d2c077e7180effd145539c9c1b7c92fba1d9f52a"
+  }
+}

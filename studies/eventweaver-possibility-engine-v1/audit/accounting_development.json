@@ -1,0 +1,64 @@
+{
+  "schema": "possibility-engine.independent-accounting-audit.v1",
+  "method": "Independent integer-cent journal reconstruction; no business.py import or simulator execution.",
+  "script_sha256": "e1413569c662edb375598c928d94e11a9b9aef6d9aa0fb0416e6d1aa4111ab20",
+  "input_files": [
+    {
+      "path": "possibility_engine/results/business_development_ledger.json",
+      "sha256": "5c457c432bc1c894b940db050b73a561b0348e9697023147ea91075ed752004f"
+    }
+  ],
+  "histories_audited": 1,
+  "journal_entries_audited": 155,
+  "checks": {
+    "chronology": 155,
+    "positive_integer_cents": 155,
+    "account_names": 155,
+    "financing_classification": 1,
+    "double_entry": 155,
+    "unrestricted_cash_nonnegative": 155,
+    "restricted_cash_nonnegative": 155,
+    "deposit_custody": 155,
+    "receivable_nonnegative": 155,
+    "debt_nonpositive": 155,
+    "buyer_receivable_nonnegative": 155,
+    "deposit_no_revenue": 7,
+    "revenue_recognition": 9,
+    "restricted_use": 7,
+    "collection_not_resale": 9,
+    "reported_money_reconstruction": 12,
+    "all_account_reconstruction": 31,
+    "terminal_commercial_closure": 3,
+    "cash_profit_equity_bridge": 1,
+    "lifecycle_count_reconstruction": 11,
+    "buyer_best_outside_option": 19,
+    "buyer_outside_value": 19,
+    "outside_utility_independent_recomputation": 95,
+    "buyer_reservation_price": 19,
+    "buyer_bid_feasible": 19,
+    "public_negotiation_policy": 19,
+    "contract_prior_steps": 7,
+    "contract_chronology": 7,
+    "acceptance_after_execution": 7,
+    "exclusive_terminal_delivery": 7,
+    "acceptance_invoice_once": 7,
+    "contract_price_preserved": 7,
+    "seller_incremental_cost_gate": 9,
+    "prospective_funding_gate": 9,
+    "buyer_participation": 7,
+    "renewal_basis": 2,
+    "renewal_after_warranty": 2,
+    "human_hours_reconstruction": 1
+  },
+  "errors": [],
+  "warnings": [],
+  "scenario_reconstruction": {
+    "base": {
+      "histories": 1,
+      "mean_full_profit": -28776.54,
+      "loss_probability": 1.0
+    }
+  },
+  "passed": true,
+  "limits": "Arithmetic/lifecycle audit does not validate demand, WTP, costs, causality or physical performance."
+}

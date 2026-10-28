@@ -1,0 +1,154 @@
+{
+  "schema": "possibility-engine.independent-accounting-audit.v1",
+  "method": "Independent integer-cent journal reconstruction; no business.py import or simulator execution.",
+  "script_sha256": "e1413569c662edb375598c928d94e11a9b9aef6d9aa0fb0416e6d1aa4111ab20",
+  "input_files": [
+    {
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "sha256": "873c520a270327db192f2490b5192e2b5af8afbe5f01ca2ff0cf544cf5a9bb8b"
+    }
+  ],
+  "histories_audited": 10240,
+  "journal_entries_audited": 1265250,
+  "checks": {
+    "chronology": 1265250,
+    "positive_integer_cents": 1265250,
+    "account_names": 1265250,
+    "financing_classification": 10495,
+    "double_entry": 1265250,
+    "unrestricted_cash_nonnegative": 1265250,
+    "restricted_cash_nonnegative": 1265250,
+    "deposit_custody": 1265250,
+    "receivable_nonnegative": 1265250,
+    "debt_nonpositive": 1265250,
+    "buyer_receivable_nonnegative": 1265250,
+    "deposit_no_revenue": 49296,
+    "revenue_recognition": 51138,
+    "restricted_use": 49296,
+    "collection_not_resale": 39592,
+    "reported_money_reconstruction": 122880,
+    "all_account_reconstruction": 283964,
+    "terminal_commercial_closure": 30720,
+    "cash_profit_equity_bridge": 10240,
+    "lifecycle_count_reconstruction": 112640,
+    "buyer_best_outside_option": 201298,
+    "buyer_outside_value": 201298,
+    "outside_utility_independent_recomputation": 1006490,
+    "buyer_reservation_price": 201298,
+    "buyer_bid_feasible": 201298,
+    "public_negotiation_policy": 201298,
+    "contract_prior_steps": 49296,
+    "contract_chronology": 49296,
+    "acceptance_after_execution": 47442,
+    "exclusive_terminal_delivery": 47442,
+    "acceptance_invoice_once": 47442,
+    "contract_price_preserved": 47442,
+    "seller_incremental_cost_gate": 58184,
+    "prospective_funding_gate": 58184,
+    "buyer_participation": 49296,
+    "renewal_basis": 3696,
+    "renewal_after_warranty": 3696,
+    "human_hours_reconstruction": 10240,
+    "scenario_mean_reconstruction": 10,
+    "scenario_loss_probability_reconstruction": 10
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "seed": 700589,
+      "scenario": "no_collection_recourse",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 2524.62; financing not closed"
+    },
+    {
+      "seed": 700282,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 18.39; financing not closed"
+    },
+    {
+      "seed": 700291,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 1344.52; financing not closed"
+    },
+    {
+      "seed": 700441,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 94.89; financing not closed"
+    },
+    {
+      "seed": 700616,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 2734.31; financing not closed"
+    },
+    {
+      "seed": 700687,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 1532.25; financing not closed"
+    },
+    {
+      "seed": 700925,
+      "scenario": "high_demand",
+      "path": "possibility_engine/results/business_confirmation_journals.jsonl.gz",
+      "message": "Terminal debt remains 560.75; financing not closed"
+    }
+  ],
+  "scenario_reconstruction": {
+    "base": {
+      "histories": 1024,
+      "mean_full_profit": -29628.412373046875,
+      "loss_probability": 1.0
+    },
+    "price_war": {
+      "histories": 1024,
+      "mean_full_profit": -30410.01220703125,
+      "loss_probability": 1.0
+    },
+    "weak_demand": {
+      "histories": 1024,
+      "mean_full_profit": -28304.776484375,
+      "loss_probability": 1.0
+    },
+    "supplier_shock": {
+      "histories": 1024,
+      "mean_full_profit": -32635.67177734375,
+      "loss_probability": 1.0
+    },
+    "slow_payment": {
+      "histories": 1024,
+      "mean_full_profit": -30195.11201171875,
+      "loss_probability": 1.0
+    },
+    "correlated_downturn": {
+      "histories": 1024,
+      "mean_full_profit": -30396.788544921874,
+      "loss_probability": 1.0
+    },
+    "identical_free_library": {
+      "histories": 1024,
+      "mean_full_profit": -30767.130029296874,
+      "loss_probability": 1.0
+    },
+    "conditional_ai_improvement": {
+      "histories": 1024,
+      "mean_full_profit": -30720.706279296875,
+      "loss_probability": 1.0
+    },
+    "no_collection_recourse": {
+      "histories": 1024,
+      "mean_full_profit": -34629.294892578124,
+      "loss_probability": 1.0
+    },
+    "high_demand": {
+      "histories": 1024,
+      "mean_full_profit": -33810.0071875,
+      "loss_probability": 1.0
+    }
+  },
+  "passed": true,
+  "limits": "Arithmetic/lifecycle audit does not validate demand, WTP, costs, causality or physical performance."
+}

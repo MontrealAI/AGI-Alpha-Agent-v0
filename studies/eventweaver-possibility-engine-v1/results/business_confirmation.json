@@ -1,0 +1,2106 @@
+{
+  "policy": {
+    "arrangement": "supported_library",
+    "price": 1200,
+    "protocol_version": "commercial-v1",
+    "selection": "Highest development mean full-project profit; not authorization to launch",
+    "development_hash": "0f9fcc8bf08553274a29e4cfea5374d93a7e27c6a1f4fa5f236a51f0bc692e66",
+    "acceptance": "technical_v1 unchanged; buyer scope/fit acceptance modeled separately",
+    "exit_day": 180,
+    "reinvest_rule": "Only realized unencumbered profit after all obligations and fixed cost recovery; no modeled investment when negative",
+    "no_launch_alternative": 0
+  },
+  "runs_per_scenario": 1024,
+  "seed_start": 700001,
+  "scenarios": {
+    "base": {},
+    "price_war": {
+      "competitor_factor": 0.68,
+      "competitor_response_day": 60
+    },
+    "weak_demand": {
+      "demand_factor": 0.55,
+      "trust_factor": 1.35
+    },
+    "supplier_shock": {
+      "rate_factor": 1.45,
+      "capacity_factor": 0.6,
+      "common_probability": 0.3
+    },
+    "slow_payment": {
+      "payment_lag_factor": 2.5,
+      "default_add": 0.1
+    },
+    "correlated_downturn": {
+      "demand_factor": 0.65,
+      "rate_factor": 1.35,
+      "capacity_factor": 0.65,
+      "common_probability": 0.35,
+      "default_add": 0.1,
+      "payment_lag_factor": 2,
+      "competitor_factor": 0.8
+    },
+    "identical_free_library": {
+      "competitor_factor": 0.5,
+      "competitor_response_day": 0,
+      "trust_factor": 1.2,
+      "outside_hours_factor": 0.65
+    },
+    "conditional_ai_improvement": {
+      "ours_hours_factor": 0.7,
+      "outside_hours_factor": 0.7,
+      "competitor_factor": 0.78,
+      "inference_factor": 0.5
+    },
+    "no_collection_recourse": {
+      "strategic_default": true
+    },
+    "high_demand": {
+      "demand_factor": 2.5
+    }
+  },
+  "summaries": {
+    "base": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 9024.40802734375,
+        "p05": 3461.28,
+        "p50": 9041.1,
+        "p95": 15006.7,
+        "se_mean": 106.59452690786317
+      },
+      "expenses": {
+        "mean": 38652.82040039063,
+        "p05": 32907.8,
+        "p50": 38409.29,
+        "p95": 45492.14,
+        "se_mean": 120.3346654984983
+      },
+      "operating_contribution": {
+        "mean": -3928.412373046875,
+        "p05": -8481.16,
+        "p50": -3561.38,
+        "p95": -899.14,
+        "se_mean": 75.93930106039402
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -29628.412373046875,
+        "p05": -34181.16,
+        "p50": -29261.38,
+        "p95": -26599.14,
+        "se_mean": 75.93930106039402
+      },
+      "roi_on_cost": {
+        "mean": -0.7711807611203039,
+        "p05": -0.8940946125298576,
+        "p50": -0.766622999741199,
+        "p95": -0.6565293550305754,
+        "se_mean": 0.00223529129506315
+      },
+      "required_capital": {
+        "mean": 32111.387666015624,
+        "p05": 28769.42,
+        "p50": 31747.59,
+        "p95": 36496.07,
+        "se_mean": 75.5653657203555
+      },
+      "peak_restricted_cash": {
+        "mean": 775.42619140625,
+        "p05": 467.31,
+        "p50": 907.07,
+        "p95": 1380.78,
+        "se_mean": 9.037881889231594
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 7.943359375,
+        "p05": 3,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08805678161541515
+      },
+      "contracts": {
+        "mean": 8.25390625,
+        "p05": 4,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08909822191709998
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.8896484375,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.02993204212546146
+      },
+      "final_refusals": {
+        "mean": 0.310546875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.017835888081167255
+      },
+      "defaults": {
+        "mean": 0.3046875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.017720211393536554
+      },
+      "warranty_refunds": {
+        "mean": 0.6162109375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 3,
+        "se_mean": 0.03362167894700407
+      },
+      "renewals": {
+        "mean": 0.76171875,
+        "p05": 0,
+        "p50": 1,
+        "p95": 2,
+        "se_mean": 0.027632426566367396
+      },
+      "human_hours": {
+        "mean": 72.80759130244178,
+        "p05": 40.61112876920785,
+        "p50": 72.04684958738092,
+        "p95": 107.64353504770338,
+        "se_mean": 0.6463877469555852
+      },
+      "delivery_human_hours": {
+        "mean": 38.143821771191796,
+        "p05": 16.54709571971657,
+        "p50": 37.83439656281937,
+        "p95": 61.49573755350341,
+        "se_mean": 0.43270323088217044
+      },
+      "interventions": {
+        "mean": 9.44921875,
+        "p05": 4,
+        "p50": 9,
+        "p95": 15,
+        "se_mean": 0.10862888482546744
+      },
+      "max_wait_days": {
+        "mean": 5.30859375,
+        "p05": 2,
+        "p50": 5,
+        "p95": 10,
+        "se_mean": 0.08295339893800305
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -36448.799215686275,
+      "buyer_benefit_conditional_on_participation": 358.8271233069498,
+      "human_interventions_per_accepted": 1.189574625030735
+    },
+    "price_war": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 4212.26541015625,
+        "p05": 1116.04,
+        "p50": 3948.5,
+        "p95": 8373.5,
+        "se_mean": 72.57252401150028
+      },
+      "expenses": {
+        "mean": 34622.2776171875,
+        "p05": 30260.11,
+        "p50": 34293.69,
+        "p95": 39890.81,
+        "se_mean": 93.07795370083456
+      },
+      "operating_contribution": {
+        "mean": -4710.01220703125,
+        "p05": -8372.84,
+        "p50": -4477.07,
+        "p95": -2107.85,
+        "se_mean": 58.70072244679976
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -30410.01220703125,
+        "p05": -34072.84,
+        "p50": -30177.07,
+        "p95": -27807.85,
+        "se_mean": 58.70072244679976
+      },
+      "roi_on_cost": {
+        "mean": -0.8818475977573954,
+        "p05": -0.9655781083020903,
+        "p50": -0.8849033919935755,
+        "p95": -0.7840227315571315,
+        "se_mean": 0.0018279160563952998
+      },
+      "required_capital": {
+        "mean": 30913.5926953125,
+        "p05": 28305.04,
+        "p50": 30620.64,
+        "p95": 34508.83,
+        "se_mean": 59.0988895903916
+      },
+      "peak_restricted_cash": {
+        "mean": 598.9502734375,
+        "p05": 448.92,
+        "p50": 480.0,
+        "p95": 949.66,
+        "se_mean": 8.139213095953387
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 3.71875,
+        "p05": 1,
+        "p50": 4,
+        "p95": 7,
+        "se_mean": 0.06139821873182365
+      },
+      "contracts": {
+        "mean": 3.86328125,
+        "p05": 1,
+        "p50": 4,
+        "p95": 7,
+        "se_mean": 0.06229238622513309
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.390625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.019921788898046737
+      },
+      "final_refusals": {
+        "mean": 0.14453125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.011749257698872872
+      },
+      "defaults": {
+        "mean": 0.1396484375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.011520382354044964
+      },
+      "warranty_refunds": {
+        "mean": 0.3095703125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.02028072254286944
+      },
+      "renewals": {
+        "mean": 0.3671875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.01894392777783318
+      },
+      "human_hours": {
+        "mean": 48.90630234317484,
+        "p05": 25.800967793479803,
+        "p50": 47.69503219542233,
+        "p95": 75.74184376080741,
+        "se_mean": 0.48766360315704244
+      },
+      "delivery_human_hours": {
+        "mean": 18.105179296299852,
+        "p05": 3.8631182015418086,
+        "p50": 16.98186368766724,
+        "p95": 35.79279485489385,
+        "se_mean": 0.31080025453158633
+      },
+      "interventions": {
+        "mean": 4.4189453125,
+        "p05": 1,
+        "p50": 4,
+        "p95": 9,
+        "se_mean": 0.0758529746682087
+      },
+      "max_wait_days": {
+        "mean": 3.6103515625,
+        "p05": 2,
+        "p50": 3,
+        "p95": 8,
+        "se_mean": 0.07194044972476864
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -35272.77411764706,
+      "buyer_benefit_conditional_on_participation": 289.83597269854795,
+      "human_interventions_per_accepted": 1.1882878151260505
+    },
+    "weak_demand": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 4456.3208984375,
+        "p05": 1122.52,
+        "p50": 3971.26,
+        "p95": 8766.21,
+        "se_mean": 77.03913818192049
+      },
+      "expenses": {
+        "mean": 32761.0973828125,
+        "p05": 28862.31,
+        "p50": 32395.8,
+        "p95": 37707.68,
+        "se_mean": 85.66604229936326
+      },
+      "operating_contribution": {
+        "mean": -2604.776484375,
+        "p05": -5649.24,
+        "p50": -2337.74,
+        "p95": -665.76,
+        "se_mean": 48.537644291365055
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -28304.776484375,
+        "p05": -31349.24,
+        "p50": -28037.74,
+        "p95": -26365.76,
+        "se_mean": 48.537644291365055
+      },
+      "roi_on_cost": {
+        "mean": -0.8681377399257904,
+        "p05": -0.9624943480638715,
+        "p50": -0.8745052318349228,
+        "p95": -0.7606714234818074,
+        "se_mean": 0.0020215643847597206
+      },
+      "required_capital": {
+        "mean": 29342.493349609376,
+        "p05": 27209.21,
+        "p50": 29018.67,
+        "p95": 32455.52,
+        "se_mean": 50.81432795525991
+      },
+      "peak_restricted_cash": {
+        "mean": 565.914228515625,
+        "p05": 449.54,
+        "p50": 480.0,
+        "p95": 942.45,
+        "se_mean": 6.879233067851996
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 3.9130859375,
+        "p05": 1,
+        "p50": 4,
+        "p95": 7,
+        "se_mean": 0.06528836709586722
+      },
+      "contracts": {
+        "mean": 4.0732421875,
+        "p05": 1,
+        "p50": 4,
+        "p95": 8,
+        "se_mean": 0.06650696183191386
+      },
+      "quotes": {
+        "mean": 10.953125,
+        "p05": 5,
+        "p50": 11,
+        "p95": 17,
+        "se_mean": 0.11695026287981933
+      },
+      "inquiries": {
+        "mean": 17.9501953125,
+        "p05": 10,
+        "p50": 17,
+        "p95": 27,
+        "se_mean": 0.16507188866305167
+      },
+      "qualified": {
+        "mean": 10.953125,
+        "p05": 5,
+        "p50": 11,
+        "p95": 17,
+        "se_mean": 0.11695026287981933
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.423828125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.020910899875100905
+      },
+      "final_refusals": {
+        "mean": 0.16015625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.012653866323325063
+      },
+      "defaults": {
+        "mean": 0.15234375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.011975588432920506
+      },
+      "warranty_refunds": {
+        "mean": 0.2978515625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.02077571624164099
+      },
+      "renewals": {
+        "mean": 0.384765625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.019403583700659623
+      },
+      "human_hours": {
+        "mean": 38.10889103822614,
+        "p05": 15.810195722466052,
+        "p50": 36.19509366234186,
+        "p95": 64.0569017385934,
+        "se_mean": 0.4749615639087056
+      },
+      "delivery_human_hours": {
+        "mean": 18.95122502260114,
+        "p05": 4.1920754878401265,
+        "p50": 17.617376159189035,
+        "p95": 37.151189636015545,
+        "se_mean": 0.324601342721389
+      },
+      "interventions": {
+        "mean": 4.634765625,
+        "p05": 1,
+        "p50": 4,
+        "p95": 9,
+        "se_mean": 0.08037541041593
+      },
+      "max_wait_days": {
+        "mean": 3.30078125,
+        "p05": 2,
+        "p50": 3,
+        "p95": 7,
+        "se_mean": 0.05860087729542275
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -32661.63588235294,
+      "buyer_benefit_conditional_on_participation": 325.3151117833867,
+      "human_interventions_per_accepted": 1.1844272523084602
+    },
+    "supplier_shock": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 862.230166015625,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 7361.21,
+        "se_mean": 76.55694274127586
+      },
+      "expenses": {
+        "mean": 33497.90194335938,
+        "p05": 30578.56,
+        "p50": 32826.86,
+        "p95": 38975.26,
+        "se_mean": 82.28722769316225
+      },
+      "operating_contribution": {
+        "mean": -6935.67177734375,
+        "p05": -10451.76,
+        "p50": -6740.16,
+        "p95": -4200.93,
+        "se_mean": 60.064024047035225
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -32635.67177734375,
+        "p05": -36151.76,
+        "p50": -32440.16,
+        "p95": -29900.93,
+        "se_mean": 60.064024047035225
+      },
+      "roi_on_cost": {
+        "mean": -0.9776664138591888,
+        "p05": -1.0,
+        "p50": -1.0,
+        "p95": -0.8100453422103657,
+        "se_mean": 0.0019436583508110786
+      },
+      "required_capital": {
+        "mean": 32839.632421875,
+        "p05": 30339.48,
+        "p50": 32552.85,
+        "p95": 36227.35,
+        "se_mean": 57.561523562605295
+      },
+      "peak_restricted_cash": {
+        "mean": 93.697255859375,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 905.89,
+        "se_mean": 8.36334114883631
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 0.7919921875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 7,
+        "se_mean": 0.068953632489298
+      },
+      "contracts": {
+        "mean": 0.830078125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 7,
+        "se_mean": 0.07161396717554627
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.0947265625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.012581127383249948
+      },
+      "final_refusals": {
+        "mean": 0.0380859375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.006875100558386317
+      },
+      "defaults": {
+        "mean": 0.03515625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.006235807979666644
+      },
+      "warranty_refunds": {
+        "mean": 0.1015625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.01492785873349899
+      },
+      "renewals": {
+        "mean": 0.0615234375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.009428510098452528
+      },
+      "human_hours": {
+        "mean": 32.33227624525193,
+        "p05": 19.849999999999994,
+        "p50": 29.099999999999987,
+        "p95": 60.86973744690069,
+        "se_mean": 0.38993718869313787
+      },
+      "delivery_human_hours": {
+        "mean": 4.085059448376947,
+        "p05": 0,
+        "p50": 0,
+        "p95": 34.81278640931771,
+        "se_mean": 0.35457526767328074
+      },
+      "interventions": {
+        "mean": 0.98828125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 8,
+        "se_mean": 0.08590095683426617
+      },
+      "max_wait_days": {
+        "mean": 0.9345703125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 8,
+        "se_mean": 0.09388032755977603
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -37290.71294117647,
+      "buyer_benefit_conditional_on_participation": 368.7061700396542,
+      "human_interventions_per_accepted": 1.247842170160296
+    },
+    "slow_payment": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 8985.29669921875,
+        "p05": 3457.12,
+        "p50": 9041.1,
+        "p95": 14972.51,
+        "se_mean": 105.85412942271897
+      },
+      "expenses": {
+        "mean": 39180.4087109375,
+        "p05": 33051.77,
+        "p50": 38957.65,
+        "p95": 46252.63,
+        "se_mean": 125.38955334050421
+      },
+      "operating_contribution": {
+        "mean": -4495.013779296875,
+        "p05": -9459.72,
+        "p50": -4048.66,
+        "p95": -1335.85,
+        "se_mean": 76.00849362998987
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.098232421875,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.098232421875
+      },
+      "full_profit": {
+        "mean": -30195.11201171875,
+        "p05": -35159.72,
+        "p50": -29748.66,
+        "p95": -27035.85,
+        "se_mean": 76.02634009014471
+      },
+      "roi_on_cost": {
+        "mean": -0.7754180638288012,
+        "p05": -0.8944234812106583,
+        "p50": -0.7702305793662069,
+        "p95": -0.6631652311025649,
+        "se_mean": 0.00216671910088562
+      },
+      "required_capital": {
+        "mean": 33192.83873046875,
+        "p05": 29636.88,
+        "p50": 32860.99,
+        "p95": 37985.54,
+        "se_mean": 80.70340701352931
+      },
+      "peak_restricted_cash": {
+        "mean": 775.42619140625,
+        "p05": 467.31,
+        "p50": 907.07,
+        "p95": 1380.78,
+        "se_mean": 9.037881889231594
+      },
+      "peak_debt": {
+        "mean": 1.537314453125,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 1.537314453125
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 7.943359375,
+        "p05": 3,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08805678161541515
+      },
+      "contracts": {
+        "mean": 8.25390625,
+        "p05": 4,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08909822191709998
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.8896484375,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.02993204212546146
+      },
+      "final_refusals": {
+        "mean": 0.310546875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.017835888081167255
+      },
+      "defaults": {
+        "mean": 1.095703125,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.0325608072681904
+      },
+      "warranty_refunds": {
+        "mean": 0.6162109375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 3,
+        "se_mean": 0.03362167894700407
+      },
+      "renewals": {
+        "mean": 0.6748046875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.025715082452153315
+      },
+      "human_hours": {
+        "mean": 72.64460302119178,
+        "p05": 40.35429159573657,
+        "p50": 71.90042573500598,
+        "p95": 107.49183928147741,
+        "se_mean": 0.6441477713291687
+      },
+      "delivery_human_hours": {
+        "mean": 38.004759271191794,
+        "p05": 16.54709571971657,
+        "p50": 37.57803869542109,
+        "p95": 61.49573755350341,
+        "se_mean": 0.43090128115656484
+      },
+      "interventions": {
+        "mean": 9.44921875,
+        "p05": 4,
+        "p50": 9,
+        "p95": 15,
+        "se_mean": 0.10862888482546744
+      },
+      "max_wait_days": {
+        "mean": 5.30859375,
+        "p05": 2,
+        "p50": 5,
+        "p95": 10,
+        "se_mean": 0.08295339893800305
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -36956.37588235294,
+      "buyer_benefit_conditional_on_participation": 358.8271233069498,
+      "human_interventions_per_accepted": 1.189574625030735
+    },
+    "correlated_downturn": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 1161.99009765625,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 4940.85,
+        "se_mean": 56.54926456370544
+      },
+      "expenses": {
+        "mean": 31558.778642578123,
+        "p05": 28968.9,
+        "p50": 31070.38,
+        "p95": 35918.8,
+        "se_mean": 67.33048959620464
+      },
+      "operating_contribution": {
+        "mean": -4696.788544921875,
+        "p05": -7326.55,
+        "p50": -4493.86,
+        "p95": -2598.78,
+        "se_mean": 44.87405932795562
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -30396.788544921874,
+        "p05": -33026.55,
+        "p50": -30193.86,
+        "p95": -28298.78,
+        "se_mean": 44.87405932795562
+      },
+      "roi_on_cost": {
+        "mean": -0.965730201777984,
+        "p05": -1.0,
+        "p50": -1.0,
+        "p95": -0.8603788852148361,
+        "se_mean": 0.001613418471057694
+      },
+      "required_capital": {
+        "mean": 30676.359423828126,
+        "p05": 28597.51,
+        "p50": 30469.3,
+        "p95": 33291.42,
+        "se_mean": 44.840444549403394
+      },
+      "peak_restricted_cash": {
+        "mean": 208.398193359375,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 480.0,
+        "se_mean": 8.499271649029831
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 1.0625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 4,
+        "se_mean": 0.05033414131594663
+      },
+      "contracts": {
+        "mean": 1.11328125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 5,
+        "se_mean": 0.05181866441560082
+      },
+      "quotes": {
+        "mean": 12.91796875,
+        "p05": 7,
+        "p50": 13,
+        "p95": 20,
+        "se_mean": 0.12998340558431157
+      },
+      "inquiries": {
+        "mean": 21.28515625,
+        "p05": 13,
+        "p50": 21,
+        "p95": 32,
+        "se_mean": 0.18824878582529525
+      },
+      "qualified": {
+        "mean": 12.91796875,
+        "p05": 7,
+        "p50": 13,
+        "p95": 20,
+        "se_mean": 0.12998340558431157
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.142578125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.013151389479107047
+      },
+      "final_refusals": {
+        "mean": 0.05078125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0075276057376293375
+      },
+      "defaults": {
+        "mean": 0.1572265625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.01414807861820587
+      },
+      "warranty_refunds": {
+        "mean": 0.1435546875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.013744606662744676
+      },
+      "renewals": {
+        "mean": 0.1025390625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.010533620621768386
+      },
+      "human_hours": {
+        "mean": 25.21593302360829,
+        "p05": 13.050000000000002,
+        "p50": 22.64999999999999,
+        "p95": 46.29153817685555,
+        "se_mean": 0.31369669723318555
+      },
+      "delivery_human_hours": {
+        "mean": 5.8142240392332925,
+        "p05": 0,
+        "p50": 0,
+        "p95": 24.263540399595527,
+        "se_mean": 0.27709138549801826
+      },
+      "interventions": {
+        "mean": 1.3486328125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 6,
+        "se_mean": 0.06398333020432372
+      },
+      "max_wait_days": {
+        "mean": 1.3701171875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 6,
+        "se_mean": 0.06823015597072839
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -33836.47078431372,
+      "buyer_benefit_conditional_on_participation": 207.09393360069734,
+      "human_interventions_per_accepted": 1.2693014705882353
+    },
+    "identical_free_library": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "expenses": {
+        "mean": 30767.130029296874,
+        "p05": 28722.2,
+        "p50": 30634.08,
+        "p95": 33272.97,
+        "se_mean": 43.16208341151874
+      },
+      "operating_contribution": {
+        "mean": -5067.130029296875,
+        "p05": -7582.58,
+        "p50": -4939.72,
+        "p95": -3046.12,
+        "se_mean": 43.16208341151874
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -30767.130029296874,
+        "p05": -33282.58,
+        "p50": -30639.72,
+        "p95": -28746.12,
+        "se_mean": 43.16208341151874
+      },
+      "roi_on_cost": {
+        "mean": -1.0,
+        "p05": -1.0,
+        "p50": -1.0,
+        "p95": -1.0,
+        "se_mean": 0.0
+      },
+      "required_capital": {
+        "mean": 30767.130029296874,
+        "p05": 28722.2,
+        "p50": 30634.08,
+        "p95": 33272.97,
+        "se_mean": 43.16208341151874
+      },
+      "peak_restricted_cash": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "contracts": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "final_refusals": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "defaults": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "warranty_refunds": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "renewals": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "human_hours": {
+        "mean": 27.542138671874987,
+        "p05": 17.4,
+        "p50": 27.29999999999999,
+        "p95": 39.14999999999998,
+        "se_mean": 0.20605867572047581
+      },
+      "delivery_human_hours": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "interventions": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "max_wait_days": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -34102.73039215686,
+      "buyer_benefit_conditional_on_participation": null,
+      "human_interventions_per_accepted": 0.0
+    },
+    "conditional_ai_improvement": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 1167.973466796875,
+        "p05": 0.0,
+        "p50": 1124.79,
+        "p95": 3433.79,
+        "se_mean": 37.77386681905387
+      },
+      "expenses": {
+        "mean": 31888.67974609375,
+        "p05": 29225.46,
+        "p50": 31664.61,
+        "p95": 35406.1,
+        "se_mean": 61.25297818323796
+      },
+      "operating_contribution": {
+        "mean": -5020.706279296875,
+        "p05": -7840.55,
+        "p50": -4868.03,
+        "p95": -2801.8,
+        "se_mean": 47.65492402977943
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "full_profit": {
+        "mean": -30720.706279296875,
+        "p05": -33540.55,
+        "p50": -30568.03,
+        "p95": -28501.8,
+        "se_mean": 47.65492402977943
+      },
+      "roi_on_cost": {
+        "mean": -0.9646525776607284,
+        "p05": -1.0,
+        "p50": -0.9650150937824925,
+        "p95": -0.8984585872106193,
+        "se_mean": 0.0011092390196370916
+      },
+      "required_capital": {
+        "mean": 30902.49326171875,
+        "p05": 28685.12,
+        "p50": 30740.68,
+        "p95": 33691.19,
+        "se_mean": 48.609086412544265
+      },
+      "peak_restricted_cash": {
+        "mean": 305.915380859375,
+        "p05": 0.0,
+        "p50": 450.33,
+        "p95": 480.0,
+        "se_mean": 7.2081910383109165
+      },
+      "peak_debt": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 1.0244140625,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.032055087085620465
+      },
+      "contracts": {
+        "mean": 1.0576171875,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.03254584438165264
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.1044921875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.00985887442550585
+      },
+      "final_refusals": {
+        "mean": 0.033203125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.005769590494762817
+      },
+      "defaults": {
+        "mean": 0.0341796875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.005680602419969711
+      },
+      "warranty_refunds": {
+        "mean": 0.0732421875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.008711931261505415
+      },
+      "renewals": {
+        "mean": 0.111328125,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.010672055331061213
+      },
+      "human_hours": {
+        "mean": 32.51057628224447,
+        "p05": 19.0,
+        "p50": 31.46573530584721,
+        "p95": 48.77155321939755,
+        "se_mean": 0.2913207368277895
+      },
+      "delivery_human_hours": {
+        "mean": 4.055400500994486,
+        "p05": 0,
+        "p50": 3.1391655051692955,
+        "p95": 12.750152994774412,
+        "se_mean": 0.13781889926329413
+      },
+      "interventions": {
+        "mean": 1.2021484375,
+        "p05": 0,
+        "p50": 1,
+        "p95": 4,
+        "se_mean": 0.03862898214679324
+      },
+      "max_wait_days": {
+        "mean": 0.8330078125,
+        "p05": 0,
+        "p50": 1,
+        "p95": 2,
+        "se_mean": 0.0260054917843559
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -34403.23411764706,
+      "buyer_benefit_conditional_on_participation": 88.30055817373959,
+      "human_interventions_per_accepted": 1.1734985700667302
+    },
+    "no_collection_recourse": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 8681.63458984375,
+        "p05": 3455.58,
+        "p50": 8631.45,
+        "p95": 14421.62,
+        "se_mean": 101.64524560019743
+      },
+      "expenses": {
+        "mean": 43310.929482421874,
+        "p05": 35048.64,
+        "p50": 43146.91,
+        "p95": 52788.48,
+        "se_mean": 165.548722383317
+      },
+      "operating_contribution": {
+        "mean": -8929.169833984375,
+        "p05": -13787.62,
+        "p50": -8649.82,
+        "p95": -5047.77,
+        "se_mean": 85.31076092072051
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.12505859375,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.12505859375
+      },
+      "full_profit": {
+        "mean": -34629.294892578124,
+        "p05": -39487.62,
+        "p50": -34349.82,
+        "p95": -30747.77,
+        "se_mean": 85.3291457629668
+      },
+      "roi_on_cost": {
+        "mean": -0.8049600623968801,
+        "p05": -0.9020931092202739,
+        "p50": -0.8012240262378122,
+        "p95": -0.7193592999667742,
+        "se_mean": 0.0017054277383878142
+      },
+      "required_capital": {
+        "mean": 34629.294892578124,
+        "p05": 30741.41,
+        "p50": 34348.63,
+        "p95": 39442.21,
+        "se_mean": 85.3291457629668
+      },
+      "peak_restricted_cash": {
+        "mean": 775.42619140625,
+        "p05": 467.31,
+        "p50": 907.07,
+        "p95": 1380.78,
+        "se_mean": 9.037881889231594
+      },
+      "peak_debt": {
+        "mean": 2.46544921875,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 2.46544921875
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 7.943359375,
+        "p05": 3,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08805678161541515
+      },
+      "contracts": {
+        "mean": 8.25390625,
+        "p05": 4,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08909822191709998
+      },
+      "quotes": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "inquiries": {
+        "mean": 32.73828125,
+        "p05": 20,
+        "p50": 32,
+        "p95": 47,
+        "se_mean": 0.25734909935780265
+      },
+      "qualified": {
+        "mean": 19.294921875,
+        "p05": 11,
+        "p50": 19,
+        "p95": 28,
+        "se_mean": 0.16408721562933465
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 0.8896484375,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.02993204212546146
+      },
+      "final_refusals": {
+        "mean": 0.310546875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 1,
+        "se_mean": 0.017835888081167255
+      },
+      "defaults": {
+        "mean": 7.943359375,
+        "p05": 3,
+        "p50": 8,
+        "p95": 13,
+        "se_mean": 0.08805678161541515
+      },
+      "warranty_refunds": {
+        "mean": 0.6162109375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 3,
+        "se_mean": 0.03362167894700407
+      },
+      "renewals": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "human_hours": {
+        "mean": 71.37424169306678,
+        "p05": 39.53589002702681,
+        "p50": 70.79952467736948,
+        "p95": 105.65232581259625,
+        "se_mean": 0.6321049859137585
+      },
+      "delivery_human_hours": {
+        "mean": 36.925071771191796,
+        "p05": 16.163833560219494,
+        "p50": 36.52156937176811,
+        "p95": 60.76670872979696,
+        "se_mean": 0.4209563135315384
+      },
+      "interventions": {
+        "mean": 9.44921875,
+        "p05": 4,
+        "p50": 9,
+        "p95": 15,
+        "se_mean": 0.10862888482546744
+      },
+      "max_wait_days": {
+        "mean": 5.30859375,
+        "p05": 2,
+        "p50": 5,
+        "p95": 10,
+        "se_mean": 0.08295339893800305
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -40911.00450980392,
+      "buyer_benefit_conditional_on_participation": 358.8271233069498,
+      "human_interventions_per_accepted": 1.189574625030735
+    },
+    "high_demand": {
+      "runs": 1024,
+      "net_revenue": {
+        "mean": 13610.989326171875,
+        "p05": 9200.71,
+        "p50": 13689.54,
+        "p95": 17818.15,
+        "se_mean": 83.4305867338648
+      },
+      "expenses": {
+        "mean": 47420.996513671875,
+        "p05": 42175.19,
+        "p50": 47504.15,
+        "p95": 51764.66,
+        "se_mean": 86.64812147435538
+      },
+      "operating_contribution": {
+        "mean": -8109.28083984375,
+        "p05": -14803.89,
+        "p50": -7649.8,
+        "p95": -2856.73,
+        "se_mean": 114.57472451236163
+      },
+      "fixed_cost": {
+        "mean": 25700.0,
+        "p05": 25700.0,
+        "p50": 25700.0,
+        "p95": 25700.0,
+        "se_mean": 0.0
+      },
+      "financing_cost": {
+        "mean": 0.72634765625,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.27456926657503733
+      },
+      "full_profit": {
+        "mean": -33810.0071875,
+        "p05": -40503.89,
+        "p50": -33349.8,
+        "p95": -28556.73,
+        "se_mean": 114.64986407694535
+      },
+      "roi_on_cost": {
+        "mean": -0.712406212755088,
+        "p05": -0.807507222966671,
+        "p50": -0.7115605520420386,
+        "p95": -0.6219144225727645,
+        "se_mean": 0.0017816181746119625
+      },
+      "required_capital": {
+        "mean": 37354.3629296875,
+        "p05": 33082.26,
+        "p50": 37197.09,
+        "p95": 42263.78,
+        "se_mean": 86.02192710515035
+      },
+      "peak_restricted_cash": {
+        "mean": 1062.00353515625,
+        "p05": 480.0,
+        "p50": 943.79,
+        "p95": 1426.85,
+        "se_mean": 9.515895543174507
+      },
+      "peak_debt": {
+        "mean": 13.79935546875,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 5.024357955015717
+      },
+      "funding_shortfall": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "se_mean": 0.0
+      },
+      "accepted": {
+        "mean": 11.9892578125,
+        "p05": 9,
+        "p50": 12,
+        "p95": 15,
+        "se_mean": 0.06309953341516752
+      },
+      "contracts": {
+        "mean": 12.44140625,
+        "p05": 9,
+        "p50": 12,
+        "p95": 15,
+        "se_mean": 0.0606117842461545
+      },
+      "quotes": {
+        "mean": 37.64453125,
+        "p05": 27,
+        "p50": 38,
+        "p95": 47,
+        "se_mean": 0.18730798598995801
+      },
+      "inquiries": {
+        "mean": 81.978515625,
+        "p05": 55,
+        "p50": 81,
+        "p95": 113,
+        "se_mean": 0.5670379493202692
+      },
+      "qualified": {
+        "mean": 37.64453125,
+        "p05": 27,
+        "p50": 38,
+        "p95": 47,
+        "se_mean": 0.18730798598995801
+      },
+      "pool_expired": {
+        "mean": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "se_mean": 0.0
+      },
+      "initial_refusals": {
+        "mean": 1.30859375,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.03547722959321809
+      },
+      "final_refusals": {
+        "mean": 0.4521484375,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.02020501237054193
+      },
+      "defaults": {
+        "mean": 0.44921875,
+        "p05": 0,
+        "p50": 0,
+        "p95": 2,
+        "se_mean": 0.021480643032083243
+      },
+      "warranty_refunds": {
+        "mean": 0.931640625,
+        "p05": 0,
+        "p50": 0,
+        "p95": 4,
+        "se_mean": 0.04567297233170315
+      },
+      "renewals": {
+        "mean": 1.1455078125,
+        "p05": 0,
+        "p50": 1,
+        "p95": 3,
+        "se_mean": 0.0323357234607738
+      },
+      "human_hours": {
+        "mean": 121.35834639717453,
+        "p05": 99.05731016323169,
+        "p50": 121.88054676504485,
+        "p95": 141.80091708405413,
+        "se_mean": 0.4186958399232833
+      },
+      "delivery_human_hours": {
+        "mean": 57.21659835029958,
+        "p05": 40.44834508259418,
+        "p50": 56.53729770020669,
+        "p95": 76.16096860987086,
+        "se_mean": 0.34532124359583133
+      },
+      "interventions": {
+        "mean": 14.2294921875,
+        "p05": 10,
+        "p50": 14,
+        "p95": 19,
+        "se_mean": 0.08945687727538673
+      },
+      "max_wait_days": {
+        "mean": 8.240234375,
+        "p05": 4,
+        "p50": 8,
+        "p95": 14,
+        "se_mean": 0.09513428126196186
+      },
+      "loss_probability": {
+        "estimate": 1.0,
+        "wilson95": [
+          0.9962624591182144,
+          1
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "cash_shortfall_probability": {
+        "estimate": 0.0,
+        "wilson95": [
+          0,
+          0.003737540881785676
+        ],
+        "interpretation": "Conditional Monte Carlo sampling interval; excludes model misspecification"
+      },
+      "worst_five_percent_mean_profit": -42518.65078431372,
+      "buyer_benefit_conditional_on_participation": 353.3369446160415,
+      "human_interventions_per_accepted": 1.1868534658304146
+    }
+  },
+  "scenario_probabilities": "Not assigned; scenarios are conditional stress tests, not an unconditional forecast",
+  "precision": "SE and intervals measure sampling only; demand/value/behavior assumptions dominate external uncertainty"
+}

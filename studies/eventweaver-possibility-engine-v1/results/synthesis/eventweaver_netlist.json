@@ -1,0 +1,1762 @@
+{
+  "creator": "Yosys 0.70 (git sha1 28ba3cb92, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+  "modules": {
+    "eventweaver": {
+      "attributes": {
+        "top": "00000000000000000000000000000001",
+        "src": "data/demo/eventweaver.v:1.1-39.10"
+      },
+      "ports": {
+        "clk": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "rst": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "events": {
+          "direction": "input",
+          "bits": [ 4, 5, 6, 7, 8, 9, 10, 11 ]
+        },
+        "out": {
+          "direction": "output",
+          "bits": [ 12, 13 ]
+        }
+      },
+      "cells": {
+        "$abc$354$blif$354$0": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 14 ],
+            "B": [ 7 ],
+            "Y": [ 15 ]
+          }
+        },
+        "$abc$354$blif$354$1": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 16 ],
+            "B": [ 7 ],
+            "Y": [ 17 ]
+          }
+        },
+        "$abc$354$blif$354$10": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18 ],
+            "B": [ 19 ],
+            "Y": [ 20 ]
+          }
+        },
+        "$abc$354$blif$354$11": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 7 ],
+            "B": [ 20 ],
+            "Y": [ 21 ]
+          }
+        },
+        "$abc$354$blif$354$12": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 22 ],
+            "B": [ 23 ],
+            "Y": [ 24 ]
+          }
+        },
+        "$abc$354$blif$354$13": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 24 ],
+            "Y": [ 25 ]
+          }
+        },
+        "$abc$354$blif$354$14": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26 ],
+            "B": [ 25 ],
+            "Y": [ 27 ]
+          }
+        },
+        "$abc$354$blif$354$15": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 7 ],
+            "B": [ 27 ],
+            "Y": [ 28 ]
+          }
+        },
+        "$abc$354$blif$354$16": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 29 ],
+            "Y": [ 30 ]
+          }
+        },
+        "$abc$354$blif$354$17": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 31 ],
+            "B": [ 30 ],
+            "Y": [ 32 ]
+          }
+        },
+        "$abc$354$blif$354$18": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 7 ],
+            "B": [ 32 ],
+            "Y": [ 33 ]
+          }
+        },
+        "$abc$354$blif$354$19": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 34 ],
+            "B": [ 7 ],
+            "Y": [ 35 ]
+          }
+        },
+        "$abc$354$blif$354$2": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5 ],
+            "B": [ 7 ],
+            "Y": [ 36 ]
+          }
+        },
+        "$abc$354$blif$354$20": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 37 ],
+            "B": [ 7 ],
+            "Y": [ 38 ]
+          }
+        },
+        "$abc$354$blif$354$21": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 11 ],
+            "Y": [ 39 ]
+          }
+        },
+        "$abc$354$blif$354$22": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 40 ],
+            "B": [ 11 ],
+            "Y": [ 41 ]
+          }
+        },
+        "$abc$354$blif$354$23": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 9 ],
+            "B": [ 41 ],
+            "Y": [ 42 ]
+          }
+        },
+        "$abc$354$blif$354$24": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 43 ],
+            "B": [ 11 ],
+            "Y": [ 44 ]
+          }
+        },
+        "$abc$354$blif$354$25": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 45 ],
+            "B": [ 11 ],
+            "Y": [ 46 ]
+          }
+        },
+        "$abc$354$blif$354$26": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 9 ],
+            "B": [ 47 ],
+            "Y": [ 48 ]
+          }
+        },
+        "$abc$354$blif$354$27": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 48 ],
+            "B": [ 11 ],
+            "Y": [ 49 ]
+          }
+        },
+        "$abc$354$blif$354$28": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 50 ],
+            "B": [ 11 ],
+            "Y": [ 51 ]
+          }
+        },
+        "$abc$354$blif$354$29": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 52 ],
+            "B": [ 11 ],
+            "Y": [ 53 ]
+          }
+        },
+        "$abc$354$blif$354$3": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 16 ],
+            "B": [ 36 ],
+            "Y": [ 54 ]
+          }
+        },
+        "$abc$354$blif$354$30": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 46 ],
+            "Y": [ 55 ]
+          }
+        },
+        "$abc$354$blif$354$31": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 56 ],
+            "B": [ 52 ],
+            "Y": [ 57 ]
+          }
+        },
+        "$abc$354$blif$354$32": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 57 ],
+            "Y": [ 58 ]
+          }
+        },
+        "$abc$354$blif$354$33": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 59 ],
+            "B": [ 58 ],
+            "Y": [ 60 ]
+          }
+        },
+        "$abc$354$blif$354$34": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 11 ],
+            "B": [ 60 ],
+            "Y": [ 61 ]
+          }
+        },
+        "$abc$354$blif$354$35": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 62 ],
+            "Y": [ 63 ]
+          }
+        },
+        "$abc$354$blif$354$36": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 64 ],
+            "B": [ 63 ],
+            "Y": [ 65 ]
+          }
+        },
+        "$abc$354$blif$354$37": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 11 ],
+            "B": [ 65 ],
+            "Y": [ 66 ]
+          }
+        },
+        "$abc$354$blif$354$38": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 67 ],
+            "B": [ 11 ],
+            "Y": [ 68 ]
+          }
+        },
+        "$abc$354$blif$354$39": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 69 ],
+            "B": [ 11 ],
+            "Y": [ 70 ]
+          }
+        },
+        "$abc$354$blif$354$4": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 71 ],
+            "B": [ 7 ],
+            "Y": [ 72 ]
+          }
+        },
+        "$abc$354$blif$354$40": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 73 ],
+            "B": [ 11 ],
+            "Y": [ 74 ]
+          }
+        },
+        "$abc$354$blif$354$41": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 75 ],
+            "B": [ 7 ],
+            "Y": [ 76 ]
+          }
+        },
+        "$abc$354$blif$354$42": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 75 ],
+            "B": [ 36 ],
+            "Y": [ 77 ]
+          }
+        },
+        "$abc$354$blif$354$43": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 4 ],
+            "B": [ 7 ],
+            "Y": [ 78 ]
+          }
+        },
+        "$abc$354$blif$354$5": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 79 ],
+            "B": [ 36 ],
+            "Y": [ 80 ]
+          }
+        },
+        "$abc$354$blif$354$6": {
+          "hide_name": 1,
+          "type": "$_ANDNOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 23 ],
+            "B": [ 7 ],
+            "Y": [ 81 ]
+          }
+        },
+        "$abc$354$blif$354$7": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 15 ],
+            "Y": [ 82 ]
+          }
+        },
+        "$abc$354$blif$354$8": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 83 ],
+            "B": [ 71 ],
+            "Y": [ 84 ]
+          }
+        },
+        "$abc$354$blif$354$9": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 84 ],
+            "Y": [ 19 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$271": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 78 ],
+            "Q": [ 75 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$272": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 76 ],
+            "Q": [ 16 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$273": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 17 ],
+            "Q": [ 79 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$274": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 77 ],
+            "Q": [ 14 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$275": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 15 ],
+            "Q": [ 83 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$276": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 54 ],
+            "Q": [ 71 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$277": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 72 ],
+            "Q": [ 22 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$278": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 80 ],
+            "Q": [ 23 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$279": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 81 ],
+            "Q": [ 29 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$280": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 82 ],
+            "Q": [ 18 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$281": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 21 ],
+            "Q": [ 26 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$282": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 28 ],
+            "Q": [ 31 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$283": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 33 ],
+            "Q": [ 34 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$284": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 35 ],
+            "Q": [ 37 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$285": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 38 ],
+            "Q": [ 12 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$286": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 39 ],
+            "Q": [ 40 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$287": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 41 ],
+            "Q": [ 47 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$288": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 42 ],
+            "Q": [ 43 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$289": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 44 ],
+            "Q": [ 45 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$290": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 46 ],
+            "Q": [ 56 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$291": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 49 ],
+            "Q": [ 50 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$292": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 51 ],
+            "Q": [ 52 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$293": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 53 ],
+            "Q": [ 62 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$294": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 55 ],
+            "Q": [ 59 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$295": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 61 ],
+            "Q": [ 64 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$296": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 66 ],
+            "Q": [ 67 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$297": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 68 ],
+            "Q": [ 69 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$298": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 70 ],
+            "Q": [ 73 ],
+            "R": [ 3 ]
+          }
+        },
+        "$auto$ff.cc:337:slice$299": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "data/demo/eventweaver.v:3.3-36.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 74 ],
+            "Q": [ 13 ],
+            "R": [ 3 ]
+          }
+        }
+      },
+      "netnames": {
+        "$abc$354$and$data/demo/eventweaver.v:10$12_Y": {
+          "hide_name": 1,
+          "bits": [ 15 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:10.19-10.44"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:11$15_Y": {
+          "hide_name": 1,
+          "bits": [ 54 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:11.19-11.56"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:12$17_Y": {
+          "hide_name": 1,
+          "bits": [ 72 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:12.19-12.44"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:13$20_Y": {
+          "hide_name": 1,
+          "bits": [ 80 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:13.19-13.56"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:14$22_Y": {
+          "hide_name": 1,
+          "bits": [ 81 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:14.19-14.44"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:15$25_Y": {
+          "hide_name": 1,
+          "bits": [ 82 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:15.19-15.56"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:16$31_Y": {
+          "hide_name": 1,
+          "bits": [ 21 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:16.20-16.95"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:17$37_Y": {
+          "hide_name": 1,
+          "bits": [ 28 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:17.20-17.96"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:18$41_Y": {
+          "hide_name": 1,
+          "bits": [ 33 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:18.20-18.71"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:19$43_Y": {
+          "hide_name": 1,
+          "bits": [ 35 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:19.20-19.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:20$45_Y": {
+          "hide_name": 1,
+          "bits": [ 38 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:20.20-20.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:21$47_Y": {
+          "hide_name": 1,
+          "bits": [ 39 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:21.20-21.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:22$49_Y": {
+          "hide_name": 1,
+          "bits": [ 41 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:22.20-22.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:23$52_Y": {
+          "hide_name": 1,
+          "bits": [ 42 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:23.20-23.58"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:24$54_Y": {
+          "hide_name": 1,
+          "bits": [ 44 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:24.20-24.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:25$56_Y": {
+          "hide_name": 1,
+          "bits": [ 46 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:25.20-25.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:26$59_Y": {
+          "hide_name": 1,
+          "bits": [ 49 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:26.20-26.58"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:27$61_Y": {
+          "hide_name": 1,
+          "bits": [ 51 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:27.20-27.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:28$63_Y": {
+          "hide_name": 1,
+          "bits": [ 53 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:28.20-28.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:29$66_Y": {
+          "hide_name": 1,
+          "bits": [ 55 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:29.20-29.58"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:30$72_Y": {
+          "hide_name": 1,
+          "bits": [ 61 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:30.20-30.98"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:31$76_Y": {
+          "hide_name": 1,
+          "bits": [ 66 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:31.20-31.72"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:32$78_Y": {
+          "hide_name": 1,
+          "bits": [ 68 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:32.20-32.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:33$80_Y": {
+          "hide_name": 1,
+          "bits": [ 70 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:33.20-33.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:34$82_Y": {
+          "hide_name": 1,
+          "bits": [ 74 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:34.20-34.46"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:6$3_Y": {
+          "hide_name": 1,
+          "bits": [ 78 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:6.19-6.45"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:7$5_Y": {
+          "hide_name": 1,
+          "bits": [ 76 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:7.19-7.44"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:8$7_Y": {
+          "hide_name": 1,
+          "bits": [ 17 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:8.19-8.44"
+          }
+        },
+        "$abc$354$and$data/demo/eventweaver.v:9$10_Y": {
+          "hide_name": 1,
+          "bits": [ 77 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:9.19-9.56"
+          }
+        },
+        "$abc$354$new_n100": {
+          "hide_name": 1,
+          "bits": [ 63 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n101": {
+          "hide_name": 1,
+          "bits": [ 65 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n67": {
+          "hide_name": 1,
+          "bits": [ 36 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n73": {
+          "hide_name": 1,
+          "bits": [ 84 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n74": {
+          "hide_name": 1,
+          "bits": [ 19 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n75": {
+          "hide_name": 1,
+          "bits": [ 20 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n77": {
+          "hide_name": 1,
+          "bits": [ 24 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n78": {
+          "hide_name": 1,
+          "bits": [ 25 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n79": {
+          "hide_name": 1,
+          "bits": [ 27 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n81": {
+          "hide_name": 1,
+          "bits": [ 30 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n82": {
+          "hide_name": 1,
+          "bits": [ 32 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n91": {
+          "hide_name": 1,
+          "bits": [ 48 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n96": {
+          "hide_name": 1,
+          "bits": [ 57 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n97": {
+          "hide_name": 1,
+          "bits": [ 58 ],
+          "attributes": {
+          }
+        },
+        "$abc$354$new_n98": {
+          "hide_name": 1,
+          "bits": [ 60 ],
+          "attributes": {
+          }
+        },
+        "clk": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:1.31-1.34"
+          }
+        },
+        "events": {
+          "hide_name": 0,
+          "bits": [ 4, 5, 6, 7, 8, 9, 10, 11 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:1.69-1.75"
+          }
+        },
+        "out": {
+          "hide_name": 0,
+          "bits": [ 12, 13 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:1.95-1.98"
+          }
+        },
+        "rst": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:1.47-1.50"
+          }
+        },
+        "state": {
+          "hide_name": 0,
+          "bits": [ 75, 16, 79, 14, 83, 71, 22, 23, 29, 18, 26, 31, 34, 37, 12, 40, 47, 43, 45, 56, 50, 52, 62, 59, 64, 67, 69, 73, 13 ],
+          "attributes": {
+            "src": "data/demo/eventweaver.v:2.14-2.19"
+          }
+        }
+      }
+    }
+  }
+}

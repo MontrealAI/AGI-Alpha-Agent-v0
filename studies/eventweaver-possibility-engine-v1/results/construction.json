@@ -1,0 +1,57 @@
+{
+  "edition": "EventWeaver construction v1",
+  "spec_sha256": "4e7c0e01b2275d113a044fd8298f90b4c0231ca782218903a8185e2b38f5cc76",
+  "source_sha256": "756394972fbda2ee1819f7fa1a0c0cbae0d6bf8fcef959a57de51884bb5b8b73",
+  "python": "3.12.14",
+  "patterns": 2,
+  "state_bits": 29,
+  "compile_seconds": 0.0011835289988084696,
+  "python_demo": {
+    "status": "PASS",
+    "ticks": 34,
+    "accepted_output_bits": 4,
+    "nonzero_outputs": [
+      {
+        "tick": 8,
+        "mask": 1
+      },
+      {
+        "tick": 9,
+        "mask": 3
+      },
+      {
+        "tick": 20,
+        "mask": 2
+      }
+    ]
+  },
+  "generated_cpp_demo": {
+    "status": "PASS",
+    "ticks": 34,
+    "build_seconds": 0.46345400000427617,
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "synthesis": {
+    "status": "PASS",
+    "seconds": 0.27878912500455044,
+    "version": "Yosys 0.70 (git sha1 28ba3cb92, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+    "generic_cells": 73,
+    "cells_by_type": {
+      "$_ANDNOT_": 19,
+      "$_AND_": 12,
+      "$_NOR_": 10,
+      "$_OR_": 3,
+      "$_SDFF_PP0_": 29
+    },
+    "no_latches": true,
+    "no_unresolved_modules": true,
+    "technology": "generic logic, not physical area/timing/power",
+    "command": "read_verilog data/demo/eventweaver.v; hierarchy -check -top eventweaver; proc; opt; check -assert; tee -o results/synthesis/rtl_statistics.json stat -json; synth -top eventweaver; check -assert; tee -o results/synthesis/generic_statistics.json stat -json; write_json results/synthesis/eventweaver_netlist.json"
+  },
+  "limits": [
+    "No physical hardware or vendor link integration tested",
+    "No measured Fmax, power, calibrated timing or optical data",
+    "Independent oracle and formal results are reported by audit workstream",
+    "Measured compile times are a single local environment, not inference or human engineering time"
+  ]
+}
