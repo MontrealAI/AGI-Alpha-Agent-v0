@@ -11,6 +11,7 @@ from .flywheel_discovery import ComparisonPlan, ComparisonTrial, key
 from .flywheel_execution import ExecutionPermit, ExecutionProfile, operation_key
 from .flywheel_learning import ACCEPTANCE_KEY, accepted_general_origin
 from .protocol import digest
+from .transformation_library import _is_exact_type
 from .trust import SignedEnvelope
 
 ROLES = ("U", "E", "E+")
@@ -107,13 +108,13 @@ def _model_io(discovery: Any, trial: ComparisonTrial, record: dict[str, Any], cx
     )
     if (
         not isinstance(turn, int)
-        or type(turn) is not int
+        or not _is_exact_type(turn, int)
         or not 0 <= turn <= trial.mission.max_turns
         or not isinstance(reserved, int)
-        or type(reserved) is not int
+        or not _is_exact_type(reserved, int)
         or reserved < 0
         or not isinstance(usage, list)
-        or type(usage) is not list
+        or not _is_exact_type(usage, list)
         or len(usage) > turn
     ):
         return result

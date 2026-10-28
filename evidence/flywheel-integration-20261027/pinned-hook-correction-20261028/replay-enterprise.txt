@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/9c7b9ec78746/repo/scripts/record_enterprise_flywheel.py", line 211, in <module>
+    value = record()
+            ^^^^^^^^
+  File "/workspace/scratch/9c7b9ec78746/repo/scripts/record_enterprise_flywheel.py", line 60, in record
+    s.seal(state, "placement-extra-rd", "C")
+  File "/workspace/scratch/9c7b9ec78746/repo/tests/runtime/test_flywheel_specialists.py", line 86, in seal
+    for row in s["costs"].snapshot()["charges"].values()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9c7b9ec78746/repo/alpha_factory_v1/core/runtime/successor/flywheel_costs.py", line 123, in snapshot
+    return self.snapshot(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9c7b9ec78746/repo/alpha_factory_v1/core/runtime/successor/flywheel_costs.py", line 124, in snapshot
+    self.checkpoint.verify(self.journal, cx)
+  File "/workspace/scratch/9c7b9ec78746/repo/alpha_factory_v1/core/runtime/successor/flywheel_checkpoint.py", line 56, in verify
+    raise Conflict("journal is older than or diverges from separately retained high-water custody")
+alpha_factory_v1.core.runtime.store.Conflict: journal is older than or diverges from separately retained high-water custody

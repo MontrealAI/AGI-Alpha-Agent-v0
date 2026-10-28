@@ -17,7 +17,7 @@ WORKERS = (
     "docs/assets/service-worker.js",
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
 )
-FIXTURE_SHA256 = "0d6ad501e3b52ec5dccc7cccd1d7fbe7cb3d55691e1e01218b05686547715970"
+FIXTURE_SHA256 = "f46991979ab65165d63ec3bfc12e187ff6c524f54b0f53112f1fda8b3a0f6d8b"
 PREDECESSOR_SHA256 = "9537d6f85cdbf220a1889e55057b3271fb512902fc30b8fe9a79a53cc176591f"
 
 
@@ -63,7 +63,7 @@ def test_147_fixture_is_the_exact_current_complete_worker_profile() -> None:
     for name, record in fixture["files"].items():
         body = record["text"].encode()
         assert body == (ROOT / name).read_bytes()
-        assert b"agialpha-gallery-7ba37fcd0034f367" in body
+        assert b"agialpha-gallery-89c2a6e9cd771594" in body
         assert (len(body), hashlib.sha256(body).hexdigest()) == successor[name]
         assert (record["bytes"], record["sha256"]) == successor[name]
         assert hashlib.sha1(b"blob " + str(len(body)).encode() + b"\0" + body).hexdigest() == record["gitBlob"]

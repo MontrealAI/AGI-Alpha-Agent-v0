@@ -6,7 +6,8 @@ The proposed additive successor integrates the existing #4960/#4961/#4963/#4975/
 cancellation and customer-funds corrections, the narrow frozen-execution receipt guard, and corrected
 execution-derived comparisons. See [scope and evidence boundaries](RELEASE_NOTES_1.47.0.md).
 
-The existing 1.46.1 publisher retains its lease. No branch result qualifies the combined source.
+The existing 1.46.1 publisher completed on main `3947e4e`, including public installation;
+the predecessor receipt is preserved in the integration evidence. That result does not qualify this successor.
 Exact-source configured review, applicable PR checks, security/integrity, the complete selected
 regression with the existing 80% floor, representative platform/install/browser checks, immutable
 release artifacts and actual served-byte verification remain required. Historical metadata, worker

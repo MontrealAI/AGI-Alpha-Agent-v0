@@ -61,6 +61,10 @@ def compare(source: Path) -> dict:
                         revised.append(cost)
                     scenario["costs"] = revised
             assessment = assess_arrangement(Arrangement.model_validate(terms), 10_000 * M, 500 * M)
+            without_screen = copy.deepcopy(terms)
+            for scenario in without_screen["scenarios"]:
+                scenario["costs"] = [cost for cost in scenario["costs"] if cost["activity_id"] != "retention-screen"]
+            no_screen_assessment = assess_arrangement(Arrangement.model_validate(without_screen), 10_000 * M, 500 * M)
             if not human:
                 assert all(assessment[key] == policy["assessment"][key] for key in MEASURES)
             unit = (
@@ -80,6 +84,9 @@ def compare(source: Path) -> dict:
                     "human_pathway_loaded_usd_per_hour": reference["loaded_hourly_usd"] if human else None,
                     "modeled_unit_cost_usd": unit,
                     "assessment": {key: value for key, value in assessment.items() if key != "branches"},
+                    "assessment_without_optional_screen": {
+                        key: value for key, value in no_screen_assessment.items() if key != "branches"
+                    },
                 }
             )
     for case in ("low", "base", "high"):
@@ -87,7 +94,8 @@ def compare(source: Path) -> dict:
             matched = [row for row in rows if row["cost_case"] == case and row["price_usd"] == price]
             joint = next(row for row in matched if row["method"] == "complete-joint")
             ordinary = next(row for row in matched if row["method"] == "equally-capable-conventional-shared")
-            assert all(joint["assessment"][key] == ordinary["assessment"][key] for key in MEASURES)
+            for field in ("assessment", "assessment_without_optional_screen"):
+                assert all(joint[field][key] == ordinary[field][key] for key in MEASURES)
     return {
         "schema": "agi-alpha.conditional-five-arrangement-comparison.v1",
         "source_path": source.as_posix(),
@@ -104,7 +112,10 @@ def compare(source: Path) -> dict:
             "automatic": "Native model/tools/execution/checking/correction/packaging forecast; no extra manual-review fee",
             "human": "Replace those automation components with the explicit human estimate; never add both",
             "all": "Retain residual coordination, support, attributable business overhead, failed attempts, defaults and refunds",
-            "B": "Retain the single USD5 no-retention screen once per arrangement",
+            "B": (
+                "Primary source scenario retains its single USD5 extra screen; the no-screen counterfactual "
+                "omits this optional work, never refunds already-incurred work or rebills A"
+            ),
             "C": "Not commissioned or charged here; optional source research estimates remain separate",
             "cash": "Calculator retains USD10000 initial cash, USD500 reserves and time-ordered prefunding; neither is profit",
         },

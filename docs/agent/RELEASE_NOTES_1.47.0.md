@@ -4,6 +4,8 @@
 
 Vincent Boucher — President of MONTREAL.AI
 
+Use [Start here](START_HERE.md) for the maintained installation and guided entry points.
+
 This proposed successor integrates the existing general executor, specialist, enterprise and bounded
 discovery owners with the frozen Insight research-access construction. One existing Journal and A/B/C
 ledger connect the original need, evidence, useful finite artifact, acceptance, unknown costs, research
@@ -38,7 +40,8 @@ Price, participation, failure, refund, financing and human-service amounts remai
 for their respective offerings. Customer savings, deposits and seed capital are not operating profit.
 No paid retention, live peer advantage or growing Alpha is established.
 
-This is a source candidate, not a release receipt. Preserve the existing 1.46.1 publication lease.
+This is a source candidate, not a release receipt. The existing 1.46.1 publication and public-install
+acceptance completed on main `3947e4e`; the predecessor receipt remains separate from this candidate.
 Configured exact-source review, applicable PR checks, complete resulting-source security/regression,
 platform/install/site gates, immutable release artifacts and served-byte verification remain required
 through the existing publisher. A protected post-deployment canary additionally needs approved provider
