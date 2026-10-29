@@ -1,0 +1,70 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_____ test_discovery_ordinary_mission_requires_review_before_signed_export _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-68/test_discovery_ordinary_missio0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fa4770f73e0>
+
+    def test_discovery_ordinary_mission_requires_review_before_signed_export(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+>       from alpha_factory_v1.core.runtime import engine as mission_engine
+
+contrib/compounding_discovery/test_engine.py:302: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/engine.py:13: in <module>
+    from . import work
+alpha_factory_v1/core/runtime/work.py:11: in <module>
+    from alpha_factory_v1.core.simulation import mats
+alpha_factory_v1/core/simulation/__init__.py:4: in <module>
+    from .mats_ops import GaussianParam, PromptRewrite, CodePatch, SelfRewriteOperator
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # SPDX-License-Identifier: Apache-2.0
+    """Minimal mutation operators for MATS demos."""
+    from __future__ import annotations
+    
+    import random
+    from typing import Any, List
+    
+    import ast
+>   from alpha_factory_v1.core.self_edit.safety import is_code_safe
+E   ModuleNotFoundError: No module named 'alpha_factory_v1.core.self_edit'
+
+alpha_factory_v1/core/simulation/mats_ops.py:9: ModuleNotFoundError
+____ test_generic_mission_runs_review_and_native_export_without_a_provider _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-68/test_generic_mission_runs_revi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fa474c7d550>
+
+    def test_generic_mission_runs_review_and_native_export_without_a_provider(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+>       from alpha_factory_v1.core.runtime import engine as mission_engine
+
+contrib/structural_transfer/test_runtime.py:590: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/engine.py:13: in <module>
+    from . import work
+alpha_factory_v1/core/runtime/work.py:11: in <module>
+    from alpha_factory_v1.core.simulation import mats
+alpha_factory_v1/core/simulation/__init__.py:4: in <module>
+    from .mats_ops import GaussianParam, PromptRewrite, CodePatch, SelfRewriteOperator
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # SPDX-License-Identifier: Apache-2.0
+    """Minimal mutation operators for MATS demos."""
+    from __future__ import annotations
+    
+    import random
+    from typing import Any, List
+    
+    import ast
+>   from alpha_factory_v1.core.self_edit.safety import is_code_safe
+E   ModuleNotFoundError: No module named 'alpha_factory_v1.core.self_edit'
+
+alpha_factory_v1/core/simulation/mats_ops.py:9: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED contrib/compounding_discovery/test_engine.py::test_discovery_ordinary_mission_requires_review_before_signed_export
+FAILED contrib/structural_transfer/test_runtime.py::test_generic_mission_runs_review_and_native_export_without_a_provider
+2 failed in 0.59s
