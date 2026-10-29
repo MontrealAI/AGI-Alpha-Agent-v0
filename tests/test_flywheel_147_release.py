@@ -44,10 +44,10 @@ def test_1461_metadata_snapshot_retains_every_exact_body_and_git_identity() -> N
 
 def test_147_changes_only_version_and_its_exact_compatibility_commitments() -> None:
     previous = predecessor()["files"]
-    project = (ROOT / "pyproject.toml").read_bytes()
+    project = _historical_147_metadata()["pyproject.toml"].encode()
     assert project.count(b'version = "1.47.0"') == 1
     assert project.replace(b'version = "1.47.0"', b'version = "1.46.1"', 1) == previous["pyproject.toml"].encode()
-    raw = (ROOT / "scripts/strategy_research_e721_compatibility_v2.json").read_bytes()
+    raw = _historical_147_metadata()["scripts/strategy_research_e721_compatibility_v2.json"].encode()
     profile, old = json.loads(raw), json.loads(previous["scripts/strategy_research_e721_compatibility_v2.json"])
     assert profile["files"]["pyproject.toml"] == {"bytes": len(project), "sha256": hashlib.sha256(project).hexdigest()}
     profile["files"]["pyproject.toml"] = old["files"]["pyproject.toml"]
@@ -60,7 +60,7 @@ def test_147_changes_only_version_and_its_exact_compatibility_commitments() -> N
         hashlib.sha256(previous["scripts/strategy_research_e721_compatibility_v2.json"].encode()).hexdigest().encode()
     )
     new_hash = hashlib.sha256(raw).hexdigest().encode()
-    guard = (ROOT / "scripts/check_strategy_research_compatibility_v2.py").read_bytes()
+    guard = _historical_147_metadata()["scripts/check_strategy_research_compatibility_v2.py"].encode()
     assert guard.count(new_hash) == 1
     assert (
         guard.replace(new_hash, old_hash, 1) == previous["scripts/check_strategy_research_compatibility_v2.py"].encode()
@@ -91,3 +91,11 @@ def test_147_keeps_the_exact_held_source_guard_and_all_five_inert_identities() -
     assert len(namespace["PINNED_FILES"]) == 5
     checks = namespace["check_identities"](ROOT, namespace["PINNED_FILES"])
     assert len(checks) == 5 and all(row["matched"] is True for row in checks)
+
+
+def _historical_147_metadata() -> dict[str, str]:
+    raw = (ROOT / "tests/fixtures/invention-packaging-147-metadata.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == "a5748c5b8bffe4eaa5e67609cae7043f73a6e0da6d5e9aea66a0414436920d35"
+    frozen = json.loads(raw)
+    assert frozen["sourceCommit"] == "12770c22b4a9f90f2013bbfb64242f912ba5071e"
+    return frozen["files"]

@@ -121,15 +121,15 @@ def test_1461_changes_only_version_in_the_146_lint_configuration() -> None:
 
 def test_147_changes_only_version_in_the_1461_lint_configuration() -> None:
     previous = _preserved_1461_metadata()
-    project = (ROOT / "pyproject.toml").read_bytes()
+    project = _historical_147_metadata()["pyproject.toml"].encode()
     assert project.count(b'version = "1.47.0"') == 1
     assert project.replace(b'version = "1.47.0"', b'version = "1.46.1"', 1) == previous["pyproject.toml"].encode()
-    profile_raw = (ROOT / "scripts/strategy_research_e721_compatibility_v2.json").read_bytes()
+    profile_raw = _historical_147_metadata()["scripts/strategy_research_e721_compatibility_v2.json"].encode()
     profile, old = json.loads(profile_raw), json.loads(previous["scripts/strategy_research_e721_compatibility_v2.json"])
     assert profile["files"]["pyproject.toml"] == {"bytes": len(project), "sha256": hashlib.sha256(project).hexdigest()}
     profile["files"]["pyproject.toml"] = old["files"]["pyproject.toml"]
     assert profile == old
-    guard = (ROOT / "scripts/check_strategy_research_compatibility_v2.py").read_bytes()
+    guard = _historical_147_metadata()["scripts/check_strategy_research_compatibility_v2.py"].encode()
     old_hash = (
         hashlib.sha256(previous["scripts/strategy_research_e721_compatibility_v2.json"].encode()).hexdigest().encode()
     )
@@ -141,3 +141,11 @@ def test_147_changes_only_version_in_the_1461_lint_configuration() -> None:
     )
     assert '__version__ = "1.47.0"' in (ROOT / "alpha_factory_v1/__init__.py").read_text()
     assert json.loads((ROOT / "alpha_factory_v1/demos/catalog.json").read_bytes())["release"] == "1.47.0"
+
+
+def _historical_147_metadata() -> dict[str, str]:
+    raw = (ROOT / "tests/fixtures/invention-packaging-147-metadata.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == "a5748c5b8bffe4eaa5e67609cae7043f73a6e0da6d5e9aea66a0414436920d35"
+    frozen = json.loads(raw)
+    assert frozen["sourceCommit"] == "12770c22b4a9f90f2013bbfb64242f912ba5071e"
+    return frozen["files"]

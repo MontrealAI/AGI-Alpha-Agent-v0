@@ -54,6 +54,8 @@ def current_files() -> dict[str, bytes]:
     assert len(catalog["sources"]) == 53 and catalog["sourceHash"] == SCIENTIFIC_SOURCE_HASH
     profile = checkout.ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES
     files = {name: (ROOT / name).read_bytes() for name in set(catalog["sources"]) | set(profile)}
+    # Historical edition uses its immutable workers, not the moving checkout.
+    files.update({name: row["text"].encode() for name, row in fixture()["files"].items()})
     assert len(files) == 61
     for name, body in files.items():
         assert b"\r" not in body

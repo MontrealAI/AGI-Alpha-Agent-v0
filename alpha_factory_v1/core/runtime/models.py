@@ -111,7 +111,39 @@ class Coding(StrictModel):
     candidate: str = Field(default="", max_length=100000)
 
 
-Work = Annotated[Research | Allocation | Schedule | Forecast | Coding, Field(discriminator="kind")]
+class TransferWork(StrictModel):
+    """An explicit bounded typed transfer request; no implicit context or provider calls."""
+
+    kind: Literal["structural-transfer"] = "structural-transfer"
+    request: dict[str, Any]
+
+    @model_validator(mode="after")
+    def validate_transfer_bounds(self) -> TransferWork:
+        """Apply inert JSON bounds before journal submission."""
+        from .structural_transfer.contracts import bounded
+
+        bounded(self.request)
+        return self
+
+
+class DiscoveryWork(StrictModel):
+    """A bounded discovery experiment, separate from settlement and operator approval."""
+
+    kind: Literal["compounding-discovery"] = "compounding-discovery"
+    request: dict[str, Any]
+    memory: dict[str, Any] | None = None
+
+    @model_validator(mode="after")
+    def validate_discovery_bounds(self) -> DiscoveryWork:
+        from .compounding_discovery.engine import _validate_request, validate_memory
+
+        _validate_request(self.request)
+        if self.memory is not None:
+            validate_memory(self.memory)
+        return self
+
+
+Work = Annotated[Research | Allocation | Schedule | Forecast | Coding | TransferWork | DiscoveryWork, Field(discriminator="kind")]
 
 
 class Mission(StrictModel):
