@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: ['headed-15', 'headed-50', 'dynamic-zip']
+        mode: ['headless-zip']
     steps:
       - name: Inspect retained artifact in memory without new execution
         env:
@@ -29,7 +29,6 @@ jobs:
           
           REPO = "MontrealAI/AGI-Alpha-Agent-v0"
           API = "https://api.github.com/repos/" + REPO
-          HEAD = "41853c868bd69f182bdac537d97ce68a5711f7bf"
           SOURCE = "939549e6487aa4cfc14b8385b52f701a1a0c8d2b"
           MODE = os.environ["READBACK_MODE"]
           NOW = datetime.now(timezone.utc)
@@ -37,11 +36,8 @@ jobs:
               raise SystemExit("BLOCKED: inherited verification deadline")
           END = datetime(2026, 10, 29, 18, 28, 45, tzinfo=timezone.utc).timestamp()
           DEADLINE = min(time.time() + 90, END)
-          if MODE == "dynamic-zip":
-              ARTIFACT, RUN, EXPECTED_SIZE, EXPECTED_HEAD = 12919617803, 40924494564, 21650, SOURCE
-          else:
-              assert MODE in ("headed-15", "headed-50")
-              ARTIFACT, RUN, EXPECTED_SIZE, EXPECTED_HEAD = 12921656957, 40928049814, 435794, HEAD
+          assert MODE == "headless-zip"
+          ARTIFACT, RUN, EXPECTED_SIZE, EXPECTED_HEAD = 12918919706, 40924494564, 2010, SOURCE
           
           class NoRedirect(urllib.request.HTTPRedirectHandler):
               def redirect_request(self, request, response, code, message, headers, newurl):
@@ -138,44 +134,21 @@ jobs:
                     "artifact": ARTIFACT, "run": RUN, "source": EXPECTED_HEAD, "zip_sha256": digest,
                     "zip_bytes": len(body), "crc": "PASS", "new_capture": False,
                     "rendering": "REQUIRES_VISUAL_INSPECTION"}, sort_keys=True))
-              if MODE == "dynamic-zip":
-                  assert digest == "3656c50dd2b6c45e9ed4b354f6dabba89851fa65dd917538a67704c7454c41bb"
-                  assert len(members) == 25
-                  # Root explicitly authorized byte-identical publication of this previously privacy-audited ZIP.
-                  emit("original-zip", "dynamic-939-original.zip", body)
-                  return
-              names = {"headed-after-15s.png", "headed-after-50s.png", "receipt.json",
-                       "top-dom.json", "frame-dom.json", "driver-original-private.log",
-                       "process-original-private.log"}
-              assert {item.filename for item in members} == names
-              receipt = json.loads(zipped.read("receipt.json"))
-              assert receipt["probe_commit"] == HEAD and receipt["software_base_commit"] == SOURCE
-              assert receipt["status"] == "CAPTURED_REQUIRES_VISUAL_INSPECTION"
-              assert receipt["headed"] is True and receipt["fresh_profile"] is True
-              assert receipt["credential_or_cookie_import"] is False
-              assert receipt["pdf"]["sha256"] == "8142fe2452162901cda732f7a8070572a033ed4f0cfe269c514e40e19b60457f"
-              for short in ("driver", "process"):
-                  private = zipped.read(short + "-original-private.log")
-                  expected = receipt["private_logs"][short]
-                  assert len(private) == expected["bytes"]
-                  assert hashlib.sha256(private).hexdigest() == expected["sha256"]
-              safe = {key: receipt[key] for key in ("schema", "status", "software_base_commit",
-                      "probe_commit", "probe_source_sha256", "paper_commit", "envelope_end",
-                      "fresh_profile", "credential_or_cookie_import", "headed", "real_wait_seconds",
-                      "profile_peak_observed_bytes", "rendering")}
-              safe["captures"] = receipt["captures"]
-              safe["private_logs"] = receipt["private_logs"]
-              safe["pdf_sha256"] = receipt["pdf"]["sha256"]
-              print("READBACK_JSON " + json.dumps(safe, sort_keys=True))
-              name = "headed-after-15s.png" if MODE == "headed-15" else "headed-after-50s.png"
-              png = zipped.read(name)
-              capture = next(value for value in receipt["captures"] if value["file"] == name)
-              assert png.startswith(b"\x89PNG\r\n\x1a\n") and len(png) == capture["bytes"]
-              assert hashlib.sha256(png).hexdigest() == capture["sha256"]
+              assert digest == "e9f4384cccbed4a1a5d95738ba889719b1e82db25c2b9eaf14d4d9bd40ae6b6a"
+              # The original workflow declares these four files; only its one PNG is emitted.
+              assert {item.filename for item in members} == {
+                  "public-reader.json", "public-reader-browser.json",
+                  "public-reader-browser.png", "public-reader-browser-version.txt",
+              }
+              png = zipped.read("public-reader-browser.png")
+              assert png.startswith(b"\x89PNG\r\n\x1a\n") and len(png) == 7389
+              assert hashlib.sha256(png).hexdigest() == "bab0da02eddcb0ebece44670c38814ceb2d4c5ba791eb8ff4a0472059987ac66"
               width, height = struct.unpack(">II", png[16:24])
-              assert [width, height] == [capture["width"], capture["height"]]
               assert 1 <= width <= 4096 and 1 <= height <= 4096
-              emit("original-png", name, png)
+              print("READBACK_JSON " + json.dumps({"prior_disposition": "NOT_RENDERED",
+                    "scope": "Original failed anonymous headless PNG only; no new capture or unknown file emission."},
+                    sort_keys=True))
+              emit("original-failed-png", "public-reader-browser.png", png)
           
           try:
               main()
