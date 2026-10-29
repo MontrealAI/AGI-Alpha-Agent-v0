@@ -29,12 +29,51 @@ jobs:
           python-version: "3.12"
       - name: Read the immutable public GitHub paper without credentials or cookies
         run: python -B contrib/invention_automation/public_reader.py --output public-reader.json
+      - name: Capture the public inline reader in a fresh anonymous browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v google-chrome
+          google-chrome --version > public-reader-browser-version.txt
+          reader_profile="$RUNNER_TEMP/public-reader-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          test ! -e "$reader_profile"
+          timeout --kill-after=5s 55s google-chrome \
+            --headless=new --disable-gpu --disable-background-networking \
+            --disable-sync --disable-extensions --no-first-run --no-default-browser-check \
+            --user-data-dir="$reader_profile" --disk-cache-size=1048576 --media-cache-size=1048576 \
+            --window-size=1440,1100 --virtual-time-budget=30000 \
+            --screenshot="$GITHUB_WORKSPACE/public-reader-browser.png" \
+            "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf"
+          test -s public-reader-browser.png
+          test "$(du -sb "$reader_profile" | cut -f1)" -le 67108864
+          python -B - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          raw = Path('public-reader-browser.png').read_bytes()
+          assert raw.startswith(b'\x89PNG\r\n\x1a\n')
+          record = {
+              'status': 'CAPTURED_REQUIRES_VISUAL_INSPECTION',
+              'fresh_profile': True,
+              'credential_or_cookie_import': False,
+              'browser_version': Path('public-reader-browser-version.txt').read_text().strip(),
+              'screenshot_sha256': hashlib.sha256(raw).hexdigest(),
+              'screenshot_bytes': len(raw),
+              'profile_postrun_max_bytes': 67108864,
+              'scope': 'Anonymous inline-browser capture; process exit alone does not establish rendered PDF.',
+          }
+          Path('public-reader-browser.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
       - name: Retain actual anonymous readback evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: public-reader-${{ github.event.pull_request.head.sha || github.sha }}
-          path: public-reader.json
+          path: |
+            public-reader.json
+            public-reader-browser.json
+            public-reader-browser.png
+            public-reader-browser-version.txt
           if-no-files-found: error
           retention-days: 30
   dynamic:
@@ -52,6 +91,8 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.12"
+      - name: Native acceptance receipt-double tests (not generated execution)
+        run: python -B -m unittest discover -s tests -p test_invention_sandbox_qualification.py -v
       - name: Check exact source and real Docker
         shell: bash
         run: |
@@ -82,6 +123,47 @@ jobs:
           assert summary["controls_executed"]==7
           assert all(item["status"]=="PASS" for item in summary["attempts"])
           PY
+      - name: Accept the retained proposal through the native frozen verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          from contrib.invention_automation.run_critic_pilot import PINNED_FILES, PROTOCOL, context
+          from alpha_factory_v1.core.runtime.structural_transfer.contracts import digest
+          root = Path.cwd()
+          output = root / "dynamic-evidence/native-acceptance"
+          output.mkdir(exist_ok=False)
+          request = json.loads((root / "contrib/invention_automation/specification-request.json").read_text())
+          ctx = context(request)
+          names = sorted(set(PINNED_FILES) | {
+              "scripts/validate_invention_sandbox.py",
+              "tests/test_invention_sandbox_qualification.py",
+              ".github/workflows/invention-dynamic.yml",
+              "contrib/invention_automation/specification-request.json",
+              "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+          })
+          pins = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in names}
+          freeze = {
+              "schema": "agialpha/critic-verifier-freeze/v1",
+              "files": pins,
+              "protocol_path": PROTOCOL,
+              "protocol_sha256": pins[PROTOCOL],
+              "request_hashes": [digest(request)],
+              "context_hashes": [digest(ctx)],
+          }
+          for name, value in {"request": request, "program": request["proposal"], "context": ctx, "freeze": freeze}.items():
+              with (output / (name + ".json")).open("x", encoding="utf-8") as stream:
+                  stream.write(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+          PY
+          python -B -m scripts.validate_invention_sandbox \
+            --request dynamic-evidence/native-acceptance/request.json \
+            --program dynamic-evidence/native-acceptance/program.json \
+            --context dynamic-evidence/native-acceptance/context.json \
+            --freeze dynamic-evidence/native-acceptance/freeze.json \
+            --output dynamic-evidence/native-acceptance/result.json
       - name: Retain immutable-run qualification evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

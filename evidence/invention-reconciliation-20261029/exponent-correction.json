@@ -1,0 +1,59 @@
+{
+  "schema": "agialpha/exponent-correction/v1",
+  "finding": {
+    "review_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/5018#discussion_r4414371808",
+    "historical_source": "4f1b04bf61cef53351fcc56f66ece0b233fc11ae",
+    "defect": "A signed scientific exponent may be split into numeric mantissa and invented unit e/E even with the complete-unit-end guard.",
+    "examples": [
+      "high-side voltage is 500e+3 kV",
+      "high-side voltage is 500e-3 kV"
+    ],
+    "old_verdict": "CONFIRMED",
+    "corrected_verdict": "REFUTED",
+    "reproduced_actual_false_confirmations": 32
+  },
+  "correction": {
+    "protocol": "agialpha/critic-oracle-protocol/v5",
+    "supported_numeric_grammar": "[0-9]+(?:\\.[0-9]+)?",
+    "absolute_original_numeric_continuation_rejected": "[0-9.eE]",
+    "existing_full_unit_boundary": "retained",
+    "scientific_notation_support": false,
+    "separate_implementations": [
+      {
+        "path": "alpha_factory_v1/core/runtime/invention_automation/evidence_critic.py",
+        "git_blob_sha1": "cb415ac770c502cdbfd3efb9eecdf8486a00048e",
+        "sha256": "949b862fdc450b849d113cc28cfcaa6131edb3e74ce04f6d6bc522d4fd7db763",
+        "bytes": 11813
+      },
+      {
+        "path": "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "git_blob_sha1": "922ba0ad0ad51fd622e045b9ed181e7b2888948f",
+        "sha256": "53b284b5714a74e6c4857e7b2f498e2b5e61ae9b7fa086949da6f7d3bab5c693",
+        "bytes": 29579
+      },
+      {
+        "path": "contrib/invention_automation/test_source_suffix.py",
+        "git_blob_sha1": "908d8bf7bbcd315e10c17c5333f45dfa6eec81e0",
+        "sha256": "75a67d1caf961b0ddf115ab70cba960054e48399d0b1fa95a4b6f30ff7b1a972",
+        "bytes": 6183
+      }
+    ]
+  },
+  "validation": {
+    "method": "Memory-only direct trusted-parser calls; no generated candidate execution, no full pytest claim.",
+    "exponent_controls": 128,
+    "positive_literal_controls": 48,
+    "prior_suffix_and_doe_controls": "PASS",
+    "native_aliases": "Existing default-core aliases _003/_005 retain expanded parametrization; expected169 additional cases.",
+    "formatting": "Black in memory; Ruff --no-cache",
+    "exact_successor_ci": "REQUIRED",
+    "configured_successor_review": "REQUIRED",
+    "new_confirmatory_looks": 0,
+    "confirmation_alpha": "0"
+  },
+  "storage": {
+    "local_files_created": 0,
+    "local_cache_or_index_changes": false,
+    "source_blobs": "3 small unreferenced authorized Git blobs transferred for root verification; root independently recomputed every byte/hash and inspected the diff."
+  }
+}

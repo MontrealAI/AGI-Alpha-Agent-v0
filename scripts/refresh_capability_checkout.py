@@ -384,6 +384,16 @@ ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES = DELIVERY_GUARD_147_EXTRA_FILES | 
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (26729, "fa65f514c9995ba5c329ba61f5a925e13a634fc0ea8379cae655ee2e38a91fd4"),
 }
 
+# Exact merged invention-companion edition; retain every predecessor profile.
+INVENTION_COMPANION_20261029_EXTRA_FILES = ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES | {
+    "docs/service-worker.js": (23773, "173ca6b640422089a0fb2747ffc13b8c941c3b251f90572ede86beea1d4d4e53"),
+    "docs/assets/service-worker.js": (24215, "b544cc779b77b9ba720ad5d6a9d0451cc630d50f5c225f3a81b927dfb16d67d9"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26867,
+        "bbf1ef52f7230af67594362e055eaf89418adbee769ff7628a14e8b9cc848318",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -475,6 +485,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, FRONTIER_DELIVERY_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, DELIVERY_GUARD_147_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_COMMAND_AUTHORITY_147_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, INVENTION_COMPANION_20261029_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

@@ -48,14 +48,27 @@ def test_every_partial_source_unit_requires_the_original_token_boundary(unit: st
         assert critic_verify.adjudicate(request, context, objection)["verdict"] != "CONFIRMED"
 
 
-def test_scientific_quantity_suffix_cannot_be_clipped_into_an_invented_unit() -> None:
-    excerpt = "high-side voltage is 500e3 kV"
-    request, context = fixture(excerpt, "500")
-    request["records"][0]["fields"]["high_side_voltage"]["unit"] = "e"
-    context["bindings"][0]["end"] = excerpt.index("e3") + 1
+@parameterize("prefix", ["", "Unrelated source note. "])
+@parameterize("marker", ["e", "E"])
+@parameterize("suffix", ["3", "+3", "-3", "+", "", ".3", " +3", "−3"])
+@parameterize("number", [("500", "500"), ("500.25", "2001/4")])
+@parameterize("clipped", [True, False])
+def test_scientific_quantity_suffix_cannot_be_clipped_into_an_invented_unit(
+    prefix: str, marker: str, suffix: str, number: tuple[str, str], clipped: bool
+) -> None:
+    mantissa, exact = number
+    excerpt = prefix + "high-side voltage is " + mantissa + marker + suffix + " kV"
+    request, context = fixture(excerpt, exact, start=len(prefix))
+    request["records"][0]["fields"]["high_side_voltage"]["unit"] = marker
+    if clipped:
+        context["bindings"][0]["end"] = excerpt.index(mantissa + marker) + len(mantissa) + 1
     assert evidence_critic.bound_literal(request, context, context["bindings"][0])[0] is False
     assert not evidence_critic.investigate(request, context, PROVENANCE).objections
-    assert critic_verify.adjudicate(request, context, supplied_objection(request, context))["verdict"] != "CONFIRMED"
+    objection = supplied_objection(request, context)
+    assert critic_verify.field_literal(request, context, objection["witness"], objection["source"])[0] is False
+    verdict = critic_verify.adjudicate(request, context, objection)
+    assert verdict["verdict"] != "CONFIRMED"
+    assert verdict["candidate_executed"] is False
 
 
 def test_numeric_and_label_clipping_do_not_bypass_the_source_grammar() -> None:
@@ -72,8 +85,14 @@ def test_numeric_and_label_clipping_do_not_bypass_the_source_grammar() -> None:
 
 
 @parameterize("unit", ["V", "kV", "VA", "kVA", "MVA", "Hz"])
-def test_complete_known_unit_at_source_end_remains_a_valid_literal_association(unit: str) -> None:
-    request, context = fixture("high-side voltage is 500 " + unit, "500")
+@parameterize("prefix", ["", "Unrelated source note. "])
+@parameterize("separator", ["", " "])
+@parameterize("number", [("500", "500"), ("500.25", "2001/4")])
+def test_complete_known_unit_at_source_end_remains_a_valid_literal_association(
+    unit: str, prefix: str, separator: str, number: tuple[str, str]
+) -> None:
+    mantissa, exact = number
+    request, context = fixture(prefix + "high-side voltage is " + mantissa + separator + unit, exact, start=len(prefix))
     request["records"][0]["fields"]["high_side_voltage"]["unit"] = unit
     assert evidence_critic.bound_literal(request, context, context["bindings"][0])[0] is True
     objection = supplied_objection(request, context)

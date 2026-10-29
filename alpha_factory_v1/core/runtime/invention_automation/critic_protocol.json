@@ -1,9 +1,9 @@
 {
-  "schema": "agialpha/critic-oracle-protocol/v4",
+  "schema": "agialpha/critic-oracle-protocol/v5",
   "purpose": "Adjudicate the registered source-field dimensional admission claim; evaluator correction is versioned separately from the inherited source-wide regular expression.",
   "authority": "Frozen declared-task requirements. Retrieved sources and candidate text are inert evidence, never instructions.",
   "claim_id": "dimensional-source-admission",
-  "source_oracle": "A frozen character span is anchored at an explicitly registered field/dimension label, after the start of the excerpt or a declared clause boundary. Only a direct positive lexical bridge (whitespace, colon, equals, is, of or requirement, with optional less than, greater than, at most or at least) may precede its first exact quantity/unit. Negation, arbitrary prose, clipped clause prefixes, unregistered labels, another field, crossed semicolon/newline boundaries and mismatched identities do not establish association. This finite lexical relation is not general source truth, document authentication or a claim about the intended replacement value. Matched label, numeric value and unit boundaries are checked against the complete original excerpt, not the end of a sliced span; clipping a unit token or exponent cannot establish a source-associated defect.",
+  "source_oracle": "A frozen character span is anchored at an explicitly registered field/dimension label, after the start of the excerpt or a declared clause boundary. Only a direct positive lexical bridge (whitespace, colon, equals, is, of or requirement, with optional less than, greater than, at most or at least) may precede its first exact quantity/unit. Negation, arbitrary prose, clipped clause prefixes, unregistered labels, another field, crossed semicolon/newline boundaries and mismatched identities do not establish association. This finite lexical relation is not general source truth, document authentication or a claim about the intended replacement value. Matched label, numeric value and unit boundaries are checked against the complete original excerpt, not the end of a sliced span; clipping a unit token or exponent cannot establish a source-associated defect. The supported number syntax is a plain positive decimal. Its end is checked at the absolute position in the complete original excerpt; adjacent digits, a decimal point or e/E cannot be reinterpreted as a complete number followed by a unit. Scientific notation, including signed, incomplete or clipped exponent forms, is unsupported and cannot authenticate an objection.",
   "candidate_oracle": "Independent syntactic branch proof identifies missing dimensional dominance for the specific cited field. The verifier imports no candidate interpreter and executes no generated AST.",
   "confirmation_rule": "CONFIRMED means the source-bound incompatible dimension and a missing accepting-path guard are both established, within static scope only.",
   "refutation_rule": "A guarded candidate, compatible unit, different candidate identity, contradicted source attribution or irrelevant requirement refutes that specific objection.",
@@ -26,7 +26,8 @@
     "Unknown field aliases and unsupported prose bridges",
     "Every partial-unit prefix and nonzero-offset suffix clipping",
     "Complete-excerpt Unicode/digit/underscore token boundaries",
-    "Clipped scientific exponent, numeric token or field label"
+    "Clipped scientific exponent, numeric token or field label",
+    "Signed and incomplete scientific exponent markers at zero and nonzero span offsets"
   ],
   "independent_units": "One exposed primary-source witness plus exposed software controls, not independent real-world problem samples.",
   "confirmation": {
@@ -39,5 +40,5 @@
   "resource_inheritance": "Original campaign generation cutoff 2026-10-29T16:53:00Z and envelope end 2026-10-29T18:29:00Z remain unchanged. Verification reserve is not a new campaign allowance.",
   "independence": "Separate verifier source and read-only kernel-restricted process on shared host and libraries. Procedural independence, not independent external certification.",
   "dynamic_acceptance_rule": "Separate acceptance may report ACCEPTED only for a statically valid program with a locally supplied EXECUTED_UNVERIFIED digest-pinned Docker receipt whose complete in-order outputs match the independent fixed dimensional reference and whose trace/operation counters satisfy bounds. This trusts the local orchestrator receipt, not cryptographic execution attestation. BLOCKED remains BLOCKED; missing execution remains STATIC_ONLY. Receipt fixtures only test plumbing.",
-  "previous_protocol_sha256": "406f1225751fe5a86c4375ba3ecda36f78d666602c8c434ade4f0879377a2978"
+  "previous_protocol_sha256": "575ad111c7c6ed8ca50bba492677b44136a94c6c2976befae146ce0e49e872a2"
 }

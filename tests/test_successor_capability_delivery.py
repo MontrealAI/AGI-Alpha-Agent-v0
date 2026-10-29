@@ -805,3 +805,21 @@ def test_checkout_refresh_retains_all_originals_on_replace_failure(
     assert originals == {name: (root / name).read_bytes() for name in originals}
     assert originals == {name: (backup / "files" / name).read_bytes() for name in originals}
     assert not [path for path in root.rglob(".*") if ".lf-" in path.name]
+
+
+@pytest.mark.parametrize("mask", range(1, 7))
+def test_invention_companion_checkout_rejects_every_mixed_worker_subset(tmp_path: Path, mask: int) -> None:
+    """Every nonempty proper subset of an older reviewed worker edition refuses before writes."""
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    older = _enterprise_138_workers()
+    for index, name in enumerate(sorted(older)):
+        if mask & (1 << index):
+            (root / name).write_bytes(older[name].replace(b"\n", b"\r\n"))
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert list(backups.iterdir()) == []
