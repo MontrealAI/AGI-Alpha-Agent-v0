@@ -65,4 +65,7 @@ def test_jsonl_round_trip_keeps_runtime_metadata(tmp_path: Path) -> None:
     front[0].fitness.crowd = 0.75
     path = tmp_path / "nested" / "lineage.jsonl"
     save_jsonl(front, path)
-    assert load_jsonl(path) == front
+    restored = load_jsonl(path)
+    assert restored == front
+    assert restored[0].fitness.rank == 2
+    assert restored[0].fitness.crowd == 0.75
