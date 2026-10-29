@@ -1,0 +1,525 @@
+{
+  "schema": "agialpha/invention-dynamic-qualification/v1",
+  "status": "DYNAMIC_COMPONENT_PASS",
+  "confirmation": false,
+  "scope": "runtime requalification of retained AST; no fresh discovery, provenance authentication, physical or commercial qualification",
+  "request_file_sha256": "bbc1ec3459df620383529379bedb805b657835f95066813acdc6375925e43dc4",
+  "program_file_sha256": "43ae41e592e7da89d66b5c3cdf2698b974390a41e88b75da26e2459a4cd59923",
+  "context_file_sha256": "4d7ff12c50a4e99da8a072d6f7462826f971de65f6b886de41eb360f59b4ad04",
+  "freeze_file_sha256": "c9af369b00358cbe6bf44993c2b14d1a5b14163eb187dd86521d4fa577ab9a1b",
+  "request_sha256": "d8c9b678eb868d9a78ef664c246ae090b3cc56045f54f60cedf0c3598271e9b7",
+  "program_sha256": "6e6f35e0d06de268736e557cf1593860c635d89d9aea1e5302e80e87746e4639",
+  "cohort_sha256": "f62c55942f811d3ece68bb50cd1622ad7916173123601a6c04c3df2c69f5b34e",
+  "source_evidence_sha256": "41ed34b89a06beb79600362d1a9201053fa39b7d9b25db3e3e9884a1978b5073",
+  "retained_proposal_bound": true,
+  "expected_outputs": [
+    {
+      "id": "doe-literal",
+      "status": "ABSTAIN"
+    },
+    {
+      "id": "valid-kV",
+      "status": "CONSISTENT"
+    },
+    {
+      "id": "valid-V",
+      "status": "CONSISTENT"
+    },
+    {
+      "id": "invalid-power-for-voltage",
+      "status": "ABSTAIN"
+    },
+    {
+      "id": "invalid-voltage-for-power",
+      "status": "ABSTAIN"
+    },
+    {
+      "id": "unknown-unit",
+      "status": "ABSTAIN"
+    },
+    {
+      "id": "missing-frequency",
+      "status": "ABSTAIN"
+    }
+  ],
+  "context_sha256": "940e34e63f23a6b8eb517ec2700b0a219e8a68081b28d472dc4c8b0fbba3e000",
+  "freeze_sha256": "c0a61c1e65cc87c37bdcecba21de4ed40f59474005406a78955458363653c2b3",
+  "implementation_sha256": "cba34d27d66d5eb1a1fe29f4fe1d2cba55d90d075de220bf8369251e656c7a90",
+  "image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+  "frozen_admission": {
+    "business_accepted": false,
+    "candidate_executed": false,
+    "candidate_hash": "39a3038bff9ff3714775afff0fba7a48fd461f4d56525e33fa47ae44da4a0e59",
+    "candidate_write_denied_by_os": true,
+    "confirmation": false,
+    "counterevidence": [
+      "Static unsafe fields remain an unresolved investigation lead."
+    ],
+    "details": {
+      "baseline_static": {
+        "consistent_paths": 1,
+        "depth": 2,
+        "nodes": 5,
+        "proof": "syntactic dimensional dominance over all branches; no candidate evaluation",
+        "statuses": [
+          "CONSISTENT"
+        ],
+        "terminal_paths": 1,
+        "unsafe_fields": [
+          "frequency",
+          "high_side_voltage",
+          "rated_power"
+        ]
+      }
+    },
+    "evidence_hashes": [
+      "d8c9b678eb868d9a78ef664c246ae090b3cc56045f54f60cedf0c3598271e9b7",
+      "940e34e63f23a6b8eb517ec2700b0a219e8a68081b28d472dc4c8b0fbba3e000",
+      "39a3038bff9ff3714775afff0fba7a48fd461f4d56525e33fa47ae44da4a0e59"
+    ],
+    "freeze_verified": true,
+    "new_socket_denied_by_os": true,
+    "objection_hash": null,
+    "objection_id": null,
+    "protocol_hash": "4b6b13d9dad33b1f71793511bd1c3ce6ceae4b34a68ed0d79f63bd36e4f38ee1",
+    "provenance": {
+      "external_certification": false,
+      "implementation": "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+      "independence": "procedural separation; shared host, libraries, and mission context",
+      "role": "separate-read-only-static-verifier"
+    },
+    "reason": "No source-bound consequential objection was supplied; unsafe static paths alone were not promoted.",
+    "request_hash": "d8c9b678eb868d9a78ef664c246ae090b3cc56045f54f60cedf0c3598271e9b7",
+    "restriction": {
+      "file_write_open_and_mutation_denied": true,
+      "mechanism": "additional kernel seccomp filter in verifier process",
+      "new_sockets_and_exec_denied": true,
+      "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+    },
+    "schema": "agialpha/critic-adjudication-verification/v1",
+    "scope": "source-field literal integrity and static dimensional dominance only; no candidate execution",
+    "source_freeze_verified": true,
+    "technical_activity_accepted": false,
+    "verdict": "NO_DEFECT_ESTABLISHED"
+  },
+  "pre_execution_static_proof": {
+    "nodes": 16,
+    "depth": 7,
+    "terminal_paths": 4,
+    "consistent_paths": 1,
+    "statuses": [
+      "ABSTAIN",
+      "CONSISTENT"
+    ],
+    "unsafe_fields": [],
+    "proof": "syntactic dimensional dominance over all branches; no candidate evaluation"
+  },
+  "candidate_execution": {
+    "status": "EXECUTED_UNVERIFIED",
+    "executed": true,
+    "image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "artifact": {
+      "operations": 55,
+      "outputs": [
+        {
+          "id": "doe-literal",
+          "status": "ABSTAIN"
+        },
+        {
+          "id": "valid-kV",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "valid-V",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "invalid-power-for-voltage",
+          "status": "ABSTAIN"
+        },
+        {
+          "id": "invalid-voltage-for-power",
+          "status": "ABSTAIN"
+        },
+        {
+          "id": "unknown-unit",
+          "status": "ABSTAIN"
+        },
+        {
+          "id": "missing-frequency",
+          "status": "ABSTAIN"
+        }
+      ],
+      "trace": [
+        {
+          "op": "sequence",
+          "record": "doe-literal"
+        },
+        {
+          "op": "observe",
+          "record": "doe-literal"
+        },
+        {
+          "op": "if",
+          "record": "doe-literal"
+        },
+        {
+          "op": "emit",
+          "record": "doe-literal"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-kV"
+        },
+        {
+          "op": "observe",
+          "record": "valid-kV"
+        },
+        {
+          "op": "if",
+          "record": "valid-kV"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-kV"
+        },
+        {
+          "op": "observe",
+          "record": "valid-kV"
+        },
+        {
+          "op": "if",
+          "record": "valid-kV"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-kV"
+        },
+        {
+          "op": "observe",
+          "record": "valid-kV"
+        },
+        {
+          "op": "if",
+          "record": "valid-kV"
+        },
+        {
+          "op": "emit",
+          "record": "valid-kV"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-V"
+        },
+        {
+          "op": "observe",
+          "record": "valid-V"
+        },
+        {
+          "op": "if",
+          "record": "valid-V"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-V"
+        },
+        {
+          "op": "observe",
+          "record": "valid-V"
+        },
+        {
+          "op": "if",
+          "record": "valid-V"
+        },
+        {
+          "op": "sequence",
+          "record": "valid-V"
+        },
+        {
+          "op": "observe",
+          "record": "valid-V"
+        },
+        {
+          "op": "if",
+          "record": "valid-V"
+        },
+        {
+          "op": "emit",
+          "record": "valid-V"
+        },
+        {
+          "op": "sequence",
+          "record": "invalid-power-for-voltage"
+        },
+        {
+          "op": "observe",
+          "record": "invalid-power-for-voltage"
+        },
+        {
+          "op": "if",
+          "record": "invalid-power-for-voltage"
+        },
+        {
+          "op": "emit",
+          "record": "invalid-power-for-voltage"
+        },
+        {
+          "op": "sequence",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "observe",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "if",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "sequence",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "observe",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "if",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "emit",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "sequence",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "observe",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "if",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "sequence",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "observe",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "if",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "sequence",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "observe",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "if",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "emit",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "sequence",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "observe",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "if",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "sequence",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "observe",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "if",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "sequence",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "observe",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "if",
+          "record": "missing-frequency"
+        },
+        {
+          "op": "emit",
+          "record": "missing-frequency"
+        }
+      ]
+    },
+    "program_hash": "6e6f35e0d06de268736e557cf1593860c635d89d9aea1e5302e80e87746e4639",
+    "records_hash": "f62c55942f811d3ece68bb50cd1622ad7916173123601a6c04c3df2c69f5b34e"
+  },
+  "separate_acceptance": {
+    "acceptance": "ACCEPTED",
+    "all_cohort_ids": [
+      "doe-literal",
+      "valid-kV",
+      "valid-V",
+      "invalid-power-for-voltage",
+      "invalid-voltage-for-power",
+      "unknown-unit",
+      "missing-frequency"
+    ],
+    "boundary": "No superiority, runtime security certification, commercial profitability, or general learning claim.",
+    "business_accepted": false,
+    "candidate_executed": true,
+    "candidate_write_denied_by_os": true,
+    "confirmation": false,
+    "execution_hash": "406d5fd7ab28a705fa1c706ba400a5b891a76d86b107bbc4a57e685a38b7177b",
+    "freeze_verified": true,
+    "independence": "separate trusted verifier implementation/process, shared host and libraries",
+    "new_socket_denied_by_os": true,
+    "program_hash": "6e6f35e0d06de268736e557cf1593860c635d89d9aea1e5302e80e87746e4639",
+    "protocol_hash": "4b6b13d9dad33b1f71793511bd1c3ce6ceae4b34a68ed0d79f63bd36e4f38ee1",
+    "reason": "Static contract and all supplied restricted-run outputs match the independent dimensional reference.",
+    "receipt_trust": "locally supplied orchestrator receipt; no cryptographic execution attestation or external certification",
+    "request_hash": "d8c9b678eb868d9a78ef664c246ae090b3cc56045f54f60cedf0c3598271e9b7",
+    "restriction": {
+      "file_write_open_and_mutation_denied": true,
+      "mechanism": "additional kernel seccomp filter in verifier process",
+      "new_sockets_and_exec_denied": true,
+      "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+    },
+    "schema": "agialpha/critic-acceptance-verification/v1",
+    "scope": "declared dimensional-screen contract only; no engineering suitability or business acceptance",
+    "source_freeze_verified": true,
+    "static_proof": {
+      "consistent_paths": 1,
+      "depth": 7,
+      "nodes": 16,
+      "proof": "syntactic dimensional dominance over all branches; no candidate evaluation",
+      "statuses": [
+        "ABSTAIN",
+        "CONSISTENT"
+      ],
+      "terminal_paths": 4,
+      "unsafe_fields": []
+    }
+  },
+  "negative_control_program_sha256": "ca2f2e0591a7abfd403ef8996aa9fcff06d8b1a26cc5ead7fd7399ca38c8f4f9",
+  "negative_control_execution": {
+    "status": "EXECUTED_UNVERIFIED",
+    "executed": true,
+    "image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "artifact": {
+      "operations": 7,
+      "outputs": [
+        {
+          "id": "doe-literal",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "valid-kV",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "valid-V",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "invalid-power-for-voltage",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "invalid-voltage-for-power",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "unknown-unit",
+          "status": "CONSISTENT"
+        },
+        {
+          "id": "missing-frequency",
+          "status": "CONSISTENT"
+        }
+      ],
+      "trace": [
+        {
+          "op": "emit",
+          "record": "doe-literal"
+        },
+        {
+          "op": "emit",
+          "record": "valid-kV"
+        },
+        {
+          "op": "emit",
+          "record": "valid-V"
+        },
+        {
+          "op": "emit",
+          "record": "invalid-power-for-voltage"
+        },
+        {
+          "op": "emit",
+          "record": "invalid-voltage-for-power"
+        },
+        {
+          "op": "emit",
+          "record": "unknown-unit"
+        },
+        {
+          "op": "emit",
+          "record": "missing-frequency"
+        }
+      ]
+    },
+    "program_hash": "ca2f2e0591a7abfd403ef8996aa9fcff06d8b1a26cc5ead7fd7399ca38c8f4f9",
+    "records_hash": "f62c55942f811d3ece68bb50cd1622ad7916173123601a6c04c3df2c69f5b34e"
+  },
+  "negative_control_rejected": true,
+  "negative_native_acceptance": {
+    "acceptance": "REJECTED",
+    "business_accepted": false,
+    "candidate_executed": false,
+    "candidate_write_denied_by_os": true,
+    "confirmation": false,
+    "execution_hash": "4731d544e801d5dffbfea88f91c454c04382323f6a5005bb23f6f54e6ffb0190",
+    "freeze_verified": true,
+    "independence": "separate trusted verifier implementation/process, shared host and libraries",
+    "new_socket_denied_by_os": true,
+    "program_hash": "ca2f2e0591a7abfd403ef8996aa9fcff06d8b1a26cc5ead7fd7399ca38c8f4f9",
+    "protocol_hash": "4b6b13d9dad33b1f71793511bd1c3ce6ceae4b34a68ed0d79f63bd36e4f38ee1",
+    "reason": "Static contract failed: CONSISTENT lacks required dimensional dominance",
+    "receipt_trust": "locally supplied orchestrator receipt; no cryptographic execution attestation or external certification",
+    "request_hash": "d8c9b678eb868d9a78ef664c246ae090b3cc56045f54f60cedf0c3598271e9b7",
+    "restriction": {
+      "file_write_open_and_mutation_denied": true,
+      "mechanism": "additional kernel seccomp filter in verifier process",
+      "new_sockets_and_exec_denied": true,
+      "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+    },
+    "schema": "agialpha/critic-acceptance-verification/v1",
+    "scope": "declared dimensional-screen contract only; no engineering suitability or business acceptance",
+    "source_freeze_verified": true
+  },
+  "negative_native_rejected": true,
+  "negative_native_scope": "Native rejection may be static; wrong actual outputs are also checked by the separate semantic oracle."
+}
