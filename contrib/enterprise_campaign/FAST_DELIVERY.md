@@ -10,7 +10,8 @@ From the repository root (Python 3.11–3.13, standard library only):
 python -m contrib.enterprise_campaign.delta_delivery \
   --before contrib/enterprise_campaign/examples/catalogue.csv \
   --delta contrib/enterprise_campaign/examples/supplier_delta.csv \
-  --keys sku --write-fields price --decimal-fields price --output /tmp/catalogue-review-new
+  --keys sku --write-fields price --decimal-fields price \
+  --aliases '{"product_code":"sku","new_price":"price"}' --output /tmp/catalogue-review-new
 python -m unittest discover -s tests -p 'test_delta_delivery*.py' -v
 ```
 
@@ -31,7 +32,7 @@ are local artifacts, not customer acceptance, financial settlement or security c
 
 `fast_delivery_evidence/original-*` preserves upstream developer evidence, not current-run receipts.
 The original ZIP remains unchanged in Library (identity and hash in qualification.json). Original
-26 tests were rerun on current Python 3.12; 36 tests pass after the checker repair, including eight
+26 tests were rerun on current Python 3.12; 37 tests pass after the checker repair, including eight
 new fixed contract cases. The 64 original development cases tie conventional software. None are
 independent customer trials or fresh scientific confirmation. Fixed code only was run with resource
 limits and network denial; this does not qualify a generated-program sandbox.

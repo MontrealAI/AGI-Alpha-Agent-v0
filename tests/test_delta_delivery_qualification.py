@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import unittest
 import copy
+import tempfile
+import subprocess
+import sys
+from pathlib import Path
 
 from contrib.enterprise_campaign import catalog_product as native
 from contrib.enterprise_campaign.delta_acceptance import verify_delta
@@ -90,6 +94,40 @@ class QualificationTests(unittest.TestCase):
     def test_non_object_native_package_refused(self) -> None:
         self.package["native_package"] = []
         self.assertEqual(verify_delta(self.before, self.delta, self.package, self.request)["verdict"], "REJECTED")
+
+    def test_documented_bundled_example_cli(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        examples = root / "contrib/enterprise_campaign/examples"
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "delivery"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "contrib.enterprise_campaign.delta_delivery",
+                    "--before",
+                    str(examples / "catalogue.csv"),
+                    "--delta",
+                    str(examples / "supplier_delta.csv"),
+                    "--keys",
+                    "sku",
+                    "--write-fields",
+                    "price",
+                    "--decimal-fields",
+                    "price",
+                    "--aliases",
+                    '{"product_code":"sku","new_price":"price"}',
+                    "--output",
+                    str(output),
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+                timeout=20,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((output / "rollback.csv").read_bytes(), (examples / "catalogue.csv").read_bytes())
+            self.assertIn("A,Montréal Widget,12.50,Preserve buyer approval", (output / "updated.csv").read_text())
 
     def test_stale_rollback_refuses(self) -> None:
         with self.assertRaises(ValueError):
