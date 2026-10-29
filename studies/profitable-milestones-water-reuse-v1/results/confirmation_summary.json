@@ -1,0 +1,118 @@
+{
+  "evidence_level": "executed software on synthetic confirmation cases",
+  "fresh_generation_this_run": true,
+  "case_count": 64,
+  "run_at_utc": "2026-10-27T23:32:01.830831+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "cpu_seconds": 0.036560578999999996,
+  "wall_seconds": 0.03800634999061003,
+  "arms": {
+    "ordinary": {
+      "cases": 64,
+      "passed": 62,
+      "decision_counts": {
+        "CONDITIONAL_NEXT_MILESTONE": 20,
+        "DEFER": 16,
+        "STOP": 8,
+        "OUT_OF_SCOPE": 4,
+        "INVALID_INPUT": 16
+      },
+      "cpu_seconds_including_oracle": 0.004908065000000003,
+      "wall_seconds_including_oracle": 0.004915044992230833
+    },
+    "expert": {
+      "cases": 64,
+      "passed": 62,
+      "decision_counts": {
+        "CONDITIONAL_NEXT_MILESTONE": 20,
+        "DEFER": 16,
+        "STOP": 8,
+        "OUT_OF_SCOPE": 4,
+        "INVALID_INPUT": 16
+      },
+      "cpu_seconds_including_oracle": 0.006074120000000009,
+      "wall_seconds_including_oracle": 0.006087296002078801
+    },
+    "conventional": {
+      "cases": 64,
+      "passed": 64,
+      "decision_counts": {
+        "CONDITIONAL_NEXT_MILESTONE": 20,
+        "DEFER": 16,
+        "STOP": 8,
+        "OUT_OF_SCOPE": 4,
+        "INVALID_INPUT": 16
+      },
+      "cpu_seconds_including_oracle": 0.007197324000000005,
+      "wall_seconds_including_oracle": 0.0072049959999276325
+    }
+  },
+  "failures": [
+    {
+      "arm": "ordinary",
+      "case_id": "tiny_negative_npv_sign",
+      "category": "numerical_boundary",
+      "protocol_status": "clear_protocol_requirement",
+      "expected": "STOP",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "semantic_match": false,
+      "decision_match": false,
+      "numeric_match": true,
+      "refusal_clean": true,
+      "passed": false
+    },
+    {
+      "arm": "ordinary",
+      "case_id": "decimal_literal_cancellation",
+      "category": "decimal_interpretation_diagnostic",
+      "protocol_status": "protocol_gap:input_number_representation_not_explicit",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "STOP",
+      "semantic_match": false,
+      "decision_match": false,
+      "numeric_match": true,
+      "refusal_clean": true,
+      "passed": false
+    },
+    {
+      "arm": "expert",
+      "case_id": "tiny_negative_npv_sign",
+      "category": "numerical_boundary",
+      "protocol_status": "clear_protocol_requirement",
+      "expected": "STOP",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "semantic_match": false,
+      "decision_match": false,
+      "numeric_match": true,
+      "refusal_clean": true,
+      "passed": false
+    },
+    {
+      "arm": "expert",
+      "case_id": "decimal_literal_cancellation",
+      "category": "decimal_interpretation_diagnostic",
+      "protocol_status": "protocol_gap:input_number_representation_not_explicit",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "STOP",
+      "semantic_match": false,
+      "decision_match": false,
+      "numeric_match": true,
+      "refusal_clean": true,
+      "passed": false
+    }
+  ],
+  "source_sha256": {
+    "protocol/acceptance.json": "d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a",
+    "inputs/published_case.json": "c5bf96c7b698543c9069e1bb3b12a25be7a02353bebb40d038e947e029937135",
+    "src/expert.py": "fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf",
+    "src/ordinary.py": "4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1",
+    "src/verifier.py": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+    "src/confirmation_cases.py": "7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2"
+  },
+  "confirmation_sha256": "0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f",
+  "actual_customers": 0,
+  "actual_collections_usd": 0,
+  "actual_complete_cost_usd": null,
+  "model_usage_and_billing": null
+}

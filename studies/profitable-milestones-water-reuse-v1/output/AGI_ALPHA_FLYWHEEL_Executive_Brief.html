@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Vincent Boucher — President of MONTREAL.AI" />
+  <title>AGI ALPHA FLYWHEEL — Executive Brief</title>
+  <style>
+    html {
+      font-size: 10pt;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+<style>:root{--purple:#402068;--violet:#795697;--ink:#262330;--muted:#625a6f;--line:#e5dfed;--wash:#f7f4fa}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#fff;font:18px/1.65 Georgia,"Times New Roman",serif}body>header,body>nav,body>main,body>section,body>div,body>p,body>h1,body>h2,body>h3,body>ul,body>ol,body>blockquote,body>table,body>figure,body>pre,body>hr{max-width:950px;margin-left:auto;margin-right:auto}body{padding:40px 28px 80px}header{padding:42px 0 28px;border-bottom:4px solid var(--purple)}h1,h2,h3,h4,nav,.author,.date{font-family:system-ui,-apple-system,sans-serif}h1,h2,h3{color:var(--purple);line-height:1.2}h1{font-size:2.4rem;letter-spacing:-.035em}h2{font-size:1.75rem;margin-top:2.8em;padding-top:.5em;border-top:1px solid var(--line)}h3{font-size:1.2rem;margin-top:1.6em}a{color:var(--purple);text-underline-offset:3px}a:focus-visible{outline:3px solid #ab82d2;outline-offset:4px}p{margin-top:.75em;margin-bottom:.75em}blockquote{background:var(--wash);border-left:4px solid var(--violet);padding:16px 24px;font-size:1.06rem;color:#4d3e60}table{width:100%;border-collapse:collapse;font-size:.94rem;display:block;overflow-x:auto;line-height:1.5}th{background:var(--purple);color:#fff;text-align:left;font:600 .9rem/1.4 system-ui,sans-serif}td,th{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:nth-child(even){background:var(--wash)}figure{text-align:center;margin-top:30px;margin-bottom:30px}figure img{max-width:100%;height:auto}figcaption{color:var(--muted);font:14px/1.5 system-ui,sans-serif;text-align:left;margin-top:8px}pre{overflow:auto;background:var(--wash);padding:20px;border-radius:7px;font:13px/1.5 ui-monospace,monospace}code{font-size:.86em;overflow-wrap:anywhere}nav{font:14px/1.6 system-ui,sans-serif;background:var(--wash);padding:20px 24px;margin-top:26px;margin-bottom:35px}nav ul{columns:2;list-style:none;padding-left:0}nav ul ul{columns:1;padding-left:16px}nav a{text-decoration:none}.subtitle{font:1.2rem/1.4 system-ui,sans-serif;color:var(--muted)}.author{font-size:1rem}.date{color:var(--muted);font-size:.85rem}.sourceCode{font-size:.8rem}.footnotes,.csl-bib-body{font-size:.9rem}.csl-entry{margin-bottom:14px}.download-bar{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}.download-bar a{padding:8px 12px;border:1px solid var(--line);border-radius:5px;text-decoration:none;font:14px system-ui,sans-serif}.badge{display:inline-block;padding:5px 10px;color:var(--purple);background:var(--wash);font:700 12px system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em}.math{overflow-wrap:anywhere}@media(max-width:640px){body{padding:20px 16px 50px;font-size:17px}h1{font-size:1.85rem}h2{font-size:1.45rem}nav ul{columns:1}table{font-size:.85rem}th,td{padding:8px}header{padding-top:20px}}@media print{body{font-size:10pt;padding:0}nav{display:none}h2{break-after:avoid}table,figure{break-inside:avoid}a{color:inherit}}
+
+/* Keep the complete reader centered and long equations locally scrollable. */
+body{max-width:none}math[display="block"]{display:block;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:.25em 0}.csl-entry a{overflow-wrap:anywhere}
+</style></head>
+<body><div class="badge">✦ ∞ Pinned research review edition • No actual sales</div>
+<header id="title-block-header">
+<h1 class="title">AGI ALPHA FLYWHEEL</h1>
+<p class="subtitle">The Paid-Progress Option — Executive Brief</p>
+<p class="author">Vincent Boucher — President of MONTREAL.AI</p>
+<p class="date">27 October 2026 · Research review edition</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#a-useful-milestone-has-been-delivered-profitability-remains-conditional"
+id="toc-a-useful-milestone-has-been-delivered-profitability-remains-conditional">A
+useful milestone has been delivered; profitability remains
+conditional</a></li>
+<li><a href="#what-comes-nextand-what-the-evidence-does-not-justify"
+id="toc-what-comes-nextand-what-the-evidence-does-not-justify">What
+comes next—and what the evidence does not justify</a></li>
+</ul>
+</nav>
+<h2
+id="a-useful-milestone-has-been-delivered-profitability-remains-conditional">A
+useful milestone has been delivered; profitability remains
+conditional</h2>
+<p>The <strong>Reuse Investment Gate Pack</strong> is an executable
+digital offering for an industrial plant owner, reuse developer or
+adviser deciding whether to fund the next water-reuse study. It supplies
+source-linked inputs, corrected cash economics, conditional quality
+checks, explicit stop/defer reasons and a next-measurement plan. A
+negative opportunity can be a useful accepted deliverable if that
+question and scope were agreed in advance.</p>
+<h3 id="the-delivered-result">The delivered result</h3>
+<p>A published process-water case states less than one year’s payback.
+Its own cost table instead implies <strong>3.37 years</strong>, before
+omitted costs: EUR82,000 stated annual savings less EUR28,630 cash
+operating expense leaves EUR53,370 against EUR180,000 capital. At an
+assumed 12% discount rate over ten years, the partial-input NPV is
+EUR121,552.</p>
+<p>The pack returns <strong>DEFER</strong>. Discharge limits are not a
+buyer’s process-water specification, and long-run performance, complete
+costs and six other evidence domains are unresolved. This is an
+actionable digital screening result, not a new treatment technology,
+physical validation or plant authorization. Source: Marjana Simonič,
+<em>Membranes</em> 11(12), 976 (2021), DOI
+10.3390/membranes11120976.</p>
+<h3 id="commercial-scope-and-modeled-economics">Commercial scope and
+modeled economics</h3>
+<p>The selected offer is <strong>US$3,500</strong>, against a
+transparent equivalent-scope human estimate of US$5,200. The modeled
+contract includes a reserved 30% deposit, acceptance of the agreed work,
+one bounded correction and refund on failed final acceptance. No
+customer was contacted and no contract or payment occurred.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Complete-cost scenario</th>
+<th style="text-align: right;">Mean project profit</th>
+<th style="text-align: right;">Profitable histories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Conservative</td>
+<td style="text-align: right;"><strong>−US$9,000</strong></td>
+<td style="text-align: right;">0 of 256</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Central</td>
+<td style="text-align: right;"><strong>+US$2,962</strong></td>
+<td style="text-align: right;">152 of 256</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Favorable</td>
+<td style="text-align: right;"><strong>+US$77,279</strong></td>
+<td style="text-align: right;">253 of 256</td>
+</tr>
+</tbody>
+</table>
+<p>The model covers 26 selling weeks plus seven settlement weeks and
+requires <strong>US$10,000 external seed</strong>. It includes
+unsuccessful work, correction, acquisition, support, bad debt, setup and
+reserved obligations. These primary figures are an explicit
+accounting-correction replay: initial frozen runs omitted settlement
+overhead. Their original central result was US$6,477; reserving the
+added expense also restricts intake, reducing the corrected mean to
+US$2,962. The price and original seeds were not retuned.</p>
+<p><strong>The campaign is not robust across demand
+assumptions.</strong> The conservative price attracts zero orders and
+acquisition consumes the risk budget. The central case loses money in
+40.6% of modeled histories. Buyer-price interpretation, acquisition,
+acceptance and residual effort can reverse the result. Actual
+collections are <strong>US$0</strong>; complete actual cost and profit
+are <strong>unknown</strong>.</p>
+<h2 id="what-comes-nextand-what-the-evidence-does-not-justify">What
+comes next—and what the evidence does not justify</h2>
+<h3 id="three-separate-accounts">Three separate accounts</h3>
+<p>Provider profit comes from the specified service fee less its full
+costs. Customer value comes from usable output or an improved decision,
+net of price and adoption burden. Future plant or venture upside belongs
+to whoever later owns the relevant rights and bears its risks. These are
+not additive earnings.</p>
+<p>A separate <strong>hypothetical</strong> empirical test has EUR30,621
+gross information value and EUR22,348 net value under a 0.50 viability
+prior, 0.80 sensitivity/specificity, US$8,000 test fee, fixed scenario
+conversion of 1.10 USD/EUR and EUR1,000 delay burden. It changes a
+modeled stop decision after a positive signal. Those probabilities are
+uncalibrated planning assumptions. This value is not attributed to the
+delivered desk pack, and the physical project remains deferred.</p>
+<h3 id="finance-and-selective-continuation">Finance and selective
+continuation</h3>
+<p>The corrected central first-job funding threshold is
+<strong>US$8,945</strong>, or <strong>US$9,295 under the shared
+shock</strong>, including committed overhead, reserves and one acquired
+lead that books. It does not guarantee a first sale. Zero-seed operation
+refuses.</p>
+<p>All optional US$1,200/US$2,500 reusable-module investments remain
+<strong>STOP</strong> after construction, maintenance, failure, scope
+fit and lost delivery capacity. Available money alone is insufficient.
+The study demonstrates neither retained Alpha nor compounding.</p>
+<h3 id="technical-evidence-and-recovery">Technical evidence and
+recovery</h3>
+<p>Ordinary and expert implementations each satisfy 62 of 64 original
+synthetic confirmation cases. One discrepancy violates an exact
+negative-NPV rule; another reveals decimal/binary interpretation
+ambiguity. The conventional evaluator matches the declared cases but
+also supplies the numerical oracle; its self-match is not independent
+validation. The final wrapper uses it, preserves both failures and
+passes 14 post-confirmation diagnostics with separate exact-arithmetic
+checks. No expert-model advantage or improved fresh-confirmation rate is
+claimed.</p>
+<p>The corrected economics ledger contains 185,135 event rows across 768
+histories. An independent Decimal implementation checks all cash,
+accrual and reserve identities. Local native accounting keeps unknown
+actual costs unknown; existing FusionPlan verification is exercised. ENS
+is unverified; MARK is not executed; no live token or payment
+transaction occurs.</p>
+<h3 id="scale-is-a-defined-scenario">Scale is a defined scenario</h3>
+<p>6,000 qualified projects at the historical EUR180,000 case capital
+would represent <strong>EUR1.08 billion cumulative plant deployment by
+2040</strong>. Eligibility, current costs and adoption are unverified.
+This is neither provider revenue nor valuation. At US$3,500 per pack,
+the same 6,000 orders would produce US$21 million gross service receipts
+before costs and competition.</p>
+<h3 id="decision">Decision</h3>
+<p>The completed package supports a <strong>separately authorized,
+bounded buyer pilot</strong> of the screening service, with measured
+input effort, acceptance, corrections, bills and collection. It does not
+justify automatically funding the full modeled campaign, buying the
+hypothetical field experiment or committing plant capital. Useful
+progress can precede the larger answer; continuation must earn its own
+evidence and funding.</p>
+<p>The research package includes the full paper, source, executable
+study, frozen inputs, original and corrected ledgers, readable delivery
+pack, failure records and an unposted LinkedIn draft. Distribution is a
+pinned review edition; canonical publication follows existing-owner
+qualification.</p>
+</body>
+</html>

@@ -1,0 +1,275 @@
+{
+  "kind": "self_authored_development_checks_not_fresh_confirmation",
+  "cases": [
+    {
+      "name": "published_aggregate",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "complete_positive_screen",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "zero_rate",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "very_small_rate",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "smallest_positive_rate",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "missing_evidence_key",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "all_evidence_absent",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "false_complete_costs",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "nonboolean_evidence",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "null_evidence_value",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "wrong_evidence_type",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "discharge_not_process",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "missing_process_limits",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "quality_incompatible",
+      "expected": "STOP",
+      "actual": "STOP",
+      "passed": true
+    },
+    {
+      "name": "quality_uncertain",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "quality_equality",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "robust_negative",
+      "expected": "DEFER",
+      "actual": "DEFER",
+      "passed": true
+    },
+    {
+      "name": "optimistic_negative",
+      "expected": "STOP",
+      "actual": "STOP",
+      "passed": true
+    },
+    {
+      "name": "zero_margin",
+      "expected": "STOP",
+      "actual": "STOP",
+      "passed": true
+    },
+    {
+      "name": "zero_capex_margin",
+      "expected": "CONDITIONAL_NEXT_MILESTONE",
+      "actual": "CONDITIONAL_NEXT_MILESTONE",
+      "passed": true
+    },
+    {
+      "name": "potable",
+      "expected": "OUT_OF_SCOPE",
+      "actual": "OUT_OF_SCOPE",
+      "passed": true
+    },
+    {
+      "name": "mixing_request",
+      "expected": "OUT_OF_SCOPE",
+      "actual": "OUT_OF_SCOPE",
+      "passed": true
+    },
+    {
+      "name": "malformed_before_scope",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "wrong_schema",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "wrong_currency",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "wrong_units",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "missing_analyte",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "extra_analyte",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "bool_years",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "bool_number",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "nan",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "infinity",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "unordered",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "missing_numeric",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "depreciation_double_count",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "empty_quality",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "negative_rate",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    },
+    {
+      "name": "excess_rate",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT",
+      "passed": true
+    }
+  ],
+  "public_reconciliation": {
+    "decision": "DEFER",
+    "reasons": [
+      "A buyer process specification is missing; discharge limits do not establish process-water acceptance.",
+      "Unresolved required evidence: buyer_spec_confirmed.",
+      "Unresolved required evidence: long_run_pilot.",
+      "Unresolved required evidence: pretreatment.",
+      "Unresolved required evidence: residuals_route.",
+      "Unresolved required evidence: nonchemical_hazards.",
+      "Unresolved required evidence: hydraulic_fit.",
+      "Unresolved required evidence: offtake.",
+      "Unresolved required evidence: complete_costs."
+    ],
+    "cash_margin": [
+      53370.0,
+      53370.0
+    ],
+    "accounting_margin": [
+      35370.0,
+      35370.0
+    ],
+    "npv": [
+      121552.40302628785,
+      121552.40302628785
+    ],
+    "simple_payback": [
+      3.372681281618887,
+      3.372681281618887
+    ],
+    "next_measurements": [
+      "Obtain the buyer's signed process-water specification for every reported analyte.",
+      "Measure long-run performance, fouling, cleaning, uptime and repeatability in an authorized pilot.",
+      "Validate the proposed pretreatment against representative source-water conditions.",
+      "Confirm residuals quantities, treatment route, acceptance and associated costs.",
+      "Evaluate biological, particulate and other nonchemical hazards for the intended process.",
+      "Confirm flow, storage, pressure, timing and system compatibility at the intended site.",
+      "Obtain a bounded offtake commitment specifying volume, availability, responsibility and payment.",
+      "Resolve omitted engineering, replacement, downtime, support and other incremental cash costs."
+    ],
+    "evidence_level": "Executed bounded software screen; field validation, customer acceptance and collections unestablished."
+  },
+  "elapsed_seconds": 0.00045482699351850897
+}

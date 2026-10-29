@@ -1,0 +1,217 @@
+{
+  "schema": "agialpha.profitable-milestones.economics.v1",
+  "currency_provider": "USD",
+  "currency_customer": "EUR",
+  "status": "All commercial probabilities, labor hours, prices, demand and cost allocations are explicit analyst hypotheses, not measured customer behavior or actual invoices. Public plant table values are source facts; arithmetic is executed. No customer contacts, purchases or payments.",
+  "horizon_weeks": 26,
+  "confirmation_worlds_per_scenario": 256,
+  "development_seed": 6102701,
+  "confirmation_seed": 6102791,
+  "opening_seed_usd": 10000,
+  "operating_buffer_usd": 1000,
+  "weekly_overhead_usd": 120,
+  "slots": 2,
+  "collection_delay_weeks": 2,
+  "support_delay_weeks": 2,
+  "deposit_fraction": 0.3,
+  "payment_fee_fraction": 0.03,
+  "price_candidates_usd": [
+    1500,
+    2500,
+    3500
+  ],
+  "price_policy": "Maximize weighted expected complete 26-week profit over declared prices; same scope, quality and responsibility at every price. Fixed development weights are risk-neutral planning preferences, not empirical frequencies. Capacity and first-job funding are screened before ranking. STOP is allowed for a nonpositive maximum.",
+  "human_comparator": {
+    "hours": 32,
+    "hourly_rate_usd": 125,
+    "overhead_factor": 1.3,
+    "scope": "same 1-case source/cost reconciliation, evidence gap register, executable decision instrument, sampling plan specification, independent checking, packaging and one correction round",
+    "basis": "transparent professional labor estimate; not an observed invoice or willingness to pay",
+    "hours_range": [
+      24,
+      48
+    ],
+    "rate_range_usd": [
+      100,
+      175
+    ]
+  },
+  "startup_costs_usd": {
+    "discovery": 400,
+    "implementation": 800,
+    "independent_verification": 600,
+    "packaging": 300,
+    "systems_setup": 100,
+    "model_authoring_allowance": 200
+  },
+  "weekly_overhead_components_usd": {
+    "maintenance": 30,
+    "business_administration": 30,
+    "insurance_and_responsibility_allowance": 40,
+    "infrastructure": 20
+  },
+  "scenarios": [
+    {
+      "id": "conservative",
+      "development_weight": 0.25,
+      "leads_per_week": 2,
+      "lead_cost_usd": 120,
+      "trust_booking_probability": 0.2,
+      "buyer_reservation_min_usd": 1800,
+      "buyer_reservation_max_usd": 3400,
+      "switching_cost_usd": 300,
+      "labor_hours": 14,
+      "labor_rate_usd": 100,
+      "model_allowance_usd": 180,
+      "infrastructure_usd": 30,
+      "packaging_usd": 100,
+      "correction_usd": 400,
+      "support_usd": 150,
+      "first_pass_delivery_probability": 0.86,
+      "correction_rescue_probability": 0.55,
+      "acceptance_given_delivery_probability": 0.85,
+      "collection_given_acceptance_probability": 0.9,
+      "buyer_adoption_given_acceptance_probability": 0.5,
+      "common_shock_probability": 0.25
+    },
+    {
+      "id": "central",
+      "development_weight": 0.5,
+      "leads_per_week": 3,
+      "lead_cost_usd": 80,
+      "trust_booking_probability": 0.35,
+      "buyer_reservation_min_usd": 2200,
+      "buyer_reservation_max_usd": 4500,
+      "switching_cost_usd": 300,
+      "labor_hours": 8,
+      "labor_rate_usd": 100,
+      "model_allowance_usd": 100,
+      "infrastructure_usd": 20,
+      "packaging_usd": 80,
+      "correction_usd": 300,
+      "support_usd": 100,
+      "first_pass_delivery_probability": 0.94,
+      "correction_rescue_probability": 0.65,
+      "acceptance_given_delivery_probability": 0.95,
+      "collection_given_acceptance_probability": 0.97,
+      "buyer_adoption_given_acceptance_probability": 0.7,
+      "common_shock_probability": 0.15
+    },
+    {
+      "id": "favorable",
+      "development_weight": 0.25,
+      "leads_per_week": 4,
+      "lead_cost_usd": 60,
+      "trust_booking_probability": 0.5,
+      "buyer_reservation_min_usd": 3000,
+      "buyer_reservation_max_usd": 6000,
+      "switching_cost_usd": 300,
+      "labor_hours": 5,
+      "labor_rate_usd": 100,
+      "model_allowance_usd": 70,
+      "infrastructure_usd": 20,
+      "packaging_usd": 60,
+      "correction_usd": 200,
+      "support_usd": 70,
+      "first_pass_delivery_probability": 0.98,
+      "correction_rescue_probability": 0.75,
+      "acceptance_given_delivery_probability": 0.98,
+      "collection_given_acceptance_probability": 0.99,
+      "buyer_adoption_given_acceptance_probability": 0.85,
+      "common_shock_probability": 0.1
+    }
+  ],
+  "common_shock": {
+    "booking_multiplier": 0.65,
+    "cost_multiplier": 1.25,
+    "first_pass_multiplier": 0.9,
+    "acceptance_multiplier": 0.95,
+    "collection_multiplier": 0.9,
+    "scope": "one shared state per whole campaign; conditional Bernoulli outcomes remain independent given this state, so unconditional jobs share demand, cost and quality exposure"
+  },
+  "retention": {
+    "enabled": true,
+    "module_fit_probability": 0.7,
+    "build_weeks": 2,
+    "options": [
+      {
+        "id": "bounded_sampling_module",
+        "construction_ceiling_usd": 1200,
+        "maintenance_ceiling_usd": 150,
+        "labor_saving_usd_per_fit_attempt": 150,
+        "technical_success_probability": 0.75
+      },
+      {
+        "id": "broader_sampling_module",
+        "construction_ceiling_usd": 2500,
+        "maintenance_ceiling_usd": 300,
+        "labor_saving_usd_per_fit_attempt": 300,
+        "technical_success_probability": 0.7
+      }
+    ],
+    "decision": "Feasible funds first, then maximum positive expected incremental benefit. Expected uses only during remaining 26-week horizon, capacity reduced during build, success and scope fit uncertain. Ordinary library with same asset has identical economics: no graph premium. Costs and savings are unmeasured hypotheses.",
+    "gate": "Only after a completed paid acceptance, when customer field-experiment net EVSI is positive in declared central illustration; fictional buyer adoption is not real readiness. Protected original seed and operating/fixed/contract reserves remain intact."
+  },
+  "plant": {
+    "source": "Simonic 2021 public Table 5, transcribed and independently checked in the primary study",
+    "capex_eur": 180000,
+    "annual_gross_saving_eur": 82000,
+    "annual_cash_opex_eur": 28630,
+    "annual_depreciation_eur": 18000,
+    "horizon_years": 10,
+    "discount_rate": 0.12,
+    "scope": "Partial-table pre-tax scenario. Missing destination specification, long-run uptime, salts and complete process costs prevent an actual plant investment recommendation."
+  },
+  "information_experiment": {
+    "prior_viable": 0.5,
+    "sensitivity": 0.8,
+    "specificity": 0.8,
+    "priors": [
+      0.2,
+      0.35,
+      0.5,
+      0.65,
+      0.8
+    ],
+    "sensitivities": [
+      0.65,
+      0.8,
+      0.95
+    ],
+    "specificities": [
+      0.65,
+      0.8,
+      0.95
+    ],
+    "fee_usd": 8000,
+    "usd_per_eur_fixed_scenario": 1.1,
+    "delay_cost_eur": 1000,
+    "nonviable_loss_eur": 180000,
+    "scope": "Optional future empirical sampling/pilot experiment only. These prior/likelihood ranges are analyst stress bounds, not calibrated probabilities. M1 Gate Pack does not supply this signal. Customer finances this experiment separately; provider module surplus does not finance EUR180000 plant."
+  },
+  "observation_boundaries": {
+    "actual_collections_usd": 0,
+    "actual_complete_cost_usd": null,
+    "actual_model_bill_usd": null,
+    "actual_human_labor_hours": null,
+    "measured_operational_alpha": false,
+    "measured_retained_alpha": false,
+    "live_transaction_executed": false,
+    "production_authorized": false
+  },
+  "effort_accounting": {
+    "labor_hours": "Unmeasured future customer-specific integration/configuration/handoff paid-effort allowance only; not observed time, not mandatory manual scientific review, and not required by the supported automated pack. Excludes separately costed acquisition, packaging, corrections and support. Zero residual effort is evaluated explicitly.",
+    "human_scientific_review_hours_required": 0,
+    "startup": "USD2400 is hypothetical repeatable commercial service setup, not measured manuscript authoring cost. Complete actual research cost remains unknown.",
+    "cost_classes": "A: all paid-delivery base, corrections, failed attempts, packaging, support, model allowances, infrastructure, lead acquisition, payment fees, receivable loss and overhead. Optional B: incremental module construction and maintenance only; no second charge for learning during delivery."
+  },
+  "runoff_weeks": 7,
+  "accounting_correction": {
+    "status": "Post-confirmation accounting correction replay, not new holdout or retuned policy",
+    "change": "Reserve and expense overhead for all33weeks:26selling plus7conservative runoff closure weeks. This reruns all cash-prefix admission decisions. Price3500 and original confirmation seeds remain unchanged.",
+    "original_source_sha256": "0f9e16d11b891cf49ff636601bf964f1dcaba7579cc8887ca4ef853cfc587111",
+    "original_configuration_sha256": "fb2986a71798322ff6d6d27d90719cf5b948011c2130c4e7415e6a8944c901a1",
+    "original_selected_price_usd": 3500,
+    "buyer_reservation_interpretation": "Original selected policy interprets reservation amounts as net fee caps after switching effort. Separate gross-value sensitivity subtracts switching cost without reselecting the price."
+  }
+}

@@ -1,0 +1,2461 @@
+{
+  "status": "POST_CONFIRMATION_ADJUDICATION_AND_DIAGNOSTICS",
+  "generated_at_utc": "2026-10-27T23:36:23.181863+00:00",
+  "confirmation_rerun": false,
+  "new_fresh_confirmation": false,
+  "frozen_code_or_original_results_modified": false,
+  "original_summary_preserved": {
+    "ordinary": {
+      "passed": 62,
+      "cases": 64
+    },
+    "expert": {
+      "passed": 62,
+      "cases": 64
+    },
+    "conventional": {
+      "declared_expected_matches": 64,
+      "cases": 64
+    }
+  },
+  "interpretation": "The conventional numeric comparison is not an independent second numeric oracle. These two boundary findings were additionally adjudicated by exact rational reasoning.",
+  "findings": [
+    {
+      "case_id": "tiny_negative_npv_sign",
+      "classification": "clear_protocol_defect",
+      "authoritative_decision": "STOP",
+      "independent_method": "Exact rational arithmetic and analytic strict inequality; no Decimal-reference code reused.",
+      "proof": "For r>0 and t>=1, (1+r)^(-t)<1; fifty discounted unit receipts sum to less than50, so NPV is strictly negative.",
+      "exact_rational_npv_decimal_90_digits": "-1.27499999999999997790000000000000029282499999999999683749000000000002898967499999999976808E-15",
+      "actual_binary64_npv": 0.0,
+      "cause": "The annuity/cash subtraction loses a negative difference smaller than binary64 spacing at50. Numeric tolerance passes while the strict-sign decision fails.",
+      "severity": "A false continuation under the frozen rule; economically immaterial at this magnitude; neither arm authorizes physical operation.",
+      "correction": "Use the unchanged frozen conventional Decimal reference for delivery. Retain the original62/64 scores; do not relabel recovery as fresh confirmation."
+    },
+    {
+      "case_id": "decimal_literal_cancellation",
+      "classification": "protocol_gap_input_number_representation",
+      "authoritative_decision_under_declared_decimal_policy": "CONDITIONAL_NEXT_MILESTONE",
+      "independent_method": "Exact fractions for decimal literals and, separately, exact fractions of binary64 input values.",
+      "exact_decimal_margin": "0",
+      "exact_binary64_input_margin_fraction": "-1/36028797018963968",
+      "binary64_evaluated_margin": -5.551115123125783e-17,
+      "cause": "The original protocol did not state whether JSON decimal literals or their binary64 approximations define exact equality. Under decimal literals the margin iszero; under exact binary64 inputs it isnegative, with an additional rounded-addition difference.",
+      "severity": "A false rejection under the now-declared decimal interpretation; not evidence of a meaningful monetary loss or operational advantage.",
+      "correction": "State decimal-literal interpretation explicitly at delivery. Parse JSON floats as Decimal and refuse a literal if its shortest-decimal round trip to the unchanged evaluator would lose information. Keep this case separately tagged as a protocol ambiguity."
+    }
+  ],
+  "source_extraction_check": {
+    "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+    "doi": "10.3390/membranes11120976",
+    "license": "CC BY4.0; author Marjana Simonic,2021",
+    "source_location": "Table5 and adjacent projected-savings text; concentration-mode permeate narrative for sodium/chloride.",
+    "currency_basis": "Historical nominal EUR as reported in2021, not current quotation or observed AGI revenue.",
+    "checks": {
+      "energy": true,
+      "chemicals": true,
+      "labour": true,
+      "wastewater_discharge": true,
+      "capital": true,
+      "depreciation": true,
+      "gross_annual_savings": true,
+      "table_total_arithmetic": true,
+      "table_annual_arithmetic": true,
+      "concentration_mode_sodium": true,
+      "concentration_mode_chloride": true
+    },
+    "checks_passed": 11,
+    "checks_total": 11,
+    "cash_opex": 28630,
+    "cash_margin": 53370,
+    "accounting_margin": 35370,
+    "simple_payback": 3.372681281618887,
+    "claim_status": "Table numbers are accurately transcribed. The article narrative payback under one year is not supported by those tabulated inputs; omitted costs and scope gaps remain unresolved."
+  },
+  "post_confirmation_diagnostic_count": 14,
+  "post_confirmation_diagnostics_passed": 14,
+  "diagnostics": [
+    {
+      "id": "post_confirmation_replay_tiny_negative_npv_sign",
+      "origin": "diagnosed confirmation case; not fresh",
+      "expected_decision": "STOP",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "tiny_negative_npv_sign",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          50,
+          50
+        ],
+        "annual_savings": [
+          2,
+          2
+        ],
+        "cash_opex": {
+          "operations": [
+            1,
+            1
+          ]
+        },
+        "annual_depreciation": 800,
+        "discount_rate": 1e-18,
+        "years": 50,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            80,
+            100
+          ],
+          "chloride": [
+            90,
+            120
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        }
+      },
+      "result": {
+        "decision": "STOP",
+        "reasons": [
+          "optimistic_npv_negative"
+        ],
+        "cash_margin": [
+          1.0,
+          1.0
+        ],
+        "accounting_margin": [
+          -799.0,
+          -799.0
+        ],
+        "npv": [
+          -1.275e-15,
+          -1.275e-15
+        ],
+        "simple_payback": [
+          50.0,
+          50.0
+        ],
+        "annuity": 50.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "1",
+            "1"
+          ],
+          "accounting_margin": [
+            "-799",
+            "-799"
+          ],
+          "npv": [
+            "-1.274999999999999977900000000000000292824999999999996837490000000000028989674999999999768082600000000E-15",
+            "-1.274999999999999977900000000000000292824999999999996837490000000000028989674999999999768082600000000E-15"
+          ],
+          "annuity": "49.999999999999998725000000000000022099999999999999707175000000000003162509999999999971010325000000000231917400000000",
+          "simple_payback": [
+            "50",
+            "50"
+          ],
+          "precision": 116
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                1.0,
+                1.0
+              ],
+              "accounting_margin": [
+                -799.0,
+                -799.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                50.0,
+                50.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The specified bounded quality, evidence and cash-flow screen supports only the next conditional engineering milestone."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                1.0,
+                1.0
+              ],
+              "accounting_margin": [
+                -799.0,
+                -799.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                50.0,
+                50.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The bounded screen passes; regrant authority for the next milestone."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 2,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_confirmation_replay_decimal_literal_cancellation",
+      "origin": "diagnosed confirmation case; not fresh",
+      "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "decimal_literal_cancellation",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          0,
+          0
+        ],
+        "annual_savings": [
+          0.3,
+          0.3
+        ],
+        "cash_opex": {
+          "first": [
+            0.1,
+            0.1
+          ],
+          "second": [
+            0.2,
+            0.2
+          ]
+        },
+        "annual_depreciation": 800,
+        "discount_rate": 0,
+        "years": 1,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            80,
+            100
+          ],
+          "chloride": [
+            90,
+            120
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        }
+      },
+      "result": {
+        "decision": "CONDITIONAL_NEXT_MILESTONE",
+        "reasons": [
+          "all_supplied_bounded_screening_conditions_met;no_operational_permission"
+        ],
+        "cash_margin": [
+          0.0,
+          0.0
+        ],
+        "accounting_margin": [
+          -800.0,
+          -800.0
+        ],
+        "npv": [
+          0.0,
+          0.0
+        ],
+        "simple_payback": [
+          null,
+          null
+        ],
+        "annuity": 1.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "0.0",
+            "0.0"
+          ],
+          "accounting_margin": [
+            "-800.0",
+            "-800.0"
+          ],
+          "npv": [
+            "0.0",
+            "0.0"
+          ],
+          "annuity": "1",
+          "simple_payback": [
+            null,
+            null
+          ],
+          "precision": 99
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "accounting_margin": [
+                -800.0,
+                -800.0
+              ],
+              "npv": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Optimistic NPV is negative (-5.55111512313e-17 EUR) under the stated cash-flow bounds."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "accounting_margin": [
+                -800.0,
+                -800.0
+              ],
+              "npv": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Even optimistic stated-cost NPV is negative."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 2,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_tiny_discount_seven_years",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "STOP",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_tiny_discount_seven_years",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          21,
+          21
+        ],
+        "annual_savings": [
+          4,
+          4
+        ],
+        "cash_opex": {
+          "operations": [
+            1,
+            1
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 1e-24,
+        "years": 7,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "STOP",
+        "reasons": [
+          "optimistic_npv_negative"
+        ],
+        "cash_margin": [
+          3.0,
+          3.0
+        ],
+        "accounting_margin": [
+          -17997.0,
+          -17997.0
+        ],
+        "npv": [
+          -8.4e-23,
+          -8.4e-23
+        ],
+        "simple_payback": [
+          7.0,
+          7.0
+        ],
+        "annuity": 7.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "3",
+            "3"
+          ],
+          "accounting_margin": [
+            "-17997.0",
+            "-17997.0"
+          ],
+          "npv": [
+            "-8.399999999999999999999974800000000000000000000062999999999999999999999861400000000000000000000277200E-23",
+            "-8.399999999999999999999974800000000000000000000062999999999999999999999861400000000000000000000277200E-23"
+          ],
+          "annuity": "6.999999999999999999999972000000000000000000000083999999999999999999999790000000000000000000000461999999999999999999999076000",
+          "simple_payback": [
+            "7",
+            "7"
+          ],
+          "precision": 124
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                3.0,
+                3.0
+              ],
+              "accounting_margin": [
+                -17997.0,
+                -17997.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                7.0,
+                7.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The specified bounded quality, evidence and cash-flow screen supports only the next conditional engineering milestone."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                3.0,
+                3.0
+              ],
+              "accounting_margin": [
+                -17997.0,
+                -17997.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                7.0,
+                7.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The bounded screen passes; regrant authority for the next milestone."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 2,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_exact_zero_discount_equality",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_exact_zero_discount_equality",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          21,
+          21
+        ],
+        "annual_savings": [
+          4,
+          4
+        ],
+        "cash_opex": {
+          "operations": [
+            1,
+            1
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0,
+        "years": 7,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "CONDITIONAL_NEXT_MILESTONE",
+        "reasons": [
+          "all_supplied_bounded_screening_conditions_met;no_operational_permission"
+        ],
+        "cash_margin": [
+          3.0,
+          3.0
+        ],
+        "accounting_margin": [
+          -17997.0,
+          -17997.0
+        ],
+        "npv": [
+          0.0,
+          0.0
+        ],
+        "simple_payback": [
+          7.0,
+          7.0
+        ],
+        "annuity": 7.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "3",
+            "3"
+          ],
+          "accounting_margin": [
+            "-17997.0",
+            "-17997.0"
+          ],
+          "npv": [
+            "0",
+            "0"
+          ],
+          "annuity": "7",
+          "simple_payback": [
+            "7",
+            "7"
+          ],
+          "precision": 101
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                3.0,
+                3.0
+              ],
+              "accounting_margin": [
+                -17997.0,
+                -17997.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                7.0,
+                7.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The specified bounded quality, evidence and cash-flow screen supports only the next conditional engineering milestone."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                3.0,
+                3.0
+              ],
+              "accounting_margin": [
+                -17997.0,
+                -17997.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                7.0,
+                7.0
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The bounded screen passes; regrant authority for the next milestone."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_decimal_47_cancellation",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_decimal_47_cancellation",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          0,
+          0
+        ],
+        "annual_savings": [
+          0.47,
+          0.47
+        ],
+        "cash_opex": {
+          "a": [
+            0.13,
+            0.13
+          ],
+          "b": [
+            0.34,
+            0.34
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0,
+        "years": 1,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "CONDITIONAL_NEXT_MILESTONE",
+        "reasons": [
+          "all_supplied_bounded_screening_conditions_met;no_operational_permission"
+        ],
+        "cash_margin": [
+          0.0,
+          0.0
+        ],
+        "accounting_margin": [
+          -18000.0,
+          -18000.0
+        ],
+        "npv": [
+          0.0,
+          0.0
+        ],
+        "simple_payback": [
+          null,
+          null
+        ],
+        "annuity": 1.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "0.00",
+            "0.00"
+          ],
+          "accounting_margin": [
+            "-18000.00",
+            "-18000.00"
+          ],
+          "npv": [
+            "0.00",
+            "0.00"
+          ],
+          "annuity": "1",
+          "simple_payback": [
+            null,
+            null
+          ],
+          "precision": 102
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Optimistic NPV is negative (-5.55111512313e-17 EUR) under the stated cash-flow bounds."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                -5.551115123125783e-17,
+                -5.551115123125783e-17
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Even optimistic stated-cost NPV is negative."
+              ]
+            },
+            "decision_disagrees": true,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 2,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_genuinely_negative_decimal_margin",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "STOP",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_genuinely_negative_decimal_margin",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          0,
+          0
+        ],
+        "annual_savings": [
+          0.4699999999999999,
+          0.4699999999999999
+        ],
+        "cash_opex": {
+          "a": [
+            0.13,
+            0.13
+          ],
+          "b": [
+            0.34,
+            0.34
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0,
+        "years": 1,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "STOP",
+        "reasons": [
+          "optimistic_npv_negative"
+        ],
+        "cash_margin": [
+          -1e-16,
+          -1e-16
+        ],
+        "accounting_margin": [
+          -18000.0,
+          -18000.0
+        ],
+        "npv": [
+          -1e-16,
+          -1e-16
+        ],
+        "simple_payback": [
+          null,
+          null
+        ],
+        "annuity": 1.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "-1E-16",
+            "-1E-16"
+          ],
+          "accounting_margin": [
+            "-18000.0000000000000001",
+            "-18000.0000000000000001"
+          ],
+          "npv": [
+            "-1E-16",
+            "-1E-16"
+          ],
+          "annuity": "1",
+          "simple_payback": [
+            null,
+            null
+          ],
+          "precision": 116
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -1.1102230246251565e-16,
+                -1.1102230246251565e-16
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                -1.1102230246251565e-16,
+                -1.1102230246251565e-16
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Optimistic NPV is negative (-1.11022302463e-16 EUR) under the stated cash-flow bounds."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                -1.1102230246251565e-16,
+                -1.1102230246251565e-16
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                -1.1102230246251565e-16,
+                -1.1102230246251565e-16
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Even optimistic stated-cost NPV is negative."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_genuinely_positive_decimal_margin",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "CONDITIONAL_NEXT_MILESTONE",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_genuinely_positive_decimal_margin",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          0,
+          0
+        ],
+        "annual_savings": [
+          0.47000000000000003,
+          0.47000000000000003
+        ],
+        "cash_opex": {
+          "a": [
+            0.13,
+            0.13
+          ],
+          "b": [
+            0.34,
+            0.34
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0,
+        "years": 1,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "CONDITIONAL_NEXT_MILESTONE",
+        "reasons": [
+          "all_supplied_bounded_screening_conditions_met;no_operational_permission"
+        ],
+        "cash_margin": [
+          3e-17,
+          3e-17
+        ],
+        "accounting_margin": [
+          -18000.0,
+          -18000.0
+        ],
+        "npv": [
+          3e-17,
+          3e-17
+        ],
+        "simple_payback": [
+          0.0,
+          0.0
+        ],
+        "annuity": 1.0,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "3E-17",
+            "3E-17"
+          ],
+          "accounting_margin": [
+            "-17999.99999999999999997",
+            "-17999.99999999999999997"
+          ],
+          "npv": [
+            "3E-17",
+            "3E-17"
+          ],
+          "annuity": "1",
+          "simple_payback": [
+            "0E+17",
+            "0E+17"
+          ],
+          "precision": 117
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                0.0,
+                0.0
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The specified bounded quality, evidence and cash-flow screen supports only the next conditional engineering milestone."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": false
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                0.0,
+                0.0
+              ],
+              "accounting_margin": [
+                -18000.0,
+                -18000.0
+              ],
+              "npv": [
+                0.0,
+                0.0
+              ],
+              "simple_payback": [
+                null,
+                null
+              ],
+              "decision": "CONDITIONAL_NEXT_MILESTONE",
+              "reasons": [
+                "The bounded screen passes; regrant authority for the next milestone."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": false
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_missing_long_run",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "DEFER",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_missing_long_run",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          180000.0,
+          180000.0
+        ],
+        "annual_savings": [
+          82000.0,
+          82000.0
+        ],
+        "cash_opex": {
+          "energy": [
+            7730.0,
+            7730.0
+          ],
+          "chemicals": [
+            3900.0,
+            3900.0
+          ],
+          "labour": [
+            11000.0,
+            11000.0
+          ],
+          "wastewater_discharge": [
+            6000.0,
+            6000.0
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0.12,
+        "years": 10,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": false,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "DEFER",
+        "reasons": [
+          "unresolved:long_run_pilot"
+        ],
+        "cash_margin": [
+          53370.0,
+          53370.0
+        ],
+        "accounting_margin": [
+          35370.0,
+          35370.0
+        ],
+        "npv": [
+          121552.40302628787,
+          121552.40302628787
+        ],
+        "simple_payback": [
+          3.372681281618887,
+          3.372681281618887
+        ],
+        "annuity": 5.650223028410865,
+        "next_measurements": [
+          "Measure sustained flux, cleaning frequency, uptime and permeate quality across operating states."
+        ],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "53370.0",
+            "53370.0"
+          ],
+          "accounting_margin": [
+            "35370.0",
+            "35370.0"
+          ],
+          "npv": [
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003",
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003"
+          ],
+          "annuity": "5.650223028410864893408062032542893696148224299821751816563581469752063126776817178768112175378593966652",
+          "simple_payback": [
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302",
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302"
+          ],
+          "precision": 103
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "DEFER",
+              "reasons": [
+                "Unresolved required evidence: long_run_pilot."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "DEFER",
+              "reasons": [
+                "unresolved:long_run_pilot"
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_refuse_control",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "OUT_OF_SCOPE",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_refuse_control",
+        "use": "industrial_nonpotable",
+        "request": "control",
+        "currency": "EUR",
+        "capex": [
+          180000.0,
+          180000.0
+        ],
+        "annual_savings": [
+          82000.0,
+          82000.0
+        ],
+        "cash_opex": {
+          "energy": [
+            7730.0,
+            7730.0
+          ],
+          "chemicals": [
+            3900.0,
+            3900.0
+          ],
+          "labour": [
+            11000.0,
+            11000.0
+          ],
+          "wastewater_discharge": [
+            6000.0,
+            6000.0
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0.12,
+        "years": 10,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "OUT_OF_SCOPE",
+        "reasons": [
+          "only_nonpotable_industrial_screening_supported"
+        ],
+        "cash_margin": null,
+        "accounting_margin": null,
+        "npv": null,
+        "simple_payback": null,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": null,
+              "accounting_margin": null,
+              "npv": null,
+              "simple_payback": null,
+              "decision": "OUT_OF_SCOPE",
+              "reasons": [
+                "Only industrial nonpotable screening is supported; no operation, mixing or control authorization."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": null,
+              "accounting_margin": null,
+              "npv": null,
+              "simple_payback": null,
+              "decision": "OUT_OF_SCOPE",
+              "reasons": [
+                "This instrument supports non-potable industrial screening only."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_refuse_wrong_quality_units",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "INVALID_INPUT",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_refuse_wrong_quality_units",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          180000.0,
+          180000.0
+        ],
+        "annual_savings": [
+          82000.0,
+          82000.0
+        ],
+        "cash_opex": {
+          "energy": [
+            7730.0,
+            7730.0
+          ],
+          "chemicals": [
+            3900.0,
+            3900.0
+          ],
+          "labour": [
+            11000.0,
+            11000.0
+          ],
+          "wastewater_discharge": [
+            6000.0,
+            6000.0
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0.12,
+        "years": 10,
+        "quality_unit": "g/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "INVALID_INPUT",
+        "reasons": [
+          "invalid:quality_unit"
+        ],
+        "cash_margin": null,
+        "accounting_margin": null,
+        "npv": null,
+        "simple_payback": null,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": null,
+              "accounting_margin": null,
+              "npv": null,
+              "simple_payback": null,
+              "decision": "INVALID_INPUT",
+              "reasons": [
+                "quality_unit: mg/L is required"
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": null,
+              "accounting_margin": null,
+              "npv": null,
+              "simple_payback": null,
+              "decision": "INVALID_INPUT",
+              "reasons": [
+                "currency must be EUR and concentration unit must be mg/L"
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_strict_quality_limit",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "STOP",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_strict_quality_limit",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          180000.0,
+          180000.0
+        ],
+        "annual_savings": [
+          82000.0,
+          82000.0
+        ],
+        "cash_opex": {
+          "energy": [
+            7730.0,
+            7730.0
+          ],
+          "chemicals": [
+            3900.0,
+            3900.0
+          ],
+          "labour": [
+            11000.0,
+            11000.0
+          ],
+          "wastewater_discharge": [
+            6000.0,
+            6000.0
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0.12,
+        "years": 10,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 144.99999999999997,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "process_specification",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "STOP",
+        "reasons": [
+          "quality_incompatible:sodium"
+        ],
+        "cash_margin": [
+          53370.0,
+          53370.0
+        ],
+        "accounting_margin": [
+          35370.0,
+          35370.0
+        ],
+        "npv": [
+          121552.40302628787,
+          121552.40302628787
+        ],
+        "simple_payback": [
+          3.372681281618887,
+          3.372681281618887
+        ],
+        "annuity": 5.650223028410865,
+        "next_measurements": [],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "53370.0",
+            "53370.0"
+          ],
+          "accounting_margin": [
+            "35370.0",
+            "35370.0"
+          ],
+          "npv": [
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003",
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003"
+          ],
+          "annuity": "5.650223028410864893408062032542893696148224299821751816563581469752063126776817178768112175378593966652",
+          "simple_payback": [
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302",
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302"
+          ],
+          "precision": 103
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "sodium: lower product bound 145 mg/L exceeds specified process limit 145 mg/L."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "STOP",
+              "reasons": [
+                "Minimum product concentration exceeds the process limit: sodium"
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_discharge_not_process",
+      "origin": "manual post-confirmation diagnostic; not fresh confirmation",
+      "expected_decision": "DEFER",
+      "input": {
+        "schema": "reuse-gate-input.v1",
+        "id": "post_discharge_not_process",
+        "use": "industrial_nonpotable",
+        "request": "screening",
+        "currency": "EUR",
+        "capex": [
+          180000.0,
+          180000.0
+        ],
+        "annual_savings": [
+          82000.0,
+          82000.0
+        ],
+        "cash_opex": {
+          "energy": [
+            7730.0,
+            7730.0
+          ],
+          "chemicals": [
+            3900.0,
+            3900.0
+          ],
+          "labour": [
+            11000.0,
+            11000.0
+          ],
+          "wastewater_discharge": [
+            6000.0,
+            6000.0
+          ]
+        },
+        "annual_depreciation": 18000.0,
+        "discount_rate": 0.12,
+        "years": 10,
+        "quality_unit": "mg/L",
+        "product_quality": {
+          "sodium": [
+            145.0,
+            145.0
+          ],
+          "chloride": [
+            193.0,
+            193.0
+          ]
+        },
+        "buyer_limits": {
+          "sodium": 150,
+          "chloride": 200
+        },
+        "buyer_limit_kind": "discharge_only",
+        "evidence": {
+          "buyer_spec_confirmed": true,
+          "long_run_pilot": true,
+          "pretreatment": true,
+          "residuals_route": true,
+          "nonchemical_hazards": true,
+          "hydraulic_fit": true,
+          "offtake": true,
+          "complete_costs": true
+        },
+        "provenance": {
+          "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+          "author": "Marjana Simonič",
+          "year": 2021,
+          "doi": "10.3390/membranes11120976",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+          "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+          "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+          "analysis_assumptions": [
+            "12% annual discount rate",
+            "ten-year evaluation horizon consistent with reported depreciation period",
+            "constant annual stated cash flows",
+            "no tax, salvage, financing charges or inflation"
+          ],
+          "unresolved": [
+            "Discharge maxima are not process-water acceptance limits",
+            "Short-duration fouling narrative contains conflicting statements around 200 minutes",
+            "Missing independent site-specific pretreatment and residuals validation",
+            "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"
+          ],
+          "source_claim_to_check": "Payback less than one year"
+        }
+      },
+      "result": {
+        "decision": "DEFER",
+        "reasons": [
+          "buyer_limit_kind:discharge_only"
+        ],
+        "cash_margin": [
+          53370.0,
+          53370.0
+        ],
+        "accounting_margin": [
+          35370.0,
+          35370.0
+        ],
+        "npv": [
+          121552.40302628787,
+          121552.40302628787
+        ],
+        "simple_payback": [
+          3.372681281618887,
+          3.372681281618887
+        ],
+        "annuity": 5.650223028410865,
+        "next_measurements": [
+          "Obtain the customer's dated, use-specific product-water acceptance specification."
+        ],
+        "evidence_level": "SOFTWARE_SCREEN_ONLY",
+        "operational_authorization": false,
+        "decimal_oracle": {
+          "cash_margin": [
+            "53370.0",
+            "53370.0"
+          ],
+          "accounting_margin": [
+            "35370.0",
+            "35370.0"
+          ],
+          "npv": [
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003",
+            "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003"
+          ],
+          "annuity": "5.650223028410864893408062032542893696148224299821751816563581469752063126776817178768112175378593966652",
+          "simple_payback": [
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302",
+            "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302"
+          ],
+          "precision": 103
+        },
+        "original_arm_comparison": {
+          "ordinary": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "DEFER",
+              "reasons": [
+                "A buyer process specification is missing; discharge limits do not establish process-water acceptance."
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          },
+          "expert": {
+            "evaluation_status": "executed_unchanged_frozen_arm",
+            "original_result": {
+              "cash_margin": [
+                53370.0,
+                53370.0
+              ],
+              "accounting_margin": [
+                35370.0,
+                35370.0
+              ],
+              "npv": [
+                121552.40302628785,
+                121552.40302628785
+              ],
+              "simple_payback": [
+                3.372681281618887,
+                3.372681281618887
+              ],
+              "decision": "DEFER",
+              "reasons": [
+                "missing_process_specification"
+              ]
+            },
+            "decision_disagrees": false,
+            "numbers_within_original_protocol_tolerance": true
+          }
+        },
+        "decision_disagreement_count": 0,
+        "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_refuse_lossy_long_decimal_literal",
+      "origin": "manual post-confirmation parser diagnostic",
+      "expected_decision": "INVALID_INPUT",
+      "raw_json": "{\"schema\": \"reuse-gate-input.v1\", \"id\": \"simonic2021-published-aggregate\", \"use\": \"industrial_nonpotable\", \"request\": \"screening\", \"currency\": \"EUR\", \"capex\": [0, 0], \"annual_savings\": [0.4700000000000000000000001, 0.4700000000000000000000001], \"cash_opex\": {\"a\": [0.13, 0.13], \"b\": [0.34, 0.34]}, \"annual_depreciation\": 18000.0, \"discount_rate\": 0, \"years\": 1, \"quality_unit\": \"mg/L\", \"product_quality\": {\"sodium\": [145.0, 145.0], \"chloride\": [193.0, 193.0]}, \"buyer_limits\": {\"sodium\": 150, \"chloride\": 200}, \"buyer_limit_kind\": \"process_specification\", \"evidence\": {\"buyer_spec_confirmed\": true, \"long_run_pilot\": true, \"pretreatment\": true, \"residuals_route\": true, \"nonchemical_hazards\": true, \"hydraulic_fit\": true, \"offtake\": true, \"complete_costs\": true}, \"provenance\": {\"title\": \"Reverse Osmosis Treatment of Wastewater for Reuse as Process Water\\u2014A Case Study\", \"author\": \"Marjana Simoni\\u010d\", \"year\": 2021, \"doi\": \"10.3390/membranes11120976\", \"url\": \"https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/\", \"cost_basis\": \"Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.\", \"quality_basis\": \"Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.\", \"analysis_assumptions\": [\"12% annual discount rate\", \"ten-year evaluation horizon consistent with reported depreciation period\", \"constant annual stated cash flows\", \"no tax, salvage, financing charges or inflation\"], \"unresolved\": [\"Discharge maxima are not process-water acceptance limits\", \"Short-duration fouling narrative contains conflicting statements around 200 minutes\", \"Missing independent site-specific pretreatment and residuals validation\", \"Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence\"], \"source_claim_to_check\": \"Payback less than one year\"}}",
+      "result": {
+        "decision": "INVALID_INPUT",
+        "reasons": [
+          "invalid_json_or_unsupported_decimal_precision:ValueError"
+        ],
+        "cash_margin": null,
+        "accounting_margin": null,
+        "npv": null,
+        "simple_payback": null,
+        "next_measurements": [],
+        "evidence_level": "INPUT_NOT_EVALUATED",
+        "operational_authorization": false,
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    },
+    {
+      "id": "post_refuse_nonstandard_nonfinite_json",
+      "origin": "manual post-confirmation parser diagnostic",
+      "expected_decision": "INVALID_INPUT",
+      "raw_json": "{\"schema\": \"reuse-gate-input.v1\", \"id\": \"simonic2021-published-aggregate\", \"use\": \"industrial_nonpotable\", \"request\": \"screening\", \"currency\": \"EUR\", \"capex\": [180000.0, 180000.0], \"annual_savings\": [82000.0, 82000.0], \"cash_opex\": {\"energy\": [7730.0, 7730.0], \"chemicals\": [3900.0, 3900.0], \"labour\": [11000.0, 11000.0], \"wastewater_discharge\": [6000.0, 6000.0]}, \"annual_depreciation\": 18000.0, \"discount_rate\": NaN, \"years\": 10, \"quality_unit\": \"mg/L\", \"product_quality\": {\"sodium\": [145.0, 145.0], \"chloride\": [193.0, 193.0]}, \"buyer_limits\": {\"sodium\": 150, \"chloride\": 200}, \"buyer_limit_kind\": \"process_specification\", \"evidence\": {\"buyer_spec_confirmed\": true, \"long_run_pilot\": true, \"pretreatment\": true, \"residuals_route\": true, \"nonchemical_hazards\": true, \"hydraulic_fit\": true, \"offtake\": true, \"complete_costs\": true}, \"provenance\": {\"title\": \"Reverse Osmosis Treatment of Wastewater for Reuse as Process Water\\u2014A Case Study\", \"author\": \"Marjana Simoni\\u010d\", \"year\": 2021, \"doi\": \"10.3390/membranes11120976\", \"url\": \"https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/\", \"cost_basis\": \"Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.\", \"quality_basis\": \"Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.\", \"analysis_assumptions\": [\"12% annual discount rate\", \"ten-year evaluation horizon consistent with reported depreciation period\", \"constant annual stated cash flows\", \"no tax, salvage, financing charges or inflation\"], \"unresolved\": [\"Discharge maxima are not process-water acceptance limits\", \"Short-duration fouling narrative contains conflicting statements around 200 minutes\", \"Missing independent site-specific pretreatment and residuals validation\", \"Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence\"], \"source_claim_to_check\": \"Payback less than one year\"}}",
+      "result": {
+        "decision": "INVALID_INPUT",
+        "reasons": [
+          "invalid_json_or_unsupported_decimal_precision:ValueError"
+        ],
+        "cash_margin": null,
+        "accounting_margin": null,
+        "npv": null,
+        "simple_payback": null,
+        "next_measurements": [],
+        "evidence_level": "INPUT_NOT_EVALUATED",
+        "operational_authorization": false,
+        "delivery_revision": "post_confirmation_conventional_selector.v1",
+        "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+        "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+        "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+        "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+      },
+      "passed": true
+    }
+  ],
+  "published_case_delivery": {
+    "decision": "DEFER",
+    "reasons": [
+      "buyer_limits_missing",
+      "buyer_limit_kind:discharge_only",
+      "unresolved:buyer_spec_confirmed",
+      "unresolved:long_run_pilot",
+      "unresolved:pretreatment",
+      "unresolved:residuals_route",
+      "unresolved:nonchemical_hazards",
+      "unresolved:hydraulic_fit",
+      "unresolved:offtake",
+      "unresolved:complete_costs"
+    ],
+    "cash_margin": [
+      53370.0,
+      53370.0
+    ],
+    "accounting_margin": [
+      35370.0,
+      35370.0
+    ],
+    "npv": [
+      121552.40302628787,
+      121552.40302628787
+    ],
+    "simple_payback": [
+      3.372681281618887,
+      3.372681281618887
+    ],
+    "annuity": 5.650223028410865,
+    "next_measurements": [
+      "Obtain the customer's dated, use-specific product-water acceptance specification.",
+      "Measure sustained flux, cleaning frequency, uptime and permeate quality across operating states.",
+      "Validate pretreatment under representative source variability and chemical additions.",
+      "Confirm concentrate and cleaning-residual disposal routes, acceptance and full costs.",
+      "Assess microbial, aerosol, worker-contact and other nonchemical hazards for the intended use.",
+      "Measure source availability, demand, storage, hydraulic capacity and downtime compatibility.",
+      "Confirm the receiving process's demand, operational acceptance and contractual offtake conditions.",
+      "Obtain complete engineering, installation, replacement, downtime, permitting and funding costs."
+    ],
+    "evidence_level": "SOFTWARE_SCREEN_ONLY",
+    "operational_authorization": false,
+    "decimal_oracle": {
+      "cash_margin": [
+        "53370.0",
+        "53370.0"
+      ],
+      "accounting_margin": [
+        "35370.0",
+        "35370.0"
+      ],
+      "npv": [
+        "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003",
+        "121552.4030262878593611882706768142365634307308814868944499983430406676090760787328308541467999555600003"
+      ],
+      "annuity": "5.650223028410864893408062032542893696148224299821751816563581469752063126776817178768112175378593966652",
+      "simple_payback": [
+        "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302",
+        "3.372681281618887015177065767284991568296795952782462057335581787521079258010118043844856661045531197302"
+      ],
+      "precision": 103
+    },
+    "original_arm_comparison": {
+      "ordinary": {
+        "evaluation_status": "executed_unchanged_frozen_arm",
+        "original_result": {
+          "cash_margin": [
+            53370.0,
+            53370.0
+          ],
+          "accounting_margin": [
+            35370.0,
+            35370.0
+          ],
+          "npv": [
+            121552.40302628785,
+            121552.40302628785
+          ],
+          "simple_payback": [
+            3.372681281618887,
+            3.372681281618887
+          ],
+          "decision": "DEFER",
+          "reasons": [
+            "A buyer process specification is missing; discharge limits do not establish process-water acceptance.",
+            "Unresolved required evidence: buyer_spec_confirmed.",
+            "Unresolved required evidence: long_run_pilot.",
+            "Unresolved required evidence: pretreatment.",
+            "Unresolved required evidence: residuals_route.",
+            "Unresolved required evidence: nonchemical_hazards.",
+            "Unresolved required evidence: hydraulic_fit.",
+            "Unresolved required evidence: offtake.",
+            "Unresolved required evidence: complete_costs."
+          ]
+        },
+        "decision_disagrees": false,
+        "numbers_within_original_protocol_tolerance": true
+      },
+      "expert": {
+        "evaluation_status": "executed_unchanged_frozen_arm",
+        "original_result": {
+          "cash_margin": [
+            53370.0,
+            53370.0
+          ],
+          "accounting_margin": [
+            35370.0,
+            35370.0
+          ],
+          "npv": [
+            121552.40302628785,
+            121552.40302628785
+          ],
+          "simple_payback": [
+            3.372681281618887,
+            3.372681281618887
+          ],
+          "decision": "DEFER",
+          "reasons": [
+            "unresolved:buyer_spec_confirmed",
+            "unresolved:long_run_pilot",
+            "unresolved:pretreatment",
+            "unresolved:residuals_route",
+            "unresolved:nonchemical_hazards",
+            "unresolved:hydraulic_fit",
+            "unresolved:offtake",
+            "unresolved:complete_costs",
+            "missing_process_specification"
+          ]
+        },
+        "decision_disagrees": false,
+        "numbers_within_original_protocol_tolerance": true
+      }
+    },
+    "decision_disagreement_count": 0,
+    "reference_source_sha256": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+    "delivery_revision": "post_confirmation_conventional_selector.v1",
+    "selected_evaluator": "unchanged_frozen_conventional_decimal_reference",
+    "input_number_policy": "JSON numeric literals are parsed as exact decimal tokens, then admitted only if their shortest decimal round trip into the unchanged frozen evaluator is lossless. Long or out-of-range literals are refused.",
+    "confirmation_status": "Post-confirmation recovery; original confirmation scores and failures are unchanged.",
+    "alpha_claim": "No Operational Alpha or improved fresh-confirmation rate is claimed."
+  },
+  "protected_sha256_before": {
+    "protocol/acceptance.json": "d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a",
+    "inputs/confirmation.json": "0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f",
+    "src/verifier.py": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+    "src/ordinary.py": "4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1",
+    "src/expert.py": "fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf",
+    "src/confirmation_cases.py": "7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2",
+    "results/confirmation_summary.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "results/confirmation_outputs.json": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed",
+    "results/published_case_result.json": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204"
+  },
+  "protected_sha256_after": {
+    "protocol/acceptance.json": "d05af0f04ea55b1bcc5cf5303e0862dacd509d8cfabd9d216f68689a8467c72a",
+    "inputs/confirmation.json": "0a00a5f0e348a2118115fa96cce51752a6e95a345061f8e2dd611a5509273d8f",
+    "src/verifier.py": "5392b40020f0482b50dc0a48ea4e6cfbc42ee7e9a6c252a74015c6464935a5a5",
+    "src/ordinary.py": "4ba3b068d77892dcd54b07fa045e4b31510ddf806aaa53cdf9dcf15b23674fc1",
+    "src/expert.py": "fd4390b85ff38359c6a8915b982a951aaaac383d2c1c2560146552ec9a8645cf",
+    "src/confirmation_cases.py": "7f0ed03ae1c0fed36b7d26239d00fb6fc7a94bcd6acb598e6c16210cb8c229d2",
+    "results/confirmation_summary.json": "7fa78a485efc9ed4d210cc6ea927784b7d85009714b81f237df5b7bb274d64be",
+    "results/confirmation_outputs.json": "e9c626346f4e832c3020abb2d1ebdb1e51a9b4d2822ab71187fae8a41c59e5ed",
+    "results/published_case_result.json": "c3ac7bea41d342f14698181130faf28ab3dc95acd85a12116647c18205af8204"
+  },
+  "delivery_source_sha256": "8b280ee5ab032cdaf50a2fc595864e66722d45383c74e42e9c5177da598362cf"
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "reuse-gate-input.v1",
+  "id": "simonic2021-published-aggregate",
+  "use": "industrial_nonpotable",
+  "request": "screening",
+  "currency": "EUR",
+  "capex": [180000.0,180000.0],
+  "annual_savings": [82000.0,82000.0],
+  "cash_opex": {"energy":[7730.0,7730.0],"chemicals":[3900.0,3900.0],"labour":[11000.0,11000.0],"wastewater_discharge":[6000.0,6000.0]},
+  "annual_depreciation": 18000.0,
+  "discount_rate": 0.12,
+  "years": 10,
+  "quality_unit": "mg/L",
+  "product_quality": {"sodium":[145.0,145.0],"chloride":[193.0,193.0]},
+  "buyer_limits": null,
+  "buyer_limit_kind": "discharge_only",
+  "evidence": {"buyer_spec_confirmed":false,"long_run_pilot":false,"pretreatment":false,"residuals_route":false,"nonchemical_hazards":false,"hydraulic_fit":false,"offtake":false,"complete_costs":false},
+  "provenance": {
+    "title": "Reverse Osmosis Treatment of Wastewater for Reuse as Process Water—A Case Study",
+    "author": "Marjana Simonič",
+    "year": 2021,
+    "doi": "10.3390/membranes11120976",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8705695/",
+    "cost_basis": "Published Table 5 projected company/literature costs, historical nominal EUR; not a current quotation or measured AGI project cost.",
+    "quality_basis": "Published concentration-mode permeate values; not a time series, representative distribution, simultaneous validated process guarantee, or buyer specification.",
+    "analysis_assumptions": ["12% annual discount rate", "ten-year evaluation horizon consistent with reported depreciation period", "constant annual stated cash flows", "no tax, salvage, financing charges or inflation"],
+    "unresolved": ["Discharge maxima are not process-water acceptance limits", "Short-duration fouling narrative contains conflicting statements around 200 minutes", "Missing independent site-specific pretreatment and residuals validation", "Missing full engineering, downtime, replacement, transport, permitting and funding cost evidence"],
+    "source_claim_to_check": "Payback less than one year"
+  }
+}

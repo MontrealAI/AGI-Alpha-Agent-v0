@@ -1,0 +1,60 @@
+{
+  "scope": "Independent same-session read-only source review after economics freeze; not external peer review or new confirmation.",
+  "reviewed_utc": "2026-10-27T23:35:58.412780+00:00",
+  "source_sha256": "0f9e16d11b891cf49ff636601bf964f1dcaba7579cc8887ca4ef853cfc587111",
+  "config_sha256": "fb2986a71798322ff6d6d27d90719cf5b948011c2130c4e7415e6a8944c901a1",
+  "frozen_economics_modified": false,
+  "accounting_assessment": "No evident double counting in inspected acquisition, depreciation, accepted revenue/default, refund, or payable logic. Native ledger conformance remains separate from the commercial simulator.",
+  "material_limitations": [
+    {
+      "id": "E1",
+      "topic": "Buyer switching costs",
+      "finding": "Booking willingness tail uses price alone; switching enters only comparison with the human service. Reservation bounds must mean net maximum fees after switching. If instead they are gross buyer values, booking probability is overstated. This semantic ambiguity should not be resolved by silently rewriting frozen assumptions.",
+      "post_freeze_analytical_diagnostic": {
+        "central_no_shock_original_q": 0.15217391304347824,
+        "central_no_shock_gross_reservations_q": 0.10652173913043478,
+        "central_no_shock_original_profit_usd": 11635.012869489132,
+        "central_no_shock_gross_reservations_profit_usd": 4616.509008642393,
+        "central_shock_original_profit_usd": -2472.588995225655,
+        "central_shock_gross_reservations_profit_usd": -5258.812296657958
+      }
+    },
+    {
+      "id": "E2",
+      "topic": "Fixed-policy downside and learning",
+      "finding": "At selected USD3500 the conservative reservation upper bound is USD3400, so zero purchases are structurally guaranteed. Acquisition continues until its resource cap. The preserved USD9000 loss is fixed-policy stress, not an implemented learned stop or pivot."
+    },
+    {
+      "id": "E3",
+      "topic": "Experiment timing",
+      "finding": "EVSI uses already discounted ten-year project payoffs but no explicit field-experiment duration or post-signal deferral discount. EUR1000 is an assumed lump-sum timing loss. Interpretation requires that allowance to cover the entire delay effect; it is not empirically measured."
+    },
+    {
+      "id": "E4",
+      "topic": "Surplus aggregation",
+      "finding": "Central USD7353.90625 is mean(max(available minus seed,0)); negative worlds are clipped. It is not mean net incremental surplus or a transferable pooled budget. Central mean available funds USD15477.27539 minus USD10000 seed is USD5477.27539."
+    },
+    {
+      "id": "E5",
+      "topic": "Seed and exposure",
+      "finding": "Minimum first-job seed assumes the first purchased lead books, not that an arbitrary sequence of unsuccessful leads is financed. USD9000 maximum capital risk is enforced within declared bounded costs and a USD1000 buffer; it is not a real-world liability cap."
+    },
+    {
+      "id": "E6",
+      "topic": "Optional construction",
+      "finding": "No optional module is admitted across all 768 frozen worlds. The study can establish conditional delivery profitability, not realized or simulated compounding from admitted investments. Ordinary-library parity is specified, not measured retained advantage."
+    },
+    {
+      "id": "E7",
+      "topic": "Settlement overhead",
+      "finding": "Acquisition lasts 26weeks and settlement loops through week32, but recurring overhead is charged only in weeks0 through25. Last correction/support/collection can run through week29. Unless support allocations include all post-horizon administration/infrastructure/insurance, up to four additional USD120 weekly charges are outside the stated expense total. Frozen results are preserved."
+    },
+    {
+      "id": "E8",
+      "topic": "Price selection",
+      "finding": "The USD3500 price maximizes a finite analytical planning grid under analyst scenario weights and first-job startability. Planning approximates load and does not enforce each cash prefix; fresh campaign paths do. It is not empirically optimal pricing or validated willingness to pay."
+    }
+  ],
+  "confirmation_rewritten": false,
+  "new_customer_or_market_evidence": false
+}
