@@ -1,0 +1,242 @@
+{
+  "schema": "agialpha/specification-synthesis-request/v1",
+  "problem": {
+    "id": "transformer-source-consistency",
+    "activity": "Screen evidence dimensions before any engineering compatibility review; all records retained",
+    "scope": "specification-consistency-only"
+  },
+  "requirements": {
+    "high_side_voltage": "voltage",
+    "rated_power": "apparent_power",
+    "frequency": "frequency"
+  },
+  "sources": [
+    {
+      "id": "doe-transcript",
+      "url": "https://www.energy.gov/oe/distribution-transformer-webinar-text-alternative",
+      "sha256": "c35a7832ef83ce08a1a739ac20fe81628ae92c611fc19c74236984cb23f01926",
+      "excerpt": "high-side voltage of less than 34.5 kVA"
+    },
+    {
+      "id": "synthetic",
+      "url": "fixture:development-only",
+      "sha256": "9d20314c74a9eeda8f3493546673fa014fb119282dd5b7de726a2d73ecd43bf0",
+      "excerpt": "Synthetic engineering-only neighbors: voltage V/kV; apparent power VA/kVA/MVA; frequency Hz. Not actual products, customers, or independent provenance."
+    }
+  ],
+  "records": [
+    {
+      "id": "doe-literal",
+      "source_id": "doe-transcript",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kVA"
+        }
+      }
+    },
+    {
+      "id": "valid-kV",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kV"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kVA"
+        },
+        "frequency": {
+          "value": "60",
+          "unit": "Hz"
+        }
+      }
+    },
+    {
+      "id": "valid-V",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "34500",
+          "unit": "V"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kVA"
+        },
+        "frequency": {
+          "value": "60",
+          "unit": "Hz"
+        }
+      }
+    },
+    {
+      "id": "invalid-power-for-voltage",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kVA"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kVA"
+        },
+        "frequency": {
+          "value": "60",
+          "unit": "Hz"
+        }
+      }
+    },
+    {
+      "id": "invalid-voltage-for-power",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kV"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kV"
+        },
+        "frequency": {
+          "value": "60",
+          "unit": "Hz"
+        }
+      }
+    },
+    {
+      "id": "unknown-unit",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kV"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kVA"
+        },
+        "frequency": {
+          "value": "60",
+          "unit": "unknown"
+        }
+      }
+    },
+    {
+      "id": "missing-frequency",
+      "source_id": "synthetic",
+      "fields": {
+        "high_side_voltage": {
+          "value": "69/2",
+          "unit": "kV"
+        },
+        "rated_power": {
+          "value": "500",
+          "unit": "kVA"
+        }
+      }
+    }
+  ],
+  "baseline": {
+    "op": "sequence",
+    "steps": [
+      {
+        "field": "high_side_voltage",
+        "op": "observe"
+      },
+      {
+        "field": "rated_power",
+        "op": "observe"
+      },
+      {
+        "field": "frequency",
+        "op": "observe"
+      },
+      {
+        "op": "emit",
+        "status": "CONSISTENT"
+      }
+    ]
+  },
+  "proposal": {
+    "op": "sequence",
+    "steps": [
+      {
+        "field": "high_side_voltage",
+        "op": "observe"
+      },
+      {
+        "else": {
+          "op": "emit",
+          "status": "ABSTAIN"
+        },
+        "op": "if",
+        "test": {
+          "dimension": "voltage",
+          "field": "high_side_voltage",
+          "op": "dimension-is"
+        },
+        "then": {
+          "op": "sequence",
+          "steps": [
+            {
+              "field": "rated_power",
+              "op": "observe"
+            },
+            {
+              "else": {
+                "op": "emit",
+                "status": "ABSTAIN"
+              },
+              "op": "if",
+              "test": {
+                "dimension": "apparent_power",
+                "field": "rated_power",
+                "op": "dimension-is"
+              },
+              "then": {
+                "op": "sequence",
+                "steps": [
+                  {
+                    "field": "frequency",
+                    "op": "observe"
+                  },
+                  {
+                    "else": {
+                      "op": "emit",
+                      "status": "ABSTAIN"
+                    },
+                    "op": "if",
+                    "test": {
+                      "dimension": "frequency",
+                      "field": "frequency",
+                      "op": "dimension-is"
+                    },
+                    "then": {
+                      "op": "emit",
+                      "status": "CONSISTENT"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "author": {
+    "kind": "host-model",
+    "model": "Codex GPT-6 family; exact deployment model id not exposed",
+    "prompt": "Act as actual authorized HOST MODEL candidate author, not scripted replacement. Need save actual prompt context and your output to isolated repo [REDACTED_LOCAL_AUTHORSHIP_DIRECTORY]/. Do not change runtime. Read AGENTS + original brief attached. Narrow target: transformer specification consistency, primary DOE transcript excerpt 'high-side voltage of less than 34.5 kVA' wrong power-vs-voltage unit, intended replacement UNKNOWN, no procurement/physical claims. AST grammar (inert JSON): sequence{op,steps}, observe{op,field}, if{op,test:{op:'dimension-is',field,dimension},then:AST,else:AST}, emit{op,status:'CONSISTENT'|'ABSTAIN'}. Requirements high_side_voltage:voltage, rated_power:apparent_power, frequency:frequency. Build nontrivial branch/sequence composition observing and guarding every field before CONSISTENT, with ABSTAIN for missing/unknown/wrong-dimension. No runtime/interpretation/exec; Docker absent so BLOCKED. Start baseline observe all3 then emit CONSISTENT (unsafe). Supply actual authored proposal.json and metadata including this exact task prompt/context identity, exposed model only 'Codex GPT-6 family; exact deployment model id not exposed', measured usage UNKNOWN not zero. Include causal cross-domain mapping compiler type systems->spec screening, assumptions and counterexample/refutation, no global novelty. Our deterministic compiler will separately build branches from validated constraints, compare structure to this real host proposal. Need not select two old supplied templates. All files inert and no candidate executed. Check bound max64nodes depth16. Send exact paths and hashes. No spending/new confirmation. This is development within inherited unknown budget, no new allowance.\n",
+    "usage": "UNKNOWN"
+  },
+  "budget": {
+    "max_nodes": 64,
+    "max_depth": 16,
+    "max_candidates": 8
+  }
+}

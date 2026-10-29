@@ -1,0 +1,72 @@
+{
+  "schema": "agialpha/public-ledger-projection/v1",
+  "classification": "historical-sanitized-derived-replay",
+  "original_sha256": "c4a8137f198e536dd6c680a8fe1c0000fe6cdb1500f13af681054f5d67d8754a",
+  "original_bytes": 131072,
+  "derived_sha256": "4ad0c8230917898477f05914e084277e6226efc6eae22d0950b44f3aa2fb90d9",
+  "derived_bytes": 20480,
+  "retained_columns": {
+    "config": [
+      "id",
+      "value"
+    ],
+    "journal": [
+      "seq",
+      "kind",
+      "amount"
+    ],
+    "trades": [
+      "price",
+      "state",
+      "custody",
+      "refund_due"
+    ],
+    "investments": [
+      "cap",
+      "state"
+    ]
+  },
+  "rows": {
+    "config": 1,
+    "journal": 102,
+    "trades": 6,
+    "investments": 1
+  },
+  "omitted": [
+    "all unlisted tables and columns",
+    "private artifacts",
+    "encryption material",
+    "task and buyer data"
+  ],
+  "scope": "Derived arithmetic fixture, not original exchange evidence, fresh confirmation or external profit proof",
+  "original_unchanged": true,
+  "numeric_replay": {
+    "cash": "128994728",
+    "obligations": "92200000",
+    "free": "36794728",
+    "decomposition": {
+      "incurred_payables": "0",
+      "custody": "0",
+      "tail": "91200000",
+      "working": "1000000",
+      "investment_commitments": "0"
+    }
+  },
+  "historical_capture_hash": "6355640e491b9e39cb5698c6cb7f233ba4caf70cd9e1dba0d7a43c6e2e505fde",
+  "derived_capture_hash": "c9d18d95a691c6c63381926dafa87821c8cb2abc724d7fded7ac87a9c23a98ed",
+  "original_and_derived_independent_verifiers_accepted": true,
+  "extraction": "installed allowlisted reserve-experience/v1 via structural_transfer.extract; no supplied code execution",
+  "sqlite_version": "3.53.1",
+  "original_capture_file_sha256": "cacf22e3691e897776368d940c76b55662bb33339fe1e90658acfa667750e817",
+  "derived_capture_file_sha256": "a08114c5a7f324abf576a414cdb5ce9ea2a6a35f380ef293d7c118d8252cb931",
+  "derived_capture_history": [
+    {
+      "capture_hash": "1d9c08e4efae2771ae9fe630fa8cd98ea8317e2ac2dcd3068a9aecd31d44d4b2",
+      "capture_file_sha256": "5d72933358ecc3bce059c60ce54d22dd8f50247901667d331f6ec0a7255c2c8c",
+      "adapter_sha256": "18e50d52a798a8b8bbc1b795c15ea108b231807ff9f31b803a3a90c9e0ad1eac",
+      "classification": "historical-sanitized-derived-replay",
+      "superseded_reason": "E731 lambda-to-typed-function style repair changes source identity; retained arithmetic unchanged; no fresh confirmation"
+    }
+  ],
+  "derived_adapter_sha256": "01526c3f77ae6fab66c535a41c37f96a173b8be3e2ee0e9e5a8e874a4795be43"
+}

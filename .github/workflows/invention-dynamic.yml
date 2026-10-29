@@ -1,0 +1,70 @@
+name: Invention dynamic qualification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: invention-dynamic-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  dynamic:
+    name: Real generated-program and isolation qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      QUALIFICATION_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ env.QUALIFICATION_HEAD_SHA }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - name: Check exact source and real Docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$QUALIFICATION_HEAD_SHA"
+          command -v docker
+          docker version
+          test -r /lib/x86_64-linux-gnu/libseccomp.so.2
+      - name: Provision public image and freeze resolved digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker pull python:3.12-slim
+          resolved_image="$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')"
+          [[ "$resolved_image" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]
+          printf 'ALPHA_SANDBOX_IMAGE=%s\n' "$resolved_image" >> "$GITHUB_ENV"
+      - name: Qualify actual native programs and contained adversarial fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m contrib.invention_automation.qualify_dynamic \
+            --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/dynamic-evidence"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          summary=json.loads(Path("dynamic-evidence/summary.json").read_text())
+          assert summary["status"]=="PASS"
+          assert summary["controls_executed"]==7
+          assert all(item["status"]=="PASS" for item in summary["attempts"])
+          PY
+      - name: Retain immutable-run qualification evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: invention-dynamic-${{ env.QUALIFICATION_HEAD_SHA }}
+          path: dynamic-evidence/
+          if-no-files-found: error
+          retention-days: 30

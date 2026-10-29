@@ -29,6 +29,27 @@ def parser() -> argparse.ArgumentParser:
     from .successor.flywheel_operator import add_commands as add_flywheel_commands
 
     add_flywheel_commands(commands)
+    from .meta_discovery.operator import add_commands as add_meta_commands
+
+    add_meta_commands(commands)
+    from .claim_probe.operator import add_commands as add_probe_commands
+
+    add_probe_commands(commands)
+    from .flood_readiness.operator import add_commands as add_flood_commands
+
+    add_flood_commands(commands)
+    from .structural_transfer.operator import add_commands as add_structural_commands
+
+    add_structural_commands(commands)
+    from .compounding_discovery.operator import add_commands as add_discovery_commands
+
+    add_discovery_commands(commands)
+    from .compounding_discovery.shared_charger import add_commands as add_shared_charger_commands
+
+    add_shared_charger_commands(commands)
+    from .invention_automation.operator import add_commands as add_invention_commands
+
+    add_invention_commands(commands)
     samples = commands.add_parser("examples", help="List or copy the five editable, packaged mission examples")
     samples.add_argument("--output", type=Path, help="Create a NEW directory; existing files are never overwritten")
     for name in ("ascension-compile", "ascension-check"):
@@ -122,6 +143,34 @@ def main(argv: list[str] | None = None) -> int:
             from .successor.flywheel_operator import handle as handle_flywheel
 
             result = handle_flywheel(args)
+        elif args.command == "meta-discovery":
+            from .meta_discovery.operator import handle as handle_meta
+
+            result = handle_meta(args)
+        elif args.command == "flood-readiness":
+            from .flood_readiness.operator import handle as handle_flood
+
+            result = handle_flood(args)
+        elif args.command == "claim-probe":
+            from .claim_probe.operator import handle as handle_probe
+
+            result = handle_probe(args)
+        elif args.command == "transfer":
+            from .structural_transfer.operator import handle as handle_structural
+
+            result = handle_structural(args)
+        elif args.command == "shared-charger":
+            from .compounding_discovery.shared_charger import handle as handle_shared_charger
+
+            result = handle_shared_charger(args)
+        elif args.command == "invention":
+            from .invention_automation.operator import handle as handle_invention
+
+            result = handle_invention(args)
+        elif args.command == "discovery":
+            from .compounding_discovery.operator import handle as handle_discovery
+
+            result = handle_discovery(args)
         elif args.command == "examples":
             from .samples import examples
 
