@@ -169,9 +169,9 @@ class Experiment(Record):
         cost = _mapping(self.estimated_cost)
         if not cost or len(cost) > 16:
             raise ValueError("explicit bounded estimated cost required")
-        for name, value in cost.items():
+        for name, amount in cost.items():
             _ident(name)
-            if value != "UNKNOWN" and (type(value) is not int or not 0 <= value <= 10**18):
+            if amount != "UNKNOWN" and (type(amount) is not int or not 0 <= amount <= 10**18):
                 raise ValueError("cost must be an exact nonnegative integer or UNKNOWN")
         object.__setattr__(self, "estimated_cost", cost)
 

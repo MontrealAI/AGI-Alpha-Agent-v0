@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any
 
 from ..structural_transfer.contracts import digest, read, write_new
-from . import engine, programs
 
 
 def add_commands(commands: Any) -> None:
@@ -33,6 +32,9 @@ def add_commands(commands: Any) -> None:
     critic.add_argument("--objections", type=Path, help="Optional inert typed host-model objections")
     critic_resume = sub.add_parser("critic-resume", help="Verify an existing critic checkpoint without regeneration")
     critic_resume.add_argument("--output", type=Path, required=True)
+    retained = sub.add_parser("qualify-retained", help="Execute only the exact frozen retained proposal in Docker")
+    for name in ("request", "program", "context", "freeze", "output"):
+        retained.add_argument("--" + name, type=Path, required=True)
     for name in ["qualify", "qualify-resume", "qualify-reproduce"]:
         qualify = sub.add_parser(
             name, help="Retired legacy protocol; use critic-loop with frozen source field/span context"
@@ -46,6 +48,11 @@ def add_commands(commands: Any) -> None:
 
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
+    if args.invention_command == "qualify-retained":
+        from .qualification import qualify_files
+
+        paths = {name: getattr(args, name) for name in ("request", "program", "context", "freeze")}
+        return qualify_files(paths, args.output)
     if args.invention_command in {"critic-loop", "critic-resume"}:
         from . import critic_loop
 
@@ -72,6 +79,8 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         result = analyze(args.meter, args.weather)
         write_new(args.output, result)
         return {"output": str(args.output.resolve()), "hash": digest(result), "scope": result["scope"]}
+    from . import engine, programs
+
     request = read(args.file)
     if set(request) != {"program", "cases", "opening"}:
         raise ValueError("request fields")

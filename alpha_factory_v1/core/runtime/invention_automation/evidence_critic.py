@@ -117,6 +117,9 @@ def bound_literal(request: dict[str, Any], context: dict[str, Any], link: dict[s
         or Fraction(literal.group(1)) != Fraction(reading["value"])
     ):
         return False, "positive source bridge or its exact quantity/unit does not match the record"
+    absolute_unit_end = link["start"] + matches[0].end() + literal.end(2)
+    if re.match(r"\w", source["excerpt"][absolute_unit_end : absolute_unit_end + 1]):
+        return False, "source span clips the complete unit token"
     return True, "anchored registered field and positive lexical bridge bind the literal quantity/unit"
 
 

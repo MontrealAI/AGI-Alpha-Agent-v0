@@ -26,7 +26,7 @@ import math
 import sqlite3
 import time
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass, field, replace
+from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
@@ -209,32 +209,6 @@ def to_dataframe(cands: Sequence[Candidate]):
     return pd.DataFrame.from_records(recs)
 
 
-def save_jsonl(cands: Sequence[Candidate], path: Path | str) -> None:
-    """Write archive to newline-delimited JSON (*jsonl*)."""
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as fh:
-        for c in cands:
-            fh.write(json.dumps(asdict(c)) + "\n")
-
-
-def load_jsonl(path: Path | str) -> list[Candidate]:
-    """Read archive from JSONL file."""
-    out: list[Candidate] = []
-    for line in Path(path).open():
-        d = json.loads(line)
-        out.append(
-            Candidate(
-                id=d["id"],
-                gen=d["gen"],
-                ts=d["ts"],
-                code=d["code"],
-                fitness=Fitness(**d["fitness"]),
-            )
-        )
-    return out
-
-
 # -------------------------------------------------------------------
 # 4 · PARETO FRONT  &  DIVERSITY
 # -------------------------------------------------------------------
@@ -278,7 +252,7 @@ def crowding_distance(front: Sequence[Candidate]) -> None:
         return
 
     # keys participating in diversity (exclude rank / crowd fields)
-    mkeys = [k for k in vars(front[0].fitness) if k not in {"rank", "crowd"}]
+    mkeys = [item.name for item in fields(Fitness) if item.name not in {"rank", "crowd"}]
 
     # initialise
     for f in front:
@@ -358,7 +332,9 @@ def jaccard_novelty(a: str, b: str, k: int = 6) -> float:
     if a == b:
         return 0.0
 
-    grams = lambda s: {s[i : i + k] for i in range(len(s) - k + 1)}
+    def grams(s: str) -> set[str]:
+        return {s[i : i + k] for i in range(len(s) - k + 1)}
+
     A, B = grams(a), grams(b)
     return 1 - len(A & B) / (len(A | B) or 1)
 
@@ -403,7 +379,6 @@ def simhash_distance(a: str, b: str, bits: int = 128) -> int:
 # are resolved relative to *cwd*; non-existent parent dirs are created.
 
 import csv
-import argparse
 from datetime import datetime
 
 
@@ -438,13 +413,15 @@ def load_jsonl(src: Path | str) -> List[Candidate]:
 # ----------------- CSV  ---------------------------------------------
 def save_csv(cands: Sequence[Candidate], dst: Path | str) -> None:
     dst = _ensure_dir(Path(dst))
-    fieldnames = ["id", "gen", "ts", "code"] + [k for k in vars(cands[0].fitness) if k not in {"rank", "crowd"}]
+    fieldnames = ["id", "gen", "ts", "code"] + [
+        item.name for item in fields(Fitness) if item.name not in {"rank", "crowd"}
+    ]
     with dst.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         for c in cands:
             row = {"id": c.id, "gen": c.gen, "ts": c.ts, "code": c.code}
-            row.update(asdict(c.fitness))
+            row.update({key: value for key, value in asdict(c.fitness).items() if key not in {"rank", "crowd"}})
             writer.writerow(row)
 
 

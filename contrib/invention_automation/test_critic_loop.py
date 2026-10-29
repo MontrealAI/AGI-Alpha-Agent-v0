@@ -31,12 +31,14 @@ def context(value: dict[str, Any]) -> dict[str, Any]:
             field: {
                 "dimension": dim,
                 "authority": "declared-task",
-                "labels": [label],
+                "labels": [
+                    {"high_side_voltage": "high-side voltage", "rated_power": "rated power", "frequency": "frequency"}[
+                        field
+                    ]
+                ],
                 "location": "/requirements/" + field,
             }
-            for (field, dim), label in zip(
-                value["requirements"].items(), ["high-side voltage", "rated power", "frequency"]
-            )
+            for field, dim in value["requirements"].items()
         },
         "sources": [
             {

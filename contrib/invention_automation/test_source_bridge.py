@@ -141,3 +141,32 @@ def test_clause_start_after_a_real_boundary_remains_supported() -> None:
     finding = evidence_critic.investigate(request, context, PROVENANCE)
     assert len(finding.objections) == 1
     assert critic_verify.adjudicate(request, context, finding.objections[0].to_dict())["verdict"] == "CONFIRMED"
+
+
+@parameterize("suffix", ["V", "VA", "é", "_tail", "1"])
+def test_clipped_unit_suffix_never_creates_a_source_token_boundary(suffix: str) -> None:
+    prefix = "high-side voltage is 500 k"
+    request, context = fixture(prefix + suffix, "500")
+    request["records"][0]["fields"]["high_side_voltage"]["unit"] = "k"
+    context["bindings"][0]["end"] = len(prefix)
+    assert evidence_critic.bound_literal(request, context, context["bindings"][0])[0] is False
+    assert not evidence_critic.investigate(request, context, PROVENANCE).objections
+    assert critic_verify.adjudicate(request, context, supplied_objection(request, context))["verdict"] == "INCONCLUSIVE"
+
+
+@parameterize("numeric_prefix", ["5", "50", "500", "500."])
+def test_clipped_numeric_literal_cannot_authorize_an_objection(numeric_prefix: str) -> None:
+    lead = "high-side voltage is "
+    request, context = fixture(lead + "500.5 kV", "500")
+    request["records"][0]["fields"]["high_side_voltage"]["unit"] = "k"
+    context["bindings"][0]["end"] = len(lead + numeric_prefix)
+    assert not evidence_critic.investigate(request, context, PROVENANCE).objections
+    assert critic_verify.adjudicate(request, context, supplied_objection(request, context))["verdict"] == "INCONCLUSIVE"
+
+
+def test_complete_unit_before_punctuation_remains_admissible() -> None:
+    request, context = fixture("high-side voltage is 500 kVA.", "500")
+    context["bindings"][0]["end"] -= 1
+    finding = evidence_critic.investigate(request, context, PROVENANCE)
+    assert len(finding.objections) == 1
+    assert critic_verify.adjudicate(request, context, finding.objections[0].to_dict())["verdict"] == "CONFIRMED"

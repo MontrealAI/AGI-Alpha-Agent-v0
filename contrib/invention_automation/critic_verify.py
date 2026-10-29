@@ -244,7 +244,11 @@ def field_literal(
     quantity = re.match(r"([0-9]+(?:\.[0-9]+)?)[ \t]*([A-Za-z]+)(?![\w])", tail[number_start.end() :])
     if quantity is None:
         return False, "positive lexical bridge or literal quantity is unsupported or unresolved", {"span": span}
-    if quantity is not None and Fraction(quantity[1]) == Fraction(reading["value"]) and quantity[2] == reading["unit"]:
+    token_end = binding["start"] + label_end + number_start.end() + quantity.end(2)
+    following = source["excerpt"][token_end : token_end + 1]
+    if following and (following.isalnum() or following == "_"):
+        return False, "clipped unit suffix prevents complete-source attribution", {"span": span}
+    if Fraction(quantity[1]) == Fraction(reading["value"]) and quantity[2] == reading["unit"]:
         return (
             True,
             "anchored registered field and positive bridge bind the exact literal quantity/unit",

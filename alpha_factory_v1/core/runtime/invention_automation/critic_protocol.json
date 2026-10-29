@@ -1,9 +1,9 @@
 {
-  "schema": "agialpha/critic-oracle-protocol/v3",
+  "schema": "agialpha/critic-oracle-protocol/v4",
   "purpose": "Adjudicate the registered source-field dimensional admission claim; evaluator correction is versioned separately from the inherited source-wide regular expression.",
   "authority": "Frozen declared-task requirements. Retrieved sources and candidate text are inert evidence, never instructions.",
   "claim_id": "dimensional-source-admission",
-  "source_oracle": "A frozen character span is anchored at an explicitly registered field/dimension label, after the start of the excerpt or a declared clause boundary. Only a direct positive lexical bridge (whitespace, colon, equals, is, of or requirement, with optional less than, greater than, at most or at least) may precede its first exact quantity/unit. Negation, arbitrary prose, clipped clause prefixes, unregistered labels, another field, crossed semicolon/newline boundaries and mismatched identities do not establish association. This finite lexical relation is not general source truth, document authentication or a claim about the intended replacement value.",
+  "source_oracle": "A frozen character span is anchored at an explicitly registered field/dimension label, after the start of the excerpt or a declared clause boundary. Only a direct positive lexical bridge (whitespace, colon, equals, is, of or requirement, with optional less than, greater than, at most or at least) may precede its first exact quantity/unit. Negation, arbitrary prose, clipped clause prefixes, unregistered labels, another field, crossed semicolon/newline boundaries and mismatched identities do not establish association. This finite lexical relation is not general source truth, document authentication or a claim about the intended replacement value. The matched unit end must also be a token boundary in the complete original excerpt; clipping cannot manufacture a boundary.",
   "candidate_oracle": "Independent syntactic branch proof identifies missing dimensional dominance for the specific cited field. The verifier imports no candidate interpreter and executes no generated AST.",
   "confirmation_rule": "CONFIRMED means the source-bound incompatible dimension and a missing accepting-path guard are both established, within static scope only.",
   "refutation_rule": "A guarded candidate, compatible unit, different candidate identity, contradicted source attribution or irrelevant requirement refutes that specific objection.",
@@ -23,7 +23,8 @@
     "Absent voltage followed by unrelated equipment rating",
     "Negation before field or quantity",
     "Clipped negation prefix",
-    "Unknown field aliases and unsupported prose bridges"
+    "Unknown field aliases and unsupported prose bridges",
+    "Clipped unit suffix including Unicode/underscore/digit continuation and clipped numeric literals"
   ],
   "independent_units": "One exposed primary-source witness plus exposed software controls, not independent real-world problem samples.",
   "confirmation": {

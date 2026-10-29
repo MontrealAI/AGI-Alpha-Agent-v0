@@ -99,7 +99,9 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("configure", help="Apply configuration while paused").add_argument("file", type=Path)
     serve = commands.add_parser("serve", help="Open the local, authenticated operator console")
     serve.add_argument("--port", type=int, default=8765)
-    serve.add_argument("--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration")
+    serve.add_argument(
+        "--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration"
+    )
     for name in ("wallet-challenge", "balance"):
         commands.add_parser(name)
     commands.add_parser("wallet-bind").add_argument("signature")
@@ -334,11 +336,15 @@ def main(argv: list[str] | None = None) -> int:
                     from .successor.flywheel_operator import load as load_flywheel
 
                     protected = load_flywheel(journal, args.flywheel_deployment)
-                uvicorn.run(create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False)
+                uvicorn.run(
+                    create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False
+                )
                 return 0
             else:  # pragma: no cover - argparse enumerates the commands
                 raise ValueError("unknown command")
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
+        if args.command == "invention" and args.invention_command == "qualify-retained":
+            return 0 if result["status"] == "DYNAMIC_COMPONENT_PASS" else 1
         return 0
     except Exception as exc:
         # Validation errors can contain supplied source text; don't emit them to
