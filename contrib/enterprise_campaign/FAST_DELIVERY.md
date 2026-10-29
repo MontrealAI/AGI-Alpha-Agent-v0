@@ -1,8 +1,10 @@
 # Scoped supplier delta delivery
 
-This is a small source-checkout capability, not the full enterprise campaign or a new platform.
+This is a small local CLI capability, not the full enterprise campaign or a new platform.
 Only the byte-pinned PR #5011 catalogue producer and two adapter/checker modules plus a tiny shared identity guard are imported.
-No campaign engine, financial logic, dependency change, hosted service or installed-wheel promise is added.
+No campaign engine, financial logic, dependency change or hosted service is added.
+The original source-only increment made no installed-wheel promise; the explicit narrow
+wheel closure and its separate qualification are described in [PACKAGING.md](PACKAGING.md).
 
 From the repository root (Python 3.11–3.13, standard library only):
 
@@ -44,7 +46,8 @@ alternative, accepted output, collection and all acquisition/review/support/deve
 Use the existing Journal/CostLedger when that probe is authorized; this module adds no ledger.
 
 Full locked installation, full repository regression, required hosted checks and release acceptance
-remain separate. This additive contrib source CLI is not currently included in the installed wheel.
+remain separate. The original source-only increment was not included in the wheel. The additive wheel
+closure in [PACKAGING.md](PACKAGING.md) does not itself establish a published release.
 The retained failed full-snapshot interpretation is a counterexample, not a regression in the
 upstream producer's correctly declared full-snapshot contract.
 
