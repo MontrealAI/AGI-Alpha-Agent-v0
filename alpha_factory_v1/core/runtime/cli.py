@@ -44,6 +44,9 @@ def parser() -> argparse.ArgumentParser:
     from .compounding_discovery.operator import add_commands as add_discovery_commands
 
     add_discovery_commands(commands)
+    from .retained_experience.operator import add_commands as add_experience_commands
+
+    add_experience_commands(commands)
     from .compounding_discovery.shared_charger import add_commands as add_shared_charger_commands
 
     add_shared_charger_commands(commands)
@@ -169,6 +172,10 @@ def main(argv: list[str] | None = None) -> int:
             from .invention_automation.operator import handle as handle_invention
 
             result = handle_invention(args)
+        elif args.command == "experience":
+            from .retained_experience.operator import handle as handle_experience
+
+            result = handle_experience(args)
         elif args.command == "discovery":
             from .compounding_discovery.operator import handle as handle_discovery
 
@@ -345,6 +352,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
         if args.command == "invention" and args.invention_command == "qualify-retained":
             return 0 if result["status"] == "DYNAMIC_COMPONENT_PASS" else 1
+        if args.command == "experience" and args.experience_command == "check":
+            return 0 if result.get("freeze_verified") is True and not result.get("rejected") else 1
         return 0
     except Exception as exc:
         # Validation errors can contain supplied source text; don't emit them to
