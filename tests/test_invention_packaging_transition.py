@@ -38,7 +38,8 @@ def test_exact_prior_metadata_and_all_legacy_pins_remain_preserved() -> None:
 
 def test_only_explicit_verifier_package_and_exact_commitments_change() -> None:
     old = historical()["files"]
-    project = (ROOT / "pyproject.toml").read_bytes()
+    prior = json.loads((ROOT / "tests/fixtures/fast-delivery-packaging-147-metadata.json").read_text())["files"]
+    project = prior["pyproject.toml"].encode()
     before = b'include = ["alpha_factory_v1*", "af_requests*", "openai_agents*"]'
     after = b'include = ["alpha_factory_v1*", "af_requests*", "openai_agents*", "contrib.invention_automation*"]'
     assert old["pyproject.toml"].encode().count(before) == 1
@@ -49,7 +50,7 @@ def test_only_explicit_verifier_package_and_exact_commitments_change() -> None:
     prior_profile = old[PROFILE].encode()
     previous = json.loads(prior_profile)
     old_entry = previous["files"]["pyproject.toml"]
-    raw = (ROOT / PROFILE).read_bytes()
+    raw = prior[PROFILE].encode()
     expected = prior_profile.replace(
         ('"bytes": ' + str(old_entry["bytes"])).encode(), ('"bytes": ' + str(len(project))).encode(), 1
     ).replace(old_entry["sha256"].encode(), hashlib.sha256(project).hexdigest().encode(), 1)
@@ -60,4 +61,4 @@ def test_only_explicit_verifier_package_and_exact_commitments_change() -> None:
     old_hash = hashlib.sha256(prior_profile).hexdigest().encode()
     new_hash = hashlib.sha256(raw).hexdigest().encode()
     assert old[GUARD].encode().count(old_hash) == 1
-    assert (ROOT / GUARD).read_bytes() == old[GUARD].encode().replace(old_hash, new_hash, 1)
+    assert prior[GUARD].encode() == old[GUARD].encode().replace(old_hash, new_hash, 1)

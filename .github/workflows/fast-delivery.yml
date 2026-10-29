@@ -4,12 +4,16 @@ on:
     paths:
       - 'contrib/enterprise_campaign/**'
       - 'tests/test_delta*.py'
+      - 'scripts/validate_installed_delta.py'
+      - 'pyproject.toml'
       - '.github/workflows/fast-delivery.yml'
   push:
     branches: [main]
     paths:
       - 'contrib/enterprise_campaign/**'
       - 'tests/test_delta*.py'
+      - 'scripts/validate_installed_delta.py'
+      - 'pyproject.toml'
       - '.github/workflows/fast-delivery.yml'
   workflow_dispatch:
 permissions:
@@ -35,3 +39,36 @@ jobs:
           ulimit -t 60
           ulimit -v 786432
           python -m unittest discover -s tests -p 'test_delta*.py' -v
+
+  installed-cli:
+    name: Installed stdlib CLI (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      QUALIFICATION_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Build wheel and install only the stdlib CLI closure
+        run: |
+          test "$(git rev-parse HEAD)" = "$QUALIFICATION_HEAD_SHA"
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/delta-wheel" .
+          python -m venv "$RUNNER_TEMP/delta-installed"
+          "$RUNNER_TEMP/delta-installed/bin/python" -m pip install --no-deps "$RUNNER_TEMP"/delta-wheel/*.whl
+      - name: Verify installed bytes, actual local delivery and refusals outside checkout
+        run: |
+          SOURCE_ROOT="$GITHUB_WORKSPACE"
+          cd "$RUNNER_TEMP"
+          PYTHONPATH='' "$RUNNER_TEMP/delta-installed/bin/python" -I "$SOURCE_ROOT/scripts/validate_installed_delta.py" \
+            --source-root "$SOURCE_ROOT" --output "$RUNNER_TEMP/delta-installed-proof"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: installed-delta-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/delta-installed-proof/
+          if-no-files-found: warn
