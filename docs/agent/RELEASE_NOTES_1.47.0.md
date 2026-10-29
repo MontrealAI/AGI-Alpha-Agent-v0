@@ -58,6 +58,10 @@ remains unknown. The historical 64-task plan therefore keeps the incumbent; long
 require verification-scaling measurements and a new frozen evaluation. These are bounded numerical
 and failure-feedback tools; no full-cost advantage, general invention or production authority is established.
 
+The source-field critic also rejects scientific-notation tokens clipped into apparent units. Both
+parsers check the full original numeric boundary; protocol v5 and its current source freeze are explicit,
+with the earlier false-confirmation receipt, protocol and freeze preserved for review.
+
 ## Operating and release boundaries
 
 Fixtures, imports, research artifacts and browser replays grant no live identity or production authority.

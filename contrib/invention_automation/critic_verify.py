@@ -244,6 +244,10 @@ def field_literal(
     quantity = re.match(r"([0-9]+(?:\.[0-9]+)?)[ \t]*([A-Za-z]+)(?![\w])", tail[number_start.end() :])
     if quantity is None:
         return False, "positive lexical bridge or literal quantity is unsupported or unresolved", {"span": span}
+    original_number_end = binding["start"] + label_end + number_start.end() + quantity.end(1)
+    numeric_continuation = source["excerpt"][original_number_end : original_number_end + 1]
+    if numeric_continuation in tuple("0123456789.eE"):
+        return False, "numeric token is not attributable under the finite decimal grammar", {"span": span}
     token_end = binding["start"] + label_end + number_start.end() + quantity.end(2)
     following = source["excerpt"][token_end : token_end + 1]
     if following and (following.isalnum() or following == "_"):

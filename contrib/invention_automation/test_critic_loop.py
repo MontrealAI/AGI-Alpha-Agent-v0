@@ -6,12 +6,14 @@ from __future__ import annotations
 import hashlib
 import json
 from copy import deepcopy
+from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pytest
 
-from alpha_factory_v1.core.runtime.invention_automation import critic_loop, evidence_critic
+from alpha_factory_v1.core.runtime.invention_automation import critic_loop, evidence_critic, specification_run
+from alpha_factory_v1.core.runtime.invention_automation import specification as spec
 from alpha_factory_v1.core.runtime.invention_automation.evidence_contracts import Objection
 from alpha_factory_v1.core.runtime.structural_transfer.contracts import digest
 from contrib.invention_automation import critic_verify
@@ -20,8 +22,33 @@ ROOT = Path(__file__).resolve().parents[2]
 PROVENANCE = {"kind": "deterministic-engineering-control", "model": "NONE", "usage": "NOT_A_MODEL_CALL"}
 
 
+@pytest.fixture
+def before_generation_deadline(monkeypatch: pytest.MonkeyPatch) -> None:
+    class BeforeDeadline:
+        @classmethod
+        def now(cls, tz: Any = None) -> datetime:
+            return (critic_loop.GENERATION_CUTOFF - timedelta(minutes=1)).astimezone(tz)
+
+    monkeypatch.setattr(critic_loop, "datetime", BeforeDeadline)
+
+
+def test_generation_deadline_refuses_before_input_reads_and_output_creation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class AfterDeadline:
+        @classmethod
+        def now(cls, tz: Any = None) -> datetime:
+            return (critic_loop.GENERATION_CUTOFF + timedelta(minutes=1)).astimezone(tz)
+
+    monkeypatch.setattr(critic_loop, "datetime", AfterDeadline)
+    output = tmp_path / "refused"
+    with pytest.raises(ValueError, match="inherited generation cutoff"):
+        critic_loop.run(tmp_path / "missing-request", tmp_path / "missing-context", tmp_path / "missing-freeze", output)
+    assert not output.exists()
+
+
 def request() -> dict[str, Any]:
-    return json.loads(Path(__file__).with_name("specification-request.json").read_text())
+    return cast(dict[str, Any], json.loads(Path(__file__).with_name("specification-request.json").read_text()))
 
 
 def context(value: dict[str, Any]) -> dict[str, Any]:
@@ -161,7 +188,9 @@ def test_retrieved_commands_are_inert_unrelated_evidence() -> None:
     assert not evidence_critic.investigate(value, ctx, PROVENANCE).objections
 
 
-def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_full_native_loop_retains_blocked_execution_and_resume(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, before_generation_deadline: None
+) -> None:
     value = request()
     ctx = context(value)
     pins = freeze(tmp_path, [value], [ctx])
@@ -176,7 +205,7 @@ def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, m
             "reason": "engineering boundary fixture; never candidate execution",
         }
 
-    monkeypatch.setattr(critic_loop.specification_run, "isolated", blocked)
+    monkeypatch.setattr(specification_run, "isolated", blocked)
     result = critic_loop.run(request_path, context_path, pins, tmp_path / "run")
     assert len(probes) == 1
     assert result["verdicts"][0]["verdict"] == "CONFIRMED"
@@ -193,7 +222,7 @@ def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, m
 
 
 def test_missing_verifier_is_retained_failure_without_candidate_fallback(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, before_generation_deadline: None
 ) -> None:
     value = request()
     ctx = context(value)
@@ -207,7 +236,7 @@ def test_missing_verifier_is_retained_failure_without_candidate_fallback(
         raise AssertionError("candidate boundary must not be reached")
 
     monkeypatch.setattr(critic_loop, "verify_role", missing)
-    monkeypatch.setattr(critic_loop.specification_run, "isolated", forbidden)
+    monkeypatch.setattr(specification_run, "isolated", forbidden)
     with pytest.raises(ValueError, match="verifier unavailable"):
         critic_loop.run(request_path, context_path, pins, tmp_path / "failed")
     assert json.loads((tmp_path / "failed" / "failure.json").read_text())["confirmation"] is False
@@ -247,9 +276,7 @@ def test_unresolved_investigation_keeps_typed_inconclusive_without_objection_id(
 
 def test_bound_boundary_receipt_cannot_be_reused_for_different_program(monkeypatch: pytest.MonkeyPatch) -> None:
     value = request()
-    monkeypatch.setattr(
-        critic_loop.specification_run, "isolated", lambda *args: {"status": "BLOCKED", "executed": False}
-    )
+    monkeypatch.setattr(specification_run, "isolated", lambda *args: {"status": "BLOCKED", "executed": False})
     bound = critic_loop.execute_bound(value["proposal"], value["records"])
     assert bound["program_hash"] == digest(value["proposal"])
     assert bound["records_hash"] == digest(value["records"])
@@ -268,5 +295,5 @@ def test_admitted_literal_spacing_survives_corrective_construction(separator: st
     corrected = critic_loop.construct_verified(value, ctx, objection, receipt)
     assert corrected["constraint"]["field"] == "high_side_voltage"
     assert corrected["constraint"]["objection_hash"] == objection.digest
-    proof = critic_loop.spec.dominance(corrected["program"], value["requirements"], value["budget"])
+    proof = spec.dominance(corrected["program"], value["requirements"], value["budget"])
     assert proof["valid"] is True
