@@ -1,0 +1,38 @@
+{
+  "schema": "agialpha.reconciliation.component-evidence/v1",
+  "component": "legacy evolutionary archive slotted fitness",
+  "base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "preserved_baseline_failure": {
+    "function": "crowding_distance",
+    "input": "nine trusted fixture Candidate records with slots=True Fitness",
+    "observed": "TypeError: vars() argument must have __dict__ attribute",
+    "reproduced_from": "unchanged git-show source at base_commit",
+    "generated_program_executed": false
+  },
+  "changes": [
+    "Read objective names with dataclasses.fields instead of vars on slotted instances",
+    "CSV excludes rank/crowd runtime metadata and supports an empty archive header",
+    "Remove shadowed JSONL definitions and duplicate argparse import; preserve effective implementation",
+    "Replace equivalent lambda with named typed helper for existing Ruff requirement"
+  ],
+  "checks": {
+    "five_new_and_three_existing_trusted_tests": "PASS",
+    "scoped_ruff": "PASS",
+    "scoped_black": "PASS",
+    "strict_mypy_new_test_follow_imports_silent": "PASS",
+    "check_python_deps": "PASS",
+    "check_env_auto_install": "Environment OK; installed missing google-adk in existing validation environment",
+    "full_repository_coverage": "NOT RUN",
+    "full_locked_installation": "NOT QUALIFIED",
+    "full_precommit": "NOT RUN",
+    "hosted_ci": "PENDING"
+  },
+  "preserved_limitations": [
+    "Initial direct Ruff found four inherited lint failures; fixed without configuration exceptions",
+    "Existing archive self-test emits a datetime.utcnow deprecation warning",
+    "Local validation environment cryptography 45.0.7 is below declared runtime >=50.0.1",
+    "No provider call, generated-code execution, learned-program quality or commercial result is established",
+    "Single-fixture legacy search, absent task-feedback mutation and proxy objectives remain unqualified",
+    "Independent source-grounding checkpoint integration and dynamic AST qualification are separate pending increments"
+  ]
+}

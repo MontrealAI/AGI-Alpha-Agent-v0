@@ -5,10 +5,23 @@
 Vincent Boucher, President, MONTREAL.AI  
 Publication edition 1.0.1 · 29 October 2026 · 33 pages
 
+## One paper, preserved publication versions
+
+The canonical catalog now uses **Reader 1**, merged by PR #5019 at
+`3544aa804b26364236dcac3a585f29c45498e73d`. This folder is its companion-only
+source publication, not another catalog registration or scientific paper.
+Reader 1 and publication edition 1.0.1 independently adapt the same original
+33-page research edition 1.0.0; their publication labels and link targets differ,
+not their scientific findings. The supplied ZIP and source in this folder rebuild
+**1.0.1**, not a byte-identical Reader 1. The exact Reader 1 source is preserved in
+[the parallel source snapshot](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/ca8e1b95bf4ce6d5e22b80c419211b3d8247b8cc/studies/invention-automation-research-20261029).
+PR #5015 preserves that source lineage and is not a second paper to register.
+
 ## Read the complete paper
 
-- [Read the complete manuscript in GitHub](manuscript.md).
-- [Read the publication PDF in the browser](../../papers/verified-criticism-executable-repair-v1.pdf).
+- [Read the canonical Reader 1 PDF in the browser](../../papers/agi-alpha-invention-automation-v1-20261029.pdf).
+- [Inspect the authoring Markdown](manuscript.md); Pandoc citation keys and typesetting directives are not resolved by GitHub. Use PDF or the self-contained HTML for complete typeset references.
+- [Read the preserved publication edition 1.0.1 PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f17aa2857e929fdfde8fa5b01ded337a0c8f59df/docs/papers/verified-criticism-executable-repair-v1.pdf).
 - [Open the complete self-contained HTML edition](index.html) when served by the qualified paper site, or download it for offline reading. GitHub's file view displays HTML source rather than executing it.
 - [Download the complete editable LaTeX source bundle](latex-source.zip), including all figures, the bibliography, audited presentation data and build scripts.
 - [Inspect the LaTeX entry point](main.tex), [body](body.tex), [abstract](abstract.tex), and [bibliography](references.bib).
