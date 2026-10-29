@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Legacy evolution archive regression
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/legacy-evolution-regression.yml'
+      - 'alpha_factory_v1/demos/meta_agentic_agi_v3/meta_agentic_search/archive.py'
+      - 'tests/test_legacy_evolution_fitness.py'
+      - 'requirements-dev.lock'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  slotted-fitness-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Install only the hash-locked pytest dependency closure
+        run: |
+          python - <<'PY'
+          import pathlib, re
+          wanted = {'pytest', 'iniconfig', 'packaging', 'pluggy', 'pygments'}
+          text = pathlib.Path('requirements-dev.lock').read_text()
+          blocks = re.findall(r'^([a-zA-Z0-9_.-]+)==[^\n]*(?:\n[ \t]+[^\n]*)*', text, re.M)
+          found = set(blocks) & wanted
+          if found != wanted:
+              raise SystemExit(f'Missing locked test dependencies: {wanted - found}')
+          selected = []
+          for match in re.finditer(r'^([a-zA-Z0-9_.-]+)==[^\n]*(?:\n[ \t]+[^\n]*)*', text, re.M):
+              if match[1] in wanted:
+                  selected.append(match[0])
+          pathlib.Path('/tmp/legacy-regression.lock').write_text('\n'.join(selected) + '\n')
+          PY
+          python -m pip install --require-hashes -r /tmp/legacy-regression.lock
+      - name: Exercise archive records only (no generated code execution)
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+        run: >-
+          python -m pytest --noconftest -o addopts=''
+          tests/test_legacy_evolution_fitness.py
+          alpha_factory_v1/demos/meta_agentic_agi_v3/meta_agentic_search/archive.py -q
