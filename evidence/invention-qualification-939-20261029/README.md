@@ -12,7 +12,7 @@ The exact-source dynamic workflow actually executed all seven Docker controls: v
 
 [Installed receipt](installed-receipt.from-job-log.json) and [dynamic summary](dynamic-summary.from-job-log.json) preserve complete JSON blocks extracted from newly read job logs with timestamps removed; they are explicitly not asserted byte-identical to original artifact JSON formatting. [Qualification provenance](qualification-provenance.json) records methods, hashes, wheel identity, source bindings and limits. Its earlier pending browser/raw-ZIP access fields are superseded by the later [readback and visual record](READBACK_AND_VISUAL_VERIFICATION.json).
 
-Configured exact939 review completed with no findings. Optional paper preview passed. Five canonical workflows remain nonterminal at the latest snapshot; passing scope jobs do not pass their child jobs. No current-source full CI qualification, merge, resulting-main release qualification or public software release is claimed.
+Configured exact939 review completed with no findings. Optional paper preview passed. Four canonical workflows remain nonterminal at the latest snapshot; passing scope jobs do not pass their child jobs. No current-source full CI qualification, merge, resulting-main release qualification or public software release is claimed.
 
 ## Public paper
 
@@ -41,4 +41,6 @@ A successful flywheel still requires source-backed useful customer results, the 
 
 Original generation cutoff16:53Z and hard end18:29Z persist; there is no new allowance. The17:19 retained apparent-byte proxy was2,256,784,975, above2GiB; actual baseline-relative added storage, continuous peak and complete model/CI/tool cost remain UNKNOWN. Local execution later became unavailable. Necessary verification used API/hosted memory without a new local build/cache/artifact tree or destructive cleanup. Broad invention/commercial research remains unfinished. Pending checks, release work or business evidence must never be promoted to PASS by this packet.
 
-Final metadata rechecked18:26:20Z (peers) and18:26:48Z (Alpha): all main/source identities above unchanged; five canonical Alpha workflows remain nonterminal. Jobs current-main CodeQL service-receipt failure/publication skip remain, Manager preparation is not publication, Fleet61 still has two failed checks. The inherited18:29Z boundary supplies no new construction allowance.
+Final metadata rechecked18:26:20Z (peers) and18:26:48Z (Alpha): all main/source identities above unchanged; four canonical Alpha workflows remain nonterminal. Jobs current-main CodeQL service-receipt failure/publication skip remain, Manager preparation is not publication, Fleet61 still has two failed checks. The inherited18:29Z boundary supplies no new construction allowance.
+
+Last observed18:27:51.580Z: exact939 Transform workflow40924494671 reachedSUCCESS. Four canonical workflows remain incomplete; no current failure observed. Source/main/review identities remain unchanged; PR5031 remains draft. Main regression is running and no actual public software publication job exists. No fullCI/merge/release or commercial success is inferred.
