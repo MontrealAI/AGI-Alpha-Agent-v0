@@ -1,0 +1,185 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Retained invention artifact bounded readback
+on:
+  push:
+    branches: ['evidence/invention-artifact-readback-20261029']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  readback:
+    if: github.ref == 'refs/heads/evidence/invention-artifact-readback-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: ['headed-15', 'headed-50', 'dynamic-zip']
+    steps:
+      - name: Inspect retained artifact in memory without new execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+          READBACK_MODE: ${{ matrix.mode }}
+        shell: bash
+        run: |
+          python3 -I -S -B - <<'PY'
+          import base64, hashlib, io, json, os, struct, time, urllib.error, urllib.parse, urllib.request, zipfile
+          from datetime import datetime, timezone
+          from pathlib import PurePosixPath
+          
+          REPO = "MontrealAI/AGI-Alpha-Agent-v0"
+          API = "https://api.github.com/repos/" + REPO
+          HEAD = "41853c868bd69f182bdac537d97ce68a5711f7bf"
+          SOURCE = "939549e6487aa4cfc14b8385b52f701a1a0c8d2b"
+          MODE = os.environ["READBACK_MODE"]
+          NOW = datetime.now(timezone.utc)
+          if NOW >= datetime(2026, 10, 29, 18, 27, tzinfo=timezone.utc):
+              raise SystemExit("BLOCKED: inherited verification deadline")
+          END = datetime(2026, 10, 29, 18, 28, 45, tzinfo=timezone.utc).timestamp()
+          DEADLINE = min(time.time() + 90, END)
+          if MODE == "dynamic-zip":
+              ARTIFACT, RUN, EXPECTED_SIZE, EXPECTED_HEAD = 12919617803, 40924494564, 21650, SOURCE
+          else:
+              assert MODE in ("headed-15", "headed-50")
+              ARTIFACT, RUN, EXPECTED_SIZE, EXPECTED_HEAD = 12921656957, 40928049814, 435794, HEAD
+          
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, response, code, message, headers, newurl):
+                  return None
+          
+          OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+          
+          def timeout():
+              remaining = DEADLINE - time.time()
+              if remaining <= 0:
+                  raise RuntimeError("inherited verification deadline")
+              return min(15, remaining)
+          
+          def api(path):
+              request = urllib.request.Request(API + path, headers={
+                  "Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "bounded-evidence-readback",
+              })
+              with OPENER.open(request, timeout=timeout()) as response:
+                  body = response.read(65537)
+              if len(body) > 65536:
+                  raise RuntimeError("metadata byte bound")
+              return json.loads(body)
+          
+          def archive():
+              request = urllib.request.Request(API + "/actions/artifacts/" + str(ARTIFACT) + "/zip", headers={
+                  "Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "bounded-evidence-readback",
+              })
+              try:
+                  with OPENER.open(request, timeout=timeout()) as response:
+                      raise RuntimeError("expected authenticated API redirect")
+              except urllib.error.HTTPError as error:
+                  if error.code != 302:
+                      raise RuntimeError("archive API status " + str(error.code)) from None
+                  location = error.headers.get("Location", "")
+              for _ in range(3):
+                  target = urllib.parse.urlsplit(location)
+                  if (target.scheme != "https" or target.username or target.password or target.fragment
+                          or not target.hostname or not target.hostname.endswith(".blob.core.windows.net")):
+                      raise RuntimeError("unapproved archive transport")
+                  # New request has NO Authorization or API headers; opaque transport URL is never emitted.
+                  request = urllib.request.Request(location, headers={"User-Agent": "bounded-evidence-readback"})
+                  try:
+                      with OPENER.open(request, timeout=timeout()) as response:
+                          body = response.read(1048577)
+                  except urllib.error.HTTPError as error:
+                      if error.code in (301, 302, 303, 307, 308):
+                          location = error.headers.get("Location", "")
+                          continue
+                      raise RuntimeError("transport HTTP status " + str(error.code)) from None
+                  if len(body) > 1048576:
+                      raise RuntimeError("archive byte bound")
+                  return body
+              raise RuntimeError("redirect bound")
+          
+          def emit(kind, name, body):
+              digest = hashlib.sha256(body).hexdigest()
+              encoded = base64.b64encode(body).decode("ascii")
+              print("READBACK_BEGIN " + json.dumps({"kind": kind, "name": name, "bytes": len(body),
+                    "sha256": digest, "chunks": (len(encoded) + 4095) // 4096}, sort_keys=True))
+              for index in range(0, len(encoded), 4096):
+                  print("READBACK_CHUNK " + json.dumps({"name": name, "index": index // 4096,
+                        "base64": encoded[index:index + 4096]}, sort_keys=True))
+              print("READBACK_END " + json.dumps({"name": name, "sha256": digest}, sort_keys=True))
+          
+          def main():
+              metadata = api("/actions/artifacts/" + str(ARTIFACT))
+              assert metadata["id"] == ARTIFACT and metadata["expired"] is False
+              assert metadata["size_in_bytes"] == EXPECTED_SIZE
+              assert metadata["workflow_run"]["id"] == RUN
+              assert metadata["workflow_run"]["head_sha"] == EXPECTED_HEAD
+              body = archive()
+              assert len(body) == EXPECTED_SIZE
+              digest = hashlib.sha256(body).hexdigest()
+              if metadata.get("digest"):
+                  assert metadata["digest"] == "sha256:" + digest
+              zipped = zipfile.ZipFile(io.BytesIO(body))
+              members = zipped.infolist()
+              assert 1 <= len(members) <= 64
+              assert len({item.filename for item in members}) == len(members)
+              assert sum(item.file_size for item in members) <= 16777216
+              for item in members:
+                  path = PurePosixPath(item.filename)
+                  assert not path.is_absolute() and ".." not in path.parts and "\\" not in item.filename
+                  assert item.file_size <= 4194304
+                  assert (item.external_attr >> 16) & 0o170000 != 0o120000
+              assert zipped.testzip() is None
+              print("READBACK_JSON " + json.dumps({"schema": "agialpha/retained-artifact-readback/v1",
+                    "artifact": ARTIFACT, "run": RUN, "source": EXPECTED_HEAD, "zip_sha256": digest,
+                    "zip_bytes": len(body), "crc": "PASS", "new_capture": False,
+                    "rendering": "REQUIRES_VISUAL_INSPECTION"}, sort_keys=True))
+              if MODE == "dynamic-zip":
+                  assert digest == "3656c50dd2b6c45e9ed4b354f6dabba89851fa65dd917538a67704c7454c41bb"
+                  assert len(members) == 25
+                  # Root explicitly authorized byte-identical publication of this previously privacy-audited ZIP.
+                  emit("original-zip", "dynamic-939-original.zip", body)
+                  return
+              names = {"headed-after-15s.png", "headed-after-50s.png", "receipt.json",
+                       "top-dom.json", "frame-dom.json", "driver-original-private.log",
+                       "process-original-private.log"}
+              assert {item.filename for item in members} == names
+              receipt = json.loads(zipped.read("receipt.json"))
+              assert receipt["probe_commit"] == HEAD and receipt["software_base_commit"] == SOURCE
+              assert receipt["status"] == "CAPTURED_REQUIRES_VISUAL_INSPECTION"
+              assert receipt["headed"] is True and receipt["fresh_profile"] is True
+              assert receipt["credential_or_cookie_import"] is False
+              assert receipt["pdf"]["sha256"] == "8142fe2452162901cda732f7a8070572a033ed4f0cfe269c514e40e19b60457f"
+              for short in ("driver", "process"):
+                  private = zipped.read(short + "-original-private.log")
+                  expected = receipt["private_logs"][short]
+                  assert len(private) == expected["bytes"]
+                  assert hashlib.sha256(private).hexdigest() == expected["sha256"]
+              safe = {key: receipt[key] for key in ("schema", "status", "software_base_commit",
+                      "probe_commit", "probe_source_sha256", "paper_commit", "envelope_end",
+                      "fresh_profile", "credential_or_cookie_import", "headed", "real_wait_seconds",
+                      "profile_peak_observed_bytes", "rendering")}
+              safe["captures"] = receipt["captures"]
+              safe["private_logs"] = receipt["private_logs"]
+              safe["pdf_sha256"] = receipt["pdf"]["sha256"]
+              print("READBACK_JSON " + json.dumps(safe, sort_keys=True))
+              name = "headed-after-15s.png" if MODE == "headed-15" else "headed-after-50s.png"
+              png = zipped.read(name)
+              capture = next(value for value in receipt["captures"] if value["file"] == name)
+              assert png.startswith(b"\x89PNG\r\n\x1a\n") and len(png) == capture["bytes"]
+              assert hashlib.sha256(png).hexdigest() == capture["sha256"]
+              width, height = struct.unpack(">II", png[16:24])
+              assert [width, height] == [capture["width"], capture["height"]]
+              assert 1 <= width <= 4096 and 1 <= height <= 4096
+              emit("original-png", name, png)
+          
+          try:
+              main()
+          except Exception as error:
+              print("READBACK_FAILED " + type(error).__name__)
+              raise SystemExit(1) from None
+          PY
