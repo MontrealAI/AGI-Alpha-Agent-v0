@@ -1,0 +1,60 @@
+{
+  "schema": "independent-final-dev-ui-review/v1",
+  "observed_at": "2026-10-28T11:09:32.719549+00:00",
+  "base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "source": {
+    "scripts/validate_legacy_compose.py": "36a82e732ec9577f072a937cd70516965fbb5fb1e04aa31653f015167b3c7a07",
+    "tests/test_legacy_dev_ui_diagnostics.py": "96cf1de6e64597f25deb05ab0253dd19c117266af62e82b9769de071853c7850"
+  },
+  "checks": [
+    {
+      "name": "independent-final-focused",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "tests/test_legacy_dev_ui_diagnostics.py",
+        "-q",
+        "--junitxml=evidence/decisive-frontier-20261027/dev-ui-readiness-20261028/independent-final-focused.xml"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 1.725,
+      "output": "independent-final-focused.txt",
+      "output_sha256": "76d712595c6f6db0cfdc11ee6d22b4c15daf465fa700ac6bed10f77f703e588c"
+    },
+    {
+      "name": "independent-final-ruff",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/validate_legacy_compose.py",
+        "tests/test_legacy_dev_ui_diagnostics.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.03,
+      "output": "independent-final-ruff.txt",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "independent-final-types",
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy.ini",
+        "scripts/validate_legacy_compose.py"
+      ],
+      "exit_code": 1,
+      "duration_seconds": 2.132,
+      "output": "independent-final-types.txt",
+      "output_sha256": "01e6f6d55b91819e8e361b6daaa99941845351a9e0477e0e5836d73b67d7da63"
+    }
+  ],
+  "scope": "Final diagnostic source review and pure-Python tests only. Docker unavailable; no Docker startup, held native behaviors, public release or operating canary qualified."
+}

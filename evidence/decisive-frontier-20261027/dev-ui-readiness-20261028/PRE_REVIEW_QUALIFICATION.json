@@ -1,0 +1,105 @@
+{
+  "schema": "agialpha.legacy-dev-ui-diagnostics-qualification.v1",
+  "created_at": "2026-10-28T06:43:42.223389+00:00",
+  "base_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "base_tree": "e334beeaa54ab4979999e4bb2352b885a3501aec",
+  "result": "SCOPED_MOCKED_OBSERVABILITY_PASS",
+  "source": {
+    "scripts/validate_legacy_compose.py": {
+      "sha256": "7d6a330339ca1e81107a7462dccaa40d09d03dc30e2c7dd5d00e956f06801a07",
+      "bytes": 14873
+    },
+    "tests/test_legacy_dev_ui_diagnostics.py": {
+      "sha256": "20b8209a256649706620aed90c7079fd8d35db5a0d005bb9e74bbdfdbef1afd2",
+      "bytes": 13975
+    }
+  },
+  "scope": [
+    "Failed UI startup and both original HTTP/module checks collect failure evidence before cleanup.",
+    "Only bounded UI log tail, focused State/Health/OOM/exit fields and disk counts are recorded; Config/environment are excluded and known operator credential values are redacted.",
+    "Each of two read-only Docker diagnostics has8seconds read budget plus2seconds termination; retained tail<=16384UTF8bytes.",
+    "Original failure survives failed/timed-out diagnostics, failed report writes and failed cleanup. Successful cleanup remains mandatory.",
+    "CLI passes sibling legacy-compose-failure.json and keeps the original success report unchanged."
+  ],
+  "unchanged_acceptance_budgets": {
+    "ui_start_period_seconds": 180,
+    "compose_wait_seconds": 240,
+    "startup_subprocess_seconds": 360,
+    "cleanup_seconds": 60,
+    "runtime_job_minutes": 25,
+    "http_probe_seconds": 15,
+    "diagnostic_commands": 2,
+    "diagnostic_read_seconds": 8,
+    "diagnostic_termination_seconds": 2,
+    "diagnostic_tail_bytes": 16384
+  },
+  "checks": {
+    "pytest": {
+      "exit_code": 0,
+      "counts": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "seconds": 0.501,
+      "argv": [
+        "/tmp/decisive-agent-venv/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "tests/test_legacy_dev_ui_diagnostics.py",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/tmp/legacy-dev-ui-diagnostics-proof/final-fixtures",
+        "-q",
+        "--junitxml=/tmp/legacy-dev-ui-diagnostics-proof/final-results.xml"
+      ],
+      "environment": {
+        "PYTHONPATH": "/tmp/agi-alpha-dev-ui-diagnostics-12770",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "TMPDIR": "/tmp/legacy-dev-ui-diagnostics-proof"
+      }
+    },
+    "ruff": {
+      "exit_code": 0,
+      "files": [
+        "scripts/validate_legacy_compose.py",
+        "tests/test_legacy_dev_ui_diagnostics.py"
+      ]
+    },
+    "git_diff_check": {
+      "exit_code": 0
+    }
+  },
+  "limits": [
+    "Docker was never invoked: startup/cleanup/log/inspect were mocked. Three local Python subprocess probes exercised bounded output, timeout termination and invalid UTF8/redaction expansion.",
+    "No original unhealthy-container root cause is claimed; the next hosted confirmation must observe actual startup/health evidence.",
+    "No workflow, Compose, runtime, worker, frozen source, inventory or paper edits were made by this agent.",
+    "No held node/helper, frozen canary, live model, ENS/wallet, external customer or production action was executed."
+  ],
+  "proof": {
+    "final-results.txt": {
+      "sha256": "3384aa6bc97b2b4e098125470e40981825bbdc9ea0169fc2d88b24aa8d79a882",
+      "bytes": 180
+    },
+    "final-results.xml": {
+      "sha256": "d55c96c5536f4945f690983d7a8a9df8ba5fffd4f50bf8019695443b1406c986",
+      "bytes": 2792
+    },
+    "results.xml": {
+      "sha256": "7b6352193dfc698b99def4aef3b7b5472e938276fee948d0f8abcc1b22b64e59",
+      "bytes": 2200
+    },
+    "results.txt": {
+      "sha256": "ba0124ee4e009d673ff8a9d678af932092857236a8fd94e474dd930b7dd1803a",
+      "bytes": 180
+    },
+    "ruff.txt": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    }
+  }
+}

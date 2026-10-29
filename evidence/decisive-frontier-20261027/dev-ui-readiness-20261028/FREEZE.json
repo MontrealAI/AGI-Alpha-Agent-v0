@@ -1,0 +1,53 @@
+{
+  "schema": "dev-ui-diagnostic-correction-freeze/v1",
+  "frozen_at": "2026-10-28T06:39:57.414735+00:00",
+  "base_source": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "base_tree": "e334beeaa54ab4979999e4bb2352b885a3501aec",
+  "purpose": "Preserve bounded UI startup/health evidence before cleanup while keeping original readiness, telemetry checks, cleanup and failure semantics.",
+  "initial_evidence": "Unhealthy UI at~188s; no retained npm/Vite/health startup diagnostics. Original job18m57s, below25min. Underlying cause unknown.",
+  "no_established_cause": [
+    "network",
+    "disk",
+    "OOM",
+    "npm failure",
+    "Vite failure",
+    "startup delay"
+  ],
+  "allowed_changes": [
+    "scripts/validate_legacy_compose.py",
+    "one focused mocked regression test file",
+    "additive failure/policy/test evidence"
+  ],
+  "preserved_acceptance": [
+    "same Compose UI/startup fixture and environment whitelist",
+    "same180s health start period",
+    "same240s Compose wait and360s Python startup ceiling",
+    "same successful telemetry module HTTP assertions",
+    "same60s cleanup bound and cleanup obligation",
+    "same25min runtime job and all release gates",
+    "failure remains failure; diagnostics never replace acceptance"
+  ],
+  "additional_diagnostic_ceiling": {
+    "docker_commands": 3,
+    "read_seconds_each": 8,
+    "termination_wait_seconds_each": 2,
+    "retained_text_bytes_each": 32768,
+    "full_container_config_or_env_dump": false
+  },
+  "local_tests": "Mocked subprocess failure/success/capture limits and exception/cleanup preservation; no Docker or provider calls",
+  "fresh_confirmation": "Next normal reviewed exact-main campaign under unchanged acceptance. Original failure and all future failed evidence retained; a later pass will not establish the original root cause.",
+  "falsifiers": [
+    "primary failure becomes a pass",
+    "cleanup omitted",
+    "acceptance or deadline weakened",
+    "unbounded diagnostics",
+    "operator/container config or environment secrets dumped"
+  ],
+  "permissions": {
+    "paid_provider_budget_usd": 0,
+    "on_chain_actions": false,
+    "access_expansion": false,
+    "frozen_canary_execution": false
+  },
+  "full_release_status": "blocked until actual exact-main acceptance/publication completes"
+}

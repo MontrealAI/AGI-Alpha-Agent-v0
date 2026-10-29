@@ -1,0 +1,48 @@
+2026-10-28T06:17:54.3582507Z   OPENAI_AGENTS_DISABLE_TRACING: true
+2026-10-28T06:17:54.3582803Z   NO_DISCLAIMER: 1
+2026-10-28T06:17:54.3583111Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T06:17:54.3583592Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-28T06:17:54.3584064Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T06:17:54.3584497Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T06:17:54.3584962Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T06:17:54.3585409Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-28T06:17:54.3585775Z ##[endgroup]
+2026-10-28T06:17:56.0056256Z  ui Pulling 
+2026-10-28T06:17:56.2903284Z  59e22667830b Already exists 
+2026-10-28T06:17:56.2904007Z  dbe5016d5605 Already exists 
+2026-10-28T06:17:56.2904544Z  013b1f6b2fa0 Already exists 
+2026-10-28T06:17:56.2905004Z  c222336d941a Already exists 
+2026-10-28T06:17:56.2919074Z  372c13f59098 Already exists 
+2026-10-28T06:17:56.3216979Z  ui Pulled 
+2026-10-28T06:17:56.3276671Z  Network alpha-dev-ui-acceptance_af-net  Creating
+2026-10-28T06:17:56.3669234Z  Network alpha-dev-ui-acceptance_af-net  Created
+2026-10-28T06:17:56.3725585Z  Volume "alpha-dev-ui-acceptance_ui-node-modules"  Creating
+2026-10-28T06:17:56.3737609Z  Volume "alpha-dev-ui-acceptance_ui-node-modules"  Created
+2026-10-28T06:17:56.3743618Z  Container alpha-dev-ui-acceptance  Creating
+2026-10-28T06:17:56.3960103Z  Container alpha-dev-ui-acceptance  Created
+2026-10-28T06:17:56.3968330Z  Container alpha-dev-ui-acceptance  Starting
+2026-10-28T06:17:56.5464191Z  Container alpha-dev-ui-acceptance  Started
+2026-10-28T06:17:56.5465170Z  Container alpha-dev-ui-acceptance  Waiting
+2026-10-28T06:21:04.5478329Z container alpha-dev-ui-acceptance is unhealthy
+2026-10-28T06:21:04.6779277Z  Container alpha-dev-ui-acceptance  Stopping
+2026-10-28T06:21:14.8609239Z  Container alpha-dev-ui-acceptance  Stopped
+2026-10-28T06:21:15.1814301Z  Container alpha-dev-ui-acceptance  Removing
+2026-10-28T06:21:15.1815058Z  Container alpha-dev-ui-acceptance  Removed
+2026-10-28T06:21:15.1822789Z  Volume alpha-dev-ui-acceptance_ui-node-modules  Removing
+2026-10-28T06:21:15.1827453Z  Network alpha-dev-ui-acceptance_af-net  Removing
+2026-10-28T06:21:15.2667993Z  Network alpha-dev-ui-acceptance_af-net  Removed
+2026-10-28T06:21:18.2070196Z  Volume alpha-dev-ui-acceptance_ui-node-modules  Removed
+2026-10-28T06:21:18.2387122Z Traceback (most recent call last):
+2026-10-28T06:21:18.2389491Z   File "<frozen runpy>", line 198, in _run_module_as_main
+2026-10-28T06:21:18.2390851Z   File "<frozen runpy>", line 88, in _run_code
+2026-10-28T06:21:18.2392007Z   File "/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/scripts/validate_legacy_compose.py", line 177, in <module>
+2026-10-28T06:21:18.2393072Z     main()
+2026-10-28T06:21:18.2394063Z   File "/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/scripts/validate_legacy_compose.py", line 159, in main
+2026-10-28T06:21:18.2395066Z     validate_dev_ui(root)
+2026-10-28T06:21:18.2396843Z   File "/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/scripts/validate_legacy_compose.py", line 45, in validate_dev_ui
+2026-10-28T06:21:18.2399215Z     subprocess.run(command + ["up", "-d", "--wait", "--wait-timeout", "240"], env=env, check=True, timeout=360)
+2026-10-28T06:21:18.2401036Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+2026-10-28T06:21:18.2948197Z     raise CalledProcessError(retcode, process.args,
+2026-10-28T06:21:18.2951334Z subprocess.CalledProcessError: Command '['docker', 'compose', '--env-file', '/dev/null', '-p', 'alpha-dev-ui-acceptance', '-f', '/tmp/alpha-dev-ui-v3e3k3cp/compose.yml', 'up', '-d', '--wait', '--wait-timeout', '240']' returned non-zero exit status 1.
+2026-10-28T06:21:18.3116617Z ##[error]Process completed with exit code 1.
+2026-10-28T06:21:18.3223008Z ##[group]Run actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f

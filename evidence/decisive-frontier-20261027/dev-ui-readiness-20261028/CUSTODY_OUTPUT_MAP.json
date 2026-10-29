@@ -1,0 +1,52 @@
+{
+  "schema": "dev-ui-original-prepublish-custody-map/v1",
+  "observed_at": "2026-10-28T11:10:38.839370+00:00",
+  "original_receipt": "prepublish-checks.json",
+  "mapping": [
+    {
+      "original_output_field": "privacy.txt",
+      "actual_archived_filename": "prepublish-privacy.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_hash_matches": true,
+      "original_bytes_match": true
+    },
+    {
+      "original_output_field": "binary.txt",
+      "actual_archived_filename": "prepublish-binary.txt",
+      "bytes": 28,
+      "sha256": "4c8e9f7415394e887080ef92b034b17ad6e7a2617fb6bb3c95346d038e309537",
+      "original_hash_matches": true,
+      "original_bytes_match": true
+    },
+    {
+      "original_output_field": "held.txt",
+      "actual_archived_filename": "prepublish-held.txt",
+      "bytes": 2019,
+      "sha256": "6911a2534bc0790e23e419e6d0884b3c173168d1aad134ecfc031572cfee26fd",
+      "original_hash_matches": true,
+      "original_bytes_match": true
+    },
+    {
+      "original_output_field": "existing-custody.txt",
+      "actual_archived_filename": "prepublish-existing-custody.txt",
+      "bytes": 564,
+      "sha256": "84e4163e0e12cd93e25bdbc801ab036a4bfe550cb93fafe564762487298e2924",
+      "original_hash_matches": true,
+      "original_bytes_match": true
+    },
+    {
+      "original_output_field": "diff-whitespace.txt",
+      "actual_archived_filename": "prepublish-diff-whitespace.txt",
+      "bytes": 1489,
+      "sha256": "87f3ec54932a5b981eeb7a6b8f32ddae565eeb59d16cccddd1f324f5b0db5abf",
+      "original_hash_matches": true,
+      "original_bytes_match": true
+    }
+  ],
+  "notes": [
+    "The original output fields omitted the archival prepublish- prefix; this additive mapping closes those exact-byte references without modifying original receipts.",
+    "Raw original whitespace failures remain failures and losslessly preserved.",
+    "Final independent strict checking found two collection annotations absent; prior source hash 36a82e732ec9577f072a937cd70516965fbb5fb1e04aa31653f015167b3c7a07 is preserved as PRE_TYPE_ANNOTATION_VALIDATOR.py.txt. The correction changes annotations only."
+  ]
+}

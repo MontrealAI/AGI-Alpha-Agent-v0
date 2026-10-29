@@ -1,0 +1,53 @@
+..................F............                                          [100%]
+=================================== FAILURES ===================================
+_ test_credentials_are_masked_before_trimming_and_across_stream_boundaries[eof-prefix] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f36a7db00e0>
+mode = 'eof-prefix'
+
+    @pytest.mark.parametrize("mode", ["tail-boundary", "chunk-boundary", "eof-prefix", "utf8"])
+    def test_credentials_are_masked_before_trimming_and_across_stream_boundaries(
+        monkeypatch: pytest.MonkeyPatch, mode: str
+    ) -> None:
+        secret = "FICTIONAL_CREDENTIAL_0123456789"
+        if mode == "utf8":
+            secret = "FICTIONAL_é_🔐_CREDENTIAL"
+        monkeypatch.setenv("API_TOKEN", secret)
+        encoded = secret.encode()
+        if mode == "tail-boundary":
+            body = encoded + b"z" * (16_384 - len(encoded) + 4)
+            script = "import os;os.write(1," + repr(body) + ")"
+        elif mode == "chunk-boundary":
+            script = (
+                'import os,time;os.write(1,b"x"*4090+'
+                + repr(encoded[:7])
+                + ");time.sleep(.02);os.write(1,"
+                + repr(encoded[7:] + b"/END")
+                + ")"
+            )
+        elif mode == "eof-prefix":
+            script = 'import os;os.write(1,b"before/"+' + repr(encoded[:17]) + ")"
+        else:
+            script = (
+                "import os,time;os.write(1,"
+                + repr(encoded[:12])
+                + ");time.sleep(.02);os.write(1,"
+                + repr(encoded[12:] + b"/END")
+                + ")"
+            )
+        result = validator._diagnostic_command([sys.executable, "-c", script], {}, timeout=2)
+        assert result["status"] == "ok"
+        assert len(result["tail"].encode()) <= 16_384
+        assert secret not in result["tail"] and secret[4:] not in result["tail"]
+        if mode == "eof-prefix":
+>           assert secret[:17] not in result["tail"] and "REDACTED-INCOMPLETE-SUFFIX" in result["tail"]
+E           AssertionError: assert ('FICTIONAL_CREDENT' not in 'before/[REDACTED]'
+E             
+E             'FICTIONAL_CREDENT' is contained here:
+E               before/[REDACTED] and 'REDACTED-INCOMPLETE-SUFFIX' in 'before/[REDACTED]')
+
+tests/test_legacy_dev_ui_diagnostics.py:366: AssertionError
+- generated xml file: /tmp/legacy-dev-ui-diagnostics-proof/review-fix-final2-results.xml -
+=========================== short test summary info ============================
+FAILED tests/test_legacy_dev_ui_diagnostics.py::test_credentials_are_masked_before_trimming_and_across_stream_boundaries[eof-prefix]
+1 failed, 30 passed in 1.10s

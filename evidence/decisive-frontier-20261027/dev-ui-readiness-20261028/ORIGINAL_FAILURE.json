@@ -1,0 +1,71 @@
+{
+  "schema": "exact-main-runtime312-failure-diagnosis/v1",
+  "source_commit": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+  "source_tree": "e334beeaa54ab4979999e4bb2352b885a3501aec",
+  "agent_run": 40640285041,
+  "run_attempt": 1,
+  "job_id": 122656903827,
+  "job_name": "runtime (3.12)",
+  "job_conclusion": "failure",
+  "job_started_at": "2026-10-28T06:02:26Z",
+  "job_completed_at": "2026-10-28T06:21:23Z",
+  "job_duration_seconds": 1137,
+  "configured_job_timeout_minutes": 25,
+  "failed_step": {
+    "number": 12,
+    "name": "Verify every shared legacy Compose build consumer",
+    "started_at": "2026-10-28T06:17:54Z",
+    "completed_at": "2026-10-28T06:21:18Z",
+    "command": "python -m scripts.validate_legacy_compose --docker-compose --dev-ui --output evidence/legacy-compose.json",
+    "process_exit_code": 1
+  },
+  "observed_failure": "Docker Compose declares alpha-dev-ui-acceptance unhealthy approximately188seconds after start; up --wait --wait-timeout240 returns1 and validate_dev_ui raises CalledProcessError at line45. Job was not cancelled and did not hit its25minute ceiling.",
+  "raw_completed_log": {
+    "path": "/tmp/decisive-main-147-monitor/runtime312-completed-log.raw.txt",
+    "bytes": 1459515,
+    "sha256": "ae5c5c4e7491607e5c244d289f71fc0aff548ed02590ed1b4109130249411a93",
+    "meaning": "Exact UTF-8 encoding of connector-returned decoded completed-job log text, not an asserted HTTP ZIP transport identity. No CR or newline normalization retained."
+  },
+  "bounded_excerpt": {
+    "path": "/tmp/decisive-main-147-monitor/runtime312-failure-excerpt.txt",
+    "sha256": "ccb015589c22e6817c71af3f8227da2aaa866abd39effa6294a464d00d3b6b4c"
+  },
+  "actual_downloaded_completed_artifact": {
+    "id": 12795409808,
+    "name": "runtime-3.12",
+    "path": "/tmp/decisive-main-147-monitor/runtime312-completed-artifact.zip",
+    "bytes": 20765564,
+    "sha256": "df0c259c33e08c58dbd2926d00158c55b25dcea12ac4690a1282cd3cdb19dff5",
+    "matches_github_api_digest": true,
+    "workflow_run_head_sha": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+    "diagnostic_candidates": [
+      "legacy-container.xml"
+    ],
+    "legacy_container_testcases": 2,
+    "legacy_container_failures": 0,
+    "legacy_compose_success_report_present": false
+  },
+  "source_file_identities": {
+    "scripts/validate_legacy_compose.py": {
+      "sha256": "1ca7da542e144e8fae09b51203edd72663f1ceb4f3a182abe324a675e875a6ef",
+      "bytes": 8962
+    },
+    "alpha_factory_v1/docker-compose.override.yml": {
+      "sha256": "8ab5389ba80a53064148e671eab8a10f613bb7a6378ce405e9014f8b9189a142",
+      "bytes": 3978
+    },
+    ".github/workflows/agent-release.yml": {
+      "sha256": "c412a61725b214da118d9d47150d5c8a47840fb529b483ba3fa8c185c1e4e56b",
+      "bytes": 84818
+    }
+  },
+  "root_cause_limits": [
+    "The observed symptom is a development-UI container health failure. It is not a job-wide timeout.",
+    "The startup command runs npm ci before Vite; inherited health start_period is180seconds and the validator changes interval to2seconds. This makes startup/install delay one hypothesis, not an observed root cause.",
+    "No container startup stdout/stderr or health-inspect result is retained in the completed job log or identified relevant artifact members. The finally block removes the failed container and volume.",
+    "No observed network, disk, OOM, package-install error or new enterprise-runtime assertion establishes infrastructure transience or a source defect. Do not label flaky from this evidence."
+  ],
+  "smallest_decisive_diagnostic": "Owner-controlled exact-source reproduction that captures docker compose logs and docker inspect health/state before cleanup; retain failure bytes and compare with a bounded fresh attempt. Do not relax health acceptance or deadlines from this symptom alone.",
+  "actions": "Read completed metadata/logs and bounded20.8MB artifact only; no source edits, tests, held nodes, canaries, retry or cancellation. Regression left undisturbed.",
+  "publication": "Blocked by failed runtime job; previous33successful Agent jobs and exact-main Creator success remain accurately scoped."
+}
