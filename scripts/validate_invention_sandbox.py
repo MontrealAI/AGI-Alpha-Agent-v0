@@ -97,6 +97,9 @@ def qualify(
         cohort_sha256=digest(request["records"]),
         source_evidence_sha256=digest(request["sources"]),
     )
+    if "proposal" not in request or digest(program) != digest(request["proposal"]):
+        raise ValueError("program is not the retained proposal bound by the frozen request")
+    evidence["retained_proposal_bound"] = True
     expected = expected_outputs(request)
     if {row["status"] for row in expected} != {"CONSISTENT", "ABSTAIN"}:
         raise ValueError("qualification cohort must include both consistent and inconsistent records")

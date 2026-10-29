@@ -73,3 +73,13 @@ admission, and a native CLI static loop plus exact resume. The loop confirms onl
 the source-associated dimensional guard defect; generated execution and acceptance
 remain `BLOCKED` locally because Docker is absent. The failed order-dependent test
 fixture and an initially invalid verifier CLI invocation are retained in history.
+
+### Retained identity review correction
+
+The qualification gate additionally requires the supplied AST's canonical hash
+to equal the proposal in the frozen request. A different statically valid AST is
+refused before any Docker lookup or execution. This intentionally narrows the gate
+to the retained proposal; it is not an arbitrary-program qualification interface.
+The original hosted run executed the intended fixed proposal and its exact receipts
+are retained in `hosted-source-v1/`; those receipts are not relabeled as evidence
+for a later gate revision. The revision's hosted checks must pass separately.

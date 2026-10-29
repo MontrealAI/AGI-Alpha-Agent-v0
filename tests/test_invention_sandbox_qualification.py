@@ -12,6 +12,7 @@ from scripts import validate_invention_sandbox as gate
 
 IMAGE = "python@sha256:" + "a" * 64
 REQUEST = {
+    "proposal": {},
     "requirements": {"voltage": "voltage"},
     "sources": [],
     "records": [
@@ -198,6 +199,19 @@ class QualificationTests(unittest.TestCase):
             json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
         ).hexdigest()
         self.assertEqual(gate.digest(value), expected)
+
+    def test_different_valid_retained_program_refused_before_execution(self):
+        from contrib.invention_automation.qualify_verify import prove_program
+
+        fixture = Path(__file__).resolve().parents[1] / "evidence/invention-qualification-20261029/request.json"
+        request = json.loads(fixture.read_text())
+        alternate = {"op": "sequence", "steps": [request["proposal"]]}
+        proof = prove_program(alternate, request["requirements"], request["budget"], dominance=True)
+        self.assertEqual(proof["unsafe_fields"], [])
+        with patch.object(gate.shutil, "which") as docker:
+            with self.assertRaisesRegex(ValueError, "not the retained proposal"):
+                gate.qualify(request, alternate, {})
+        docker.assert_not_called()
 
     def test_duplicate_record_ids_refused(self):
         request = deepcopy(REQUEST)
