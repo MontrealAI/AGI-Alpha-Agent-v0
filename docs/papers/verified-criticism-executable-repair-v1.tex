@@ -1,0 +1,44 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}\usepackage[utf8]{inputenc}
+\usepackage[margin=0.86in,headheight=15pt]{geometry}
+\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,longtable,array,graphicx,xurl,calc}
+\usepackage{fancyhdr,enumitem,etoolbox,caption,float,needspace}
+\usepackage[hidelinks,unicode,breaklinks]{hyperref}
+\hypersetup{pdftitle={AGI ALPHA FLYWHEEL: The Enterprise That Invents Its Next Economy},pdfauthor={Vincent Boucher, President, MONTREAL.AI},pdfsubject={From verified criticism to executable repair; audited limits of economic compounding},pdfkeywords={invention automation, structural transfer, counterexamples, executable constraints, simulated economics}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small AGI ALPHA FLYWHEEL}\fancyhead[R]{\small Research edition 1.0.1}\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.42em}\setlength{\emergencystretch}{3em}\raggedbottom
+\setlist{nosep,leftmargin=1.5em}\captionsetup{font=small,labelfont=bf}
+\AtBeginEnvironment{longtable}{\small\setlength{\tabcolsep}{4pt}}
+\renewcommand{\topfraction}{.92}\renewcommand{\bottomfraction}{.85}\renewcommand{\textfraction}{.07}\renewcommand{\floatpagefraction}{.8}
+\setcounter{tocdepth}{1}\setcounter{secnumdepth}{2}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
+\newcommand{\pandocbounded}[1]{#1}
+\makeatletter\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}\def\maxheight{\ifdim\Gin@nat@height>0.82\textheight0.82\textheight\else\Gin@nat@height\fi}\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{\begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter\let\@cite@ofmt\@firstofone\def\@biblabel#1{}\def\@cite#1#2{{#1\if@tempswa , #2\fi}}\makeatother
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\newlength{\cslhangindent}\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2]{\interlinepenalty=10000\begin{list}{}{\setlength{\itemindent}{0pt}\setlength{\leftmargin}{0pt}\setlength{\parsep}{0.45em}\ifodd #1\setlength{\leftmargin}{\cslhangindent}\setlength{\itemindent}{-1\cslhangindent}\fi}}{\end{list}}
+\newcommand{\CSLBlock}[1]{\hfill\break#1}\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}\newcommand{\CSLRightInline}[1]{\parbox[t]{\dimexpr\linewidth-\csllabelwidth\relax}{#1}}\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\small MONTREAL.AI\quad /\quad TRANSFORMATIONAL INTELLIGENCE}\par\vspace{0.7em}
+{\fontsize{25}{29}\selectfont\bfseries AGI ALPHA FLYWHEEL}\par\vspace{0.35em}
+{\Large\bfseries The Enterprise That Invents Its Next Economy}\par\vspace{0.6em}
+{\large From Verified Criticism to Executable Repair}\par
+{\normalsize An Operating Experiment and the Limits of Economic Compounding}\par\vspace{0.8em}
+{\large Vincent Boucher}\par
+President, MONTREAL.AI\par\vspace{0.4em}
+29 October 2026\quad$\cdot$\quad Research edition 1.0.1\par
+\end{center}
+\input{abstract.tex}
+\clearpage\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup\clearpage
+\input{body.tex}
+\end{document}

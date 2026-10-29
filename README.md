@@ -185,6 +185,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   Vincent Boucher · President of MONTREAL\.AI · 2026-10-27 · English PDF.
 - **[The Enterprise That Invents Its Next Advantage · Capacity Evidence Edition](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-enterprise-implementation-v4.pdf)** · Current implementation separates per\-offering occupied slots from the enterprise global ceiling, keeps production bound to current commercial evidence and preserves intent\-bound failure recovery\. Two\-offering and withdrawal regressions complement the connected internal placement/Gym/protected\-relay study\. Twelve fresh finite checks pass; Alpha admission is rejected and funds held\. No actual customer revenue, complete\-cost profit or growing network advantage is established\.
   Vincent Boucher · President of MONTREAL\.AI · 2026-10-27 · English PDF.
+- **[AGI ALPHA FLYWHEEL: The Enterprise That Invents Its Next Economy](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/verified-criticism-executable-repair-v1.pdf)** · Frozen research edition: verified criticism generates executable constraints, but the conventional solver remains cheaper and economic compounding is not established\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-29 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
