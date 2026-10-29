@@ -1,0 +1,31 @@
+{
+  "schema": "agialpha/paper-ci-lint-repair/v1",
+  "failed_run": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40889382832",
+  "failed_job": 123502081128,
+  "reported_errors": {
+    "E702": 72,
+    "E701": 3
+  },
+  "historical_source_commit": "53df20402b8af04ca2a56d77d99f1f5e33882f19",
+  "local_ruff_version": "0.17.3",
+  "hosted_pinned_ruff_version": "0.12.5",
+  "local_check": "PASS under repository config; exact-head hosted pinned rerun still required",
+  "rule_changes": false,
+  "ignore_changes": false,
+  "code": [
+    {
+      "path": "build.py",
+      "original_sha256": "7593e1734e5221ec35c81af771024f9b40edaa0c2ff870c6478c98be3187a7b3",
+      "current_sha256": "4e359059aa9b7a0edf17acf0e853b82f8700a0073e8d9398c32ab2fe4bdf14db",
+      "normalized_ast_equal": true,
+      "normalization": "Import grouping/order; explicit subprocess.run(check=False) equals Python default. No other AST changes."
+    },
+    {
+      "path": "generate_figures.py",
+      "original_sha256": "229077f01702b0688cf63f42d1936d204e27dfcc8d37bd9bc0ddd54cda99284c",
+      "current_sha256": "f53ae7e4cc5d2e226c4b4522688642c76c75f82ffa4eef10100570f0b60431e3",
+      "normalized_ast_equal": true,
+      "normalization": "Import grouping/order; explicit subprocess.run(check=False) equals Python default. No other AST changes."
+    }
+  ]
+}
