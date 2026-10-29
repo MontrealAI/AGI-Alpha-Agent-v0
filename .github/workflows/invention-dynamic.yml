@@ -39,7 +39,7 @@ jobs:
           test ! -e "$reader_profile"
           timeout --kill-after=5s 55s google-chrome \
             --headless=new --disable-gpu --disable-background-networking \
-            --disable-sync --disable-extensions --no-first-run --no-default-browser-check \
+            --disable-sync --no-first-run --no-default-browser-check \
             --user-data-dir="$reader_profile" --disk-cache-size=1048576 --media-cache-size=1048576 \
             --window-size=1440,1100 --virtual-time-budget=30000 \
             --screenshot="$GITHUB_WORKSPACE/public-reader-browser.png" \
