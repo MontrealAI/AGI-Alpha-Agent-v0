@@ -110,7 +110,13 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
             ]
             assert any(step.get("if") == cleanup.get("if") for step in matches), (name, key, cleanup)
     if "concurrency" in old:
-        assert "${{ github.sha }}" in new["concurrency"]["group"]
+        if name == "pr-ci.yml":
+            assert new["concurrency"]["group"] == (
+                "${{ github.workflow }}-${{ github.ref }}-"
+                "${{ github.event_name == 'pull_request' && 'latest-pr' || github.sha }}"
+            )
+        else:
+            assert "${{ github.sha }}" in new["concurrency"]["group"]
         assert new["concurrency"]["cancel-in-progress"] == old["concurrency"]["cancel-in-progress"]
 
 

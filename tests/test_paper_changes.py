@@ -418,3 +418,15 @@ def test_pathologically_nested_catalog_fails_closed(history: tuple[Path, str]) -
     raw = '{"schema":"agialpha.research-papers.v1","papers":' + "[" * 2000 + "0" + "]" * 2000 + "}"
     (root / papers.CATALOG).write_text(raw)
     assert_full(root, base, save(root))
+
+
+def test_latest_pr_paper_commit_retains_unmerged_software_qualification(history: tuple[Path, str]) -> None:
+    root, base = history
+    (root / "app.py").write_text("VALUE = 'new software'\n")
+    software_head = save(root, "Software PR head")
+    assert_full(root, base, software_head)
+    append_paper(root)
+    latest_head = save(root, "Paper-only latest commit on software PR")
+    assert "app.py" not in git(root, "diff", "--name-only", software_head, latest_head).splitlines()
+    # GitHub PR scope starts at the PR base, never the superseded head.
+    assert_full(root, base, latest_head)
