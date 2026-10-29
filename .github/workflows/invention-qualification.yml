@@ -1,0 +1,131 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Invention component qualification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/invention-qualification.yml'
+      - 'scripts/validate_invention_sandbox.py'
+      - 'tests/test_invention_sandbox_qualification.py'
+      - 'tests/test_invention_install_qualification.py'
+      - 'scripts/prepare_installed_invention.py'
+      - 'pyproject.toml'
+      - 'requirements-agent.lock'
+      - 'alpha_factory_v1/core/runtime/invention_automation/**'
+      - 'alpha_factory_v1/core/utils/secure_run.py'
+      - 'alpha_factory_v1/core/runtime/structural_transfer/**'
+      - 'contrib/invention_automation/**'
+      - 'evidence/invention-qualification-20261029/**'
+  workflow_dispatch:
+    inputs:
+      request:
+        description: 'Committed request JSON path (exposed qualification cohort)'
+        required: true
+        type: string
+      program:
+        description: 'Committed AST JSON path (AST itself, not a bundle)'
+        required: true
+        type: string
+      context:
+        description: 'Committed frozen context JSON path'
+        required: true
+        type: string
+      freeze:
+        description: 'Committed source/protocol/input freeze JSON path'
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  verifier-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Receipt doubles only (not Docker qualification)
+        run: python -m unittest discover -s tests -p 'test_invention_*qualification.py' -v
+  real-docker-component:
+    needs: verifier-unit-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      QUALIFICATION_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      REQUEST_PATH: ${{ inputs.request || 'evidence/invention-qualification-20261029/request.json' }}
+      PROGRAM_PATH: ${{ inputs.program || 'evidence/invention-qualification-20261029/program.json' }}
+      CONTEXT_PATH: ${{ inputs.context || 'evidence/invention-qualification-20261029/context.json' }}
+      FREEZE_PATH: ${{ inputs.freeze || 'evidence/invention-qualification-20261029/freeze.json' }}
+      OPENAI_AGENTS_DISABLE_TRACING: 'true'
+      NO_DISCLAIMER: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Validate committed fixture paths
+        run: |
+          python - <<'PY'
+          import os, pathlib, subprocess
+          root = pathlib.Path.cwd()
+          for key in ('REQUEST_PATH', 'PROGRAM_PATH', 'CONTEXT_PATH', 'FREEZE_PATH'):
+              path = pathlib.Path(os.environ[key])
+              if path.is_absolute() or path.is_symlink() or not path.resolve().is_relative_to(root):
+                  raise SystemExit('fixture must be a repository-local regular file')
+              if not path.is_file():
+                  raise SystemExit('fixture is absent')
+              subprocess.run(['git', 'ls-files', '--error-unmatch', '--', str(path)], check=True)
+          PY
+      - name: Install existing locked runtime dependencies
+        run: python -m pip install --require-hashes -r requirements-agent.lock
+      - name: Resolve image digest and verify existing isolation boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$QUALIFICATION_HEAD_SHA"
+          mkdir -p evidence/invention
+          printf '%s\n' "$QUALIFICATION_HEAD_SHA" > evidence/invention/source-head.txt
+          docker pull python:3.12-slim
+          ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
+          export ALPHA_SANDBOX_IMAGE
+          printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/invention/sandbox-image.txt
+          printf 'ALPHA_SANDBOX_IMAGE=%s\n' "$ALPHA_SANDBOX_IMAGE" >> "$GITHUB_ENV"
+          python -m scripts.validate_agent_sandbox --output evidence/invention/isolation.json
+      - name: Execute frozen AST and reject known-defective control
+        run: >-
+          python -m scripts.validate_invention_sandbox
+          --request "$REQUEST_PATH" --program "$PROGRAM_PATH"
+          --context "$CONTEXT_PATH" --freeze "$FREEZE_PATH"
+          --output evidence/invention/dynamic.json
+      - name: Build and install the reviewed wheel in a fresh environment
+        run: |
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/invention-wheel" .
+          python -m venv "$RUNNER_TEMP/invention-installed"
+          "$RUNNER_TEMP/invention-installed/bin/python" -m pip install --require-hashes -r requirements-agent.lock
+          "$RUNNER_TEMP/invention-installed/bin/python" -m pip install --no-deps "$RUNNER_TEMP"/invention-wheel/*.whl
+      - name: Qualify installed CLI from outside the checkout
+        run: |
+          SOURCE_ROOT="$GITHUB_WORKSPACE"
+          cd "$RUNNER_TEMP"
+          PYTHONPATH='' "$RUNNER_TEMP/invention-installed/bin/python" "$SOURCE_ROOT/scripts/prepare_installed_invention.py" \
+            --source-root "$SOURCE_ROOT" --output "$RUNNER_TEMP/invention-installed-proof" \
+            --request "$SOURCE_ROOT/$REQUEST_PATH" --program "$SOURCE_ROOT/$PROGRAM_PATH" \
+            --context "$SOURCE_ROOT/$CONTEXT_PATH" --freeze "$SOURCE_ROOT/$FREEZE_PATH"
+          PYTHONPATH='' "$RUNNER_TEMP/invention-installed/bin/alpha-agent" invention qualify-retained \
+            --request "$RUNNER_TEMP/invention-installed-proof/request.json" \
+            --program "$RUNNER_TEMP/invention-installed-proof/program.json" \
+            --context "$RUNNER_TEMP/invention-installed-proof/context.json" \
+            --freeze "$RUNNER_TEMP/invention-installed-proof/freeze.json" \
+            --output "$RUNNER_TEMP/invention-installed-proof/dynamic.json"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: invention-component-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/invention/
+            ${{ runner.temp }}/invention-installed-proof/
+          if-no-files-found: warn

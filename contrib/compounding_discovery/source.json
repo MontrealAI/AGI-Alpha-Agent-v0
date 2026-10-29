@@ -1,0 +1,31 @@
+{
+  "schema": "agialpha/structural-source/v1",
+  "id": "beneficiary-finance-capacity-public-ledger-v1",
+  "kind": "adapter-work",
+  "context": "Historical sanitized derived replay of the simulated beneficiary ledger. The public projection preserves required arithmetic rows and omits encryption material, private artifacts and task/buyer data. Original private evidence remains separate. This is not a fresh confirmation, original exchange replay, current market observation or external-money attestation. Transfer only typed capacity structure.",
+  "task": {
+    "adapter_id": "reserve-experience/v1",
+    "target": {
+      "id": "historical-public-beneficiary-liquidity",
+      "adapter_id": "reserve-experience/v1",
+      "database": "contrib/compounding_discovery/source-evidence/exchange-public-ledger.sqlite",
+      "database_sha256": "4ad0c8230917898477f05914e084277e6226efc6eae22d0950b44f3aa2fb90d9",
+      "useful_artifact": "contrib/compounding_discovery/source-evidence/county-readiness.json",
+      "useful_artifact_sha256": "a3cf972c1714b40aaad730b832945b3af767392509473b3b1e6c9c77d6eaaed3"
+    },
+    "constructed": {
+      "source_snapshot_only": true
+    }
+  },
+  "evidence": [
+    {
+      "path": "contrib/compounding_discovery/source-evidence/POST_PACKAGE_COST.json",
+      "sha256": "278e4abe41c6c6d2908a355371492d577e711efdddcd0b27ba267b223fe90858",
+      "role": "source",
+      "url": "urn:agialpha:simulated-executed-beneficiary-funding/v2"
+    }
+  ],
+  "cost_ids": [
+    "inherited-source-known-allocation-v2"
+  ]
+}

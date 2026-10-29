@@ -1,0 +1,146 @@
+{
+  "schema": "agialpha/structural-capture/v1",
+  "source": {
+    "schema": "agialpha/structural-source/v1",
+    "id": "beneficiary-finance-capacity-public-ledger-v1",
+    "kind": "adapter-work",
+    "context": "Historical sanitized derived replay of the simulated beneficiary ledger. The public projection preserves required arithmetic rows and omits encryption material, private artifacts and task/buyer data. Original private evidence remains separate. This is not a fresh confirmation, original exchange replay, current market observation or external-money attestation. Transfer only typed capacity structure.",
+    "task": {
+      "adapter_id": "reserve-experience/v1",
+      "target": {
+        "id": "historical-public-beneficiary-liquidity",
+        "adapter_id": "reserve-experience/v1",
+        "database": "contrib/compounding_discovery/source-evidence/exchange-public-ledger.sqlite",
+        "database_sha256": "4ad0c8230917898477f05914e084277e6226efc6eae22d0950b44f3aa2fb90d9",
+        "useful_artifact": "contrib/compounding_discovery/source-evidence/county-readiness.json",
+        "useful_artifact_sha256": "a3cf972c1714b40aaad730b832945b3af767392509473b3b1e6c9c77d6eaaed3"
+      },
+      "constructed": {
+        "source_snapshot_only": true
+      }
+    },
+    "evidence": [
+      {
+        "path": "contrib/compounding_discovery/source-evidence/POST_PACKAGE_COST.json",
+        "sha256": "278e4abe41c6c6d2908a355371492d577e711efdddcd0b27ba267b223fe90858",
+        "role": "source",
+        "url": "urn:agialpha:simulated-executed-beneficiary-funding/v2"
+      }
+    ],
+    "cost_ids": [
+      "inherited-source-known-allocation-v2"
+    ]
+  },
+  "evidence_capture": [
+    {
+      "path": "contrib/compounding_discovery/source-evidence/POST_PACKAGE_COST.json",
+      "sha256": "278e4abe41c6c6d2908a355371492d577e711efdddcd0b27ba267b223fe90858",
+      "role": "source",
+      "url": "urn:agialpha:simulated-executed-beneficiary-funding/v2",
+      "captured_base64": "ewogICJhY3Rpdml0eSI6ICJvbmUgbW9udGggZmluYWwgcGFja2FnZSByZXRlbnRpb24iLAogICJ1cHBlckJvdW5kR0IiOiAxLAogICJVU0RQZXJHQk1vbnRoIjogMC4wMywKICAiY2hhcmdlZE1pY3JvVVNEIjogMzAwMDAsCiAgImNvbnNlcnZhdGl2ZVVwcGVyQm91bmQiOiB0cnVlLAogICJhY3R1YWxGaWxlU2l6ZVRvQmVSZWNvcmRlZCI6IHRydWUsCiAgImJlZm9yZSI6IHsKICAgICJyZXNlcnZlZEludmVzdG1lbnQiOiAwLAogICAgInJldmVudWUiOiA5MDAwMDAwMCwKICAgICJleHBlbnNlcyI6IDYwOTc1MjcyLAogICAgInJlY292ZXJ5SW5jb21lIjogMCwKICAgICJwcm9maXQiOiAyOTAyNDcyOCwKICAgICJjYXNoIjogMTI5MDI0NzI4LAogICAgImNvbGxlY3Rpb25zIjogOTAwMDAwMDAsCiAgICAiZXhwZW5zZVBhaWQiOiA2MDk3NTI3MiwKICAgICJwYXlhYmxlcyI6IDAsCiAgICAiY3VzdG9keVJlc3RyaWN0ZWQiOiAwLAogICAgImN1c3RvZHlSZXNlcnZlIjogMCwKICAgICJ0YWlsUmVzZXJ2ZSI6IDkxMjAwMDAwLAogICAgIndvcmtpbmdDYXBpdGFsIjogMTAwMDAwMCwKICAgICJhdmFpbGFibGUiOiAzNjgyNDcyOCwKICAgICJ1bnJlc3RyaWN0ZWRFYXJuZWQiOiAyOTAyNDcyOCwKICAgICJzdHJpY3RFYXJuZWRDb250cm9sIjogMCwKICAgICJlcXVpdHlQcm90ZWN0aW9uQmFja2luZyI6IDkyMjAwMDAwLAogICAgImVhcm5lZFByb3RlY3Rpb25CYWNraW5nIjogMCwKICAgICJuZXRFYXJuZWRBZnRlckluY3VycmVkT2JsaWdhdGlvbnMiOiAyOTAyNDcyOCwKICAgICJmdW5kaW5nU2NvcGUiOiAiQm91bmRlZCBwcmluY2lwYWwtcGx1cy1mZWUgZXhwb3N1cmU7IGFyYml0cmFyeSBhZGRpdGlvbmFsIGRlYml0cyBhcmUgbm90IGd1YXJhbnRlZWQiLAogICAgImNvbmRpdGlvbmFsRWFybmVkIjogMjgwMjQ3MjgsCiAgICAiaW52ZXN0bWVudFN0b3BwZWQiOiBmYWxzZSwKICAgICJhc3N1cmFuY2VTY29wZSI6ICJMb2NhbCBwcm92aWRlciBhc3N1bXB0aW9uIG9ubHk7IGZ1bGwgbGF0ZS1kZWJpdCByZXNlcnZlIHJldGFpbmVkIGZvciBjb25zZXJ2YXRpdmUgaW52ZXN0bWVudCIKICB9LAogICJhZnRlciI6IHsKICAgICJyZXNlcnZlZEludmVzdG1lbnQiOiAwLAogICAgInJldmVudWUiOiA5MDAwMDAwMCwKICAgICJleHBlbnNlcyI6IDYxMDA1MjcyLAogICAgInJlY292ZXJ5SW5jb21lIjogMCwKICAgICJwcm9maXQiOiAyODk5NDcyOCwKICAgICJjYXNoIjogMTI4OTk0NzI4LAogICAgImNvbGxlY3Rpb25zIjogOTAwMDAwMDAsCiAgICAiZXhwZW5zZVBhaWQiOiA2MTAwNTI3MiwKICAgICJwYXlhYmxlcyI6IDAsCiAgICAiY3VzdG9keVJlc3RyaWN0ZWQiOiAwLAogICAgImN1c3RvZHlSZXNlcnZlIjogMCwKICAgICJ0YWlsUmVzZXJ2ZSI6IDkxMjAwMDAwLAogICAgIndvcmtpbmdDYXBpdGFsIjogMTAwMDAwMCwKICAgICJhdmFpbGFibGUiOiAzNjc5NDcyOCwKICAgICJ1bnJlc3RyaWN0ZWRFYXJuZWQiOiAyODk5NDcyOCwKICAgICJzdHJpY3RFYXJuZWRDb250cm9sIjogMCwKICAgICJlcXVpdHlQcm90ZWN0aW9uQmFja2luZyI6IDkyMjAwMDAwLAogICAgImVhcm5lZFByb3RlY3Rpb25CYWNraW5nIjogMCwKICAgICJuZXRFYXJuZWRBZnRlckluY3VycmVkT2JsaWdhdGlvbnMiOiAyODk5NDcyOCwKICAgICJmdW5kaW5nU2NvcGUiOiAiQm91bmRlZCBwcmluY2lwYWwtcGx1cy1mZWUgZXhwb3N1cmU7IGFyYml0cmFyeSBhZGRpdGlvbmFsIGRlYml0cyBhcmUgbm90IGd1YXJhbnRlZWQiLAogICAgImNvbmRpdGlvbmFsRWFybmVkIjogMjc5OTQ3MjgsCiAgICAiaW52ZXN0bWVudFN0b3BwZWQiOiBmYWxzZSwKICAgICJhc3N1cmFuY2VTY29wZSI6ICJMb2NhbCBwcm92aWRlciBhc3N1bXB0aW9uIG9ubHk7IGZ1bGwgbGF0ZS1kZWJpdCByZXNlcnZlIHJldGFpbmVkIGZvciBjb25zZXJ2YXRpdmUgaW52ZXN0bWVudCIKICB9LAogICJub0R1cGxpY2F0ZUNvbnN0cnVjdGlvbkNoYXJnZSI6IHRydWUsCiAgImFjdHVhbEV4dGVybmFsU3BlbmRVU0QiOiAwCn0K"
+    }
+  ],
+  "observation": {
+    "source_hash": "c398e5308aac53eacd7d88cdf1fee309c4e3aa81823da3b1c4a13e20ee633920",
+    "task_hash": "68464369b94797eee0cb3b80132d680c4efc6bda1c9e5cf32a24cad1df4881b0",
+    "result": {
+      "schema": "agialpha/executed-reserve-observation/v1",
+      "source_db_sha256": "4ad0c8230917898477f05914e084277e6226efc6eae22d0950b44f3aa2fb90d9",
+      "cash": "128994728",
+      "obligations": "92200000",
+      "free": "36794728",
+      "decomposition": {
+        "incurred_payables": "0",
+        "custody": "0",
+        "tail": "91200000",
+        "working": "1000000",
+        "investment_commitments": "0"
+      },
+      "source_useful_artifact_sha256": "a3cf972c1714b40aaad730b832945b3af767392509473b3b1e6c9c77d6eaaed3",
+      "scope": "recorded-liquidity-audit; prior beneficiary acceptance separately hash-bound; no external cash attestation"
+    },
+    "result_hash": "a8355c11374606c11e82c386a6598d2c1e17fae07f3595d56f5920c7d882e44e",
+    "acceptance": {
+      "accepted": true,
+      "task_id": "historical-public-beneficiary-liquidity",
+      "artifact_hash": "a8355c11374606c11e82c386a6598d2c1e17fae07f3595d56f5920c7d882e44e",
+      "decisive": true,
+      "scope": "exact independent historical ledger arithmetic; external money and current demand unqualified"
+    },
+    "acceptance_hash": "996968e4dcbf147f28255e3afd5fb9f6df6ad986e5ca8bc2d63f8e31c7194e5c",
+    "code_hashes": {
+      "execute": "f39b2ebb59ce9c234e65610840c753c606b0d0502dc6d9bff4d946b203e1f614",
+      "checker": "7b87d6e0ead5b0643413887c9d2c41f08b5db3a248c31061409135445fb6fd85",
+      "adapter_spec": "90db0065b809c87130a95c7bbe580a70714b7b98f72dec3e58ceec01f83891de",
+      "implementations": {
+        "adaptations.py": "e898fb660e541013d675e349d067f050c923a6c75965b5304cfdb5204c9f5dae",
+        "reserve_source.py": "01526c3f77ae6fab66c535a41c37f96a173b8be3e2ee0e9e5a8e874a4795be43"
+      }
+    }
+  },
+  "principle": {
+    "schema": "agialpha/structural-principle/v1",
+    "id": "beneficiary-finance-capacity-public-ledger-v1/principle",
+    "family": "linear-capacity",
+    "variables": [
+      {
+        "name": "cash",
+        "dimension": "currency",
+        "unit": "microUSD",
+        "role": "capacity"
+      },
+      {
+        "name": "free",
+        "dimension": "currency",
+        "unit": "microUSD",
+        "role": "remaining"
+      },
+      {
+        "name": "obligations",
+        "dimension": "currency",
+        "unit": "microUSD",
+        "role": "reserved"
+      }
+    ],
+    "relations": [
+      {
+        "kind": "conservation",
+        "inputs": [
+          "obligations",
+          "free"
+        ],
+        "output": "cash"
+      }
+    ],
+    "signature": "a82ecff0d648283af5d44d5a9d5a0ffcf3dc8f29b6ecaf9a4e5e7697386a32bb",
+    "assumptions": [],
+    "constraints": "exact declared relations, dimensional equalities and nonnegative durations/amounts",
+    "epistemic_status": "supported-axiom-instantiated-by-checked-execution",
+    "extraction_method": "typed relation projection from whitelisted executed algorithm and independent constraint check",
+    "applicability_boundaries": [
+      "structural instantiation only; no numerical conversion across domains",
+      "no inference of an empirical physical law or all source causal relations",
+      "external cash, complete demand and unseen outcomes are not attested"
+    ],
+    "counterexamples": [
+      {
+        "case": "unknown dimension",
+        "rejected": true
+      },
+      {
+        "case": "incompatible units in a relation",
+        "rejected": true
+      },
+      {
+        "case": "negative nonnegative quantity",
+        "rejected": true
+      }
+    ],
+    "source_id": "beneficiary-finance-capacity-public-ledger-v1",
+    "source_task_hash": "68464369b94797eee0cb3b80132d680c4efc6bda1c9e5cf32a24cad1df4881b0",
+    "source_result_hash": "a8355c11374606c11e82c386a6598d2c1e17fae07f3595d56f5920c7d882e44e",
+    "extraction_code_hash": "42bdb0bf66581b611bbfdfca6ad0e34ddb3ab3da91ffd008781b23ec7401b662"
+  },
+  "developmental_only": false,
+  "capture_hash": "c9d18d95a691c6c63381926dafa87821c8cb2abc724d7fded7ac87a9c23a98ed"
+}

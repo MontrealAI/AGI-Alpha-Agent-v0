@@ -29,6 +29,27 @@ def parser() -> argparse.ArgumentParser:
     from .successor.flywheel_operator import add_commands as add_flywheel_commands
 
     add_flywheel_commands(commands)
+    from .meta_discovery.operator import add_commands as add_meta_commands
+
+    add_meta_commands(commands)
+    from .claim_probe.operator import add_commands as add_probe_commands
+
+    add_probe_commands(commands)
+    from .flood_readiness.operator import add_commands as add_flood_commands
+
+    add_flood_commands(commands)
+    from .structural_transfer.operator import add_commands as add_structural_commands
+
+    add_structural_commands(commands)
+    from .compounding_discovery.operator import add_commands as add_discovery_commands
+
+    add_discovery_commands(commands)
+    from .compounding_discovery.shared_charger import add_commands as add_shared_charger_commands
+
+    add_shared_charger_commands(commands)
+    from .invention_automation.operator import add_commands as add_invention_commands
+
+    add_invention_commands(commands)
     samples = commands.add_parser("examples", help="List or copy the five editable, packaged mission examples")
     samples.add_argument("--output", type=Path, help="Create a NEW directory; existing files are never overwritten")
     for name in ("ascension-compile", "ascension-check"):
@@ -78,7 +99,9 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("configure", help="Apply configuration while paused").add_argument("file", type=Path)
     serve = commands.add_parser("serve", help="Open the local, authenticated operator console")
     serve.add_argument("--port", type=int, default=8765)
-    serve.add_argument("--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration")
+    serve.add_argument(
+        "--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration"
+    )
     for name in ("wallet-challenge", "balance"):
         commands.add_parser(name)
     commands.add_parser("wallet-bind").add_argument("signature")
@@ -122,6 +145,34 @@ def main(argv: list[str] | None = None) -> int:
             from .successor.flywheel_operator import handle as handle_flywheel
 
             result = handle_flywheel(args)
+        elif args.command == "meta-discovery":
+            from .meta_discovery.operator import handle as handle_meta
+
+            result = handle_meta(args)
+        elif args.command == "flood-readiness":
+            from .flood_readiness.operator import handle as handle_flood
+
+            result = handle_flood(args)
+        elif args.command == "claim-probe":
+            from .claim_probe.operator import handle as handle_probe
+
+            result = handle_probe(args)
+        elif args.command == "transfer":
+            from .structural_transfer.operator import handle as handle_structural
+
+            result = handle_structural(args)
+        elif args.command == "shared-charger":
+            from .compounding_discovery.shared_charger import handle as handle_shared_charger
+
+            result = handle_shared_charger(args)
+        elif args.command == "invention":
+            from .invention_automation.operator import handle as handle_invention
+
+            result = handle_invention(args)
+        elif args.command == "discovery":
+            from .compounding_discovery.operator import handle as handle_discovery
+
+            result = handle_discovery(args)
         elif args.command == "examples":
             from .samples import examples
 
@@ -285,11 +336,15 @@ def main(argv: list[str] | None = None) -> int:
                     from .successor.flywheel_operator import load as load_flywheel
 
                     protected = load_flywheel(journal, args.flywheel_deployment)
-                uvicorn.run(create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False)
+                uvicorn.run(
+                    create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False
+                )
                 return 0
             else:  # pragma: no cover - argparse enumerates the commands
                 raise ValueError("unknown command")
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
+        if args.command == "invention" and args.invention_command == "qualify-retained":
+            return 0 if result["status"] == "DYNAMIC_COMPONENT_PASS" else 1
         return 0
     except Exception as exc:
         # Validation errors can contain supplied source text; don't emit them to

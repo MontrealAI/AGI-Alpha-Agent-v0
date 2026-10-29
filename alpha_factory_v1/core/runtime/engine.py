@@ -7,7 +7,7 @@ import threading
 import time
 from typing import Any
 
-from .models import Allocation, Forecast, Mission, Research, Schedule, Coding
+from .models import Allocation, Forecast, Mission, Research, Schedule, Coding, TransferWork, DiscoveryWork
 from .provider import synthesize, generate_code
 from .store import Conflict, Journal, canonical, digest, public_error
 from . import work
@@ -167,6 +167,14 @@ class Engine:
                     result = work.coding(mission, code)
                 elif isinstance(mission.work, Forecast):
                     result = work.forecast(mission)
+                elif isinstance(mission.work, DiscoveryWork):
+                    from .compounding_discovery import engine as discovery
+
+                    result = discovery.execute(mission.work.request, mission.work.memory)
+                elif isinstance(mission.work, TransferWork):
+                    from .structural_transfer import engine as structural
+
+                    result = structural.run(mission.work.request, stage)
                 else:  # pragma: no cover - discriminated schema rejects unknown kinds
                     raise ValueError("unsupported mission kind")
                 stage("strategy", {"method": result["method"], "inference": inference})
@@ -191,7 +199,16 @@ class Engine:
                         ),
                     },
                 )
-                verification = work.verify_result(mission, result)
+                if isinstance(mission.work, DiscoveryWork):
+                    from .compounding_discovery import engine as discovery
+
+                    verification = discovery.verify_result(mission.work.request, result)
+                elif isinstance(mission.work, TransferWork):
+                    from .structural_transfer import engine as structural
+
+                    verification = structural.verify_result(mission.work.request, result)
+                else:
+                    verification = work.verify_result(mission, result)
                 stage("safety", verification)
                 stage("memory", {"archive": "signed mission journal", "learning_eligible_after_approval": True})
                 return self.journal.transition(
@@ -245,7 +262,17 @@ class Engine:
             raise Conflict("reviewed artifact hash does not match")
         if not note.strip() or len(note) > 2000:
             raise ValueError("review requires a note of 1–2000 characters")
-        verification = work.verify_result(Mission.model_validate(current["request"]), current["result"])
+        mission = Mission.model_validate(current["request"])
+        if isinstance(mission.work, DiscoveryWork):
+            from .compounding_discovery import engine as discovery
+
+            verification = discovery.verify_result(mission.work.request, current["result"])
+        elif isinstance(mission.work, TransferWork):
+            from .structural_transfer import engine as structural
+
+            verification = structural.verify_result(mission.work.request, current["result"])
+        else:
+            verification = work.verify_result(mission, current["result"])
         return self.journal.transition(
             ident,
             revision,
