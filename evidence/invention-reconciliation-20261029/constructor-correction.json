@@ -1,0 +1,38 @@
+{
+  "schema": "agialpha/constructor-correction/v1",
+  "parent_source": "ef6b4acb26089888c6951467187c17286884d44f",
+  "review_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/5018#discussion_r4415024804",
+  "old_result": {
+    "source_literal": "high-side voltage is 34.5kVA",
+    "adjudication": "CONFIRMED",
+    "construction": "ValueError: quantity and unit witness not in literal source"
+  },
+  "correction": {
+    "separator_old": "\\s+",
+    "separator_new": "[ \\t]*",
+    "current_source_gates": "Unchanged and still checked before legacy utility",
+    "protocol": "agialpha/critic-oracle-protocol/v5 unchanged; acceptance oracle not retuned",
+    "code": [
+      {
+        "path": "alpha_factory_v1/core/runtime/invention_automation/specification.py",
+        "git_blob_sha1": "cf9b8917bd93ae12da758373816f95ad4d155c7b",
+        "sha256": "d7c1839007b19c2ae6f4a42d5ec07b40e52a2795ddfff1d5476b7948a096f790",
+        "bytes": 14235
+      },
+      {
+        "path": "contrib/invention_automation/test_critic_loop.py",
+        "git_blob_sha1": "feed1906e16f901a5456947e20955b83db83863e",
+        "sha256": "8c7bf502b5db2bb773cd0c4fb4c30c79f74352de7b901e49c2e7b5a4902776e6",
+        "bytes": 14370
+      }
+    ]
+  },
+  "validation": {
+    "zero_space_tab": "Same guarded AST and separate STATIC_ONLY acceptance",
+    "negative_exponent_clippedunit": "Refused before poisoned legacy utility even with forged-confirmation record",
+    "actual_host_candidate_execution": false,
+    "expected_native_cases": 413,
+    "full_native_pytest": "PENDING exactsourceCI",
+    "new_confirmation_looks": 0
+  }
+}

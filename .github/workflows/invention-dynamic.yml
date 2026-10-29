@@ -28,7 +28,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Read the immutable public GitHub paper without credentials or cookies
-        run: python -B contrib/invention_automation/public_reader.py --output public-reader.json
+        run: |
+          python -B contrib/invention_automation/public_reader.py --output public-reader.json \
+            --inline-url-output "$RUNNER_TEMP/public-reader-inline-url"
       - name: Capture the public inline reader in a fresh anonymous browser
         shell: bash
         run: |
@@ -43,7 +45,8 @@ jobs:
             --user-data-dir="$reader_profile" --disk-cache-size=1048576 --media-cache-size=1048576 \
             --window-size=1440,1100 --virtual-time-budget=30000 \
             --screenshot="$GITHUB_WORKSPACE/public-reader-browser.png" \
-            "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf"
+            "$(cat "$RUNNER_TEMP/public-reader-inline-url")" \
+            > "$RUNNER_TEMP/public-reader-chrome.log" 2>&1
           test -s public-reader-browser.png
           test "$(du -sb "$reader_profile" | cut -f1)" -le 67108864
           python -B - <<'PY'
@@ -57,10 +60,12 @@ jobs:
               'fresh_profile': True,
               'credential_or_cookie_import': False,
               'browser_version': Path('public-reader-browser-version.txt').read_text().strip(),
+              'reader_route_sha256': json.loads(Path('public-reader.json').read_text())['inline_viewer']['url_sha256'],
+              'reader_route_provenance': 'anonymous GitHub blob HTML displayUrl',
               'screenshot_sha256': hashlib.sha256(raw).hexdigest(),
               'screenshot_bytes': len(raw),
               'profile_postrun_max_bytes': 67108864,
-              'scope': 'Anonymous inline-browser capture; process exit alone does not establish rendered PDF.',
+              'scope': 'Anonymous GitHub-supplied PDF iframe capture; process exit alone does not establish rendered PDF.',
           }
           Path('public-reader-browser.json').write_text(json.dumps(record, indent=2) + '\n')
           PY

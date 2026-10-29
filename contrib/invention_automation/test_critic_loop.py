@@ -96,16 +96,66 @@ def freeze(tmp_path: Path, values: list[dict[str, Any]], contexts: list[dict[str
 
 
 def test_true_source_bound_objection_has_distinct_static_verdict() -> None:
-    value = request()
-    ctx = context(value)
-    finding = evidence_critic.investigate(value, ctx, PROVENANCE)
-    assert len(finding.objections) == 1
-    objection = finding.objections[0]
-    assert objection.source.location.startswith("/sources/0/excerpt#chars=")
-    receipt = critic_verify.adjudicate(value, ctx, objection.to_dict())
-    assert receipt["verdict"] == "CONFIRMED"
-    assert receipt["candidate_executed"] is False
-    assert receipt["technical_activity_accepted"] is False
+    programs = []
+    for unit_gap in (" ", "", "\t"):
+        value = request()
+        source = value["sources"][0]
+        source["excerpt"] = "high-side voltage of less than 34.5" + unit_gap + "kVA"
+        source["sha256"] = hashlib.sha256(source["excerpt"].encode()).hexdigest()
+        ctx = context(value)
+        finding = evidence_critic.investigate(value, ctx, PROVENANCE)
+        assert len(finding.objections) == 1
+        objection = finding.objections[0]
+        assert objection.source.location.startswith("/sources/0/excerpt#chars=")
+        receipt = critic_verify.adjudicate(value, ctx, objection.to_dict())
+        assert receipt["verdict"] == "CONFIRMED"
+        assert receipt["candidate_executed"] is receipt["technical_activity_accepted"] is False
+        adaptation = critic_loop.construct_verified(value, ctx, objection, receipt)
+        assert adaptation["construction"]["static"]["valid"] is True
+        assert adaptation["constraint"]["source_span"] == ctx["bindings"][0]
+        assert adaptation["constraint"]["objection_hash"] == objection.digest
+        acceptance = critic_verify.accept(value, adaptation["program"], None)
+        assert acceptance["acceptance"] == "STATIC_ONLY"
+        assert acceptance["candidate_executed"] is False
+        programs.append(adaptation["program"])
+    assert programs[0] == programs[1] == programs[2]
+
+    def forbidden(*args: Any, **kwargs: Any) -> Any:
+        raise AssertionError("unsupported source reached the legacy constructor utility")
+
+    template = objection.to_dict()
+    with pytest.MonkeyPatch.context() as mutation:
+        mutation.setattr(critic_loop.spec, "criticize", forbidden)
+        for excerpt, unit, clipped_end in [
+            ("No high-side voltage is 34.5kVA", "kVA", None),
+            ("high-side voltage is 34.5e+3 kV", "e", len("high-side voltage is 34.5e")),
+            ("high-side voltage is 34.5kVA", "k", len("high-side voltage is 34.5k")),
+        ]:
+            value = request()
+            source = value["sources"][0]
+            source["excerpt"] = excerpt
+            source["sha256"] = hashlib.sha256(excerpt.encode()).hexdigest()
+            reading = value["records"][0]["fields"]["high_side_voltage"]
+            reading["unit"] = unit
+            ctx = context(value)
+            if clipped_end is not None:
+                ctx["bindings"][0]["end"] = clipped_end
+            raw = deepcopy(template)
+            binding = ctx["bindings"][0]
+            raw["source"].update(
+                sha256=source["sha256"],
+                location=f"/sources/0/excerpt#chars={binding['start']}:{binding['end']}",
+            )
+            raw["witness"] = {**binding, **reading}
+            ungrounded = Objection.from_dict(raw)
+            forged = {
+                "verdict": "CONFIRMED",
+                "candidate_hash": digest(value["baseline"]),
+                "objection_id": ungrounded.id,
+                "objection_hash": ungrounded.digest,
+            }
+            with pytest.raises(ValueError, match="source association no longer valid"):
+                critic_loop.construct_verified(value, ctx, ungrounded, forged)
 
 
 def test_safe_candidate_returns_no_defect_without_error_or_repair() -> None:
@@ -160,8 +210,14 @@ def test_retrieved_commands_are_inert_unrelated_evidence() -> None:
     assert not evidence_critic.investigate(value, ctx, PROVENANCE).objections
 
 
-def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize("unit_gap", [" ", ""])
+def test_full_native_loop_retains_blocked_execution_and_resume(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, unit_gap: str
+) -> None:
     value = request()
+    source = value["sources"][0]
+    source["excerpt"] = "high-side voltage of less than 34.5" + unit_gap + "kVA"
+    source["sha256"] = hashlib.sha256(source["excerpt"].encode()).hexdigest()
     ctx = context(value)
     pins = freeze(tmp_path, [value], [ctx])
     request_path, context_path = write(tmp_path / "request.json", value), write(tmp_path / "context.json", ctx)
