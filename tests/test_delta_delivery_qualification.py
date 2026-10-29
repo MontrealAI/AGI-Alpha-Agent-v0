@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import unittest
 import copy
+import json
 import tempfile
 import subprocess
 import sys
@@ -128,6 +129,32 @@ class QualificationTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual((output / "rollback.csv").read_bytes(), (examples / "catalogue.csv").read_bytes())
             self.assertIn("A,Montréal Widget,12.50,Preserve buyer approval", (output / "updated.csv").read_text())
+            packet = json.loads((output / "package.json").read_text())
+            transfer = json.loads((output / "transfer-record.json").read_text())
+            self.assertEqual(transfer["witness"], packet["digest"])
+            self.assertFalse(transfer["autonomous_discovery"])
+            self.assertEqual(transfer["state"], "DEVELOPMENT_EVIDENCE_ONLY")
+            checked = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "contrib.enterprise_campaign.delta_acceptance",
+                    "--before",
+                    str(examples / "catalogue.csv"),
+                    "--delta",
+                    str(examples / "supplier_delta.csv"),
+                    "--request",
+                    str(output / "request.json"),
+                    "--package",
+                    str(output / "package.json"),
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+                timeout=20,
+            )
+            self.assertEqual(checked.returncode, 0, checked.stderr)
+            self.assertEqual(json.loads(checked.stdout)["verdict"], "PASS_IN_SCOPE")
 
     def test_non_object_change_entries_refused(self) -> None:
         for changes in ([None], ["update"], [1], None, {}, "update"):

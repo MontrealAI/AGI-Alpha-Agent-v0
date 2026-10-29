@@ -137,9 +137,10 @@ def main() -> int:
             "delta.csv": delta,
         }
         for name, text in artifacts.items():
-            (output / name).write_text(text, encoding="utf-8", newline="")
+            with (output / name).open("x", encoding="utf-8", newline="") as handle:
+                handle.write(text)
         usage = {
-            "elapsed_ns": time.perf_counter_ns() - started,
+            "elapsed_through_csv_writes_ns": time.perf_counter_ns() - started,
             "model_calls": 0,
             "network_actions": 0,
             "changed_rows": len(package["changes"]),
@@ -148,14 +149,33 @@ def main() -> int:
             "complete_monetary_cost": None,
             "commercial_success": "UNESTABLISHED",
         }
+        transfer = {
+            "schema": "catalog-delta-transfer/v1",
+            "state": "DEVELOPMENT_EVIDENCE_ONLY",
+            "source_mechanism": "Transactional partial updates preserve omitted state",
+            "target": "Update-existing-only supplier feed",
+            "construction": "Sparse feed to full after-image to unchanged native reversible package",
+            "witness": envelope["digest"],
+            "producer_git_blob": UPSTREAM_GIT_BLOB,
+            "verified_scope": acceptance["scope"],
+            "counterexample": "Treating a sparse feed as a complete replacement deletes omitted items",
+            "review_regressions": ["altered preview", "hidden changes", "false counts", "wrong producer identity"],
+            "reuse_conditions": ["explicit keys and field authority", "existing keys only", "bounded UTF-8 CSV"],
+            "autonomous_discovery": False,
+            "successor_invention_benefit": "UNMEASURED",
+            "conventional_control": "same intended output; no superiority claim",
+            "next_investment": "Measure complete accepted-job effort before adding a product feature",
+        }
         for name, value in {
             "package.json": envelope,
             "native-package.json": package,
             "request.json": request,
             "acceptance.json": acceptance,
             "usage.json": usage,
+            "transfer-record.json": transfer,
         }.items():
-            (output / name).write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
+            with (output / name).open("x", encoding="utf-8", newline="") as handle:
+                handle.write(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
         report = (
             "# Supplier delta delivery\n\n**PASS_IN_SCOPE — local review package only.**\n\n"
             f"Updated {usage['changed_rows']} of {usage['catalogue_rows']} existing rows. "
@@ -165,7 +185,8 @@ def main() -> int:
             "No source overwritten, remote update, payment, model API call or customer acceptance. "
             "Actual complete cost and profitability remain unknown.\n"
         )
-        (output / "REPORT.md").write_text(report)
+        with (output / "REPORT.md").open("x", encoding="utf-8", newline="") as handle:
+            handle.write(report)
         print(json.dumps({"verdict": acceptance["verdict"], "output": str(output), **usage}, indent=2))
     except (ValueError, KeyError, TypeError, OSError) as error:
         parser.exit(2, f"REFUSED: {error}\n")

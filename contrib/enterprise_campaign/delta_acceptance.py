@@ -2,6 +2,11 @@
 """Separate finite semantic checker for an update-only supplier feed."""
 from __future__ import annotations
 
+import argparse
+import os
+import stat
+from pathlib import Path
+
 import csv
 import hashlib
 import io
@@ -15,6 +20,10 @@ from .catalog_identity import assert_upstream_identity
 
 def _hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _canonical(value: object) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
 def _read(text: str) -> tuple[list[str], list[dict[str, str]]]:
@@ -184,15 +193,28 @@ def verify_delta(before: str, delta: str, envelope: dict[str, Any], request: dic
             json.dumps(unsigned, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
         )
         obligations = {
+            "envelope_fields": set(envelope)
+            == {
+                "schema",
+                "request",
+                "before_sha256",
+                "delta_sha256",
+                "native_package",
+                "mechanism",
+                "source_git_blob",
+                "digest",
+            },
+            "mechanism_label": envelope.get("mechanism")
+            == "Sparse transactional update semantics adapted to a full-snapshot compiler",
             "envelope_identity": envelope.get("digest") == expected_digest,
             "schema": envelope.get("schema") == "catalog-delta-delivery/v1",
-            "request_binding": envelope.get("request") == request,
+            "request_binding": _canonical(envelope.get("request")) == _canonical(request),
             "source_binding": envelope.get("before_sha256") == _hash(before),
             "delta_binding": envelope.get("delta_sha256") == _hash(delta),
             "native_source_binding": native.get("before_sha256") == _hash(before),
             "intended_result": native.get("output_csv") == expected,
             "output_binding": native.get("output_sha256") == _hash(expected),
-            "native_contract": native_unsigned == expected_native and type(native.get("generation")) is int,
+            "native_contract": _canonical(native_unsigned) == _canonical(expected_native),
             "native_integrity": native.get("proof_digest") == native_digest,
             "source_identity": envelope.get("source_git_blob") == "9f22a4448fa7bbd949b54c4c0d9b61936f49d549",
             "review_preview": native.get("safe_preview_csv") == preview.getvalue(),
@@ -209,3 +231,45 @@ def verify_delta(before: str, delta: str, envelope: dict[str, Any], request: dic
         "scope": "Bounded update-only CSV semantics and exact rollback; not business or security certification",
         "independence": "Shared bounded syntax parser; separate semantic derivation; same author/session/runtime; not external certification",
     }
+
+
+def main() -> int:
+    """Read-only second-process verification; caller supplies the trusted request and inputs."""
+    parser = argparse.ArgumentParser(description="Check a supplier delivery against its trusted source and request")
+    for name in ("before", "delta", "request", "package"):
+        parser.add_argument("--" + name, required=True)
+    args = parser.parse_args()
+    try:
+        values: dict[str, str] = {}
+        for name in ("before", "delta", "request", "package"):
+            limit = 4_000_000 if name == "package" else 200_000
+            path = Path(getattr(args, name))
+            descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+            try:
+                opened, current = os.fstat(descriptor), path.lstat()
+                if (
+                    not stat.S_ISREG(opened.st_mode)
+                    or not stat.S_ISREG(current.st_mode)
+                    or (opened.st_dev, opened.st_ino) != (current.st_dev, current.st_ino)
+                ):
+                    raise ValueError(f"{name} must be the same regular file")
+                with os.fdopen(descriptor, "rb") as source:
+                    descriptor = -1
+                    data = source.read(limit + 1)
+            finally:
+                if descriptor >= 0:
+                    os.close(descriptor)
+            if len(data) > limit:
+                raise ValueError(f"{name} exceeds byte limit")
+            values[name] = data.decode("utf-8")
+        verdict = verify_delta(
+            values["before"], values["delta"], json.loads(values["package"]), json.loads(values["request"])
+        )
+    except (OSError, ValueError, TypeError) as error:
+        verdict = {"verdict": "REJECTED", "failures": [str(error)]}
+    print(json.dumps(verdict, ensure_ascii=False, indent=2, allow_nan=False))
+    return 0 if verdict["verdict"] == "PASS_IN_SCOPE" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

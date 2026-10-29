@@ -3,13 +3,13 @@ on:
   pull_request:
     paths:
       - 'contrib/enterprise_campaign/**'
-      - 'tests/test_delta_delivery*.py'
+      - 'tests/test_delta*.py'
       - '.github/workflows/fast-delivery.yml'
   push:
     branches: [main]
     paths:
       - 'contrib/enterprise_campaign/**'
-      - 'tests/test_delta_delivery*.py'
+      - 'tests/test_delta*.py'
       - '.github/workflows/fast-delivery.yml'
   workflow_dispatch:
 permissions:
@@ -34,4 +34,4 @@ jobs:
         run: |
           ulimit -t 60
           ulimit -v 786432
-          python -m unittest discover -s tests -p 'test_delta_delivery*.py' -v
+          python -m unittest discover -s tests -p 'test_delta*.py' -v
