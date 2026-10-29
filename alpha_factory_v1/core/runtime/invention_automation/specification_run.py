@@ -80,6 +80,11 @@ def source_hashes() -> dict[str, str]:
         "core/runtime/invention_automation/operator.py",
         "core/runtime/structural_transfer/contracts.py",
         "core/utils/secure_run.py",
+        "core/runtime/invention_verification/__init__.py",
+        "core/runtime/invention_verification/critic_verify.py",
+        "core/runtime/invention_verification/qualify_verify.py",
+        "core/runtime/invention_verification/readonly.py",
+        "core/runtime/invention_verification/dynamic_oracle.py",
     ]
     return {"alpha_factory_v1/" + name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in relative}
 

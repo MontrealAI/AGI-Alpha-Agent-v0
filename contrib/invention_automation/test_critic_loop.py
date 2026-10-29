@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 from copy import deepcopy
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -14,7 +15,7 @@ import pytest
 from alpha_factory_v1.core.runtime.invention_automation import critic_loop, evidence_critic
 from alpha_factory_v1.core.runtime.invention_automation.evidence_contracts import Objection
 from alpha_factory_v1.core.runtime.structural_transfer.contracts import digest
-from contrib.invention_automation import critic_verify
+from alpha_factory_v1.core.runtime.invention_verification import critic_verify
 
 ROOT = Path(__file__).resolve().parents[2]
 PROVENANCE = {"kind": "deterministic-engineering-control", "model": "NONE", "usage": "NOT_A_MODEL_CALL"}
@@ -68,9 +69,12 @@ def write(path: Path, value: Any) -> Path:
 
 def freeze(tmp_path: Path, values: list[dict[str, Any]], contexts: list[dict[str, Any]]) -> Path:
     paths = [
-        "contrib/invention_automation/critic_verify.py",
-        "contrib/invention_automation/qualify_verify.py",
-        "contrib/invention_automation/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+        "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+        "alpha_factory_v1/core/runtime/invention_automation/qualification.py",
         "alpha_factory_v1/core/utils/secure_run.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification_run.py",
@@ -94,6 +98,17 @@ def freeze(tmp_path: Path, values: list[dict[str, Any]], contexts: list[dict[str
             "context_hashes": [digest(c) for c in contexts],
         },
     )
+
+
+def historical_clock(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Replay exposed pre-cutoff fixtures without changing the production deadline."""
+
+    class HistoricalDateTime(datetime):
+        @classmethod
+        def now(cls, tz: Any = None) -> HistoricalDateTime:
+            return cls(2026, 10, 29, 16, 52, tzinfo=UTC).astimezone(tz)
+
+    monkeypatch.setattr(critic_loop, "datetime", HistoricalDateTime)
 
 
 def test_true_source_bound_objection_has_distinct_static_verdict() -> None:
@@ -162,6 +177,7 @@ def test_retrieved_commands_are_inert_unrelated_evidence() -> None:
 
 
 def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    historical_clock(monkeypatch)
     value = request()
     ctx = context(value)
     pins = freeze(tmp_path, [value], [ctx])
@@ -195,6 +211,7 @@ def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, m
 def test_missing_verifier_is_retained_failure_without_candidate_fallback(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    historical_clock(monkeypatch)
     value = request()
     ctx = context(value)
     pins = freeze(tmp_path, [value], [ctx])
@@ -270,3 +287,14 @@ def test_admitted_literal_spacing_survives_corrective_construction(separator: st
     assert corrected["constraint"]["objection_hash"] == objection.digest
     proof = critic_loop.spec.dominance(corrected["program"], value["requirements"], value["budget"])
     assert proof["valid"] is True
+
+
+def test_production_cutoff_refuses_new_generation_before_input_reads(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="generation cutoff reached"):
+        critic_loop.run(
+            tmp_path / "absent-request.json",
+            tmp_path / "absent-context.json",
+            tmp_path / "absent-freeze.json",
+            tmp_path / "never-created",
+        )
+    assert not (tmp_path / "never-created").exists()

@@ -11,6 +11,8 @@ on:
       - 'pyproject.toml'
       - 'requirements-agent.lock'
       - 'alpha_factory_v1/core/runtime/invention_automation/**'
+      - 'alpha_factory_v1/core/runtime/invention_verification/**'
+      - '.github/workflows/invention-dynamic.yml'
       - 'alpha_factory_v1/core/utils/secure_run.py'
       - 'alpha_factory_v1/core/runtime/structural_transfer/**'
       - 'contrib/invention_automation/**'
@@ -30,7 +32,7 @@ on:
         required: true
         type: string
       freeze:
-        description: 'Committed source/protocol/input freeze JSON path'
+        description: 'Historical committed freeze provenance (a new exact-source freeze is generated)'
         required: true
         type: string
 permissions:
@@ -95,11 +97,30 @@ jobs:
           printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/invention/sandbox-image.txt
           printf 'ALPHA_SANDBOX_IMAGE=%s\n' "$ALPHA_SANDBOX_IMAGE" >> "$GITHUB_ENV"
           python -m scripts.validate_agent_sandbox --output evidence/invention/isolation.json
+      - name: Create new exact-source freeze without changing historical fixtures
+        run: |
+          python -B -m scripts.prepare_installed_invention \
+            --prepare-source --source-root "$GITHUB_WORKSPACE" \
+            --request "$REQUEST_PATH" --program "$PROGRAM_PATH" --context "$CONTEXT_PATH" \
+            --output evidence/invention/source-v2
+          python -B - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          original = Path(os.environ["FREEZE_PATH"])
+          Path("evidence/invention/historical-freeze-provenance.json").write_text(json.dumps({
+              "historical_freeze_path": str(original),
+              "historical_freeze_sha256": hashlib.sha256(original.read_bytes()).hexdigest(),
+              "historical_freeze_used_for_admission": False,
+              "new_freeze_path": "evidence/invention/source-v2/freeze.json",
+              "source_head": os.environ["QUALIFICATION_HEAD_SHA"],
+              "scope": "Exposed retained-software verification; no new candidate or campaign."
+          }, indent=2) + "\n")
+          PY
       - name: Execute frozen AST and reject known-defective control
         run: >-
           python -m scripts.validate_invention_sandbox
-          --request "$REQUEST_PATH" --program "$PROGRAM_PATH"
-          --context "$CONTEXT_PATH" --freeze "$FREEZE_PATH"
+          --request evidence/invention/source-v2/request.json --program evidence/invention/source-v2/program.json
+          --context evidence/invention/source-v2/context.json --freeze evidence/invention/source-v2/freeze.json
           --output evidence/invention/dynamic.json
       - name: Build and install the reviewed wheel in a fresh environment
         run: |
@@ -113,8 +134,10 @@ jobs:
           cd "$RUNNER_TEMP"
           PYTHONPATH='' "$RUNNER_TEMP/invention-installed/bin/python" "$SOURCE_ROOT/scripts/prepare_installed_invention.py" \
             --source-root "$SOURCE_ROOT" --output "$RUNNER_TEMP/invention-installed-proof" \
-            --request "$SOURCE_ROOT/$REQUEST_PATH" --program "$SOURCE_ROOT/$PROGRAM_PATH" \
-            --context "$SOURCE_ROOT/$CONTEXT_PATH" --freeze "$SOURCE_ROOT/$FREEZE_PATH"
+            --request "$SOURCE_ROOT/evidence/invention/source-v2/request.json" \
+            --program "$SOURCE_ROOT/evidence/invention/source-v2/program.json" \
+            --context "$SOURCE_ROOT/evidence/invention/source-v2/context.json" \
+            --freeze "$SOURCE_ROOT/evidence/invention/source-v2/freeze.json"
           PYTHONPATH='' "$RUNNER_TEMP/invention-installed/bin/alpha-agent" invention qualify-retained \
             --request "$RUNNER_TEMP/invention-installed-proof/request.json" \
             --program "$RUNNER_TEMP/invention-installed-proof/program.json" \

@@ -69,7 +69,11 @@ PROTOCOL: dict[str, Any] = {
         "verifier-tampering": ["verifier_state", "oracle_source"],
     },
     "independence": "separate read-only verifier process; shared authors, host, model family and standard library",
-    "excluded_claims": ["general hostile-code certification", "all container exec denied", "fresh invention benefit"],
+    "excluded_claims": [
+        "general hostile-code certification",
+        "all container exec denied",
+        "fresh invention benefit",
+    ],
 }
 
 PERMISSIONS = r"""import errno,json,os,pathlib,socket,subprocess,sys
@@ -177,7 +181,11 @@ def preflight() -> dict[str, Any]:
     if not re.fullmatch(r"[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}", image):
         raise SandboxUnavailable("qualification requires an already present digest-pinned image")
     inspected = subprocess.run(
-        ["docker", "image", "inspect", image], capture_output=True, text=True, timeout=10, check=False
+        ["docker", "image", "inspect", image],
+        capture_output=True,
+        text=True,
+        timeout=10,
+        check=False,
     )
     require(inspected.returncode == 0, "digest-pinned image absent; harness never pulls images")
     metadata = json.loads(inspected.stdout)[0]
@@ -204,11 +212,19 @@ def containers() -> set[str]:
 
 
 def oracle(root: Path, output: Path, candidate: str) -> dict[str, Any]:
+    for name in ["__init__.py", "dynamic_oracle.py", "readonly.py"]:
+        path = root / "alpha_factory_v1/core/runtime/invention_verification" / name
+        require(
+            path.is_file() and not path.is_symlink(),
+            "installed dynamic verifier source unavailable: " + name,
+        )
     command = [
         sys.executable,
         "-B",
+        "-P",
+        "-S",
         "-m",
-        "contrib.invention_automation.dynamic_oracle",
+        "alpha_factory_v1.core.runtime.invention_verification.dynamic_oracle",
         "--root",
         str(root),
         "--freeze",
@@ -227,12 +243,23 @@ def oracle(root: Path, output: Path, candidate: str) -> dict[str, Any]:
         timeout=30,
         check=False,
         cwd=root,
-        env={"PATH": os.defpath, "PYTHONPATH": str(root), "PYTHONDONTWRITEBYTECODE": "1", "LANG": "C.UTF-8"},
+        env={
+            "PATH": os.defpath,
+            "PYTHONPATH": str(root),
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "LANG": "C.UTF-8",
+        },
     )
-    write(output / f"{candidate}-oracle-process.json", {"returncode": result.returncode, "stderr": result.stderr})
+    write(
+        output / f"{candidate}-oracle-process.json",
+        {"returncode": result.returncode, "stderr": result.stderr},
+    )
     require(result.returncode in (0, 2), "separate oracle failed: " + result.stderr[-1000:])
     receipt: dict[str, Any] = json.loads(result.stdout)
-    require(receipt.get("tested_denials") == {"candidate_write": True, "socket": True}, "oracle restrictions untested")
+    require(
+        receipt.get("tested_denials") == {"candidate_write": True, "socket": True},
+        "oracle restrictions untested",
+    )
     return receipt
 
 
@@ -253,7 +280,7 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
     protected = output / "verifier-state.txt"
     protected.write_text("host verifier canary; never mounted into candidate\n")
     protected_hash = sha(protected)
-    oracle_path = root / "contrib/invention_automation/dynamic_oracle.py"
+    oracle_path = root / "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py"
     oracle_hash = sha(oracle_path)
     mutation_probe = (
         "import errno,json,pathlib\nchecks={}\n"
@@ -272,12 +299,24 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
     }
     for name, source in probes.items():
         (output / f"{name}.py").write_text(source)
-    source_paths = list(native.source_hashes()) + [
-        "contrib/invention_automation/qualify_dynamic.py",
-        "contrib/invention_automation/dynamic_oracle.py",
-        "contrib/invention_automation/readonly.py",
-        "contrib/invention_automation/specification-request.json",
-    ]
+    source_paths = sorted(
+        set(native.source_hashes())
+        | {
+            "alpha_factory_v1/core/runtime/invention_automation/critic_loop.py",
+            "alpha_factory_v1/core/runtime/invention_automation/critic_protocol.json",
+            "alpha_factory_v1/core/runtime/invention_automation/evidence_contracts.py",
+            "alpha_factory_v1/core/runtime/invention_automation/evidence_critic.py",
+            "alpha_factory_v1/core/runtime/invention_automation/qualification.py",
+            "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+            "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+            "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+            "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+            "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+            "contrib/invention_automation/qualify_dynamic.py",
+            "contrib/invention_automation/run_critic_pilot.py",
+            "contrib/invention_automation/specification-request.json",
+        }
+    )
     freeze = {
         "protocol": PROTOCOL,
         **inventory,
@@ -322,7 +361,12 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
             KeyError,
             TypeError,
         ) as error:
-            entry = {"name": name, "status": "FAIL", "error_type": type(error).__name__, "reason": str(error)}
+            entry = {
+                "name": name,
+                "status": "FAIL",
+                "error_type": type(error).__name__,
+                "reason": str(error),
+            }
         entry["wall_seconds"] = time.monotonic() - start
         entry["executed"] = entered
         attempts.append(entry)
@@ -343,7 +387,11 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
                 receipt.get("reason") == "actual record consequences differ from separate oracle",
                 "invalid-result control must reject actual wrong consequences, not a crash or schema failure",
             )
-        return {"actual_execution": True, "oracle": receipt, "result_sha256": sha(output / f"{name}-result.json")}
+        return {
+            "actual_execution": True,
+            "oracle": receipt,
+            "result_sha256": sha(output / f"{name}-result.json"),
+        }
 
     for name in programs:
         record("native-" + name, partial(native_case, name))
@@ -355,24 +403,37 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
         except SandboxTimeout:
             require(name == "timeout", "unexpected timeout")
             duration = time.monotonic() - started
-            require(115 <= duration <= 150, "native wall timeout outside allowed termination margin")
+            require(
+                115 <= duration <= 150, "native wall timeout outside allowed termination margin"
+            )
             require(containers() == initial_containers, "timeout left a candidate container")
             return {"termination": "SandboxTimeout", "observed_seconds": duration}
         except ValueError as error:
-            require(name == "excessive-output" and str(error) == "sandbox output exceeds 1 MiB", "unexpected refusal")
-            require(containers() == initial_containers, "output termination left a candidate container")
+            require(
+                name == "excessive-output" and str(error) == "sandbox output exceeds 1 MiB",
+                "unexpected refusal",
+            )
+            require(
+                containers() == initial_containers, "output termination left a candidate container"
+            )
             return {"termination": "output cap", "combined_output_upper_bound": 1048576}
         require(name not in {"timeout", "excessive-output"}, "termination control was not enforced")
         require(result.returncode == 0, "probe failed inside container: " + result.stderr[-1000:])
         receipt: dict[str, Any] = json.loads(result.stdout)
         require_probe_receipt(name, receipt)
-        require(sha(protected) == protected_hash and sha(oracle_path) == oracle_hash, "verifier state changed")
+        require(
+            sha(protected) == protected_hash and sha(oracle_path) == oracle_hash,
+            "verifier state changed",
+        )
         return receipt
 
     for name in probes:
         record(name, partial(probe, name))
     require(containers() == initial_containers, "qualification left candidate containers")
-    require(sha(protected) == protected_hash and sha(oracle_path) == oracle_hash, "verifier state changed")
+    require(
+        sha(protected) == protected_hash and sha(oracle_path) == oracle_hash,
+        "verifier state changed",
+    )
     verify_frozen_inventory()
     require(len(attempts) == 7, "empty or incomplete qualification selection")
     status = "PASS" if all(attempt["status"] == "PASS" for attempt in attempts) else "FAIL"
@@ -408,7 +469,9 @@ def main() -> int:
             "error_type": type(error).__name__,
             "reason": str(error),
         }
-    summary.update({"protocol": PROTOCOL, "run_url": run_url(), "wall_seconds": time.monotonic() - started})
+    summary.update(
+        {"protocol": PROTOCOL, "run_url": run_url(), "wall_seconds": time.monotonic() - started}
+    )
     write(output / "summary.json", summary)
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1

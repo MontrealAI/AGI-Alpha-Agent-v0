@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 """Verifier unit tests with explicit receipt doubles; NOT real Docker qualification."""
-from copy import deepcopy
+
+import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import Mock, patch
+from copy import deepcopy
+from pathlib import Path
 from types import ModuleType
+from unittest.mock import Mock, patch
 
 from alpha_factory_v1.core.runtime.invention_automation import qualification as gate
 
@@ -131,7 +133,7 @@ class QualificationTests(unittest.TestCase):
         module_name = "alpha_factory_v1.core.runtime.invention_automation"
         module = ModuleType(module_name)
         module.critic_loop = Mock()
-        verifier_name = "contrib.invention_automation.qualify_verify"
+        verifier_name = "alpha_factory_v1.core.runtime.invention_verification.qualify_verify"
         verifier = ModuleType(verifier_name)
         verifier.prove_program = Mock(return_value={"proof": "double"})
         request = deepcopy(REQUEST)
@@ -162,19 +164,38 @@ class QualificationTests(unittest.TestCase):
             "confirmation": False,
             "business_accepted": False,
         }
+        native_negative = {
+            **flags,
+            "acceptance": "REJECTED",
+            "program_hash": gate.digest(request["baseline"]),
+            "request_hash": gate.digest(request),
+            "execution_hash": gate.digest(negative),
+            "confirmation": False,
+            "business_accepted": False,
+        }
         cases = [
-            (candidate, negative, acceptance, True),
-            (candidate, {"status": "BLOCKED"}, acceptance, False),
-            ({**candidate, "program_hash": "wrong"}, negative, acceptance, False),
-            ({**candidate, "records_hash": "wrong"}, negative, acceptance, False),
-            (candidate, negative, {**acceptance, "acceptance": "REJECTED"}, False),
-            (candidate, negative, {**acceptance, "execution_hash": "wrong"}, False),
-            (candidate, negative, {**acceptance, "new_socket_denied_by_os": False}, False),
+            (candidate, negative, acceptance, native_negative, True),
+            (candidate, {"status": "BLOCKED"}, acceptance, native_negative, False),
+            ({**candidate, "program_hash": "wrong"}, negative, acceptance, native_negative, False),
+            ({**candidate, "records_hash": "wrong"}, negative, acceptance, native_negative, False),
+            (candidate, negative, {**acceptance, "acceptance": "REJECTED"}, native_negative, False),
+            (candidate, negative, {**acceptance, "execution_hash": "wrong"}, native_negative, False),
+            (candidate, negative, {**acceptance, "new_socket_denied_by_os": False}, native_negative, False),
+            (candidate, negative, acceptance, {**native_negative, "acceptance": "ACCEPTED"}, False),
+            (candidate, negative, acceptance, {**native_negative, "execution_hash": "wrong"}, False),
+            (candidate, negative, acceptance, {**native_negative, "new_socket_denied_by_os": False}, False),
         ]
-        for index, (execution, control, final, passes) in enumerate(cases):
+        freeze = {
+            "files": {
+                "alpha_factory_v1/core/runtime/invention_automation/qualification.py": hashlib.sha256(
+                    b"source double"
+                ).hexdigest()
+            }
+        }
+        for index, (execution, control, final, negative_final, passes) in enumerate(cases):
             with self.subTest(index=index):
                 module.critic_loop.execute_bound.side_effect = [execution, control]
-                module.critic_loop.verify_role.side_effect = [admission, final]
+                module.critic_loop.verify_role.side_effect = [admission, final, negative_final]
                 evidence = {"status": "FAILED"}
                 with (
                     patch.dict("sys.modules", {module_name: module, verifier_name: verifier}),
@@ -184,12 +205,32 @@ class QualificationTests(unittest.TestCase):
                 ):
                     if not passes:
                         with self.assertRaises(ValueError):
-                            gate.qualify(request, {}, evidence, context={}, freeze={})
+                            gate.qualify(request, {}, evidence, context={}, freeze=freeze)
                     else:
-                        gate.qualify(request, {}, evidence, context={}, freeze={})
+                        gate.qualify(request, {}, evidence, context={}, freeze=freeze)
                 self.assertEqual(evidence["status"], "DYNAMIC_COMPONENT_PASS" if passes else "FAILED")
                 self.assertEqual(evidence["candidate_execution"], execution)
                 self.assertIn("implementation_sha256", evidence)
+
+    def test_installed_implementation_missing_or_changed_pin_refused_before_runtime_import(self):
+        module_name = "alpha_factory_v1.core.runtime.invention_automation"
+        for freeze in (
+            {},
+            {"files": {}},
+            {"files": {"alpha_factory_v1/core/runtime/invention_automation/qualification.py": "wrong"}},
+        ):
+            with self.subTest(freeze=freeze):
+                evidence = {}
+                with (
+                    patch.object(gate.shutil, "which", return_value="docker"),
+                    patch.dict(gate.os.environ, {"ALPHA_SANDBOX_IMAGE": IMAGE}),
+                    patch.object(Path, "read_bytes", return_value=b"source double"),
+                    patch.dict("sys.modules", {module_name: None}),
+                    self.assertRaisesRegex(ValueError, "actual installed qualification"),
+                ):
+                    gate.qualify(REQUEST, {}, evidence, context={}, freeze=freeze)
+                self.assertNotIn("candidate_execution", evidence)
+                self.assertNotIn("frozen_admission", evidence)
 
     def test_unicode_hash_matches_frozen_contract_encoding(self):
         import hashlib
@@ -201,16 +242,20 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(gate.digest(value), expected)
 
     def test_different_valid_retained_program_refused_before_execution(self):
-        from contrib.invention_automation.qualify_verify import prove_program
+        from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import (
+            prove_program,
+        )
 
         fixture = Path(__file__).resolve().parents[1] / "evidence/invention-qualification-20261029/request.json"
         request = json.loads(fixture.read_text())
         alternate = {"op": "sequence", "steps": [request["proposal"]]}
         proof = prove_program(alternate, request["requirements"], request["budget"], dominance=True)
         self.assertEqual(proof["unsafe_fields"], [])
-        with patch.object(gate.shutil, "which") as docker:
-            with self.assertRaisesRegex(ValueError, "not the retained proposal"):
-                gate.qualify(request, alternate, {})
+        with (
+            patch.object(gate.shutil, "which") as docker,
+            self.assertRaisesRegex(ValueError, "not the retained proposal"),
+        ):
+            gate.qualify(request, alternate, {})
         docker.assert_not_called()
 
     def test_duplicate_record_ids_refused(self):

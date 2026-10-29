@@ -15,6 +15,72 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  public-reader:
+    name: Anonymous merged-paper byte and viewer readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - name: Read the immutable public GitHub paper without credentials or cookies
+        run: |
+          python -B contrib/invention_automation/public_reader.py --output public-reader.json \
+            --inline-url-output "$RUNNER_TEMP/public-reader-inline-url"
+      - name: Capture the public inline reader in a fresh anonymous browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v google-chrome
+          google-chrome --version > public-reader-browser-version.txt
+          reader_profile="$RUNNER_TEMP/public-reader-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          test ! -e "$reader_profile"
+          timeout --kill-after=5s 55s google-chrome \
+            --headless=new --disable-gpu --disable-background-networking \
+            --disable-sync --no-first-run --no-default-browser-check \
+            --user-data-dir="$reader_profile" --disk-cache-size=1048576 --media-cache-size=1048576 \
+            --window-size=1440,1100 --virtual-time-budget=30000 \
+            --screenshot="$GITHUB_WORKSPACE/public-reader-browser.png" \
+            "$(cat "$RUNNER_TEMP/public-reader-inline-url")" \
+            > "$RUNNER_TEMP/public-reader-chrome.log" 2>&1
+          test -s public-reader-browser.png
+          test "$(du -sb "$reader_profile" | cut -f1)" -le 67108864
+          python -B - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          raw = Path('public-reader-browser.png').read_bytes()
+          assert raw.startswith(b'\x89PNG\r\n\x1a\n')
+          record = {
+              'status': 'CAPTURED_REQUIRES_VISUAL_INSPECTION',
+              'fresh_profile': True,
+              'credential_or_cookie_import': False,
+              'browser_version': Path('public-reader-browser-version.txt').read_text().strip(),
+              'reader_route_sha256': json.loads(Path('public-reader.json').read_text())['inline_viewer']['url_sha256'],
+              'reader_route_provenance': 'anonymous GitHub blob HTML displayUrl',
+              'screenshot_sha256': hashlib.sha256(raw).hexdigest(),
+              'screenshot_bytes': len(raw),
+              'profile_postrun_max_bytes': 67108864,
+              'scope': 'Anonymous GitHub-supplied PDF iframe capture; process exit alone does not establish rendered PDF.',
+          }
+          Path('public-reader-browser.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
+      - name: Retain actual anonymous readback evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: public-reader-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            public-reader.json
+            public-reader-browser.json
+            public-reader-browser.png
+            public-reader-browser-version.txt
+          if-no-files-found: error
+          retention-days: 30
   dynamic:
     name: Real generated-program and isolation qualification
     runs-on: ubuntu-24.04
@@ -30,6 +96,8 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.12"
+      - name: Native acceptance receipt-double tests (not generated execution)
+        run: python -B -m unittest discover -s tests -p 'test_invention_*qualification.py' -v
       - name: Check exact source and real Docker
         shell: bash
         run: |
@@ -60,6 +128,22 @@ jobs:
           assert summary["controls_executed"]==7
           assert all(item["status"]=="PASS" for item in summary["attempts"])
           PY
+      - name: Accept the retained proposal through the native frozen verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m scripts.prepare_installed_invention \
+            --prepare-source --source-root "$GITHUB_WORKSPACE" \
+            --request evidence/invention-qualification-20261029/request.json \
+            --program evidence/invention-qualification-20261029/program.json \
+            --context evidence/invention-qualification-20261029/context.json \
+            --output dynamic-evidence/native-acceptance-v2
+          python -B -m scripts.validate_invention_sandbox \
+            --request dynamic-evidence/native-acceptance-v2/request.json \
+            --program dynamic-evidence/native-acceptance-v2/program.json \
+            --context dynamic-evidence/native-acceptance-v2/context.json \
+            --freeze dynamic-evidence/native-acceptance-v2/freeze.json \
+            --output dynamic-evidence/native-acceptance-v2/result.json
       - name: Retain immutable-run qualification evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
