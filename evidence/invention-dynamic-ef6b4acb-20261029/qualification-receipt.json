@@ -1,0 +1,261 @@
+{
+  "schema": "agialpha/invention-dynamic-public-receipt/v2",
+  "status": "PARTIAL_QUALIFICATION_WITH_RECORDED_FAILURE",
+  "source_commit": "ef6b4acb26089888c6951467187c17286884d44f",
+  "source_tree": "d273a3aa0f36139060c90c825666c17933303df7",
+  "run": {
+    "id": 40911121082,
+    "attempt": 1,
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40911121082",
+    "workflow_conclusion": "success",
+    "dynamic_job_id": 123579042907,
+    "reader_job_id": 123579044243
+  },
+  "dynamic": {
+    "status": "PASS",
+    "controls_executed": 7,
+    "attempts": [
+      {
+        "details": {
+          "actual_execution": true,
+          "oracle": {
+            "boundary": {
+              "file_write_open_and_mutation_denied": true,
+              "mechanism": "additional kernel seccomp filter in verifier process",
+              "new_sockets_and_exec_denied": true,
+              "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+            },
+            "confirmation": false,
+            "operations": 55,
+            "records_checked": 7,
+            "tested_denials": {
+              "candidate_write": true,
+              "socket": true
+            },
+            "verdict": "PASS"
+          },
+          "result_sha256": "bc290ec22529336335ea05b3d1b851ffb2c0414579eb61e6910cfb5662775555"
+        },
+        "executed": true,
+        "name": "native-valid",
+        "status": "PASS",
+        "wall_seconds": 0.46589351199999385
+      },
+      {
+        "details": {
+          "actual_execution": true,
+          "oracle": {
+            "boundary": {
+              "file_write_open_and_mutation_denied": true,
+              "mechanism": "additional kernel seccomp filter in verifier process",
+              "new_sockets_and_exec_denied": true,
+              "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+            },
+            "confirmation": false,
+            "reason": "actual record consequences differ from separate oracle",
+            "tested_denials": {
+              "candidate_write": true,
+              "socket": true
+            },
+            "verdict": "REJECTED"
+          },
+          "result_sha256": "e19c58bb85ca7b795a1c7dc868f12cc33eda81de0e60772d54bb70dee1c8397f"
+        },
+        "executed": true,
+        "name": "native-invalid",
+        "status": "PASS",
+        "wall_seconds": 0.40982994099999814
+      },
+      {
+        "details": {
+          "checks": {
+            "capabilities_dropped": true,
+            "cpu_limit": true,
+            "external_network_denied": true,
+            "input_write": true,
+            "memory_limit": true,
+            "no_default_route": true,
+            "no_docker_socket": true,
+            "no_host_mounts": true,
+            "no_new_privileges": true,
+            "nonroot": true,
+            "pids_limit": true,
+            "privilege_escalation": true,
+            "root_write": true,
+            "scratch_exec": true,
+            "scratch_writable": true,
+            "seccomp_filter": true
+          },
+          "observed_cgroup_limits": {
+            "cpu.max": "200000 100000",
+            "memory.max": "2147483648",
+            "pids.max": "64"
+          }
+        },
+        "executed": true,
+        "name": "permissions-network-exec",
+        "status": "PASS",
+        "wall_seconds": 0.3529207240000005
+      },
+      {
+        "details": {
+          "checks": {
+            "pids_exhaustion": true,
+            "scratch_exhaustion": true
+          },
+          "scratch_bytes_written": 16777216,
+          "threads_started": 63
+        },
+        "executed": true,
+        "name": "resource-exhaustion",
+        "status": "PASS",
+        "wall_seconds": 0.3540154939999951
+      },
+      {
+        "details": {
+          "checks": {
+            "oracle_source": true,
+            "verifier_state": true
+          }
+        },
+        "executed": true,
+        "name": "verifier-tampering",
+        "status": "PASS",
+        "wall_seconds": 0.30222940299999834
+      },
+      {
+        "details": {
+          "combined_output_upper_bound": 1048576,
+          "termination": "output cap"
+        },
+        "executed": true,
+        "name": "excessive-output",
+        "status": "PASS",
+        "wall_seconds": 0.21787044600000627
+      },
+      {
+        "details": {
+          "observed_seconds": 120.088579497,
+          "termination": "SandboxTimeout"
+        },
+        "executed": true,
+        "name": "timeout",
+        "status": "PASS",
+        "wall_seconds": 120.105194648
+      }
+    ],
+    "limits": {
+      "combined_output_bytes": 1048576,
+      "cpus": 2,
+      "memory_bytes": 2147483648,
+      "pids": 64,
+      "scratch_bytes": 16777216,
+      "wall_seconds": 120
+    },
+    "image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "image_id": "sha256:ae4e8b7c575fabea88a029b6cae757f342ca2525e07f7c22272d5105c346b35e",
+    "docker_server": "28.0.4",
+    "scope": "exposed Docker software-mechanics qualification; no scientific confirmation or commercial claim"
+  },
+  "retained_native_acceptance": {
+    "status": "DYNAMIC_COMPONENT_PASS",
+    "retained_proposal_bound": true,
+    "positive_acceptance": "ACCEPTED",
+    "positive_candidate_executed": true,
+    "positive_operations": 55,
+    "records": 7,
+    "negative_actual_execution": true,
+    "negative_operations": 7,
+    "negative_semantic_oracle_rejected": true,
+    "negative_native_acceptance": "REJECTED",
+    "negative_native_reason": "Static contract failed: CONSISTENT lacks required dimensional dominance",
+    "negative_native_candidate_executed_field": false,
+    "negative_native_scope": "Native rejection may be static; wrong actual outputs are also checked by the separate semantic oracle.",
+    "all_source_freeze_kernel_restriction_and_execution_identity_checks": true,
+    "receipt_trust": "locally supplied orchestrator receipt; no cryptographic execution attestation or external certification"
+  },
+  "anonymous_http": {
+    "authentication_headers": false,
+    "cookie_jar": false,
+    "paper_commit": "3544aa804b26364236dcac3a585f29c45498e73d",
+    "pdf": {
+      "bytes": 622931,
+      "final_url": "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf",
+      "sha256": "8142fe2452162901cda732f7a8070572a033ed4f0cfe269c514e40e19b60457f",
+      "status": 200,
+      "url": "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf"
+    },
+    "schema": "agialpha/anonymous-paper-readback/v1",
+    "scope": "anonymous HTTP viewer availability and exact PDF bytes; visual inline rendering checked separately",
+    "status": "PASS",
+    "viewer": {
+      "bytes": 199570,
+      "final_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf",
+      "status": 200,
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/3544aa804b26364236dcac3a585f29c45498e73d/docs/papers/agi-alpha-invention-automation-v1-20261029.pdf"
+    }
+  },
+  "anonymous_browser": {
+    "status": "CAPTURED_REQUIRES_VISUAL_INSPECTION",
+    "fresh_profile": true,
+    "credential_or_cookie_import": false,
+    "browser_version": "Google Chrome 156.0.8078.47",
+    "screenshot_sha256": "9724241e604b89f868595f04631a6d97d909ad19388b3c42efcb0d7875a9f0aa",
+    "screenshot_bytes": 136709,
+    "profile_postrun_max_bytes": 67108864,
+    "scope": "Anonymous inline-browser capture; process exit alone does not establish rendered PDF.",
+    "visual_inspection": {
+      "status": "NOT_RENDERED",
+      "artifact_id": 12914886740,
+      "png_sha256": "9724241e604b89f868595f04631a6d97d909ad19388b3c42efcb0d7875a9f0aa",
+      "dimensions": [
+        1440,
+        1100
+      ],
+      "browser_version": "Google Chrome 156.0.8078.47",
+      "anonymous_evidence": "Sign in and Sign up controls visible; workflow created new profile and imported no credentials/cookies",
+      "observed": "Exact immutable paper blob/path is visible, with red 'Unable to render code block' message. No rendered PDF page visible.",
+      "scope": "HTTP exact PDF retrieval passed; capture succeeded; this original anonymous-browser capture does not establish inline PDF rendering.",
+      "local_disk_writes": false
+    }
+  },
+  "legacy_constructor_source_admission": {
+    "status": "BLOCKED_AT_THIS_HEAD_PENDING_P2_REPAIR",
+    "scope": "The retained-AST and mechanical Docker results do not qualify every construction path or establish source-claim truth."
+  },
+  "original_artifacts": [
+    {
+      "name": "dynamic-artifact.zip",
+      "id": 12914921061,
+      "bytes": 20338,
+      "sha256": "ff1c35ff22e732fba216679a0ccb605565dc52a53026b87174eba97fa6471fdd",
+      "expires_at": "2026-11-28T16:30:04Z"
+    },
+    {
+      "name": "public-reader.zip",
+      "id": 12914886740,
+      "bytes": 114585,
+      "sha256": "3eda151c934d23d93066e00058f0aaecb267e1a3afd0422b98221f2ce82bb3e3",
+      "expires_at": "2026-11-28T16:37:30Z"
+    }
+  ],
+  "sanitization": {
+    "all_original_archive_members_inspected": true,
+    "dynamic_members": 24,
+    "reader_members": 4,
+    "original_png_visually_inspected": true,
+    "secret_or_private_task_path_findings": [],
+    "generic_github_runner_paths_present": true,
+    "original_bytes_preserved": true
+  },
+  "unknowns": [
+    "Anonymous GitHub blob PDF rendering failed in the preserved capture; green capture status is not rendering success.",
+    "Native negative acceptance rejection is static dominance; the separate semantic oracle rejected its actual wrong Docker outputs.",
+    "Receipts trust the local orchestrator and shared host/libraries; no cryptographic execution attestation or external certification.",
+    "Memory and CPU limits were observed in cgroups; an OOM or CPU saturation experiment was not performed.",
+    "These exposed finite controls do not establish general hostile-code safety, physical suitability, source-provenance truth, or commercial value."
+  ],
+  "confirmation": false,
+  "business_accepted": false,
+  "deployment_accepted": false
+}
