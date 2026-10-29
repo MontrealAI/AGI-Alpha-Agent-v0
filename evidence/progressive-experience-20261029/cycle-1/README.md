@@ -37,7 +37,7 @@ From a checkout containing this evidence and the unchanged frozen sources, copy 
 ```sh
 python - <<'PYDATA'
 from pathlib import Path
-import hashlib, json, shutil
+import hashlib, json, shutil, subprocess
 source = Path.cwd()
 published = source / 'evidence/progressive-experience-20261029/cycle-1'
 output = Path('/tmp/NEW-progressive-replay')
@@ -54,16 +54,24 @@ freeze = json.loads((output/'freeze.json').read_text())
 for name, digest in freeze['sources'].items():
     relative = Path(name)
     assert not relative.is_absolute() and '..' not in relative.parts
-    raw = (source/relative).read_bytes()
+    raw = subprocess.check_output(['git', 'show', '2ca09dae85f28cf440357de93fecea9c85bd57e9:' + name])
     assert hashlib.sha256(raw).hexdigest() == digest
     target = output/'source-snapshot'/relative
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(raw)
 print(hashlib.sha256((output/'freeze.json').read_bytes()).hexdigest())
 PYDATA
-python -B -m contrib.retained_experience.progressive_check /tmp/NEW-progressive-replay --freeze-sha256 PRINTED_FREEZE_HASH
+python -B -m contrib.retained_experience.progressive_check /tmp/NEW-progressive-replay --freeze-sha256 PRINTED_FREEZE_HASH --historical-sealed-trial
 ```
 
 The first original source snapshot is retained by its source/run owner; its bytes are independently recoverable from the immutable public source freeze and per-file hashes. Public data excludes duplicate source copies and all private journal secrets. Do not overwrite the trial, its seal or the private journal. No service was started and no production setting needs rollback.
 
 A new numerical run follows [the source quickstart](../../../contrib/retained_experience/PROGRESSIVE.md); it is a different exploratory panel, not a rescue or confirmation of this retired cohort. The next productive decision is to keep the incumbent and require independent operator/cohort/demand evidence or a materially different bottleneck before reopening commercial promotion.
+
+## Subsequent review repair
+
+Configured review reproduced two gaps in the original checker: zeroed delivered costs and a noninteger seed could still pass its audit. The original checker/source freeze and verification receipt remain historical records, not sufficient evidence of those two integrity properties. The updated checker independently regenerates the exact two-per-regime panel from a bounded integer seed, binds every resource cost to its observation's execution measurement and checks cost-family attribution.
+
+The explicit historical audit mode admits only this fixed seal and freeze. It verifies every original source snapshot as inert data and records the executing updated verifier separately. It does not requalify the original producer, change a frozen hash, permit source drift in normal qualification, grant authority or create fresh confirmation. The stronger audit passes the same768outputs and leaves RETIRE_COHORT_PROMOTION unchanged. No replacement panel was generated.
+
+The original v1 runtime dependency versions were not frozen in freeze.json. A subsequently observed, isolated Python3.12 Linuxx86-64 profile reproduces the numerical development fixtures and incomplete accounting behavior; it is not retrospective prospective toolchain qualification. See REPRODUCTION.json and the source quickstart.

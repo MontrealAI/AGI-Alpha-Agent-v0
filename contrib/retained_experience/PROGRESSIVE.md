@@ -37,6 +37,31 @@ No scientific confirmation allowance is allocated or reset.
 
 ## Run from source
 
+For a fresh, scoped Python 3.12 Linux x86-64 environment, the following source
+profile was independently exercised on known development fixtures. It is not a
+wheel, release or full development-environment qualification. Record the checked
+out commit; the original numerical trial stays pinned to its earlier source.
+
+```sh
+git clone --filter=blob:none --sparse --single-branch --branch codex/progressive-experience-diagnostic-20261029 https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git agi-progressive
+cd agi-progressive
+git sparse-checkout set --no-cone /alpha_factory_v1/core/ /alpha_factory_v1/utils/ /alpha_factory_v1/__init__.py /contrib/retained_experience/ /contrib/compounding_discovery/base-target.json /contrib/invention_automation/readonly.py /evidence/progressive-experience-20261029/
+git rev-parse HEAD
+python3.12 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r contrib/retained_experience/requirements-diagnostic.txt
+python -m pip check
+```
+
+The version-pinned lightweight profile was observed after the original trial; it
+is not retrospectively part of that freeze. Linux `libseccomp.so.2` must already
+be present. No model key or operator grant is needed. To inspect the saved
+negative result, follow the exact reconstruction/check command in
+[the trial evidence](../../evidence/progressive-experience-20261029/cycle-1/README.md).
+Expected stronger-check output: `accepted: true`, `outputs: 768`,
+`audit_mode: post-hoc fixed sealed historical data`; the saved advancement decision
+is still `RETIRE_COHORT_PROMOTION`. This checks data without generating more tasks.
+
 Use the repository's supported Python 3.11-3.13 development environment, the
 `compounding-discovery` extra with NumPy/SciPy 1.17, and Linux `libseccomp.so.2`.
 No model, Docker daemon, server, account grant, wallet or paid call is required.

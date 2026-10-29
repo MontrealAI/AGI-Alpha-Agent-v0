@@ -1,0 +1,33 @@
+{
+  "review_findings": [
+    {
+      "comment": 4415645033,
+      "defect": "Delivered cost was not bounded below by the corresponding execution measurement.",
+      "repair": "Require exact nonnegative integer execution/cost values and delivered cost >= execution; bind cost family."
+    },
+    {
+      "comment": 4415645035,
+      "defect": "Evaluation seed value and exact per-regime generation were not verified.",
+      "repair": "Require a bounded integer seed and independently reconstruct and compare the complete exact panel."
+    }
+  ],
+  "original_source_commit": "2ca09dae85f28cf440357de93fecea9c85bd57e9",
+  "original_checker_sha256": "e7a82ed08dfca9fb8910b92ede4a7f5c0b396b61bebb8662ee3267d216cc6ce9",
+  "repaired_checker_sha256": "44bbad2db787f2b33934c40a8cc32193e89e9621dfc5ae8e52056f4cea20526c",
+  "original_seal_sha256": "3bacb09810fa4648a4e440c824fac77f0dcf462202e2438616aafabedff490be",
+  "tests_passed": 56,
+  "actual_verifier_negative_controls": [
+    "zeroed delivered costs refused",
+    "string seed refused"
+  ],
+  "posthoc_outputs_checked": 768,
+  "fresh_tasks_generated_after_repair": 0,
+  "new_confirmation_claim": false,
+  "old_producer_requalified": false,
+  "retirement_decision_changed": false,
+  "historical_scope": "Only fixed original seal/freeze admitted for inert snapshot re-audit; normal qualification still requires current source hashes.",
+  "source_typing": "PASS: two source files strict Mypy",
+  "ruff": "PASS: locked0.12.5",
+  "formatting": "PASS: Black",
+  "clean_source_profile": "Ten pinned packages in fresh venv; scoped immutable source export numerical fixtures and incomplete accounting PASS; not installed wheel or release qualification."
+}

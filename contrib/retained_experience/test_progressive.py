@@ -3,6 +3,9 @@
 
 from copy import deepcopy
 from pathlib import Path
+import hashlib
+import json
+import shutil
 
 import pytest
 
@@ -93,3 +96,76 @@ def test_existing_journal_and_cost_ledger_keep_unadmitted_costs_unknown_without_
     assert all(r["accrued_micro_usd"] is None for r in report["unsigned_cost_inputs"])
     assert report["grants_created"] == 0 and report["complete_monetary_cost"] is None
     assert not (evidence / "identity.key").exists() and not (evidence / "api.token").exists()
+
+
+@pytest.mark.parametrize("execution,cost", [(1, 0), (5, 4), (-1, 5), (True, 5), (1, False), (1, "1")])
+def test_undercounted_or_malformed_resource_cost_is_refused(execution, cost):
+    with pytest.raises(ValueError):
+        audit.delivered_cost(execution, cost)
+
+
+def test_cost_includes_execution_and_optional_serialization():
+    audit.delivered_cost(123, 123)
+    audit.delivered_cost(123, 145)
+
+
+@pytest.mark.parametrize("seed", ["not a seed", True, -1, 2**63, None])
+def test_malformed_seed_is_refused_before_reconstructing_panel(history, seed):
+    with pytest.raises(ValueError, match="seed"):
+        audit.expected_panel(history[0]["target"], seed)
+
+
+def test_independent_seed_reconstruction_matches_each_declared_regime_and_family(history):
+    base = history[0]["target"]
+    expected = audit.expected_panel(base, 123456789)
+    actual = []
+    for stage in trial.STAGES:
+        for family in ("same-route", "withheld-stops"):
+            for target in trial.experiment.make_panel(base, 123456789 + stage, 2, f"evaluation-{stage}-{family}"):
+                if family == "withheld-stops":
+                    target = trial.withheld(target)
+                actual.append({"stage": stage, "family": family, "target": trial.compact(target)})
+    assert actual == expected
+    assert audit.expected_panel(base, 123456790) != expected
+
+
+def test_historical_mode_cannot_admit_an_unrecognized_trial(tmp_path):
+    with pytest.raises(ValueError, match="unrecognized historical source freeze"):
+        audit.historical_source_root(tmp_path, "0" * 64)
+
+
+def repaired_fixture(tmp_path):
+    published = ROOT / "evidence/progressive-experience-20261029/cycle-1"
+    directory = tmp_path / "adversarial-fixture-not-confirmation"
+    directory.mkdir()
+    for p in published.iterdir():
+        if p.is_file():
+            shutil.copyfile(p, directory / p.name)
+    freeze = verifier.read(directory / "freeze.json")
+    for name in freeze["sources"]:
+        raw = (ROOT / name).read_bytes()
+        freeze["sources"][name] = hashlib.sha256(raw).hexdigest()
+        target = directory / "source-snapshot" / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(raw)
+    (directory / "freeze.json").write_bytes(verifier.canonical(freeze) + b"\n")
+    return directory, hashlib.sha256((directory / "freeze.json").read_bytes()).hexdigest()
+
+
+def test_actual_verifier_rejects_seed_substitution(tmp_path):
+    directory, freeze = repaired_fixture(tmp_path)
+    seed = verifier.read(directory / "seed.json")
+    seed["seed"] = "not a seed"
+    (directory / "seed.json").write_bytes(verifier.canonical(seed))
+    with pytest.raises(ValueError, match="seed"):
+        audit.verify(directory, freeze)
+
+
+def test_actual_verifier_rejects_zeroed_delivered_costs(tmp_path):
+    directory, freeze = repaired_fixture(tmp_path)
+    rows = [json.loads(line) for line in (directory / "costs.jsonl").read_text().splitlines()]
+    for row in rows:
+        row["cpu_ns"] = 0
+    (directory / "costs.jsonl").write_bytes(b"\n".join(verifier.canonical(row) for row in rows) + b"\n")
+    with pytest.raises(ValueError, match="understates"):
+        audit.verify(directory, freeze)
