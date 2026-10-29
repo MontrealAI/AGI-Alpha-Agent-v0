@@ -12,7 +12,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  # Only superseded PR heads share a cancellation group; other events retain exact-SHA grouping.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name == 'pull_request' && 'latest-pr' || github.sha }}
   cancel-in-progress: true
 
 defaults:
@@ -177,3 +178,4 @@ jobs:
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as report:
               report.write(message + '\n')
           PYTHON
+
