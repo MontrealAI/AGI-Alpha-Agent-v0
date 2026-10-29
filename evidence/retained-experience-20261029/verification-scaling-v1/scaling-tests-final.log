@@ -1,0 +1,68 @@
+........................................................................ [ 42%]
+...................F.................................................... [ 85%]
+.......................F                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_discovery_ordinary_mission_requires_review_before_signed_export _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-66/test_discovery_ordinary_missio0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7bdaf22180>
+
+    def test_discovery_ordinary_mission_requires_review_before_signed_export(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+>       from alpha_factory_v1.core.runtime import engine as mission_engine
+
+contrib/compounding_discovery/test_engine.py:302: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/engine.py:13: in <module>
+    from . import work
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # SPDX-License-Identifier: Apache-2.0
+    """Bounded, reproducible work and independent output checks."""
+    
+    from __future__ import annotations
+    
+    import itertools
+    import math
+    import re
+    from typing import Any, Callable
+    
+>   from alpha_factory_v1.core.simulation import mats
+E   ModuleNotFoundError: No module named 'alpha_factory_v1.core.simulation'
+
+alpha_factory_v1/core/runtime/work.py:11: ModuleNotFoundError
+____ test_generic_mission_runs_review_and_native_export_without_a_provider _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-66/test_generic_mission_runs_revi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7bd81c5760>
+
+    def test_generic_mission_runs_review_and_native_export_without_a_provider(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+>       from alpha_factory_v1.core.runtime import engine as mission_engine
+
+contrib/structural_transfer/test_runtime.py:590: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/engine.py:13: in <module>
+    from . import work
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # SPDX-License-Identifier: Apache-2.0
+    """Bounded, reproducible work and independent output checks."""
+    
+    from __future__ import annotations
+    
+    import itertools
+    import math
+    import re
+    from typing import Any, Callable
+    
+>   from alpha_factory_v1.core.simulation import mats
+E   ModuleNotFoundError: No module named 'alpha_factory_v1.core.simulation'
+
+alpha_factory_v1/core/runtime/work.py:11: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED contrib/compounding_discovery/test_engine.py::test_discovery_ordinary_mission_requires_review_before_signed_export
+FAILED contrib/structural_transfer/test_runtime.py::test_generic_mission_runs_review_and_native_export_without_a_provider
+2 failed, 166 passed in 45.04s

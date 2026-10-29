@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from alpha_factory_v1.core.runtime.retained_experience import verifier
-from alpha_factory_v1.core.runtime.retained_experience.operator import check_seal
+from alpha_factory_v1.core.runtime.retained_experience.operator import check_seal as check_seal
 
 ROOT = Path(__file__).resolve().parents[2]
 VERIFIER = "alpha_factory_v1/core/runtime/retained_experience/verifier.py"
@@ -72,6 +72,12 @@ def write(path: Path, value: Any) -> None:
 
 def snapshot_identity(source: Path, root: Path = ROOT) -> dict[str, str]:
     freeze = verifier.read(source / "freeze.json")
+    snapshot = source / "source-snapshot"
+    entries = list(snapshot.rglob("*"))
+    if any(p.is_symlink() for p in entries) or {str(p.relative_to(snapshot)) for p in entries if p.is_file()} != set(
+        freeze["sources"]
+    ):
+        raise ValueError("archived source file set differs from the frozen closure")
     for name, expected in freeze["sources"].items():
         path = Path(name)
         if (

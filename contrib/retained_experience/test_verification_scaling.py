@@ -99,6 +99,14 @@ def test_trusted_seal_and_archived_source_cannot_be_substituted(tmp_path: Path) 
         scaling.snapshot_identity(PANEL, root=tmp_path)
 
 
+def test_unlisted_archived_startup_code_is_refused(tmp_path: Path) -> None:
+    output = tmp_path / "panel"
+    scaling.derive_panel(PANEL, output, 1, SEAL)
+    (output / "source-snapshot/sitecustomize.py").write_text("raise RuntimeError('unlisted startup code')\n")
+    with pytest.raises(ValueError, match="source file set"):
+        scaling.snapshot_identity(output)
+
+
 @pytest.mark.parametrize("count", [0, 17, True])
 def test_subset_budget_refuses_before_writing(tmp_path: Path, count: int) -> None:
     with pytest.raises(ValueError, match="bounded source subset"):

@@ -30,7 +30,7 @@ def load_module(path: Path, name: str) -> ModuleType:
 def measure(directory: Path, expected_freeze: str) -> dict[str, Any]:
     started = time.process_time_ns()
     snapshot = directory / "source-snapshot"
-    verifier = load_module(snapshot / VERIFIER, "_scaling_archived_verifier")
+    verifier: Any = load_module(snapshot / VERIFIER, "_scaling_archived_verifier")
     readonly = load_module(snapshot / READONLY, "_scaling_archived_readonly")
     history_count = len(verifier.read(directory / "history.json"))
     development_count = len(verifier.read(directory / "development.json"))
