@@ -192,11 +192,19 @@ full software qualification. Dispatches also require the full lane. Histories ar
 bounded to 200 introduced commits; a longer chain needs a new software baseline.
 Successful paper checks are explicitly not full-runtime historical evidence.
 
-Workflow concurrency includes the exact source SHA before classification, so a
-new paper does not cancel an older software run. This intentionally permits some
-superseded software work to finish using runner resources; stale software still
-cannot publish. Cancellation-aware execution guards do not remove always-run
-evidence cleanup.
+Workflow concurrency retains exact source SHA grouping before classification,
+except PR CI supersedes earlier heads of the same pull request. Its replacement
+head classifies the complete base-to-head history, not only the latest commit:
+a paper commit following unmerged software changes still reruns full software
+checks. Other workflows and non-PR events retain their existing grouping; main,
+merge-group and manual PR CI runs continue to use exact-SHA groups. Cancelled
+superseded runs remain in history and are never treated as passes or inherited
+qualification. Cancellation-aware guards retain always-run evidence cleanup;
+no current-head checks are removed and stale software still cannot publish.
+Same-head PR reruns share that pull request's group as well, so a replacement
+attempt supersedes an earlier attempt for the same head. Distinct non-PR SHAs
+remain independent; duplicate runs for one non-PR SHA retain their original
+grouping and cancellation behavior.
 
 ## Software identity versus paper-site identity
 
