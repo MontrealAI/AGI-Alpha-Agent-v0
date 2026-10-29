@@ -29,6 +29,9 @@ def parser() -> argparse.ArgumentParser:
     from .successor.flywheel_operator import add_commands as add_flywheel_commands
 
     add_flywheel_commands(commands)
+    from .invention_automation.operator import add_commands as add_invention_commands
+
+    add_invention_commands(commands)
     samples = commands.add_parser("examples", help="List or copy the five editable, packaged mission examples")
     samples.add_argument("--output", type=Path, help="Create a NEW directory; existing files are never overwritten")
     for name in ("ascension-compile", "ascension-check"):
@@ -78,7 +81,9 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("configure", help="Apply configuration while paused").add_argument("file", type=Path)
     serve = commands.add_parser("serve", help="Open the local, authenticated operator console")
     serve.add_argument("--port", type=int, default=8765)
-    serve.add_argument("--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration")
+    serve.add_argument(
+        "--flywheel-deployment", type=Path, help="Explicitly provisioned protected service configuration"
+    )
     for name in ("wallet-challenge", "balance"):
         commands.add_parser(name)
     commands.add_parser("wallet-bind").add_argument("signature")
@@ -122,6 +127,10 @@ def main(argv: list[str] | None = None) -> int:
             from .successor.flywheel_operator import handle as handle_flywheel
 
             result = handle_flywheel(args)
+        elif args.command == "invention":
+            from .invention_automation.operator import handle
+
+            result = handle(args)
         elif args.command == "examples":
             from .samples import examples
 
@@ -285,7 +294,9 @@ def main(argv: list[str] | None = None) -> int:
                     from .successor.flywheel_operator import load as load_flywheel
 
                     protected = load_flywheel(journal, args.flywheel_deployment)
-                uvicorn.run(create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False)
+                uvicorn.run(
+                    create_app(journal, protected_library=protected), host="127.0.0.1", port=args.port, access_log=False
+                )
                 return 0
             else:  # pragma: no cover - argparse enumerates the commands
                 raise ValueError("unknown command")
