@@ -129,6 +129,13 @@ class QualificationTests(unittest.TestCase):
             self.assertEqual((output / "rollback.csv").read_bytes(), (examples / "catalogue.csv").read_bytes())
             self.assertIn("A,Montréal Widget,12.50,Preserve buyer approval", (output / "updated.csv").read_text())
 
+    def test_non_object_change_entries_refused(self) -> None:
+        for changes in ([None], ["update"], [1], None, {}, "update"):
+            with self.subTest(changes=changes):
+                package = copy.deepcopy(self.package)
+                package["native_package"]["changes"] = changes
+                self.assertEqual(verify_delta(self.before, self.delta, package, self.request)["verdict"], "REJECTED")
+
     def test_stale_rollback_refuses(self) -> None:
         with self.assertRaises(ValueError):
             native.rollback("sku,note\nA,different\n", self.package["native_package"], authorized=True)

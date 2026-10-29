@@ -32,7 +32,7 @@ are local artifacts, not customer acceptance, financial settlement or security c
 
 `fast_delivery_evidence/original-*` preserves upstream developer evidence, not current-run receipts.
 The original ZIP remains unchanged in Library (identity and hash in qualification.json). Original
-26 tests were rerun on current Python 3.12; 37 tests pass after the checker repair, including eight
+26 tests were rerun on current Python 3.12; 38 tests pass after the checker repair, including eight
 new fixed contract cases. The 64 original development cases tie conventional software. None are
 independent customer trials or fresh scientific confirmation. Fixed code only was run with resource
 limits and network denial; this does not qualify a generated-program sandbox.

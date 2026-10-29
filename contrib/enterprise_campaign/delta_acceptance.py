@@ -120,6 +120,9 @@ def verify_delta(before: str, delta: str, envelope: dict[str, Any], request: dic
         native = envelope["native_package"]
         if not isinstance(native, dict):
             raise ValueError("Native package must be an object")
+        changes_value = native.get("changes")
+        if not isinstance(changes_value, list) or not all(isinstance(item, dict) for item in changes_value):
+            raise ValueError("Native changes must be a list of objects")
         expected = conventional_delta(before, delta, request)
         columns, old_rows = _read(before)
         _, new_rows = _read(expected)
