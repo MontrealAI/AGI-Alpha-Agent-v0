@@ -218,7 +218,8 @@ def criticize(request: dict[str, Any]) -> dict[str, Any]:
                 from fractions import Fraction
 
                 literals = re.findall(
-                    r"(?<![\w.])([0-9]+(?:\.[0-9]+)?)\s+" + re.escape(reading["unit"]) + r"(?![\w])", source["excerpt"]
+                    r"(?<![\w.])([0-9]+(?:\.[0-9]+)?)[ \t]*" + re.escape(reading["unit"]) + r"(?![\w])",
+                    source["excerpt"],
                 )
                 if not any(Fraction(value) == Fraction(reading["value"]) for value in literals):
                     raise ValueError("quantity and unit witness not in literal source")

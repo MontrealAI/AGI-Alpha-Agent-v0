@@ -253,3 +253,20 @@ def test_bound_boundary_receipt_cannot_be_reused_for_different_program(monkeypat
     bound = critic_loop.execute_bound(value["proposal"], value["records"])
     assert bound["program_hash"] == digest(value["proposal"])
     assert bound["records_hash"] == digest(value["records"])
+
+
+@pytest.mark.parametrize("separator", ["", " ", "\t"])
+def test_admitted_literal_spacing_survives_corrective_construction(separator: str) -> None:
+    value = request()
+    source = value["sources"][0]
+    source["excerpt"] = f"high-side voltage of less than 34.5{separator}kVA"
+    source["sha256"] = hashlib.sha256(source["excerpt"].encode()).hexdigest()
+    ctx = context(value)
+    objection = evidence_critic.investigate(value, ctx, PROVENANCE).objections[0]
+    receipt = critic_verify.adjudicate(value, ctx, objection.to_dict())
+    assert receipt["verdict"] == "CONFIRMED"
+    corrected = critic_loop.construct_verified(value, ctx, objection, receipt)
+    assert corrected["constraint"]["field"] == "high_side_voltage"
+    assert corrected["constraint"]["objection_hash"] == objection.digest
+    proof = critic_loop.spec.dominance(corrected["program"], value["requirements"], value["budget"])
+    assert proof["valid"] is True
