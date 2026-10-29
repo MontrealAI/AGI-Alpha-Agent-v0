@@ -263,6 +263,72 @@ AUTHORIZED_FLAGSHIP_ARTWORK = {
 }
 
 
+# Reviewed publication source assets only; no suffix or directory-wide admission.
+# Canonical paper PDF remains subject to the existing catalog/PDF validators.
+AUTHORIZED_INVENTION_PUBLICATION: dict[str, tuple[int, str]] = {
+    "docs/reports/invention-automation-research-v1/figures/acceptance.pdf": (
+        14425,
+        "a689cc0d1195507047ff366b68aac01dd849cbdd4f661ca3361d7f27504457c9",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/acceptance.png": (
+        39376,
+        "df1c7853ae20129c83435e1ccc6f342aa9460a4f3fe7ad21096e1c470794a119",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/cash.pdf": (
+        17001,
+        "d137939cc18d6c2860bf8de56448fc746526758f7d2451473dc4955c448e967f",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/cash.png": (
+        63657,
+        "a906c532610301b31e6541fa0f84944ae438b17666dad55edc5f9063283671f0",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/cpu.pdf": (
+        14605,
+        "29439583e8d268abc3181bf6717aee1f7446c1a135f1c6d7b7ab06ea243237a6",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/cpu.png": (
+        37652,
+        "1e87e5edce5b4875247699d82437dff4faac2981cbbc023ccf1dad75b8690632",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/historical-intervals.pdf": (
+        12801,
+        "9a57f78f4b61e66e9a933fbaa6254eb4f5ce2ddfc0138aaa86da2f9ffd864bed",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/historical-intervals.png": (
+        34681,
+        "c054714ed70ce490fc61ae351b761c590cda4faace63bedad8234e2649edff93",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/historical-learning.pdf": (
+        17279,
+        "0c18dffb480c898e9adcfad2e08ebf63ad79d4572dd69ae40149310c73bf3673",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/historical-learning.png": (
+        92914,
+        "1fa9060e485812bff6d98a1728c8a58088e00fde6648a5d65e8ce9b552d5cd3b",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/mechanism.pdf": (
+        14938,
+        "f1bdf3e4ddf6470cefae05beca40ed335db09cbfa06d5ab0c10cac17788a7fb6",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/mechanism.png": (
+        74249,
+        "ed35f45ab43881338d449c07782c077e6f50441f5cc3c096fbaa13bcf11e353a",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/profit-bridge.pdf": (
+        15800,
+        "ae6a9ab6e3ca957c266b16904abe995f4401a3ca8922ebf714e6ecc91627e493",
+    ),
+    "docs/reports/invention-automation-research-v1/figures/profit-bridge.png": (
+        35521,
+        "c9dd8f3e053029ef84f3d89e5231d339f69bf0e89487f7df69f41982d9cdfc40",
+    ),
+    "docs/reports/invention-automation-research-v1/latex-source.zip": (
+        1527716,
+        "d4303fb2508ee28c877e192a2bacda0e0a907358089de3a2f6993a482090c37f",
+    ),
+}
+
+
 ENTERPRISE_MANIFEST = "scripts/data/autonomous_enterprise_evidence.json"
 ENTERPRISE_MANIFEST_SHA256 = "cbb2744071352b4204500b43e849b9d8b6df7b1f522d26f7b4d5e48fc9d67118"
 ENTERPRISE_PREFIX = "evidence/autonomous-enterprises-20261022/"
@@ -278,6 +344,22 @@ def _regular_path(root: Path, name: str) -> Path:
     if not stat.S_ISREG(mode):
         raise ValueError(f"Evidence must be a regular file: {name}")
     return path
+
+
+def _invention_publication_admissions(root: Path, paths: list[str]) -> set[str]:
+    """Admit only reviewed bytes at exact paths, never links or other file types."""
+    admitted: set[str] = set()
+    for name in set(paths) & AUTHORIZED_INVENTION_PUBLICATION.keys():
+        size, digest = AUTHORIZED_INVENTION_PUBLICATION[name]
+        try:
+            path = _regular_path(root, name)
+            if path.stat().st_size != size:
+                continue
+            if hashlib.sha256(path.read_bytes()).hexdigest() == digest:
+                admitted.add(name)
+        except (OSError, ValueError):
+            continue
+    return admitted
 
 
 def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -456,6 +538,7 @@ def main() -> int:
     authorized |= asset_hashes(catalog)
     try:
         admitted_evidence = _enterprise_admissions(root, binary_paths)
+        admitted_evidence |= _invention_publication_admissions(root, binary_paths)
     except (OSError, ValueError) as exc:
         print(f"ERROR: Enterprise binary admission failed: {exc}")
         return 1
