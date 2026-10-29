@@ -1,0 +1,47 @@
+.F......................F.                                               [100%]
+=================================== FAILURES ===================================
+_ test_withheld_route_family_is_admitted_and_unchanged_basis_does_not_transfer _
+
+history = [{'output': {'artifact': {'objective': '59.1943815', 'schema': 'agialpha/eadarp-certificate/v1', 'scope': 'declared-eA...], 'id': 'development-3', 'instance_sha256': 'bea39527ef395f769e1023130ca40d5112947badb7a505e73a303c1ae2801bdd', ...}}]
+
+    def test_withheld_route_family_is_admitted_and_unchanged_basis_does_not_transfer(history):
+        base = history[0]["target"]
+        task = trial.withheld(base)
+        assert task["routes"] != base["routes"] and task["instance_sha256"] == base["instance_sha256"]
+        model = eadarp.compile_model(task)
+        memory = solver.learn(history[:1])
+>       assert all(a["signature"] != solver.signature(item) for a in memory["assets"] for item in model["vehicles"])
+E       assert False
+E        +  where False = all(<generator object test_withheld_route_family_is_admitted_and_unchanged_basis_does_not_transfer.<locals>.<genexpr> at 0x7fa998a022f0>)
+
+contrib/retained_experience/test_progressive.py:47: AssertionError
+_ test_original_precision_failure_is_preserved_and_current_producer_is_checked _
+
+    def test_original_precision_failure_is_preserved_and_current_producer_is_checked() -> None:
+        directory = ROOT / "evidence/retained-experience-20261029/development-smoke-v1"
+>       tasks = verifier.read(directory / "tasks.json")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+contrib/retained_experience/test_experience.py:180:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+alpha_factory_v1/core/runtime/retained_experience/verifier.py:157: in read
+    if path.is_symlink() or path.stat().st_size > 32_000_000:
+                            ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('<SOURCE_CHECKOUT>/evidence/retained-experience-20261029/development-smoke-v1/tasks.json')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '<SOURCE_CHECKOUT>/evidence/retained-experience-20261029/development-smoke-v1/tasks.json'
+
+<PYTHON_RUNTIME>/lib/python3.12/pathlib.py:840: FileNotFoundError
+=========================== short test summary info ============================
+FAILED contrib/retained_experience/test_progressive.py::test_withheld_route_family_is_admitted_and_unchanged_basis_does_not_transfer
+FAILED contrib/retained_experience/test_experience.py::test_original_precision_failure_is_preserved_and_current_producer_is_checked
+2 failed, 24 passed in 11.93s
