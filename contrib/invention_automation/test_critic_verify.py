@@ -14,13 +14,13 @@ from typing import Any
 
 import pytest
 
-from contrib.invention_automation.critic_verify import (
+from alpha_factory_v1.core.runtime.invention_verification.critic_verify import (
     adjudicate,
     field_literal,
     verify_context,
     verify_freeze,
 )
-from contrib.invention_automation.qualify_verify import sha
+from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import sha
 
 
 def example() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -85,7 +85,11 @@ def example() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         "claim_id": "dimensional-source-admission",
         "requirement_id": "voltage",
         "requirement": "voltage field requires voltage dimension",
-        "source": {"source_id": "doe", "location": f"/sources/0/excerpt#chars=0:{len(excerpt)}", "sha256": source_hash},
+        "source": {
+            "source_id": "doe",
+            "location": f"/sources/0/excerpt#chars=0:{len(excerpt)}",
+            "sha256": source_hash,
+        },
         "witness": {
             "record_id": "literal",
             "field": "voltage",
@@ -267,9 +271,10 @@ def freeze_fixture(tmp_path: Path) -> tuple[Path, Path, Path, Path, dict[str, An
     root = Path(__file__).resolve().parents[2]
     request, context, objection = example()
     files = [
-        "contrib/invention_automation/critic_verify.py",
-        "contrib/invention_automation/qualify_verify.py",
-        "contrib/invention_automation/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+        "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification_run.py",
         "alpha_factory_v1/core/utils/secure_run.py",
@@ -282,7 +287,7 @@ def freeze_fixture(tmp_path: Path) -> tuple[Path, Path, Path, Path, dict[str, An
     ]
     protocol_path = files[-1]
     pins = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in files}
-    freeze = {
+    freeze: dict[str, Any] = {
         "schema": "agialpha/critic-verifier-freeze/v1",
         "files": pins,
         "protocol_path": protocol_path,
@@ -293,7 +298,7 @@ def freeze_fixture(tmp_path: Path) -> tuple[Path, Path, Path, Path, dict[str, An
     paths = [tmp_path / name for name in ["request.json", "context.json", "objection.json", "freeze.json"]]
     for path, data in zip(paths, [request, context, objection, freeze], strict=True):
         path.write_text(json.dumps(data))
-    return *paths, freeze
+    return paths[0], paths[1], paths[2], paths[3], freeze
 
 
 def test_freeze_binds_request_context_protocol_and_self(tmp_path: Path) -> None:
@@ -305,7 +310,7 @@ def test_freeze_binds_request_context_protocol_and_self(tmp_path: Path) -> None:
         ]
         == "dimensional-source-admission"
     )
-    freeze["files"]["contrib/invention_automation/critic_verify.py"] = "0" * 64
+    freeze["files"]["alpha_factory_v1/core/runtime/invention_verification/critic_verify.py"] = "0" * 64
     with pytest.raises(ValueError, match="source freeze mismatch"):
         verify_freeze(root, freeze, json.loads(request_path.read_text()), json.loads(context_path.read_text()))
 
@@ -323,14 +328,16 @@ def run_cli(tmp_path: Path, *, corrupt_freeze: bool = False) -> subprocess.Compl
     request_path, context_path, objection_path, freeze_path, freeze = freeze_fixture(tmp_path)
     root = Path(__file__).resolve().parents[2]
     if corrupt_freeze:
-        freeze["files"]["contrib/invention_automation/critic_verify.py"] = "0" * 64
+        freeze["files"]["alpha_factory_v1/core/runtime/invention_verification/critic_verify.py"] = "0" * 64
         freeze_path.write_text(json.dumps(freeze))
     return subprocess.run(
         [
             sys.executable,
             "-B",
+            "-P",
+            "-S",
             "-m",
-            "contrib.invention_automation.critic_verify",
+            "alpha_factory_v1.core.runtime.invention_verification.critic_verify",
             "--root",
             str(root),
             "--freeze",
@@ -371,7 +378,7 @@ def test_cli_frozen_hash_failure_is_inconclusive_and_nonzero(tmp_path: Path) -> 
 
 
 def test_acceptance_is_distinct_and_blocked_execution_cannot_promote() -> None:
-    from contrib.invention_automation.critic_verify import accept
+    from alpha_factory_v1.core.runtime.invention_verification.critic_verify import accept
 
     request, _, _ = example()
     accepted = accept(request, request["proposal"], {"status": "BLOCKED", "executed": False, "reason": "Docker absent"})
@@ -382,10 +389,10 @@ def test_acceptance_is_distinct_and_blocked_execution_cannot_promote() -> None:
 
 
 def test_acceptance_fixture_checks_output_coverage_and_false_refusal() -> None:
-    from contrib.invention_automation.critic_verify import accept
+    from alpha_factory_v1.core.runtime.invention_verification.critic_verify import accept
 
     request, _, _ = example()
-    receipt = {
+    receipt: dict[str, Any] = {
         "status": "EXECUTED_UNVERIFIED",
         "executed": True,
         "image": "fixture@sha256:" + "a" * 64,
@@ -408,7 +415,7 @@ def test_acceptance_fixture_checks_output_coverage_and_false_refusal() -> None:
 
 
 def test_execution_fixtures_cannot_skip_pinned_image_or_resource_accounting() -> None:
-    from contrib.invention_automation.critic_verify import accept
+    from alpha_factory_v1.core.runtime.invention_verification.critic_verify import accept
 
     request, _, _ = example()
     fixture = {
@@ -425,7 +432,11 @@ def test_execution_fixtures_cannot_skip_pinned_image_or_resource_accounting() ->
 
 
 def test_original_evaluator_misbinding_reproduced_and_versioned_fix_rejects() -> None:
-    from contrib.invention_automation.qualify_verify import LOSS_DRIVER, UNCERTAINTY, verify_criticism
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import (
+        LOSS_DRIVER,
+        UNCERTAINTY,
+        verify_criticism,
+    )
 
     request, context, objection = example()
     request["records"][0]["fields"]["voltage"]["value"] = "500"
@@ -478,7 +489,7 @@ def test_source_closure_must_include_shared_contracts_and_native_protocol(tmp_pa
 
 
 def test_dynamic_receipt_must_bind_exact_program_and_immutable_records() -> None:
-    from contrib.invention_automation.critic_verify import accept
+    from alpha_factory_v1.core.runtime.invention_verification.critic_verify import accept
 
     request, _, _ = example()
     execution = {

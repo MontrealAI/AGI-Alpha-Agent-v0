@@ -5,16 +5,17 @@
 Exposed component testing only: no source authentication, physical suitability,
 commercial validation, or new synthesis campaign.
 """
+
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import shutil
 import tempfile
+from pathlib import Path
 from typing import Any
 
 IMAGE = re.compile(r"[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}")
@@ -114,14 +115,22 @@ def qualify(
     if context is None or freeze is None:
         raise ValueError("explicit frozen context and source freeze required")
     evidence.update(context_sha256=digest(context), freeze_sha256=digest(freeze))
+    implementation_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    pins = freeze.get("files")
+    if (
+        not isinstance(pins, dict)
+        or pins.get("alpha_factory_v1/core/runtime/invention_automation/qualification.py") != implementation_sha256
+    ):
+        raise ValueError("actual installed qualification implementation must be frozen")
+    evidence["implementation_sha256"] = implementation_sha256
     # No generator is invoked: the retained candidate is requalified after its
     # original campaign, without changing or resetting its generation cutoff.
     from alpha_factory_v1.core.runtime.invention_automation import critic_loop
-
-    from contrib.invention_automation.qualify_verify import prove_program
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import (
+        prove_program,
+    )
 
     evidence["image"] = image
-    evidence["implementation_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="alpha-retained-ast-qualification-") as directory:
         root = Path(directory)
         for name, value in {"request": request, "program": program, "context": context, "freeze": freeze}.items():
@@ -177,6 +186,32 @@ def qualify(
             evidence["negative_control_rejected"] = True
         else:
             raise ValueError("known-defective control was accepted")
+        negative_program_path = root / "negative-program.json"
+        negative_execution_path = root / "negative-execution.json"
+        negative_program_path.write_text(json.dumps(control), encoding="utf-8")
+        negative_execution_path.write_text(json.dumps(negative), encoding="utf-8")
+        negative_acceptance = critic_loop.verify_role(
+            root / "request.json",
+            root / "context.json",
+            root / "freeze.json",
+            program_path=negative_program_path,
+            execution_path=negative_execution_path,
+        )
+        evidence["negative_native_acceptance"] = negative_acceptance
+        require_restrictions(negative_acceptance)
+        if (
+            negative_acceptance.get("acceptance") != "REJECTED"
+            or negative_acceptance.get("program_hash") != digest(control)
+            or negative_acceptance.get("request_hash") != digest(request)
+            or negative_acceptance.get("execution_hash") != digest(negative)
+            or negative_acceptance.get("confirmation") is not False
+            or negative_acceptance.get("business_accepted") is not False
+        ):
+            raise ValueError("native negative acceptance did not reject the exact executed control")
+        evidence["negative_native_rejected"] = True
+        evidence["negative_native_scope"] = (
+            "Native rejection may be static; wrong actual outputs are also checked by the separate semantic oracle."
+        )
     evidence["status"] = "DYNAMIC_COMPONENT_PASS"
 
 
@@ -213,7 +248,7 @@ def qualify_files(paths: dict[str, Path], output_path: Path) -> dict[str, Any]:
                 values[name] = json.loads(raw)
             qualify(values["request"], values["program"], evidence, context=values["context"], freeze=values["freeze"])
 
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001 - retain failed CLI receipts
             evidence.update(status="FAILED", reason=f"{type(error).__name__}: {error}")
         finally:
             output.write(json.dumps(evidence, indent=2, sort_keys=True) + "\n")

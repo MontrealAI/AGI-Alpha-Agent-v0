@@ -28,9 +28,12 @@ PINNED_FILES = [
     "alpha_factory_v1/core/runtime/invention_automation/operator.py",
     "alpha_factory_v1/core/runtime/structural_transfer/contracts.py",
     "alpha_factory_v1/core/utils/secure_run.py",
-    "contrib/invention_automation/critic_verify.py",
-    "contrib/invention_automation/qualify_verify.py",
-    "contrib/invention_automation/readonly.py",
+    "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+    "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+    "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+    "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+    "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+    "alpha_factory_v1/core/runtime/invention_automation/qualification.py",
     "contrib/invention_automation/run_critic_pilot.py",
 ]
 PROTOCOL = "alpha_factory_v1/core/runtime/invention_automation/critic_protocol.json"

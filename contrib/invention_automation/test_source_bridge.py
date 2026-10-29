@@ -13,7 +13,7 @@ from typing import Any, TypeVar, cast
 import pytest
 
 from alpha_factory_v1.core.runtime.invention_automation import evidence_critic
-from contrib.invention_automation import critic_verify
+from alpha_factory_v1.core.runtime.invention_verification import critic_verify
 
 F = TypeVar("F", bound=Callable[..., Any])
 PROVENANCE = {"kind": "deterministic-engineering-control", "model": "NONE", "usage": "NOT_A_MODEL_CALL"}
