@@ -201,6 +201,10 @@ merge-group and manual PR CI runs continue to use exact-SHA groups. Cancelled
 superseded runs remain in history and are never treated as passes or inherited
 qualification. Cancellation-aware guards retain always-run evidence cleanup;
 no current-head checks are removed and stale software still cannot publish.
+Same-head PR reruns share that pull request's group as well, so a replacement
+attempt supersedes an earlier attempt for the same head. Distinct non-PR SHAs
+remain independent; duplicate runs for one non-PR SHA retain their original
+grouping and cancellation behavior.
 
 ## Software identity versus paper-site identity
 
