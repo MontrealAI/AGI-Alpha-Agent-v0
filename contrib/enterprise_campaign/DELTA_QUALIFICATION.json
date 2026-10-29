@@ -1,0 +1,133 @@
+{
+  "status": "DRAFT_INTEGRATION; NOT_MERGED; NOT_RELEASED; NOT_DEPLOYED",
+  "parent_pr": 5011,
+  "parent_commit": "dc6027f35bfede9060e525772aa1e38f59b34158",
+  "parent_tree": "6ccd0174e9f5ed658a1739fd8e8aaaf1be5fc91c",
+  "unchanged_producer_blob": "9f22a4448fa7bbd949b54c4c0d9b61936f49d549",
+  "source_identity": {
+    "delta_acceptance.py": {
+      "sha256": "296417f96c15d3da18a8ec002f2a8ba1739ebc512a31e8e17efb4f7ad02285c0",
+      "git_blob": "122dbdfdbc44cf31d95b80b7dae684313ce88bc4",
+      "bytes": 12068
+    },
+    "delta_delivery.py": {
+      "sha256": "d1d712c17fbc2ff7d94f7487cfb3ad2a4c2aedc361b3a849b721d0fbba8d7243",
+      "git_blob": "b66beac86a5de811e7022953316568ee339de4fb",
+      "bytes": 10036
+    },
+    "test_delta_delivery.py": {
+      "sha256": "eed4ab7c3e18d7140405784d829effa073cae4cfa6c2d14e302f47606279c2be",
+      "git_blob": "618955a1053b7a68107d74bdc7d36fd8a62329fd",
+      "bytes": 11074
+    },
+    "test_delta_packet.py": {
+      "sha256": "54431fb3d7fb4bf8c1b071f6b07d0c0b7b634c0a8e0f44a97838735448adc66f",
+      "git_blob": "a3b0c29272f8cc2420f4e70a817b8cb2e88e8221",
+      "bytes": 6178
+    },
+    "DELTA_DELIVERY.md": {
+      "sha256": "3e4bb9dfadba5162357bc227a216486f64fa0252220b6386896ad2a2db078055",
+      "git_blob": "1d56a5744cd6379a2b087da11f30893753c62ffc",
+      "bytes": 6864
+    },
+    "delta_examples/before.csv": {
+      "sha256": "b2596459dcee151bfcb3074d2bee6eb26452dbe48d4ab37fa54026c1fee4e19d",
+      "git_blob": "91ff2e08a6d85d0bd5831ed2c845c7a42d5cce81",
+      "bytes": 89
+    },
+    "delta_examples/updates.csv": {
+      "sha256": "1e35d7ef885d518dc4c424cdceac39a42571f8d9af2573522f733bfc548f1449",
+      "git_blob": "2f75e0edb3f6da233b90596edc34dce0e17b5262",
+      "bytes": 31
+    }
+  },
+  "prior_zip_sha256": "debaa6c402b7edf969151f604d75483bf6ae48c3c1c0c6455a3652b59991ab19",
+  "prior_checker_sha256": "34d2f467b496339ad0943aa1ff43cdd5ec40b088839ae98bd3bb4371097686b7",
+  "recorded_at_utc": "2026-10-29T16:22:39.166501+00:00",
+  "python": "3.13.5",
+  "baseline_software_tests": {
+    "run": 26,
+    "passed": 26,
+    "limitations": "Four packet mutations separately produced false PASS_IN_SCOPE verdicts"
+  },
+  "final_software_tests": {
+    "run": 38,
+    "passed": 38,
+    "failures": 0,
+    "command": "python -m unittest contrib.enterprise_campaign.test_delta_delivery contrib.enterprise_campaign.test_delta_packet -v"
+  },
+  "development_cases_inside_tests": 64,
+  "conventional_output_matches": 64,
+  "counterexamples": [
+    {
+      "name": "unsafe_preview",
+      "before": "PASS_IN_SCOPE",
+      "after": "REJECTED",
+      "failures": [
+        "native.safe_preview_csv",
+        "native.proof_digest"
+      ]
+    },
+    {
+      "name": "hidden_changes",
+      "before": "PASS_IN_SCOPE",
+      "after": "REJECTED",
+      "failures": [
+        "native.changes",
+        "native.proof_digest"
+      ]
+    },
+    {
+      "name": "false_row_count",
+      "before": "PASS_IN_SCOPE",
+      "after": "REJECTED",
+      "failures": [
+        "native.trace",
+        "native.proof_digest"
+      ]
+    },
+    {
+      "name": "wrong_source_identity",
+      "before": "PASS_IN_SCOPE",
+      "after": "REJECTED",
+      "failures": [
+        "producer_identity"
+      ]
+    }
+  ],
+  "actual_example": {
+    "rows": 3,
+    "updated_rows": 1,
+    "other_rows_preserved": true,
+    "exact_rollback": true,
+    "second_process_verdict": "PASS_IN_SCOPE"
+  },
+  "coverage": {
+    "statement_percent": 86.07142857142858,
+    "line_and_branch_percent": 82.03883495145631,
+    "scope": "Two delta modules, test run plus appended actual CLI executions; not repository coverage"
+  },
+  "independence": "Separately implemented checker, read-only second process, shared author/session/host/libraries; not external certification",
+  "commercial": {
+    "real_customer_revenue": 0,
+    "complete_actual_cost": null,
+    "profitability": "UNESTABLISHED",
+    "live_model_calls": 0,
+    "simulator_executed": false,
+    "successor_invention_benefit": "UNMEASURED"
+  },
+  "next_investment": "Measure complete accepted-job effort against a competent conventional service before feature expansion",
+  "qualification_gaps": [
+    "Full checkout unavailable in local container (DNS failure); scoped sources reconstructed from supplied package and verified public blob identities",
+    "Full locked install, repository pytest, hosted CI, Ruff, strict Mypy and pre-commit not run; local tools unavailable",
+    "Parent #5011 remains draft with its own packaging/release gates; no bypass",
+    "Only Python 3.13.5 executed; supported-platform matrix unqualified"
+  ],
+  "attempts": [
+    "Original 26 tests pass; four adverse checker probes falsely pass, retained",
+    "Corrected checker retains original 26 passing tests",
+    "38 final tests pass after integration and separate checker CLI",
+    "A local temporary tests-directory removal encountered nonempty __pycache__; source relocation and tests completed; not a runtime failure",
+    "Coverage emitted module-not-imported warning for delta_delivery during checker-only process; prior suite and delivery coverage retained"
+  ]
+}
