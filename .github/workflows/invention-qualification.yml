@@ -99,7 +99,7 @@ jobs:
           python -m scripts.validate_agent_sandbox --output evidence/invention/isolation.json
       - name: Create new exact-source freeze without changing historical fixtures
         run: |
-          python -B scripts/prepare_installed_invention.py \
+          python -B -m scripts.prepare_installed_invention \
             --prepare-source --source-root "$GITHUB_WORKSPACE" \
             --request "$REQUEST_PATH" --program "$PROGRAM_PATH" --context "$CONTEXT_PATH" \
             --output evidence/invention/source-v2

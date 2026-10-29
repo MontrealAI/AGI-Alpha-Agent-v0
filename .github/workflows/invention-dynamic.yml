@@ -132,7 +132,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -B scripts/prepare_installed_invention.py \
+          python -B -m scripts.prepare_installed_invention \
             --prepare-source --source-root "$GITHUB_WORKSPACE" \
             --request evidence/invention-qualification-20261029/request.json \
             --program evidence/invention-qualification-20261029/program.json \
