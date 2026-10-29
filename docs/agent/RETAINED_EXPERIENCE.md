@@ -128,6 +128,45 @@ earlier negative results. The first development smoke is retained separately,
 including a tiny-dual serialization refusal; the producer repair never weakens
 the common checker or relabels that smoke as confirmation.
 
+## Use a failed transfer to plan the next test
+
+The `plan-retention` command turns a sealed historical panel into a machine-readable
+reuse constraint. It reconstructs setup, failed-transfer/fallback, deployment and
+verification costs from the actual cost events. An edited favorable summary cannot
+replace those costs. Every declared control remains in the comparison, including
+controls whose cost advantage changes with the number of future tasks.
+
+```sh
+alpha-agent experience plan-retention evidence/retained-experience-20261029/prospective-v1 \
+  --seal-sha256 a1eee42f8701ebceaa53b88d1f59fd15744121317ce1fcb0df1213529295736c \
+  --future-tasks 64 --output /tmp/NEW-retention-plan.json
+```
+
+On the preserved 64-task result the decision is **KEEP_INCUMBENT**. The plan retains
+the economic failure as a constraint: deployment savings must repay learning,
+construction, rejected transfers, checking and planning. The planner's measured
+input-processing CPU is also charged to its projection. Its exact arithmetic
+intersects the improvement inequalities against every control; some opportunities
+can have both a minimum and a maximum qualifying horizon.
+
+Common verifier startup, training and per-output overhead were not fully split
+in the original measurements. The planner reports both an all-fixed allocation
+and an all-recurring allocation of that remainder. These are sensitivity
+assumptions, not a measured scaling law. If only the fixed-cost assumption passes,
+the decision is **MEASURE_VERIFICATION_SCALING_FIRST**. If both pass, the decision
+is still only **FRESH_EVALUATION_REQUIRED**. The plan establishes no future benefit,
+complete monetary advantage or permission to change production. Unknown costs
+remain unknown. No task or solver is executed, no historical artifact is changed,
+and an existing plan output is refused.
+
+These cases are now exposed development experience. They cannot be recycled as
+fresh confirmation. Stationary performance on this fixed-route family is an
+explicit projection assumption. A new useful-work and complete-cost test is needed
+before claiming benefit. The original 1,920-output qualification belongs to source
+commit `f2637be78fb81f9cc73216ac95a1ae461b95d211`; this additive planner reads that
+sealed historical receipt and does not transfer its source qualification to changed
+code. Check out that exact commit for the original strict source verification.
+
 ## Validation
 
 ```sh

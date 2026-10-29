@@ -75,3 +75,31 @@ inputs remain null unless supplied. No paid API call, customer sale, profit,
 earned-funded successor or broad invention advantage is established.
 
 See [the operator and accounting guide](../../docs/agent/RETAINED_EXPERIENCE.md).
+
+## Failure feedback increment
+
+The additive `experience plan-retention` command uses this sealed historical
+result to construct a future reuse constraint. It reconstructs the cost ledger,
+retains the cost failure with provenance and compares every declared control.
+The numerical solver, controls, experiment runner and verifier remain byte-identical
+to the original `f2637be7` source. The CLI registration changes, so the original
+strict source qualification remains attached to that historical commit.
+
+Actual native CLI records are in `feedback-v1/`:
+
+- `plan-64.json` keeps the incumbent. Deployment savings still do not repay the
+  measured overhead, and the additional planning CPU is included in the projection.
+- `plan-100000.json` is a projection over 100,000 possible tasks, **not 100,000
+  executed tasks**. It returns `MEASURE_VERIFICATION_SCALING_FIRST`: treating all
+  unallocated checking overhead as fixed produces a different conclusion from
+  treating it as recurring. The original experiment did not measure that split.
+- Both retain UNKNOWN complete monetary cost, no established future benefit,
+  no production authority and no fresh confirmation claim. No old evidence changes.
+
+The next fresh test must resolve the fixed/recurring verification cost split and
+then compare useful outcomes and complete costs. A longer assumed horizon cannot
+turn this negative result into a successful demonstration. Projection assumptions
+and exposed source cases are explicit. Thirteen added regression cases cover exact
+cost intervals, changing strongest controls, zero-cost ties, false summaries,
+trusted seals, bounds and overwrite refusal. The combined suite passes **154 tests**.
+See `feedback-v1/VALIDATION.json` and the actual `tests.txt` record.

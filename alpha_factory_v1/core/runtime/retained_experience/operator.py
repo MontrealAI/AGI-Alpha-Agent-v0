@@ -18,6 +18,11 @@ def add_commands(commands: Any) -> None:
     run.add_argument("--cases-per-regime", type=int, default=8)
     run.add_argument("--repeats", type=int, default=3)
     run.add_argument("--cost-policy", type=Path)
+    plan = sub.add_parser("plan-retention", help="Convert sealed outcomes into constraints for future reuse")
+    plan.add_argument("directory", type=Path)
+    plan.add_argument("--seal-sha256", required=True)
+    plan.add_argument("--future-tasks", type=int, required=True)
+    plan.add_argument("--output", type=Path, required=True)
     for name in ("check", "replay"):
         item = sub.add_parser(name)
         item.add_argument("directory", type=Path)
@@ -44,6 +49,22 @@ def check_seal(directory: Path, expected: str) -> dict[str, Any]:
 def handle(args: argparse.Namespace) -> dict[str, Any]:
     from . import experiment, verifier
 
+    if args.experience_command == "plan-retention":
+        from .retention import plan
+
+        if args.output.exists():
+            raise ValueError("new retention-plan output required")
+        result = plan(args.directory, args.seal_sha256, args.future_tasks)
+        experiment.write(args.output, result)
+        return {
+            "output": str(args.output.resolve()),
+            "decision": result["decision"],
+            "historical_result": result["historical_result"],
+            "cpu_only_projection_scenarios": result["cpu_only_projection_scenarios"],
+            "complete_cost_advantage": None,
+            "authority_granted": False,
+            "confirmation": False,
+        }
     if args.experience_command == "check":
         seal = check_seal(args.directory, args.seal_sha256)
         result = experiment.independent_audit(args.directory, seal["files"]["freeze.json"], save=False)
