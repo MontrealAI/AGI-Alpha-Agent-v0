@@ -94,5 +94,35 @@
   "raw_private_logs": "Not emitted or publicly archived. Original headed artifact retains them until provider expiry; their byte counts/hashes appear in safe receipt.",
   "updates_to_qualification_provenance": "qualification-provenance.json preserves the earlier recovery snapshot. Its pending headed-visual and dynamic-ZIP-access fields are superseded ONLY by this later record. Source939 headless NOT_RENDERED remains true.",
   "confirmation": false,
-  "business_accepted": false
+  "business_accepted": false,
+  "failed_original_readback": {
+    "observed_at": "2026-10-29T18:25:07.537Z",
+    "commit": "5073ba42f5857ccab7f1649bfb73663f6334e4b7",
+    "run": 40930304873,
+    "job": 123646650577,
+    "file": "failed-headless-original.png",
+    "bytes": 7389,
+    "sha256": "bab0da02eddcb0ebece44670c38814ceb2d4c5ba791eb8ff4a0472059987ac66",
+    "git_blob": "275ad4c03e840abe221c8ecf83c3df2403aa0ebe",
+    "root_base64_chunk_and_hash_verification": true,
+    "disposition": "NOT_RENDERED",
+    "receipt": [
+      {
+        "artifact": 12918919706,
+        "crc": "PASS",
+        "new_capture": false,
+        "rendering": "REQUIRES_VISUAL_INSPECTION",
+        "run": 40924494564,
+        "schema": "agialpha/retained-artifact-readback/v1",
+        "source": "939549e6487aa4cfc14b8385b52f701a1a0c8d2b",
+        "zip_bytes": 2010,
+        "zip_sha256": "e9f4384cccbed4a1a5d95738ba889719b1e82db25c2b9eaf14d4d9bd40ae6b6a"
+      },
+      {
+        "prior_disposition": "NOT_RENDERED",
+        "scope": "Original failed anonymous headless PNG only; no new capture or unknown file emission."
+      }
+    ],
+    "scope": "Only original failed PNG publicly archived; originalZIP and3uninspected text files remain in provider artifact. No new capture."
+  }
 }

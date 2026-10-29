@@ -1,6 +1,6 @@
 # Exact 939 qualification and honest campaign status
 
-Snapshot: 2026-10-29T18:24:23.141Z. Software source: `939549e6487aa4cfc14b8385b52f701a1a0c8d2b`, tree `9648b505b3f2a9d5c5988c7f556c461c1d391564`. This is an evidence-only descendant, not a newly qualified software head.
+Snapshot: 2026-10-29T18:27:34.363Z. Software source: `939549e6487aa4cfc14b8385b52f701a1a0c8d2b`, tree `9648b505b3f2a9d5c5988c7f556c461c1d391564`. This is an evidence-only descendant, not a newly qualified software head.
 
 **Partial integration qualification; commercial success NOT_ESTABLISHED.** [PR #5031](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/5031) remains draft until all applicable exact-source checks pass. RECOVERED, INTEGRATED, PUBLISHED, CI_QUALIFIED, MERGED and RELEASED remain separate. See [STATUS.json](STATUS.json) and [ARTIFACT_MANIFEST.json](ARTIFACT_MANIFEST.json) for exact identities, peer states and limits.
 
@@ -20,7 +20,7 @@ The [33-page Reader1 PDF](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/
 
 Anonymous headed Chrome really rendered its first page after15s and50s. Root and another agent independently viewed the original image: GitHub Sign in/Sign up controls appear with the actual title, author/date and abstract inline. [15s original](anonymous-headed-after-15s.png) and [50s original](anonymous-headed-after-50s.png) are byte-identical,225,079 bytes/SHA256 `c45df6bdff4d03fa8517ebccab41331bd8a98e07850bc212f57da130d97ce522`. This proves first-page rendering, not inspection of all33 browser pages. Earlier full33-page build/text/raster verification is separate. Fresh empty profile, no imported credentials/cookies, no MIME rewriting or local hosting. [Actual probe](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40928049814); [retained-artifact-only readback](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40929033263).
 
-Earlier ef6 error and359/939 blank headless captures remain failures. [Original ef6 evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/59c6fdbf5bab9b463e36aac5e8367e897798d18c/evidence/invention-dynamic-ef6b4acb-20261029) is retained. Raw headed private logs stay in the original provider artifact; only their hashes and sizes are published here.
+Earlier ef6 error and359/939 blank headless captures remain failures. The [original939 blank PNG](failed-headless-original.png) is now durably retained too:7,389bytes/SHA256 `bab0da02eddcb0ebece44670c38814ceb2d4c5ba791eb8ff4a0472059987ac66`. [Original ef6 evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/59c6fdbf5bab9b463e36aac5e8367e897798d18c/evidence/invention-dynamic-ef6b4acb-20261029) is retained. Raw headed private logs stay in the original provider artifact; only their hashes and sizes are published here.
 
 ## Four repositories
 
@@ -40,3 +40,5 @@ The [commercial acceptance register](../invention-verifier-reconciliation-202610
 A successful flywheel still requires source-backed useful customer results, the strongest complete matched-cost alternative, closed costs/liabilities, collected positive unrestricted earnings and attributable earned-funded fresh successor benefit. No actual transaction, outreach, paid API, billing/access change or assumed demand was used to manufacture success.
 
 Original generation cutoff16:53Z and hard end18:29Z persist; there is no new allowance. The17:19 retained apparent-byte proxy was2,256,784,975, above2GiB; actual baseline-relative added storage, continuous peak and complete model/CI/tool cost remain UNKNOWN. Local execution later became unavailable. Necessary verification used API/hosted memory without a new local build/cache/artifact tree or destructive cleanup. Broad invention/commercial research remains unfinished. Pending checks, release work or business evidence must never be promoted to PASS by this packet.
+
+Final metadata rechecked18:26:20Z (peers) and18:26:48Z (Alpha): all main/source identities above unchanged; five canonical Alpha workflows remain nonterminal. Jobs current-main CodeQL service-receipt failure/publication skip remain, Manager preparation is not publication, Fleet61 still has two failed checks. The inherited18:29Z boundary supplies no new construction allowance.
