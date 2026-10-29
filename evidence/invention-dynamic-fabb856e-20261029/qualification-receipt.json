@@ -1,0 +1,259 @@
+{
+  "event": "pull_request",
+  "execution_image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+  "execution_image_id": "sha256:ae4e8b7c575fabea88a029b6cae757f342ca2525e07f7c22272d5105c346b35e",
+  "job_conclusion": "success",
+  "job_id": 123510519278,
+  "observed_summary": {
+    "attempts": [
+      {
+        "details": {
+          "actual_execution": true,
+          "oracle": {
+            "boundary": {
+              "file_write_open_and_mutation_denied": true,
+              "mechanism": "additional kernel seccomp filter in verifier process",
+              "new_sockets_and_exec_denied": true,
+              "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+            },
+            "confirmation": false,
+            "operations": 55,
+            "records_checked": 7,
+            "tested_denials": {
+              "candidate_write": true,
+              "socket": true
+            },
+            "verdict": "PASS"
+          },
+          "result_sha256": "bc290ec22529336335ea05b3d1b851ffb2c0414579eb61e6910cfb5662775555"
+        },
+        "executed": true,
+        "name": "native-valid",
+        "status": "PASS",
+        "wall_seconds": 0.433461046000005
+      },
+      {
+        "details": {
+          "actual_execution": true,
+          "oracle": {
+            "boundary": {
+              "file_write_open_and_mutation_denied": true,
+              "mechanism": "additional kernel seccomp filter in verifier process",
+              "new_sockets_and_exec_denied": true,
+              "scope": "trusted deterministic verifier, no hostile arbitrary-native-code sandbox claim"
+            },
+            "confirmation": false,
+            "reason": "actual record consequences differ from separate oracle",
+            "tested_denials": {
+              "candidate_write": true,
+              "socket": true
+            },
+            "verdict": "REJECTED"
+          },
+          "result_sha256": "e19c58bb85ca7b795a1c7dc868f12cc33eda81de0e60772d54bb70dee1c8397f"
+        },
+        "executed": true,
+        "name": "native-invalid",
+        "status": "PASS",
+        "wall_seconds": 0.3795946939999979
+      },
+      {
+        "details": {
+          "checks": {
+            "capabilities_dropped": true,
+            "cpu_limit": true,
+            "external_network_denied": true,
+            "input_write": true,
+            "memory_limit": true,
+            "no_default_route": true,
+            "no_docker_socket": true,
+            "no_host_mounts": true,
+            "no_new_privileges": true,
+            "nonroot": true,
+            "pids_limit": true,
+            "privilege_escalation": true,
+            "root_write": true,
+            "scratch_exec": true,
+            "scratch_writable": true,
+            "seccomp_filter": true
+          },
+          "observed_cgroup_limits": {
+            "cpu.max": "200000 100000",
+            "memory.max": "2147483648",
+            "pids.max": "64"
+          }
+        },
+        "executed": true,
+        "name": "permissions-network-exec",
+        "status": "PASS",
+        "wall_seconds": 0.35394041499999673
+      },
+      {
+        "details": {
+          "checks": {
+            "pids_exhaustion": true,
+            "scratch_exhaustion": true
+          },
+          "scratch_bytes_written": 16777216,
+          "threads_started": 63
+        },
+        "executed": true,
+        "name": "resource-exhaustion",
+        "status": "PASS",
+        "wall_seconds": 0.3539754970000004
+      },
+      {
+        "details": {
+          "checks": {
+            "oracle_source": true,
+            "verifier_state": true
+          }
+        },
+        "executed": true,
+        "name": "verifier-tampering",
+        "status": "PASS",
+        "wall_seconds": 0.30564578899999617
+      },
+      {
+        "details": {
+          "combined_output_upper_bound": 1048576,
+          "termination": "output cap"
+        },
+        "executed": true,
+        "name": "excessive-output",
+        "status": "PASS",
+        "wall_seconds": 0.21743214499999652
+      },
+      {
+        "details": {
+          "observed_seconds": 120.081356201,
+          "termination": "SandboxTimeout"
+        },
+        "executed": true,
+        "name": "timeout",
+        "status": "PASS",
+        "wall_seconds": 120.09828529499998
+      }
+    ],
+    "controls_executed": 7,
+    "freeze_sha256": "26c768a1632710466b1ad61d6d1f504db97e9364c87c8f8ac15d86ca606d257e",
+    "protocol": {
+      "acceptance": "all declared controls actually executed and checked; missing/blocked/failed controls fail the job",
+      "candidate_count": 2,
+      "confirmation": false,
+      "construction_scope": "legacy dimensional constructor is used mechanically, never as a source-claim truth gate",
+      "excluded_claims": [
+        "general hostile-code certification",
+        "all container exec denied",
+        "fresh invention benefit"
+      ],
+      "expected_subchecks": {
+        "permissions-network-exec": [
+          "root_write",
+          "input_write",
+          "privilege_escalation",
+          "nonroot",
+          "capabilities_dropped",
+          "no_new_privileges",
+          "seccomp_filter",
+          "no_docker_socket",
+          "no_host_mounts",
+          "cpu_limit",
+          "memory_limit",
+          "pids_limit",
+          "scratch_writable",
+          "scratch_exec",
+          "external_network_denied",
+          "no_default_route"
+        ],
+        "resource-exhaustion": [
+          "scratch_exhaustion",
+          "pids_exhaustion"
+        ],
+        "verifier-tampering": [
+          "verifier_state",
+          "oracle_source"
+        ]
+      },
+      "independence": "separate read-only verifier process; shared authors, host, model family and standard library",
+      "limits": {
+        "combined_output_bytes": 1048576,
+        "cpus": 2,
+        "memory_bytes": 2147483648,
+        "pids": 64,
+        "scratch_bytes": 16777216,
+        "wall_seconds": 120
+      },
+      "schema": "agialpha/invention-dynamic-qualification/v1",
+      "scope": "exposed Docker software-mechanics qualification; no scientific confirmation or commercial claim"
+    },
+    "run_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40891861055",
+    "status": "PASS",
+    "wall_seconds": 122.219722244
+  },
+  "original_artifact": {
+    "bytes": 12187,
+    "filename": "artifact.zip",
+    "github_artifact_id": 12904294518,
+    "github_expiry_utc": "2026-11-28T14:32:06Z",
+    "github_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40891861055/artifacts/12904294518",
+    "included_bytes": "byte-identical original; unmodified after download",
+    "members": 19,
+    "public_retention": "artifact.zip is retained with this separate evidence ref beyond the Actions artifact expiry",
+    "sha256": "5df68c9bfdda19228d7adc468bc222770421a4caa369d0ff01994e7239faeb48"
+  },
+  "pull_request_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/5018",
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "run_id": 40891861055,
+  "run_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40891861055",
+  "runner": {
+    "docker_server": "28.0.4",
+    "image": "ubuntu-24.04",
+    "image_version": "20261025.353.1",
+    "os": "Ubuntu24.04.5",
+    "python": "3.12.15",
+    "workflow_token_permissions": [
+      "contents:read",
+      "metadata:read"
+    ]
+  },
+  "sanitization": {
+    "archive_members_examined": 19,
+    "artifact_redactions": [],
+    "excluded_material": [
+      "full checkout/setup job logs",
+      "tool transport/download-session metadata"
+    ],
+    "opaque_or_binary_members": 0,
+    "permitted_paths": "generic GitHub-hosted runner provenance in verifier-tampering.py and ordinary container filesystem paths",
+    "private_task_path_findings": 0,
+    "secret_or_credential_findings": 0,
+    "source_originals": "retained unchanged; evidence publication changes no qualified source bytes"
+  },
+  "schema": "agialpha/public-dynamic-qualification-receipt/v1",
+  "scope": {
+    "actual_generated_asts_executed": 2,
+    "constructor": "legacy dimensional constructor used mechanically; not a source-claim truth gate",
+    "end_to_end_alpha_cli_or_service": "NOT_QUALIFIED",
+    "forbidden_execution_scope": "scratch noexec and privilege escalation; in-container Python and ordinary subprocesses remain available",
+    "fresh_scientific_confirmation": false,
+    "full_repository_ci_and_release": "SEPARATE_GATES",
+    "independence": "procedural separate read-only verifier process; shared authors, host, model family and standard library; not external certification",
+    "memory_cpu_evidence": "kernel cgroup values observed; memory OOM and sustained CPU exhaustion not induced",
+    "merge_commit_or_postmerge_acceptance": "NOT_ESTABLISHED_BY_THIS_RUN",
+    "native_function": "specification_run.isolated through real secure_run Docker",
+    "physical_or_business_profitability": "NOT_ESTABLISHED"
+  },
+  "source_commit": "fabb856e361fabda8ab2c4a34d0dcd375395018c",
+  "source_commit_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/commit/fabb856e361fabda8ab2c4a34d0dcd375395018c",
+  "state": "DYNAMIC_COMPONENT_PASS",
+  "verification": {
+    "all_members_utf8_reviewed": true,
+    "archive_crc_clean": true,
+    "archive_digest_matches_github": true,
+    "case_candidate_probe_result_hash_checks": 10,
+    "exact_commit_source_sha256_and_git_blob_checks": 9,
+    "freeze_sha256": "26c768a1632710466b1ad61d6d1f504db97e9364c87c8f8ac15d86ca606d257e"
+  }
+}
