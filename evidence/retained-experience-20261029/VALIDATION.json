@@ -1,0 +1,40 @@
+{
+  "schema": "agialpha/retained-experience-validation/v1",
+  "base_parent": "996433c0814976df27ccd09596c69178865d22a5",
+  "parent_pr": 5021,
+  "focused_and_predecessor_tests": {
+    "passed": 141,
+    "failed": 0,
+    "command": "python -m pytest -o addopts='' contrib/retained_experience/test_experience.py contrib/compounding_discovery/test_decimal_witness.py contrib/compounding_discovery/test_engine.py contrib/structural_transfer/test_runtime.py -q"
+  },
+  "typing": {
+    "status": "PASS",
+    "files": 7,
+    "scope": "mypy --strict --follow-imports=silent on new runtime and tests"
+  },
+  "formatting": "Black PASS on eight changed Python files",
+  "lint": {
+    "new_modules_full_config": "PASS",
+    "changed_python_pinned_default_scope": "PASS: isolated E4,E7,E9,F",
+    "tool_version": "ruff 0.17.3; hosted pinned tool remains separate",
+    "inherited_cli_full_local_config": "four inherited import/noqa/broad-boundary findings; original behavior preserved"
+  },
+  "environment_check": {
+    "status": "FAIL",
+    "reason": "check_env.py --auto-install reports optional Playwright/Google ADK missing; final recheck raises ModuleNotFoundError for playwright",
+    "target_dependencies": "available; actual numerical tests and CLI executed"
+  },
+  "native_run": "PASS: command completed; scientific endpoint NOT_DEMONSTRATED",
+  "native_sealed_check": "PASS: separate restricted verifier accepted all 1920 outputs",
+  "hosted_checks": "PENDING",
+  "full_repository_coverage": "NOT_RUN",
+  "full_pre_commit": "NOT_RUN",
+  "installed_wheel": "NOT_QUALIFIED",
+  "external_spending_usd": "0",
+  "confirmation": false,
+  "complete_cost_advantage": null,
+  "notes": [
+    "Retain the negative smoke and its original source snapshots.",
+    "No criterion weakening, production-default replacement, settlement or release-policy changes."
+  ]
+}

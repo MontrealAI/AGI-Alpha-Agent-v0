@@ -44,6 +44,24 @@ separate. Actual customer collections are zero; complete actual monetary cost an
 The implemented delivery path is useful engineering, not proof of profitable demand or compounding.
 No retained capability is admitted by this research replay.
 
+## Retained experience on fresh work
+
+The native `alpha-agent experience run/check/replay` commands compare retained LP experience with
+nine conventional alternatives, including six HiGHS configurations and a native warm start.
+`experience plan-retention` converts sealed historical failures into constraints for future reuse.
+See the [operator guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/173458071f024488c527bbe42a635d74cabb6676/docs/agent/RETAINED_EXPERIENCE.md).
+
+The preserved engineering panel contains 64 fresh parameter cases, ten arms and three timing repeats:
+1,920 accepted outputs. Retained deployment CPU was 22.97% lower than the strongest observed whole-panel
+control, but lifecycle CPU was 96.16% higher after learning and verification. Complete monetary cost
+remains unknown. The historical 64-task plan therefore keeps the incumbent; longer-horizon projections
+require verification-scaling measurements and a new frozen evaluation. These are bounded numerical
+and failure-feedback tools; no full-cost advantage, general invention or production authority is established.
+
+The source-field critic also rejects scientific-notation tokens clipped into apparent units. Both
+parsers check the full original numeric boundary; protocol v5 and its current source freeze are explicit,
+with the earlier false-confirmation receipt, protocol and freeze preserved for review.
+
 ## Operating and release boundaries
 
 Fixtures, imports, research artifacts and browser replays grant no live identity or production authority.
@@ -88,6 +106,10 @@ découverte, demande payante ou progression autonome. Encaissements réels : zé
 complet et profit réel : inconnus. Aucune rétention n’est admise par ce rejeu de recherche.
 
 La publication exige les propres vérifications de cette source et la clôture de la version 1.46.1.
+La comparaison de l’expérience retenue accepte 1 920 sorties sur 64 cas numériques et dix méthodes.
+Le coût CPU du déploiement diminue de 22,97 %, mais le coût CPU du cycle complet augmente de 96,16 %.
+Le plan conserve donc la méthode existante ; le coût monétaire complet reste inconnu.
+
 Les autorisations réelles, les budgets, l’identité et les rôles de validation restent séparés des
 artefacts, des simulations et de l’expérience publique en lecture seule.
 
