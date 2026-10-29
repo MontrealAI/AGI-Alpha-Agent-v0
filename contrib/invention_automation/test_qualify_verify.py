@@ -11,7 +11,7 @@ from typing import Any, TypeVar, cast
 
 import pytest
 
-from contrib.invention_automation.qualify_verify import (
+from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import (
     LOSS_DRIVER,
     UNCERTAINTY,
     prove_program,
@@ -308,12 +308,21 @@ def test_verifier_must_be_in_freeze(tmp_path: Path) -> None:
 
 
 def test_source_pin_mismatch_rejected(tmp_path: Path) -> None:
-    relative = "contrib/invention_automation/qualify_verify.py"
+    relative = "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py"
     path = tmp_path / relative
     path.parent.mkdir(parents=True)
     path.write_text("fixture")
+    helper_files = [
+        "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+    ]
+    pins = {relative: "wrong"}
+    for name in helper_files:
+        helper = tmp_path / name
+        helper.write_text("helper fixture")
+        pins[name] = hashlib.sha256(helper.read_bytes()).hexdigest()
     with pytest.raises(ValueError, match="source freeze mismatch"):
-        verify_source_freeze(tmp_path, {relative: "wrong"})
+        verify_source_freeze(tmp_path, pins)
 
 
 def test_vacuous_abstention_does_not_establish_useful_screen() -> None:
@@ -370,7 +379,7 @@ def with_construction(request: dict[str, Any], bundle: dict[str, Any]) -> dict[s
 
 
 def test_criticism_can_be_validated_before_proposal_proof() -> None:
-    from contrib.invention_automation.qualify_verify import verify_criticism
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import verify_criticism
 
     request, bundle = example()
     request["proposal"] = {"op": "shell"}
@@ -434,7 +443,7 @@ def test_known_usage_does_not_replace_unknown_usage() -> None:
 
 
 def test_conventional_reference_cannot_drop_bad_record() -> None:
-    from contrib.invention_automation.qualify_verify import conventional_reference
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import conventional_reference
 
     request, bundle = example()
     bundle["conventional_reference"] = conventional_reference(request)
@@ -445,7 +454,7 @@ def test_conventional_reference_cannot_drop_bad_record() -> None:
 
 
 def test_conventional_reference_cannot_claim_wrong_dimension_is_consistent() -> None:
-    from contrib.invention_automation.qualify_verify import conventional_reference
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import conventional_reference
 
     request, bundle = example()
     bundle["conventional_reference"] = conventional_reference(request)
@@ -455,7 +464,10 @@ def test_conventional_reference_cannot_claim_wrong_dimension_is_consistent() -> 
 
 
 def test_nonnegative_quantity_does_not_claim_voltage_suitability() -> None:
-    from contrib.invention_automation.qualify_verify import conventional_reference, verify_request
+    from alpha_factory_v1.core.runtime.invention_verification.qualify_verify import (
+        conventional_reference,
+        verify_request,
+    )
 
     request, _ = example()
     request["records"][0]["fields"]["voltage"] = {"value": "0", "unit": "kV"}

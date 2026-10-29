@@ -39,11 +39,17 @@ def verify_role(
     program_path: Path | None = None,
     execution_path: Path | None = None,
 ) -> dict[str, Any]:
+    for name in ["__init__.py", "critic_verify.py", "qualify_verify.py", "readonly.py"]:
+        required_path = ROOT / "alpha_factory_v1/core/runtime/invention_verification" / name
+        if required_path.is_symlink() or not required_path.is_file():
+            raise ValueError("installed verifier unavailable; required regular source missing: " + name)
     command = [
         sys.executable,
         "-B",
+        "-P",
+        "-S",
         "-m",
-        "contrib.invention_automation.critic_verify",
+        "alpha_factory_v1.core.runtime.invention_verification.critic_verify",
         "--root",
         str(ROOT),
         "--freeze",

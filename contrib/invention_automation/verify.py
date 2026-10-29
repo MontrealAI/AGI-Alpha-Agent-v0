@@ -104,7 +104,7 @@ def verify(root: Path, run: Path) -> dict[str, Any]:
 
 
 if __name__ == "__main__":
-    from contrib.invention_automation.readonly import enforce
+    from alpha_factory_v1.core.runtime.invention_verification.readonly import enforce
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)

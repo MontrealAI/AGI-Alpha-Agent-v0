@@ -15,7 +15,7 @@ import pytest
 from alpha_factory_v1.core.runtime.invention_automation import evidence_critic, operator
 from alpha_factory_v1.core.runtime.invention_automation import specification as spec
 from alpha_factory_v1.core.runtime.invention_automation import specification_run as runner
-from contrib.invention_automation import critic_verify, qualify_verify
+from alpha_factory_v1.core.runtime.invention_verification import critic_verify, qualify_verify
 from contrib.invention_automation.reproduce_field_misbinding import fixed_field_oracle, misbound_request
 
 PROVENANCE = {"kind": "deterministic-engineering-control", "model": "NONE", "usage": "NOT_A_MODEL_CALL"}

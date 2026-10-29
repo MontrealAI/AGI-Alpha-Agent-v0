@@ -19,6 +19,7 @@ from alpha_factory_v1.core.runtime.invention_automation import critic_loop
 from alpha_factory_v1.core.runtime.structural_transfer.contracts import digest, read, write_new
 
 PINNED_FILES = [
+    "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
     "alpha_factory_v1/core/runtime/invention_automation/evidence_contracts.py",
     "alpha_factory_v1/core/runtime/invention_automation/evidence_critic.py",
     "alpha_factory_v1/core/runtime/invention_automation/critic_loop.py",
@@ -28,9 +29,9 @@ PINNED_FILES = [
     "alpha_factory_v1/core/runtime/invention_automation/operator.py",
     "alpha_factory_v1/core/runtime/structural_transfer/contracts.py",
     "alpha_factory_v1/core/utils/secure_run.py",
-    "contrib/invention_automation/critic_verify.py",
-    "contrib/invention_automation/qualify_verify.py",
-    "contrib/invention_automation/readonly.py",
+    "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+    "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+    "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
     "contrib/invention_automation/run_critic_pilot.py",
 ]
 PROTOCOL = "alpha_factory_v1/core/runtime/invention_automation/critic_protocol.json"

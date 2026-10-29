@@ -1,0 +1,162 @@
+{
+  "canonical_package": "alpha_factory_v1.core.runtime.invention_verification",
+  "checks": {
+    "black": "PASS,28files",
+    "component_tests": {
+      "final_log": "packaging-smoke/final-component-tests.json",
+      "passed": 243,
+      "scope": "all contrib/invention_automation tests; exposed engineering cases only"
+    },
+    "installed_cli": {
+      "actual_generated_execution": false,
+      "actual_installed_entrypoint": true,
+      "cases": [
+        {
+          "name": "legacy-refusal",
+          "returncode": 1
+        },
+        {
+          "name": "installed-critic-loop",
+          "returncode": 0
+        },
+        {
+          "name": "frozen-helper-mismatch",
+          "returncode": 1
+        },
+        {
+          "name": "missing-installed-verifier",
+          "returncode": 1
+        }
+      ],
+      "contrib_package_in_wheel": false,
+      "freeze_verified": true,
+      "full_locked_release_qualification": false,
+      "helper_drift_fails_closed": true,
+      "installed_backend_restored_hash": "24b9f6a44f22752c7994e3eb161153739e6cde8226277d0d8fcf837bdad00b0e",
+      "launch_boundary": "-B -P -S plus required regular verifier-source preflight",
+      "missing_installed_backend_fails_closed": true,
+      "old_protocol_refused_before_output_creation": true,
+      "previous_negative": "Pre-hardening first missing-backend receipt unexpectedly returned0 and remains UNKNOWN-cause preserved evidence; repeat failed closed; current source requires absence admission before child launch",
+      "protocol": "agialpha/critic-oracle-protocol/v4",
+      "readonly_write_and_socket_denials_tested": true,
+      "runtime": "BLOCKED as intended: no admitted digest-pinned Docker image in smoke environment",
+      "source_tree_cwd": false,
+      "state": "INSTALLED_PACKAGING_SMOKE_PASS",
+      "verifier_namespace": "alpha_factory_v1.core.runtime.invention_verification"
+    },
+    "isolated_import": {
+      "candidate_imported": false,
+      "contrib_imported": false,
+      "origins": [
+        "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py"
+      ],
+      "site_initialized": false
+    },
+    "ruff": "PASS",
+    "strict_mypy": "PASS,14 changed/canonical files with follow-imports=silent; historical unmodified calendar test typing excluded",
+    "wheel": {
+      "actual_verifier_assets": [
+        "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+        "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+        "alpha_factory_v1/core/runtime/invention_automation/critic_protocol.json",
+        "alpha_factory_v1/core/runtime/invention_automation/critic_loop.py",
+        "alpha_factory_v1/core/runtime/invention_automation/specification_run.py"
+      ],
+      "all_asset_bytes_equal_current_source": true,
+      "build_toolchain": {
+        "matches_release_lock": false,
+        "setuptools": "84.1.0",
+        "wheel": "0.48.0"
+      },
+      "generated_build_mirror_files_verified_in_retained_wheel": 275,
+      "no_contrib_namespace": true,
+      "protocol_schema": "agialpha/critic-oracle-protocol/v4",
+      "scope": "local namespace/installed CLI packaging smoke; not locked release qualification",
+      "wheel_bytes": 4003460,
+      "wheel_sha256": "a78197abc627642b492fbd98ea67cb34dfbc2f5a251f853790fefa398ba16818"
+    }
+  },
+  "copy_exclusions": [
+    "pyproject.toml",
+    "critic_protocol.json",
+    ".github/workflows/*",
+    "packaging-smoke/*",
+    "top-level README.md",
+    "LICENSE"
+  ],
+  "critic_origin": {
+    "independent_runtime_and_verifier_suffix_logic_retained": true,
+    "suffix_fixed_pre_relocation_sha256": "5569e72e0165873cc6c23394b9453f22eda807f410ed0bfacc43db701626e0a9"
+  },
+  "current_storage_bytes": 43705918,
+  "delivered_source_bytes": 235530,
+  "delivered_source_files": 25,
+  "model_cost": "UNKNOWN",
+  "new_external_cash": 0,
+  "no_generated_host_execution": true,
+  "paid_api_calls": 0,
+  "preserved_attempts": [
+    {
+      "kind": "broad strict typing",
+      "observation": "11 test typing findings; semantic-preserving annotations/imports corrected in changed files; unchanged historical calendar tests left outside scoped strict claim"
+    },
+    {
+      "kind": "smoke harness assertion",
+      "observation": "v1 expected acceptance string; actual API returned nested BLOCKED receipt. Corrected harness assertion; original script/process outputs retained. No product code changed for this shape correction."
+    },
+    {
+      "kind": "pre-hardening missing-backend negative",
+      "observation": "First saved missing-backend CLI returned0 with BLOCKED receipt, contrary to the intended missing-backend refusal. Cause UNKNOWN. Direct import absence diagnostic and explicit repeated missing-backend test later failed closed. Both outputs preserved."
+    },
+    {
+      "kind": "corrective launch boundary",
+      "observation": "Current source requires regular installed verifier/helper/init/readonly files before launching and disables working-directory/site hooks. Current installed missing-backend and helper-hash mismatch controls both exit1. This is current-source development qualification, not a retrospective explanation of the earlier contradiction."
+    },
+    {
+      "kind": "build toolchain",
+      "observation": "Existing setuptools84.1.0 and wheel0.48.0 used with exact baseline pyproject; locked80.9.0/0.45.1 qualification remains for CI. No dependencies acquired or locks changed."
+    }
+  ],
+  "pyproject": {
+    "bytes": 7787,
+    "exact_historical_base": "12770c22b4a9f90f2013bbfb64242f912ba5071e",
+    "package_finder_and_dependencies_unchanged": true,
+    "root_owns_restore": true,
+    "sha256": "440c1883196a0dd70f6a307e882a9cfb9f5a3062450404c2224c4fc9185a9ecd"
+  },
+  "remaining": [
+    "Root integration/final suite",
+    "Exact new-head hosted dynamic tests",
+    "Required review and canonical CI",
+    "Locked clean-install/release qualification"
+  ],
+  "required_verifier_files": [
+    "__init__.py",
+    "critic_verify.py",
+    "qualify_verify.py",
+    "readonly.py",
+    "dynamic_oracle.py"
+  ],
+  "resource_notes": "A new mypy cache briefly exceeded50MB task scratch target; only regenerable task cache and byte-verified generated mirrors were discarded. Original source, wheels and failures remain. Continuous prior resource cost is UNKNOWN.",
+  "schema": "agialpha/installed-invention-verifier-packaging/v1",
+  "scope": "source namespace/default finder and installed entrypoint smoke; not locked full release or fresh dynamic qualification",
+  "source_admission": {
+    "actual_implementation_helper_initializer_readonly_frozen": true,
+    "child_launch_flags": [
+      "-B",
+      "-P",
+      "-S"
+    ],
+    "explicit_pythonpath": "frozen source/install root only",
+    "loaded_verifier_file_root_binding": true,
+    "missing_regular_source_preflight": true,
+    "wrapper_pins_cannot_substitute": true
+  },
+  "under_50MB_final": true
+}

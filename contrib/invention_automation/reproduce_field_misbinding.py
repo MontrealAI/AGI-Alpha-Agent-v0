@@ -79,8 +79,8 @@ def main() -> int:
     request = misbound_request(original)
     require(digest(request) == freeze["misbound_request_sha256"], "frozen witness changed")
     from alpha_factory_v1.core.runtime.invention_automation import specification as spec
+    from alpha_factory_v1.core.runtime.invention_verification.readonly import enforce
     from contrib.invention_automation import qualify_verify as verifier
-    from contrib.invention_automation.readonly import enforce
 
     # Only fixed trusted validators below; constructed control programs remain inert.
     cpu_start, wall_start = time.process_time_ns(), time.monotonic_ns()

@@ -204,11 +204,16 @@ def containers() -> set[str]:
 
 
 def oracle(root: Path, output: Path, candidate: str) -> dict[str, Any]:
+    for name in ["__init__.py", "dynamic_oracle.py", "readonly.py"]:
+        path = root / "alpha_factory_v1/core/runtime/invention_verification" / name
+        require(path.is_file() and not path.is_symlink(), "installed dynamic verifier source unavailable: " + name)
     command = [
         sys.executable,
         "-B",
+        "-P",
+        "-S",
         "-m",
-        "contrib.invention_automation.dynamic_oracle",
+        "alpha_factory_v1.core.runtime.invention_verification.dynamic_oracle",
         "--root",
         str(root),
         "--freeze",
@@ -253,7 +258,7 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
     protected = output / "verifier-state.txt"
     protected.write_text("host verifier canary; never mounted into candidate\n")
     protected_hash = sha(protected)
-    oracle_path = root / "contrib/invention_automation/dynamic_oracle.py"
+    oracle_path = root / "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py"
     oracle_hash = sha(oracle_path)
     mutation_probe = (
         "import errno,json,pathlib\nchecks={}\n"
@@ -274,8 +279,8 @@ def qualify(root: Path, output: Path) -> dict[str, Any]:
         (output / f"{name}.py").write_text(source)
     source_paths = list(native.source_hashes()) + [
         "contrib/invention_automation/qualify_dynamic.py",
-        "contrib/invention_automation/dynamic_oracle.py",
-        "contrib/invention_automation/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/dynamic_oracle.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
         "contrib/invention_automation/specification-request.json",
     ]
     freeze = {

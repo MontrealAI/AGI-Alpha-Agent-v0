@@ -7,21 +7,21 @@ import hashlib
 import json
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pytest
 
-from alpha_factory_v1.core.runtime.invention_automation import critic_loop, evidence_critic
+from alpha_factory_v1.core.runtime.invention_automation import critic_loop, evidence_critic, specification_run
 from alpha_factory_v1.core.runtime.invention_automation.evidence_contracts import Objection
+from alpha_factory_v1.core.runtime.invention_verification import critic_verify
 from alpha_factory_v1.core.runtime.structural_transfer.contracts import digest
-from contrib.invention_automation import critic_verify
 
 ROOT = Path(__file__).resolve().parents[2]
 PROVENANCE = {"kind": "deterministic-engineering-control", "model": "NONE", "usage": "NOT_A_MODEL_CALL"}
 
 
 def request() -> dict[str, Any]:
-    return json.loads(Path(__file__).with_name("specification-request.json").read_text())
+    return cast(dict[str, Any], json.loads(Path(__file__).with_name("specification-request.json").read_text()))
 
 
 def context(value: dict[str, Any]) -> dict[str, Any]:
@@ -66,9 +66,10 @@ def write(path: Path, value: Any) -> Path:
 
 def freeze(tmp_path: Path, values: list[dict[str, Any]], contexts: list[dict[str, Any]]) -> Path:
     paths = [
-        "contrib/invention_automation/critic_verify.py",
-        "contrib/invention_automation/qualify_verify.py",
-        "contrib/invention_automation/readonly.py",
+        "alpha_factory_v1/core/runtime/invention_verification/__init__.py",
+        "alpha_factory_v1/core/runtime/invention_verification/critic_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/qualify_verify.py",
+        "alpha_factory_v1/core/runtime/invention_verification/readonly.py",
         "alpha_factory_v1/core/utils/secure_run.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification.py",
         "alpha_factory_v1/core/runtime/invention_automation/specification_run.py",
@@ -174,7 +175,7 @@ def test_full_native_loop_retains_blocked_execution_and_resume(tmp_path: Path, m
             "reason": "engineering boundary fixture; never candidate execution",
         }
 
-    monkeypatch.setattr(critic_loop.specification_run, "isolated", blocked)
+    monkeypatch.setattr(specification_run, "isolated", blocked)
     result = critic_loop.run(request_path, context_path, pins, tmp_path / "run")
     assert len(probes) == 1
     assert result["verdicts"][0]["verdict"] == "CONFIRMED"
@@ -205,7 +206,7 @@ def test_missing_verifier_is_retained_failure_without_candidate_fallback(
         raise AssertionError("candidate boundary must not be reached")
 
     monkeypatch.setattr(critic_loop, "verify_role", missing)
-    monkeypatch.setattr(critic_loop.specification_run, "isolated", forbidden)
+    monkeypatch.setattr(specification_run, "isolated", forbidden)
     with pytest.raises(ValueError, match="verifier unavailable"):
         critic_loop.run(request_path, context_path, pins, tmp_path / "failed")
     assert json.loads((tmp_path / "failed" / "failure.json").read_text())["confirmation"] is False
@@ -245,9 +246,7 @@ def test_unresolved_investigation_keeps_typed_inconclusive_without_objection_id(
 
 def test_bound_boundary_receipt_cannot_be_reused_for_different_program(monkeypatch: pytest.MonkeyPatch) -> None:
     value = request()
-    monkeypatch.setattr(
-        critic_loop.specification_run, "isolated", lambda *args: {"status": "BLOCKED", "executed": False}
-    )
+    monkeypatch.setattr(specification_run, "isolated", lambda *args: {"status": "BLOCKED", "executed": False})
     bound = critic_loop.execute_bound(value["proposal"], value["records"])
     assert bound["program_hash"] == digest(value["proposal"])
     assert bound["records_hash"] == digest(value["records"])

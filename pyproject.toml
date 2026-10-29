@@ -25,7 +25,7 @@ dependencies = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["alpha_factory_v1*", "af_requests*", "openai_agents*", "contrib.invention_automation*"]
+include = ["alpha_factory_v1*", "af_requests*", "openai_agents*"]
 exclude = ["*.node_modules*", "*.tests*", "*.test*", "*.build*", "*.wasm*", "*.dist*", "*.presentation*", "*.venv*"]
 namespaces = true
 
@@ -73,10 +73,6 @@ governance-bridge = "alpha_factory_v1.demos.solving_agi_governance.openai_agents
 macro-sentinel = "alpha_factory_v1.demos.macro_sentinel.agent_macro_entrypoint:launch_ui"
 
 [project.optional-dependencies]
-compounding-discovery = ["scipy>=1.17,<1.18"]
-flood-readiness = ["pandas>=2.2,<4"]
-claim-probe = ["sympy>=1.13,<1.15"]
-meta-discovery = ["scipy>=1.17,<1.18"]
 chain = ["eth-account>=0.13.7,<0.14"]
 tests = [
     "pytest",

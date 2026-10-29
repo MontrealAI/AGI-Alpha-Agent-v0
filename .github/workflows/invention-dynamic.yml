@@ -15,6 +15,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  public-reader:
+    name: Anonymous merged-paper byte and viewer readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - name: Read the immutable public GitHub paper without credentials or cookies
+        run: python -B contrib/invention_automation/public_reader.py --output public-reader.json
+      - name: Retain actual anonymous readback evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: public-reader-${{ github.event.pull_request.head.sha || github.sha }}
+          path: public-reader.json
+          if-no-files-found: error
+          retention-days: 30
   dynamic:
     name: Real generated-program and isolation qualification
     runs-on: ubuntu-24.04

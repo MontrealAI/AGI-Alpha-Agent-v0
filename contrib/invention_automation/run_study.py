@@ -69,6 +69,7 @@ def component_reference() -> dict[str, Any]:
 
 def source_manifest() -> dict[str, str]:
     paths = list((ROOT / "alpha_factory_v1/core/runtime/invention_automation").glob("*.py"))
+    paths += list((ROOT / "alpha_factory_v1/core/runtime/invention_verification").glob("*.py"))
     paths += list((ROOT / "contrib/invention_automation").glob("*.py"))
     paths += [
         ROOT / "alpha_factory_v1/core/runtime/claim_probe/protected_exchange.py",

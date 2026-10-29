@@ -7,7 +7,7 @@ import unittest
 from copy import deepcopy
 from typing import Any
 
-from contrib.invention_automation.dynamic_oracle import expected_outputs, judge
+from alpha_factory_v1.core.runtime.invention_verification.dynamic_oracle import expected_outputs, judge
 from contrib.invention_automation.qualify_dynamic import (
     require_native_artifact,
     require_probe_receipt,
