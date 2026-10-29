@@ -1,0 +1,196 @@
+{
+  "scope": "Misapplication of full-snapshot semantics to an incremental feed, not a bug under the upstream contract",
+  "before_csv": "sku,name,price,local_note\nA,Montréal Widget,10.00,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+  "delta_csv": "product_code,new_price\nA,12.50\n",
+  "naive_complete_snapshot_result": {
+    "schema": "catalog-change-set/v1",
+    "generation": 3,
+    "keys": [
+      "sku"
+    ],
+    "options": {
+      "decimal_columns": [
+        "price"
+      ],
+      "aliases": {},
+      "update_fields": [
+        "price"
+      ]
+    },
+    "before_sha256": "6151bed3c94df7824838259ee6093fe121cc3cbe11262c5c36735eb5d0425c13",
+    "after_sha256": "2f8d156b3f7a121f0b2c59e039a3f0078bf7ebb193b21d239c00d9a168d795cc",
+    "after_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\n",
+    "output_sha256": "2f8d156b3f7a121f0b2c59e039a3f0078bf7ebb193b21d239c00d9a168d795cc",
+    "output_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\n",
+    "rollback_csv": "sku,name,price,local_note\nA,Montréal Widget,10.00,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+    "safe_preview_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\n",
+    "changes": [
+      {
+        "key": [
+          "A"
+        ],
+        "kind": "update",
+        "before": [
+          "A",
+          "Montréal Widget",
+          "10.00",
+          "Preserve buyer approval"
+        ],
+        "after": [
+          "A",
+          "Montréal Widget",
+          "12.50",
+          "Preserve buyer approval"
+        ],
+        "fields": [
+          "price"
+        ]
+      },
+      {
+        "key": [
+          "B"
+        ],
+        "kind": "delete",
+        "before": [
+          "B",
+          "Québec Component",
+          "20.00",
+          "Do not overwrite"
+        ],
+        "after": null,
+        "fields": [
+          "sku",
+          "name",
+          "price",
+          "local_note"
+        ]
+      },
+      {
+        "key": [
+          "C"
+        ],
+        "kind": "delete",
+        "before": [
+          "C",
+          "Spare Part",
+          "30.00",
+          "Local stock note"
+        ],
+        "after": null,
+        "fields": [
+          "sku",
+          "name",
+          "price",
+          "local_note"
+        ]
+      }
+    ],
+    "trace": {
+      "before_rows": 3,
+      "after_rows": 1,
+      "changed_keys": 3,
+      "authority": "none; in-memory transformation only",
+      "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+      "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+    },
+    "proof_digest": "d7e92b07673d0ae2951dac268475731db1699158cee9e9ff9343a689a5fb86c0"
+  },
+  "delta_result": {
+    "schema": "catalog-delta-delivery/v1",
+    "request": {
+      "keys": [
+        "sku"
+      ],
+      "write_fields": [
+        "price"
+      ],
+      "decimal_fields": [
+        "price"
+      ],
+      "aliases": {
+        "product_code": "sku",
+        "new_price": "price"
+      },
+      "mode": "update_existing_only",
+      "membership": "preserve",
+      "row_order": "preserve"
+    },
+    "before_sha256": "6151bed3c94df7824838259ee6093fe121cc3cbe11262c5c36735eb5d0425c13",
+    "delta_sha256": "1e35d7ef885d518dc4c424cdceac39a42571f8d9af2573522f733bfc548f1449",
+    "native_package": {
+      "schema": "catalog-change-set/v1",
+      "generation": 3,
+      "keys": [
+        "sku"
+      ],
+      "options": {
+        "decimal_columns": [
+          "price"
+        ],
+        "aliases": {},
+        "update_fields": [
+          "price"
+        ]
+      },
+      "before_sha256": "6151bed3c94df7824838259ee6093fe121cc3cbe11262c5c36735eb5d0425c13",
+      "after_sha256": "3a1ac7b684efad5b0b4a2c3229e0871e4df81a18d272bbd3737692425cf4743f",
+      "after_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+      "output_sha256": "3a1ac7b684efad5b0b4a2c3229e0871e4df81a18d272bbd3737692425cf4743f",
+      "output_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+      "rollback_csv": "sku,name,price,local_note\nA,Montréal Widget,10.00,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+      "safe_preview_csv": "sku,name,price,local_note\nA,Montréal Widget,12.50,Preserve buyer approval\nB,Québec Component,20.00,Do not overwrite\nC,Spare Part,30.00,Local stock note\n",
+      "changes": [
+        {
+          "key": [
+            "A"
+          ],
+          "kind": "update",
+          "before": [
+            "A",
+            "Montréal Widget",
+            "10.00",
+            "Preserve buyer approval"
+          ],
+          "after": [
+            "A",
+            "Montréal Widget",
+            "12.50",
+            "Preserve buyer approval"
+          ],
+          "fields": [
+            "price"
+          ]
+        }
+      ],
+      "trace": {
+        "before_rows": 3,
+        "after_rows": 3,
+        "changed_keys": 1,
+        "authority": "none; in-memory transformation only",
+        "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+        "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs."
+      },
+      "proof_digest": "528cc390deedf8ddf61838eb7253e9af88ebca1ba051645502aa67835b1970b5"
+    },
+    "mechanism": "Sparse transactional update semantics adapted to a full-snapshot compiler",
+    "source_git_blob": "9f22a4448fa7bbd949b54c4c0d9b61936f49d549",
+    "digest": "083cad1cc069dd5153eac800d7701ff85662b79a0a23ce163d41867dc090f1ee"
+  },
+  "negative_control_verdict": {
+    "verdict": "REJECTED",
+    "failures": [
+      "intended_result",
+      "output_binding",
+      "no_inserts_or_deletes"
+    ],
+    "scope": "Bounded update-only CSV semantics and exact rollback; not business or security certification",
+    "independence": "Separate code, same author/session/runtime; not external certification"
+  },
+  "corrected_verdict": {
+    "verdict": "PASS_IN_SCOPE",
+    "failures": [],
+    "scope": "Bounded update-only CSV semantics and exact rollback; not business or security certification",
+    "independence": "Separate code, same author/session/runtime; not external certification"
+  },
+  "change": "Preserve membership and protected columns before invoking the unchanged native producer"
+}

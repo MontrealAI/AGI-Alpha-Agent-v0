@@ -1,0 +1,355 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import io
+import json
+import os
+import stat
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+from typing import Any
+
+CAPABILITY_GENERATION = 3
+MAX_CSV_BYTES = 200_000
+MAX_ROWS = 1_500
+MAX_COLUMNS = 32
+MAX_CELL_CHARS = 4_096
+SCHEMA = "catalog-change-set/v1"
+
+
+def digest(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _canonical(value: object) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def _parse(text: str) -> tuple[list[str], list[list[str]]]:
+    if not isinstance(text, str) or len(text.encode("utf-8")) > MAX_CSV_BYTES:
+        raise ValueError("Each CSV is limited to 200000 UTF-8 bytes.")
+    if "\0" in text:
+        raise ValueError("CSV cannot contain NUL characters.")
+    if text.startswith("\ufeff"):
+        text = text[1:]
+    if not text:
+        raise ValueError("CSV needs a header row.")
+    records: list[list[str]] = []
+    row: list[str] = []
+    cell: list[str] = []
+    quoted = closed = started = False
+
+    def finish_cell() -> None:
+        nonlocal cell, closed, started
+        row.append("".join(cell))
+        if len(row) > MAX_COLUMNS:
+            raise ValueError("CSV exceeds 32 columns.")
+        cell, closed, started = [], False, False
+
+    def finish_row() -> None:
+        nonlocal row
+        finish_cell()
+        records.append(row)
+        row = []
+        if len(records) > MAX_ROWS + 1:
+            raise ValueError("CSV exceeds 1500 data rows.")
+
+    index = 0
+    while index < len(text):
+        char = text[index]
+        if quoted:
+            if char == '"':
+                if index + 1 < len(text) and text[index + 1] == '"':
+                    cell.append('"')
+                    index += 1
+                else:
+                    quoted, closed = False, True
+            else:
+                cell.append(char)
+        elif char == ",":
+            finish_cell()
+        elif char in "\r\n":
+            if char == "\r" and index + 1 < len(text) and text[index + 1] == "\n":
+                index += 1
+            finish_row()
+        elif char == '"':
+            if started or closed:
+                raise ValueError("Quote inside an unquoted CSV cell.")
+            quoted, started = True, True
+        else:
+            if closed:
+                raise ValueError("Unexpected text after a closing CSV quote.")
+            cell.append(char)
+            started = True
+        if len(cell) > MAX_CELL_CHARS:
+            raise ValueError("CSV cells exceed 4096 characters.")
+        index += 1
+    if quoted:
+        raise ValueError("Unclosed quoted CSV cell.")
+    if row or cell or closed or started:
+        finish_row()
+    headers, *rows = records
+    if any(not field.strip() for field in headers) or len(set(headers)) != len(headers):
+        raise ValueError("CSV headers must be nonempty and unique.")
+    if any(len(record) != len(headers) for record in rows):
+        raise ValueError("Every CSV row must have the header column count.")
+    return headers, rows
+
+
+def _emit(headers: list[str], rows: list[list[str]], *, spreadsheet_safe: bool = False) -> str:
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream, lineterminator="\n")
+    for row in [headers, *rows]:
+        writer.writerow(
+            ["'" + cell if spreadsheet_safe and cell.lstrip().startswith(("=", "+", "-", "@")) else cell for cell in row]
+        )
+    return stream.getvalue()
+
+
+def _index(headers: list[str], rows: list[list[str]], keys: list[str]) -> dict[tuple[str, ...], list[str]]:
+    positions = [headers.index(key) for key in keys]
+    result: dict[tuple[str, ...], list[str]] = {}
+    for row in rows:
+        key = tuple(row[position] for position in positions)
+        if any(not part for part in key):
+            raise ValueError("Keys must be nonempty exact strings.")
+        if key in result:
+            raise ValueError("Duplicate keys refuse ambiguous patch construction.")
+        result[key] = row
+    return result
+
+
+def _decimal(value: str) -> Decimal:
+    try:
+        number = Decimal(value)
+    except InvalidOperation as error:
+        raise ValueError("Declared decimal columns require finite decimal values.") from error
+    if not number.is_finite():
+        raise ValueError("Declared decimal columns require finite decimal values.")
+    return number
+
+
+def reconcile(
+    before_csv: str,
+    after_csv: str,
+    keys: list[str],
+    generation: int = 0,
+    *,
+    decimal_columns: list[str] | None = None,
+    aliases: dict[str, str] | None = None,
+    update_fields: list[str] | None = None,
+) -> dict[str, Any]:
+    if type(generation) is not int or not 0 <= generation <= CAPABILITY_GENERATION:
+        raise ValueError("Requested generation is not constructed in this source.")
+    if not isinstance(keys, list) or not keys or not all(isinstance(key, str) for key in keys):
+        raise ValueError("Declare a nonempty list of exact key columns.")
+    if len(keys) != len(set(keys)) or (generation == 0 and len(keys) != 1):
+        raise ValueError("Composite keys require generation one; repeated key columns refuse.")
+    decimals = [] if decimal_columns is None else decimal_columns
+    alias_map = {} if aliases is None else aliases
+    if not isinstance(decimals, list) or not all(isinstance(field, str) for field in decimals):
+        raise ValueError("Decimal columns must be a list of field names.")
+    if len(set(decimals)) != len(decimals):
+        raise ValueError("Repeated decimal columns refuse.")
+    if not isinstance(alias_map, dict) or not all(
+        isinstance(source, str) and isinstance(target, str) for source, target in alias_map.items()
+    ):
+        raise ValueError("Aliases must map supplier field names to canonical field names.")
+    if generation < 2 and (decimals or alias_map):
+        raise ValueError("Decimal equivalence and header aliases require generation two.")
+    updates = None if update_fields is None else update_fields
+    if updates is not None and (
+        not isinstance(updates, list) or not all(isinstance(field, str) for field in updates)
+    ):
+        raise ValueError("Update fields must be a list of field names or null.")
+    if updates is not None and len(updates) != len(set(updates)):
+        raise ValueError("Repeated update fields refuse.")
+    if generation < 3 and updates is not None:
+        raise ValueError("Selective update fields require generation three.")
+    headers, before_rows = _parse(before_csv)
+    supplied_headers, supplied_rows = _parse(after_csv)
+    if not set(alias_map).issubset(supplied_headers) or not set(alias_map.values()).issubset(headers):
+        raise ValueError("Aliases name an unknown supplier or canonical field.")
+    after_headers = [alias_map.get(field, field) for field in supplied_headers]
+    if len(after_headers) != len(set(after_headers)) or set(headers) != set(after_headers):
+        raise ValueError("Both snapshots require the same unique canonical schema.")
+    if generation < 2 and headers != after_headers:
+        raise ValueError("Header reordering requires generation two.")
+    if any(key not in headers for key in keys) or not set(decimals).issubset(headers) or set(decimals) & set(keys):
+        raise ValueError("Declare existing exact keys and non-key decimal fields.")
+    if updates is not None and (not set(updates).issubset(headers) or set(updates) & set(keys)):
+        raise ValueError("Update fields must name existing non-key columns.")
+    after_positions = [after_headers.index(field) for field in headers]
+    after_rows = [[row[position] for position in after_positions] for row in supplied_rows]
+    decimal_positions = [headers.index(field) for field in decimals]
+    for row in before_rows + after_rows:
+        for position in decimal_positions:
+            _decimal(row[position])
+    before = _index(headers, before_rows, keys)
+    _index(headers, after_rows, keys)
+    key_positions = [headers.index(field) for field in keys]
+    output_rows = []
+    for row in after_rows:
+        previous = before.get(tuple(row[position] for position in key_positions))
+        output_row = row[:]
+        if previous is not None:
+            if updates is not None:
+                for position, field in enumerate(headers):
+                    if field not in keys and field not in updates:
+                        output_row[position] = previous[position]
+            for position in decimal_positions:
+                if _decimal(previous[position]) == _decimal(row[position]):
+                    output_row[position] = previous[position]
+        output_rows.append(output_row)
+    after = _index(headers, output_rows, keys)
+    changes: list[dict[str, Any]] = []
+    for key in sorted(before.keys() | after.keys()):
+        old, new = before.get(key), after.get(key)
+        if old == new:
+            continue
+        changes.append(
+            {"key": list(key), "kind": "insert" if old is None else "delete" if new is None else "update",
+             "before": old, "after": new,
+             "fields": headers[:] if old is None or new is None else
+             [name for name, a, b in zip(headers, old, new, strict=True) if a != b]}
+        )
+    output = _emit(headers, output_rows)
+    package: dict[str, Any] = {
+        "schema": SCHEMA,
+        "generation": generation,
+        "keys": keys[:],
+        "options": {
+            "decimal_columns": decimals[:], "aliases": alias_map.copy(),
+            "update_fields": None if updates is None else updates[:],
+        },
+        "before_sha256": digest(before_csv),
+        "after_sha256": digest(after_csv),
+        "after_csv": after_csv,
+        "output_sha256": digest(output),
+        "output_csv": output,
+        "rollback_csv": before_csv,
+        "safe_preview_csv": _emit(headers, output_rows, spreadsheet_safe=True),
+        "changes": changes,
+        "trace": {
+            "before_rows": len(before_rows), "after_rows": len(after_rows), "changed_keys": len(changes),
+            "authority": "none; in-memory transformation only",
+            "formula_policy": "Exact machine CSV preserves text; safe_preview_csv prefixes formula-like cells.",
+            "parser_provenance": "Port of bounds and quote grammar in examples/successor-alpha/engine.mjs.",
+        },
+    }
+    package["proof_digest"] = digest(_canonical(package))
+    return package
+
+
+def verify_package(package: dict[str, Any], before_csv: str) -> bool:
+    if not isinstance(package, dict) or package.get("schema") != SCHEMA:
+        raise ValueError("Unsupported patch schema.")
+    if package.get("before_sha256") != digest(before_csv):
+        raise ValueError("Stale or different source snapshot.")
+    unsigned = {key: value for key, value in package.items() if key != "proof_digest"}
+    if package.get("proof_digest") != digest(_canonical(unsigned)):
+        raise ValueError("Patch integrity check failed.")
+    try:
+        expected = reconcile(
+            before_csv, package["after_csv"], package["keys"], package["generation"], **package["options"]
+        )
+    except (KeyError, TypeError) as error:
+        raise ValueError("Invalid patch fields.") from error
+    if expected != package:
+        raise ValueError("Patch content differs from source-derived construction.")
+    return True
+
+
+def apply_patch(before_csv: str, package: dict[str, Any], *, authorized: bool = False) -> str:
+    if authorized is not True:
+        raise PermissionError("Current explicit authorization is required.")
+    verify_package(package, before_csv)
+    return str(package["output_csv"])
+
+
+def rollback(output_csv: str, package: dict[str, Any], *, authorized: bool = False) -> str:
+    if authorized is not True:
+        raise PermissionError("Current explicit authorization is required.")
+    if not isinstance(package, dict) or not isinstance(package.get("rollback_csv"), str):
+        raise ValueError("Invalid rollback package.")
+    verify_package(package, package["rollback_csv"])
+    if digest(output_csv) != package["output_sha256"]:
+        raise ValueError("Current output is stale; rollback refuses.")
+    return str(package["rollback_csv"])
+
+
+def _read(path: str, limit: int = MAX_CSV_BYTES) -> str:
+    source = Path(path)
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    descriptor = os.open(source, flags)
+    try:
+        opened = os.fstat(descriptor)
+        current = os.stat(source, follow_symlinks=False)
+        if (
+            not stat.S_ISREG(opened.st_mode)
+            or not stat.S_ISREG(current.st_mode)
+            or (opened.st_dev, opened.st_ino) != (current.st_dev, current.st_ino)
+        ):
+            raise ValueError("Input must remain the same regular file, not a symlink.")
+        if opened.st_size > limit:
+            raise ValueError("Input exceeds byte limit.")
+        with os.fdopen(descriptor, "rb") as handle:
+            descriptor = -1
+            data = handle.read(limit + 1)
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+    if len(data) > limit:
+        raise ValueError("Input exceeds byte limit.")
+    return data.decode("utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Construct and check bounded reversible catalog changes.")
+    actions = parser.add_subparsers(dest="action", required=True)
+    plan = actions.add_parser("reconcile")
+    plan.add_argument("before")
+    plan.add_argument("after")
+    plan.add_argument("--keys", nargs="+", required=True)
+    plan.add_argument("--generation", type=int, default=0)
+    plan.add_argument("--decimal-columns", nargs="*")
+    plan.add_argument("--aliases", help="JSON object mapping supplier headers to canonical headers")
+    plan.add_argument("--update-fields", nargs="*")
+    plan.add_argument("--output", required=True)
+    for name in ("apply", "rollback"):
+        action = actions.add_parser(name)
+        action.add_argument("current")
+        action.add_argument("package")
+        action.add_argument("--authorize", action="store_true")
+        action.add_argument("--expected-package-digest", required=True)
+        action.add_argument("--output", required=True)
+    args = parser.parse_args()
+    try:
+        if args.action == "reconcile":
+            package = reconcile(
+                _read(args.before), _read(args.after), args.keys, args.generation,
+                decimal_columns=args.decimal_columns,
+                aliases=json.loads(args.aliases) if args.aliases else None,
+                update_fields=args.update_fields,
+            )
+            result = json.dumps(package, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        else:
+            package = json.loads(_read(args.package, 4_000_000))
+            if not isinstance(package, dict):
+                raise ValueError("Patch package must be a JSON object.")
+            if package.get("proof_digest") != args.expected_package_digest:
+                raise ValueError("Approval is bound to a different package digest.")
+            operation = apply_patch if args.action == "apply" else rollback
+            result = operation(_read(args.current), package, authorized=args.authorize)
+        with Path(args.output).open("x", encoding="utf-8", newline="") as destination:
+            destination.write(result)
+    except (ValueError, TypeError, OSError, PermissionError) as error:
+        parser.exit(2, f"Refused: {error}\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

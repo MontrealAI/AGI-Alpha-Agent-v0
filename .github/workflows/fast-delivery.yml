@@ -1,0 +1,37 @@
+name: Bounded supplier delivery
+on:
+  pull_request:
+    paths:
+      - 'contrib/enterprise_campaign/**'
+      - 'tests/test_delta*.py'
+      - '.github/workflows/fast-delivery.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'contrib/enterprise_campaign/**'
+      - 'tests/test_delta*.py'
+      - '.github/workflows/fast-delivery.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-cli:
+    name: Source CLI (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Fixed source CLI and acceptance regression (not commercial qualification)
+        shell: bash
+        run: |
+          ulimit -t 60
+          ulimit -v 786432
+          python -m unittest discover -s tests -p 'test_delta*.py' -v

@@ -1,0 +1,24 @@
+{
+  "schema": "transfer-witness/v1",
+  "status": "development_tested_in_scope",
+  "name": "Sparse update semantics for source-bound catalogue delivery",
+  "donor": "Transactional field updates: absence of a record is not deletion",
+  "target": "Supplier feeds containing only changed rows and authorized columns",
+  "old_restriction": "The native producer consumes complete snapshots with full canonical schema and target membership",
+  "adaptation": "Construct a complete after-image from before+explicit delta, then reuse native patch/apply/rollback",
+  "implementation": "contrib.enterprise_campaign.delta_delivery.build_delta",
+  "authority": "Existing rows and declared writable columns only; no insertion, deletion, external writes or payment",
+  "counterexample": "evidence/failed-transfer-and-repair.json",
+  "evidence": "evidence/development-cases.json",
+  "cost_scope": "No model calls; timings recorded, full actual cost unknown",
+  "novelty": "Known update semantics; designer-supplied mapping, not autonomous analogy discovery",
+  "successor_status": "Reusable adapter exists; causal benefit to independent successor invention not tested",
+  "failure_conditions": [
+    "Feed is a full replacement rather than a delta",
+    "Keys ambiguous or missing",
+    "New item or deletion required",
+    "Unauthorized field supplied",
+    "Source changes before applying package"
+  ],
+  "retention": "This is a portable evidence record, not a new registry or automatic production promotion"
+}
